@@ -23,7 +23,7 @@ class FediIconInCircleFilledButton extends StatelessWidget {
   const FediIconInCircleFilledButton(
     this.iconData, {
     @required this.onPressed,
-    this.enabledBackgroundColor = FediColors.primaryColor,
+    this.enabledBackgroundColor = FediColors.primary,
     this.disabledBackgroundColor = FediColors.white,
     this.enabledBorderColor = FediColors.white,
     this.disabledBorderColor = FediColors.lightGrey,

@@ -1,5 +1,6 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,9 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   });
 
   Future<List<IPleromaStatus>> getHashtagTimeline({
@@ -33,7 +35,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 
@@ -42,12 +44,12 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     String sinceId,
     String minId,
     int limit = 20,
-    bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   });
 
   Future<List<IPleromaStatus>> getListTimeline({
@@ -56,11 +58,10 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     String sinceId,
     String minId,
     int limit = 20,
-    bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 }

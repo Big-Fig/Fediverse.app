@@ -9,16 +9,18 @@ import 'package:provider/provider.dart';
 class FediSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
+  final bool enabled;
 
   FediSwitch({
     @required this.value,
     @required this.onChanged,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) => Provider.value(
-    value: value,
-    child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
+        value: value,
+        child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
           update: (context, value, previous) {
             var switchBloc = CustomSwitchBloc(startValue: value);
             switchBloc.addDisposable(streamSubscription:
@@ -33,9 +35,10 @@ class FediSwitch extends StatelessWidget {
             indicatorSize: 11.0,
             backgroundBorderRadius: 19.0,
             indicatorPadding: EdgeInsets.all(4.0),
-            indicatorActiveColor: FediColors.primaryColor,
+            indicatorActiveColor: FediColors.primary,
             indicatorInactiveColor: FediColors.lightGrey,
+            enabled: enabled,
           ),
         ),
-  );
+      );
 }

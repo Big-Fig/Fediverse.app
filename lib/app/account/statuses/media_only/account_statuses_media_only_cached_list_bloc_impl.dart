@@ -69,25 +69,28 @@ class AccountStatusesMediaOnlyCachedListBloc
       @required IStatus newerThan,
       @required IStatus olderThan}) async {
     var statuses = await statusRepository.getStatuses(
-        onlyInListWithRemoteId: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: null,
-        onlyWithMedia: true,
-        onlyNotMuted: false,
-        excludeVisibilities: null,
-        olderThanStatus: olderThan,
-        newerThanStatus: newerThan,
-        onlyNoNsfwSensitive: false,
-        onlyNoReplies: false,
-        onlyFromAccount: account,
-        limit: limit,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null,
-        isFromHomeTimeline: null);
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: null,
+      onlyWithMedia: true,
+      withMuted: false,
+      excludeVisibilities: null,
+      olderThanStatus: olderThan,
+      newerThanStatus: newerThan,
+      onlyNoNsfwSensitive: false,
+      onlyNoReplies: false,
+      onlyFromAccount: account,
+      limit: limit,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyInConversation: null,
+      isFromHomeTimeline: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     return statuses;
   }
@@ -95,25 +98,28 @@ class AccountStatusesMediaOnlyCachedListBloc
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
     return statusRepository.watchStatuses(
-        onlyInListWithRemoteId: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: null,
-        onlyWithMedia: true,
-        onlyNotMuted: false,
-        excludeVisibilities: null,
-        olderThanStatus: null,
-        newerThanStatus: item,
-        onlyNoNsfwSensitive: false,
-        onlyNoReplies: false,
-        onlyFromAccount: account,
-        limit: null,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null,
-        isFromHomeTimeline: null);
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: null,
+      onlyWithMedia: true,
+      withMuted: false,
+      excludeVisibilities: null,
+      olderThanStatus: null,
+      newerThanStatus: item,
+      onlyNoNsfwSensitive: false,
+      onlyNoReplies: false,
+      onlyFromAccount: account,
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyInConversation: null,
+      isFromHomeTimeline: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
   }
 
   @override
@@ -126,27 +132,21 @@ class AccountStatusesMediaOnlyCachedListBloc
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    try {
-      var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          onlyMedia: true,
-          accountRemoteId: account.remoteId,
-          limit: limit,
-          sinceId: newerThan?.remoteId,
-          maxId: olderThan?.remoteId);
+    var remoteStatuses = await pleromaAccountService.getAccountStatuses(
+        onlyWithMedia: true,
+        accountRemoteId: account.remoteId,
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId);
 
-      if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null, conversationRemoteId: null);
+    if (remoteStatuses != null) {
+      await statusRepository.upsertRemoteStatuses(remoteStatuses,
+          listRemoteId: null, conversationRemoteId: null);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "statuses is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "statuses is null");
       return false;
     }
   }

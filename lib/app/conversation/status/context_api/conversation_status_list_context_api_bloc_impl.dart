@@ -43,28 +43,22 @@ class ConversationStatusListContextApiBloc extends ConversationStatusListBloc {
       // context don't support load more pagination
       return false;
     }
-    try {
-      var remoteContext = await pleromaStatusService.getStatusContext(
-          statusRemoteId: statusToFetchContext.remoteId);
+    var remoteContext = await pleromaStatusService.getStatusContext(
+        statusRemoteId: statusToFetchContext.remoteId);
 
-      var remoteStatuses = <PleromaStatus>[
-        ...remoteContext.descendants,
-        ...remoteContext.ancestors,
-      ];
+    var remoteStatuses = <PleromaStatus>[
+      ...remoteContext.descendants,
+      ...remoteContext.ancestors,
+    ];
 
-      if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null, conversationRemoteId: conversation.remoteId);
+    if (remoteStatuses != null) {
+      await statusRepository.upsertRemoteStatuses(remoteStatuses,
+          listRemoteId: null, conversationRemoteId: conversation.remoteId);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "statuses is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "statuses is null");
       return false;
     }
   }

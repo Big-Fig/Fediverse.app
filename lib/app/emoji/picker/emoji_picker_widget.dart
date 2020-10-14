@@ -5,6 +5,7 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -96,15 +97,15 @@ class EmojiPickerWidget extends StatelessWidget {
         useImageEmoji: useImageEmoji,
         customCategoryIconBuilder: (category) {
           if (category is EmojiPickerCustomImageUrlCategoryBloc) {
-            return Icons.star;
+            return FediIcons.heart;
           } else if (category is EmojiPickerRecentCategoryBloc) {
-            return Icons.refresh;
+            return FediIcons.reload;
           } else {
             return null;
           }
         },
         loadingWidget: const FediCircularProgressIndicator(),
-        selectedIndicatorColor: FediColors.primaryColor,
+        selectedIndicatorColor: FediColors.primary,
         unselectedIndicatorColor: FediColors.darkGrey,
         separatorColor: FediColors.ultraLightGrey,
         onEmojiSelected: onEmojiSelected,

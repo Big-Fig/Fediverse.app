@@ -1,11 +1,11 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/device_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_uploaded_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
@@ -15,14 +15,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {
   @override
   final int maximumMediaAttachmentCount;
+  @override
+  final int maximumFileSizeInBytes;
 
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
   DisposableOwner uploadedSubscription;
 
-  UploadMediaAttachmentsCollectionBloc(
-      {@required this.maximumMediaAttachmentCount,
-      @required this.pleromaMediaAttachmentService}) {
+  UploadMediaAttachmentsCollectionBloc({
+    @required this.maximumMediaAttachmentCount,
+    @required this.pleromaMediaAttachmentService,
+    @required this.maximumFileSizeInBytes,
+  }) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: isAllAttachedMediaUploadedSubject);
     addDisposable(disposable: CustomDisposable(() {
@@ -108,16 +112,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocsSubject.stream;
 
   @override
-  void attachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
+  Future attachMedia(IMediaDeviceFile mediaDeviceFile) async {
+    var existedBloc = findMediaAttachmentBlocByFilePickerFile(mediaDeviceFile);
 
     if (existedBloc == null) {
-      var uploadMediaAttachmentBloc = UploadMediaAttachmentBloc(
-          filePickerFile: filePickerFile,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService);
-      uploadMediaAttachmentBloc.startUpload();
+      var uploadMediaAttachmentBloc = DeviceUploadMediaAttachmentBloc(
+        mediaDeviceFile: mediaDeviceFile,
+        pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        maximumFileSizeInBytes: maximumFileSizeInBytes,
+      );
       mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+      await uploadMediaAttachmentBloc.startUpload();
     }
   }
 
@@ -132,10 +138,10 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   IUploadMediaAttachmentBloc findMediaAttachmentBlocByFilePickerFile(
-          FilePickerFile filePickerFile) =>
+          IMediaDeviceFile mediaDeviceFile) =>
       mediaAttachmentBlocs.firstWhere((bloc) {
-        if (bloc is UploadMediaAttachmentBloc) {
-          return bloc.filePickerFile == filePickerFile;
+        if (bloc is DeviceUploadMediaAttachmentBloc) {
+          return bloc.mediaDeviceFile == mediaDeviceFile;
         } else {
           return false;
         }
@@ -160,7 +166,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         true,
         (previousValue, element) =>
             previousValue &&
-            element.uploadState == UploadMediaAttachmentState.uploaded);
+            element.uploadState.type == UploadMediaAttachmentStateType.uploaded);
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
   }
@@ -168,7 +174,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   void addUploadedAttachment(IPleromaMediaAttachment attachment) {
     mediaAttachmentBlocs.add(
-      UploadMediaAttachmentUploadedBloc(
+      UploadedUploadMediaAttachmentBloc(
         pleromaMediaAttachment: attachment,
       ),
     );

@@ -14,12 +14,19 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
+  @override
+  final int maximumMessageLength;
+
   PostMessageBloc({
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMediaAttachmentCount,
+    @required this.maximumMessageLength,
+    @required int maximumFileSizeInBytes,
   }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+        ) {
     assert(pleromaMediaAttachmentService != null);
     addDisposable(disposable: mediaAttachmentsBloc);
 
@@ -171,5 +178,10 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   void clearSelectedAction() {
     selectedActionSubject.add(null);
+  }
+
+  @override
+  void onFileSelected() {
+    toggleAttachActionSelection();
   }
 }

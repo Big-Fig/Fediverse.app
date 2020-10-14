@@ -35,6 +35,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   bool isJumpedToStartState = false;
 
   StreamSubscription newItemsJumpSubscription;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -172,6 +173,10 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
           }
           var status = statuses[index];
           var isFirstInList = index == 0;
+          var isInFocus =
+              index == statusThreadBloc.initialStatusToFetchThreadIndex;
+          var firstStatusInThread =
+              statusThreadBloc.isFirstStatusInThread(status);
           return Provider.value(
             value: status,
             child: Padding(
@@ -179,7 +184,9 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                   ? const EdgeInsets.only(bottom: 3.0)
                   : const EdgeInsets.symmetric(vertical: 4.0),
               child: Container(
-                color: FediColors.white,
+                color: isInFocus
+                    ? FediColors.ultraLightGrey.withOpacity(0.5)
+                    : FediColors.white,
                 child: Column(
                   children: [
                     StatusListItemTimelineWidget.thread(
@@ -187,20 +194,25 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                         if (status.remoteId !=
                             statusThreadBloc
                                 .initialStatusToFetchThread.remoteId) {
-                          goToStatusThreadPage(context, status);
+                          goToStatusThreadPage(
+                            context,
+                            status: status,
+                            initialMediaAttachment: null,
+                          );
                         }
                       },
                       collapsible: false,
-                      displayAccountHeader:
-                          !statusThreadBloc.isFirstStatusInThread(status),
-                      displayActions: isFirstInList,
+                      displayAccountHeader: !firstStatusInThread,
+                      displayActions: firstStatusInThread || isInFocus,
                       accountMentionCallback:
                           (BuildContext context, IAccount account) {
                         IPostStatusBloc.of(context, listen: false)
-                            .addMentionByAccount(account);
+                            .addAccountMentions([account]);
                       },
+                      initialMediaAttachment:
+                          statusThreadBloc.initialMediaAttachment,
                     ),
-                    if (isFirstInList) FediLightGreyDivider(),
+                    FediLightGreyDivider(),
                   ],
                 ),
               ),

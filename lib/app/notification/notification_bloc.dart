@@ -8,8 +8,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class INotificationBloc implements Disposable {
+  Stream<bool> get dismissedStream;
+
+  bool get dismissed;
+
   static INotificationBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<INotificationBloc>(context, listen: listen);
+
   INotification get notification;
 
   Stream<INotification> get notificationStream;
@@ -41,4 +46,12 @@ abstract class INotificationBloc implements Disposable {
   DateTime get createdAt;
 
   Stream<DateTime> get createdAtStream;
+
+  bool get unread;
+
+  Stream<bool> get unreadStream;
+
+  Future dismiss();
+
+  Future markAsRead();
 }

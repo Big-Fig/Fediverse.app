@@ -118,14 +118,14 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbChatPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbChatPopulatedWrapper>> watchAll() =>
@@ -298,7 +298,7 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   Future<IChat> findByAccount({@required IAccount account}) async {
     // todo: rework with one query
     var dbChatAccount = await chatAccountsDao
-        .findByAccountRemoteIdQuery(account.remoteId)
+        .findByAccountRemoteId(account.remoteId)
         .getSingle();
 
     if (dbChatAccount != null) {

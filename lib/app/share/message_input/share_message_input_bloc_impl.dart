@@ -9,7 +9,11 @@ class ShareMessageInputBloc extends DisposableOwner
   final IFormStringFieldBloc messageField;
 
   ShareMessageInputBloc()
-      : messageField = FormStringFieldBloc(validators: [], originValue: null) {
+      : messageField = FormStringFieldBloc(
+          validators: [],
+          originValue: null,
+          maxLength: null,
+        ) {
     addDisposable(disposable: messageField);
   }
 }

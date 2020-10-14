@@ -1,121 +1,270 @@
+import 'dart:convert';
+
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/custom_list/custom_list_model.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/enum/enum_values.dart';
+import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-enum TimelineRemoteType { public, list, home, hashtag }
+part 'timeline_model.g.dart';
 
-abstract class ITimelineSettings {
-  String get onlyInListWithRemoteId;
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
+@HiveType()
+// @HiveType(typeId: -32 + 78)
+@JsonSerializable(explicitToJson: true)
+class Timeline implements IPreferencesObject {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
+  final String label;
+  @HiveField(2)
+  @JsonKey(name: "is_possible_to_delete")
+  final bool isPossibleToDelete;
 
-  String get withHashtag;
+  @HiveField(3)
+  @JsonKey(name: "type_string")
+  final String typeString;
 
-  bool get onlyLocal;
+  TimelineType get type => typeString?.toTimelineType();
 
-  bool get onlyNotMuted;
+  @HiveField(4)
+  final TimelineSettings settings;
 
-  List<PleromaVisibility> get excludeVisibilities;
+  Timeline({
+    @required this.id,
+    @required this.typeString,
+    @required this.settings,
+    @required this.label,
+    @required this.isPossibleToDelete,
+  });
 
-  TimelineRemoteType get remoteType;
-}
+  Timeline.byType({
+    @required String id,
+    @required TimelineType type,
+    @required TimelineSettings settings,
+    @required String label,
+    @required bool isPossibleToDelete,
+  }) : this(
+          id: id,
+          typeString: type.toJsonValue(),
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
 
-class TimelineSettings implements ITimelineSettings {
+  Timeline.home({
+    @required String id,
+    @required String label,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: id,
+          type: TimelineType.home,
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.public({
+    @required String id,
+    @required TimelineSettings settings,
+    @required String label,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: id,
+          type: TimelineType.public,
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.hashtag({
+    @required IPleromaTag remoteTag,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: remoteTag.calculateTimelineId(),
+          type: TimelineType.hashtag,
+          settings: settings,
+          label: remoteTag.name,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.customList({
+    @required IPleromaList remoteList,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: remoteList.calculateTimelineId(),
+          type: TimelineType.customList,
+          settings: settings,
+          label: remoteList.id,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.account({
+    @required IPleromaAccount account,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: account.calculateTimelineId(),
+          type: TimelineType.account,
+          settings: settings,
+          label: account.acct,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
   @override
-  final List<PleromaVisibility> excludeVisibilities;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Timeline &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          label == other.label &&
+          isPossibleToDelete == other.isPossibleToDelete &&
+          typeString == other.typeString &&
+          settings == other.settings;
 
   @override
-  final bool onlyLocal;
-
-  @override
-  final bool onlyNotMuted;
-
-  @override
-  final String onlyInListWithRemoteId;
-
-  @override
-  final TimelineRemoteType remoteType;
-
-  @override
-  final String withHashtag;
-
-  TimelineSettings._private(
-      {@required this.excludeVisibilities,
-      @required this.onlyLocal,
-      @required this.onlyNotMuted,
-      @required this.onlyInListWithRemoteId,
-      @required this.remoteType,
-      @required this.withHashtag}) {
-    assert(remoteType != null);
-    switch (remoteType) {
-      case TimelineRemoteType.public:
-        break;
-      case TimelineRemoteType.list:
-        assert(onlyInListWithRemoteId != null);
-        break;
-      case TimelineRemoteType.home:
-        break;
-      case TimelineRemoteType.hashtag:
-        assert(withHashtag != null);
-        break;
-    }
-
-    assert(onlyNotMuted != null);
-  }
-
-  TimelineSettings.home({
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool onlyLocal,
-    @required bool onlyNotMuted,
-  }) : this._private(
-            excludeVisibilities: excludeVisibilities,
-            onlyLocal: onlyLocal,
-            onlyNotMuted: onlyNotMuted,
-            remoteType: TimelineRemoteType.home,
-            withHashtag: null,
-            onlyInListWithRemoteId: null);
-
-  TimelineSettings.list({
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool onlyLocal,
-    @required bool onlyNotMuted,
-    @required String onlyInListWithRemoteId,
-  }) : this._private(
-            excludeVisibilities: excludeVisibilities,
-            onlyLocal: onlyLocal,
-            onlyNotMuted: onlyNotMuted,
-            remoteType: TimelineRemoteType.list,
-            withHashtag: null,
-            onlyInListWithRemoteId: onlyInListWithRemoteId);
-
-  TimelineSettings.hashtag({
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool onlyLocal,
-    @required bool onlyNotMuted,
-    @required String withHashtag,
-  }) : this._private(
-            excludeVisibilities: excludeVisibilities,
-            onlyLocal: onlyLocal,
-            onlyNotMuted: onlyNotMuted,
-            remoteType: TimelineRemoteType.hashtag,
-            withHashtag: withHashtag,
-            onlyInListWithRemoteId: null);
-
-  TimelineSettings.public({
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool onlyLocal,
-    @required bool onlyNotMuted,
-  }) : this._private(
-            excludeVisibilities: excludeVisibilities,
-            onlyLocal: onlyLocal,
-            onlyNotMuted: onlyNotMuted,
-            remoteType: TimelineRemoteType.public,
-            withHashtag: null,
-            onlyInListWithRemoteId: null);
+  int get hashCode =>
+      id.hashCode ^
+      label.hashCode ^
+      isPossibleToDelete.hashCode ^
+      typeString.hashCode ^
+      settings.hashCode;
 
   @override
   String toString() {
-    return 'TimelineSettings{'
-        ' excludeVisibilities: $excludeVisibilities,'
-        ' onlyLocal: $onlyLocal, onlyNotMuted: $onlyNotMuted,'
-        ' onlyInListWithRemoteId: $onlyInListWithRemoteId,'
-        ' remoteType: $remoteType, withHashtag: $withHashtag}';
+    return 'Timeline{id: $id, label: $label,'
+        ' isPossibleToDelete: $isPossibleToDelete,'
+        ' typeString: $typeString, settings: $settings}';
   }
+
+  factory Timeline.fromJson(Map<String, dynamic> json) =>
+      _$TimelineFromJson(json);
+
+  factory Timeline.fromJsonString(String jsonString) =>
+      _$TimelineFromJson(jsonDecode(jsonString));
+
+  static List<Timeline> listFromJsonString(String str) =>
+      List<Timeline>.from(json.decode(str).map((x) => Timeline.fromJson(x)));
+
+  @override
+  Map<String, dynamic> toJson() => _$TimelineToJson(this);
+
+  String toJsonString() => jsonEncode(_$TimelineToJson(this));
+
+  bool get onlyWithMedia => settings?.onlyWithMedia;
+
+  bool get excludeReplies => settings?.excludeReplies;
+
+  bool get excludeNsfwSensitive => settings?.excludeNsfwSensitive;
+
+  bool get onlyRemote => settings?.onlyRemote;
+
+  bool get onlyLocal => settings?.onlyLocal;
+
+  bool get webSocketsUpdates => settings?.webSocketsUpdates;
+
+  bool get withMuted => settings?.withMuted;
+
+  List<String> get excludeVisibilitiesStrings =>
+      settings?.excludeVisibilitiesStrings;
+
+  List<PleromaVisibility> get excludeVisibilities =>
+      settings?.excludeVisibilities;
+
+  PleromaList get onlyInRemoteList => settings?.onlyInRemoteList;
+
+  String get withRemoteHashtag => settings?.withRemoteHashtag;
+
+  String get PleromaReplyVisibilityFilterString =>
+      settings?.replyVisibilityFilterString;
+
+  PleromaReplyVisibilityFilter get replyVisibilityFilter =>
+      settings?.replyVisibilityFilter;
+
+  PleromaAccount get onlyFromRemoteAccount => settings?.onlyFromRemoteAccount;
+
+  bool get onlyPinned => settings?.onlyPinned;
+
+  bool get excludeReblogs => settings?.excludeReblogs;
+
+  Timeline copyWith({
+    String id,
+    TimelineType type,
+    TimelineSettings settings,
+    String label,
+    bool isPossibleToDelete,
+  }) =>
+      Timeline(
+        id: id ?? this.id,
+        typeString: type?.toJsonValue() ?? typeString,
+        settings: settings ?? this.settings,
+        label: label ?? this.label,
+        isPossibleToDelete: isPossibleToDelete ?? this.isPossibleToDelete,
+      );
+}
+
+enum TimelineType {
+  public,
+  customList,
+  home,
+  hashtag,
+  account,
+}
+
+EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
+  "public": TimelineType.public,
+  "custom_list": TimelineType.customList,
+  "home": TimelineType.home,
+  "hashtag": TimelineType.hashtag,
+  "account": TimelineType.account,
+});
+
+extension TimelineIdPleromaListExtension on IPleromaList {
+  String calculateTimelineId() => "list.$id";
+}
+
+extension TimelineIdPleromaTagExtension on IPleromaTag {
+  String calculateTimelineId() => "hashtag.$name";
+}
+
+extension TimelineIdPleromaAccountExtension on IPleromaAccount {
+  String calculateTimelineId() => "account.$id";
+}
+
+extension TimelineIdCustomListExtension on ICustomList {
+  String calculateTimelineId() => "list.$remoteId";
+}
+
+extension TimelineIdHashTagExtension on IHashtag {
+  String calculateTimelineId() => "hashtag.$name";
+}
+
+extension TimelineIdAccountExtension on IAccount {
+  String calculateTimelineId() => "account.$remoteId";
+}
+
+extension TimelineTypeExtension on TimelineType {
+  String toJsonValue() {
+    var type = timelineTypeEnumValues.enumToValueMap[this];
+    assert(type != null, "invalid type $this");
+    return type;
+  }
+}
+
+extension TimelineTypeStringExtension on String {
+  TimelineType toTimelineType() => timelineTypeEnumValues.valueToEnumMap[this];
 }

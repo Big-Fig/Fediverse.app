@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
@@ -35,6 +37,11 @@ class StatusReplyWidget extends StatelessWidget {
                   child: StatusListItemTimelineWidget.list(
                     collapsible: collapsible,
                     isFirstReplyInThread: false,
+                    statusCallback: (BuildContext context, IStatus status) {
+                      goToStatusThreadPage(context,
+                          status: status, initialMediaAttachment: null);
+                    },
+                    initialMediaAttachment: null,
                   ));
               break;
             case AsyncInitLoadingState.failed:

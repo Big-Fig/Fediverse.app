@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/conversation/share/conversation_share_bloc.dart';
 import 'package:fedi/app/conversation/share/conversation_share_status_bloc_impl.dart';
 import 'package:fedi/app/share/select/share_select_account_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
+import 'package:fedi/app/share/to_account/share_to_account_icon_button_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -19,20 +19,19 @@ class ConversationShareStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var conversationShareBloc =
-        IConversationShareBloc.of(context, listen: false);
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: "app.conversation.share.title".tr(),
+        actions: [
+          ShareToAccountIconButtonWidget(),
+        ],
       ),
-      body: ShareStatusWithMessageWidget(
-        status: status,
-        header: ShareSelectAccountWidget(
-          customDefaultLocalAccountListLoader:
-              conversationShareBloc.customDefaultLocalAccountListLoader,
-          customDefaultRemoteAccountListLoader:
-              conversationShareBloc.customDefaultRemoteAccountListLoader,
+      body: ShareSelectAccountWidget(
+        header: ShareStatusWithMessageWidget(
+          status: status,
+          footer: null,
         ),
+        alwaysShowHeader: true,
       ),
     );
   }

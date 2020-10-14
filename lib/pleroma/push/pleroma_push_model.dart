@@ -283,19 +283,23 @@ class PleromaPushSubscriptionKeys {
       jsonEncode(_$PleromaPushSubscriptionKeysToJson(this));
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 56)
 @JsonSerializable()
 class PleromaPushMessageBody {
   @HiveField(0)
   @JsonKey(name: "notification_id")
-  String notificationId;
+  final String notificationId;
   @HiveField(1)
-  String server;
+  final String server;
   @HiveField(2)
-  String account;
+  final String account;
   @JsonKey(name: "notification_type")
   @HiveField(3)
-  String notificationType;
+  final String notificationType;
 
   PleromaPushMessageBody(
       {this.notificationId, this.server, this.account, this.notificationType});

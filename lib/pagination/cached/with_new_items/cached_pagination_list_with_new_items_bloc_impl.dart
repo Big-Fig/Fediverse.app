@@ -28,11 +28,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
   final bool mergeNewItemsImmediately;
 
   // ignore: close_sinks
-  final BehaviorSubject<List<TItem>> _mergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> mergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: close_sinks
-  final BehaviorSubject<List<TItem>> _unmergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> unmergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: cancel_subscriptions
@@ -40,13 +40,13 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
 
-  CachedPaginationListWithNewItemsBloc(
-      {@required this.mergeNewItemsImmediately,
-      this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
-      @required ICachedPaginationBloc<TPage, TItem> paginationBloc})
-      : super(cachedPaginationBloc: paginationBloc) {
-    addDisposable(subject: _mergedNewItemsSubject);
-    addDisposable(subject: _unmergedNewItemsSubject);
+  CachedPaginationListWithNewItemsBloc({
+    @required this.mergeNewItemsImmediately,
+    this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
+    @required ICachedPaginationBloc<TPage, TItem> paginationBloc,
+  }) : super(cachedPaginationBloc: paginationBloc) {
+    addDisposable(subject: mergedNewItemsSubject);
+    addDisposable(subject: unmergedNewItemsSubject);
 
     addDisposable(
         streamSubscription: newerItemStream.distinct().listen((newerItem) {
@@ -69,16 +69,18 @@ abstract class CachedPaginationListWithNewItemsBloc<
         // for example chat updateAt updated
         actuallyNew = removeDuplicates(actuallyNew);
 
-        _logger.finest(() => "watchItemsNewerThanItem \n"
-            "\t newItems ${newItems.length} \n"
-            "\t actuallyNew = ${actuallyNew.length}");
+        _logger.finest(() => "watchItemsNewerThanItem "
+            // "\n"
+            // "\t newItems ${newItems.length} \n"
+            // "\t actuallyNew = ${actuallyNew.length}"
+            );
 
         if (items?.isNotEmpty != true &&
             mergeNewItemsImmediatelyWhenItemsIsEmpty) {
           // merge immediately
-          _mergedNewItemsSubject.add(actuallyNew);
+          mergedNewItemsSubject.add(actuallyNew);
         } else {
-          _unmergedNewItemsSubject.add(actuallyNew);
+          unmergedNewItemsSubject.add(actuallyNew);
         }
       });
 
@@ -137,10 +139,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
       result = [...(mergedNewItems ?? []), ...items];
     }
 
-    _logger.finest(() => "_calculateNewItems \n"
-        "\t items = ${items?.length} \n"
-        "\t mergedNewItems = ${mergedNewItems.length} \n"
-        "\t result = ${result?.length}");
+    _logger.finest(() => "_calculateNewItems"
+        // " \n"
+        // "\t items = ${items?.length} \n"
+        // "\t mergedNewItems = ${mergedNewItems.length} \n"
+        // "\t result = ${result?.length}"
+        );
 
     return result;
   }
@@ -151,11 +155,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveUnmergedNewItems) => unmergedNewItemsCount > 0);
 
   @override
-  List<TItem> get unmergedNewItems => _unmergedNewItemsSubject.value;
+  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value;
 
   @override
   Stream<List<TItem>> get unmergedNewItemsStream =>
-      _unmergedNewItemsSubject.stream;
+      unmergedNewItemsSubject.stream;
 
   @override
   int get unmergedNewItemsCount => unmergedNewItems?.length ?? 0;
@@ -170,10 +174,10 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
   @override
-  List<TItem> get mergedNewItems => _mergedNewItemsSubject.value;
+  List<TItem> get mergedNewItems => mergedNewItemsSubject.value;
 
   @override
-  Stream<List<TItem>> get mergedNewItemsStream => _mergedNewItemsSubject.stream;
+  Stream<List<TItem>> get mergedNewItemsStream => mergedNewItemsSubject.stream;
 
   @override
   int get mergedNewItemsCount => mergedNewItems?.length ?? 0;
@@ -188,8 +192,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
         "\t unmergedNewItems = ${unmergedNewItems.length}\n"
         "\t mergedNewItems = ${mergedNewItems.length}\n");
     var lastMergedItems = unmergedNewItems;
-    _mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
-    _unmergedNewItemsSubject.add([]);
+    mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
+    unmergedNewItemsSubject.add([]);
 
     onNewItemsMerged(lastMergedItems);
     _logger.finest(() => "mergeNewItems after "
@@ -207,11 +211,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   void clearNewItems() {
-    if (!_mergedNewItemsSubject.isClosed) {
-      _mergedNewItemsSubject.add([]);
+    if (!mergedNewItemsSubject.isClosed) {
+      mergedNewItemsSubject.add([]);
     }
-    if (!_unmergedNewItemsSubject.isClosed) {
-      _unmergedNewItemsSubject.add([]);
+    if (!unmergedNewItemsSubject.isClosed) {
+      unmergedNewItemsSubject.add([]);
     }
   }
 

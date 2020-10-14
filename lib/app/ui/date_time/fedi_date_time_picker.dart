@@ -124,7 +124,7 @@ class FediDatePicker {
     DateChangedCallback onConfirm,
     DateCancelledCallback onCancel,
     locale = LocaleType.en,
-    DateTime currentTime,
+    DateTime currentDateTime,
     FediDatePickerTheme theme,
   }) async {
     return _showDatePickerPopup(
@@ -136,7 +136,7 @@ class FediDatePicker {
       theme: theme,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       pickerModel: DateTimePickerModel(
-          currentTime: currentTime,
+          currentTime: currentDateTime,
           minTime: minDateTime,
           maxTime: maxDateTime,
           locale: locale),
@@ -451,7 +451,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   }
 }
 
-class FediDatePickerTheme with DiagnosticableMixin {
+class FediDatePickerTheme {
   final TextStyle cancelStyle;
   final TextStyle doneStyle;
   final TextStyle itemStyle;

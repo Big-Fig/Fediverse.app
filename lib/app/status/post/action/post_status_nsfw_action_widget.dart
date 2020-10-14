@@ -35,6 +35,6 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
   }
 
   Color calculateColor(bool sensitive) {
-    return sensitive ? FediColors.primaryColor : FediColors.darkGrey;
+    return sensitive ? FediColors.primary : FediColors.darkGrey;
   }
 }

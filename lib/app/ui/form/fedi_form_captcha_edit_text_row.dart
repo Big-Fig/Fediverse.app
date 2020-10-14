@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +37,7 @@ class FediFormCaptchaEditTextRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FediFormEditTextLabel(label),
+            FediFormColumnLabel(label),
             Align(
               alignment: Alignment.center,
               child: StreamBuilder<Image>(
@@ -76,6 +76,7 @@ class FediFormCaptchaEditTextRow extends StatelessWidget {
               displayUnderlineBorder: true,
               errorText: errorText,
               highlightMentions: false,
+              maxLength: null,
             ),
           ],
         ),

@@ -38,16 +38,20 @@ abstract class INotification {
 
   bool get isContainsAccount;
 
-  INotification copyWith(
-      {int localId,
-      String remoteId,
-      bool unread,
-      DateTime createdAt,
-      IStatus status,
-      String emoji,
-      PleromaNotificationPleromaPart pleroma,
-      IAccount account,
-      MastodonNotificationType type});
+  bool get dismissed;
+
+  INotification copyWith({
+    int localId,
+    String remoteId,
+    bool unread,
+    DateTime createdAt,
+    IStatus status,
+    String emoji,
+    PleromaNotificationPleromaPart pleroma,
+    IAccount account,
+    MastodonNotificationType type,
+    bool dismissed,
+  });
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -55,8 +59,10 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   bool get isContainsChat => chatRemoteId != null;
+
   @override
   bool get isContainsStatus => status != null;
+
   @override
   bool get isContainsAccount => account != null;
 
@@ -106,16 +112,18 @@ class DbNotificationPopulatedWrapper implements INotification {
   bool get unread => dbNotificationPopulated.dbNotification.unread == true;
 
   @override
-  DbNotificationPopulatedWrapper copyWith(
-          {int localId,
-          String remoteId,
-          bool unread,
-          DateTime createdAt,
-          IStatus status,
-          IAccount account,
-          String emoji,
-          PleromaNotificationPleromaPart pleroma,
-          MastodonNotificationType type}) =>
+  DbNotificationPopulatedWrapper copyWith({
+    int localId,
+    String remoteId,
+    bool unread,
+    DateTime createdAt,
+    IStatus status,
+    IAccount account,
+    String emoji,
+    PleromaNotificationPleromaPart pleroma,
+    MastodonNotificationType type,
+    bool dismissed,
+  }) =>
       DbNotificationPopulatedWrapper(DbNotificationPopulated(
           dbNotification: dbNotificationPopulated.dbNotification.copyWith(
             id: localId ?? this.localId,
@@ -125,6 +133,7 @@ class DbNotificationPopulatedWrapper implements INotification {
             type: type ?? this.type,
             pleroma: pleroma ?? this.pleroma,
             emoji: emoji ?? this.emoji,
+            dismissed: dismissed ?? this.dismissed,
           ),
           dbAccount: dbAccountFromAccount(account) ??
               dbNotificationPopulated.dbAccount,
@@ -153,6 +162,9 @@ class DbNotificationPopulatedWrapper implements INotification {
     return 'DbNotificationPopulatedWrapper{'
         'dbNotificationPopulated: $dbNotificationPopulated}';
   }
+
+  @override
+  bool get dismissed => dbNotificationPopulated.dbNotification.dismissed;
 }
 
 class DbNotificationPopulated {

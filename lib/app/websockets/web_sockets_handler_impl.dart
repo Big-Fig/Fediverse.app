@@ -32,11 +32,13 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.conversationRepository,
     @required this.notificationRepository,
     @required this.chatNewMessagesHandlerBloc,
-    this.statusListRemoteId,
-    this.statusConversationRemoteId,
-    this.isFromHomeTimeline,
+    @required this.statusListRemoteId,
+    @required this.statusConversationRemoteId,
+    @required this.isFromHomeTimeline,
   }) {
     _logger = Logger(logTag);
+    _logger.finest(() =>
+        "Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}");
     addDisposable(streamSubscription:
         webSocketsChannel.eventsStream.listen((event) async {
       await handleEvent(event);
@@ -71,9 +73,10 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         }
         break;
       case PleromaWebSocketsEventType.delete:
-        // TODO: implement remote id
-        //          var statusRemoteId = event.parsePayloadAsRemoteId();
-        //          statusRepository.deleteByRemoteId(id);
+        var statusRemoteId = event.payload;
+
+        await statusRepository.markStatusAsDeleted(
+            statusRemoteId: statusRemoteId);
         break;
       case PleromaWebSocketsEventType.filtersChanged:
         // nothing

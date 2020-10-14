@@ -11,6 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -34,16 +35,25 @@ abstract class PostStatusBloc extends PostMessageBloc
         pollBloc.isSomethingChanged;
   }
 
+  final bool markMediaNsfwByDefault;
+
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
-    IPostStatusData initialData,
+    @required int maximumMessageLength,
+    @required IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
+    @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
+    @required this.markMediaNsfwByDefault,
   }) : super(
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
+          maximumMessageLength: maximumMessageLength,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+        ) {
     this.initialData = initialData ?? defaultInitData;
     visibilitySubject =
         BehaviorSubject.seeded(initialData.visibility.toPleromaVisibility());
@@ -54,6 +64,10 @@ abstract class PostStatusBloc extends PostMessageBloc
         mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
       _regenerateIdempotencyKey();
     }));
+
+    pollBloc = PostStatusPollBloc(
+      pollLimits: pleromaInstancePollLimits,
+    );
 
     addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
@@ -122,7 +136,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
   @override
-  IPostStatusPollBloc pollBloc = PostStatusPollBloc();
+  IPostStatusPollBloc pollBloc;
 
   String idempotencyKey;
 
@@ -132,7 +146,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     subject: null,
     text: null,
     scheduledAt: null,
-    visibility: PleromaVisibility.PUBLIC.toJsonValue(),
+    visibility: PleromaVisibility.public.toJsonValue(),
     mediaAttachments: null,
     poll: null,
     inReplyToPleromaStatus: null,
@@ -325,17 +339,23 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void addMentionByAccount(IAccount account) {
-    var acct = account.acct;
-    if (!mentionedAccts.contains(acct)) {
-      mentionedAccts.add(acct);
-      onMentionedAccountsChanged();
-    }
+  void addAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    // remove duplicates
+    removeAccountMentions(accounts);
+    mentionedAccts.addAll(accts);
+
+    onMentionedAccountsChanged();
   }
 
   @override
-  void removeMentionByAccount(IAccount account) {
-    removeMentionByAcct(account.acct);
+  void removeAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    mentionedAccts.removeWhere((acct) => accts.contains(acct));
+
+    onMentionedAccountsChanged();
   }
 
   @override
@@ -431,8 +451,8 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   List<IPleromaMediaAttachment> _calculateMediaAttachmentsField() {
     var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
-        ?.where(
-            (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
+        ?.where((bloc) =>
+            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
         ?.map((bloc) => bloc.pleromaMediaAttachment)
         ?.toList();
     // media ids shouldn't be empty (should be null in this case)
@@ -533,7 +553,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     var poll;
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
-        expiresAt: pollBloc.expiresAtFieldBloc.currentValue,
+        durationLength: pollBloc.durationLengthFieldBloc.currentValue,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
@@ -547,9 +567,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   PleromaPostStatusPoll _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
-      var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
       var expiresInSeconds =
-          DateTime.now().difference(expiresAt).abs().inSeconds;
+          (pollBloc.durationLengthFieldBloc.currentValue.inMicroseconds /
+                  Duration.microsecondsPerSecond)
+              .floor();
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
@@ -622,4 +643,12 @@ abstract class PostStatusBloc extends PostMessageBloc
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         to: calculateToField(),
       );
+
+  @override
+  void onFileSelected() {
+    super.onFileSelected();
+    if (markMediaNsfwByDefault) {
+      nsfwSensitiveSubject.add(true);
+    }
+  }
 }

@@ -50,14 +50,16 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                action.onAction();
+                if (action.onAction != null) {
+                  action.onAction();
+                }
               },
               child: Row(
                 children: [
                   if (action.icon != null)
                     Icon(action.icon,
                         color: isSelected
-                            ? FediColors.primaryColor
+                            ? FediColors.primary
                             : FediColors.darkGrey),
                   Padding(
                     padding: FediPadding.allMediumPadding,

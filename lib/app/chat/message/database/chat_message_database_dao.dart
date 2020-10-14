@@ -21,8 +21,7 @@ var _accountAliasId = "account";
 })
 class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     with _$ChatMessageDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
 
   // Called by the AppDatabase class
@@ -89,7 +88,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbChatMessage> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbChatMessages)..where((i) => i.id.equals(localId)))
@@ -107,13 +106,13 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   JoinedSelectStatement addChatWhere(
           JoinedSelectStatement query, String chatRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "db_chat_messages.chat_remote_id = '$chatRemoteId'"));
 
   JoinedSelectStatement addChatsWhere(
           JoinedSelectStatement query, List<String> chatRemoteIds) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "db_chat_messages.chat_remote_id IN ("
             "${chatRemoteIds.join(", ")})"));
 

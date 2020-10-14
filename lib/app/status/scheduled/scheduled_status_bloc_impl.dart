@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
@@ -207,32 +208,32 @@ class ScheduledStatusBloc extends DisposableOwner
   Future<bool> postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-
-
-    var pleromaScheduledStatus =
-        await pleromaStatusService.scheduleStatus(
+    var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-          mediaIds: postStatusData.mediaAttachments
-              ?.map((mediaAttachment) => mediaAttachment.id)
-              ?.toList(),
-          status: postStatusData.text,
-          sensitive: postStatusData.isNsfwSensitiveEnabled,
-          visibility: postStatusData.visibility,
-          inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-          inReplyToConversationId: postStatusData.inReplyToConversationId,
-          idempotencyKey: null,
-          scheduledAt: postStatusData.scheduledAt,
-          to: postStatusData.to,
-          poll: postStatusData.poll != null ? PleromaPostStatusPoll(
-            expiresInSeconds: DateTime.now().difference(
-                postStatusData.poll.expiresAt).abs().inSeconds,
-            multiple: postStatusData.poll.multiple,
-            options: postStatusData.poll.options,
-            hideTotals: postStatusData.poll.hideTotals,
-          ) : null,
-          spoilerText: postStatusData.subject,
-        ));
-
+      mediaIds: postStatusData.mediaAttachments
+          ?.map((mediaAttachment) => mediaAttachment.id)
+          ?.toList(),
+      status: postStatusData.text,
+      sensitive: postStatusData.isNsfwSensitiveEnabled,
+      visibility: postStatusData.visibility,
+      inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
+      inReplyToConversationId: postStatusData.inReplyToConversationId,
+      idempotencyKey: null,
+      scheduledAt: postStatusData.scheduledAt,
+      to: postStatusData.to,
+      poll: postStatusData.poll != null
+          ? PleromaPostStatusPoll(
+              expiresInSeconds:
+                  (postStatusData.poll.durationLength.inMicroseconds /
+                          Duration.microsecondsPerSecond)
+                      .floor(),
+              multiple: postStatusData.poll.multiple,
+              options: postStatusData.poll.options,
+              hideTotals: postStatusData.poll.hideTotals,
+            )
+          : null,
+      spoilerText: postStatusData.subject,
+    ));
 
     await scheduledStatusRepository
         .upsertRemoteScheduledStatus(pleromaScheduledStatus);
@@ -253,12 +254,20 @@ class ScheduledStatusBloc extends DisposableOwner
       scheduledAt: scheduledStatus.scheduledAt,
       visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
-      poll: scheduledStatus.params.poll,
+      poll: scheduledStatus.params?.poll != null
+          ? PostStatusPoll(
+              durationLength: Duration(
+                  seconds: scheduledStatus.params.poll.expiresInSeconds),
+              hideTotals: scheduledStatus.params.poll.hideTotals,
+              multiple: scheduledStatus.params.poll.multiple,
+              options: scheduledStatus.params.poll.options,
+            )
+          : null,
       inReplyToPleromaStatus: null,
       inReplyToConversationId: null,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       // actually to should be extracted fro
-      to:null,
+      to: null,
     );
   }
 }

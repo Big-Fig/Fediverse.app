@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
@@ -8,6 +10,18 @@ import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
   final BehaviorSubject<IPleromaPoll> pollSubject;
+
+  BehaviorSubject<bool> isNeedShowResultsWithoutVoteSubject =
+      BehaviorSubject.seeded(false);
+
+  @override
+  bool get isNeedShowResultsWithoutVote =>
+      isNeedShowResultsWithoutVoteSubject.value;
+
+  @override
+  Stream<bool> get isNeedShowResultsWithoutVoteStream =>
+      isNeedShowResultsWithoutVoteSubject.stream;
+
   final BehaviorSubject<List<IPleromaPollOption>> selectedVotesSubject =
       BehaviorSubject.seeded([]);
 
@@ -19,6 +33,16 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     addDisposable(subject: pollSubject);
     addDisposable(subject: selectedVotesSubject);
+    addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
+
+    if (!poll.expired) {
+      var diff = DateTime.now().difference(poll.expiresAt).abs();
+
+      addDisposable(
+          timer: Timer(diff, () {
+        refreshFromNetwork();
+      }));
+    }
   }
 
   @override
@@ -98,14 +122,36 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       selectedVotesSubject.stream;
 
   @override
-  bool get isSelectedVotesNotEmpty => selectedVotes.isNotEmpty;
+  bool get isVoted => selectedVotes.isNotEmpty;
 
   @override
-  Stream<bool> get isSelectedVotesNotEmptyStream =>
+  Stream<bool> get isVotedStream =>
       selectedVotesStream.map((selectedVotes) => selectedVotes.isNotEmpty);
 
   @override
   void onPollUpdated(IPleromaPoll poll) {
     pollSubject.add(poll);
+  }
+
+  @override
+  Future<bool> refreshFromNetwork() async {
+    var remotePoll = await pleromaPollService.getPoll(pollRemoteId: poll.id);
+    var success = remotePoll != null;
+
+    if (success) {
+      pollSubject.add(remotePoll);
+    }
+
+    return success;
+  }
+
+  @override
+  void showResultsWithoutVote() {
+    isNeedShowResultsWithoutVoteSubject.add(true);
+  }
+
+  @override
+  void hideResultsWithoutVote() {
+    isNeedShowResultsWithoutVoteSubject.add(false);
   }
 }

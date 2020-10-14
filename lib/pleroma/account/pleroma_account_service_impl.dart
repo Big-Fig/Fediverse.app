@@ -2,7 +2,7 @@ import 'package:fedi/pleroma/account/pleroma_account_exception.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/list/pleroma_mastodon_list_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
@@ -277,7 +277,7 @@ class PleromaAccountService implements IPleromaAccountService {
   }
 
   @override
-  Future<List<IPleromaList>> getAccountLists(
+  Future<List<IPleromaList>> getListsWithAccount(
       {@required String accountRemoteId}) async {
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(
@@ -297,7 +297,7 @@ class PleromaAccountService implements IPleromaAccountService {
       bool excludeReblogs,
       List<String> excludeVisibilities,
       bool withMuted,
-      bool onlyMedia,
+      bool onlyWithMedia,
       String sinceId,
       String maxId,
       int limit = 20}) async {
@@ -320,7 +320,7 @@ class PleromaAccountService implements IPleromaAccountService {
               ),
             ),
           RestRequestQueryArg("with_muted", withMuted?.toString()),
-          RestRequestQueryArg("only_media", onlyMedia?.toString()),
+          RestRequestQueryArg("only_media", onlyWithMedia?.toString()),
         ]));
 
     return parseStatusListResponse(httpResponse);
@@ -354,6 +354,36 @@ class PleromaAccountService implements IPleromaAccountService {
         bodyJson: reportRequest.toJson()));
 
     return httpResponse.statusCode == 200;
+  }
+
+  @override
+  Future blockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future unBlockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.delete(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
   }
 
   @override

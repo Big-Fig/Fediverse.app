@@ -36,25 +36,20 @@ class ChatMessageListBloc extends DisposableOwner
         "\t chat = $chat"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
-    try {
-      var remoteMessages = await pleromaChatService.getChatMessages(
-          chatId: chat.remoteId,
-          maxId: olderThan?.remoteId,
-          sinceId: newerThan?.remoteId,
-          limit: limit);
 
-      if (remoteMessages != null) {
-        await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
+    var remoteMessages = await pleromaChatService.getChatMessages(
+        chatId: chat.remoteId,
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "messages is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+    if (remoteMessages != null) {
+      await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
+
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "messages is null");
       return false;
     }
   }

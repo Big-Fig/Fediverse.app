@@ -29,6 +29,14 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     _subject.add((await getValueInternal()) ?? defaultValue);
+
+    _preferenceService.listenKeyPreferenceChanged(key, (newValue) {
+      if (value != newValue) {
+        if (!_subject.isClosed) {
+          _subject.add(newValue);
+        }
+      }
+    });
   }
 
   @override
@@ -50,6 +58,11 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     return future;
   }
 
+  @override
+  Future reload() async {
+    _subject.add(await getValueInternal());
+  }
+
   @protected
   Future<T> getValueInternal();
 
@@ -59,11 +72,15 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
 
 abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
     extends LocalPreferenceBloc<T> {
+  final T Function(Map<String, dynamic> jsonData) jsonConverter;
   final int schemaVersion;
 
-  ObjectLocalPreferenceBloc(ILocalPreferencesService preferencesService,
-      String key, this.schemaVersion)
-      : super(preferencesService, "$key.$schemaVersion");
+  ObjectLocalPreferenceBloc(
+    ILocalPreferencesService preferencesService,
+    String key,
+    this.schemaVersion,
+    this.jsonConverter,
+  ) : super(preferencesService, "$key.$schemaVersion");
 
   @override
   Future<bool> setValueInternal(T newValue) async {
@@ -72,7 +89,7 @@ abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
 
   @override
   Future<T> getValueInternal() async =>
-      _preferenceService.getObjectPreference(key);
+      _preferenceService.getObjectPreference(key, jsonConverter);
 }
 
 abstract class SimplePreferencesBloc<T> extends LocalPreferenceBloc<T> {

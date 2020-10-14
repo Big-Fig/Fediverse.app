@@ -1,3 +1,5 @@
+import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
@@ -7,6 +9,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -41,28 +44,48 @@ class ThreadPostStatusBloc extends PostStatusBloc
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    @required int maximumMessageLength,
+    @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
+    @required bool markMediaNsfwByDefault,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaVisibility.PUBLIC.toJsonValue(),
-            inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(inReplyToStatus),
+            visibility: PleromaVisibility.public.toJsonValue(),
+            inReplyToPleromaStatus:
+                mapLocalStatusToRemoteStatus(inReplyToStatus),
           ),
+          maximumMessageLength: maximumMessageLength,
+          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+          markMediaNsfwByDefault: markMediaNsfwByDefault,
         ) {
     addDisposable(subject: originInReplyToStatusCanceledSubject);
   }
 
   static ThreadPostStatusBloc createFromContext(BuildContext context,
-          {@required IStatus inReplyToStatus}) =>
-      ThreadPostStatusBloc(
-          inReplyToStatus: inReplyToStatus,
-          statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
-          pleromaStatusService:
-              IPleromaStatusService.of(context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false),
-          pleromaMediaAttachmentService:
-              IPleromaMediaAttachmentService.of(context, listen: false));
+      {@required IStatus inReplyToStatus}) {
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+        .currentInstance
+        .info;
+    var myAccountSettingsBloc =
+        IMyAccountSettingsBloc.of(context, listen: false);
+    return ThreadPostStatusBloc(
+      inReplyToStatus: inReplyToStatus,
+      statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
+      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      statusRepository: IStatusRepository.of(context, listen: false),
+      pleromaMediaAttachmentService:
+          IPleromaMediaAttachmentService.of(context, listen: false),
+      maximumMessageLength: info.maxTootChars,
+      pleromaInstancePollLimits: info.pollLimits,
+      maximumFileSizeInBytes: info.uploadLimit,
+      markMediaNsfwByDefault:
+          myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
+    );
+  }
 
   static Widget provideToContext(BuildContext context,
       {@required IStatus inReplyToStatus, @required Widget child}) {
@@ -72,7 +95,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
         inReplyToStatus: inReplyToStatus,
       ),
       child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
-          update: ( context,  value,  previous) => value,
+          update: (context, value, previous) => value,
           child: PostStatusMessageBlocProxyProvider(child: child)),
     );
   }
@@ -145,8 +168,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
     // we should force DIRECT visibility if inReplyToStatus have DIRECT too
     var inReplyToStatus = notCanceledOriginInReplyToStatus;
     if (inReplyToStatus != null) {
-      if (inReplyToStatus.visibility == PleromaVisibility.DIRECT) {
-        return PleromaVisibility.DIRECT.toJsonValue();
+      if (inReplyToStatus.visibility == PleromaVisibility.direct) {
+        return PleromaVisibility.direct.toJsonValue();
       } else {
         return super.calculateVisibilityField();
       }

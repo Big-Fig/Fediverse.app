@@ -9,6 +9,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -199,7 +200,11 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
   PleromaVisibility get privacyPleroma;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 43)
 @JsonSerializable()
 class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @override
@@ -211,26 +216,26 @@ class PleromaMyAccountSource implements IPleromaMyAccountSource {
 
   @override
   @HiveField(1)
-  String privacy;
+  final String privacy;
   @override
   @HiveField(2)
-  bool sensitive;
+  final bool sensitive;
   @override
   @HiveField(3)
-  String language;
+  final String language;
   @override
   @HiveField(4)
-  String note;
+  final String note;
   @override
   @HiveField(5)
-  List<PleromaField> fields;
+  final List<PleromaField> fields;
   @override
   @HiveField(6)
   @JsonKey(name: "follow_requests_count")
-  int followRequestsCount;
+  final int followRequestsCount;
   @override
   @HiveField(7)
-  PleromaMyAccountSourcePleromaPart pleroma;
+  final PleromaMyAccountSourcePleromaPart pleroma;
 
   PleromaMyAccountSource(
       {this.privacy,
@@ -252,27 +257,31 @@ class PleromaMyAccountSource implements IPleromaMyAccountSource {
   String toJsonString() => jsonEncode(_$PleromaMyAccountSourceToJson(this));
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 44)
 @JsonSerializable()
 class PleromaMyAccountSourcePleromaPart {
   //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
   @HiveField(1)
   @JsonKey(name: "show_role")
-  bool showRole;
+  final bool showRole;
 
   //  no_rich_text - boolean, nullable, true when html tags are stripped from all statuses requested from the API
   @HiveField(2)
   @JsonKey(name: "no_rich_text")
-  bool noRichText;
+  final bool noRichText;
 
   //  discoverable: boolean, true when the user allows discovery of the account in search results and other services.
   @HiveField(3)
-  bool discoverable;
+  final bool discoverable;
 
   // actor_type: string, the type of this account.
   @HiveField(4)
   @JsonKey(name: "actor_type")
-  String actorType;
+  final String actorType;
 
   PleromaMyAccountSourcePleromaPart(
       {this.showRole, this.noRichText, this.discoverable, this.actorType});
@@ -292,98 +301,106 @@ class PleromaMyAccountSourcePleromaPart {
 }
 
 class PleromaMyAccountFilesRequest {
-  /// Avatar image
   final File avatar;
   final File header;
+  final File pleromaBackgroundImage;
 
-  PleromaMyAccountFilesRequest({this.avatar, this.header});
+  PleromaMyAccountFilesRequest({
+    @required this.avatar,
+    @required this.header,
+    @required this.pleromaBackgroundImage,
+  });
 
   @override
   String toString() {
-    return 'PleromaAccountFiles{avatar: $avatar, header: $header}';
+    return 'PleromaMyAccountFilesRequest{avatar: $avatar, header: $header,'
+        ' pleromaBackgroundImage: $pleromaBackgroundImage}';
   }
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 75)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @HiveField(1)
   @JsonKey(name: "background_image")
-  dynamic backgroundImage;
+  final dynamic backgroundImage;
 
   @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
-  List<dynamic> tags;
+  final List<dynamic> tags;
 
   @HiveField(3)
-  PleromaAccountRelationship relationship;
+  final PleromaAccountRelationship relationship;
   @HiveField(4)
   @JsonKey(name: "is_admin")
-  bool isAdmin;
+  final bool isAdmin;
   @HiveField(5)
   @JsonKey(name: "is_moderator")
   @HiveField(6)
-  bool isModerator;
+  final bool isModerator;
 
   @HiveField(7)
   @JsonKey(name: "confirmation_pending")
-  bool confirmationPending;
+  final bool confirmationPending;
 
   @HiveField(8)
   // TODO: CHECK, was in previous implementation, but not exist at
   @JsonKey(name: "hide_favorites")
-  bool hideFavorites;
+  final bool hideFavorites;
 
   @HiveField(9)
   @JsonKey(name: "hide_followers")
-  @HiveField(10)
-  bool hideFollowers;
+  final bool hideFollowers;
   @HiveField(11)
   @JsonKey(name: "hide_follows")
-  bool hideFollows;
+  final bool hideFollows;
   @HiveField(12)
   @JsonKey(name: "hide_followers_count")
-  bool hideFollowersCount;
+  final bool hideFollowersCount;
   @HiveField(13)
   @JsonKey(name: "hide_follows_count")
-  bool hideFollowsCount;
+  final bool hideFollowsCount;
 
   ///  A generic map of settings for frontends.
   ///  Opaque to the backend.
   ///  Only returned in verify_credentials and update_credentials
   @HiveField(14)
   @JsonKey(name: "settings_store")
-  dynamic settingsStore;
+  final dynamic settingsStore;
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
   @HiveField(15)
   @JsonKey(name: "chat_token")
-  String chatToken;
+  final String chatToken;
   @HiveField(16)
-  bool deactivated;
+  final bool deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
   @HiveField(17)
   @JsonKey(name: "allow_following_move")
-  bool allowFollowingMove;
+  final bool allowFollowingMove;
 
   /// The count of unread conversations. Only returned to the account owner.
   @HiveField(18)
   @JsonKey(name: "unread_conversation_count")
-  int unreadConversationCount;
+  final int unreadConversationCount;
 
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @JsonKey(name: "skip_thread_containment")
-  bool skipThreadContainment;
+  final bool skipThreadContainment;
 
   @HiveField(19)
   @JsonKey(name: "notifications_settings")
-  PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
+  final PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
 
   PleromaAccountPleromaPart(
       {this.backgroundImage,
@@ -442,80 +459,84 @@ abstract class IPleromaMyAccountPleromaPart
   PleromaMyAccountPleromaPartNotificationsSettings get notificationSettings;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 54)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   @override
   @HiveField(0)
-  String username;
+  final String username;
   @override
   @HiveField(1)
-  String url;
+  final String url;
   @override
   @HiveField(2)
   @JsonKey(name: "statuses_count")
-  int statusesCount;
+  final int statusesCount;
   @override
   @HiveField(3)
-  String note;
+  final String note;
   @override
   @HiveField(4)
-  bool locked;
+  final bool locked;
   @override
   @HiveField(5)
-  String id;
+  final String id;
   @override
   @HiveField(6)
   @JsonKey(name: "header_static")
-  String headerStatic;
+  final String headerStatic;
   @override
   @HiveField(7)
-  String header;
+  final String header;
   @override
   @HiveField(8)
   @JsonKey(name: "following_count")
-  int followingCount;
+  final int followingCount;
   @override
   @HiveField(9)
   @JsonKey(name: "followers_count")
-  int followersCount;
+  final int followersCount;
   @override
   @HiveField(10)
-  List<PleromaField> fields;
+  final List<PleromaField> fields;
   @override
   @HiveField(11)
-  List<PleromaEmoji> emojis;
+  final List<PleromaEmoji> emojis;
   @override
   @HiveField(12)
   @JsonKey(name: "display_name")
-  String displayName;
+  final String displayName;
   @override
   @HiveField(13)
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  final DateTime createdAt;
   @override
   @HiveField(14)
-  bool bot;
+  final bool bot;
   @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")
-  String avatarStatic;
+  final String avatarStatic;
   @override
   @HiveField(16)
-  String avatar;
+  final String avatar;
   @override
   @HiveField(17)
-  String acct;
+  final String acct;
   @override
   @HiveField(19)
-  PleromaMyAccountPleromaPart pleroma;
+  final PleromaMyAccountPleromaPart pleroma;
   @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
-  DateTime lastStatusAt;
+  final DateTime lastStatusAt;
   @override
   @HiveField(21)
-  PleromaMyAccountSource source;
+  final PleromaMyAccountSource source;
 
   PleromaMyAccount(
       {this.username,
@@ -550,6 +571,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
       List<PleromaMyAccount>.from(
           json.decode(str).map((x) => PleromaMyAccount.fromJson(x)));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMyAccountToJson(this));
@@ -612,15 +634,23 @@ class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   }
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 41)
 @JsonSerializable()
 class PleromaMyAccountPleromaPartNotificationsSettings {
-  bool followers;
-  bool follows;
+  @HiveField(0)
+  final bool followers;
+  @HiveField(1)
+  final bool follows;
   @JsonKey(name: "non_followers")
-  bool nonFollowers;
+  @HiveField(2)
+  final bool nonFollowers;
   @JsonKey(name: "non_follows")
-  bool nonFollows;
+  @HiveField(3)
+  final bool nonFollows;
 
   PleromaMyAccountPleromaPartNotificationsSettings(
       {this.followers, this.follows, this.nonFollowers, this.nonFollows});
@@ -649,63 +679,65 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
       _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 40)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @HiveField(1)
   @JsonKey(name: "background_image")
-  dynamic backgroundImage;
+  final dynamic backgroundImage;
 
   @override
   @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
-  List<dynamic> tags;
+  final List<dynamic> tags;
 
   @override
   @HiveField(3)
-  PleromaAccountRelationship relationship;
+  final PleromaAccountRelationship relationship;
   @override
   @HiveField(4)
   @JsonKey(name: "is_admin")
-  bool isAdmin;
+  final bool isAdmin;
   @override
   @HiveField(5)
   @JsonKey(name: "is_moderator")
-  @HiveField(6)
-  bool isModerator;
+  final bool isModerator;
 
   @override
   @HiveField(7)
   @JsonKey(name: "confirmation_pending")
-  bool confirmationPending;
+  final bool confirmationPending;
 
   @override
   @HiveField(8)
   // TODO: CHECK, was in previous implementation, but not exist at
   @JsonKey(name: "hide_favorites")
-  bool hideFavorites;
+  final bool hideFavorites;
 
   @override
   @HiveField(9)
   @JsonKey(name: "hide_followers")
-  @HiveField(10)
-  bool hideFollowers;
+  final bool hideFollowers;
   @override
   @HiveField(11)
   @JsonKey(name: "hide_follows")
-  bool hideFollows;
+  final bool hideFollows;
   @override
   @HiveField(12)
   @JsonKey(name: "hide_followers_count")
-  bool hideFollowersCount;
+  final bool hideFollowersCount;
   @override
   @HiveField(13)
   @JsonKey(name: "hide_follows_count")
-  bool hideFollowsCount;
+  final bool hideFollowsCount;
 
   ///  A generic map of settings for frontends.
   ///  Opaque to the backend.
@@ -713,40 +745,41 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @override
   @HiveField(14)
   @JsonKey(name: "settings_store")
-  dynamic settingsStore;
+  final dynamic settingsStore;
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
   @override
   @HiveField(15)
   @JsonKey(name: "chat_token")
-  String chatToken;
+  final String chatToken;
   @override
   @HiveField(16)
-  bool deactivated;
+  final bool deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
   @override
   @HiveField(17)
   @JsonKey(name: "allow_following_move")
-  bool allowFollowingMove;
+  final bool allowFollowingMove;
 
   /// The count of unread conversations. Only returned to the account owner.
   @override
   @HiveField(18)
   @JsonKey(name: "unread_conversation_count")
-  int unreadConversationCount;
+  final int unreadConversationCount;
 
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  @override
-  @JsonKey(name: "skip_thread_containment")
-  bool skipThreadContainment;
 
   @override
   @HiveField(19)
   @JsonKey(name: "notifications_settings")
-  PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
+  final PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
+  /// TODO: CHECK, was in previous implementation, but not exist at
+  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
+  @override
+  @HiveField(20)
+  @JsonKey(name: "skip_thread_containment")
+  final bool skipThreadContainment;
 
   PleromaMyAccountPleromaPart(
       {this.backgroundImage,

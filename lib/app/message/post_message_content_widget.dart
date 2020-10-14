@@ -39,9 +39,11 @@ class PostMessageContentWidget extends StatelessWidget {
               .show(context);
         }
       },
-      maxLines: 1,
+      maxLines: null,
+      // maxLines: 1,
       errorText: null,
       highlightMentions: true,
+      maxLength: postMessageBloc.maximumMessageLength,
     );
   }
 }

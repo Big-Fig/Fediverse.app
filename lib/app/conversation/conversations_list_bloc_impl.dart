@@ -78,7 +78,7 @@ class ConversationsListBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
-        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc, accountId: null,
       ));
     }
   }

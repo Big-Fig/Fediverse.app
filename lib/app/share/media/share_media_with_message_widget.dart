@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 
 class ShareMediaWithMessageWidget extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
-  final Widget header;
+  final Widget footer;
 
   ShareMediaWithMessageWidget({
     @required this.mediaAttachment,
-    @required this.header,
+    @required this.footer,
   });
 
   @override
@@ -18,7 +18,7 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
       child: MediaAttachmentWidget(
         mediaAttachment: mediaAttachment,
       ),
-      header: header,
+      footer: footer,
     );
   }
 }

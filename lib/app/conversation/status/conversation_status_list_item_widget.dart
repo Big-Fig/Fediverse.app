@@ -28,7 +28,6 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
     var deviceWidth = MediaQuery.of(context).size.width;
 
-
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
 
     var alignment =
@@ -46,7 +45,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isHaveTextContent
                     ? isStatusFromMe
-                        ? FediColors.primaryColorDark
+                        ? FediColors.primaryDark
                         : FediColors.ultraLightGrey
                     : Colors.transparent,
                 borderRadius: isHaveTextContent
@@ -128,6 +127,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
             return MediaAttachmentsWidget(
               mediaAttachments: mediaAttachments,
+              initialMediaAttachment: null,
             );
           });
 
@@ -145,7 +145,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                       isStatusFromMe ? FediColors.white : FediColors.darkGrey,
                   linkColor: isStatusFromMe
                       ? FediColors.white
-                      : FediColors.primaryColor,
+                      : FediColors.primary,
                   fontSize: 16.0,
                   lineHeight: 1.5,
                   data: contentWithEmojis,

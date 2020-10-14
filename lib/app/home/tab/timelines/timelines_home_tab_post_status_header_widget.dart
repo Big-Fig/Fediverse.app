@@ -7,6 +7,7 @@ class TimelinesHomeTabPostStatusHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return NewPostStatusBloc.provideToContext(context,
         child: PostStatusComposeWidget(
+          autofocus: false,
           expanded: false,
           goBackOnSuccess: false,
           displayAccountAvatar: true,

@@ -1,16 +1,23 @@
 import 'dart:async';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+typedef ValueCallback<T> = Function(T value);
+
 abstract class ILocalPreferencesService extends DisposableOwner
     implements IAsyncInitLoadingBloc {
   bool isKeyExist(String key);
 
-  Future<bool> clear();
+  Future<bool> clearAllValues();
+
+  Future<bool> isStorageExist();
+
+  Future<bool> clearAllValuesAndDeleteStorage();
 
   Future<bool> clearValue(String key);
 
@@ -21,7 +28,9 @@ abstract class ILocalPreferencesService extends DisposableOwner
   Future<bool> setBoolPreference(String key, bool value);
 
   Future<bool> setObjectPreference(
-      String key, IPreferencesObject preferencesObject);
+    String key,
+    IPreferencesObject preferencesObject,
+  );
 
   bool getBoolPreference(
     String key,
@@ -31,7 +40,12 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   int getIntPreference(String key);
 
-  T getObjectPreference<T>(String key);
+  T getObjectPreference<T>(
+    String key,
+    T jsonConverter(Map<String, dynamic> jsonData),
+  );
+
+  Disposable listenKeyPreferenceChanged<T>(String key, ValueCallback onChanged);
 
   static ILocalPreferencesService of(BuildContext context,
           {bool listen = true}) =>

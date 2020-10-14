@@ -80,7 +80,8 @@ void main() {
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null, chatRemoteId: null);
+        conversationRemoteId: null,
+        chatRemoteId: null);
 
     expect(await accountRepository.countAll(), 1);
     expectDbAccount(await accountRepository.findByRemoteId(dbAccount1.remoteId),
@@ -89,7 +90,8 @@ void main() {
     // item with same id updated
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null, chatRemoteId: null);
+        conversationRemoteId: null,
+        chatRemoteId: null);
     expect(await accountRepository.countAll(), 1);
   });
 
@@ -128,7 +130,8 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
@@ -160,7 +163,8 @@ void main() {
         searchQuery: "qu",
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
@@ -198,7 +202,8 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
@@ -245,7 +250,8 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
@@ -289,23 +295,20 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowers(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
 
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId, [
+    await accountRepository.addAccountFollowers(dbAccount1.remoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
     ]);
     expect((await query.get()).length, 2);
-
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
-    expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInAccountFollowing', () async {
@@ -323,23 +326,20 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowings(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
 
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId, [
+    await accountRepository.addAccountFollowings(dbAccount1.remoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
     ]);
     expect((await query.get()).length, 2);
-
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
-    expect((await query.get()).length, 1);
   });
 
   test('createQuery onlyInConversation', () async {
@@ -358,31 +358,36 @@ void main() {
         searchQuery: null,
         limit: null,
         offset: null,
-        orderingTermData: null, onlyInChat: null);
+        orderingTermData: null,
+        onlyInChat: null);
 
     // not associated with conversation
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: null, chatRemoteId: null);
+        conversationRemoteId: null,
+        chatRemoteId: null);
     expect((await query.get()).length, 0);
 
     // associated with conversation
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
+        conversationRemoteId: conversationRemoteId,
+        chatRemoteId: null);
     expect((await query.get()).length, 1);
 
     // duplicated
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
+        conversationRemoteId: conversationRemoteId,
+        chatRemoteId: null);
 
     expect((await query.get()).length, 1);
 
     // additional account associated with conversation
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2)),
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
+        conversationRemoteId: conversationRemoteId,
+        chatRemoteId: null);
 
     expect((await query.get()).length, 2);
   });
@@ -400,7 +405,8 @@ void main() {
       limit: null,
       offset: null,
       orderingTermData: null,
-      olderThanAccount: null, onlyInChat: null,
+      olderThanAccount: null,
+      onlyInChat: null,
     );
 
     await insertDbAccount(
@@ -444,7 +450,8 @@ void main() {
         offset: null,
         orderingTermData: null,
         olderThanAccount:
-            await createTestAccount(seed: "seed5", remoteId: "remoteId5"), onlyInChat: null);
+            await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
+        onlyInChat: null);
 
     await insertDbAccount(
         accountRepository,
@@ -488,7 +495,8 @@ void main() {
         offset: null,
         orderingTermData: null,
         olderThanAccount:
-            await createTestAccount(seed: "seed5", remoteId: "remoteId5"), onlyInChat: null);
+            await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
+        onlyInChat: null);
 
     await insertDbAccount(
         accountRepository,
@@ -546,7 +554,8 @@ void main() {
         orderingTermData: AccountOrderingTermData(
             orderByType: AccountOrderByType.remoteId,
             orderingMode: OrderingMode.asc),
-        olderThanAccount: null, onlyInChat: null);
+        olderThanAccount: null,
+        onlyInChat: null);
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -586,7 +595,8 @@ void main() {
         orderingTermData: AccountOrderingTermData(
             orderByType: AccountOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
-        olderThanAccount: null, onlyInChat: null);
+        olderThanAccount: null,
+        onlyInChat: null);
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -626,7 +636,8 @@ void main() {
         orderingTermData: AccountOrderingTermData(
             orderByType: AccountOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
-        olderThanAccount: null, onlyInChat: null);
+        olderThanAccount: null,
+        onlyInChat: null);
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -657,73 +668,73 @@ void main() {
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
-
+        conversationRemoteId: conversationRemoteId,
+        chatRemoteId: null);
 
     var conversation = await createTestConversation(
         seed: "seed1", remoteId: conversationRemoteId);
 
-
     expect(await accountRepository.countAll(), 1);
     expect(
         (await accountRepository.getAccounts(
-            olderThanAccount: null,
-            newerThanAccount: null,
-            onlyInConversation: null,
-            onlyInStatusRebloggedBy: null,
-            onlyInStatusFavouritedBy: null,
-            onlyInAccountFollowers: null,
-            onlyInAccountFollowing: null,
-            searchQuery: null,
-            limit: null,
-            offset: null,
-            orderingTermData: null, onlyInChat: null)).length,
+                olderThanAccount: null,
+                newerThanAccount: null,
+                onlyInConversation: null,
+                onlyInStatusRebloggedBy: null,
+                onlyInStatusFavouritedBy: null,
+                onlyInAccountFollowers: null,
+                onlyInAccountFollowing: null,
+                searchQuery: null,
+                limit: null,
+                offset: null,
+                orderingTermData: null,
+                onlyInChat: null))
+            .length,
         1);
     expect(
-        (await accountRepository.conversationAccountsDao.getAll()).length,
-        1);
+        (await accountRepository.conversationAccountsDao.getAll().get()).length, 1);
 
     expect(
         (await accountRepository.getAccounts(
-            olderThanAccount: null,
-            newerThanAccount: null,
-            onlyInConversation: conversation,
-            onlyInStatusRebloggedBy: null,
-            onlyInStatusFavouritedBy: null,
-            onlyInAccountFollowers: null,
-            onlyInAccountFollowing: null,
-            searchQuery: null,
-            limit: null,
-            offset: null,
-            orderingTermData: null, onlyInChat: null)).length,
-        1);
-
-
-    var accounts = (await accountRepository.getConversationAccounts(
-        conversation: conversation));
-    expect(
-        accounts
+                olderThanAccount: null,
+                newerThanAccount: null,
+                onlyInConversation: conversation,
+                onlyInStatusRebloggedBy: null,
+                onlyInStatusFavouritedBy: null,
+                onlyInAccountFollowers: null,
+                onlyInAccountFollowing: null,
+                searchQuery: null,
+                limit: null,
+                offset: null,
+                orderingTermData: null,
+                onlyInChat: null))
             .length,
         1);
 
+    var accounts = (await accountRepository.getConversationAccounts(
+        conversation: conversation));
+    expect(accounts.length, 1);
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
+        conversationRemoteId: conversationRemoteId,
+        chatRemoteId: null);
     expect(await accountRepository.countAll(), 1);
     expect(
         (await accountRepository.getAccounts(
-            olderThanAccount: null,
-            newerThanAccount: null,
-            onlyInConversation: null,
-            onlyInStatusRebloggedBy: null,
-            onlyInStatusFavouritedBy: null,
-            onlyInAccountFollowers: null,
-            onlyInAccountFollowing: null,
-            searchQuery: null,
-            limit: null,
-            offset: null,
-            orderingTermData: null, onlyInChat: null)).length,
+                olderThanAccount: null,
+                newerThanAccount: null,
+                onlyInConversation: null,
+                onlyInStatusRebloggedBy: null,
+                onlyInStatusFavouritedBy: null,
+                onlyInAccountFollowers: null,
+                onlyInAccountFollowing: null,
+                searchQuery: null,
+                limit: null,
+                offset: null,
+                orderingTermData: null,
+                onlyInChat: null))
+            .length,
         1);
     expect(
         (await accountRepository.getConversationAccounts(

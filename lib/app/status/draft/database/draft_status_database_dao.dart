@@ -17,8 +17,7 @@ part 'draft_status_database_dao.g.dart';
 })
 class DraftStatusDao extends DatabaseAccessor<AppDatabase>
     with _$DraftStatusDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
 
   // Called by the AppDatabase class
   DraftStatusDao(this.db) : super(db);
@@ -87,12 +86,12 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
+      var biggerExp = CustomExpression<bool>(
           "db_draft_statuses.updated_at > '$minimumUpdatedAtExcluding'");
       query = query..where((draftStatus) => biggerExp);
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
+      var smallerExp = CustomExpression<bool>(
           "db_draft_statuses.updated_at < '$maximumUpdatedAtExcluding'");
       query = query..where((draftStatus) => smallerExp);
     }

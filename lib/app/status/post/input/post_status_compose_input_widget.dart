@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 
 class PostStatusComposeInputWidget extends StatelessWidget {
   final bool expanded;
+  final bool autofocus;
   final int maxLines;
   final String hintText;
 
   PostStatusComposeInputWidget({
     @required this.expanded,
+    @required this.autofocus,
     @required this.maxLines,
     this.hintText,
   });
@@ -27,7 +29,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
       focusNode: postStatusBloc.inputFocusNode,
       hintText: hintText ?? tr("app.status.post.field.message.hint"),
       expanded: expanded,
-      autofocus: expanded,
+      autofocus: autofocus,
       maxLines: maxLines,
       textInputAction: TextInputAction.send,
       onSubmitted: (String value) async {
@@ -50,6 +52,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
       },
       errorText: null,
       highlightMentions: true,
+      maxLength: postStatusBloc.maximumMessageLength,
     );
   }
 }

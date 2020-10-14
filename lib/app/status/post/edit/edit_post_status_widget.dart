@@ -14,6 +14,7 @@ class EditPostStatusWidget extends StatelessWidget {
           hasScrollBody: false,
           child: UnfocusOnScrollAreaWidget(
             child: PostStatusComposeWidget(
+              autofocus: false,
               goBackOnSuccess: true,
               expanded: true,
               maxLines: null,

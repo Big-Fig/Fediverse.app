@@ -5,8 +5,9 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 
-typedef AccountCallback = Function(
-    BuildContext context, IAccount account);
+typedef AccountCallback = Function(BuildContext context, IAccount account);
+typedef AccountsListCallback = Function(
+    BuildContext context, List<IAccount> accounts);
 
 abstract class IAccount {
   static List<IAccount> excludeAccountFromList(
@@ -55,9 +56,7 @@ abstract class IAccount {
 
   // start pleroma related fields
 
-  // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  // TODO: add when type will be found
-//  dynamic get pleromaBackgroundImage;
+  String get pleromaBackgroundImage;
 
   ///  Lists an array of tags for the user
   List<dynamic> get pleromaTags;
@@ -243,45 +242,50 @@ class DbAccountWrapper implements IAccount {
   String get username => dbAccount.username;
 
   @override
+  String get pleromaBackgroundImage => dbAccount.pleromaBackgroundImage;
+
+  @override
   String toString() {
     return 'DbAccountWrapper{dbAccount: $dbAccount}';
   }
 
   @override
-  IAccount copyWith(
-          {int id,
-          String remoteId,
-          String username,
-          String url,
-          String note,
-          bool locked,
-          String headerStatic,
-          String header,
-          int followingCount,
-          int followersCount,
-          int statusesCount,
-          String displayName,
-          DateTime createdAt,
-          bool bot,
-          String avatarStatic,
-          String avatar,
-          String acct,
-          DateTime lastStatusAt,
-          List<PleromaField> fields,
-          List<PleromaEmoji> emojis,
-          List<PleromaTag> pleromaTags,
-          PleromaAccountRelationship pleromaRelationship,
-          bool pleromaIsAdmin,
-          bool pleromaIsModerator,
-          bool pleromaConfirmationPending,
-          bool pleromaHideFavorites,
-          bool pleromaHideFollowers,
-          bool pleromaHideFollows,
-          bool pleromaHideFollowersCount,
-          bool pleromaHideFollowsCount,
-          bool pleromaDeactivated,
-          bool pleromaAllowFollowingMove,
-          bool pleromaSkipThreadContainment}) =>
+  IAccount copyWith({
+    int id,
+    String remoteId,
+    String username,
+    String url,
+    String note,
+    bool locked,
+    String headerStatic,
+    String header,
+    int followingCount,
+    int followersCount,
+    int statusesCount,
+    String displayName,
+    DateTime createdAt,
+    bool bot,
+    String avatarStatic,
+    String avatar,
+    String acct,
+    DateTime lastStatusAt,
+    List<PleromaField> fields,
+    List<PleromaEmoji> emojis,
+    List<PleromaTag> pleromaTags,
+    PleromaAccountRelationship pleromaRelationship,
+    bool pleromaIsAdmin,
+    bool pleromaIsModerator,
+    bool pleromaConfirmationPending,
+    bool pleromaHideFavorites,
+    bool pleromaHideFollowers,
+    bool pleromaHideFollows,
+    bool pleromaHideFollowersCount,
+    bool pleromaHideFollowsCount,
+    bool pleromaDeactivated,
+    bool pleromaAllowFollowingMove,
+    bool pleromaSkipThreadContainment,
+    String pleromaBackgroundImage,
+  }) =>
       DbAccountWrapper(dbAccount.copyWith(
         id: id,
         remoteId: remoteId,
@@ -316,6 +320,7 @@ class DbAccountWrapper implements IAccount {
         pleromaDeactivated: pleromaDeactivated,
         pleromaAllowFollowingMove: pleromaAllowFollowingMove,
         pleromaSkipThreadContainment: pleromaSkipThreadContainment,
+        pleromaBackgroundImage: pleromaBackgroundImage,
       ));
 }
 
@@ -326,37 +331,39 @@ DbAccount dbAccountFromAccount(IAccount account) {
 
   assert(account.remoteId != null);
   return DbAccount(
-      id: account?.localId,
-      remoteId: account?.remoteId,
-      username: account?.username,
-      url: account?.url,
-      note: account?.note,
-      locked: account?.locked,
-      headerStatic: account?.headerStatic,
-      header: account?.header,
-      followingCount: account?.followingCount,
-      followersCount: account?.followersCount,
-      statusesCount: account?.statusesCount,
-      displayName: account?.displayName,
-      createdAt: account?.createdAt,
-      bot: account?.bot,
-      avatarStatic: account?.avatarStatic,
-      avatar: account?.avatar,
-      acct: account?.acct,
-      lastStatusAt: account?.lastStatusAt,
-      fields: account?.fields,
-      emojis: account?.emojis,
-      pleromaRelationship: account?.pleromaRelationship,
-      pleromaTags: account?.pleromaTags,
-      pleromaIsAdmin: account?.pleromaIsAdmin,
-      pleromaIsModerator: account?.pleromaIsModerator,
-      pleromaConfirmationPending: account?.pleromaConfirmationPending,
-      pleromaHideFavorites: account?.pleromaHideFavorites,
-      pleromaHideFollowers: account?.pleromaHideFollowers,
-      pleromaHideFollows: account?.pleromaHideFollows,
-      pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
-      pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
-      pleromaDeactivated: account?.pleromaDeactivated,
-      pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
-      pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment);
+    id: account?.localId,
+    remoteId: account?.remoteId,
+    username: account?.username,
+    url: account?.url,
+    note: account?.note,
+    locked: account?.locked,
+    headerStatic: account?.headerStatic,
+    header: account?.header,
+    followingCount: account?.followingCount,
+    followersCount: account?.followersCount,
+    statusesCount: account?.statusesCount,
+    displayName: account?.displayName,
+    createdAt: account?.createdAt,
+    bot: account?.bot,
+    avatarStatic: account?.avatarStatic,
+    avatar: account?.avatar,
+    acct: account?.acct,
+    lastStatusAt: account?.lastStatusAt,
+    fields: account?.fields,
+    emojis: account?.emojis,
+    pleromaRelationship: account?.pleromaRelationship,
+    pleromaTags: account?.pleromaTags,
+    pleromaIsAdmin: account?.pleromaIsAdmin,
+    pleromaIsModerator: account?.pleromaIsModerator,
+    pleromaConfirmationPending: account?.pleromaConfirmationPending,
+    pleromaHideFavorites: account?.pleromaHideFavorites,
+    pleromaHideFollowers: account?.pleromaHideFollowers,
+    pleromaHideFollows: account?.pleromaHideFollows,
+    pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+    pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+    pleromaDeactivated: account?.pleromaDeactivated,
+    pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+    pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment,
+    pleromaBackgroundImage: account?.pleromaBackgroundImage,
+  );
 }

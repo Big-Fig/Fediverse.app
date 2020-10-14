@@ -26,7 +26,7 @@ class AccountStatusesMediaWidget extends AccountStatusesWidget {
           @required List<IStatus> items,
           @required Widget header,
           @required Widget footer}) =>
-      StatusCachedPaginationListMediaWidget.buildStaggeredGridView(
+      StatusCachedPaginationListMediaWidget.buildStaggeredMediaGridView(
         context: context,
         items: items,
         header: header,

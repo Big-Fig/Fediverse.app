@@ -1,17 +1,17 @@
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/account/my/settings'
-    '/my_account_settings_model'
-    '.dart';
+import 'package:fedi/app/account/my/settings/my_account_settings_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_model.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
@@ -21,9 +21,12 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/history/pleroma_history_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,6 +35,11 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
   Future internalAsyncInit() async {
     final directory = await getApplicationDocumentsDirectory();
+    registerAdapters();
+    Hive.init(directory.path);
+  }
+
+  static void registerAdapters() {
     Hive.registerAdapter(PleromaFieldAdapter(), 37);
     Hive.registerAdapter(PleromaEmojiAdapter(), 38);
     Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter(), 40);
@@ -40,7 +48,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaAccountRelationshipAdapter(), 42);
     Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
     Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
-    Hive.registerAdapter(TimelineSettingsLocalPreferencesAdapter(), 46);
+    Hive.registerAdapter(TimelineSettingsAdapter(), 46);
     Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter(), 47);
 
     Hive.registerAdapter(AuthInstanceListAdapter(), 49);
@@ -66,7 +74,16 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter(), 69);
     Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter(), 70);
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter(), 71);
-
-    Hive.init(directory.path);
+    Hive.registerAdapter(
+        PleromaInstancePleromaPartMetadataFieldLimitsAdapter(), 72);
+    Hive.registerAdapter(PushNotificationAdapter(), 73);
+    Hive.registerAdapter(PleromaTagAdapter(), 74); // 74
+    Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 75); // 75
+    Hive.registerAdapter(PleromaCustomEmojiAdapter(), 76); // 76
+    Hive.registerAdapter(PleromaHistoryAdapter(), 77); // 77
+    Hive.registerAdapter(TimelineAdapter(), 78); // 78
+    Hive.registerAdapter(TimelineSettingsAdapter(), 79); // 79
+    Hive.registerAdapter(PleromaListAdapter(), 80); // 80
+    Hive.registerAdapter(TimelinesHomeTabStorageAdapter(), 81); // 81
   }
 }

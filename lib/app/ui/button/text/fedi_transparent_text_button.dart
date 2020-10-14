@@ -20,6 +20,10 @@ class FediTransparentTextButton extends StatelessWidget {
 
   final Color color;
 
+  final bool expanded;
+
+  final bool limitMinWidth;
+
   static const TextStyle defaultTextStyle =
       FediTextStyles.mediumShortBoldMediumGrey;
 
@@ -31,34 +35,49 @@ class FediTransparentTextButton extends StatelessWidget {
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
     @required this.color,
+    this.expanded = true,
+    this.limitMinWidth = false,
   });
 
   @override
   Widget build(BuildContext context) {
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
-    return InkWell(
+    var button = InkWell(
       onTap: onPressed,
-      child: Container(
-          width: width,
-          height: calculatedHeight,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: color,
-              width: borderWidth,
-            ),
-          ),
-          child: Center(
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Text(
-                text,
-                style: textStyle.copyWith(color: color),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+        ),
+        child: Container(
+            width: width,
+            height: calculatedHeight,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: color,
+                width: borderWidth,
               ),
             ),
-          )),
+            child: Center(
+              child: Padding(
+                padding: FediPadding.buttonHorizontalPadding,
+                child: Text(
+                  text,
+                  style: textStyle.copyWith(color: color),
+                ),
+              ),
+            )),
+      ),
     );
+    if (expanded) {
+      return button;
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [button],
+      );
+    }
   }
 }

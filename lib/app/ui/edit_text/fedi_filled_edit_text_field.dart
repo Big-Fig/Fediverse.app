@@ -23,6 +23,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final BoxBorder border;
   final Color backgroundColor;
   final bool highlightMentions;
+  final int maxLength;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -41,6 +42,7 @@ class FediFilledEditTextField extends StatelessWidget {
     this.autocorrect = true,
     this.keyboardType,
     @required this.highlightMentions,
+    @required this.maxLength,
   });
 
   @override
@@ -63,6 +65,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 highlightMentions: highlightMentions,
                 autocorrect: autocorrect,
                 focusNode: focusNode,
+                maxLength: maxLength,
                 textInputAction:
                     maxLines == 1 ? textInputAction : TextInputAction.newline,
                 onSubmitted: onSubmitted,

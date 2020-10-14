@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +21,19 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance;
-    var backgroundImage = currentInstance?.info?.backgroundImage;
+
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var accountBackgroundImage = myAccountBloc.account.pleromaBackgroundImage;
+
+    String backgroundImage = accountBackgroundImage;
+
+    if (backgroundImage?.isNotEmpty != true) {
+      backgroundImage = currentInstance?.info?.backgroundImage;
+    }
 
     var backgroundImageAbsolutePath;
 
-    // backgroundImageAbsolutePath maybe relative path or absolute absolute
+    // backgroundImage maybe relative path or absolute path]
     if (backgroundImage != null) {
       var backgroundImageUri = Uri.parse(backgroundImage);
       var isRelative = backgroundImageUri.host?.isNotEmpty != true;
@@ -47,7 +56,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         placeholder: (_, __) => Container(
           width: double.infinity,
           height: double.infinity,
-          color: FediColors.primaryColorDark,
+          color: FediColors.primaryDark,
           child: child,
         ),
         imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
@@ -59,7 +68,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
   }
 
   Widget buildDefault(Widget child) {
-    var imageProvider = getDefaultHeaderImage().image;
+    var imageProvider = getDefaultBackgroundImage().image;
     return buildWithImageProvider(imageProvider, child);
   }
 
@@ -84,6 +93,6 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
     );
   }
 
-  Image getDefaultHeaderImage() =>
+  Image getDefaultBackgroundImage() =>
       Image.asset("assets/images/default_timeline_header.png");
 }

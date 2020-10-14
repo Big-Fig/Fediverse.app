@@ -35,8 +35,6 @@ import 'package:logging/logging.dart';
 var _logger = Logger("home_page.dart");
 
 class HomePage extends StatelessWidget {
-
-
   const HomePage();
 
   @override
@@ -46,7 +44,7 @@ class HomePage extends StatelessWidget {
     var homeBloc = IHomeBloc.of(context, listen: false);
 
     return StreamBuilder<HomeTab>(
-        stream: homeBloc.selectedTabStream,
+        stream: homeBloc.selectedTabStream.distinct(),
         initialData: homeBloc.selectedTab,
         builder: (context, snapshot) {
           var selectedTab = snapshot.data;
@@ -85,7 +83,7 @@ class HomePage extends StatelessWidget {
 
   FediLightStatusBarStyleArea _buildBackground() => FediLightStatusBarStyleArea(
         child: Container(
-          color: FediColors.primaryColor,
+          color: FediColors.primary,
           child: FediInstanceImageBackgroundWidget(
             child: Container(),
           ),
@@ -133,10 +131,13 @@ class HomePage extends StatelessWidget {
 
   DisposableProvider<ITimelinesHomeTabBloc> buildTimelinesTab(
       BuildContext context) {
+    _logger.finest(() => "buildTimelinesTab");
     return DisposableProvider<ITimelinesHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
         var timelinesHomeTabBloc = TimelinesHomeTabBloc();
+
+        _logger.finest(() => "create timelinesHomeTabBloc");
 
         timelinesHomeTabBloc.addDisposable(streamSubscription:
             homeBloc.reselectedTabStream.listen((reselectedTab) {
@@ -147,7 +148,8 @@ class HomePage extends StatelessWidget {
         return timelinesHomeTabBloc;
       },
       child: TimelinesHomeTabBlocProxyProvider(
-          child: const TimelinesHomeTabPage()),
+        child: TimelinesHomeTabPage(),
+      ),
     );
   }
 
@@ -251,5 +253,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }

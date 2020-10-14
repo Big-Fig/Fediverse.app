@@ -9,9 +9,14 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
   final IFormBoolFieldBloc field;
+  final bool enabled;
 
-  FormBoolFieldFormRowWidget(
-      {@required this.label, this.desc, @required this.field});
+  FormBoolFieldFormRowWidget({
+    @required this.label,
+    this.desc,
+    @required this.field,
+    this.enabled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,8 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
               FediFormSwitchRow(
                 label: label,
                 onChanged: field.changeCurrentValue,
-                value: currentValue,
+                value: currentValue == true,
+                enabled: enabled,
               ),
               if (desc != null) Text(desc),
             ],

@@ -11,4 +11,5 @@ abstract class IFormValueFieldBloc<T> extends IFormFieldBloc {
   void changeCurrentValue(T newValue);
 
   List<FormValueFieldValidation<T>> get validators;
+  void updateValidators(List<FormValueFieldValidation<T>> validators);
 }

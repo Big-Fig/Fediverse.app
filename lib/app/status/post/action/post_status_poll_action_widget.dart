@@ -1,9 +1,10 @@
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
-import 'package:fedi/app/ui/badge/fedi_value_unread_badge_widget.dart';
+import 'package:fedi/app/ui/badge/fedi_stream_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,9 @@ class PostStatusPollActionWidget extends StatelessWidget {
 
           var button = FediIconButton(
             icon: Icon(
-              Icons.poll,
+              FediIcons.poll,
               color: selectedAction == PostMessageSelectedAction.poll
-                  ? FediColors.primaryColor
+                  ? FediColors.primary
                   : FediColors.darkGrey,
             ),
             onPressed: () {
@@ -38,9 +39,9 @@ class PostStatusPollActionWidget extends StatelessWidget {
               builder: (context, snapshot) {
                 var isSomethingChanged = snapshot.data;
                 if (isSomethingChanged) {
-                  return FediValueUnreadBadgeWidget(
+                  return FediStreamBoolBadgeWidget(
                     offset: 8.0,
-                    valueStream: postStatusPollBloc
+                    stream: postStatusPollBloc
                         .pollOptionsGroupBloc.itemsStream
                         .map((items) => items?.isNotEmpty == true),
                     child: button,

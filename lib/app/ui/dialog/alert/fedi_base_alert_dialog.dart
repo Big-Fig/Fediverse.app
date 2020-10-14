@@ -107,7 +107,7 @@ class FediBaseAlertDialog extends BaseDialog {
                   child: buildButton(
                     context: context,
                     action: action,
-                    color: FediColors.primaryColor,
+                    color: FediColors.primary,
                     notAddRightPadding: isLast,
                   ),
                 );
@@ -128,7 +128,7 @@ class FediBaseAlertDialog extends BaseDialog {
                   child: buildButton(
                     context: context,
                     action: action,
-                    color: FediColors.primaryColor,
+                    color: FediColors.primary,
                     notAddRightPadding: true,
                   ),
                 );

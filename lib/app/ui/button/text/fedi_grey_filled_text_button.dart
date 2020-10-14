@@ -17,6 +17,9 @@ class FediGreyFilledTextButton extends StatelessWidget {
   final double borderWidth;
 
   final TextStyle textStyle;
+
+  final bool limitMinWidth;
+
   static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldGrey;
 
   FediGreyFilledTextButton(
@@ -25,37 +28,42 @@ class FediGreyFilledTextButton extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
+    this.limitMinWidth = false,
   });
 
   @override
   Widget build(BuildContext context) {
-
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     return InkWell(
       onTap: onPressed,
-      child: Container(
-          height: calculatedHeight,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: onPressed != null
-                ? FediColors.ultraLightGrey
-                : FediColors.lightGrey,
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: FediColors.white,
-              width: borderWidth,
-            ),
-          ),
-          child: Center(
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Text(
-                text,
-                style: defaultTextStyle,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+        ),
+        child: Container(
+            height: calculatedHeight,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: onPressed != null
+                  ? FediColors.ultraLightGrey
+                  : FediColors.lightGrey,
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: FediColors.white,
+                width: borderWidth,
               ),
             ),
-          )),
+            child: Center(
+              child: Padding(
+                padding: FediPadding.buttonHorizontalPadding,
+                child: Text(
+                  text,
+                  style: defaultTextStyle,
+                ),
+              ),
+            )),
+      ),
     );
   }
 }

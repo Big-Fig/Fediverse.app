@@ -266,6 +266,7 @@ void main() {
       limit: null,
       offset: null,
       orderingTermData: null,
+      onlyNotDismissed: null,
     );
 
     await insertDbNotification(
@@ -290,6 +291,7 @@ void main() {
       limit: null,
       offset: null,
       orderingTermData: null,
+      onlyNotDismissed: null,
     );
 
     await insertDbNotification(
@@ -368,13 +370,15 @@ void main() {
 
   test('createQuery newerThanNotification', () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanNotification: null,
-        excludeTypes: null);
+      newerThanNotification: await createTestNotification(
+          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      olderThanNotification: null,
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     await insertDbNotification(
         notificationRepository,
@@ -406,13 +410,15 @@ void main() {
 
   test('createQuery notNewerThanNotification', () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-        excludeTypes: null);
+      newerThanNotification: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      olderThanNotification: await createTestNotification(
+          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     await insertDbNotification(
         notificationRepository,
@@ -445,14 +451,16 @@ void main() {
   test('createQuery notNewerThanNotification & newerThanNotification',
       () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: await createTestNotification(
-            seed: "remoteId2", remoteId: "remoteId2", createdAt: DateTime(2)),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-        excludeTypes: null);
+      newerThanNotification: await createTestNotification(
+          seed: "remoteId2", remoteId: "remoteId2", createdAt: DateTime(2)),
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      olderThanNotification: await createTestNotification(
+          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     await insertDbNotification(
         notificationRepository,
@@ -498,14 +506,16 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: null,
-        limit: null,
-        offset: null,
-        orderingTermData: NotificationOrderingTermData(
-            orderByType: NotificationOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThanNotification: null,
-        excludeTypes: null);
+      newerThanNotification: null,
+      limit: null,
+      offset: null,
+      orderingTermData: NotificationOrderingTermData(
+          orderByType: NotificationOrderByType.remoteId,
+          orderingMode: OrderingMode.asc),
+      olderThanNotification: null,
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -532,14 +542,16 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: null,
-        limit: null,
-        offset: null,
-        orderingTermData: NotificationOrderingTermData(
-            orderByType: NotificationOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanNotification: null,
-        excludeTypes: null);
+      newerThanNotification: null,
+      limit: null,
+      offset: null,
+      orderingTermData: NotificationOrderingTermData(
+          orderByType: NotificationOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      olderThanNotification: null,
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -566,14 +578,16 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: null,
-        limit: 1,
-        offset: 1,
-        orderingTermData: NotificationOrderingTermData(
-            orderByType: NotificationOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanNotification: null,
-        excludeTypes: null);
+      newerThanNotification: null,
+      limit: 1,
+      offset: 1,
+      orderingTermData: NotificationOrderingTermData(
+          orderByType: NotificationOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      olderThanNotification: null,
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -599,14 +613,16 @@ void main() {
   test('createQuery orderingTermData createdAt desc & limit & offset',
       () async {
     var query = notificationRepository.createQuery(
-        newerThanNotification: null,
-        limit: 1,
-        offset: 1,
-        orderingTermData: NotificationOrderingTermData(
-            orderByType: NotificationOrderByType.createdAt,
-            orderingMode: OrderingMode.desc),
-        olderThanNotification: null,
-        excludeTypes: null);
+      newerThanNotification: null,
+      limit: 1,
+      offset: 1,
+      orderingTermData: NotificationOrderingTermData(
+          orderByType: NotificationOrderByType.createdAt,
+          orderingMode: OrderingMode.desc),
+      olderThanNotification: null,
+      excludeTypes: null,
+      onlyNotDismissed: null,
+    );
 
     var notification2 = await insertDbNotification(
         notificationRepository,

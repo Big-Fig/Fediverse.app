@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediPrimaryFilledTextButton  extends StatelessWidget {
+class FediPrimaryFilledTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -18,15 +19,15 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
   final Color enabledBorderColor;
   final Color disabledBorderColor;
 
+  final bool limitMinWidth;
 
   final TextStyle textStyle;
   static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
-
   FediPrimaryFilledTextButton(
     this.text, {
     @required this.onPressed,
-    this.enabledBackgroundColor = FediColors.primaryColor,
+    this.enabledBackgroundColor = FediColors.primary,
     this.disabledBackgroundColor = FediColors.lightGrey,
     this.enabledBorderColor = FediColors.white,
     this.disabledBorderColor = FediColors.white,
@@ -34,6 +35,7 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
     this.expanded = true,
+    this.limitMinWidth = false,
   });
 
   @override
@@ -43,30 +45,35 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
 
     var button = InkWell(
       onTap: onPressed,
-      child: Container(
-          height: calculatedHeight,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: onPressed != null
-                ? enabledBackgroundColor
-                : disabledBackgroundColor,
-            borderRadius: borderRadius,
-            border: Border.all(
-              color:  onPressed != null
-                  ? enabledBorderColor
-                  : disabledBorderColor,
-              width: borderWidth,
-            ),
-          ),
-          child: Padding(
-            padding: FediPadding.buttonHorizontalPadding,
-            child: Center(
-              child: Text(
-                text, textAlign: TextAlign.center, // 80% transparency
-                style: textStyle,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
+        ),
+        child: Container(
+            height: calculatedHeight,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: onPressed != null
+                  ? enabledBackgroundColor
+                  : disabledBackgroundColor,
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: onPressed != null
+                    ? enabledBorderColor
+                    : disabledBorderColor,
+                width: borderWidth,
               ),
             ),
-          )),
+            child: Padding(
+              padding: FediPadding.buttonHorizontalPadding,
+              child: Center(
+                child: Text(
+                  text, textAlign: TextAlign.center, // 80% transparency
+                  style: textStyle,
+                ),
+              ),
+            )),
+      ),
     );
 
     if (expanded) {

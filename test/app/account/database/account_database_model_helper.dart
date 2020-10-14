@@ -41,6 +41,7 @@ Future<DbAccount> createTestDbAccount(
       pleromaDeactivated: false,
       pleromaAllowFollowingMove: true,
       pleromaSkipThreadContainment: true,
+      pleromaBackgroundImage: "$seed pleromaBackgroundImage",
     );
 
 void expectDbAccount(IAccount actual, DbAccount expected) {

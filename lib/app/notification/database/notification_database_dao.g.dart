@@ -7,55 +7,39 @@ part of 'notification_database_dao.dart';
 // **************************************************************************
 
 mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
-  $DbNotificationsTable get dbNotifications => db.dbNotifications;
-  Selectable<int> countAllQuery() {
-    return customSelectQuery('SELECT Count(*) FROM db_notifications;',
+  $DbNotificationsTable get dbNotifications => attachedDatabase.dbNotifications;
+  Selectable<int> countAll() {
+    return customSelect('SELECT Count(*) FROM db_notifications;',
             variables: [], readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Future<List<int>> countAll() {
-    return countAllQuery().get();
-  }
-
-  Stream<List<int>> watchCountAll() {
-    return countAllQuery().watch();
-  }
-
-  Selectable<int> countByIdQuery(int id) {
-    return customSelectQuery(
-            'SELECT COUNT(*) FROM db_notifications WHERE id = :id;',
-            variables: [Variable.withInt(id)],
-            readsFrom: {dbNotifications})
+  Selectable<int> countById(int id) {
+    return customSelect('SELECT COUNT(*) FROM db_notifications WHERE id = :id;',
+            variables: [Variable.withInt(id)], readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<List<int>> countById(int id) {
-    return countByIdQuery(id).get();
+  Selectable<int> countUnreadAll() {
+    return customSelect(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed;',
+        variables: [],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Stream<List<int>> watchCountById(int id) {
-    return countByIdQuery(id).watch();
+  Selectable<int> countUnreadAllNotDismissed() {
+    return customSelect(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed IS NULL;',
+        variables: [],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Selectable<int> countUnreadAllQuery() {
-    return customSelectQuery(
-            'SELECT COUNT(*) FROM db_notifications WHERE unread = 1;',
-            variables: [],
-            readsFrom: {dbNotifications})
-        .map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Future<List<int>> countUnreadAll() {
-    return countUnreadAllQuery().get();
-  }
-
-  Stream<List<int>> watchCountUnreadAll() {
-    return countUnreadAllQuery().watch();
-  }
-
-  Selectable<int> countUnreadByTypeQuery(String type) {
-    return customSelectQuery(
+  Selectable<int> countUnreadByType(String type) {
+    return customSelect(
         'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type;',
         variables: [
           Variable.withString(type)
@@ -65,12 +49,15 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<List<int>> countUnreadByType(String type) {
-    return countUnreadByTypeQuery(type).get();
-  }
-
-  Stream<List<int>> watchCountUnreadByType(String type) {
-    return countUnreadByTypeQuery(type).watch();
+  Selectable<int> countUnreadByTypeNotDismissed(String type) {
+    return customSelect(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type AND dismissed IS NULL;',
+        variables: [
+          Variable.withString(type)
+        ],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
   Future<int> deleteById(int id) {
@@ -78,6 +65,7 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_notifications WHERE id = :id;',
       variables: [Variable.withInt(id)],
       updates: {dbNotifications},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -86,51 +74,20 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_notifications',
       variables: [],
       updates: {dbNotifications},
+      updateKind: UpdateKind.delete,
     );
   }
 
-  DbNotification _rowToDbNotification(QueryRow row) {
-    return DbNotification(
-      id: row.readInt('id'),
-      remoteId: row.readString('remote_id'),
-      accountRemoteId: row.readString('account_remote_id'),
-      statusRemoteId: row.readString('status_remote_id'),
-      chatRemoteId: row.readString('chat_remote_id'),
-      chatMessageRemoteId: row.readString('chat_message_remote_id'),
-      emoji: row.readString('emoji'),
-      pleroma: $DbNotificationsTable.$converter0
-          .mapToDart(row.readString('pleroma')),
-      unread: row.readBool('unread'),
-      type: row.readString('type'),
-      createdAt: row.readDateTime('created_at'),
-    );
+  Selectable<DbNotification> getAll() {
+    return customSelect('SELECT * FROM db_notifications',
+        variables: [],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 
-  Selectable<DbNotification> getAllQuery() {
-    return customSelectQuery('SELECT * FROM db_notifications',
-        variables: [], readsFrom: {dbNotifications}).map(_rowToDbNotification);
-  }
-
-  Future<List<DbNotification>> getAll() {
-    return getAllQuery().get();
-  }
-
-  Stream<List<DbNotification>> watchGetAll() {
-    return getAllQuery().watch();
-  }
-
-  Selectable<int> findLocalIdByRemoteIdQuery(String remoteId) {
-    return customSelectQuery(
+  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+    return customSelect(
         'SELECT id FROM db_notifications WHERE remote_id = :remoteId;',
         variables: [Variable.withString(remoteId)],
         readsFrom: {dbNotifications}).map((QueryRow row) => row.readInt('id'));
-  }
-
-  Future<List<int>> findLocalIdByRemoteId(String remoteId) {
-    return findLocalIdByRemoteIdQuery(remoteId).get();
-  }
-
-  Stream<List<int>> watchFindLocalIdByRemoteId(String remoteId) {
-    return findLocalIdByRemoteIdQuery(remoteId).watch();
   }
 }

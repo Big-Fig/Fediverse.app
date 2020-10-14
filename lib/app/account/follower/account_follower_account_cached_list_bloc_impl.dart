@@ -38,7 +38,6 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    try {
       List<IPleromaAccount> remoteAccounts;
 
       remoteAccounts = await pleromaAccountService.getAccountFollowers(
@@ -51,7 +50,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
             conversationRemoteId: null, chatRemoteId: null);
 
-        await accountRepository.updateAccountFollowers(
+        await accountRepository.addAccountFollowers(
             account.remoteId, remoteAccounts);
 
         return true;
@@ -60,11 +59,6 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
             "accounts is null");
         return false;
       }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
-      return false;
-    }
   }
 
   @override

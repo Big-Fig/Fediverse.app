@@ -20,9 +20,13 @@ var _statusReblogAccountAliasId = "status_reblog_account";
   "countAll": "SELECT Count(*) FROM db_notifications;",
   "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
   "countUnreadAll": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1;",
+      " WHERE unread = 1 AND dismissed;",
+  "countUnreadAllNotDismissed": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1 AND dismissed IS NULL;",
   "countUnreadByType": "SELECT COUNT(*) FROM db_notifications"
       " WHERE unread = 1 AND type = :type;",
+  "countUnreadByTypeNotDismissed": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1 AND type = :type AND dismissed IS NULL;",
   "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
   "clear": "DELETE FROM db_notifications",
   "getAll": "SELECT * FROM db_notifications",
@@ -31,8 +35,7 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 })
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable statusAlias;
   $DbAccountsTable statusAccountAlias;
@@ -108,7 +111,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbNotification> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbNotifications)..where((i) => i.id.equals(localId)))
@@ -120,15 +123,14 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     return localId;
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addExcludeTypeWhere(
-              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-                  query,
-              List<PleromaNotificationType> excludeTypes) =>
-          query
-            ..where((notification) => (notification.type.isNotIn(excludeTypes
-                .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
-                .toList())));
+  SimpleSelectStatement<$DbNotificationsTable,
+      DbNotification> addExcludeTypeWhere(
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+          List<PleromaNotificationType> excludeTypes) =>
+      query
+        ..where((notification) => (notification.type.isNotIn(excludeTypes
+            .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
+            .toList())));
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
@@ -145,12 +147,12 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 //    assert(minimumExist || maximumExist);
 //
 //    if (minimumExist) {
-//      var biggerExp = CustomExpression<bool, BoolType>(
+//      var biggerExp = CustomExpression<bool>(
 //          "db_notifications.remote_id > '$minimumRemoteIdExcluding'");
 //      query = query..where((notification) => biggerExp);
 //    }
 //    if (maximumExist) {
-//      var smallerExp = CustomExpression<bool, BoolType>(
+//      var smallerExp = CustomExpression<bool>(
 //          "db_notifications.remote_id < '$maximumRemoteIdExcluding'");
 //      query = query..where((notification) => smallerExp);
 //    }
@@ -244,12 +246,40 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes) {
+  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes,
+  {@required bool onlyNotDismissed,}) {
+    // asd
     var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
         'type NOT IN '
         '(${excludeTypes.map((type) => "'$type'").join(", ")})';
-    return customSelectQuery(query, readsFrom: {dbNotifications})
+    return customSelect(query, readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future markAsRead({@required String remoteId}) {
+    var update = "UPDATE db_notifications "
+        "SET unread = 0 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+
+  Future markAsDismissed({@required String remoteId}) {
+    var update = "UPDATE db_notifications "
+        "SET dismissed = 1 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+
+  Future markAllAsDismissed() {
+    var update = "UPDATE db_notifications "
+        "SET dismissed = 1 ";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
   }
 
   List<Join<Table, DataClass>> populateNotificationJoin() {
@@ -277,4 +307,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       ),
     ];
   }
+
+  SimpleSelectStatement<$DbNotificationsTable,
+      DbNotification> addOnlyNotDismissedWhere(
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
+      query..where((status) => isNull(status.dismissed));
 }

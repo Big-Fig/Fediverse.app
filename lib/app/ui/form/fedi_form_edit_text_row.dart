@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,6 +13,8 @@ class FediFormEditTextRow extends StatelessWidget {
   final FocusNode focusNode;
   final TextInputAction textInputAction;
   final ValueChanged<String> onSubmitted;
+  final int maxLength;
+  final bool enabled;
 
   FediFormEditTextRow({
     @required this.label,
@@ -24,6 +26,8 @@ class FediFormEditTextRow extends StatelessWidget {
     @required this.textInputAction,
     @required this.onSubmitted,
     @required this.focusNode,
+    @required this.maxLength,
+    this.enabled = true,
   });
 
   @override
@@ -31,8 +35,9 @@ class FediFormEditTextRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FediFormEditTextLabel(label),
+            if (label != null) FediFormColumnLabel(label),
             FediTransparentEditTextField(
+              enabled: enabled,
               focusNode: focusNode,
               autocorrect: autocorrect,
               expanded: false,
@@ -46,6 +51,7 @@ class FediFormEditTextRow extends StatelessWidget {
               displayUnderlineBorder: true,
               errorText: errorText,
               highlightMentions: false,
+              maxLength: maxLength,
             ),
           ],
         ),

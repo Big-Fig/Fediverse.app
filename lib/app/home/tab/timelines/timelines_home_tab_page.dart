@@ -1,17 +1,22 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/timelines_settings_page.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
-import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
-import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
+import 'package:fedi/app/timeline/create/create_timeline_page.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_text_tab_indicator_item_widget.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/button/fedi_transparent_icon_text_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -20,7 +25,9 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
@@ -34,81 +41,106 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-const _timelineTabs = [
-  TimelineTab.home,
-  TimelineTab.local,
-  TimelineTab.public,
-];
+final _logger = Logger("timelines_home_tab_page.dart");
 
 class TimelinesHomeTabPage extends StatefulWidget {
-  const TimelinesHomeTabPage({Key key}) : super(key: key);
-
   @override
   _TimelinesHomeTabPageState createState() => _TimelinesHomeTabPageState();
 }
 
 class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
     with TickerProviderStateMixin {
-  TabController tabController;
-
   @override
-  void initState() {
-    super.initState();
-    tabController = TabController(
-      vsync: this,
-      length: _timelineTabs.length,
+  Widget build(BuildContext context) {
+    _logger.finest(() => "build");
+
+    return DisposableProvider<ITimelineTabListBloc>(
+      create: (context) {
+        var homeBloc = IHomeBloc.of(context, listen: false);
+
+        var timelineTabListBloc = TimelineTabListBloc.createFromContext(
+          context,
+          vsync: this,
+        );
+
+        _logger.finest(() => "create timelineTabListBloc");
+
+        StreamSubscription listener;
+        timelineTabListBloc.performAsyncInit();
+        timelineTabListBloc.addDisposable(streamSubscription:
+            timelineTabListBloc.mainTimelineTabBlocStream
+                .listen((mainTimelineTabBloc) {
+          if (mainTimelineTabBloc != null) {
+            if (listener != null) {
+              listener.cancel();
+            }
+
+            listener = mainTimelineTabBloc
+                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
+                .listen((unreadCount) {
+              homeBloc.updateTimelinesUnread(
+                  unreadCount != null && unreadCount > 0);
+            });
+            timelineTabListBloc.addDisposable(streamSubscription: listener);
+          }
+        }));
+
+        return timelineTabListBloc;
+      },
+      child: Builder(
+        builder: (context) => StreamBuilder<TimelineTabBlocsList>(
+            stream: ITimelineTabListBloc.of(context, listen: false)
+                .timelineTabBlocsListStream,
+            builder: (context, snapshot) {
+              var timelineTabBlocsList = snapshot.data;
+
+              _logger.finest(() => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
+              return Provider<TimelineTabBlocsList>.value(
+                value: timelineTabBlocsList,
+                child: TimelinesHomeTabPageBody(),
+              );
+            }),
+      ),
     );
   }
+}
 
-  @override
-  void dispose() {
-    super.dispose();
-    tabController.dispose();
+class TimelinesHomeTabPageBody extends StatelessWidget {
+  TimelinesHomeTabPageBody() {
+    _logger.finest(() => "TimelinesHomeTabPageBody constructor");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: _buildBody(),
-    );
-  }
-
-  DisposableProvider<ITimelineTabsBloc> _buildBody() {
-    return DisposableProvider<ITimelineTabsBloc>(
-      create: (BuildContext context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
-        var timelineTabsBloc =
-            TimelineTabsBloc.createFromContext(context, TimelineTab.home);
-
-        timelineTabsBloc.addDisposable(
-            streamSubscription: timelineTabsBloc.tabsMap[TimelineTab.home]
-                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
-                .listen((unreadCount) {
-          homeBloc
-              .updateTimelinesUnread(unreadCount != null && unreadCount > 0);
-        }));
-        return timelineTabsBloc;
-      },
-      child: Builder(
-        builder: (context) => _buildBodyWidget(context),
-      ),
+      body: _buildBodyWidget(context),
     );
   }
 
   Widget _buildBodyWidget(BuildContext context) {
-    var timelineTabsBloc = ITimelineTabsBloc.of(context, listen: false);
     var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context, listen: false);
-    return DisposableProvider<
+
+    var timelineTabBlocsList =
+        Provider.of<TimelineTabBlocsList>(context, listen: true);
+
+    return DisposableProxyProvider<TimelineTabBlocsList,
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
-      create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
+      update: (context, value, previous) {
+
+        _logger.finest(() => "IFediNestedScrollViewWithNestedScrollableTabsBloc update");
+
+        return FediNestedScrollViewWithNestedScrollableTabsBloc(
         nestedScrollControllerBloc:
             timelinesHomeTabBloc.nestedScrollControllerBloc,
-        tabController: tabController,
-      ),
+        tabController: value?.tabController,
+      );
+      },
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
+        tabsEmptyBuilder: (context) => _buildLoading(),
         onLongScrollUpTopOverlayWidget:
             const TimelinesHomeTabOverlayOnLongScrollWidget(),
         topSliverWidgets: [
@@ -123,12 +155,23 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
                     children: [
                       Expanded(child: buildSearchActionButton(context)),
                       FediBigHorizontalSpacer(),
-                      buildFilterActionButton()
+                      buildFilterActionButton(context)
                     ],
                   ),
                 ),
                 FediBigVerticalSpacer(),
-                _buildTabIndicatorWidget(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTabIndicatorWidget(
+                          context, timelineTabBlocsList),
+                    ),
+                    Padding(
+                      padding: FediPadding.horizontalSmallPadding,
+                      child: buildAddTimelineActionButton(context),
+                    ),
+                  ],
+                ),
               ],
             ),
             endingWidgets: null,
@@ -152,16 +195,58 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         topSliverScrollOffsetToShowWhiteStatusBar: 100,
         tabKeyPrefix: "TimelineTab",
         tabBodyProviderBuilder:
-            (BuildContext context, int index, Widget child) => Provider<
-                ICachedPaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IStatus>, IStatus>>.value(
-          value: timelineTabsBloc.retrieveTimelineTabPaginationListBloc(
-              timelineTabsBloc.tabs[index]),
-          child: CachedPaginationListWithNewItemsBlocProxyProvider<
-              CachedPaginationPage<IStatus>, IStatus>(child: child),
-        ),
-        tabBodyContentBuilder: (BuildContext context, int index) =>
-            FediDarkStatusBarStyleArea(child: TimelineWidget()),
+            (BuildContext context, int index, Widget child) {
+          var timelineTabListBloc =
+              ITimelineTabListBloc.of(context, listen: false);
+          var tabBloc =
+              timelineTabListBloc.timelineTabBlocsList.timelineTabBlocs[index];
+
+          _logger.finest(() => "tabBodyProviderBuilder index ${index} "
+              "tabBloc ${tabBloc.timelineId}");
+
+          // return Provider<ITimelineTabBloc>.value(
+          //   value: tabBloc,
+          //   child: Provider<ITimelineLocalPreferencesBloc>.value(
+          //     value: tabBloc.timelineLocalPreferencesBloc,
+          //     child: Provider<
+          //         ICachedPaginationListWithNewItemsBloc<
+          //             CachedPaginationPage<IStatus>, IStatus>>.value(
+          //       value: tabBloc.paginationListWithNewItemsBloc,
+          //       child: CachedPaginationListWithNewItemsBlocProxyProvider<
+          //           CachedPaginationPage<IStatus>, IStatus>(child: child),
+          //     ),
+          //   ),
+          // );
+
+          return Provider<ITimelineTabBloc>.value(
+            value: tabBloc,
+            child:
+                ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
+              update: (context, value, previous) =>
+                  value.timelineLocalPreferencesBloc,
+              // value: tabBloc.timelineLocalPreferencesBloc,
+              child: ProxyProvider<
+                  ITimelineTabBloc,
+                  ICachedPaginationListWithNewItemsBloc<
+                      CachedPaginationPage<IStatus>, IStatus>>(
+                // value: tabBloc.paginationListWithNewItemsBloc,
+                update: (context, value, previous) =>
+                    value.paginationListWithNewItemsBloc,
+                child: CachedPaginationListWithNewItemsBlocProxyProvider<
+                    CachedPaginationPage<IStatus>, IStatus>(child: child),
+              ),
+            ),
+          );
+        },
+        tabBodyContentBuilder: (BuildContext context, int index) {
+          // var tabBloc = timelineTabBlocs[index];
+
+          _logger.finest(() => "tabBodyContentBuilder index $index");
+
+          return FediDarkStatusBarStyleArea(
+            child: TimelineWidget(),
+          );
+        },
         tabBodyOverlayBuilder: (BuildContext context, int index) =>
             StatusListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: null,
@@ -169,12 +254,23 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
     );
   }
 
-  Widget buildFilterActionButton() => FediIconInCircleBlurredButton(
-        FediIcons.filter,
-        onPressed: () {
-          goTimelinesSettingsPage(context);
-        },
-      );
+  Widget buildFilterActionButton(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.filter,
+      onPressed: () {
+        goToTimelinesHomeTabStoragePage(context);
+      },
+    );
+  }
+
+  Widget buildAddTimelineActionButton(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.plus,
+      onPressed: () {
+        goToCreateItemTimelinesHomeTabStoragePage(context);
+      },
+    );
+  }
 
   Widget buildSearchActionButton(BuildContext context) =>
       FediTransparentIconTextButton(
@@ -186,11 +282,35 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         height: FediSizes.iconInCircleDefaultSize,
       );
 
-  Widget _buildTabIndicatorWidget() => Padding(
-        padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-        child: TimelineTabTextTabIndicatorItemWidget(
-          tabController: tabController,
-          timelineTabs: _timelineTabs,
-        ),
-      );
+  Widget _buildTabIndicatorWidget(
+    BuildContext context,
+    timelineTabBlocsList,
+  ) {
+    if (timelineTabBlocsList == null) {
+      return SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      child: TimelineTabListTextTabIndicatorItemWidget(),
+    );
+  }
+
+  Widget _buildLoading() {
+    _logger.finest(() => "_buildLoading");
+    return Container(
+      width: double.infinity,
+      color: FediColors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          FediCircularProgressIndicator(),
+          Text(
+            "app.timeline.loading".tr(),
+            style: FediTextStyles.bigShortBoldDarkGrey,
+          )
+        ],
+      ),
+    );
+  }
 }

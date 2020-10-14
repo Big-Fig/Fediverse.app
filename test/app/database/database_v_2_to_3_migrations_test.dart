@@ -7,24 +7,27 @@ import 'package:moor_ffi/moor_ffi.dart';
 
 void main() {
   AppDatabase database;
-
+  File dbFile;
   setUp(() async {
-    database = AppDatabase(VmDatabase(
-        File('test_resources/app/database/fedi2_database_dump_v2.sqlite')));
+    var filePath = 'test_resources/app/database/fedi2_database_dump_v2.sqlite';
+    var file = File(filePath);
+    dbFile = await file.copy(filePath + ".temp");
+    database = AppDatabase(VmDatabase(dbFile));
   });
 
   tearDown(() async {
     await database.close();
+    await dbFile.delete();
   });
 
   test('test scheduled', () async {
     var scheduledStatusDao = database.scheduledStatusDao;
     // sqldump should have old scheduled
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
 
     await scheduledStatusDao.clear();
 
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, false);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, false);
 
     await scheduledStatusDao.insert(DbScheduledStatus(
         scheduledAt: DateTime.now(),
@@ -32,12 +35,14 @@ void main() {
         id: null,
         remoteId: "asda"));
 
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
   });
+
   test('test draft', () async {
     var draftStatusDao = database.draftStatusDao;
 
-    expect((await draftStatusDao.getAll()).isNotEmpty, false);
+    await draftStatusDao.clear();
+    expect((await draftStatusDao.getAll().get()).isNotEmpty, false);
 
     await draftStatusDao.insert(DbDraftStatus(
         id: null,
@@ -54,6 +59,6 @@ void main() {
             inReplyToConversationId: null,
             isNsfwSensitiveEnabled: null)));
 
-    expect((await draftStatusDao.getAll()).isNotEmpty, true);
+    expect((await draftStatusDao.getAll().get()).isNotEmpty, true);
   });
 }

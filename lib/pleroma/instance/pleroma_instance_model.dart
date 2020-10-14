@@ -77,6 +77,10 @@ abstract class IPleromaInstance extends IMastodonInstance {
 
   int get bannerUploadLimit;
 
+  int get descriptionLimit;
+
+  int get chatLimit;
+
   PleromaInstancePleromaPart get pleroma;
 
   String get vapidPublicKey;
@@ -88,27 +92,40 @@ abstract class IPleromaInstance extends IMastodonInstance {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 58)
 class PleromaInstancePleromaPart {
   @HiveField(0)
-  PleromaInstancePleromaPartMetadata metadata;
+  final PleromaInstancePleromaPartMetadata metadata;
 
-  PleromaInstancePleromaPart({this.metadata});
+  @HiveField(1)
+  @JsonKey(name: "vapid_public_key")
+  final String vapidPublicKey;
+
+  PleromaInstancePleromaPart({
+    this.metadata,
+    this.vapidPublicKey,
+  });
+
+  @override
+  String toString() {
+    return 'PleromaInstancePleromaPart{metadata: $metadata,'
+        ' vapidPublicKey: $vapidPublicKey}';
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaInstancePleromaPart &&
           runtimeType == other.runtimeType &&
-          metadata == other.metadata;
+          metadata == other.metadata &&
+          vapidPublicKey == other.vapidPublicKey;
 
   @override
-  int get hashCode => metadata.hashCode;
-
-  @override
-  String toString() {
-    return 'PleromaInstancePleromaPart{metadata: $metadata}';
-  }
+  int get hashCode => metadata.hashCode ^ vapidPublicKey.hashCode;
 
   factory PleromaInstancePleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaInstancePleromaPartFromJson(json);
@@ -126,14 +143,101 @@ class PleromaInstancePleromaPart {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 72)
+class PleromaInstancePleromaPartMetadataFieldLimits {
+  @HiveField(0)
+  @JsonKey(name: "max_fields")
+  final int maxFields;
+  @JsonKey(name: "max_remote_fields")
+  @HiveField(1)
+  final int maxRemoteFields;
+  @JsonKey(name: "name_length")
+  @HiveField(2)
+  final int nameLength;
+  @JsonKey(name: "value_length")
+  @HiveField(3)
+  final int valueLength;
+
+  PleromaInstancePleromaPartMetadataFieldLimits({
+    this.maxFields,
+    this.maxRemoteFields,
+    this.nameLength,
+    this.valueLength,
+  });
+
+  factory PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
+          Map<String, dynamic> json) =>
+      _$PleromaInstancePleromaPartMetadataFieldLimitsFromJson(json);
+
+  factory PleromaInstancePleromaPartMetadataFieldLimits.fromJsonString(
+          String jsonString) =>
+      _$PleromaInstancePleromaPartMetadataFieldLimitsFromJson(
+          jsonDecode(jsonString));
+
+  static List<PleromaInstancePleromaPartMetadataFieldLimits> listFromJsonString(
+          String str) =>
+      List<PleromaInstancePleromaPartMetadataFieldLimits>.from(json
+          .decode(str)
+          .map((x) =>
+              PleromaInstancePleromaPartMetadataFieldLimits.fromJson(x)));
+
+  Map<String, dynamic> toJson() =>
+      _$PleromaInstancePleromaPartMetadataFieldLimitsToJson(this);
+
+  String toJsonString() =>
+      jsonEncode(_$PleromaInstancePleromaPartMetadataFieldLimitsToJson(this));
+}
+
+@JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
+@HiveType()
+// @HiveType(typeId: -32 + 60)
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
-  dynamic features;
+  final List<String> features;
   @HiveField(1)
-  dynamic federation;
+  final dynamic federation;
 
-  PleromaInstancePleromaPartMetadata({this.features, this.federation});
+  // "federation":{
+  //            "enabled":true,
+  //            "exclusions":false,
+  //            "mrf_object_age":{
+  //               "actions":[
+  //                  "delist",
+  //                  "strip_followers"
+  //               ],
+  //               "threshold":604800
+  //            },
+  //            "mrf_policies":[
+  //               "ObjectAgePolicy"
+  //            ],
+  //            "quarantined_instances":[
+  //
+  //            ]
+  //         },
+
+  @HiveField(2)
+  @JsonKey(name: "post_formats")
+  final List<String> postFormats;
+  @HiveField(3)
+  @JsonKey(name: "account_activation_required")
+  final bool accountActivationRequired;
+  @HiveField(4)
+  @JsonKey(name: "fields_limits")
+  final PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
+
+  PleromaInstancePleromaPartMetadata(
+      {this.features,
+      this.federation,
+      this.postFormats,
+      this.accountActivationRequired,
+      this.fieldsLimits});
 
   @override
   bool operator ==(Object other) =>
@@ -141,15 +245,25 @@ class PleromaInstancePleromaPartMetadata {
       other is PleromaInstancePleromaPartMetadata &&
           runtimeType == other.runtimeType &&
           features == other.features &&
-          federation == other.federation;
+          federation == other.federation &&
+          postFormats == other.postFormats &&
+          accountActivationRequired == other.accountActivationRequired &&
+          fieldsLimits == other.fieldsLimits;
 
   @override
-  int get hashCode => features.hashCode ^ federation.hashCode;
+  int get hashCode =>
+      features.hashCode ^
+      federation.hashCode ^
+      postFormats.hashCode ^
+      accountActivationRequired.hashCode ^
+      fieldsLimits.hashCode;
 
   @override
   String toString() {
     return 'PleromaInstancePleromaPartMetadata{features: $features,'
-        ' federation: $federation}';
+        ' federation: $federation, postFormats: $postFormats,'
+        ' accountActivationRequired: $accountActivationRequired,'
+        ' fieldsLimits: $fieldsLimits}';
   }
 
   factory PleromaInstancePleromaPartMetadata.fromJson(
@@ -174,20 +288,24 @@ class PleromaInstancePleromaPartMetadata {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 63)
 class PleromaInstancePollLimits {
   @HiveField(0)
   @JsonKey(name: "max_expiration")
-  int maxExpiration;
+  final int maxExpiration;
   @HiveField(1)
   @JsonKey(name: "max_option_chars")
-  int maxOptionChars;
+  final int maxOptionChars;
   @HiveField(2)
   @JsonKey(name: "max_options")
-  int maxOptions;
+  final int maxOptions;
   @HiveField(3)
   @JsonKey(name: "min_expiration")
-  int minExpiration;
+  final int minExpiration;
 
   PleromaInstancePollLimits(
       {this.maxExpiration,
@@ -211,102 +329,125 @@ class PleromaInstancePollLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 59)
 class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(0)
   @JsonKey(name: "approval_required")
-  bool approvalRequired;
+  final bool approvalRequired;
 
   @override
   @HiveField(1)
   @JsonKey(name: "avatar_upload_limit")
-  int avatarUploadLimit;
+  final int avatarUploadLimit;
 
   @override
   @HiveField(2)
   @JsonKey(name: "background_upload_limit")
-  int backgroundUploadLimit;
+  final int backgroundUploadLimit;
 
   @override
   @HiveField(3)
   @JsonKey(name: "banner_upload_limit")
-  int bannerUploadLimit;
+  final int bannerUploadLimit;
 
   @override
   @HiveField(4)
   @JsonKey(name: "contact_account")
-  PleromaAccount contactAccount;
+  final PleromaAccount contactAccount;
 
   @override
   @HiveField(5)
-  String email;
+  final String email;
 
   @override
   @HiveField(6)
-  List<String> languages;
+  final List<String> languages;
 
   @override
   @HiveField(7)
   @JsonKey(name: "max_toot_chars")
-  int maxTootChars;
+  final int maxTootChars;
 
   @override
   @HiveField(8)
-  PleromaInstancePleromaPart pleroma;
+  final PleromaInstancePleromaPart pleroma;
 
   @override
   @HiveField(9)
   @JsonKey(name: "poll_limits")
-  PleromaInstancePollLimits pollLimits;
+  final PleromaInstancePollLimits pollLimits;
 
   @override
   @HiveField(10)
-  bool registrations;
+  final bool registrations;
 
   @override
   @HiveField(11)
   @JsonKey(name: "short_description")
-  String shortDescription;
+  final String shortDescription;
 
   @override
   @HiveField(12)
-  MastodonInstanceStats stats;
+  final MastodonInstanceStats stats;
 
   @override
   @HiveField(13)
-  String thumbnail;
+  final String thumbnail;
 
   @override
   @HiveField(14)
-  String title;
+  final String title;
 
   @override
   @HiveField(15)
   @JsonKey(name: "upload_limit")
-  int uploadLimit;
+  final int uploadLimit;
 
   @override
   @HiveField(16)
-  String uri;
+  final String uri;
 
   @override
   @HiveField(17)
-  MastodonUrls urls;
+  final MastodonUrls urls;
 
   @override
   @HiveField(18)
   @JsonKey(name: "vapid_public_key")
-  String vapidPublicKey;
+  final String vapidPublicKey;
 
   @override
   @HiveField(19)
-  String version;
+  final String version;
 
   @override
   @HiveField(20)
   @JsonKey(name: "background_image")
-  String backgroundImage;
+  final String backgroundImage;
+
+  @override
+  @HiveField(21)
+  @JsonKey(name: "chat_limit")
+  final int chatLimit;
+
+  @override
+  @HiveField(22)
+  final String description;
+
+  @override
+  @HiveField(23)
+  @JsonKey(name: "description_limit")
+  final int descriptionLimit;
+
+  @override
+  @HiveField(24)
+  @JsonKey(name: "invites_enabled")
+  final bool invitesEnabled;
 
   PleromaInstance({
     this.approvalRequired,
@@ -330,7 +471,29 @@ class PleromaInstance extends IPleromaInstance {
     this.vapidPublicKey,
     this.version,
     this.backgroundImage,
+    this.chatLimit,
+    this.description,
+    this.descriptionLimit,
+    this.invitesEnabled,
   });
+
+  @override
+  String toString() {
+    return 'PleromaInstance{approvalRequired: $approvalRequired,'
+        ' avatarUploadLimit: $avatarUploadLimit,'
+        ' backgroundUploadLimit: $backgroundUploadLimit,'
+        ' bannerUploadLimit: $bannerUploadLimit,'
+        ' contactAccount: $contactAccount, email: $email,'
+        ' languages: $languages, maxTootChars: $maxTootChars,'
+        ' pleroma: $pleroma, pollLimits: $pollLimits,'
+        ' registrations: $registrations, shortDescription: $shortDescription,'
+        ' stats: $stats, thumbnail: $thumbnail, title: $title,'
+        ' uploadLimit: $uploadLimit, uri: $uri, urls: $urls,'
+        ' vapidPublicKey: $vapidPublicKey, version: $version,'
+        ' backgroundImage: $backgroundImage, chatLimit: $chatLimit,'
+        ' description: $description, descriptionLimit: $descriptionLimit, '
+        'invitesEnabled: $invitesEnabled}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -356,8 +519,12 @@ class PleromaInstance extends IPleromaInstance {
           uri == other.uri &&
           urls == other.urls &&
           vapidPublicKey == other.vapidPublicKey &&
+          version == other.version &&
           backgroundImage == other.backgroundImage &&
-          version == other.version;
+          chatLimit == other.chatLimit &&
+          description == other.description &&
+          descriptionLimit == other.descriptionLimit &&
+          invitesEnabled == other.invitesEnabled;
 
   @override
   int get hashCode =>
@@ -380,25 +547,12 @@ class PleromaInstance extends IPleromaInstance {
       uri.hashCode ^
       urls.hashCode ^
       vapidPublicKey.hashCode ^
+      version.hashCode ^
       backgroundImage.hashCode ^
-      version.hashCode;
-
-  @override
-  String toString() {
-    return 'PleromaInstance{approvalRequired: $approvalRequired,'
-        ' avatarUploadLimit: $avatarUploadLimit,'
-        ' backgroundUploadLimit: $backgroundUploadLimit,'
-        ' bannerUploadLimit: $bannerUploadLimit, contactAccount: $contactAccount,'
-        ' email: $email, languages: $languages,'
-        ' maxTootChars: $maxTootChars, pleroma: $pleroma,'
-        ' pollLimits: $pollLimits, registrations: $registrations,'
-        ' shortDescription: $shortDescription, stats: $stats,'
-        ' thumbnail: $thumbnail, title: $title, uploadLimit: $uploadLimit,'
-        ' uri: $uri, urls: $urls, vapidPublicKey: $vapidPublicKey,'
-        ' version: $version, '
-        ' backgroundImage: $backgroundImage'
-        '}';
-  }
+      chatLimit.hashCode ^
+      description.hashCode ^
+      descriptionLimit.hashCode ^
+      invitesEnabled.hashCode;
 
   factory PleromaInstance.fromJson(Map<String, dynamic> json) =>
       _$PleromaInstanceFromJson(json);

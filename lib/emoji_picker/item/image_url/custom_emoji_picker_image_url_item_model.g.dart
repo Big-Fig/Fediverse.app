@@ -10,27 +10,42 @@ class CustomEmojiPickerImageUrlItemAdapter
     extends TypeAdapter<CustomEmojiPickerImageUrlItem> {
   @override
   CustomEmojiPickerImageUrlItem read(BinaryReader reader) {
-    var obj = CustomEmojiPickerImageUrlItem();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.name = reader.read() as String;
-          break;
-        case 1:
-          obj.imageUrl = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return CustomEmojiPickerImageUrlItem(
+      imageUrl: fields[1] as String,
+      name: fields[0] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, CustomEmojiPickerImageUrlItem obj) {
-    writer.writeByte(2);
-    writer.writeByte(0);
-    writer.write(obj.name);
-    writer.writeByte(1);
-    writer.write(obj.imageUrl);
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.imageUrl);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+CustomEmojiPickerImageUrlItem _$CustomEmojiPickerImageUrlItemFromJson(
+    Map<String, dynamic> json) {
+  return CustomEmojiPickerImageUrlItem(
+    imageUrl: json['image_url'] as String,
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$CustomEmojiPickerImageUrlItemToJson(
+        CustomEmojiPickerImageUrlItem instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'image_url': instance.imageUrl,
+    };

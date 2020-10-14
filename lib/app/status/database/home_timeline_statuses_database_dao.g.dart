@@ -8,58 +8,27 @@ part of 'home_timeline_statuses_database_dao.dart';
 
 mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbHomeTimelineStatusesTable get dbHomeTimelineStatuses =>
-      db.dbHomeTimelineStatuses;
-  Selectable<int> countAllQuery() {
-    return customSelectQuery('SELECT Count(*) FROM db_home_timeline_statuses;',
+      attachedDatabase.dbHomeTimelineStatuses;
+  Selectable<int> countAll() {
+    return customSelect('SELECT Count(*) FROM db_home_timeline_statuses;',
             variables: [], readsFrom: {dbHomeTimelineStatuses})
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Future<List<int>> countAll() {
-    return countAllQuery().get();
+  Selectable<DbHomeTimelineStatus> findById(int id) {
+    return customSelect(
+            'SELECT * FROM db_home_timeline_statuses WHERE id = :id;',
+            variables: [Variable.withInt(id)],
+            readsFrom: {dbHomeTimelineStatuses})
+        .map(dbHomeTimelineStatuses.mapFromRow);
   }
 
-  Stream<List<int>> watchCountAll() {
-    return countAllQuery().watch();
-  }
-
-  DbHomeTimelineStatus _rowToDbHomeTimelineStatus(QueryRow row) {
-    return DbHomeTimelineStatus(
-      id: row.readInt('id'),
-      accountRemoteId: row.readString('account_remote_id'),
-      statusRemoteId: row.readString('status_remote_id'),
-    );
-  }
-
-  Selectable<DbHomeTimelineStatus> findByIdQuery(int id) {
-    return customSelectQuery(
-        'SELECT * FROM db_home_timeline_statuses WHERE id = :id;',
-        variables: [Variable.withInt(id)],
-        readsFrom: {dbHomeTimelineStatuses}).map(_rowToDbHomeTimelineStatus);
-  }
-
-  Future<List<DbHomeTimelineStatus>> findById(int id) {
-    return findByIdQuery(id).get();
-  }
-
-  Stream<List<DbHomeTimelineStatus>> watchFindById(int id) {
-    return findByIdQuery(id).watch();
-  }
-
-  Selectable<int> countByIdQuery(int id) {
-    return customSelectQuery(
+  Selectable<int> countById(int id) {
+    return customSelect(
             'SELECT COUNT(*) FROM db_home_timeline_statuses WHERE id = :id;',
             variables: [Variable.withInt(id)],
             readsFrom: {dbHomeTimelineStatuses})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Future<List<int>> countById(int id) {
-    return countByIdQuery(id).get();
-  }
-
-  Stream<List<int>> watchCountById(int id) {
-    return countByIdQuery(id).watch();
   }
 
   Future<int> deleteById(int id) {
@@ -67,6 +36,7 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_home_timeline_statuses WHERE id = :id;',
       variables: [Variable.withInt(id)],
       updates: {dbHomeTimelineStatuses},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -75,6 +45,7 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_home_timeline_statuses WHERE account_remote_id = :accountRemoteId;',
       variables: [Variable.withString(accountRemoteId)],
       updates: {dbHomeTimelineStatuses},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -83,20 +54,13 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_home_timeline_statuses',
       variables: [],
       updates: {dbHomeTimelineStatuses},
+      updateKind: UpdateKind.delete,
     );
   }
 
-  Selectable<DbHomeTimelineStatus> getAllQuery() {
-    return customSelectQuery('SELECT * FROM db_home_timeline_statuses',
-        variables: [],
-        readsFrom: {dbHomeTimelineStatuses}).map(_rowToDbHomeTimelineStatus);
-  }
-
-  Future<List<DbHomeTimelineStatus>> getAll() {
-    return getAllQuery().get();
-  }
-
-  Stream<List<DbHomeTimelineStatus>> watchGetAll() {
-    return getAllQuery().watch();
+  Selectable<DbHomeTimelineStatus> getAll() {
+    return customSelect('SELECT * FROM db_home_timeline_statuses',
+            variables: [], readsFrom: {dbHomeTimelineStatuses})
+        .map(dbHomeTimelineStatuses.mapFromRow);
   }
 }

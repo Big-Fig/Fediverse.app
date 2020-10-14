@@ -26,6 +26,8 @@ class FediBaseEditTextField extends StatelessWidget {
   final InputBorder focusedBorder;
   final InputBorder errorBorder;
   final bool highlightMentions;
+  final int maxLength;
+  final bool enabled;
 
   FediBaseEditTextField({
     @required this.textEditingController,
@@ -49,13 +51,17 @@ class FediBaseEditTextField extends StatelessWidget {
     @required this.errorBorder,
     @required this.focusedBorder,
     @required this.highlightMentions,
+    @required this.maxLength,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return ExtendedTextField(
-        specialTextSpanBuilder: _SpecialTextSpanBuilder(),
+      enabled: enabled,
+      specialTextSpanBuilder: _SpecialTextSpanBuilder(),
 //    return TextField(
+      maxLength: maxLength,
       autocorrect: autocorrect,
       obscureText: obscureText,
       focusNode: focusNode,
@@ -83,6 +89,9 @@ class FediBaseEditTextField extends StatelessWidget {
       maxLines: maxLines,
       expands: expanded,
       keyboardType: keyboardType,
+      buildCounter: (BuildContext context,
+              {int currentLength, int maxLength, bool isFocused}) =>
+          null,
     );
   }
 }
@@ -125,7 +134,7 @@ class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     ///index is end index of start flag, so text start index should be index-(flag.length-1)
     if (flag?.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(
-        textStyle: textStyle?.copyWith(color: FediColors.primaryColor),
+        textStyle: textStyle?.copyWith(color: FediColors.primary),
         onTap: onTap,
         start: index - (_MentionSpecialText.flag.length - 1),
       );

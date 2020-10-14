@@ -51,12 +51,13 @@ class RestRequest<T> {
     @required String relativePath,
     List<RestRequestQueryArg> queryArgs,
     Map<String, String> headers,
+    Map<String, dynamic> bodyJson,
   }) : this._private(
           type: RestRequestType.delete,
           relativeUrlPath: relativePath,
           queryArgs: queryArgs,
           headers: headers,
-          bodyJson: null,
+          bodyJson: bodyJson,
         );
 
   RestRequest.post({

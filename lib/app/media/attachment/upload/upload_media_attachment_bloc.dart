@@ -9,6 +9,8 @@ abstract class IUploadMediaAttachmentBloc implements Disposable {
           {bool listen = true}) =>
       Provider.of<IUploadMediaAttachmentBloc>(context, listen: listen);
 
+  int get maximumFileSizeInBytes;
+
   IPleromaMediaAttachment get pleromaMediaAttachment;
 
   UploadMediaAttachmentState get uploadState;
@@ -17,7 +19,7 @@ abstract class IUploadMediaAttachmentBloc implements Disposable {
 
   bool get isMedia;
 
-  String get filePath;
+  Future<String> calculateFilePath();
 
-  void startUpload();
+  Future startUpload();
 }

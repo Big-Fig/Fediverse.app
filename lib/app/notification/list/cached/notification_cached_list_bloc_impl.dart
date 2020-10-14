@@ -48,7 +48,8 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
     var remoteNotifications = await pleromaNotificationService.getNotifications(
         request: MastodonNotificationsRequest(
             excludeTypes: excludeTypes
-                ?.map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
+                ?.map((type) =>
+                    pleromaNotificationTypeValues.enumToValueMap[type])
                 ?.toList(),
             maxId: olderThan?.remoteId,
             sinceId: newerThan?.remoteId,
@@ -100,9 +101,8 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
               orderByType: NotificationOrderByType.createdAt));
 
   @override
-  Future markAsRead(List<INotification> notifications) async {
-    for (var notification in notifications) {
-      await notificationRepository.markAsRead(notification: notification);
-    }
+  Future dismissAll() async {
+    await pleromaNotificationService.dismissAll();
+    await notificationRepository.dismissAll();
   }
 }

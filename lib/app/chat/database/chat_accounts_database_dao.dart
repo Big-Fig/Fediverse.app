@@ -25,8 +25,7 @@ part 'chat_accounts_database_dao.g.dart';
 })
 class ChatAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$ChatAccountsDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
 
   // Called by the AppDatabase class
   ChatAccountsDao(this.db) : super(db);

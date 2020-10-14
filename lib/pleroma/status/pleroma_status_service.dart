@@ -14,7 +14,7 @@ abstract class IPleromaStatusService implements IPleromaApi {
   Future<IPleromaScheduledStatus> scheduleStatus(
       {@required IPleromaScheduleStatus data});
 
-  Future<IPleromaStatus> deleteStatus({@required String statusRemoteId});
+  Future deleteStatus({@required String statusRemoteId});
 
   Future<IPleromaStatus> getStatus({@required String statusRemoteId});
 

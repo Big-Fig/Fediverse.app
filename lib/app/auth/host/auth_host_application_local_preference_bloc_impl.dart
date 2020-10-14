@@ -8,5 +8,10 @@ class AuthHostApplicationLocalPreferenceBloc
     implements IAuthHostApplicationLocalPreferenceBloc {
   AuthHostApplicationLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, String host)
-      : super(preferencesService, "auth.host.$host.application", 1);
+      : super(
+          preferencesService,
+          "auth.host.$host.application",
+          1,
+          (json) => PleromaClientApplication.fromJson(json),
+        );
 }

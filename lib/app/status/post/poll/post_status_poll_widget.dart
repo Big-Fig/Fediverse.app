@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_date_time_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
+import 'package:fedi/app/status/post/poll/poll_status_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,9 +29,8 @@ class PostStatusPollWidget extends StatelessWidget {
         buildMultiplyField(
             context: context,
             multiplyFieldBloc: postStatusPollBloc.multiplyFieldBloc),
-        buildExpiresAtField(
-            context: context,
-            expiresAtBloc: postStatusPollBloc.expiresAtFieldBloc),
+        buildPollLengthField(
+            context: context, lengthBloc: postStatusPollBloc.durationLengthFieldBloc),
       ],
     );
   }
@@ -44,12 +43,13 @@ class PostStatusPollWidget extends StatelessWidget {
         label: "app.status.post.poll.field.multiply.label".tr(),
       );
 
-  Widget buildExpiresAtField(
+  Widget buildPollLengthField(
           {@required BuildContext context,
-          @required IFormDateTimeFieldBloc expiresAtBloc}) =>
-      FormDateTimeFieldFormRowWidget(
-        field: expiresAtBloc,
-        label: "app.status.post.poll.field.expires_at.label".tr(),
+          @required IFormDurationFieldBloc lengthBloc}) =>
+      FormDurationFieldFormRowWidget(
+        field: lengthBloc,
+        label: "app.status.post.poll.field.length.label".tr(),
+        popupTitle: "app.status.post.poll.field.length.picker.title".tr(),
       );
 
   Widget buildPollOptionFields(
@@ -67,70 +67,90 @@ class PostStatusPollWidget extends StatelessWidget {
             children: [
               ...items.asMap().entries.map((entry) {
                 var index = entry.key;
-                var bloc = entry.value;
+                var pollItemBloc = entry.value;
                 var number = index + 1;
                 var isLast = items.length == number;
-                return Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: FormStringFieldFormRowWidget(
-                        formStringFieldBloc: bloc,
-                        onSubmitted: (String value) {
-                          var nextItem = items[index + 1];
-                          nextItem.focusNode.requestFocus();
-                        },
-                        label: "app.status.post.poll.field.option.label"
-                            .tr(args: [number.toString()]),
-                        autocorrect: true,
-                        textInputAction: isLast
-                            ? TextInputAction.done
-                            : TextInputAction.next,
-                        hint: "app.status.post.poll.field.option.hint".tr(),
+                return Padding(
+                  padding: EdgeInsets.only(top: FediSizes.mediumPadding),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: PollStatusOptionFormStringFieldFormRowWidget(
+                          formStringFieldBloc: pollItemBloc,
+                          onSubmitted: (String value) {
+                            var nextItem = items[index + 1];
+                            nextItem.focusNode.requestFocus();
+                          },
+                          textInputAction: isLast
+                              ? TextInputAction.done
+                              : TextInputAction.next,
+                          hint: "app.status.post.poll.field.option.hint"
+                              .tr(args: [number.toString()]),
+                        ),
                       ),
-                    ),
-                    StreamBuilder<bool>(
-                        stream:
-                            pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
-                        initialData:
-                            pollOptionsGroupBloc.isPossibleToRemoveFields,
-                        builder: (context, snapshot) {
-                          var isPossibleToRemoveFields = snapshot.data;
-                          return FediIconButton(
-                            icon: Icon(FediIcons.remove),
-                            color: isPossibleToRemoveFields
-                                ? FediColors.darkGrey
-                                : FediColors.lightGrey,
-                            onPressed: isPossibleToRemoveFields
-                                ? () {
-                                    pollOptionsGroupBloc.removeField(bloc);
-                                  }
-                                : null,
-                          );
-                        }),
-                  ],
+                      if (!isLast)
+                        buildRemoveItemIconButton(
+                            pollOptionsGroupBloc: pollOptionsGroupBloc,
+                            pollItemBloc: pollItemBloc),
+                      if (isLast)
+                        StreamBuilder<bool>(
+                            stream: pollOptionsGroupBloc
+                                .isMaximumFieldsCountReachedStream,
+                            initialData: pollOptionsGroupBloc
+                                .isMaximumFieldsCountReached,
+                            builder: (context, snapshot) {
+                              var isMaximumFieldsCountReached = snapshot.data;
+                              if (isMaximumFieldsCountReached) {
+                                return buildRemoveItemIconButton(
+                                  pollOptionsGroupBloc: pollOptionsGroupBloc,
+                                  pollItemBloc: pollItemBloc,
+                                );
+                              } else {
+                                return buildAddItemIconButton(
+                                  pollOptionsGroupBloc: pollOptionsGroupBloc,
+                                );
+                              }
+                            })
+                    ],
+                  ),
                 );
               }).toList(),
-              StreamBuilder<bool>(
-                  stream:
-                      pollOptionsGroupBloc.isMaximumFieldsCountReachedStream,
-                  initialData: pollOptionsGroupBloc.isMaximumFieldsCountReached,
-                  builder: (context, snapshot) {
-                    var isMaximumFieldsCountReached = snapshot.data;
-                    if (isMaximumFieldsCountReached) {
-                      return SizedBox.shrink();
-                    } else {
-                      return FediPrimaryFilledTextButton(
-                        "app.status.post.poll.action.add_option".tr(),
-                        onPressed: isMaximumFieldsCountReached
-                            ? null
-                            : () {
-                                pollOptionsGroupBloc.addNewEmptyField();
-                              },
-                        expanded: false,
-                      );
-                    }
-                  }),
             ],
+          );
+        });
+  }
+
+  FediIconButton buildAddItemIconButton(
+      {@required
+          IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc}) {
+    return FediIconButton(
+      icon: Icon(FediIcons.plus),
+      color: FediColors.primary,
+      onPressed: () {
+        pollOptionsGroupBloc.addNewEmptyField();
+      },
+    );
+  }
+
+  StreamBuilder<bool> buildRemoveItemIconButton({
+    @required IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc,
+    @required IFormStringFieldBloc pollItemBloc,
+  }) {
+    return StreamBuilder<bool>(
+        stream: pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
+        initialData: pollOptionsGroupBloc.isPossibleToRemoveFields,
+        builder: (context, snapshot) {
+          var isPossibleToRemoveFields = snapshot.data;
+          return FediIconButton(
+            icon: Icon(FediIcons.remove),
+            color: isPossibleToRemoveFields
+                ? FediColors.darkGrey
+                : FediColors.lightGrey,
+            onPressed: isPossibleToRemoveFields
+                ? () {
+                    pollOptionsGroupBloc.removeField(pollItemBloc);
+                  }
+                : null,
           );
         });
   }

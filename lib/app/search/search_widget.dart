@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/search/accounts/search_accounts_list_widget.dart';
 import 'package:fedi/app/search/accounts/search_accounts_pagination_list_bloc.dart';
+import 'package:fedi/app/search/hashtags/search_hashtags_list_widget.dart';
+import 'package:fedi/app/search/hashtags/search_hashtags_pagination_list_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_widget.dart';
 import 'package:fedi/app/search/result/pagination/search_account_pagination_bloc_impl.dart';
+import 'package:fedi/app/search/result/pagination/search_hashtag_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_status_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/search_result_item_list_widget.dart';
 import 'package:fedi/app/search/search_bloc.dart';
@@ -14,6 +18,8 @@ import 'package:fedi/app/search/statuses/search_statuses_pagination_list_bloc.da
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -27,6 +33,7 @@ const List<SearchTab> tabs = [
   SearchTab.all,
   SearchTab.accounts,
   SearchTab.statuses,
+  SearchTab.hashtags,
 ];
 
 class SearchWidget extends StatelessWidget {
@@ -68,11 +75,16 @@ class SearchWidget extends StatelessWidget {
       Padding(
         padding: FediPadding.allBigPadding,
         child: Builder(
-          builder: (context) => FediTextTabIndicatorWidget(
-            isTransparent: false,
-            tabs: tabs,
-            tabController: DefaultTabController.of(context),
-            tabToTextMapper: mapTabToTitle,
+          builder: (context) =>
+              DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
+            create: (context) => FediTabIndicatorBloc<SearchTab>(
+              items: tabs,
+              tabController: DefaultTabController.of(context),
+            ),
+            child: FediTextTabIndicatorWidget(
+              isTransparent: false,
+              tabToTextMapper: mapTabToTitle,
+            ),
           ),
         ),
       );
@@ -87,6 +99,9 @@ class SearchWidget extends StatelessWidget {
         break;
       case SearchTab.all:
         return tr("app.search.tab.all");
+        break;
+      case SearchTab.hashtags:
+        return tr("app.search.tab.hashtags");
         break;
     }
 
@@ -120,6 +135,9 @@ class SearchWidget extends StatelessWidget {
         return buildAllTab(context);
 
         break;
+      case SearchTab.hashtags:
+        return buildHashtagsTab(context);
+        break;
     }
     throw "Invalid tab $tab";
   }
@@ -134,6 +152,18 @@ class SearchWidget extends StatelessWidget {
         create: (context) =>
             SearchStatusesPaginationListBloc.createFromContext(context),
         child: SearchStatusesListWidget(),
+      ),
+    );
+  }
+
+  Widget buildHashtagsTab(BuildContext context) {
+    return SearchHashtagPaginationBloc.provideToContext(
+      context,
+      child: DisposableProvider<
+          IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
+        create: (context) =>
+            SearchHashtagsPaginationListBloc.createFromContext(context),
+        child: SearchHashtagsListWidget(),
       ),
     );
   }

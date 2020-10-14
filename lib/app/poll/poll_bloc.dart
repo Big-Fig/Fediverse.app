@@ -11,6 +11,10 @@ abstract class IPollBloc implements Disposable {
 
   Stream<IPleromaPoll> get pollStream;
 
+  bool get isNeedShowResultsWithoutVote;
+
+  Stream<bool> get isNeedShowResultsWithoutVoteStream;
+
   bool get isPossibleToVote;
 
   Stream<bool> get isPossibleToVoteStream;
@@ -35,11 +39,17 @@ abstract class IPollBloc implements Disposable {
 
   Stream<List<IPleromaPollOption>> get selectedVotesStream;
 
-  bool get isSelectedVotesNotEmpty;
+  bool get isVoted;
 
-  Stream<bool> get isSelectedVotesNotEmptyStream;
+  Stream<bool> get isVotedStream;
 
   Future vote();
 
   void onPollUpdated(IPleromaPoll poll);
+
+  Future<bool> refreshFromNetwork();
+
+  void showResultsWithoutVote();
+
+  void hideResultsWithoutVote();
 }

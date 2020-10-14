@@ -28,6 +28,9 @@ class FediSizes {
   static const iconInCircleDefaultSize = 40.0;
   static const iconInCircleDefaultIconSize = 18.0;
 
+  static const bigIconInCircleDefaultSize = 60.0;
+  static const bigIconInCircleDefaultIconSize = 20.0;
+
   static const mediumIconSize = 16.0;
   static const bigIconSize = 20.0;
 

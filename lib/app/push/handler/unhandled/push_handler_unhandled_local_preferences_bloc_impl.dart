@@ -13,7 +13,12 @@ class PushHandlerUnhandledLocalPreferencesBloc
     implements IPushHandlerUnhandledLocalPreferencesBloc {
   PushHandlerUnhandledLocalPreferencesBloc(
       ILocalPreferencesService preferencesService)
-      : super(preferencesService, "push.unhandled", 2);
+      : super(
+          preferencesService,
+          "push.unhandled",
+          2,
+          (json) => PushHandlerUnhandledList.fromJson(json),
+        );
 
   @override
   PushHandlerUnhandledList get defaultValue =>

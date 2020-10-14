@@ -18,9 +18,12 @@ class StatusActionCounterWidget extends StatelessWidget {
           padding: const EdgeInsets.only(
             right: 4.0,
           ),
-          child: Text(
-            value.toString(),
-            style: FediTextStyles.smallShortDarkGrey,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: 10),
+            child: Text(
+              value == 0 ? "" : value.toString(),
+              style: FediTextStyles.smallShortDarkGrey,
+            ),
           ),
         ),
       );

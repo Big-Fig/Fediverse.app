@@ -88,7 +88,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
         FediIcons.check,
         size: FediSizes.smallFilledButtonHeight,
         onPressed: null,
-        color: FediColors.primaryColor,
+        color: FediColors.primary,
       );
     } else {
       return SizedBox(width: FediSizes.smallFilledButtonHeight);

@@ -6,7 +6,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
     implements IJoinAuthInstanceBloc {
   @override
   final TextEditingController hostTextController =
-      TextEditingController(text: "Fedi.app");
+      TextEditingController();
 
   JoinAuthInstanceBloc() {
     addDisposable(textEditingController: hostTextController);

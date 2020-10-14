@@ -20,7 +20,7 @@ class PostMessageEmojiActionWidget extends StatelessWidget {
             icon: Icon(
               FediIcons.emoji,
               color: selectedAction == PostMessageSelectedAction.emoji
-                  ? FediColors.primaryColor
+                  ? FediColors.primary
                   : FediColors.darkGrey,
             ),
             onPressed: () {

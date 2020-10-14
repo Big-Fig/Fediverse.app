@@ -12,18 +12,22 @@ abstract class IPleromaTag implements IMastodonTag {
   List<IPleromaHistory> get history;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 74)
 @JsonSerializable()
 class PleromaTag implements IPleromaTag {
   @override
   @HiveField(0)
-  String name;
+  final String name;
   @override
   @HiveField(1)
-  String url;
+  final String url;
   @override
   @HiveField(2)
-  List<PleromaHistory> history;
+  final List<PleromaHistory> history;
   PleromaTag({
     this.name,
     this.url,

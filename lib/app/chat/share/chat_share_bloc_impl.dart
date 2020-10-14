@@ -1,20 +1,22 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository_model.dart';
 import 'package:fedi/app/chat/share/chat_share_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
-import 'package:fedi/app/share/select/share_select_account_bloc.dart';
-import 'package:fedi/app/share/select/share_select_account_bloc_impl.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
-abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
+abstract class ChatShareBloc extends ShareToAccountBloc
+    implements IChatShareBloc {
   final IChatRepository chatRepository;
   final IChatMessageRepository chatMessageRepository;
   final IPleromaChatService pleromaChatService;
@@ -31,16 +33,20 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
 
   @override
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
-  @override
-  IShareSelectAccountBloc shareSelectAccountBloc = ShareSelectAccountBloc();
 
   ChatShareBloc({
     @required this.chatRepository,
     @required this.chatMessageRepository,
     @required this.pleromaChatService,
-  }) {
+    @required IMyAccountBloc myAccountBloc,
+    @required IAccountRepository accountRepository,
+    @required IPleromaAccountService pleromaAccountService,
+  }) : super(
+          myAccountBloc: myAccountBloc,
+          accountRepository: accountRepository,
+          pleromaAccountService: pleromaAccountService,
+        ) {
     addDisposable(disposable: shareMessageInputBloc);
-    addDisposable(disposable: shareSelectAccountBloc);
   }
 
   @override
@@ -76,7 +82,7 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
   PleromaChatMessageSendData createSendData();
 
   @override
-  Future<List<IAccount>> customDefaultLocalAccountListLoader({
+  Future<List<IAccount>> customLocalAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,
@@ -98,7 +104,7 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
   }
 
   @override
-  Future<List<IPleromaAccount>> customDefaultRemoteAccountListLoader({
+  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,

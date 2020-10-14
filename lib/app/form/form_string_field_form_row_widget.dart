@@ -11,6 +11,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
   final IFormStringFieldBloc formStringFieldBloc;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
+  final bool enabled;
 
   FormStringFieldFormRowWidget({
     @required this.label,
@@ -20,6 +21,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
     @required this.formStringFieldBloc,
     @required this.onSubmitted,
     @required this.textInputAction,
+    this.enabled = true,
   });
 
   @override
@@ -33,6 +35,8 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
           var error = errors?.isNotEmpty == true ? errors.first : null;
 
           return FediFormEditTextRow(
+            enabled: enabled,
+            maxLength: formStringFieldBloc.maxLength,
             hint: hint,
             label: label,
             autocorrect: autocorrect,

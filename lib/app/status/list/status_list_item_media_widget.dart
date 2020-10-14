@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           ),
           width: MediaQuery.of(context).size.width,
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          errorWidget: (context, url, error) => Icon(FediIcons.warning),
         ),
       ),
     );
@@ -40,6 +42,26 @@ class StatusListItemMediaWidget extends StatelessWidget {
 
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
+    return StreamBuilder<bool>(
+        stream: statusBloc.deletedStream.distinct(),
+        initialData: statusBloc.deleted,
+        builder: (context, snapshot) {
+          var deleted = snapshot.data;
+
+          if (deleted == true) {
+            return StatusDeletedOverlayWidget(
+              child: buildBody(
+                statusBloc,
+                previewUrl,
+              ),
+            );
+          } else {
+            return buildBody(statusBloc, previewUrl);
+          }
+        });
+  }
+
+  StreamBuilder<bool> buildBody(IStatusBloc statusBloc, String previewUrl) {
     return StreamBuilder<bool>(
         stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
         initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,

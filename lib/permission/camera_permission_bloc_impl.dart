@@ -6,5 +6,5 @@ import 'package:permission_handler/permission_handler.dart';
 class CameraPermissionBloc extends PermissionBloc
     implements ICameraPermissionBloc {
   CameraPermissionBloc(IPermissionsService permissionsService)
-      : super(permissionsService, PermissionGroup.camera);
+      : super(permissionsService, Permission.camera);
 }

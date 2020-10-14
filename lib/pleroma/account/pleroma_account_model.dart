@@ -19,77 +19,81 @@ abstract class IPleromaAccount implements IMastodonAccount {
   IPleromaAccountPleromaPart get pleroma;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 64)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccount implements IPleromaAccount {
   @override
   @HiveField(0)
-  String username;
+  final String username;
   @override
   @HiveField(1)
-  String url;
+  final String url;
   @override
   @HiveField(2)
   @JsonKey(name: "statuses_count")
-  int statusesCount;
+  final int statusesCount;
   @override
   @HiveField(3)
-  String note;
+  final String note;
   @override
   @HiveField(4)
-  bool locked;
+  final bool locked;
   @override
   @HiveField(5)
-  String id;
+  final String id;
   @override
   @HiveField(6)
   @JsonKey(name: "header_static")
-  String headerStatic;
+  final String headerStatic;
   @override
   @HiveField(7)
-  String header;
+  final String header;
   @override
   @HiveField(8)
   @JsonKey(name: "following_count")
-  int followingCount;
+  final int followingCount;
   @override
   @HiveField(9)
   @JsonKey(name: "followers_count")
-  int followersCount;
+  final int followersCount;
   @override
   @HiveField(10)
-  List<PleromaField> fields;
+  final List<PleromaField> fields;
   @override
   @HiveField(11)
-  List<PleromaEmoji> emojis;
+  final List<PleromaEmoji> emojis;
   @override
   @HiveField(12)
   @JsonKey(name: "display_name")
-  String displayName;
+  final String displayName;
   @override
   @HiveField(13)
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  final DateTime createdAt;
   @override
   @HiveField(14)
-  bool bot;
+  final bool bot;
   @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")
-  String avatarStatic;
+  final String avatarStatic;
   @override
   @HiveField(16)
-  String avatar;
+  final String avatar;
   @override
   @HiveField(17)
-  String acct;
+  final String acct;
   @override
   @HiveField(19)
-  PleromaAccountPleromaPart pleroma;
+  final PleromaAccountPleromaPart pleroma;
   @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
-  DateTime lastStatusAt;
+  final DateTime lastStatusAt;
 
   PleromaAccount(
       {this.username,
@@ -371,49 +375,78 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 }
 
 abstract class IPleromaAccountRelationship
-    implements IMastodonAccountRelationship {}
+    implements IMastodonAccountRelationship {
+  IPleromaAccountRelationship copyWith({
+    int id,
+    bool blocking,
+    bool domainBlocking,
+    bool endorsed,
+    bool followedBy,
+    bool following,
+    bool muting,
+    bool mutingNotifications,
+    bool requested,
+    bool showingReblogs,
+    bool subscribing,
+    bool blockedBy,
+    bool note,
+  });
+}
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 42)
 @JsonSerializable()
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @override
   @HiveField(1)
-  bool blocking;
+  final bool blocking;
   @override
   @JsonKey(name: "domain_blocking")
   @HiveField(2)
-  bool domainBlocking;
+  final bool domainBlocking;
   @override
   @HiveField(3)
-  bool endorsed;
+  final bool endorsed;
   @override
   @HiveField(4)
   @JsonKey(name: "followed_by")
-  bool followedBy;
+  final bool followedBy;
   @override
   @HiveField(5)
-  bool following;
+  final bool following;
   @override
   @HiveField(6)
-  String id;
+  final String id;
   @override
   @HiveField(7)
-  bool muting;
+  final bool muting;
   @override
   @HiveField(8)
   @JsonKey(name: "muting_notifications")
   @HiveField(9)
-  bool mutingNotifications;
+  final bool mutingNotifications;
   @override
   @HiveField(10)
-  bool requested;
+  final bool requested;
   @override
   @JsonKey(name: "showing_reblogs")
   @HiveField(11)
-  bool showingReblogs;
+  final bool showingReblogs;
   @override
   @HiveField(12)
-  bool subscribing;
+  final bool subscribing;
+
+  @override
+  @HiveField(13)
+  @JsonKey(name: "blocked_by")
+  final bool blockedBy;
+
+  @override
+  @HiveField(14)
+  final String note;
 
   PleromaAccountRelationship({
     this.blocking,
@@ -427,20 +460,26 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     this.requested,
     this.showingReblogs,
     this.subscribing,
+    this.blockedBy,
+    this.note,
   });
 
-  PleromaAccountRelationship copyWith(
-          {int id,
-          bool blocking,
-          bool domainBlocking,
-          bool endorsed,
-          bool followedBy,
-          bool following,
-          bool muting,
-          bool mutingNotifications,
-          bool requested,
-          bool showingReblogs,
-          bool subscribing}) =>
+  @override
+  PleromaAccountRelationship copyWith({
+    int id,
+    bool blocking,
+    bool domainBlocking,
+    bool endorsed,
+    bool followedBy,
+    bool following,
+    bool muting,
+    bool mutingNotifications,
+    bool requested,
+    bool showingReblogs,
+    bool subscribing,
+    bool blockedBy,
+    bool note,
+  }) =>
       PleromaAccountRelationship(
         id: id ?? this.id,
         blocking: blocking ?? this.blocking,
@@ -453,6 +492,8 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
         requested: requested ?? this.requested,
         showingReblogs: showingReblogs ?? this.showingReblogs,
         subscribing: subscribing ?? this.subscribing,
+        blockedBy: blockedBy ?? this.blockedBy,
+        note: note ?? this.note,
       );
 
   @override
@@ -470,6 +511,8 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
           mutingNotifications == other.mutingNotifications &&
           requested == other.requested &&
           showingReblogs == other.showingReblogs &&
+          blockedBy == other.blockedBy &&
+          note == other.note &&
           subscribing == other.subscribing;
 
   @override
@@ -484,6 +527,8 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
       mutingNotifications.hashCode ^
       requested.hashCode ^
       showingReblogs.hashCode ^
+      blockedBy.hashCode ^
+      note.hashCode ^
       subscribing.hashCode;
 
   @override
@@ -493,7 +538,10 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
         ' followedBy: $followedBy, following: $following, id: $id,'
         ' muting: $muting, mutingNotifications: $mutingNotifications,'
         ' requested: $requested, showingReblogs: $showingReblogs,'
-        ' subscribing: $subscribing}';
+        ' subscribing: $subscribing,'
+        ' note: $note,'
+        ' blockedBy: $blockedBy'
+        '}';
   }
 
   factory PleromaAccountRelationship.fromJson(Map<String, dynamic> json) =>

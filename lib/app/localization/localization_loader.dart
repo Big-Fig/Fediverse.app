@@ -1,4 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -11,8 +14,34 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-    static const Map<String,dynamic> en_US = {
+  static const Map<String,dynamic> en_US = {
   "app": {
+    "custom_list": {
+      "title": "\"{}\" list statuses",
+      "accounts": {
+        "label": "Accounts in list",
+        "action": {
+          "add": "Add following account"
+        }
+      },
+      "create": {
+        "title": "Create list"
+      },
+      "edit": {
+        "title": "Edit list"
+      },
+      "list": {
+        "title": "Lists"
+      },
+      "form": {
+        "field": {
+          "title": {
+            "label": "Title*",
+            "hint": "List name"
+          }
+        }
+      }
+    },
     "emoji": {
       "custom": {
         "empty": "This instance don't have custom emojis"
@@ -41,7 +70,6 @@ class CodegenLoader extends AssetLoader{
       "toast": {
         "success": "Shared successfully"
       },
-      "content": "Content",
       "with_message": {
         "field": {
           "message": {
@@ -59,11 +87,13 @@ class CodegenLoader extends AssetLoader{
     },
     "poll": {
       "metadata": {
+        "hide_results": "Hide results",
+        "show_results": "View results",
         "expires": {
-          "expired": "Ended {} ago",
-          "not_expired": "Ends at {}"
+          "expired": "Poll ended",
+          "not_expired": "{} left"
         },
-        "total_votes": "Total votes: {}"
+        "total_votes": "{} votes"
       },
       "vote": "Vote"
     },
@@ -79,8 +109,8 @@ class CodegenLoader extends AssetLoader{
     "account": {
       "statuses": {
         "tab": {
-          "withReplies": "With replies",
-          "withoutReplies": "Posts",
+          "with_replies": "With replies",
+          "without_replies": "Posts",
           "pinned": "Pinned",
           "media": "Media"
         }
@@ -96,13 +126,17 @@ class CodegenLoader extends AssetLoader{
       },
       "action": {
         "follow": "Follow",
+        "request_follow": "Request follow",
         "unfollow": "Unfollow",
+        "follow_requested": "Requested",
         "message": "Message",
         "block": "Block",
         "unblock": "Unblock",
+        "block_domain": "Block domain {}",
+        "unblock_domain": "Unblock domain {}",
         "mute": "Mute",
-        "open_in_browser": "Open in browser",
         "unmute": "Unmute",
+        "open_in_browser": "Open in browser",
         "report": {
           "label": "Report",
           "success": {
@@ -123,6 +157,26 @@ class CodegenLoader extends AssetLoader{
         "statuses": "Statuses"
       },
       "my": {
+        "follow_request": {
+          "title": "Follow requests"
+        },
+        "account_block": {
+          "title": "Account blocks"
+        },
+        "account_mute": {
+          "title": "Account mutes"
+        },
+        "domain_block": {
+          "title": "Domain blocks"
+        },
+        "statuses": {
+          "bookmarked": {
+            "title": "Bookmarks"
+          },
+          "favourited": {
+            "title": "Favourites"
+          }
+        },
         "settings": {
           "title": "Account settings",
           "field": {
@@ -132,14 +186,53 @@ class CodegenLoader extends AssetLoader{
             },
             "new_chats_enabled": {
               "label": "Replace DM with chats",
-              "description": "Not supported on most instances"
+              "description": "Not supported on non-Pleroma instances"
+            },
+            "always_show_spoiler": {
+              "label": "Show spoilers by default"
+            },
+            "always_show_nsfw": {
+              "label": "Show NSFW by default"
+            },
+            "default_visibility": {
+              "label": "Default post visibility"
+            },
+            "media_nsfw_by_default": {
+              "label": "Mark media NSFW by default"
+            },
+            "media_auto_init": {
+              "label": "Media auto-init"
+            },
+            "media_auto_play": {
+              "label": "Media auto-play"
             }
           },
-          "scheduled_posts": "Scheduled posts",
-          "draft_posts": "Draft posts"
+          "action": {
+            "scheduled_posts": "Scheduled posts",
+            "draft_posts": "Draft posts",
+            "lists": "Lists",
+            "bookmarked": "Bookmarks",
+            "favourited": "Favourites",
+            "follow_requests": "Follow requests",
+            "account_blocks": "Account blocks",
+            "account_mutes": "Account mutes",
+            "domain_blocks": "Domain blocks"
+          }
         },
         "edit": {
           "title": "Edit account",
+          "media": {
+            "upload": {
+              "failed": {
+                "notification": {
+                  "title": "Failed to upload",
+                  "exceed_size": {
+                    "content": "File size is {} MB, but max is {} MB"
+                  }
+                }
+              }
+            }
+          },
           "action": {
             "save": "Save"
           },
@@ -170,6 +263,12 @@ class CodegenLoader extends AssetLoader{
                   "crop": "Crop",
                   "cancel": "Cancel"
                 }
+              }
+            },
+            "background_image": {
+              "label": "Background image",
+              "action": {
+                "add": "Add"
               }
             },
             "display_name": {
@@ -227,6 +326,14 @@ class CodegenLoader extends AssetLoader{
         "error": {
           "dialog": {
             "title": "Check your connection",
+            "content": "No network or remote server unavailable"
+          }
+        }
+      },
+      "timeout": {
+        "error": {
+          "dialog": {
+            "title": "Timeout reached",
             "content": "No network or remote server unavailable"
           }
         }
@@ -293,8 +400,8 @@ class CodegenLoader extends AssetLoader{
           },
           "fail": {
             "dialog": {
-              "title": "Not a valid instance (may be closed or dead)",
-              "content": "Please enter a valid instance name like fedi.app or pleroma.com"
+              "title": "Fail to connect to instance. You can try verified fedi.app or pleroma.com",
+              "content": "Details: {}"
             }
           },
           "registration_disabled": {
@@ -302,10 +409,22 @@ class CodegenLoader extends AssetLoader{
               "title": "Instance owner disabled registration",
               "content": "Try any other instance, like fedi.app"
             }
+          },
+          "invites_only": {
+            "dialog": {
+              "title": "Instance owner limit registration to invites-only",
+              "content": "Try any other instance, or register by invite link in your browser"
+            }
           }
         },
         "register": {
           "title": "Create account",
+          "approval_required": {
+            "notification": {
+              "title": "Success registration",
+              "content": "You can once moderators will approve your account"
+            }
+          },
           "field": {
             "username": {
               "label": "Username*",
@@ -474,6 +593,13 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "notification": {
+      "action": {
+        "popup": {
+          "title": "Notification actions"
+        },
+        "mark_as_read": "Mark as read",
+        "dismiss": "Dismiss"
+      },
       "list": {
         "new_items": {
           "action": {
@@ -511,37 +637,130 @@ class CodegenLoader extends AssetLoader{
       },
       "header": {
         "follow": "Followed you",
-        "favourite": "Liked your status \"{}\"",
-        "mention": "Mentioned you in status \"{}\"",
-        "reblog": "Reblogged your status \"{}\"",
+        "favourite": "Liked: {}",
+        "mention": "<b>Mentioned you:</b> {}",
+        "reblog": "Reblogged: {}",
         "poll": "Poll notification",
         "move": "Move notification",
         "followRequest": "Follow request",
-        "pleromaEmojiReaction": "{} for \"{}\"",
+        "pleromaEmojiReaction": "{} for: \"{}\"",
         "pleromaChatMention": "Chat mention in \"{}\"",
         "unknown": "Unknown: {}"
-      }
+      },
+      "dismissed": "Dismissed"
     },
     "timeline": {
-      "display": {
-        "settings": {
-          "title": "Timeline settings",
-          "field": {
-            "only_with_media": {
-              "label": "Only with media"
-            },
-            "hide_replies": {
-              "label": "Hide replies"
-            },
-            "hide_nsfw": {
-              "label": "Hide NSFW"
+      "loading": "Loading timelines",
+      "create": {
+        "title": "Create new timeline",
+        "field": {
+          "title": {
+            "label": "Title",
+            "hint": "Timeline name"
+          },
+          "id": {
+            "label": "Unique id"
+          }
+        }
+      },
+      "type": {
+        "home": "Home",
+        "public": "Public",
+        "custom_list": "List",
+        "hashtag": "Hashtag",
+        "account": "Account",
+        "field": {
+          "label": "Type",
+          "null": "Not selected",
+          "chooser": {
+            "dialog": {
+              "title": "Choose timeline type"
             }
+          }
+        }
+      },
+      "storage": {
+        "title": "Timelines",
+        "empty": "Nothing found"
+      },
+      "settings": {
+        "title": "'{}' timeline settings",
+        "reply_visibility_filter": {
+          "self": "Self",
+          "following": "Following",
+          "field": {
+            "label": "Reply visibility filter",
+            "null": "Not selected",
+            "chooser": {
+              "dialog": {
+                "title": "Choose reply visibility filter"
+              }
+            }
+          }
+        },
+        "only_from_remote_account": {
+          "field": {
+            "label": "Only from account",
+            "null": "Not selected"
+          }
+        },
+        "with_remote_hashtag": {
+          "field": {
+            "label": "With hashtag",
+            "hint": "pleroma"
+          }
+        },
+        "only_in_remote_list": {
+          "field": {
+            "label": "Only in list",
+            "null": "Not selected",
+            "chooser": {
+              "dialog": {
+                "title": "Choose list"
+              }
+            }
+          }
+        },
+        "field": {
+          "not_supported": {
+            "desc": "Not supported on this instance"
+          },
+          "only_with_media": {
+            "label": "Only with media"
+          },
+          "only_remote": {
+            "label": "Only remote"
+          },
+          "web_sockets_updates": {
+            "label": "WebSockets updates",
+            "disabled": {
+              "desc": "WebSockets disabled in account settings"
+            }
+          },
+          "only_local": {
+            "label": "Only local"
+          },
+          "only_pinned": {
+            "label": "Only pinned"
+          },
+          "with_muted": {
+            "label": "With muted"
+          },
+          "exclude_reblogs": {
+            "label": "Exclude reblogs"
+          },
+          "exclude_replies": {
+            "label": "Exclude replies"
+          },
+          "exclude_nsfw": {
+            "label": "Exclude NSFW"
           }
         }
       }
     },
     "list": {
       "empty": "Items not found",
+      "cant_update_from_network": "Can't update from network",
       "loading": {
         "state": {
           "can_loading": "Can load more",
@@ -555,6 +774,15 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "media": {
+      "player": {
+        "error": {
+          "desc": "Something wrong",
+          "action": {
+            "reload": "Reload",
+            "more_details": "More details"
+          }
+        }
+      },
       "attachment": {
         "type": {
           "gallery": "Gallery",
@@ -577,14 +805,17 @@ class CodegenLoader extends AssetLoader{
             }
           }
         },
-        "preview": {
+        "details": {
           "title": "Media attachment",
           "not_supported_type": "Not supported type {}"
         },
         "upload": {
           "failed": {
             "notification": {
-              "content": "Failed to upload"
+              "title": "Failed to upload",
+              "exceed_size": {
+                "content": "File size is {} MB, but max is {} MB"
+              }
             }
           },
           "remove": {
@@ -608,7 +839,8 @@ class CodegenLoader extends AssetLoader{
       "tab": {
         "all": "All",
         "accounts": "Users",
-        "statuses": "Posts"
+        "statuses": "Posts",
+        "hashtags": "Hashtags"
       },
       "desc": {
         "empty": "Search term is empty",
@@ -692,16 +924,18 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "action": {
+        "delete": "Delete",
         "comment": "Comment",
         "favourite": "Favourite",
         "reblog": "Reblog",
         "report": "Report",
-        "mute": "Mute",
-        "block": "Block",
-        "follow": "Follow",
+        "mute": "Mute conversation",
+        "unmute": "Unmute conversation",
         "open_in_browser": "Open in browser",
         "pin": "Pin",
         "unpin": "Unpin",
+        "bookmark": "Bookmark",
+        "unbookmark": "Unbookmark",
         "copy_link": "Copy link",
         "share_as_text": "Share as text",
         "share_as_link": "Share as link",
@@ -715,11 +949,16 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "nsfw": {
+        "chip": "NSFW!",
         "action": {
           "view": "Tap to view"
         }
       },
+      "deleted": {
+        "desc": "Status deleted"
+      },
       "spoiler": {
+        "chip": "Spoilers!",
         "action": {
           "view": "Tap to view"
         }
@@ -737,21 +976,17 @@ class CodegenLoader extends AssetLoader{
         "poll": {
           "field": {
             "option": {
-              "label": "Option {}",
-              "hint": "Option"
+              "hint": "Option {}"
             },
             "multiply": {
-              "label": "Multiply choices"
+              "label": "Multiple selection"
             },
-            "expires_at": {
-              "label": "Expires at",
+            "length": {
+              "label": "Poll length",
               "picker": {
-                "title": "Expires at"
+                "title": "Poll length"
               }
             }
-          },
-          "action": {
-            "add_option": "Add option"
           }
         },
         "schedule": {
@@ -934,6 +1169,13 @@ class CodegenLoader extends AssetLoader{
   },
   "form": {
     "field": {
+      "value": {
+        "error": {
+          "null": {
+            "desc": "Required"
+          }
+        }
+      },
       "text": {
         "email": {
           "error": {
@@ -988,7 +1230,24 @@ class CodegenLoader extends AssetLoader{
       "initializing": "Initializing: {}",
       "failed": "Failed to load: {}"
     }
+  },
+  "duration": {
+    "day": {
+      "one": "{} day",
+      "many": "{} days",
+      "other": "{} days"
+    },
+    "hour": {
+      "one": "{} hour",
+      "many": "{} hours",
+      "other": "{} hours"
+    },
+    "minute": {
+      "one": "{} minute",
+      "many": "{} minutes",
+      "other": "{} minutes"
+    }
   }
 };
-  static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
 }

@@ -119,6 +119,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       .map((notification) => notification?.createdAt)
       .distinct();
 
+  @override
+  bool get unread => notification?.unread;
+
+  @override
+  Stream<bool> get unreadStream =>
+      notificationStream.map((notification) => notification?.unread).distinct();
+
   Future refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
         notificationRemoteId: remoteId);
@@ -151,4 +158,24 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   PleromaNotificationType get typePleroma => notification.typePleroma;
+
+  @override
+  Future dismiss() async {
+    await pleromaNotificationService.dismissNotification(
+        notificationRemoteId: notification.remoteId);
+
+    await notificationRepository.dismiss(notification: notification);
+  }
+
+  @override
+  Future markAsRead() async {
+    await notificationRepository.markAsRead(notification: notification);
+  }
+
+  @override
+  bool get dismissed => notification.dismissed;
+
+  @override
+  Stream<bool> get dismissedStream =>
+      notificationStream.map((notification) => notification.dismissed);
 }

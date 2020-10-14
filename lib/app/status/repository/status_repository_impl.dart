@@ -49,14 +49,17 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
       {@required String listRemoteId,
-        @required String conversationRemoteId,
-        bool isFromHomeTimeline = false}) async {
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false}) async {
     // if conversation not specified we try to fetch it from status
     conversationRemoteId = conversationRemoteId ??
         remoteStatus?.pleroma?.conversationId?.toString();
 
-    _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
-        "$listRemoteId");
+    _logger.finer(() => "upsertRemoteStatus $remoteStatus "
+        "listRemoteId => $listRemoteId "
+        "conversationRemoteId => $conversationRemoteId "
+        "isFromHomeTimeline => $isFromHomeTimeline ");
+
     var remoteAccount = remoteStatus.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
@@ -100,16 +103,18 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
       {@required String listRemoteId,
-        @required String conversationRemoteId,
-        bool isFromHomeTimeline = false}) async {
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "upsertRemoteStatuses ${remoteStatuses.length} "
-        "listRemoteId => $listRemoteId");
+        "listRemoteId => $listRemoteId"
+        "conversationRemoteId => $conversationRemoteId"
+        "isFromHomeTimeline => $isFromHomeTimeline");
     if (remoteStatuses.isEmpty) {
       return;
     }
 
     List<IPleromaAccount> remoteAccounts =
-    remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
+        remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: conversationRemoteId, chatRemoteId: null);
@@ -121,12 +126,11 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insertAll(
           remoteStatuses
-              .map((remoteStatus) =>
-              DbHomeTimelineStatus(
-                statusRemoteId: remoteStatus.id,
-                id: null,
-                accountRemoteId: remoteStatus.account.id,
-              ))
+              .map((remoteStatus) => DbHomeTimelineStatus(
+                    statusRemoteId: remoteStatus.id,
+                    id: null,
+                    accountRemoteId: remoteStatus.account.id,
+                  ))
               .toList(),
           InsertMode.insertOrReplace);
     }
@@ -164,22 +168,21 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
   }
 
-  Future addStatusesToList(List<String> statusRemoteIds,
-      String listRemoteId) async {
+  Future addStatusesToList(
+      List<String> statusRemoteIds, String listRemoteId) async {
     List<DbStatusList> alreadyAddedListStatuses =
-    await listsDao.findByListRemoteId(listRemoteId);
+        await listsDao.findByListRemoteId(listRemoteId).get();
     Iterable<String> alreadyAddedListStatusesIds =
-    alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
+        alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
     Iterable<String> notAddedYetStatusRemoteIds =
-    statusRemoteIds.where((statusRemoteId) {
+        statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedListStatusesIds.contains(statusRemoteId);
     });
 
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
       await listsDao.insertAll(
           notAddedYetStatusRemoteIds
-              .map((statusRemoteId) =>
-              DbStatusList(
+              .map((statusRemoteId) => DbStatusList(
                   id: null,
                   statusRemoteId: statusRemoteId,
                   listRemoteId: listRemoteId))
@@ -188,16 +191,17 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
   }
 
-  Future addStatusesToConversation(List<String> statusRemoteIds,
-      String conversationRemoteId) async {
+  Future addStatusesToConversation(
+      List<String> statusRemoteIds, String conversationRemoteId) async {
     List<DbConversationStatus> alreadyAddedConversationStatuses =
-    await conversationStatusesDao
-        .findByConversationRemoteId(conversationRemoteId);
+        await conversationStatusesDao
+            .findByConversationRemoteId(conversationRemoteId)
+            .get();
     Iterable<String> alreadyAddedConversationStatusesIds =
-    alreadyAddedConversationStatuses
-        .map((conversationStatus) => conversationStatus.statusRemoteId);
+        alreadyAddedConversationStatuses
+            .map((conversationStatus) => conversationStatus.statusRemoteId);
     Iterable<String> notAddedYetStatusRemoteIds =
-    statusRemoteIds.where((statusRemoteId) {
+        statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 
@@ -226,8 +230,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
       await hashtagsDao.insertAll(
           tags
-              .map((remoteTag) =>
-              DbStatusHashtag(
+              .map((remoteTag) => DbStatusHashtag(
                   id: null,
                   statusRemoteId: statusRemoteId,
                   hashtag: remoteTag.name))
@@ -249,7 +252,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -259,25 +262,32 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyFromAccount: onlyFromAccount,
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyInConversation: onlyInConversation,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
+    );
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -294,7 +304,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -304,29 +314,39 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyInConversation: onlyInConversation,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyFromAccount: onlyFromAccount,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
+    );
 
     Stream<List<DbStatusPopulated>> stream =
-    query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
+        query.watch().map(dao.typedResultListToPopulated);
+    return stream.map((list) {
+      var statuses = list.map(mapDataClassToItem).toList();
+      return statuses;
+    });
   }
 
   JoinedSelectStatement createQuery({
@@ -337,7 +357,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -347,6 +367,9 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    @required bool onlyNotDeleted,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
@@ -356,12 +379,14 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t onlyInConversation=$onlyInConversation\n"
         "\t onlyLocal=$onlyLocal\n"
         "\t onlyWithMedia=$onlyWithMedia\n"
-        "\t onlyNotMuted=$onlyNotMuted\n"
+        "\t withMuted=$withMuted\n"
         "\t excludeVisibilities=$excludeVisibilities\n"
         "\t olderThanStatus=$olderThanStatus\n"
         "\t newerThanStatus=$newerThanStatus\n"
         "\t onlyNoNsfwSensitive=$onlyNoNsfwSensitive\n"
         "\t onlyNoReplies=$onlyNoReplies\n"
+        "\t onlyBookmarked=$onlyBookmarked\n"
+        "\t onlyFavourited=$onlyFavourited\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t isFromHomeTimeline=$isFromHomeTimeline\n"
@@ -383,12 +408,20 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyFromAccountWhere(query, onlyFromAccount.remoteId);
     }
 
-    if (onlyNotMuted == true) {
+    if (withMuted != true) {
       dao.addOnlyNotMutedWhere(query);
     }
 
     if (onlyNoNsfwSensitive == true) {
       dao.addOnlyNoNsfwSensitiveWhere(query);
+    }
+
+    if (onlyBookmarked == true) {
+      dao.addOnlyBookmarkedWhere(query);
+    }
+
+    if (onlyFavourited == true) {
+      dao.addOnlyFavouritedWhere(query);
     }
 
     if (onlyNoReplies == true) {
@@ -403,6 +436,10 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThanStatus?.remoteId,
           minimumRemoteIdExcluding: newerThanStatus?.remoteId);
+    }
+
+    if (onlyNotDeleted == true) {
+      dao.addOnlyNotDeletedWhere(query);
     }
 
     if (orderingTermData != null) {
@@ -492,14 +529,14 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbStatusPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbStatusPopulatedWrapper>> watchAll() =>
@@ -534,9 +571,10 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future updateLocalStatusByRemoteStatus({@required IStatus oldLocalStatus,
-    @required IPleromaStatus newRemoteStatus,
-    bool isFromHomeTimeline = false}) async {
+  Future updateLocalStatusByRemoteStatus(
+      {@required IStatus oldLocalStatus,
+      @required IPleromaStatus newRemoteStatus,
+      bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "updateLocalStatusByRemoteStatus \n"
         "\t old: $oldLocalStatus \n"
         "\t newRemoteStatus: $newRemoteStatus");
@@ -574,80 +612,96 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbStatusPopulatedWrapper> getStatus(
-      {@required String onlyInListWithRemoteId,
-        @required String onlyWithHashtag,
-        @required IAccount onlyFromAccountsFollowingByAccount,
-        @required IAccount onlyFromAccount,
-        @required IConversation onlyInConversation,
-        @required OnlyLocalStatusFilter onlyLocal,
-        @required bool onlyWithMedia,
-        @required bool onlyNotMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus olderThanStatus,
-        @required IStatus newerThanStatus,
-        @required bool onlyNoNsfwSensitive,
-        @required bool onlyNoReplies,
-        @required StatusOrderingTermData orderingTermData,
-        @required bool isFromHomeTimeline}) async {
+  Future<DbStatusPopulatedWrapper> getStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
+  }) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyFromAccount: onlyFromAccount,
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyInConversation: onlyInConversation,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
+    );
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
   }
 
   @override
-  Stream<DbStatusPopulatedWrapper> watchStatus(
-      {@required String onlyInListWithRemoteId,
-        @required String onlyWithHashtag,
-        @required IAccount onlyFromAccount,
-        @required IAccount onlyFromAccountsFollowingByAccount,
-        @required IConversation onlyInConversation,
-        @required OnlyLocalStatusFilter onlyLocal,
-        @required bool onlyWithMedia,
-        @required bool onlyNotMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus olderThanStatus,
-        @required IStatus newerThanStatus,
-        @required bool onlyNoNsfwSensitive,
-        @required bool onlyNoReplies,
-        @required StatusOrderingTermData orderingTermData,
-        @required bool isFromHomeTimeline}) {
+  Stream<DbStatusPopulatedWrapper> watchStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccount,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
+  }) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyInConversation: onlyInConversation,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyFromAccount: onlyFromAccount,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
+    );
 
     Stream<DbStatusPopulated> stream = query
         .watchSingle()
@@ -656,48 +710,60 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IStatus> getConversationLastStatus(
-      {@required IConversation conversation}) =>
+  Future<IStatus> getConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  }) =>
       getStatus(
-          onlyInListWithRemoteId: null,
-          onlyWithHashtag: null,
-          onlyFromAccountsFollowingByAccount: null,
-          onlyFromAccount: null,
-          onlyInConversation: conversation,
-          onlyLocal: null,
-          onlyWithMedia: null,
-          onlyNotMuted: null,
-          excludeVisibilities: null,
-          olderThanStatus: null,
-          newerThanStatus: null,
-          onlyNoNsfwSensitive: null,
-          onlyNoReplies: null,
-          isFromHomeTimeline: null,
-          orderingTermData: StatusOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: StatusOrderByType.remoteId));
+        onlyInListWithRemoteId: null,
+        onlyWithHashtag: null,
+        onlyFromAccountsFollowingByAccount: null,
+        onlyFromAccount: null,
+        onlyInConversation: conversation,
+        onlyLocal: null,
+        onlyWithMedia: null,
+        withMuted: null,
+        excludeVisibilities: null,
+        olderThanStatus: null,
+        newerThanStatus: null,
+        onlyNoNsfwSensitive: null,
+        onlyNoReplies: null,
+        isFromHomeTimeline: null,
+        onlyBookmarked: null,
+        onlyFavourited: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId),
+        onlyNotDeleted: onlyNotDeleted,
+      );
 
   @override
-  Stream<IStatus> watchConversationLastStatus(
-      {@required IConversation conversation}) =>
+  Stream<IStatus> watchConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  }) =>
       watchStatus(
-          onlyInListWithRemoteId: null,
-          onlyWithHashtag: null,
-          onlyFromAccountsFollowingByAccount: null,
-          onlyFromAccount: null,
-          onlyInConversation: conversation,
-          onlyLocal: null,
-          onlyWithMedia: null,
-          onlyNotMuted: null,
-          excludeVisibilities: null,
-          olderThanStatus: null,
-          newerThanStatus: null,
-          onlyNoNsfwSensitive: null,
-          onlyNoReplies: null,
-          isFromHomeTimeline: null,
-          orderingTermData: StatusOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: StatusOrderByType.remoteId));
+        onlyInListWithRemoteId: null,
+        onlyWithHashtag: null,
+        onlyFromAccountsFollowingByAccount: null,
+        onlyFromAccount: null,
+        onlyInConversation: conversation,
+        onlyLocal: null,
+        onlyWithMedia: null,
+        withMuted: null,
+        excludeVisibilities: null,
+        olderThanStatus: null,
+        newerThanStatus: null,
+        onlyNoNsfwSensitive: null,
+        onlyNoReplies: null,
+        isFromHomeTimeline: null,
+        onlyBookmarked: null,
+        onlyFavourited: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId),
+        onlyNotDeleted: onlyNotDeleted,
+      );
 
   @override
   Future incrementRepliesCount({@required String remoteId}) =>
@@ -706,5 +772,15 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
-  }) => homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+  }) =>
+      homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+
+  @override
+  Future markStatusAsDeleted({@required String statusRemoteId}) =>
+      dao.markAsDeleted(remoteId: statusRemoteId);
+
+  @override
+  Future clearListStatusesConnection({@required String listRemoteId}) async {
+    await listsDao.deleteByRemoteId(listRemoteId);
+  }
 }

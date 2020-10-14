@@ -14,19 +14,24 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
     @required IConversationRepository conversationRepository,
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required String accountId,
+    @required bool notification,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getAccountChannel(
-              accountId: accountId, notification: false),
+              accountId: accountId, notification: notification),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
           chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          statusListRemoteId: null,
+          statusConversationRemoteId: null,
+          isFromHomeTimeline: false,
         );
 
   static AccountWebSocketsHandler createFromContext(BuildContext context,
-          {@required String accountId}) =>
+          {@required String accountId, @required bool notification}) =>
       AccountWebSocketsHandler(
         accountId: accountId,
+        notification: notification,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:
@@ -34,7 +39,8 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
         conversationRepository:
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc: IChatNewMessagesHandlerBloc.of(context, listen: false),
+        chatNewMessagesHandlerBloc:
+            IChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

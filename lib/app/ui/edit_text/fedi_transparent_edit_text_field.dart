@@ -26,6 +26,8 @@ class FediTransparentEditTextField extends StatelessWidget {
   final TextStyle hintStyle;
   final TextStyle textStyle;
   final bool highlightMentions;
+  final int maxLength;
+  final bool enabled;
 
   FediTransparentEditTextField({
     @required this.expanded,
@@ -45,6 +47,8 @@ class FediTransparentEditTextField extends StatelessWidget {
     this.autocorrect = true,
     this.obscureText = false,
     @required this.highlightMentions,
+    @required this.maxLength,
+    this.enabled = true,
   })  : border = UnderlineInputBorder(
           borderSide: BorderSide(
               width: 1.0, color: customBorderColor ?? FediColors.lightGrey),
@@ -52,7 +56,7 @@ class FediTransparentEditTextField extends StatelessWidget {
         focusedBorder = UnderlineInputBorder(
           borderSide: BorderSide(
             width: 1.0,
-            color: customBorderColor ?? FediColors.primaryColor,
+            color: customBorderColor ?? FediColors.primary,
           ),
         ),
         errorBorder = UnderlineInputBorder(
@@ -64,6 +68,7 @@ class FediTransparentEditTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediBaseEditTextField(
+        enabled: enabled,
         highlightMentions: highlightMentions,
         autocorrect: autocorrect,
         focusNode: focusNode,
@@ -86,5 +91,6 @@ class FediTransparentEditTextField extends StatelessWidget {
         contentPadding: null,
         displayBorder: displayUnderlineBorder,
         hintStyle: hintStyle,
+        maxLength: maxLength,
       );
 }

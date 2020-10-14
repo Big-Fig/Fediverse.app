@@ -109,7 +109,7 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
   String toJsonString() => jsonEncode(_$PleromaScheduledStatusToJson(this));
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   @override
   final String text;
@@ -133,7 +133,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final DateTime scheduledAt;
 
   @override
-  final dynamic poll;
+  final PleromaPostStatusPoll poll;
 
   @override
   final String idempotency;

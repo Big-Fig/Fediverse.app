@@ -1,19 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediMediaCarouselWidget extends StatefulWidget {
   final List<Widget> children;
+  final int initialPageIndex;
 
-  FediMediaCarouselWidget({@required this.children});
+  FediMediaCarouselWidget({
+    @required this.children,
+    @required this.initialPageIndex,
+  });
 
   @override
-  _FediMediaCarouselWidgetState createState() => _FediMediaCarouselWidgetState();
+  _FediMediaCarouselWidgetState createState() => _FediMediaCarouselWidgetState(
+        currentPageIndex: initialPageIndex,
+      );
 }
 
 class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
-  int _current = 0;
+  int currentPageIndex;
+
+  _FediMediaCarouselWidgetState({this.currentPageIndex = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +30,12 @@ class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
         CarouselSlider(
           items: widget.children,
           options: CarouselOptions(
+              initialPage: currentPageIndex,
               viewportFraction: 0.9,
               enableInfiniteScroll: false,
               onPageChanged: (index, reason) {
                 setState(() {
-                  _current = index;
+                  currentPageIndex = index;
                 });
               }),
         ),
@@ -35,23 +44,13 @@ class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
           right: 0.0,
           bottom: 12.0,
           child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: widget.children.map((url) {
               int index = widget.children.indexOf(url);
-              return Container(
-                width: 12.0,
-                height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: FediSizes.mediumPadding,
-                    horizontal: 2.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _current == index
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).backgroundColor,
-                    border: Border.all(width: 1.0, color: Colors.white)),
-              );
+              var active = currentPageIndex == index;
+              return FediIndicatorWidget(active: active);
             }).toList(),
           ),
         ),

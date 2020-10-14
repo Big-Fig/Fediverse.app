@@ -8,6 +8,7 @@ import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -32,7 +33,6 @@ import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final redirectUri = "com.fediverse.app://addNewInstance";
 final scopes = "read write follow push";
 
 var _logger = Logger("auth_host_bloc_impl.dart");
@@ -118,6 +118,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future<bool> registerApplication() async {
     _logger.finest(() => "registerApplication");
+    String redirectUri = await _calculateRedirectUri();
+
     var application = await pleromaApplicationService.registerApp(
         registrationRequest: MastodonApplicationRegistrationRequest(
             clientName: "Fediverse",
@@ -134,11 +136,17 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     }
   }
 
+  Future<String> _calculateRedirectUri() async {
+    var packageId = await FediPackageInfoHelper.getPackageId();
+    var redirectUri = "${packageId}://addNewInstance";
+    return redirectUri;
+  }
+
   @override
   Future<bool> retrieveAppAccessToken() async {
     var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
         tokenRequest: PleromaOAuthAppTokenRequest(
-      redirectUri: redirectUri,
+      redirectUri: await _calculateRedirectUri(),
       scope: scopes,
       clientSecret: hostApplication.clientSecret,
       clientId: hostApplication.clientId,
@@ -165,7 +173,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var authCode = await pleromaOAuthService
         .launchAuthorizeFormAndExtractAuthorizationCode(
       authorizeRequest: PleromaOAuthAuthorizeRequest(
-          redirectUri: redirectUri,
+          redirectUri: await _calculateRedirectUri(),
           scope: scopes,
           forceLogin: true,
           clientId: hostApplication.clientId),
@@ -187,7 +195,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   Future<AuthInstance> loginWithAuthCode(String authCode) async {
     var token = await pleromaOAuthService.retrieveAccountAccessToken(
         tokenRequest: PleromaOAuthAccountTokenRequest(
-      redirectUri: redirectUri,
+      redirectUri: await _calculateRedirectUri(),
       scope: scopes,
       code: authCode,
       clientSecret: hostApplication.clientSecret,
@@ -264,16 +272,24 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     PleromaInstanceService pleromaInstanceService;
     try {
-      pleromaInstanceService = PleromaInstanceService(restService: pleromaRestService);
+      pleromaInstanceService =
+          PleromaInstanceService(restService: pleromaRestService);
       var pleromaInstance = await pleromaInstanceService.getInstance();
 
       var isRegistrationEnabled = pleromaInstance.registrations;
 
       if (isRegistrationEnabled != false) {
-        return true;
+        var invitesEnabled = pleromaInstance.invitesEnabled;
+        if (invitesEnabled != false) {
+          return true;
+        } else {
+          throw InvitesOnlyRegistrationAuthHostException();
+        }
       } else {
-        throw RegistrationNotEnabledAuthHostException();
+        throw DisabledRegistrationAuthHostException();
       }
+
+
     } finally {
       pleromaInstanceService?.dispose();
     }

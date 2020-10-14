@@ -1,6 +1,6 @@
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/list/pleroma_mastodon_list_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ abstract class IPleromaAccountService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<List<IPleromaList>> getAccountLists({
+  Future<List<IPleromaList>> getListsWithAccount({
     @required String accountRemoteId,
   });
 
@@ -47,7 +47,7 @@ abstract class IPleromaAccountService implements IPleromaApi {
     bool excludeReblogs,
     List<String> excludeVisibilities,
     bool withMuted,
-    bool onlyMedia,
+    bool onlyWithMedia,
     String sinceId,
     String maxId,
     int limit = 20,
@@ -89,6 +89,11 @@ abstract class IPleromaAccountService implements IPleromaApi {
   Future<IPleromaAccountRelationship> unBlockAccount({
     @required String accountRemoteId,
   });
+
+  Future blockDomain({@required String domain});
+
+  Future unBlockDomain({@required String domain});
+
 
   Future<bool> reportAccount({
     @required IPleromaAccountReportRequest reportRequest,

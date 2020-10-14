@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -16,20 +17,46 @@ class StatusCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IStatus>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IStatus> {
   final IStatusCachedListBloc statusCachedListBloc;
+  final IMyAccountBloc myAccountBloc;
+  final bool mergeOwnStatusesImmediately;
 
-  StatusCachedPaginationListWithNewItemsBloc(
-      {@required bool mergeNewItemsImmediately,
-      @required this.statusCachedListBloc,
-      @required IPaginationBloc<TPage, IStatus> paginationBloc})
-      : super(
+  StatusCachedPaginationListWithNewItemsBloc({
+    @required bool mergeNewItemsImmediately,
+    @required this.statusCachedListBloc,
+    @required this.myAccountBloc,
+    @required this.mergeOwnStatusesImmediately,
+    @required IPaginationBloc<TPage, IStatus> paginationBloc,
+  }) : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
             paginationBloc: paginationBloc) {
-    addDisposable(streamSubscription:
-        statusCachedListBloc.settingsChangedStream.listen((changed) async {
-      if (changed == true) {
-        refreshWithController();
-      }
-    }));
+    addDisposable(
+      streamSubscription: statusCachedListBloc.settingsChangedStream.listen(
+        (changed) async {
+          if (changed == true) {
+            refreshWithController();
+          }
+        },
+      ),
+    );
+
+    if (mergeOwnStatusesImmediately == true) {
+      addDisposable(
+        streamSubscription: unmergedNewItemsStream.distinct().listen(
+          (unmergedNewItems) {
+            if (unmergedNewItems?.isNotEmpty == true) {
+              var firstUnmergedItem = unmergedNewItems.first;
+
+              var isOwnFirstUnmergedItem =
+                  myAccountBloc.checkIsStatusFromMe(firstUnmergedItem);
+
+              if (isOwnFirstUnmergedItem) {
+                mergeNewItems();
+              }
+            }
+          },
+        ),
+      );
+    }
   }
 
   @override
@@ -57,15 +84,19 @@ class StatusCachedPaginationListWithNewItemsBloc<
   bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
 
   static Widget provideToContext<TPage extends CachedPaginationPage<IStatus>>(
-      BuildContext context,
-      {@required bool mergeNewItemsImmediately,
-      @required Widget child}) {
+    BuildContext context, {
+    @required bool mergeNewItemsImmediately,
+    @required bool mergeOwnStatusesImmediately,
+    @required Widget child,
+  }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
       create: (context) =>
           StatusCachedPaginationListWithNewItemsBloc.createFromContext<TPage>(
-              context,
-              mergeNewItemsImmediately: mergeNewItemsImmediately),
+        context,
+        mergeNewItemsImmediately: mergeNewItemsImmediately,
+        mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
+      ),
       child: ProxyProvider<
           ICachedPaginationListWithNewItemsBloc<TPage, IStatus>,
           ICachedPaginationListWithNewItemsBloc>(
@@ -79,10 +110,14 @@ class StatusCachedPaginationListWithNewItemsBloc<
 
   static StatusCachedPaginationListWithNewItemsBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<IStatus>>(
-          BuildContext context,
-          {@required bool mergeNewItemsImmediately}) {
+    BuildContext context, {
+    @required bool mergeNewItemsImmediately,
+    @required bool mergeOwnStatusesImmediately,
+  }) {
     return StatusCachedPaginationListWithNewItemsBloc<TPage>(
+        mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
         mergeNewItemsImmediately: mergeNewItemsImmediately,
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
         paginationBloc: Provider.of<IPaginationBloc<TPage, IStatus>>(context,
             listen: false),
         statusCachedListBloc: IStatusCachedListBloc.of(context, listen: false));

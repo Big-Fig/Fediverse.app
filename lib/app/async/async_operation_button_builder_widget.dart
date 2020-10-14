@@ -51,6 +51,15 @@ class _AsyncOperationButtonBuilderWidgetState
     extends State<AsyncOperationButtonBuilderWidget> {
   bool asyncOperationInProgress = false;
 
+  bool disposed = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    disposed = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.builder(
@@ -62,9 +71,11 @@ class _AsyncOperationButtonBuilderWidgetState
                   asyncOperationInProgress = true;
                 });
                 widget.performAsyncOperation(context: context).then((_) async {
-                  setState(() {
-                    asyncOperationInProgress = false;
-                  });
+                  if (!disposed) {
+                    setState(() {
+                      asyncOperationInProgress = false;
+                    });
+                  }
                   var successToastMessage = widget.successToastMessage;
                   if (successToastMessage != null) {
                     showInfoFediNotificationOverlay(
@@ -73,9 +84,11 @@ class _AsyncOperationButtonBuilderWidgetState
                 }).catchError((error, stacktrace) {
                   _logger.severe(() => "Fail to execute async operation", error,
                       stacktrace);
-                  setState(() {
-                    asyncOperationInProgress = false;
-                  });
+                  if (!disposed) {
+                    setState(() {
+                      asyncOperationInProgress = false;
+                    });
+                  }
                 });
               });
   }

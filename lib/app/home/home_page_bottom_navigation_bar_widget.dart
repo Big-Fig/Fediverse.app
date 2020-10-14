@@ -70,7 +70,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           });
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
-    var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
+    var color = isSelected ? FediColors.primary : FediColors.darkGrey;
 
     // todo: refactor UI
     const insets = FediPadding.allBigPadding;
@@ -111,17 +111,18 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             builder: (context, snapshot) {
               var isNewChatsEnabled = snapshot.data;
 
+              final iconData = FediIcons.chat;
               if (isNewChatsEnabled == true) {
                 return ChatUnreadBadgeCountWidget(
                     offset: badgeOffset,
                     child: Padding(
                   padding: insets,
-                  child: FediTransparentIcon(FediIcons.envelope, color: color),
+                  child: FediTransparentIcon(iconData, color: color),
                 ));
               } else {
                 return Padding(
                   padding: insets,
-                  child: FediTransparentIcon(FediIcons.envelope, color: color),
+                  child: FediTransparentIcon(iconData, color: color),
                 );
               }
             });

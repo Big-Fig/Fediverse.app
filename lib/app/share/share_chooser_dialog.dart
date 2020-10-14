@@ -24,7 +24,7 @@ void showShareChooserDialog(
               externalShareAction();
             }),
         DialogAction(
-          icon: FediIcons.share,
+          icon: FediIcons.envelope,
           label: tr("app.share.action.share_to_conversations"),
           onAction: () {
             conversationsShareAction();
@@ -32,7 +32,7 @@ void showShareChooserDialog(
         ),
         if (currentAuthInstanceBloc.currentInstance.isSupportChats)
           DialogAction(
-            icon: FediIcons.share,
+            icon: FediIcons.chat,
             label: tr("app.share.action.share_to_chats"),
             onAction: () {
               chatsShareAction();

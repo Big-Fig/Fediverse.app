@@ -21,8 +21,7 @@ var _chatAccountsAliasId = "chatAccounts";
       ":remoteId;",
 })
 class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbChatAccountsTable chatAccountsAlias;
 
@@ -89,7 +88,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbChat> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbChats)..where((i) => i.id.equals(localId)))

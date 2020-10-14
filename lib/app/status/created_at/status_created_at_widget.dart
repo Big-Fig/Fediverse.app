@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class StatusCreatedAtWidget extends StatelessWidget {
   @override
@@ -14,10 +14,9 @@ class StatusCreatedAtWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var createdAt = snapshot.data;
 
-          // todo: locale
-          return Text(
-            timeago.format(createdAt, locale: 'en_short'),
-            style: FediTextStyles.smallShortGrey,
+          return DateTimeDynamicTimeAgoWidget(
+            dateTime: createdAt,
+            textStyle: FediTextStyles.smallShortGrey,
           );
         });
   }

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
+import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("join_auth_instance_widget.dart");
+const _defaultInstanceDomain = "fedi.app";
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   final bool isFromScratch;
@@ -167,6 +169,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           customBorderColor: FediColors.white.withOpacity(0.8),
           textStyle: FediTextStyles.subHeaderTallWhite,
           highlightMentions: false,
+          maxLength: null,
         ),
         Text(
           "app.auth.instance.join.field.host.helper".tr(),
@@ -197,6 +200,11 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
     var uriText = joinInstanceBloc.hostTextController.text;
+
+    if (uriText?.isNotEmpty != true) {
+      uriText = _defaultInstanceDomain;
+    }
+
     var parsedUri = Uri.parse(uriText);
 
     Uri uri;
@@ -233,8 +241,14 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             error,
             stackTrace,
           ) {
-            if (error is RegistrationNotEnabledAuthHostException) {
+            if (error is DisabledRegistrationAuthHostException) {
               return createRegistrationDisabledErrorData(
+                context,
+                error,
+                stackTrace,
+              );
+            } else if (error is InvitesOnlyRegistrationAuthHostException) {
+              return createRegistrationInvitesOnlyErrorData(
                 context,
                 error,
                 stackTrace,
@@ -271,13 +285,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   ErrorData createInstanceDeadErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
-      ErrorData(
-          error: error,
-          stackTrace: stackTrace,
-          titleText: tr("app.auth.instance.join"
-              ".fail.dialog.title"),
-          contentText: tr("app.auth.instance.join"
-              ".fail.dialog.content"));
+      AuthInstancePleromaRestErrorData(
+        error: error,
+        stackTrace: stackTrace,
+      );
 
   ErrorData createRegistrationDisabledErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
@@ -288,6 +299,16 @@ class JoinAuthInstanceWidget extends StatelessWidget {
               ".registration_disabled.dialog.title"),
           contentText: tr("app.auth.instance.join"
               ".registration_disabled.dialog.content"));
+
+  ErrorData createRegistrationInvitesOnlyErrorData(
+          BuildContext context, error, StackTrace stackTrace) =>
+      ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleText: tr("app.auth.instance.join"
+              ".invites_only.dialog.title"),
+          contentText: tr("app.auth.instance.join"
+              ".invites_only.dialog.content"));
 
   Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);

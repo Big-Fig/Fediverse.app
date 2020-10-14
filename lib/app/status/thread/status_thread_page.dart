@@ -22,6 +22,7 @@ import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +31,14 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: FediSubPageCustomAppBar(
-          leading: FediBackIconButton(),
-          child: buildStatusStarterAccountWidget(context),
-        ),
-        body: SafeArea(child: StatusThreadWidget()));
+      appBar: FediSubPageCustomAppBar(
+        leading: FediBackIconButton(),
+        child: buildStatusStarterAccountWidget(context),
+      ),
+      body: SafeArea(
+        child: StatusThreadWidget(),
+      ),
+    );
   }
 
   Widget buildStatusStarterAccountWidget(BuildContext context) {
@@ -117,21 +121,32 @@ class StatusThreadPage extends StatelessWidget {
   }
 }
 
-void goToStatusThreadPage(BuildContext context, IStatus status) {
+void goToStatusThreadPage(
+  BuildContext context, {
+  @required IStatus status,
+  @required IMastodonMediaAttachment initialMediaAttachment,
+}) {
   Navigator.push(
     context,
-    createStatusThreadPageRoute(status),
+    createStatusThreadPageRoute(
+      status: status,
+      initialMediaAttachment: initialMediaAttachment,
+    ),
   );
 }
 
-MaterialPageRoute createStatusThreadPageRoute(IStatus status) {
+MaterialPageRoute createStatusThreadPageRoute({
+  @required IStatus status,
+  @required IMastodonMediaAttachment initialMediaAttachment,
+}) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(
       create: (context) => StatusThreadBloc(
           statusRepository: IStatusRepository.of(context, listen: false),
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),
-          initialStatusToFetchThread: status),
+          initialStatusToFetchThread: status,
+          initialMediaAttachment: initialMediaAttachment),
       child: ThreadPostStatusBloc.provideToContext(context,
           inReplyToStatus: status, child: StatusThreadPage()),
     ),

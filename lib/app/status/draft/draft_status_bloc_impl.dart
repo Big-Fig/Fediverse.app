@@ -133,10 +133,10 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
               ? PleromaPostStatusPoll(
                   options: postStatusData.poll.options,
                   multiple: postStatusData.poll.multiple,
-                  expiresInSeconds: DateTime.now()
-                      .difference(postStatusData.poll.expiresAt)
-                      .abs()
-                      .inSeconds,
+                  expiresInSeconds:
+                      (postStatusData.poll.durationLength.inMicroseconds /
+                              Duration.microsecondsPerSecond)
+                          .floor(),
                 )
               : null,
         ),
@@ -158,14 +158,15 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
           to: postStatusData.to,
           poll: postStatusData.poll != null
               ? PleromaPostStatusPoll(
-            options: postStatusData.poll.options,
-            multiple: postStatusData.poll.multiple,
-            expiresInSeconds: DateTime.now()
-                .difference(postStatusData.poll.expiresAt)
-                .abs()
-                .inSeconds,
-          )
-              : null,),
+                  options: postStatusData.poll.options,
+                  multiple: postStatusData.poll.multiple,
+                  expiresInSeconds:
+                      (postStatusData.poll.durationLength.inMicroseconds /
+                              Duration.microsecondsPerSecond)
+                          .floor(),
+                )
+              : null,
+        ),
       );
       await statusRepository.upsertRemoteStatus(pleromaStatus,
           listRemoteId: null,

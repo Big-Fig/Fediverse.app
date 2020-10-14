@@ -12,7 +12,7 @@ class FromScratchJoinAuthInstancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediLightStatusBarStyleArea(
       child: Scaffold(
-        backgroundColor: FediColors.primaryColorDark,
+        backgroundColor: FediColors.primaryDark,
         body: SafeArea(
           child: JoinAuthInstanceWidget(
             isFromScratch: true,

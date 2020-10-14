@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -44,7 +46,22 @@ class AccountNoteWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               data: htmlContent,
               onLinkTap: (String url) {
-                UrlHelper.handleUrlClick(context, url);
+                var tagUrlPart = "/tag/";
+                var tagUrlPartIndex = url.indexOf(tagUrlPart);
+                if (tagUrlPartIndex > 0) {
+                  var tag = url.substring(tagUrlPartIndex + tagUrlPart.length);
+
+                  if (htmlContent.contains("#$tag")) {
+                    goToHashtagPage(
+                      context: context,
+                      hashtag: Hashtag(name: tag, url: url, history: []),
+                    );
+                  } else {
+                    UrlHelper.handleUrlClick(context, url);
+                  }
+                } else {
+                  UrlHelper.handleUrlClick(context, url);
+                }
               },
             ),
           );

@@ -1,17 +1,19 @@
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/switch/fedi_switch.dart';
-import 'package:fedi/app/ui/form/fedi_form_switch_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormSwitchRow extends StatelessWidget {
   final String label;
   final bool value;
   final ValueChanged<bool> onChanged;
+  final bool enabled;
 
   FediFormSwitchRow({
     @required this.label,
     @required this.value,
     @required this.onChanged,
+    this.enabled = true,
   });
 
   @override
@@ -20,10 +22,11 @@ class FediFormSwitchRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FediFormSwitchLabel(label),
+            FediFormRowLabel(label),
             FediSwitch(
               value: value,
               onChanged: onChanged,
+              enabled: enabled,
             ),
           ],
         ),

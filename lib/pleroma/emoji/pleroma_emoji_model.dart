@@ -12,32 +12,42 @@ abstract class IPleromaCustomEmoji {
   List<String> get tags;
 
   String get imageUrl;
+
   String get name;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 38)
 @JsonSerializable()
 class PleromaEmoji implements IPleromaEmoji {
   @override
   @HiveField(0)
-  String shortcode;
+  final String shortcode;
   @override
   @HiveField(1)
-  String url;
+  final String url;
   @override
   @HiveField(2)
   @JsonKey(name: "static_url")
-  String staticUrl;
+  final String staticUrl;
   @override
   @JsonKey(name: "visible_in_picker")
   @HiveField(3)
-  bool visibleInPicker;
+  final bool visibleInPicker;
   @override
   @HiveField(4)
-  String category;
+  final String category;
 
-  PleromaEmoji(
-      {this.shortcode, this.url, this.staticUrl, this.visibleInPicker});
+  PleromaEmoji({
+    this.shortcode,
+    this.url,
+    this.staticUrl,
+    this.visibleInPicker,
+    this.category,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -71,27 +81,30 @@ class PleromaEmoji implements IPleromaEmoji {
   Map<String, dynamic> toJson() => _$PleromaEmojiToJson(this);
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 76)
 @JsonSerializable()
 class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @override
   @HiveField(0)
-  List<String> tags;
+  final List<String> tags;
   @override
   @HiveField(1)
   @JsonKey(name: "image_url")
-  String imageUrl;
+  final String imageUrl;
 
   @override
   @HiveField(2)
-  String name;
+  final String name;
 
   PleromaCustomEmoji({
     this.tags,
     this.imageUrl,
     this.name,
   });
-
 
   @override
   bool operator ==(Object other) =>
@@ -101,9 +114,9 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
           tags == other.tags &&
           imageUrl == other.imageUrl &&
           name == other.name;
+
   @override
   int get hashCode => tags.hashCode ^ imageUrl.hashCode ^ name.hashCode;
-
 
   @override
   String toString() {
@@ -112,7 +125,6 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
 
   factory PleromaCustomEmoji.fromJson(Map<String, dynamic> json) =>
       _$PleromaCustomEmojiFromJson(json);
-
 
   static List<PleromaCustomEmoji> listFromJsonString(String str) =>
       List<PleromaCustomEmoji>.from(

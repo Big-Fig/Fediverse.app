@@ -13,24 +13,32 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
     implements IRegisterAuthInstanceBloc {
   @override
   final FormStringFieldBloc usernameFieldBloc = FormStringFieldBloc(
-      originValue: "",
-      validators: [NonEmptyStringFieldValidationError.createValidator()]);
+    originValue: "",
+    validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+    maxLength: null,
+  );
 
   @override
   final FormStringFieldBloc emailFieldBloc = FormStringFieldBloc(
-      originValue: "",
-      validators: [FormEmailStringFieldValidationError.createValidator()]);
+    originValue: "",
+    validators: [FormEmailStringFieldValidationError.createValidator()],
+    maxLength: null,
+  );
 
   @override
-  final FormStringFieldBloc passwordFieldBloc =
-      FormStringFieldBloc(originValue: "", validators: [
-    FormLengthStringFieldValidationError.createValidator(
-        minLength: 4, maxLength: null)
-  ]);
+  final FormStringFieldBloc passwordFieldBloc = FormStringFieldBloc(
+      originValue: "",
+      validators: [
+        FormLengthStringFieldValidationError.createValidator(
+            minLength: 4, maxLength: null)
+      ],
+      maxLength: null);
 
   @override
   final FormPasswordMatchStringFieldBloc confirmPasswordFieldBloc =
-      FormPasswordMatchStringFieldBloc();
+      FormPasswordMatchStringFieldBloc(
+    maxLength: null,
+  );
 
   @override
   bool get isCaptchaRequired => captchaFieldBloc != null;
@@ -59,12 +67,4 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
     }));
   }
 
-  @override
-  void clear() {
-    usernameFieldBloc.dispose();
-    emailFieldBloc.dispose();
-    passwordFieldBloc.dispose();
-    confirmPasswordFieldBloc.dispose();
-    captchaFieldBloc?.dispose();
-  }
 }

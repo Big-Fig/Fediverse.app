@@ -23,6 +23,8 @@ abstract class IMastodonInstance {
 
   String get shortDescription;
 
+  String get description;
+
   String get email;
 
   String get version;
@@ -39,21 +41,27 @@ abstract class IMastodonInstance {
 
   bool get approvalRequired;
 
+  bool get invitesEnabled;
+
   IMastodonAccount get contactAccount;
 }
 
 @JsonSerializable()
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 61)
 class MastodonInstanceStats {
   @JsonKey(name: "user_count")
   @HiveField(0)
-  int userCount;
+  final int userCount;
   @JsonKey(name: "status_count")
   @HiveField(1)
-  int statusCount;
+  final int statusCount;
   @JsonKey(name: "domain_count")
   @HiveField(2)
-  int domainCount;
+  final int domainCount;
 
   MastodonInstanceStats({this.userCount, this.statusCount, this.domainCount});
 
@@ -92,11 +100,15 @@ class MastodonInstanceStats {
 }
 
 @JsonSerializable()
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 62)
 class MastodonUrls {
   @JsonKey(name: "streaming_api")
   @HiveField(0)
-  String streamingApi;
+  final String streamingApi;
 
   MastodonUrls({this.streamingApi});
 
