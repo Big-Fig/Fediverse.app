@@ -6,14 +6,14 @@ import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-class PollStatusOptionFormStringFieldFormRowWidget extends StatelessWidget {
+class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   final String hint;
   final IFormStringFieldBloc formStringFieldBloc;
 
   final TextInputAction textInputAction;
   final ValueChanged<String> onSubmitted;
 
-  PollStatusOptionFormStringFieldFormRowWidget({
+  PostStatusPollOptionFormStringFieldFormRowWidget({
     @required this.hint,
     @required this.formStringFieldBloc,
     @required this.onSubmitted,

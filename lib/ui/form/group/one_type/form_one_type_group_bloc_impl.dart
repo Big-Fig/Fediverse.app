@@ -125,7 +125,9 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   void clear() {
-    originalItems.forEach((item) => item.clear());
+    for (var item in originalItems) {
+      item.clear();
+    }
     _itemsSubject.add(originalItems);
   }
 

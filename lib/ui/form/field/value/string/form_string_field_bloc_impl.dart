@@ -41,4 +41,10 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
   @override
   bool isValueChanged(String newValue, String originValue) =>
       (newValue ?? "") != (originValue ?? "");
+
+  @override
+  void clear() {
+    textEditingController.text = originValue ?? "";
+    super.clear();
+  }
 }

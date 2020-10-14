@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
-import 'package:fedi/app/status/post/poll/poll_status_option_form_string_field_form_row_widget.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -75,7 +75,7 @@ class PostStatusPollWidget extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        child: PollStatusOptionFormStringFieldFormRowWidget(
+                        child: PostStatusPollOptionFormStringFieldFormRowWidget(
                           formStringFieldBloc: pollItemBloc,
                           onSubmitted: (String value) {
                             var nextItem = items[index + 1];
