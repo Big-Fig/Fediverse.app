@@ -50,10 +50,19 @@ class PostStatusComposeInputWidget extends StatelessWidget {
             );
           }
         } else {
-          await FediSimpleAlertDialog(
-                  context: context,
-                  title: tr("app.status.post.error.empty.dialog.title"))
-              .show(context);
+
+          if(postStatusBloc.pollBloc.isHaveAtLeastOneError) {
+            await FediSimpleAlertDialog(
+                context: context,
+                title: tr("app.status.post.error.poll.dialog.title"))
+                .show(context);
+          } else {
+            await FediSimpleAlertDialog(
+                context: context,
+                title: tr("app.status.post.error.empty.dialog.title"))
+                .show(context);
+          }
+
         }
       },
       errorText: null,

@@ -1059,6 +1059,11 @@ class CodegenLoader extends AssetLoader{
             "dialog": {
               "title": "Can't send empty message"
             }
+          },
+          "poll": {
+            "dialog": {
+              "title": "Enter at least two poll options"
+            }
           }
         },
         "field": {
