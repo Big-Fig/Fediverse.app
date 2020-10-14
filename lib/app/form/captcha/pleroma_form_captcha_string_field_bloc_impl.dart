@@ -16,14 +16,18 @@ class PleromaFormCaptchaStringFieldBloc extends FormStringFieldBloc
   final IPleromaCaptchaService pleromaCaptchaService;
 
   final BehaviorSubject<PleromaCaptcha> captchaSubject;
+
   @override
   PleromaCaptcha get captcha => captchaSubject.value;
+
   @override
   Stream<PleromaCaptcha> get captchaStream => captchaSubject.stream;
 
   final BehaviorSubject<DateTime> captchaLoadedDateTimeSubject;
+
   @override
   DateTime get captchaLoadedDateTime => captchaLoadedDateTimeSubject.value;
+
   @override
   Stream<DateTime> get captchaLoadedDateTimeStream =>
       captchaLoadedDateTimeSubject.stream;
@@ -38,6 +42,7 @@ class PleromaFormCaptchaStringFieldBloc extends FormStringFieldBloc
         super(
           originValue: originValue,
           validators: validators,
+          maxLength: null,
         ) {
     addDisposable(subject: captchaSubject);
     addDisposable(subject: captchaLoadedDateTimeSubject);

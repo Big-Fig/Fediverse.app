@@ -29,7 +29,7 @@ class MediaVideoPlayerWidget extends MediaPlayerWidget<ChewieController> {
         aspectRatio: aspectRatio,
         videoPlayerController: videoPlayerController,
         autoInitialize: false,
-        allowFullScreen: false,
+        allowFullScreen: true,
         allowMuting: true,
         autoPlay: false,
         looping: false,

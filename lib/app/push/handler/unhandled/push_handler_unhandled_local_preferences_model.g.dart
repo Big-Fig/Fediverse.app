@@ -10,22 +10,41 @@ class PushHandlerUnhandledListAdapter
     extends TypeAdapter<PushHandlerUnhandledList> {
   @override
   PushHandlerUnhandledList read(BinaryReader reader) {
-    var obj = PushHandlerUnhandledList();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.messages = (reader.read() as List)?.cast<PushHandlerMessage>();
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PushHandlerUnhandledList(
+      messages: (fields[0] as List)?.cast<PushHandlerMessage>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, PushHandlerUnhandledList obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.messages);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.messages);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+PushHandlerUnhandledList _$PushHandlerUnhandledListFromJson(
+    Map<String, dynamic> json) {
+  return PushHandlerUnhandledList(
+    messages: (json['messages'] as List)
+        ?.map((e) => e == null
+            ? null
+            : PushHandlerMessage.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$PushHandlerUnhandledListToJson(
+        PushHandlerUnhandledList instance) =>
+    <String, dynamic>{
+      'messages': instance.messages?.map((e) => e?.toJson())?.toList(),
+    };

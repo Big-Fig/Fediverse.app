@@ -7,8 +7,8 @@ abstract class IPermissionsService implements Disposable {
   static IPermissionsService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPermissionsService>(context, listen: listen);
 
-  Future<PermissionStatus> checkPermissionStatus(PermissionGroup permission);
+  Future<PermissionStatus> checkPermissionStatus(Permission permission);
 
-  Future<Map<PermissionGroup, PermissionStatus>> requestPermissions(
-      List<PermissionGroup> list);
+  Future<Map<Permission, PermissionStatus>> requestPermissions(
+      List<Permission> list);
 }

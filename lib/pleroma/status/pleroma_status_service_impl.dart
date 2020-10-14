@@ -55,12 +55,9 @@ class PleromaStatusService implements IPleromaStatusService {
   }
 
   @override
-  Future<IPleromaStatus> deleteStatus({@required String statusRemoteId}) async {
-    var request = RestRequest.delete(
-        relativePath: join(statusRelativeUrlPath, statusRemoteId));
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
+  Future deleteStatus({@required String statusRemoteId}) async {
+    await restService.sendHttpRequest(RestRequest.delete(
+        relativePath: join(statusRelativeUrlPath, statusRemoteId)));
   }
 
   @override

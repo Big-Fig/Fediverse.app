@@ -10,23 +10,42 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
     extends TypeAdapter<EmojiPickerCustomImageUrlCategoryItems> {
   @override
   EmojiPickerCustomImageUrlCategoryItems read(BinaryReader reader) {
-    var obj = EmojiPickerCustomImageUrlCategoryItems();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.items =
-              (reader.read() as List)?.cast<CustomEmojiPickerImageUrlItem>();
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return EmojiPickerCustomImageUrlCategoryItems(
+      items: (fields[0] as List)?.cast<CustomEmojiPickerImageUrlItem>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, EmojiPickerCustomImageUrlCategoryItems obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.items);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.items);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+EmojiPickerCustomImageUrlCategoryItems
+    _$EmojiPickerCustomImageUrlCategoryItemsFromJson(
+        Map<String, dynamic> json) {
+  return EmojiPickerCustomImageUrlCategoryItems(
+    items: (json['items'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$EmojiPickerCustomImageUrlCategoryItemsToJson(
+        EmojiPickerCustomImageUrlCategoryItems instance) =>
+    <String, dynamic>{
+      'items': instance.items?.map((e) => e?.toJson())?.toList(),
+    };

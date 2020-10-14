@@ -1,8 +1,10 @@
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
 import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
@@ -16,13 +18,9 @@ import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-// todo: default server config is 4, should be fetched from server
-var _maximumPossibleCustomFieldsCount = 4;
-
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
-  final int maximumPossibleCustomFieldsCount;
 
   @override
   final FormStringFieldBloc displayNameField;
@@ -42,11 +40,14 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   final IFormImageFilePickerOrUrlFieldBloc headerField;
+  @override
+  final IFormImageFilePickerOrUrlFieldBloc backgroundField;
 
   @override
   List<IFormItemBloc> get items => [
         avatarField,
         headerField,
+        backgroundField,
         displayNameField,
         noteField,
         lockedField,
@@ -56,28 +57,54 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   EditMyAccountBloc({
     @required this.myAccountBloc,
     @required this.pleromaMyAccountService,
-    @required this.maximumPossibleCustomFieldsCount,
+    @required int noteMaxLength,
+    @required int avatarUploadSizeInBytes,
+    @required int headerUploadSizeInBytes,
+    @required int backgroundUploadSizeInBytes,
+    @required PleromaInstancePleromaPartMetadataFieldLimits customFieldLimits,
   })  : displayNameField = FormStringFieldBloc(
-            originValue: myAccountBloc.displayNameEmojiText.text,
-            validators: [NonEmptyStringFieldValidationError.createValidator()]),
+          originValue: myAccountBloc.displayNameEmojiText.text,
+          validators: [NonEmptyStringFieldValidationError.createValidator()],
+          maxLength: null,
+        ),
         noteField = FormStringFieldBloc(
-            originValue: myAccountBloc.note, validators: []),
+          originValue: myAccountBloc.note,
+          validators: [],
+          maxLength: noteMaxLength,
+        ),
         lockedField =
             FormBoolFieldBloc(originValue: myAccountBloc.account.locked),
         avatarField = FormImageFilePickerOrUrlFieldBloc(
-            originalUrl: myAccountBloc.account.avatar),
+          originalUrl: myAccountBloc.account.avatar,
+          maxFileSizeInBytes: avatarUploadSizeInBytes,
+          isPossibleToDeleteOriginal: false,
+        ),
         headerField = FormImageFilePickerOrUrlFieldBloc(
-            originalUrl: myAccountBloc.account.header),
+          originalUrl: myAccountBloc.account.header,
+          maxFileSizeInBytes: headerUploadSizeInBytes,
+          isPossibleToDeleteOriginal: false,
+        ),
+        backgroundField = FormImageFilePickerOrUrlFieldBloc(
+          originalUrl: myAccountBloc.account.pleromaBackgroundImage,
+          maxFileSizeInBytes: backgroundUploadSizeInBytes,
+          isPossibleToDeleteOriginal: true,
+        ),
         customFieldsGroupBloc =
             FormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>(
-          maximumFieldsCount: _maximumPossibleCustomFieldsCount,
-          newFieldCreator: () =>
-              FormLinkPairFieldGroupBloc(value: null, name: null),
+          maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
+          newEmptyFieldCreator: () => FormLinkPairFieldGroupBloc(
+            value: null,
+            name: null,
+            nameMaxLength: customFieldLimits?.nameLength,
+            valueMaxLength: customFieldLimits?.valueLength,
+          ),
           originalItems: myAccountBloc.fields
               .map(
                 (field) => FormLinkPairFieldGroupBloc(
                   name: field.name,
                   value: field.valueAsRawUrl,
+                  nameMaxLength: customFieldLimits?.nameLength,
+                  valueMaxLength: customFieldLimits?.valueLength,
                 ),
               )
               .toList(),
@@ -94,25 +121,34 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   @override
   Future submitChanges() async {
     var avatarPickedFile = avatarField.isSomethingChanged
-        ? avatarField.currentFilePickerFile
+        ? avatarField.currentMediaDeviceFile
         : null;
 
     var headerPickedFile = headerField.isSomethingChanged
-        ? headerField.currentFilePickerFile
+        ? headerField.currentMediaDeviceFile
         : null;
-    if (avatarPickedFile != null || headerPickedFile != null) {
+    var backgroundPickedFile = backgroundField.isSomethingChanged
+        ? backgroundField.currentMediaDeviceFile
+        : null;
+    if (avatarPickedFile != null ||
+        headerPickedFile != null ||
+        backgroundPickedFile != null) {
       var request = PleromaMyAccountFilesRequest(
-        avatar: avatarPickedFile?.file,
-        header: headerPickedFile?.file,
+        avatar: await avatarPickedFile?.loadFile(),
+        header: await headerPickedFile?.loadFile(),
+        pleromaBackgroundImage: await backgroundPickedFile?.loadFile(),
       );
 
       await _updateFiles(request);
 
       if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
-        await avatarPickedFile.file.delete();
+        await avatarPickedFile.delete();
       }
       if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
-        await headerPickedFile.file.delete();
+        await headerPickedFile.delete();
+      }
+      if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
+        await backgroundPickedFile.delete();
       }
     }
 
@@ -125,13 +161,21 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           name: field.keyField.currentValue,
           value: field.valueField.currentValue);
     });
-    var remoteMyAccount =
-        await pleromaMyAccountService.updateCredentials(PleromaMyAccountEdit(
-      displayName: displayNameField.currentValue,
-      note: noteField.currentValue,
-      fieldsAttributes: fieldsAttributes,
-      locked: lockedField.currentValue,
-    ));
+
+    var backgroundImageOriginalDeleted = backgroundField.isOriginalDeleted;
+    String pleromaBackgroundImage;
+    if (backgroundImageOriginalDeleted) {
+      // API logic
+      // We should set pleromaBackgroundImage to empty string to delete it
+      pleromaBackgroundImage = "";
+    }
+    var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
+        PleromaMyAccountEdit(
+            displayName: displayNameField.currentValue,
+            note: noteField.currentValue,
+            fieldsAttributes: fieldsAttributes,
+            locked: lockedField.currentValue,
+            pleromaBackgroundImage: pleromaBackgroundImage));
 
     await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
   }
@@ -149,12 +193,21 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     }
   }
 
-  static EditMyAccountBloc createFromContext(BuildContext context) =>
-      EditMyAccountBloc(
-          myAccountBloc: IMyAccountBloc.of(context, listen: false),
-          pleromaMyAccountService:
-              IPleromaMyAccountService.of(context, listen: false),
-          maximumPossibleCustomFieldsCount: _maximumPossibleCustomFieldsCount);
+  static EditMyAccountBloc createFromContext(BuildContext context) {
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+        .currentInstance
+        .info;
+    return EditMyAccountBloc(
+      myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      pleromaMyAccountService:
+          IPleromaMyAccountService.of(context, listen: false),
+      customFieldLimits: info?.pleroma?.metadata?.fieldsLimits,
+      noteMaxLength: info?.descriptionLimit,
+      avatarUploadSizeInBytes: info?.avatarUploadLimit,
+      headerUploadSizeInBytes: info?.bannerUploadLimit,
+      backgroundUploadSizeInBytes: info?.backgroundUploadLimit,
+    );
+  }
 
   @override
   void clear() {

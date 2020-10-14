@@ -11,11 +11,11 @@ import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class PollWidget extends StatelessWidget {
   @override
@@ -142,19 +142,29 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      expired ? buildExpired() : buildNotExpired();
+
+  Widget buildNotExpired() {
     return Text(
-      expired
-          ? "app.poll.metadata.expires.expired"
-              .tr(args: [timeago.format(expiresAt, locale: "en_short")])
-          : "app.poll.metadata.expires.not_expired".tr(
-              args: [
-                expiresDateFormat.format(
-                  expiresAt?.toLocal() ?? DateTime.now(),
-                ),
-              ],
-            ),
+      "app.poll.metadata.expires.not_expired".tr(
+        args: [
+          expiresDateFormat.format(
+            expiresAt?.toLocal() ?? DateTime.now(),
+          ),
+        ],
+      ),
       style: FediTextStyles.mediumShortDarkGrey,
+    );
+  }
+
+  Widget buildExpired() {
+    return DateTimeDynamicTimeAgoWidget(
+      dateTime: expiresAt,
+      textStyle: FediTextStyles.mediumShortDarkGrey,
+      customTextBuilder: (timeAgoString) {
+        return "app.poll.metadata.expires.expired".tr(args: [timeAgoString]);
+      },
     );
   }
 }

@@ -41,9 +41,9 @@ class MastodonMediaAttachmentTypeTypeConverter
 
   @override
   MastodonMediaAttachmentType fromJson(String value) =>
-      mastodonMediaAttachmentTypeValues.map[value];
+      mastodonMediaAttachmentTypeValues.valueToEnumMap[value];
 
   @override
   String toJson(MastodonMediaAttachmentType value) =>
-      mastodonMediaAttachmentTypeValues.reverse[value];
+      mastodonMediaAttachmentTypeValues.enumToValueMap[value];
 }

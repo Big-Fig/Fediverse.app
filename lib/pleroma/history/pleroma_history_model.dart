@@ -8,20 +8,24 @@ part 'pleroma_history_model.g.dart';
 
 abstract class IPleromaHistory extends IMastodonHistory {}
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 77)
 @JsonSerializable()
 class PleromaHistory implements IPleromaHistory {
   @override
   @HiveField(0)
-  int accounts;
+  final int accounts;
 
   @override
   @HiveField(1)
-  int dayInUnixTimestamp;
+  final int dayInUnixTimestamp;
 
   @override
   @HiveField(2)
-  int uses;
+  final int uses;
   PleromaHistory({this.accounts, this.dayInUnixTimestamp, this.uses});
 
   factory PleromaHistory.fromJson(Map<String, dynamic> json) =>

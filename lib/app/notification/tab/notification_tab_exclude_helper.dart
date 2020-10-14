@@ -8,23 +8,22 @@ class NotificationTabExcludeHelper {
 
     switch (tab) {
       case NotificationTab.all:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
+        excludeTypes = [PleromaNotificationType.pleromaChatMention];
         break;
       case NotificationTab.mentions:
         excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.mention]);
+            .valuesWithoutSelected([PleromaNotificationType.mention]);
         break;
       case NotificationTab.reblogs:
         excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.reblog]);
+            .valuesWithoutSelected([PleromaNotificationType.reblog]);
         break;
       case NotificationTab.favourites:
         excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.favourite]);
+            .valuesWithoutSelected([PleromaNotificationType.favourite]);
         break;
       case NotificationTab.follows:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+        excludeTypes = pleromaNotificationTypeValues.valuesWithoutSelected([
           PleromaNotificationType.follow,
           PleromaNotificationType.followRequest,
         ]);

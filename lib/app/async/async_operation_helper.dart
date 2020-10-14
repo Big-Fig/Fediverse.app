@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -9,7 +10,8 @@ import 'package:flutter/widgets.dart';
 
 class AsyncOperationHelper {
   static const List<ErrorDataBuilder> defaultErrorDataBuilders = [
-    socketErrorAlertDialogBuilder
+    socketErrorAlertDialogBuilder,
+    timeoutErrorAlertDialogBuilder
   ];
 
   static Future<AsyncDialogResult<T>> performAsyncOperation<T>({
@@ -56,6 +58,22 @@ class AsyncOperationHelper {
         stackTrace: stackTrace,
         titleText: tr("app.async.socket.error.dialog.title"),
         contentText: tr("app.async.socket.error.dialog.content"),
+      );
+    } else {
+      return null;
+    }
+  }
+  static ErrorData timeoutErrorAlertDialogBuilder(
+    BuildContext context,
+    dynamic error,
+    StackTrace stackTrace,
+  ) {
+    if (error is TimeoutException) {
+      return ErrorData(
+        error: error,
+        stackTrace: stackTrace,
+        titleText: tr("app.async.timeout.error.dialog.title"),
+        contentText: tr("app.async.timeout.error.dialog.content"),
       );
     } else {
       return null;

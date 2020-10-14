@@ -1,4 +1,4 @@
-import 'package:fedi/pagination/pagination_bloc.dart';
+import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +8,7 @@ var _logger = Logger("network_only_pagination_bloc_impl.dart");
 
 abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
-    implements IPaginationBloc<TPage, TItem> {
+    implements INetworkOnlyPaginationBloc<TPage, TItem> {
   NetworkOnlyPaginationBloc(
       {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
       : super(

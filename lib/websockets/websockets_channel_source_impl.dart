@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:web_socket_channel/io.dart';
 
-var _logger = Logger("websockets_channel_source.dart");
+var _logger = Logger("websockets_channel_source_impl.dart");
 
 class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannelSource<T> {
@@ -55,11 +55,11 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
       _channel = IOWebSocketChannel.connect(url);
       _channelSubscription = _channel.stream.listen(
         (dynamic message) {
-          _logger.finest(() => "message $message");
+          _logger.finest(() => "$url message $message");
           eventsStreamController.add(_mapChannelData(message));
         },
         onDone: () {
-          _logger.finest(() => "ws channel closed");
+          _logger.finest(() => "ws channel closed $url");
         },
         onError: (error) {
           _logger.shout(() => "ws error $error");
@@ -69,7 +69,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
   }
 
   void _disconnect() {
-    _logger.finest(() => "_disconnect");
+    _logger.finest(() => "_disconnect $url");
     _channelSubscription?.cancel();
     _channel?.sink?.close();
     _channel = null;

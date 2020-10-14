@@ -167,6 +167,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           customBorderColor: FediColors.white.withOpacity(0.8),
           textStyle: FediTextStyles.subHeaderTallWhite,
           highlightMentions: false,
+          maxLength: null,
         ),
         Text(
           "app.auth.instance.join.field.host.helper".tr(),
@@ -233,8 +234,14 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             error,
             stackTrace,
           ) {
-            if (error is RegistrationNotEnabledAuthHostException) {
+            if (error is DisabledRegistrationAuthHostException) {
               return createRegistrationDisabledErrorData(
+                context,
+                error,
+                stackTrace,
+              );
+            } else if (error is InvitesOnlyRegistrationAuthHostException) {
+              return createRegistrationInvitesOnlyErrorData(
                 context,
                 error,
                 stackTrace,
@@ -288,6 +295,16 @@ class JoinAuthInstanceWidget extends StatelessWidget {
               ".registration_disabled.dialog.title"),
           contentText: tr("app.auth.instance.join"
               ".registration_disabled.dialog.content"));
+
+  ErrorData createRegistrationInvitesOnlyErrorData(
+          BuildContext context, error, StackTrace stackTrace) =>
+      ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleText: tr("app.auth.instance.join"
+              ".invites_only.dialog.title"),
+          contentText: tr("app.auth.instance.join"
+              ".invites_only.dialog.content"));
 
   Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);

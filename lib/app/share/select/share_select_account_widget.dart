@@ -2,8 +2,8 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/select/multi/multi_select_account_page.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
-import 'package:fedi/app/account/select/select_account_page.dart';
 import 'package:fedi/app/share/select/share_select_account_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -15,12 +15,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class ShareSelectAccountWidget extends StatelessWidget {
-  final PleromaAccountListLoader customDefaultRemoteAccountListLoader;
-  final AccountListLoader customDefaultLocalAccountListLoader;
+  final PleromaAccountListLoader customRemoteAccountListLoader;
+  final AccountListLoader customLocalAccountListLoader;
 
   ShareSelectAccountWidget({
-    @required this.customDefaultRemoteAccountListLoader,
-    @required this.customDefaultLocalAccountListLoader,
+    @required this.customRemoteAccountListLoader,
+    @required this.customLocalAccountListLoader,
   });
 
   @override
@@ -42,17 +42,16 @@ class ShareSelectAccountWidget extends StatelessWidget {
                 color: FediColors.darkGrey,
               ),
               onPressed: () {
-                goToSelectAccountPage(
+                goToMultiSelectAccountPage(
                   context,
-                  accountSelectedCallback: (context, account) {
-                    shareSelectAccountBloc.addAccountToShare(account);
+                  accountsListSelectedCallback: (context, accounts) {
+                    shareSelectAccountBloc.addAccountsToShare(accounts);
                     Navigator.of(context).pop();
                   },
                   excludeMyAccount: true,
-                  customDefaultLocalAccountListLoader:
-                      customDefaultLocalAccountListLoader,
-                  customDefaultRemoteAccountListLoader:
-                      customDefaultRemoteAccountListLoader,
+                  customLocalAccountListLoader: customLocalAccountListLoader,
+                  customRemoteAccountListLoader: customRemoteAccountListLoader,
+                  followingsOnly: false,
                 );
               },
             ),
@@ -87,7 +86,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
                                     accountSelectedCallback:
                                         (context, account) {
                                       shareSelectAccountBloc
-                                          .removeAccountToShare(account);
+                                          .removeAccountsToShare([account]);
                                     },
                                   ),
                                 ),
@@ -96,7 +95,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
                                   color: FediColors.darkGrey,
                                   onPressed: () {
                                     shareSelectAccountBloc
-                                        .removeAccountToShare(account);
+                                        .removeAccountsToShare([account]);
                                   },
                                 )
                               ],

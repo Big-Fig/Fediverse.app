@@ -18,7 +18,8 @@ class SearchAccountPaginationBloc
   @override
   PaginationPage<IAccount> mapPage(PaginationPage<ISearchResultItem> page) {
     List<IAccount> items = page.items
-        .where((searchResultItem) => searchResultItem.isAccount)
+        .where((searchResultItem) => searchResultItem.type ==
+        SearchResultItemType.account)
         .map((searchResultItem) => searchResultItem.account)
         .toList();
     return PaginationPage(

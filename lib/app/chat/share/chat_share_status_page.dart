@@ -27,10 +27,10 @@ class ChatShareStatusPage extends StatelessWidget {
       body: ShareStatusWithMessageWidget(
         status: status,
         header: ShareSelectAccountWidget(
-          customDefaultLocalAccountListLoader:
-              chatShareBloc.customDefaultLocalAccountListLoader,
-          customDefaultRemoteAccountListLoader:
-              chatShareBloc.customDefaultRemoteAccountListLoader,
+          customLocalAccountListLoader:
+              chatShareBloc.customLocalAccountListLoader,
+          customRemoteAccountListLoader:
+              chatShareBloc.customRemoteAccountListLoader,
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/widgets.dart';
@@ -40,6 +41,14 @@ class AccountActionMoreDialogBody extends StatelessWidget {
       content: "${accountBloc.acct}",
       actions: [
         DialogAction(
+            icon: FediIcons.browser,
+            label: tr("app.account.action.open_in_browser"),
+            onAction: () async {
+              var url = accountBloc.account.url;
+              await UrlHelper.handleUrlClick(context, url);
+              Navigator.of(context).pop();
+            }),
+        DialogAction(
           icon: FediIcons.mute,
           label: relationship.muting
               ? tr("app.account.action.unmute")
@@ -59,12 +68,24 @@ class AccountActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
+        if (accountBloc.isOnRemoteDomain)
+          DialogAction(
+            icon: FediIcons.block,
+            label: relationship.domainBlocking
+                ? tr("app.account.action.unblock_domain",
+                    args: [accountBloc.remoteDomainOrNull])
+                : tr("app.account.action.block_domain",
+                    args: [accountBloc.remoteDomainOrNull]),
+            onAction: () async {
+              await accountBloc.toggleBlockDomain();
+              Navigator.of(context).pop();
+            },
+          ),
         DialogAction(
             icon: FediIcons.report,
             label: tr("app.account.action.report.label"),
             onAction: () async {
-              var success = await doAsyncActionReport(
-                  context, accountBloc);
+              var success = await doAsyncActionReport(context, accountBloc);
 
               if (success) {
                 Navigator.of(context).pop();

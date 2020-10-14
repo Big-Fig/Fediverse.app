@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
@@ -7,7 +9,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,14 +55,26 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       _buildAction(FediIcons.image, "app.media.attachment.type.gallery".tr(),
           () async {
         goToSingleMediaPickerPage(context,
-            fileSelectedCallback: (FilePickerFile filePickerFile) {
+            onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+            context,
+            attachmentsCollectionBloc,
+            mediaDeviceFile,
+          );
           Navigator.of(context).pop();
         });
       });
+
+  Future _attachMedia(
+    BuildContext context,
+    IUploadMediaAttachmentsCollectionBloc attachmentsCollectionBloc,
+    IMediaDeviceFile mediaDeviceFile,
+  ) async {
+    await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
+    onFileSelected();
+  }
 
   Widget _buildAttachPhoto(BuildContext context) =>
       _buildAction(FediIcons.camera, "app.media.attachment.type.photo".tr(),
@@ -70,15 +84,15 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
         var pickedFile = await mediaPickerService.pickImageFromCamera();
 
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.image,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.image,
             isNeedDeleteAfterUsage: true,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
@@ -90,50 +104,61 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
         var pickedFile = await mediaPickerService.pickVideoFromCamera();
 
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.video,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.video,
             isNeedDeleteAfterUsage: true,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
   Widget _buildAttachFile(BuildContext context) =>
       _buildAction(FediIcons.file, "app.media.attachment.type.file".tr(),
           () async {
-        var pickedFile = await FilePicker.getFile();
+        var pickedFilesResult = await FilePicker.platform.pickFiles();
+        var pickedFile;
+
+        if (pickedFilesResult.files?.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult.files.first.path);
+        }
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.other,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.other,
             isNeedDeleteAfterUsage: false,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
 
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
   Widget _buildAttachAudio(BuildContext context) =>
       _buildAction(FediIcons.audio, "app.media.attachment.type.audio".tr(),
           () async {
-        var pickedFile = await FilePicker.getFile(type: FileType.audio);
+        var pickedFilesResult =
+            await FilePicker.platform.pickFiles(type: FileType.audio);
+        var pickedFile;
+
+        if (pickedFilesResult.files?.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult.files.first.path);
+        }
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.other,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.other,
             isNeedDeleteAfterUsage: false,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 

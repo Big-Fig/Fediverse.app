@@ -4,6 +4,7 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
@@ -12,9 +13,12 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -31,7 +35,7 @@ class NotificationListItemWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
-    return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
+    var child = DisposableProxyProvider<INotificationBloc, IAccountBloc>(
       update: (context, value, previous) => AccountBloc.createFromContext(
         context,
         account: value.account,
@@ -76,13 +80,42 @@ class NotificationListItemWidget extends StatelessWidget {
                   ),
                 ),
                 const FediBigHorizontalSpacer(),
-                NotificationCreatedAtWidget()
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FediIconInCircleTransparentButton(
+                      FediIcons.close,
+                      onPressed: () async {
+                        await notificationBloc.dismiss();
+                      },
+                      color: FediColors.darkGrey,
+                      iconSize : 12.0,
+                      size : 24.0,
+                    ),
+                    NotificationCreatedAtWidget(),
+                  ],
+                ),
+
               ],
             ),
           ],
         ),
       ),
     );
+    return StreamBuilder<bool>(
+        stream: notificationBloc.dismissedStream,
+        initialData: notificationBloc.dismissed,
+        builder: (context, snapshot) {
+          var dismissed = snapshot.data;
+          if (dismissed == true) {
+            return FediBlurredOverlayWarningWidget(
+              descriptionText: "app.notification.dismissed".tr(),
+              child: child,
+            );
+          } else {
+            return child;
+          }
+        });
   }
 
   void onNotificationClick(
@@ -90,7 +123,9 @@ class NotificationListItemWidget extends StatelessWidget {
     var status = notificationBloc.status;
     var account = notificationBloc.account;
     var chatRemoteId = notificationBloc.chatRemoteId;
-    if (status != null) {
+    if (notificationBloc.typePleroma == PleromaNotificationType.followRequest) {
+      goToMyAccountFollowRequestListPage(context);
+    } else if (status != null) {
       goToStatusThreadPage(context, status);
     } else if (chatRemoteId != null) {
       var chatRepository = IChatRepository.of(context, listen: false);

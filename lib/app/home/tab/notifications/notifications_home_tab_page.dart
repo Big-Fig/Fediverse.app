@@ -22,6 +22,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 const _notificationTabs = [
@@ -32,17 +33,31 @@ const _notificationTabs = [
   NotificationTab.follows,
 ];
 
-class NotificationsHomeTabPage extends StatefulWidget {
-  const NotificationsHomeTabPage({Key key}) : super(key: key);
+var _logger = Logger("notifications_home_tab_page.dart");
 
+class NotificationsHomeTabPage extends StatelessWidget {
   @override
-  _NotificationsHomeTabPageState createState() =>
-      _NotificationsHomeTabPageState();
+  Widget build(BuildContext context) {
+    return DisposableProvider<INotificationTabsBloc>(
+      create: (context) => NotificationsTabsBloc.createFromContext(context),
+      child: NotificationsHomeTabPageBody(),
+    );
+  }
 }
 
-class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
-    with TickerProviderStateMixin {
+class NotificationsHomeTabPageBody extends StatefulWidget {
+  const NotificationsHomeTabPageBody({Key key}) : super(key: key);
+
+  @override
+  _NotificationsHomeTabPageBodyState createState() =>
+      _NotificationsHomeTabPageBodyState();
+}
+
+class _NotificationsHomeTabPageBodyState
+    extends State<NotificationsHomeTabPageBody> with TickerProviderStateMixin {
   TabController tabController;
+
+  VoidCallback listener;
 
   @override
   void initState() {
@@ -51,11 +66,25 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
       vsync: this,
       length: _notificationTabs.length,
     );
+
+    listener = () {
+      var tab = _notificationTabs[tabController.index];
+      var notificationTabsBloc =
+          INotificationTabsBloc.of(context, listen: false);
+      var paginationListBloc =
+          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
+      if (paginationListBloc.unmergedNewItemsCount > 0) {
+        paginationListBloc.mergeNewItems();
+      }
+      notificationTabsBloc.selectTab(tab);
+    };
+    tabController.addListener(listener);
   }
 
   @override
   void dispose() {
     super.dispose();
+    tabController.removeListener(listener);
     tabController.dispose();
   }
 
@@ -63,16 +92,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: _buildBody(),
-    );
-  }
-
-  DisposableProvider<INotificationTabsBloc> _buildBody() {
-    return DisposableProvider<INotificationTabsBloc>(
-      create: (context) => NotificationsTabsBloc.createFromContext(context),
-      child: Builder(
-        builder: (context) => _buildBodyWidget(context),
-      ),
+      body: _buildBodyWidget(context),
     );
   }
 
@@ -103,13 +123,13 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
 
           return _buildTabBodyProvider(context, tab, child);
         },
-        tabBodyContentBuilder: (BuildContext context) =>
+        tabBodyContentBuilder: (BuildContext context, int index) =>
             FediDarkStatusBarStyleArea(
           child: NotificationPaginationListWidget(
             needWatchLocalRepositoryForUpdates: true,
           ),
         ),
-        tabBodyOverlayBuilder: (BuildContext context) =>
+        tabBodyOverlayBuilder: (BuildContext context, int index) =>
             NotificationListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: (BuildContext context, Widget child) {
           return ClipRRect(
@@ -126,6 +146,8 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
 
   Widget _buildTabBodyProvider(
       BuildContext context, NotificationTab tab, Widget child) {
+    _logger.finest(() => "_buildTabBodyProvider tab $tab");
+
     var timelineTabPaginationListBloc =
         INotificationTabsBloc.of(context, listen: false)
             .retrieveTimelineTabPaginationListBloc(tab);
@@ -145,9 +167,9 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
     );
   }
 
-  List<Widget> _buildEndingWidgets(BuildContext context) {
-    return [buildFilterActionButton()];
-  }
+  List<Widget> _buildEndingWidgets(BuildContext context) => [
+        buildFilterActionButton(),
+      ];
 
   Widget buildFilterActionButton() => FediIconInCircleBlurredButton(
         FediIcons.filter,

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/app/media/attachment/media_attachment_non_media_item_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notificationOverlay.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +32,8 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
 
     streamSubscription =
         uploadMediaAttachmentBloc.uploadStateStream.listen((state) {
-      if (state == UploadMediaAttachmentState.failed) {
-        showMediaAttachmentFailedNotificationOverlay(context);
+      if (state.type == UploadMediaAttachmentStateType.failed) {
+        showMediaAttachmentFailedNotificationOverlay(context, state.error);
       }
     });
   }
@@ -56,11 +57,20 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
         initialData: mediaItemBloc.uploadState,
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
-          return MediaAttachmentNonMediaItemWidget(
-              opacity:
-                  uploadState == UploadMediaAttachmentState.uploaded ? 1 : 0.5,
-              filePath: mediaItemBloc.filePickerFile.file.path,
-              actionsWidget: actionsWidget);
+          return FutureBuilder(
+            future: mediaItemBloc.calculateFilePath(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              var filePath = snapshot.data;
+
+              return MediaAttachmentNonMediaItemWidget(
+                  opacity: uploadState.type ==
+                          UploadMediaAttachmentStateType.uploaded
+                      ? 1
+                      : 0.5,
+                  filePath: filePath ?? "",
+                  actionsWidget: actionsWidget);
+            },
+          );
         });
   }
 
@@ -72,15 +82,22 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
 
-          switch (uploadState) {
-            case UploadMediaAttachmentState.uploading:
+          switch (uploadState.type) {
+            case UploadMediaAttachmentStateType.uploading:
               return buildLoading();
               break;
-            case UploadMediaAttachmentState.notUploaded:
-            case UploadMediaAttachmentState.uploaded:
+            case UploadMediaAttachmentStateType.notUploaded:
+            case UploadMediaAttachmentStateType.uploaded:
               return buildRemoveButton(context, mediaItemBloc);
-            case UploadMediaAttachmentState.failed:
-              return buildErrorButton(context, mediaItemBloc);
+            case UploadMediaAttachmentStateType.failed:
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  buildErrorButton(context, mediaItemBloc),
+                  const FediSmallHorizontalSpacer(),
+                  buildRemoveButton(context, mediaItemBloc),
+                ],
+              );
             default:
               throw "Invalid state uploadState ${uploadState}";
               break;
@@ -104,11 +121,12 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
   }
 
   Widget buildRemoveButton(
-      BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) => FediRemoveIconInCircleButton(
-      onPressed: () {
-        showConfirmRemoveAssetDialog(context, mediaItemBloc);
-      },
-    );
+          BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) =>
+      FediRemoveIconInCircleButton(
+        onPressed: () {
+          showConfirmRemoveAssetDialog(context, mediaItemBloc);
+        },
+      );
 
   Widget buildErrorButton(
       BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {

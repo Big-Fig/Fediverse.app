@@ -10,8 +10,10 @@ abstract class StatusCachedPaginationListBaseWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    ScrollController scrollController,
   }) : super(
             key: key,
+            scrollController: scrollController,
             footer: footer,
             header: header,
             alwaysShowHeader: alwaysShowHeader,

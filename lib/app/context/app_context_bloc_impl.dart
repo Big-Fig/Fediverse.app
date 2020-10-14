@@ -11,12 +11,14 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
+import 'package:fedi/app/local_prefernces/fedi_local_preferences_service_migration_bloc_impl.dart';
 import 'package:fedi/app/localization/localization_service.dart';
 import 'package:fedi/app/localization/localization_service_impl.dart';
 import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -25,8 +27,9 @@ import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/local_preferences_service_hive_impl.dart';
+import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';
@@ -45,7 +48,6 @@ import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
 import 'package:fedi/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
-import 'package:package_info/package_info.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
 
@@ -86,9 +88,35 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
 
-    var preferencesService = HiveLocalPreferencesService();
-    await globalProviderService
-        .asyncInitAndRegister<ILocalPreferencesService>(preferencesService);
+    var sharedPreferencesService = SharedPreferencesLocalPreferencesService();
+
+    await sharedPreferencesService.performAsyncInit();
+
+    final sharedPreferencesStorageExist =
+        await sharedPreferencesService.isStorageExist();
+    _logger.finest(() => "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
+    if (!sharedPreferencesStorageExist) {
+
+      var hivePreferencesService =
+          HiveLocalPreferencesService(boxName: "local_preferences");
+      await hivePreferencesService.performAsyncInit();
+      var hivePreferencesExist = await hivePreferencesService.isStorageExist();
+      _logger.finest(() => "hivePreferencesExist == ${hivePreferencesExist}");
+      if (hivePreferencesExist) {
+        var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
+          inputService: hivePreferencesService,
+          outputService: sharedPreferencesService,
+        );
+
+        await migrationBloc.migrateData();
+        await hivePreferencesService.clearAllValuesAndDeleteStorage();
+      }
+
+      await sharedPreferencesService.putStorageCreatedKey();
+    }
+
+    await globalProviderService.asyncInitAndRegister<ILocalPreferencesService>(
+        sharedPreferencesService);
 
     var cameraPermissionBloc =
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
@@ -108,13 +136,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
         PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
-            preferencesService);
+            sharedPreferencesService);
     await globalProviderService.asyncInitAndRegister<
             IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
 
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(preferencesService);
+        AuthInstanceListLocalPreferenceBloc(sharedPreferencesService);
     await globalProviderService.asyncInitAndRegister<
         IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
@@ -124,7 +152,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(preferencesService);
+        CurrentAuthInstanceLocalPreferenceBloc(sharedPreferencesService);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
@@ -136,22 +164,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
     String pushRelayBaseUrl;
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // different
-    var packageName = packageInfo.packageName;
-    if (packageName ==
-        "com.fediverse"
-            ".app2") {
-      // test app2 push relay
-      pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
-    } else if (packageName ==
-        "com.fediverse"
-            ".app") {
-      // production app push relay
+    if (await FediPackageInfoHelper.isProdPackageId()) {
       pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
+    } else if (await FediPackageInfoHelper.isDevPackageId()) {
+      pushRelayBaseUrl = "https://pushrelay.jff.name/push/";
     } else {
+      var packageName = await FediPackageInfoHelper.getPackageId();
       throw "Invalid packageName $packageName";
     }
+
     var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
     addDisposable(disposable: pushRelayService);
     await globalProviderService
@@ -162,7 +183,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
     var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferencesBloc(preferencesService);
+        PushHandlerUnhandledLocalPreferencesBloc(sharedPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(

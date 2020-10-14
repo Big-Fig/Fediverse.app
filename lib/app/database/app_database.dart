@@ -31,6 +31,9 @@ import 'package:fedi/app/status/database/status_lists_database_dao.dart';
 import 'package:fedi/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
+import 'package:fedi/app/status/draft/database/draft_status_database_dao.dart';
+import 'package:fedi/app/status/draft/database/draft_status_database_model.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -71,7 +74,8 @@ part 'app_database.g.dart';
 //  DbChats,
 //  DbChatAccounts,
 //  DbChatMessages,
-  DbHomeTimelineStatuses
+  DbHomeTimelineStatuses,
+  DbDraftStatuses,
 //  DbAccountRelationships
 ], daos: [
   StatusDao,
@@ -91,6 +95,8 @@ part 'app_database.g.dart';
   ChatAccountsDao,
   ChatMessageDao,
   HomeTimelineStatusesDao,
+  DraftStatusDao,
+
 //  AccountRelationshipsDao
 ], include: {
   'app_database.moor'
@@ -99,17 +105,52 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 2;
-
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
       onCreate: (Migrator m) => m.createAll(),
       onUpgrade: (Migrator m, int from, int to) async {
-        if (from == 1 && to == 2) {
-          await m.addColumn(dbChatMessages, dbChatMessages.card);
-        }
-      }
-  );
-}
 
+        var currentVersion = from;
+
+        while(currentVersion < to) {
+          switch(currentVersion) {
+            case 1:
+              await _migrate1to2(m);
+              break;
+            case 2:
+              await _migrate2to3(m);
+              break;
+            case 3:
+              await _migrate3to4(m);
+              break;
+            case 4:
+              await _migrate4to5(m);
+              break;
+            case 5:
+              await _migrate5to6(m);
+              break;
+            default:
+              throw "invalid currentVersion $currentVersion";
+          }
+          currentVersion++;
+        }
+
+      });
+
+  Future<void> _migrate5to6(Migrator m) async =>
+      await m.addColumn(dbNotifications, dbNotifications.dismissed);
+
+  Future<void> _migrate4to5(Migrator m) async =>
+      await m.addColumn(dbAccounts, dbAccounts.pleromaBackgroundImage);
+
+  Future<void> _migrate3to4(Migrator m) async =>
+      await m.addColumn(dbStatuses, dbStatuses.deleted);
+
+  Future<void> _migrate2to3(Migrator m) async =>
+      await m.createTable(dbDraftStatuses);
+
+  Future<void> _migrate1to2(Migrator m) async =>
+      await m.addColumn(dbChatMessages, dbChatMessages.card);
+}

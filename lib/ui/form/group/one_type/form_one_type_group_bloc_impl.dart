@@ -4,7 +4,7 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-typedef NewFieldCreator<T> = T Function();
+typedef NewEmptyFieldCreator<T> = T Function();
 
 class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     implements IFormOneTypeGroupBloc<T> {
@@ -12,7 +12,7 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   final int maximumFieldsCount;
   @override
   final int minimumFieldsCount;
-  final NewFieldCreator<T> newFieldCreator;
+  final NewEmptyFieldCreator<T> newEmptyFieldCreator;
 
   final List<T> originalItems;
 
@@ -21,7 +21,7 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   FormOneTypeGroupBloc({
     @required this.maximumFieldsCount,
     @required this.minimumFieldsCount,
-    @required this.newFieldCreator,
+    @required this.newEmptyFieldCreator,
     @required this.originalItems,
   }) : _itemsSubject = BehaviorSubject.seeded([
           ...originalItems,
@@ -98,15 +98,17 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }
 
   @override
-  void addNewEmptyField() {
+  T addNewEmptyField() {
     assert(!isMaximumFieldsCountReached);
 
-    var newField = newFieldCreator();
+    var newField = newEmptyFieldCreator();
     items.add(newField);
     _itemsSubject.add(items);
     isGroupChanged = true;
     checkIsSomethingChanged();
     recalculateErrors();
+
+    return newField;
   }
 
   @override
@@ -125,5 +127,24 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   void clear() {
     originalItems.forEach((item) => item.clear());
     _itemsSubject.add(originalItems);
+  }
+
+  @override
+  T addNewField(T newField) {
+    assert(!isMaximumFieldsCountReached);
+
+    items.add(newField);
+    _itemsSubject.add(items);
+    isGroupChanged = true;
+    checkIsSomethingChanged();
+    recalculateErrors();
+
+    return newField;
+  }
+
+  @override
+  void removeAllFields() {
+    items.clear();
+    _itemsSubject.add(items);
   }
 }

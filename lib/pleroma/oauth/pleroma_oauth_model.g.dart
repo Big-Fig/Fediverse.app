@@ -9,38 +9,30 @@ part of 'pleroma_oauth_model.dart';
 class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
   @override
   PleromaOAuthToken read(BinaryReader reader) {
-    var obj = PleromaOAuthToken();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.accessToken = reader.read() as String;
-          break;
-        case 1:
-          obj.tokenType = reader.read() as String;
-          break;
-        case 2:
-          obj.scope = reader.read() as dynamic;
-          break;
-        case 3:
-          obj.createdAt = reader.read() as dynamic;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaOAuthToken(
+      accessToken: fields[0] as String,
+      tokenType: fields[1] as String,
+      scope: fields[2] as dynamic,
+      createdAt: fields[3] as dynamic,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaOAuthToken obj) {
-    writer.writeByte(4);
-    writer.writeByte(0);
-    writer.write(obj.accessToken);
-    writer.writeByte(1);
-    writer.write(obj.tokenType);
-    writer.writeByte(2);
-    writer.write(obj.scope);
-    writer.writeByte(3);
-    writer.write(obj.createdAt);
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.accessToken)
+      ..writeByte(1)
+      ..write(obj.tokenType)
+      ..writeByte(2)
+      ..write(obj.scope)
+      ..writeByte(3)
+      ..write(obj.createdAt);
   }
 }
 

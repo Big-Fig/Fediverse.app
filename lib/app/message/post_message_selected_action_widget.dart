@@ -30,7 +30,8 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                   ),
                   SelectMediaAttachmentTypeToPickWidget(
                     onFileSelected: () {
-                      postMessageBloc.toggleAttachActionSelection();
+                      postMessageBloc.onFileSelected();
+
                     },
                   ),
                 ],

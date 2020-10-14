@@ -46,6 +46,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                       var error =
                           errors?.isNotEmpty == true ? errors.first : null;
                       return FediTransparentEditTextField(
+                        maxLength: nameStringFieldBloc.maxLength,
                         expanded: false,
                         autofocus: false,
                         hintText: nameHint,
@@ -77,6 +78,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                           errors?.isNotEmpty == true ? errors.first : null;
 
                       return FediTransparentEditTextField(
+                        maxLength: valueStringFieldBloc.maxLength,
                         expanded: false,
                         autofocus: false,
                         hintText: valueHint,

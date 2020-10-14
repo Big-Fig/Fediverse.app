@@ -15,7 +15,6 @@ class PleromaNotificationService implements IPleromaNotificationService {
   @override
   final IPleromaAuthRestService restService;
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -98,6 +97,36 @@ class PleromaNotificationService implements IPleromaNotificationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
+      throw PleromaNotificationException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future dismissNotification({@required String notificationRemoteId}) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath:
+            join(notificationRelativeUrlPath, notificationRemoteId, "dismiss"),
+      ),
+    );
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaNotificationException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future dismissAll() async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath:
+        join(notificationRelativeUrlPath, "clear"),
+      ),
+    );
+
+    if (httpResponse.statusCode != 200) {
       throw PleromaNotificationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }

@@ -35,8 +35,6 @@ import 'package:logging/logging.dart';
 var _logger = Logger("home_page.dart");
 
 class HomePage extends StatelessWidget {
-
-
   const HomePage();
 
   @override
@@ -146,8 +144,7 @@ class HomePage extends StatelessWidget {
         }));
         return timelinesHomeTabBloc;
       },
-      child: TimelinesHomeTabBlocProxyProvider(
-          child: const TimelinesHomeTabPage()),
+      child: TimelinesHomeTabBlocProxyProvider(child: TimelinesHomeTabPage()),
     );
   }
 
@@ -251,5 +248,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }

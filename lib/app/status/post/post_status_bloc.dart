@@ -1,12 +1,15 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPostStatusBloc implements IPostMessageBloc {
+  bool get isAnyDataEntered;
+
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
@@ -26,9 +29,17 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<bool> get isNsfwSensitiveEnabledStream;
 
-  void addMentionByAccount(IAccount account);
+  TextEditingController get subjectTextController;
 
-  void removeMentionByAccount(IAccount account);
+  FocusNode get subjectFocusNode;
+
+  String get subjectText;
+
+  Stream<String> get subjectTextStream;
+
+  void addAccountMentions(List<IAccount> accounts);
+
+  void removeAccountMentions(List<IAccount> accounts);
 
   void removeMentionByAcct(String acct);
 
@@ -58,15 +69,8 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   IStatus get originInReplyToStatus;
 
-  IStatus get notCanceledOriginInReplyToStatus;
 
-  Stream<IStatus> get notCanceledOriginInReplyToStatusStream;
-
-  bool get originInReplyToStatusCanceled;
-
-  Stream<bool> get originInReplyToStatusCanceledStream;
   IPostStatusPollBloc get pollBloc;
 
-
-  void cancelOriginInReplyToStatus();
+  IPostStatusData calculateCurrentPostStatusData();
 }

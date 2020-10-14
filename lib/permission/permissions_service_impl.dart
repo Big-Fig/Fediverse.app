@@ -4,16 +4,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsService extends DisposableOwner
     implements IPermissionsService {
-  final PermissionHandler permissionHandler = PermissionHandler();
-
   @override
-  Future<PermissionStatus> checkPermissionStatus(PermissionGroup permission) {
-    return permissionHandler.checkPermissionStatus(permission);
+  Future<PermissionStatus> checkPermissionStatus(Permission permission) {
+    return permission.status;
   }
 
   @override
-  Future<Map<PermissionGroup, PermissionStatus>> requestPermissions(
-      List<PermissionGroup> list) {
-    return permissionHandler.requestPermissions(list);
+  Future<Map<Permission, PermissionStatus>> requestPermissions(
+      List<Permission> list) {
+    return list.request();
   }
 }

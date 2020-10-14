@@ -101,7 +101,8 @@ class AccountBloc extends IAccountBloc {
       if (needRefreshFromNetworkOnInit == true) {
         refreshFromNetwork(isNeedPreFetchRelationship);
       } else {
-        if (isNeedPreFetchRelationship && accountRelationship?.following == null) {
+        if (isNeedPreFetchRelationship &&
+            accountRelationship?.following == null) {
           _refreshAccountRelationship(account);
         }
       }
@@ -155,7 +156,7 @@ class AccountBloc extends IAccountBloc {
 
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
-    if(!_accountRelationshipSubject.isClosed) {
+    if (!_accountRelationshipSubject.isClosed) {
       _accountRelationshipSubject.add(newRelationship);
     }
     var newAccount = account.copyWith(pleromaRelationship: newRelationship);
@@ -199,7 +200,7 @@ class AccountBloc extends IAccountBloc {
             followingAccountId: account.remoteId);
       }
 
-      await statusRepository.removeHomeStatusesFromAccount(
+      await statusRepository.removeAccountStatusesFromHome(
           accountRemoteId: account.remoteId);
     } else {
       newRelationship = await pleromaAccountService.followAccount(
@@ -242,6 +243,24 @@ class AccountBloc extends IAccountBloc {
       newRelationship = await pleromaAccountService.pinAccount(
           accountRemoteId: account.remoteId);
     }
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> toggleBlockDomain() async {
+    assert(accountRelationship != null);
+    var newRelationship;
+    var domainBlocking = accountRelationship.domainBlocking == true;
+    var domain = remoteDomainOrNull;
+    if (domainBlocking) {
+      await pleromaAccountService.unBlockDomain(domain: domain);
+    } else {
+      await pleromaAccountService.blockDomain(domain: domain);
+    }
+    newRelationship =
+        accountRelationship.copyWith(domainBlocking: !domainBlocking);
     await _updateRelationship(account, newRelationship);
 
     return newRelationship;
@@ -311,4 +330,14 @@ class AccountBloc extends IAccountBloc {
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false),
           myAccount: IMyAccountBloc.of(context, listen: false).account);
+
+  @override
+  String get remoteDomainOrNull {
+    var usernameWithAt = "${account.username}@";
+    if (acct.contains(usernameWithAt)) {
+      return acct.replaceAll(usernameWithAt, "");
+    } else {
+      return null;
+    }
+  }
 }

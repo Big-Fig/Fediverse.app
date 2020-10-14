@@ -1,7 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,16 +16,15 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var nsfwSensitive = snapshot.data;
 
-            return Container(
-              height: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Center(
-                  child: Text(tr("app.status.post.nsfw.title").toUpperCase(),
-                      style: FediTextStyles.mediumShortDarkGrey
-                          .copyWith(color: calculateColor(nsfwSensitive))),
-                ),
+            return FediIconButton(
+              icon: Icon(
+                Icons.visibility,
+                color: calculateColor(nsfwSensitive),
               ),
+              onPressed: () {
+                postStatusBloc.changeNsfwSensitive(
+                    !postStatusBloc.isNsfwSensitiveEnabled);
+              },
             );
           }),
       onTap: () {

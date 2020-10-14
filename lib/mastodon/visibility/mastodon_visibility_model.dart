@@ -1,12 +1,12 @@
 import 'package:fedi/enum/enum_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-enum MastodonVisibility { PUBLIC, UNLISTED, DIRECT }
+enum MastodonVisibility { public, unlisted, direct }
 
 final mastodonVisibilityValues = EnumValues({
-  "public": MastodonVisibility.PUBLIC,
-  "unlisted": MastodonVisibility.UNLISTED,
-  "direct": MastodonVisibility.DIRECT
+  "public": MastodonVisibility.public,
+  "unlisted": MastodonVisibility.unlisted,
+  "direct": MastodonVisibility.direct
 });
 
 class MastodonVisibilityTypeConverter
@@ -15,8 +15,8 @@ class MastodonVisibilityTypeConverter
 
   @override
   MastodonVisibility fromJson(String value) =>
-      mastodonVisibilityValues.map[value];
+      mastodonVisibilityValues.valueToEnumMap[value];
   @override
   String toJson(MastodonVisibility value) =>
-      mastodonVisibilityValues.reverse[value];
+      mastodonVisibilityValues.enumToValueMap[value];
 }

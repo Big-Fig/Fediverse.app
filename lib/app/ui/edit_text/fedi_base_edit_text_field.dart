@@ -26,6 +26,7 @@ class FediBaseEditTextField extends StatelessWidget {
   final InputBorder focusedBorder;
   final InputBorder errorBorder;
   final bool highlightMentions;
+  final int maxLength;
 
   FediBaseEditTextField({
     @required this.textEditingController,
@@ -49,13 +50,15 @@ class FediBaseEditTextField extends StatelessWidget {
     @required this.errorBorder,
     @required this.focusedBorder,
     @required this.highlightMentions,
+    @required this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
     return ExtendedTextField(
-        specialTextSpanBuilder: _SpecialTextSpanBuilder(),
+      specialTextSpanBuilder: _SpecialTextSpanBuilder(),
 //    return TextField(
+      maxLength: maxLength,
       autocorrect: autocorrect,
       obscureText: obscureText,
       focusNode: focusNode,
@@ -83,6 +86,9 @@ class FediBaseEditTextField extends StatelessWidget {
       maxLines: maxLines,
       expands: expanded,
       keyboardType: keyboardType,
+      buildCounter: (BuildContext context,
+              {int currentLength, int maxLength, bool isFocused}) =>
+          null,
     );
   }
 }

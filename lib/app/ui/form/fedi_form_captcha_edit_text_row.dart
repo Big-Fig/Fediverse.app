@@ -76,6 +76,7 @@ class FediFormCaptchaEditTextRow extends StatelessWidget {
               displayUnderlineBorder: true,
               errorText: errorText,
               highlightMentions: false,
+              maxLength: null,
             ),
           ],
         ),

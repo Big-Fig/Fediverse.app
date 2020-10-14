@@ -47,10 +47,7 @@ class DbAccounts extends Table {
   TextColumn get emojis =>
       text().nullable().map(PleromaEmojiListDatabaseConverter()).nullable()();
 
-  // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  // TODO: add when type will be found
-//  dynamic get pleromaBackgroundImage;
-  //  TextColumn get pleromaBackgroundImage => text()();
+  TextColumn get pleromaBackgroundImage => text().nullable()();
 
   TextColumn get pleromaTags =>
       text().nullable().map(PleromaTagListDatabaseConverter()).nullable()();

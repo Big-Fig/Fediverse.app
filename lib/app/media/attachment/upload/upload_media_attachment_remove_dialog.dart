@@ -27,7 +27,7 @@ void showConfirmRemoveAssetDialog(
             child: Text(tr("app.media.attachment.upload.remove.dialog"
                 ".action.remove")),
             onPressed: () {
-              attachmentsBloc.detachMedia(mediaItemBloc.filePickerFile);
+              attachmentsBloc.detachMediaAttachmentBloc(mediaItemBloc);
               Navigator.of(context).pop();
             },
           ),

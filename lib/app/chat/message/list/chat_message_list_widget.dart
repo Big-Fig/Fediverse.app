@@ -48,7 +48,13 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,
               action: () async {
-                bool success = await additionalPreRefreshAction(context);
+                var success;
+                try {
+                  success = await additionalPreRefreshAction(context);
+                } catch (e, stackTrace) {
+                  success = false;
+                  _logger.severe(() => "additionalPreRefreshAction()", e, stackTrace);
+                }
                 _logger.finest(() => "additionalRefreshAction $success");
                 var state = await paginationListBloc.refreshWithoutController();
                 _logger.finest(() => "paginationListBloc.refresh() $state");

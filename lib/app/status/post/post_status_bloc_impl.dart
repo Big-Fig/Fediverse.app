@@ -4,10 +4,15 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc_impl.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -22,72 +27,48 @@ final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
 
 abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
-  final IPleromaStatusService pleromaStatusService;
-  final IStatusRepository statusRepository;
-
-  final String conversationRemoteId;
   @override
-  final IStatus originInReplyToStatus;
-
-  String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
-
-  @override
-  IPostStatusPollBloc pollBloc = PostStatusPollBloc();
-
-  String idempotencyKey;
-
-  @override
-  IStatus get notCanceledOriginInReplyToStatus =>
-      (originInReplyToStatus != null && !originInReplyToStatusCanceled)
-          ? originInReplyToStatus
-          : null;
-
-  @override
-  Stream<IStatus> get notCanceledOriginInReplyToStatusStream =>
-      originInReplyToStatusCanceledStream.map((originInReplyToStatusCanceled) =>
-          (originInReplyToStatus != null && !originInReplyToStatusCanceled)
-              ? originInReplyToStatus
-              : null);
-
-  @override
-  bool get originInReplyToStatusCanceled =>
-      originInReplyToStatusCanceledSubject.value;
-
-  @override
-  Stream<bool> get originInReplyToStatusCanceledStream =>
-      originInReplyToStatusCanceledSubject.stream;
-
-  @override
-  void cancelOriginInReplyToStatus() {
-    originInReplyToStatusCanceledSubject.add(true);
+  bool get isAnyDataEntered {
+    return inputText?.isNotEmpty == true ||
+        subjectText?.isNotEmpty == true ||
+        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
+        pollBloc.isSomethingChanged;
   }
 
-  BehaviorSubject<bool> originInReplyToStatusCanceledSubject =
-      BehaviorSubject.seeded(false);
-
-  final PleromaVisibility initialVisibility;
+  final bool markMediaNsfwByDefault;
 
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    this.conversationRemoteId,
-    this.originInReplyToStatus,
     int maximumMediaAttachmentCount = 8,
-    this.initialVisibility = PleromaVisibility.PUBLIC,
+    @required int maximumMessageLength,
+    @required IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
+    @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
+    @required this.markMediaNsfwByDefault,
   }) : super(
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
-    visibilitySubject = BehaviorSubject.seeded(initialVisibility);
-    nsfwSensitiveSubject = BehaviorSubject.seeded(false);
+          maximumMessageLength: maximumMessageLength,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+        ) {
+    this.initialData = initialData ?? defaultInitData;
+    visibilitySubject =
+        BehaviorSubject.seeded(initialData.visibility.toPleromaVisibility());
+    nsfwSensitiveSubject =
+        BehaviorSubject.seeded(initialData.isNsfwSensitiveEnabled);
 
     addDisposable(streamSubscription:
         mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
       _regenerateIdempotencyKey();
     }));
 
-    addDisposable(subject: originInReplyToStatusCanceledSubject);
+    pollBloc = PostStatusPollBloc(
+      pollLimits: pleromaInstancePollLimits,
+    );
+
     addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: visibilitySubject);
@@ -104,7 +85,75 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(disposable: CustomDisposable(() {
       inputFocusNode.removeListener(focusListener);
     }));
+
+    addDisposable(focusNode: subjectFocusNode);
+    addDisposable(textEditingController: subjectTextController);
+    addDisposable(subject: subjectTextSubject);
+
+    var editTextListener = () {
+      onSubjectTextChanged();
+    };
+    subjectTextController.addListener(editTextListener);
+
+    addDisposable(disposable: CustomDisposable(() {
+      subjectTextController.removeListener(editTextListener);
+    }));
+
+    if (initialAccountsToMention?.isNotEmpty == true) {
+      initialAccountsToMention.forEach((account) {
+        mentionedAccts.add(account.acct);
+      });
+
+      onMentionedAccountsChanged();
+    }
+
+    if (initialData.scheduledAt != null) {
+      scheduledAtSubject.add(initialData.scheduledAt);
+    }
+    if (initialData.subject != null) {
+      subjectTextController.text = initialData.subject;
+    }
+    if (initialData.text != null) {
+      inputTextController.text = initialData.text;
+    }
+    if (initialData.poll != null) {
+      pollBloc.fillFormData(initialData.poll);
+    }
+    if (initialData.mediaAttachments?.isNotEmpty == true) {
+      initialData.mediaAttachments.forEach((attachment) {
+        mediaAttachmentsBloc.addUploadedAttachment(attachment);
+      });
+    }
   }
+
+  final IPleromaStatusService pleromaStatusService;
+  final IStatusRepository statusRepository;
+
+  @override
+  IStatus get originInReplyToStatus =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
+
+  String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
+
+  @override
+  IPostStatusPollBloc pollBloc;
+
+  String idempotencyKey;
+
+  IPostStatusData initialData;
+
+  static final defaultInitData = PostStatusData(
+    subject: null,
+    text: null,
+    scheduledAt: null,
+    visibility: PleromaVisibility.public.toJsonValue(),
+    mediaAttachments: null,
+    poll: null,
+    inReplyToPleromaStatus: null,
+    inReplyToConversationId: null,
+    isNsfwSensitiveEnabled: false,
+    to: null,
+  );
 
   void onFocusChange(bool hasFocus) {
     // nothing by default
@@ -290,17 +339,23 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void addMentionByAccount(IAccount account) {
-    var acct = account.acct;
-    if (!mentionedAccts.contains(acct)) {
-      mentionedAccts.add(acct);
-      onMentionedAccountsChanged();
-    }
+  void addAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    // remove duplicates
+    removeAccountMentions(accounts);
+    mentionedAccts.addAll(accts);
+
+    onMentionedAccountsChanged();
   }
 
   @override
-  void removeMentionByAccount(IAccount account) {
-    removeMentionByAcct(account.acct);
+  void removeAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    mentionedAccts.removeWhere((acct) => accts.contains(acct));
+
+    onMentionedAccountsChanged();
   }
 
   @override
@@ -329,6 +384,12 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Future<bool> post() async {
+    var postStatusData = calculateCurrentPostStatusData();
+
+    return await internalPostStatusData(postStatusData);
+  }
+
+  Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
     bool success;
     if (isScheduled) {
       success = await _scheduleStatus();
@@ -349,17 +410,19 @@ abstract class PostStatusBloc extends PostMessageBloc
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusRemoteId(),
-      inReplyToConversationId: conversationRemoteId,
+      inReplyToId: calculateInReplyToStatusField()?.remoteId,
+      inReplyToConversationId: initialData.inReplyToConversationId,
       idempotencyKey: idempotencyKey,
-      to: _calculateToField(),
-      poll: _calculatePollField(),
+      to: calculateToField(),
+      poll: _calculatePleromaPostStatusPollField(),
+      spoilerText: _calculateSpoilerTextField(),
     ));
 
     var success;
     if (remoteStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteStatus,
-          listRemoteId: null, conversationRemoteId: conversationRemoteId);
+          listRemoteId: null,
+          conversationRemoteId: initialData.inReplyToConversationId);
       await onStatusPosted(remoteStatus);
       if (inReplyToStatusRemoteId != null) {}
       success = true;
@@ -380,19 +443,23 @@ abstract class PostStatusBloc extends PostMessageBloc
     return success;
   }
 
-  String calculateVisibilityField() => pleromaVisibilityValues.reverse[visibility];
+  String calculateVisibilityField() => visibility.toJsonValue();
 
-  List<String> _calculateMediaIdsField() {
-    var mediaIds = mediaAttachmentsBloc.mediaAttachmentBlocs
-        ?.where(
-            (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
-        ?.map((bloc) => bloc.pleromaMediaAttachment.id)
+  List<String> _calculateMediaIdsField() => _calculateMediaAttachmentsField()
+      ?.map((mediaAttachment) => mediaAttachment.id)
+      ?.toList();
+
+  List<IPleromaMediaAttachment> _calculateMediaAttachmentsField() {
+    var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
+        ?.where((bloc) =>
+            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
+        ?.map((bloc) => bloc.pleromaMediaAttachment)
         ?.toList();
     // media ids shouldn't be empty (should be null in this case)
-    if (mediaIds?.isNotEmpty != true) {
-      mediaIds = null;
+    if (mediaAttachments?.isNotEmpty != true) {
+      mediaAttachments = null;
     }
-    return mediaIds;
+    return mediaAttachments;
   }
 
   Future<bool> _scheduleStatus() async {
@@ -402,12 +469,13 @@ abstract class PostStatusBloc extends PostMessageBloc
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusRemoteId(),
-      inReplyToConversationId: conversationRemoteId,
+      inReplyToId: calculateInReplyToStatusField()?.remoteId,
+      inReplyToConversationId: initialData.inReplyToConversationId,
       idempotencyKey: idempotencyKey,
       scheduledAt: scheduledAt,
-      to: _calculateToField(),
-      poll: _calculatePollField(),
+      to: calculateToField(),
+      poll: _calculatePleromaPostStatusPollField(),
+      spoilerText: _calculateSpoilerTextField(),
     ));
     var success = scheduledStatus != null;
     return success;
@@ -417,13 +485,16 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
 
-    visibilitySubject.add(initialVisibility);
+    visibilitySubject.add(initialData.visibility.toPleromaVisibility());
 
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
 
     pollBloc.clear();
+
+    subjectTextController.clear();
+    subjectFocusNode.unfocus();
   }
 
   String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
@@ -453,20 +524,9 @@ abstract class PostStatusBloc extends PostMessageBloc
     // nothing by default
   }
 
-  List<String> _calculateToField() {
+  List<String> calculateToField() {
     if (pleromaStatusService.isPleromaInstance) {
-      if (originInReplyToStatus != null && !originInReplyToStatusCanceled) {
-        var inReplyToStatusAcct = originInReplyToStatus.account.acct;
-
-        var toField = [...mentionedAccts];
-
-        if (!toField.contains(inReplyToStatusAcct)) {
-          toField.add(inReplyToStatusAcct);
-        }
-        return toField;
-      } else {
-        return mentionedAccts;
-      }
+      return mentionedAccts;
     } else {
       return null;
     }
@@ -486,15 +546,30 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  String calculateInReplyToStatusRemoteId() {
-    return inReplyToStatusRemoteId;
+  IStatus calculateInReplyToStatusField() =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
+
+  IPostStatusPoll _calculatePostStatusPoll() {
+    var poll;
+    if (pollBloc.isSomethingChanged) {
+      poll = PostStatusPoll(
+        expiresAt: pollBloc.expiresAtFieldBloc.currentValue,
+        multiple: pollBloc.multiplyFieldBloc.currentValue,
+        options: pollBloc.pollOptionsGroupBloc.items
+            .map((item) => item.currentValue)
+            .toList(),
+        hideTotals: false,
+      );
+    }
+    return poll;
   }
 
-  PleromaPostStatusPoll _calculatePollField() {
+  PleromaPostStatusPoll _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
-      var expiresInSeconds = DateTime.now().difference(expiresAt).abs().inSeconds;
+      var expiresInSeconds =
+          DateTime.now().difference(expiresAt).abs().inSeconds;
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
@@ -505,5 +580,75 @@ abstract class PostStatusBloc extends PostMessageBloc
       );
     }
     return poll;
+  }
+
+  String _calculateSpoilerTextField() {
+    String spoiler;
+
+    if (subjectText?.trim()?.isNotEmpty == true) {
+      spoiler = subjectText;
+    }
+
+    return spoiler;
+  }
+
+  @override
+  final FocusNode subjectFocusNode = FocusNode();
+
+  @override
+  String get subjectText => subjectTextSubject.value;
+
+  @override
+  Stream<String> get subjectTextStream => subjectTextSubject.stream;
+
+  @override
+  final TextEditingController subjectTextController = TextEditingController();
+
+  final BehaviorSubject<String> subjectTextSubject = BehaviorSubject();
+
+  void onSubjectTextChanged() {
+    var text = subjectTextController.text;
+
+    if (subjectText != text) {
+      subjectTextSubject.add(text);
+    }
+  }
+
+  @override
+  IPostStatusData calculateCurrentPostStatusData() => PostStatusData(
+        subject: _calculateSpoilerTextField(),
+        text: calculateStatusTextField(),
+        scheduledAt: scheduledAt,
+        visibility: visibility.toJsonValue(),
+        mediaAttachments: _calculateMediaAttachmentsField()
+            ?.map(
+              (mediaAttachment) => PleromaMediaAttachment(
+                description: mediaAttachment.description,
+                id: mediaAttachment.id,
+                previewUrl: mediaAttachment.previewUrl,
+                remoteUrl: mediaAttachment.remoteUrl,
+                textUrl: mediaAttachment.textUrl,
+                type: mediaAttachment.type,
+                url: mediaAttachment.url,
+                pleroma: mediaAttachment.pleroma,
+              ),
+            )
+            ?.toList(),
+        poll: _calculatePostStatusPoll(),
+        inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
+          calculateInReplyToStatusField(),
+        ),
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+        to: calculateToField(),
+      );
+
+
+  @override
+  void onFileSelected() {
+    super.onFileSelected();
+    if(markMediaNsfwByDefault) {
+      nsfwSensitiveSubject.add(true);
+    }
   }
 }

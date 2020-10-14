@@ -8,5 +8,10 @@ class EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
     implements IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc {
   EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, String userAtHost)
-      : super(preferencesService, "$userAtHost.emoji.custom", 1);
+      : super(
+          preferencesService,
+          "$userAtHost.emoji.custom",
+          1,
+          (json) => EmojiPickerCustomImageUrlCategoryItems.fromJson(json),
+        );
 }

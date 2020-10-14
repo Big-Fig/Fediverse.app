@@ -1,3 +1,4 @@
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusBloc implements Disposable {
+
   static IScheduledStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScheduledStatusBloc>(context, listen: listen);
 
@@ -35,4 +37,8 @@ abstract class IScheduledStatusBloc implements Disposable {
   Future cancelSchedule();
 
   Future refreshFromNetwork();
+
+  IPostStatusData calculatePostStatusData();
+
+  Future<bool> postScheduledPost(PostStatusData postStatusData);
 }

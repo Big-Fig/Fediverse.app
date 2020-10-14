@@ -11,6 +11,7 @@ class DbNotifications extends Table {
   TextColumn get accountRemoteId => text()();
   TextColumn get statusRemoteId => text().nullable()();
   TextColumn get chatRemoteId => text().nullable()();
+
   TextColumn get chatMessageRemoteId => text().nullable()();
   TextColumn get emoji => text().nullable()();
   TextColumn get pleroma => text()
@@ -20,4 +21,6 @@ class DbNotifications extends Table {
   TextColumn get type => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();
+
+  BoolColumn get dismissed => boolean().nullable()();
 }

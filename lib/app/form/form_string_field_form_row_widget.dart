@@ -33,6 +33,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
           var error = errors?.isNotEmpty == true ? errors.first : null;
 
           return FediFormEditTextRow(
+            maxLength: formStringFieldBloc.maxLength,
             hint: hint,
             label: label,
             autocorrect: autocorrect,

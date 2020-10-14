@@ -619,7 +619,7 @@ void main() {
 
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expect((await chatMessageRepository.dao.countAll()).length, 1);
+    expect((await chatMessageRepository.dao.countAll().get()).length, 1);
     expect(
         (await chatMessageRepository.getChatMessages(
                 onlyInChats: [

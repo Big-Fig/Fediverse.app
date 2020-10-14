@@ -42,7 +42,9 @@ abstract class IMastodonAccount {
 }
 
 abstract class IMastodonAccountRelationship {
-  bool blocking;
+  bool get blocking;
+
+  bool get blockedBy;
 
   bool get domainBlocking;
 
@@ -50,11 +52,11 @@ abstract class IMastodonAccountRelationship {
 
   bool get followedBy;
 
-  bool following;
+  bool get following;
 
   String get id;
 
-  bool muting;
+  bool get muting;
 
   bool get mutingNotifications;
 
@@ -63,6 +65,8 @@ abstract class IMastodonAccountRelationship {
   bool get showingReblogs;
 
   bool get subscribing;
+
+  String get note;
 }
 
 abstract class IMastodonAccountIdentityProof {

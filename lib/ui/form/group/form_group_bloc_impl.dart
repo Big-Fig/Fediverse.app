@@ -45,10 +45,12 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   @override
   Stream<bool> get isHaveAtLeastOneErrorStream =>
       errorsStream.map((fieldsErrors) => fieldsErrors?.isNotEmpty == true);
+
   FormGroupBloc() {
     addDisposable(subject: errorsSubject);
     _resubscribeForErrors();
     addDisposable(disposable: itemsErrorSubscription);
+
     try {
       addDisposable(streamSubscription: itemsStream.listen((newItems) {
         itemsErrorSubscription?.dispose();

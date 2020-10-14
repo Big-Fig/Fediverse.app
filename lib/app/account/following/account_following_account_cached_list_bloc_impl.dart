@@ -38,31 +38,25 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    try {
-      List<IPleromaAccount> remoteAccounts;
+    List<IPleromaAccount> remoteAccounts;
 
-      remoteAccounts = await pleromaAccountService.getAccountFollowings(
-          accountRemoteId: account.remoteId,
-          maxId: olderThan?.remoteId,
-          sinceId: newerThan?.remoteId,
-          limit: limit);
+    remoteAccounts = await pleromaAccountService.getAccountFollowings(
+        accountRemoteId: account.remoteId,
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit);
 
-      if (remoteAccounts != null) {
-        await accountRepository.upsertRemoteAccounts(remoteAccounts,
-            conversationRemoteId: null, chatRemoteId: null);
+    if (remoteAccounts != null) {
+      await accountRepository.upsertRemoteAccounts(remoteAccounts,
+          conversationRemoteId: null, chatRemoteId: null);
 
-        await accountRepository.updateAccountFollowings(
-            account.remoteId, remoteAccounts);
+      await accountRepository.addAccountFollowings(
+          account.remoteId, remoteAccounts);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "accounts is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "accounts is null");
       return false;
     }
   }

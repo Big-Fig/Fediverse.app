@@ -10,53 +10,39 @@ class PleromaMyAccountSourceAdapter
     extends TypeAdapter<PleromaMyAccountSource> {
   @override
   PleromaMyAccountSource read(BinaryReader reader) {
-    var obj = PleromaMyAccountSource();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.privacy = reader.read() as String;
-          break;
-        case 2:
-          obj.sensitive = reader.read() as bool;
-          break;
-        case 3:
-          obj.language = reader.read() as String;
-          break;
-        case 4:
-          obj.note = reader.read() as String;
-          break;
-        case 5:
-          obj.fields = (reader.read() as List)?.cast<PleromaField>();
-          break;
-        case 6:
-          obj.followRequestsCount = reader.read() as int;
-          break;
-        case 7:
-          obj.pleroma = reader.read() as PleromaMyAccountSourcePleromaPart;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaMyAccountSource(
+      privacy: fields[1] as String,
+      sensitive: fields[2] as bool,
+      language: fields[3] as String,
+      note: fields[4] as String,
+      fields: (fields[5] as List)?.cast<PleromaField>(),
+      followRequestsCount: fields[6] as int,
+      pleroma: fields[7] as PleromaMyAccountSourcePleromaPart,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccountSource obj) {
-    writer.writeByte(7);
-    writer.writeByte(1);
-    writer.write(obj.privacy);
-    writer.writeByte(2);
-    writer.write(obj.sensitive);
-    writer.writeByte(3);
-    writer.write(obj.language);
-    writer.writeByte(4);
-    writer.write(obj.note);
-    writer.writeByte(5);
-    writer.write(obj.fields);
-    writer.writeByte(6);
-    writer.write(obj.followRequestsCount);
-    writer.writeByte(7);
-    writer.write(obj.pleroma);
+    writer
+      ..writeByte(7)
+      ..writeByte(1)
+      ..write(obj.privacy)
+      ..writeByte(2)
+      ..write(obj.sensitive)
+      ..writeByte(3)
+      ..write(obj.language)
+      ..writeByte(4)
+      ..write(obj.note)
+      ..writeByte(5)
+      ..write(obj.fields)
+      ..writeByte(6)
+      ..write(obj.followRequestsCount)
+      ..writeByte(7)
+      ..write(obj.pleroma);
   }
 }
 
@@ -64,38 +50,30 @@ class PleromaMyAccountSourcePleromaPartAdapter
     extends TypeAdapter<PleromaMyAccountSourcePleromaPart> {
   @override
   PleromaMyAccountSourcePleromaPart read(BinaryReader reader) {
-    var obj = PleromaMyAccountSourcePleromaPart();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.showRole = reader.read() as bool;
-          break;
-        case 2:
-          obj.noRichText = reader.read() as bool;
-          break;
-        case 3:
-          obj.discoverable = reader.read() as bool;
-          break;
-        case 4:
-          obj.actorType = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaMyAccountSourcePleromaPart(
+      showRole: fields[1] as bool,
+      noRichText: fields[2] as bool,
+      discoverable: fields[3] as bool,
+      actorType: fields[4] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccountSourcePleromaPart obj) {
-    writer.writeByte(4);
-    writer.writeByte(1);
-    writer.write(obj.showRole);
-    writer.writeByte(2);
-    writer.write(obj.noRichText);
-    writer.writeByte(3);
-    writer.write(obj.discoverable);
-    writer.writeByte(4);
-    writer.write(obj.actorType);
+    writer
+      ..writeByte(4)
+      ..writeByte(1)
+      ..write(obj.showRole)
+      ..writeByte(2)
+      ..write(obj.noRichText)
+      ..writeByte(3)
+      ..write(obj.discoverable)
+      ..writeByte(4)
+      ..write(obj.actorType);
   }
 }
 
@@ -103,227 +81,151 @@ class PleromaAccountPleromaPartAdapter
     extends TypeAdapter<PleromaAccountPleromaPart> {
   @override
   PleromaAccountPleromaPart read(BinaryReader reader) {
-    var obj = PleromaAccountPleromaPart();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.backgroundImage = reader.read() as dynamic;
-          break;
-        case 2:
-          obj.tags = (reader.read() as List)?.cast<dynamic>();
-          break;
-        case 3:
-          obj.relationship = reader.read() as PleromaAccountRelationship;
-          break;
-        case 4:
-          obj.isAdmin = reader.read() as bool;
-          break;
-        case 5:
-          obj.isModerator = reader.read() as bool;
-          break;
-        case 7:
-          obj.confirmationPending = reader.read() as bool;
-          break;
-        case 8:
-          obj.hideFavorites = reader.read() as bool;
-          break;
-        case 9:
-          obj.hideFollowers = reader.read() as bool;
-          break;
-        case 11:
-          obj.hideFollows = reader.read() as bool;
-          break;
-        case 12:
-          obj.hideFollowersCount = reader.read() as bool;
-          break;
-        case 13:
-          obj.hideFollowsCount = reader.read() as bool;
-          break;
-        case 14:
-          obj.settingsStore = reader.read() as dynamic;
-          break;
-        case 15:
-          obj.chatToken = reader.read() as String;
-          break;
-        case 16:
-          obj.deactivated = reader.read() as bool;
-          break;
-        case 17:
-          obj.allowFollowingMove = reader.read() as bool;
-          break;
-        case 18:
-          obj.unreadConversationCount = reader.read() as int;
-          break;
-        case 19:
-          obj.notificationSettings =
-              reader.read() as PleromaMyAccountPleromaPartNotificationsSettings;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaAccountPleromaPart(
+      backgroundImage: fields[1] as dynamic,
+      tags: (fields[2] as List)?.cast<dynamic>(),
+      relationship: fields[3] as PleromaAccountRelationship,
+      isAdmin: fields[4] as bool,
+      isModerator: fields[5] as bool,
+      confirmationPending: fields[7] as bool,
+      hideFavorites: fields[8] as bool,
+      hideFollowers: fields[9] as bool,
+      hideFollows: fields[11] as bool,
+      hideFollowersCount: fields[12] as bool,
+      hideFollowsCount: fields[13] as bool,
+      settingsStore: fields[14] as dynamic,
+      chatToken: fields[15] as String,
+      deactivated: fields[16] as bool,
+      allowFollowingMove: fields[17] as bool,
+      unreadConversationCount: fields[18] as int,
+      notificationSettings:
+          fields[19] as PleromaMyAccountPleromaPartNotificationsSettings,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaAccountPleromaPart obj) {
-    writer.writeByte(17);
-    writer.writeByte(1);
-    writer.write(obj.backgroundImage);
-    writer.writeByte(2);
-    writer.write(obj.tags);
-    writer.writeByte(3);
-    writer.write(obj.relationship);
-    writer.writeByte(4);
-    writer.write(obj.isAdmin);
-    writer.writeByte(5);
-    writer.write(obj.isModerator);
-    writer.writeByte(7);
-    writer.write(obj.confirmationPending);
-    writer.writeByte(8);
-    writer.write(obj.hideFavorites);
-    writer.writeByte(9);
-    writer.write(obj.hideFollowers);
-    writer.writeByte(11);
-    writer.write(obj.hideFollows);
-    writer.writeByte(12);
-    writer.write(obj.hideFollowersCount);
-    writer.writeByte(13);
-    writer.write(obj.hideFollowsCount);
-    writer.writeByte(14);
-    writer.write(obj.settingsStore);
-    writer.writeByte(15);
-    writer.write(obj.chatToken);
-    writer.writeByte(16);
-    writer.write(obj.deactivated);
-    writer.writeByte(17);
-    writer.write(obj.allowFollowingMove);
-    writer.writeByte(18);
-    writer.write(obj.unreadConversationCount);
-    writer.writeByte(19);
-    writer.write(obj.notificationSettings);
+    writer
+      ..writeByte(17)
+      ..writeByte(1)
+      ..write(obj.backgroundImage)
+      ..writeByte(2)
+      ..write(obj.tags)
+      ..writeByte(3)
+      ..write(obj.relationship)
+      ..writeByte(4)
+      ..write(obj.isAdmin)
+      ..writeByte(5)
+      ..write(obj.isModerator)
+      ..writeByte(7)
+      ..write(obj.confirmationPending)
+      ..writeByte(8)
+      ..write(obj.hideFavorites)
+      ..writeByte(9)
+      ..write(obj.hideFollowers)
+      ..writeByte(11)
+      ..write(obj.hideFollows)
+      ..writeByte(12)
+      ..write(obj.hideFollowersCount)
+      ..writeByte(13)
+      ..write(obj.hideFollowsCount)
+      ..writeByte(14)
+      ..write(obj.settingsStore)
+      ..writeByte(15)
+      ..write(obj.chatToken)
+      ..writeByte(16)
+      ..write(obj.deactivated)
+      ..writeByte(17)
+      ..write(obj.allowFollowingMove)
+      ..writeByte(18)
+      ..write(obj.unreadConversationCount)
+      ..writeByte(19)
+      ..write(obj.notificationSettings);
   }
 }
 
 class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
   @override
   PleromaMyAccount read(BinaryReader reader) {
-    var obj = PleromaMyAccount();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.username = reader.read() as String;
-          break;
-        case 1:
-          obj.url = reader.read() as String;
-          break;
-        case 2:
-          obj.statusesCount = reader.read() as int;
-          break;
-        case 3:
-          obj.note = reader.read() as String;
-          break;
-        case 4:
-          obj.locked = reader.read() as bool;
-          break;
-        case 5:
-          obj.id = reader.read() as String;
-          break;
-        case 6:
-          obj.headerStatic = reader.read() as String;
-          break;
-        case 7:
-          obj.header = reader.read() as String;
-          break;
-        case 8:
-          obj.followingCount = reader.read() as int;
-          break;
-        case 9:
-          obj.followersCount = reader.read() as int;
-          break;
-        case 10:
-          obj.fields = (reader.read() as List)?.cast<PleromaField>();
-          break;
-        case 11:
-          obj.emojis = (reader.read() as List)?.cast<PleromaEmoji>();
-          break;
-        case 12:
-          obj.displayName = reader.read() as String;
-          break;
-        case 13:
-          obj.createdAt = reader.read() as DateTime;
-          break;
-        case 14:
-          obj.bot = reader.read() as bool;
-          break;
-        case 15:
-          obj.avatarStatic = reader.read() as String;
-          break;
-        case 16:
-          obj.avatar = reader.read() as String;
-          break;
-        case 17:
-          obj.acct = reader.read() as String;
-          break;
-        case 19:
-          obj.pleroma = reader.read() as PleromaMyAccountPleromaPart;
-          break;
-        case 20:
-          obj.lastStatusAt = reader.read() as DateTime;
-          break;
-        case 21:
-          obj.source = reader.read() as PleromaMyAccountSource;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaMyAccount(
+      username: fields[0] as String,
+      url: fields[1] as String,
+      statusesCount: fields[2] as int,
+      note: fields[3] as String,
+      locked: fields[4] as bool,
+      id: fields[5] as String,
+      headerStatic: fields[6] as String,
+      header: fields[7] as String,
+      followingCount: fields[8] as int,
+      followersCount: fields[9] as int,
+      fields: (fields[10] as List)?.cast<PleromaField>(),
+      emojis: (fields[11] as List)?.cast<PleromaEmoji>(),
+      displayName: fields[12] as String,
+      createdAt: fields[13] as DateTime,
+      bot: fields[14] as bool,
+      avatarStatic: fields[15] as String,
+      avatar: fields[16] as String,
+      acct: fields[17] as String,
+      pleroma: fields[19] as PleromaMyAccountPleromaPart,
+      lastStatusAt: fields[20] as DateTime,
+      source: fields[21] as PleromaMyAccountSource,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccount obj) {
-    writer.writeByte(21);
-    writer.writeByte(0);
-    writer.write(obj.username);
-    writer.writeByte(1);
-    writer.write(obj.url);
-    writer.writeByte(2);
-    writer.write(obj.statusesCount);
-    writer.writeByte(3);
-    writer.write(obj.note);
-    writer.writeByte(4);
-    writer.write(obj.locked);
-    writer.writeByte(5);
-    writer.write(obj.id);
-    writer.writeByte(6);
-    writer.write(obj.headerStatic);
-    writer.writeByte(7);
-    writer.write(obj.header);
-    writer.writeByte(8);
-    writer.write(obj.followingCount);
-    writer.writeByte(9);
-    writer.write(obj.followersCount);
-    writer.writeByte(10);
-    writer.write(obj.fields);
-    writer.writeByte(11);
-    writer.write(obj.emojis);
-    writer.writeByte(12);
-    writer.write(obj.displayName);
-    writer.writeByte(13);
-    writer.write(obj.createdAt);
-    writer.writeByte(14);
-    writer.write(obj.bot);
-    writer.writeByte(15);
-    writer.write(obj.avatarStatic);
-    writer.writeByte(16);
-    writer.write(obj.avatar);
-    writer.writeByte(17);
-    writer.write(obj.acct);
-    writer.writeByte(19);
-    writer.write(obj.pleroma);
-    writer.writeByte(20);
-    writer.write(obj.lastStatusAt);
-    writer.writeByte(21);
-    writer.write(obj.source);
+    writer
+      ..writeByte(21)
+      ..writeByte(0)
+      ..write(obj.username)
+      ..writeByte(1)
+      ..write(obj.url)
+      ..writeByte(2)
+      ..write(obj.statusesCount)
+      ..writeByte(3)
+      ..write(obj.note)
+      ..writeByte(4)
+      ..write(obj.locked)
+      ..writeByte(5)
+      ..write(obj.id)
+      ..writeByte(6)
+      ..write(obj.headerStatic)
+      ..writeByte(7)
+      ..write(obj.header)
+      ..writeByte(8)
+      ..write(obj.followingCount)
+      ..writeByte(9)
+      ..write(obj.followersCount)
+      ..writeByte(10)
+      ..write(obj.fields)
+      ..writeByte(11)
+      ..write(obj.emojis)
+      ..writeByte(12)
+      ..write(obj.displayName)
+      ..writeByte(13)
+      ..write(obj.createdAt)
+      ..writeByte(14)
+      ..write(obj.bot)
+      ..writeByte(15)
+      ..write(obj.avatarStatic)
+      ..writeByte(16)
+      ..write(obj.avatar)
+      ..writeByte(17)
+      ..write(obj.acct)
+      ..writeByte(19)
+      ..write(obj.pleroma)
+      ..writeByte(20)
+      ..write(obj.lastStatusAt)
+      ..writeByte(21)
+      ..write(obj.source);
   }
 }
 
@@ -331,19 +233,31 @@ class PleromaMyAccountPleromaPartNotificationsSettingsAdapter
     extends TypeAdapter<PleromaMyAccountPleromaPartNotificationsSettings> {
   @override
   PleromaMyAccountPleromaPartNotificationsSettings read(BinaryReader reader) {
-    var obj = PleromaMyAccountPleromaPartNotificationsSettings();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaMyAccountPleromaPartNotificationsSettings(
+      followers: fields[0] as bool,
+      follows: fields[1] as bool,
+      nonFollowers: fields[2] as bool,
+      nonFollows: fields[3] as bool,
+    );
   }
 
   @override
   void write(BinaryWriter writer,
       PleromaMyAccountPleromaPartNotificationsSettings obj) {
-    writer.writeByte(0);
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.followers)
+      ..writeByte(1)
+      ..write(obj.follows)
+      ..writeByte(2)
+      ..write(obj.nonFollowers)
+      ..writeByte(3)
+      ..write(obj.nonFollows);
   }
 }
 
@@ -351,104 +265,73 @@ class PleromaMyAccountPleromaPartAdapter
     extends TypeAdapter<PleromaMyAccountPleromaPart> {
   @override
   PleromaMyAccountPleromaPart read(BinaryReader reader) {
-    var obj = PleromaMyAccountPleromaPart();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.backgroundImage = reader.read() as dynamic;
-          break;
-        case 2:
-          obj.tags = (reader.read() as List)?.cast<dynamic>();
-          break;
-        case 3:
-          obj.relationship = reader.read() as PleromaAccountRelationship;
-          break;
-        case 4:
-          obj.isAdmin = reader.read() as bool;
-          break;
-        case 5:
-          obj.isModerator = reader.read() as bool;
-          break;
-        case 7:
-          obj.confirmationPending = reader.read() as bool;
-          break;
-        case 8:
-          obj.hideFavorites = reader.read() as bool;
-          break;
-        case 9:
-          obj.hideFollowers = reader.read() as bool;
-          break;
-        case 11:
-          obj.hideFollows = reader.read() as bool;
-          break;
-        case 12:
-          obj.hideFollowersCount = reader.read() as bool;
-          break;
-        case 13:
-          obj.hideFollowsCount = reader.read() as bool;
-          break;
-        case 14:
-          obj.settingsStore = reader.read() as dynamic;
-          break;
-        case 15:
-          obj.chatToken = reader.read() as String;
-          break;
-        case 16:
-          obj.deactivated = reader.read() as bool;
-          break;
-        case 17:
-          obj.allowFollowingMove = reader.read() as bool;
-          break;
-        case 18:
-          obj.unreadConversationCount = reader.read() as int;
-          break;
-        case 19:
-          obj.notificationSettings =
-              reader.read() as PleromaMyAccountPleromaPartNotificationsSettings;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaMyAccountPleromaPart(
+      backgroundImage: fields[1] as dynamic,
+      tags: (fields[2] as List)?.cast<dynamic>(),
+      relationship: fields[3] as PleromaAccountRelationship,
+      isAdmin: fields[4] as bool,
+      isModerator: fields[5] as bool,
+      confirmationPending: fields[7] as bool,
+      hideFavorites: fields[8] as bool,
+      hideFollowers: fields[9] as bool,
+      hideFollows: fields[11] as bool,
+      hideFollowersCount: fields[12] as bool,
+      hideFollowsCount: fields[13] as bool,
+      settingsStore: fields[14] as dynamic,
+      chatToken: fields[15] as String,
+      deactivated: fields[16] as bool,
+      allowFollowingMove: fields[17] as bool,
+      unreadConversationCount: fields[18] as int,
+      skipThreadContainment: fields[20] as bool,
+      notificationSettings:
+          fields[19] as PleromaMyAccountPleromaPartNotificationsSettings,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccountPleromaPart obj) {
-    writer.writeByte(17);
-    writer.writeByte(1);
-    writer.write(obj.backgroundImage);
-    writer.writeByte(2);
-    writer.write(obj.tags);
-    writer.writeByte(3);
-    writer.write(obj.relationship);
-    writer.writeByte(4);
-    writer.write(obj.isAdmin);
-    writer.writeByte(5);
-    writer.write(obj.isModerator);
-    writer.writeByte(7);
-    writer.write(obj.confirmationPending);
-    writer.writeByte(8);
-    writer.write(obj.hideFavorites);
-    writer.writeByte(9);
-    writer.write(obj.hideFollowers);
-    writer.writeByte(11);
-    writer.write(obj.hideFollows);
-    writer.writeByte(12);
-    writer.write(obj.hideFollowersCount);
-    writer.writeByte(13);
-    writer.write(obj.hideFollowsCount);
-    writer.writeByte(14);
-    writer.write(obj.settingsStore);
-    writer.writeByte(15);
-    writer.write(obj.chatToken);
-    writer.writeByte(16);
-    writer.write(obj.deactivated);
-    writer.writeByte(17);
-    writer.write(obj.allowFollowingMove);
-    writer.writeByte(18);
-    writer.write(obj.unreadConversationCount);
-    writer.writeByte(19);
-    writer.write(obj.notificationSettings);
+    writer
+      ..writeByte(18)
+      ..writeByte(1)
+      ..write(obj.backgroundImage)
+      ..writeByte(2)
+      ..write(obj.tags)
+      ..writeByte(3)
+      ..write(obj.relationship)
+      ..writeByte(4)
+      ..write(obj.isAdmin)
+      ..writeByte(5)
+      ..write(obj.isModerator)
+      ..writeByte(7)
+      ..write(obj.confirmationPending)
+      ..writeByte(8)
+      ..write(obj.hideFavorites)
+      ..writeByte(9)
+      ..write(obj.hideFollowers)
+      ..writeByte(11)
+      ..write(obj.hideFollows)
+      ..writeByte(12)
+      ..write(obj.hideFollowersCount)
+      ..writeByte(13)
+      ..write(obj.hideFollowsCount)
+      ..writeByte(14)
+      ..write(obj.settingsStore)
+      ..writeByte(15)
+      ..write(obj.chatToken)
+      ..writeByte(16)
+      ..write(obj.deactivated)
+      ..writeByte(17)
+      ..write(obj.allowFollowingMove)
+      ..writeByte(18)
+      ..write(obj.unreadConversationCount)
+      ..writeByte(19)
+      ..write(obj.notificationSettings)
+      ..writeByte(20)
+      ..write(obj.skipThreadContainment);
   }
 }
 
@@ -753,6 +636,6 @@ Map<String, dynamic> _$PleromaMyAccountPleromaPartToJson(
       'deactivated': instance.deactivated,
       'allow_following_move': instance.allowFollowingMove,
       'unread_conversation_count': instance.unreadConversationCount,
-      'skip_thread_containment': instance.skipThreadContainment,
       'notifications_settings': instance.notificationSettings?.toJson(),
+      'skip_thread_containment': instance.skipThreadContainment,
     };

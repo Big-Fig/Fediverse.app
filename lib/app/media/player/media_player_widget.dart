@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
 import 'package:video_player/video_player.dart';
 
 var _logger = Logger("media_player_widget.dart");
@@ -68,6 +69,7 @@ class _MediaPlayerWidgetState<T> extends State<MediaPlayerWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
+    var filename = p.basename(widget.pathToFile ?? "") ?? "";
     switch (mediaPlayerState) {
       case MediaPlayerState.initializing:
         return Padding(
@@ -79,7 +81,10 @@ class _MediaPlayerWidgetState<T> extends State<MediaPlayerWidget<T>> {
                 padding: FediPadding.allSmallPadding,
                 child: FediCircularProgressIndicator(),
               ),
-              Text("media.player.initializing".tr(args: [widget.pathToFile]),
+              Text(
+                  "media.player.initializing".tr(
+                    args: [filename],
+                  ),
                   textAlign: TextAlign.center),
             ],
           ),
@@ -92,7 +97,7 @@ class _MediaPlayerWidgetState<T> extends State<MediaPlayerWidget<T>> {
         return Padding(
           padding: FediPadding.allSmallPadding,
           child: Text(
-            "media.player.failed".tr(args: [widget.pathToFile]),
+            "media.player.failed".tr(args: [filename]),
             textAlign: TextAlign.center,
           ),
         );

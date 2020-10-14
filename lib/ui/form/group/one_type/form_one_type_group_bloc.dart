@@ -3,7 +3,7 @@ import 'package:fedi/ui/form/group/form_group_bloc.dart';
 
 abstract class IFormOneTypeGroupBloc<T extends IFormItemBloc>
     extends IFormGroupBloc<T> {
-  void addNewEmptyField();
+  T addNewEmptyField();
 
   void removeField(T field);
 
@@ -26,4 +26,8 @@ abstract class IFormOneTypeGroupBloc<T extends IFormItemBloc>
   Stream<bool> get isPossibleToAddFieldsStream;
 
   bool get isPossibleToAddFields;
+
+  T addNewField(T value);
+
+  void removeAllFields();
 }

@@ -35,26 +35,20 @@ class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    try {
-      List<IPleromaChat> remoteChats;
+    List<IPleromaChat> remoteChats;
 
-      remoteChats = await pleromaChatService.getChats(
-          maxId: olderThan?.chat?.remoteId,
-          sinceId: newerThan?.chat?.remoteId,
-          limit: limit);
+    remoteChats = await pleromaChatService.getChats(
+        maxId: olderThan?.chat?.remoteId,
+        sinceId: newerThan?.chat?.remoteId,
+        limit: limit);
 
-      if (remoteChats != null) {
-        await chatRepository.upsertRemoteChats(remoteChats);
+    if (remoteChats != null) {
+      await chatRepository.upsertRemoteChats(remoteChats);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "chats is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "chats is null");
       return false;
     }
   }

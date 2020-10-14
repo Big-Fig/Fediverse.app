@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
-import 'package:fedi/app/account/select/select_account_widget.dart';
+import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/chat_page.dart';
@@ -25,7 +25,7 @@ class StartChatPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: SelectAccountWidget(
+        child: SingleSelectAccountWidget(
           accountSelectedCallback: (context, account) async {
             var dialogResult = await PleromaAsyncOperationHelper
                 .performPleromaAsyncOperation<IChat>(
@@ -81,8 +81,9 @@ void goToStartChatPage(BuildContext context) {
             child: SelectAccountPaginationListBloc.provideToContext(context,
                 child: StartChatPage()),
           ),
-          customDefaultLocalAccountListLoader: null,
-          customDefaultRemoteAccountListLoader: null,
+          customLocalAccountListLoader: null,
+          customRemoteAccountListLoader: null,
+          followingsOnly: false,
         );
       },
     ),

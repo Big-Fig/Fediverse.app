@@ -31,27 +31,19 @@ class ConversationCachedListBloc extends IConversationCachedListBloc {
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    try {
-      List<IPleromaConversation> remoteConversations;
+    List<IPleromaConversation> remoteConversations;
 
-      remoteConversations = await pleromaConversationService.getConversations(
-          maxId: olderThan?.remoteId,
-          sinceId: newerThan?.remoteId,
-          limit: limit);
+    remoteConversations = await pleromaConversationService.getConversations(
+        maxId: olderThan?.remoteId, sinceId: newerThan?.remoteId, limit: limit);
 
-      if (remoteConversations != null) {
-        await conversationRepository
-            .upsertRemoteConversations(remoteConversations);
+    if (remoteConversations != null) {
+      await conversationRepository
+          .upsertRemoteConversations(remoteConversations);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "conversations is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "conversations is null");
       return false;
     }
   }

@@ -17,6 +17,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as path;
 
 class ChatListItemWidget extends StatelessWidget {
   ChatListItemWidget();
@@ -92,7 +93,12 @@ class ChatListItemWidget extends StatelessWidget {
           var content = lastMessage.content;
           if (content?.isNotEmpty != true) {
             var mediaAttachment = lastMessage.mediaAttachment;
-            content = mediaAttachment.description;
+            var description = mediaAttachment.description;
+            if(description?.isNotEmpty == true) {
+              content = description;
+            } else {
+              content = path.basename(mediaAttachment.url);
+            }
           } else {
             content = extractContent(context, lastMessage, content);
           }

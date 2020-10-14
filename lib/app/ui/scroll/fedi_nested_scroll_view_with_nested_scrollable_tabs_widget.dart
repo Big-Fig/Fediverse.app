@@ -12,14 +12,18 @@ typedef TabBarViewContainerBuilder = Widget Function(
 
 typedef TabBodyProviderBuilder = Widget Function(
     BuildContext context, int index, Widget child);
+typedef TabBodyContentBuilder = Widget Function(
+    BuildContext context, int index);
+typedef TabBodyOverlayBuilder = Widget Function(
+    BuildContext context, int index);
 
 class FediNestedScrollViewWithNestedScrollableTabsWidget
     extends FediNestedScrollViewWidget {
   final String tabKeyPrefix;
 
   final TabBodyProviderBuilder tabBodyProviderBuilder;
-  final NestedScrollViewContentBuilder tabBodyContentBuilder;
-  final NestedScrollViewOverlayBuilder tabBodyOverlayBuilder;
+  final TabBodyContentBuilder tabBodyContentBuilder;
+  final TabBodyOverlayBuilder tabBodyOverlayBuilder;
   final TabBarViewContainerBuilder tabBarViewContainerBuilder;
 
   FediNestedScrollViewWithNestedScrollableTabsWidget({
@@ -89,8 +93,8 @@ class _NestedBodyWidget extends StatefulWidget {
   final String tabKeyPrefix;
   final Widget onLongScrollUpTopOverlayWidget;
   final TabBodyProviderBuilder tabBodyProviderBuilder;
-  final NestedScrollViewContentBuilder tabBodyContentBuilder;
-  final NestedScrollViewOverlayBuilder tabBodyOverlayBuilder;
+  final TabBodyContentBuilder tabBodyContentBuilder;
+  final TabBodyOverlayBuilder tabBodyOverlayBuilder;
   final TabBarViewContainerBuilder tabBarViewContainerBuilder;
 
   const _NestedBodyWidget({
@@ -164,8 +168,8 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
 class _NestedBodyTabItemWidget extends StatefulWidget {
   final TabBodyProviderBuilder tabBodyProviderBuilder;
-  final NestedScrollViewContentBuilder tabBodyContentBuilder;
-  final NestedScrollViewOverlayBuilder tabBodyOverlayBuilder;
+  final TabBodyContentBuilder tabBodyContentBuilder;
+  final TabBodyOverlayBuilder tabBodyOverlayBuilder;
   final Key tabKey;
   final int index;
 
@@ -197,11 +201,14 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
             children: [
               NestedScrollViewInnerScrollPositionKeyWidget(
                 widget.tabKey,
-                widget.tabBodyContentBuilder(context),
+                widget.tabBodyContentBuilder(context, widget.index),
               ),
               if (widget.tabBodyOverlayBuilder != null)
                 FediNestedScrollViewWidget.buildOverlay(
-                    context, widget.tabBodyOverlayBuilder),
+                  context,
+                  (context) =>
+                      widget.tabBodyOverlayBuilder(context, widget.index),
+                ),
             ],
           );
         },

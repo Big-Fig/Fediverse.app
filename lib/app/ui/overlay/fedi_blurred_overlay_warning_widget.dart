@@ -12,17 +12,16 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   final VoidCallback buttonAction;
 
   FediBlurredOverlayWarningWidget({
-    @required this.descriptionText,
-    @required this.buttonText,
-    @required this.buttonAction,
+    this.descriptionText,
+    this.buttonText,
+    this.buttonAction,
     @required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-
-    constraints: BoxConstraints(minHeight: 100),
-    child: Stack(
+        constraints: BoxConstraints(minHeight: 100),
+        child: Stack(
           children: <Widget>[
             child,
             Positioned(
@@ -41,18 +40,21 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          descriptionText,
-                          style: FediTextStyles.bigTallDarkGrey,
-                        ),
-                        FediBigVerticalSpacer(),
-                        FediPrimaryFilledTextButton(
-                          buttonText,
-                          enabledBorderColor: Colors.transparent,
-                          disabledBorderColor: Colors.transparent,
-                          expanded: false,
-                          onPressed: buttonAction,
-                        ),
+                        if (descriptionText != null) ...[
+                          Text(
+                            descriptionText,
+                            style: FediTextStyles.bigTallDarkGrey,
+                          ),
+                          FediBigVerticalSpacer(),
+                        ],
+                        if (buttonText != null && buttonAction != null)
+                          FediPrimaryFilledTextButton(
+                            buttonText,
+                            enabledBorderColor: Colors.transparent,
+                            disabledBorderColor: Colors.transparent,
+                            expanded: false,
+                            onPressed: buttonAction,
+                          ),
                       ],
                     ),
                     sigma: 6.0,
@@ -62,5 +64,5 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
             ),
           ],
         ),
-  );
+      );
 }

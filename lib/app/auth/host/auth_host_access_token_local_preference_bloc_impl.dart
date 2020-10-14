@@ -8,5 +8,10 @@ class AuthHostAccessTokenLocalPreferenceBloc
     implements IAuthHostAccessTokenLocalPreferenceBloc {
   AuthHostAccessTokenLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, String host)
-      : super(preferencesService, "auth.host.$host.access_token", 1);
+      : super(
+          preferencesService,
+          "auth.host.$host.access_token",
+          1,
+          (json) => PleromaOAuthToken.fromJson(json),
+        );
 }

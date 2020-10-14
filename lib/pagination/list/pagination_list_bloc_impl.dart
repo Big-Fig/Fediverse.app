@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -13,6 +15,20 @@ var _logger = Logger("pagination_list_bloc_impl.dart");
 class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
+
+  StreamController<PaginationListLoadingError> refreshErrorStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<PaginationListLoadingError> get refreshErrorStream =>
+      refreshErrorStreamController.stream;
+
+  StreamController<PaginationListLoadingError> loadMoreErrorStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<PaginationListLoadingError> get loadMoreErrorStream =>
+      loadMoreErrorStreamController.stream;
 
   BehaviorSubject<PaginationListLoadingState> refreshStateSubject =
       BehaviorSubject.seeded(PaginationListLoadingState.initialized);
@@ -48,6 +64,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     }));
     addDisposable(subject: refreshStateSubject);
+    addDisposable(subject: loadMoreStateSubject);
+    addDisposable(streamController: refreshErrorStreamController);
+    addDisposable(streamController: loadMoreErrorStreamController);
   }
 
   @override
@@ -103,7 +122,15 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
       return state;
     } catch (e, stackTrace) {
-      loadMoreStateSubject.add(PaginationListLoadingState.failed);
+      // todo: refactor copy-pasted code
+      if (!loadMoreStateSubject.isClosed) {
+        loadMoreStateSubject.add(PaginationListLoadingState.failed);
+      }
+
+      if (!loadMoreErrorStreamController.isClosed) {
+        loadMoreErrorStreamController
+            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
+      }
 
       _logger.warning(
           () => "error during loadMoreWithoutController", e, stackTrace);
@@ -132,6 +159,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(PaginationListLoadingState.failed);
+      }
+      if (!refreshErrorStreamController.isClosed) {
+        refreshErrorStreamController
+            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
       }
       _logger.warning(
           () => "error during refreshWithoutController", e, stackTrace);
