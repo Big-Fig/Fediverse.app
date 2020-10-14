@@ -6,7 +6,6 @@ import 'package:fedi/app/conversation/status/conversation_api/conversation_statu
 import 'package:fedi/app/conversation/status/conversation_status_list_widget.dart';
 import 'package:fedi/app/conversation/status/list/cached/conversation_status_list_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';

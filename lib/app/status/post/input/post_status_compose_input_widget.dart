@@ -34,14 +34,20 @@ class PostStatusComposeInputWidget extends StatelessWidget {
       textInputAction: TextInputAction.send,
       onSubmitted: (String value) async {
         if (postStatusBloc.isReadyToPost) {
+          var isScheduled = postStatusBloc.isScheduled;
           var dialogResult =
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
             asyncCode: () => postStatusBloc.post(),
           );
           var success = dialogResult.result;
-          if (success == true) {
-            showPostStatusPostOverlayNotification(context, postStatusBloc);
+
+          if (success) {
+            showPostStatusPostOverlayNotification(
+              context: context,
+              postStatusBloc: postStatusBloc,
+              isScheduled: isScheduled,
+            );
           }
         } else {
           await FediSimpleAlertDialog(

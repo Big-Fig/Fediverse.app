@@ -28,9 +28,14 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             showProgressDialog: true,
             progressContentMessage: tr("app.status.post.dialog.async.content"),
             asyncButtonAction: () async {
+              var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.post();
-              if (success) {
-                showPostStatusPostOverlayNotification(context, postStatusBloc);
+              if (success == true) {
+                showPostStatusPostOverlayNotification(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  isScheduled: isScheduled,
+                );
               }
               FocusScope.of(context).requestFocus(FocusNode()); //remove focus
               if (success && successCallback != null) {

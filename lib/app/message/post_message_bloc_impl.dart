@@ -198,10 +198,10 @@ abstract class PostMessageBloc extends DisposableOwner
   void toggleExpanded() {
     var newValue = !isExpanded;
     isExpandedSubject.add(newValue);
-    Future.delayed(Duration(seconds: 1), () {
-      if (newValue == true) {
-        inputFocusNode.requestFocus();
-      }
-    });
+    // Future.delayed(Duration(seconds: 1), () {
+    //   if (newValue == true) {
+    //     inputFocusNode.requestFocus();
+    //   }
+    // });
   }
 }

@@ -144,7 +144,8 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   @override
   @JsonKey(name: "application_id")
-  final String applicationId;
+  // int or String
+  final dynamic applicationId;
 
   PleromaScheduledStatusParams(
       {this.text,

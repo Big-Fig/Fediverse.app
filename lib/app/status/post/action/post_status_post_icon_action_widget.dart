@@ -22,9 +22,14 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: () async {
+              var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.post();
-              if(success) {
-                showPostStatusPostOverlayNotification(context, postStatusBloc);
+              if (success) {
+                showPostStatusPostOverlayNotification(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  isScheduled: isScheduled,
+                );
               }
             },
             builder: (BuildContext context, onPressed) {
