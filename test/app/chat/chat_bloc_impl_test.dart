@@ -19,7 +19,7 @@ import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/local_preferences_service_memory_impl.dart';
+import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

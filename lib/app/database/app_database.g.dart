@@ -46,6 +46,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final DateTime pleromaExpiresAt;
   final bool pleromaThreadMuted;
   final List<PleromaStatusEmojiReaction> pleromaEmojiReactions;
+  final bool deleted;
   DbStatus(
       {@required this.id,
       @required this.remoteId,
@@ -84,7 +85,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaSpoilerText,
       this.pleromaExpiresAt,
       this.pleromaThreadMuted,
-      this.pleromaEmojiReactions});
+      this.pleromaEmojiReactions,
+      this.deleted});
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -168,115 +170,152 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       pleromaEmojiReactions: $DbStatusesTable.$converter10.mapToDart(
           stringType.mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_emoji_reactions'])),
-    );
-  }
-  factory DbStatus.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DbStatus(
-      id: serializer.fromJson<int>(json['id']),
-      remoteId: serializer.fromJson<String>(json['remoteId']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      inReplyToRemoteId: serializer.fromJson<String>(json['inReplyToRemoteId']),
-      inReplyToAccountRemoteId:
-          serializer.fromJson<String>(json['inReplyToAccountRemoteId']),
-      sensitive: serializer.fromJson<bool>(json['sensitive']),
-      spoilerText: serializer.fromJson<String>(json['spoilerText']),
-      visibility: serializer.fromJson<PleromaVisibility>(json['visibility']),
-      uri: serializer.fromJson<String>(json['uri']),
-      url: serializer.fromJson<String>(json['url']),
-      repliesCount: serializer.fromJson<int>(json['repliesCount']),
-      reblogsCount: serializer.fromJson<int>(json['reblogsCount']),
-      favouritesCount: serializer.fromJson<int>(json['favouritesCount']),
-      favourited: serializer.fromJson<bool>(json['favourited']),
-      reblogged: serializer.fromJson<bool>(json['reblogged']),
-      muted: serializer.fromJson<bool>(json['muted']),
-      bookmarked: serializer.fromJson<bool>(json['bookmarked']),
-      pinned: serializer.fromJson<bool>(json['pinned']),
-      content: serializer.fromJson<String>(json['content']),
-      reblogStatusRemoteId:
-          serializer.fromJson<String>(json['reblogStatusRemoteId']),
-      application: serializer.fromJson<PleromaApplication>(json['application']),
-      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
-      mediaAttachments: serializer
-          .fromJson<List<PleromaMediaAttachment>>(json['mediaAttachments']),
-      mentions: serializer.fromJson<List<PleromaMention>>(json['mentions']),
-      tags: serializer.fromJson<List<PleromaTag>>(json['tags']),
-      emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
-      poll: serializer.fromJson<PleromaPoll>(json['poll']),
-      card: serializer.fromJson<PleromaCard>(json['card']),
-      language: serializer.fromJson<String>(json['language']),
-      pleromaContent:
-          serializer.fromJson<PleromaContent>(json['pleromaContent']),
-      pleromaConversationId:
-          serializer.fromJson<int>(json['pleromaConversationId']),
-      pleromaDirectConversationId:
-          serializer.fromJson<int>(json['pleromaDirectConversationId']),
-      pleromaInReplyToAccountAcct:
-          serializer.fromJson<String>(json['pleromaInReplyToAccountAcct']),
-      pleromaLocal: serializer.fromJson<bool>(json['pleromaLocal']),
-      pleromaSpoilerText:
-          serializer.fromJson<PleromaContent>(json['pleromaSpoilerText']),
-      pleromaExpiresAt: serializer.fromJson<DateTime>(json['pleromaExpiresAt']),
-      pleromaThreadMuted: serializer.fromJson<bool>(json['pleromaThreadMuted']),
-      pleromaEmojiReactions:
-          serializer.fromJson<List<PleromaStatusEmojiReaction>>(
-              json['pleromaEmojiReactions']),
+      deleted:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'remoteId': serializer.toJson<String>(remoteId),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'inReplyToRemoteId': serializer.toJson<String>(inReplyToRemoteId),
-      'inReplyToAccountRemoteId':
-          serializer.toJson<String>(inReplyToAccountRemoteId),
-      'sensitive': serializer.toJson<bool>(sensitive),
-      'spoilerText': serializer.toJson<String>(spoilerText),
-      'visibility': serializer.toJson<PleromaVisibility>(visibility),
-      'uri': serializer.toJson<String>(uri),
-      'url': serializer.toJson<String>(url),
-      'repliesCount': serializer.toJson<int>(repliesCount),
-      'reblogsCount': serializer.toJson<int>(reblogsCount),
-      'favouritesCount': serializer.toJson<int>(favouritesCount),
-      'favourited': serializer.toJson<bool>(favourited),
-      'reblogged': serializer.toJson<bool>(reblogged),
-      'muted': serializer.toJson<bool>(muted),
-      'bookmarked': serializer.toJson<bool>(bookmarked),
-      'pinned': serializer.toJson<bool>(pinned),
-      'content': serializer.toJson<String>(content),
-      'reblogStatusRemoteId': serializer.toJson<String>(reblogStatusRemoteId),
-      'application': serializer.toJson<PleromaApplication>(application),
-      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
-      'mediaAttachments':
-          serializer.toJson<List<PleromaMediaAttachment>>(mediaAttachments),
-      'mentions': serializer.toJson<List<PleromaMention>>(mentions),
-      'tags': serializer.toJson<List<PleromaTag>>(tags),
-      'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
-      'poll': serializer.toJson<PleromaPoll>(poll),
-      'card': serializer.toJson<PleromaCard>(card),
-      'language': serializer.toJson<String>(language),
-      'pleromaContent': serializer.toJson<PleromaContent>(pleromaContent),
-      'pleromaConversationId': serializer.toJson<int>(pleromaConversationId),
-      'pleromaDirectConversationId':
-          serializer.toJson<int>(pleromaDirectConversationId),
-      'pleromaInReplyToAccountAcct':
-          serializer.toJson<String>(pleromaInReplyToAccountAcct),
-      'pleromaLocal': serializer.toJson<bool>(pleromaLocal),
-      'pleromaSpoilerText':
-          serializer.toJson<PleromaContent>(pleromaSpoilerText),
-      'pleromaExpiresAt': serializer.toJson<DateTime>(pleromaExpiresAt),
-      'pleromaThreadMuted': serializer.toJson<bool>(pleromaThreadMuted),
-      'pleromaEmojiReactions': serializer
-          .toJson<List<PleromaStatusEmojiReaction>>(pleromaEmojiReactions),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || inReplyToRemoteId != null) {
+      map['in_reply_to_remote_id'] = Variable<String>(inReplyToRemoteId);
+    }
+    if (!nullToAbsent || inReplyToAccountRemoteId != null) {
+      map['in_reply_to_account_remote_id'] =
+          Variable<String>(inReplyToAccountRemoteId);
+    }
+    if (!nullToAbsent || sensitive != null) {
+      map['sensitive'] = Variable<bool>(sensitive);
+    }
+    if (!nullToAbsent || spoilerText != null) {
+      map['spoiler_text'] = Variable<String>(spoilerText);
+    }
+    if (!nullToAbsent || visibility != null) {
+      final converter = $DbStatusesTable.$converter0;
+      map['visibility'] = Variable<String>(converter.mapToSql(visibility));
+    }
+    if (!nullToAbsent || uri != null) {
+      map['uri'] = Variable<String>(uri);
+    }
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
+    }
+    if (!nullToAbsent || repliesCount != null) {
+      map['replies_count'] = Variable<int>(repliesCount);
+    }
+    if (!nullToAbsent || reblogsCount != null) {
+      map['reblogs_count'] = Variable<int>(reblogsCount);
+    }
+    if (!nullToAbsent || favouritesCount != null) {
+      map['favourites_count'] = Variable<int>(favouritesCount);
+    }
+    if (!nullToAbsent || favourited != null) {
+      map['favourited'] = Variable<bool>(favourited);
+    }
+    if (!nullToAbsent || reblogged != null) {
+      map['reblogged'] = Variable<bool>(reblogged);
+    }
+    if (!nullToAbsent || muted != null) {
+      map['muted'] = Variable<bool>(muted);
+    }
+    if (!nullToAbsent || bookmarked != null) {
+      map['bookmarked'] = Variable<bool>(bookmarked);
+    }
+    if (!nullToAbsent || pinned != null) {
+      map['pinned'] = Variable<bool>(pinned);
+    }
+    if (!nullToAbsent || content != null) {
+      map['content'] = Variable<String>(content);
+    }
+    if (!nullToAbsent || reblogStatusRemoteId != null) {
+      map['reblog_status_remote_id'] = Variable<String>(reblogStatusRemoteId);
+    }
+    if (!nullToAbsent || application != null) {
+      final converter = $DbStatusesTable.$converter1;
+      map['application'] = Variable<String>(converter.mapToSql(application));
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || mediaAttachments != null) {
+      final converter = $DbStatusesTable.$converter2;
+      map['media_attachments'] =
+          Variable<String>(converter.mapToSql(mediaAttachments));
+    }
+    if (!nullToAbsent || mentions != null) {
+      final converter = $DbStatusesTable.$converter3;
+      map['mentions'] = Variable<String>(converter.mapToSql(mentions));
+    }
+    if (!nullToAbsent || tags != null) {
+      final converter = $DbStatusesTable.$converter4;
+      map['tags'] = Variable<String>(converter.mapToSql(tags));
+    }
+    if (!nullToAbsent || emojis != null) {
+      final converter = $DbStatusesTable.$converter5;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis));
+    }
+    if (!nullToAbsent || poll != null) {
+      final converter = $DbStatusesTable.$converter6;
+      map['poll'] = Variable<String>(converter.mapToSql(poll));
+    }
+    if (!nullToAbsent || card != null) {
+      final converter = $DbStatusesTable.$converter7;
+      map['card'] = Variable<String>(converter.mapToSql(card));
+    }
+    if (!nullToAbsent || language != null) {
+      map['language'] = Variable<String>(language);
+    }
+    if (!nullToAbsent || pleromaContent != null) {
+      final converter = $DbStatusesTable.$converter8;
+      map['pleroma_content'] =
+          Variable<String>(converter.mapToSql(pleromaContent));
+    }
+    if (!nullToAbsent || pleromaConversationId != null) {
+      map['pleroma_conversation_id'] = Variable<int>(pleromaConversationId);
+    }
+    if (!nullToAbsent || pleromaDirectConversationId != null) {
+      map['pleroma_direct_conversation_id'] =
+          Variable<int>(pleromaDirectConversationId);
+    }
+    if (!nullToAbsent || pleromaInReplyToAccountAcct != null) {
+      map['pleroma_in_reply_to_account_acct'] =
+          Variable<String>(pleromaInReplyToAccountAcct);
+    }
+    if (!nullToAbsent || pleromaLocal != null) {
+      map['pleroma_local'] = Variable<bool>(pleromaLocal);
+    }
+    if (!nullToAbsent || pleromaSpoilerText != null) {
+      final converter = $DbStatusesTable.$converter9;
+      map['pleroma_spoiler_text'] =
+          Variable<String>(converter.mapToSql(pleromaSpoilerText));
+    }
+    if (!nullToAbsent || pleromaExpiresAt != null) {
+      map['pleroma_expires_at'] = Variable<DateTime>(pleromaExpiresAt);
+    }
+    if (!nullToAbsent || pleromaThreadMuted != null) {
+      map['pleroma_thread_muted'] = Variable<bool>(pleromaThreadMuted);
+    }
+    if (!nullToAbsent || pleromaEmojiReactions != null) {
+      final converter = $DbStatusesTable.$converter10;
+      map['pleroma_emoji_reactions'] =
+          Variable<String>(converter.mapToSql(pleromaEmojiReactions));
+    }
+    if (!nullToAbsent || deleted != null) {
+      map['deleted'] = Variable<bool>(deleted);
+    }
+    return map;
   }
 
-  @override
-  DbStatusesCompanion createCompanion(bool nullToAbsent) {
+  DbStatusesCompanion toCompanion(bool nullToAbsent) {
     return DbStatusesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       remoteId: remoteId == null && nullToAbsent
@@ -379,7 +418,117 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       pleromaEmojiReactions: pleromaEmojiReactions == null && nullToAbsent
           ? const Value.absent()
           : Value(pleromaEmojiReactions),
+      deleted: deleted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deleted),
     );
+  }
+
+  factory DbStatus.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbStatus(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      inReplyToRemoteId: serializer.fromJson<String>(json['inReplyToRemoteId']),
+      inReplyToAccountRemoteId:
+          serializer.fromJson<String>(json['inReplyToAccountRemoteId']),
+      sensitive: serializer.fromJson<bool>(json['sensitive']),
+      spoilerText: serializer.fromJson<String>(json['spoilerText']),
+      visibility: serializer.fromJson<PleromaVisibility>(json['visibility']),
+      uri: serializer.fromJson<String>(json['uri']),
+      url: serializer.fromJson<String>(json['url']),
+      repliesCount: serializer.fromJson<int>(json['repliesCount']),
+      reblogsCount: serializer.fromJson<int>(json['reblogsCount']),
+      favouritesCount: serializer.fromJson<int>(json['favouritesCount']),
+      favourited: serializer.fromJson<bool>(json['favourited']),
+      reblogged: serializer.fromJson<bool>(json['reblogged']),
+      muted: serializer.fromJson<bool>(json['muted']),
+      bookmarked: serializer.fromJson<bool>(json['bookmarked']),
+      pinned: serializer.fromJson<bool>(json['pinned']),
+      content: serializer.fromJson<String>(json['content']),
+      reblogStatusRemoteId:
+          serializer.fromJson<String>(json['reblogStatusRemoteId']),
+      application: serializer.fromJson<PleromaApplication>(json['application']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
+      mediaAttachments: serializer
+          .fromJson<List<PleromaMediaAttachment>>(json['mediaAttachments']),
+      mentions: serializer.fromJson<List<PleromaMention>>(json['mentions']),
+      tags: serializer.fromJson<List<PleromaTag>>(json['tags']),
+      emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      poll: serializer.fromJson<PleromaPoll>(json['poll']),
+      card: serializer.fromJson<PleromaCard>(json['card']),
+      language: serializer.fromJson<String>(json['language']),
+      pleromaContent:
+          serializer.fromJson<PleromaContent>(json['pleromaContent']),
+      pleromaConversationId:
+          serializer.fromJson<int>(json['pleromaConversationId']),
+      pleromaDirectConversationId:
+          serializer.fromJson<int>(json['pleromaDirectConversationId']),
+      pleromaInReplyToAccountAcct:
+          serializer.fromJson<String>(json['pleromaInReplyToAccountAcct']),
+      pleromaLocal: serializer.fromJson<bool>(json['pleromaLocal']),
+      pleromaSpoilerText:
+          serializer.fromJson<PleromaContent>(json['pleromaSpoilerText']),
+      pleromaExpiresAt: serializer.fromJson<DateTime>(json['pleromaExpiresAt']),
+      pleromaThreadMuted: serializer.fromJson<bool>(json['pleromaThreadMuted']),
+      pleromaEmojiReactions:
+          serializer.fromJson<List<PleromaStatusEmojiReaction>>(
+              json['pleromaEmojiReactions']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'inReplyToRemoteId': serializer.toJson<String>(inReplyToRemoteId),
+      'inReplyToAccountRemoteId':
+          serializer.toJson<String>(inReplyToAccountRemoteId),
+      'sensitive': serializer.toJson<bool>(sensitive),
+      'spoilerText': serializer.toJson<String>(spoilerText),
+      'visibility': serializer.toJson<PleromaVisibility>(visibility),
+      'uri': serializer.toJson<String>(uri),
+      'url': serializer.toJson<String>(url),
+      'repliesCount': serializer.toJson<int>(repliesCount),
+      'reblogsCount': serializer.toJson<int>(reblogsCount),
+      'favouritesCount': serializer.toJson<int>(favouritesCount),
+      'favourited': serializer.toJson<bool>(favourited),
+      'reblogged': serializer.toJson<bool>(reblogged),
+      'muted': serializer.toJson<bool>(muted),
+      'bookmarked': serializer.toJson<bool>(bookmarked),
+      'pinned': serializer.toJson<bool>(pinned),
+      'content': serializer.toJson<String>(content),
+      'reblogStatusRemoteId': serializer.toJson<String>(reblogStatusRemoteId),
+      'application': serializer.toJson<PleromaApplication>(application),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
+      'mediaAttachments':
+          serializer.toJson<List<PleromaMediaAttachment>>(mediaAttachments),
+      'mentions': serializer.toJson<List<PleromaMention>>(mentions),
+      'tags': serializer.toJson<List<PleromaTag>>(tags),
+      'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'poll': serializer.toJson<PleromaPoll>(poll),
+      'card': serializer.toJson<PleromaCard>(card),
+      'language': serializer.toJson<String>(language),
+      'pleromaContent': serializer.toJson<PleromaContent>(pleromaContent),
+      'pleromaConversationId': serializer.toJson<int>(pleromaConversationId),
+      'pleromaDirectConversationId':
+          serializer.toJson<int>(pleromaDirectConversationId),
+      'pleromaInReplyToAccountAcct':
+          serializer.toJson<String>(pleromaInReplyToAccountAcct),
+      'pleromaLocal': serializer.toJson<bool>(pleromaLocal),
+      'pleromaSpoilerText':
+          serializer.toJson<PleromaContent>(pleromaSpoilerText),
+      'pleromaExpiresAt': serializer.toJson<DateTime>(pleromaExpiresAt),
+      'pleromaThreadMuted': serializer.toJson<bool>(pleromaThreadMuted),
+      'pleromaEmojiReactions': serializer
+          .toJson<List<PleromaStatusEmojiReaction>>(pleromaEmojiReactions),
+      'deleted': serializer.toJson<bool>(deleted),
+    };
   }
 
   DbStatus copyWith(
@@ -420,7 +569,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           PleromaContent pleromaSpoilerText,
           DateTime pleromaExpiresAt,
           bool pleromaThreadMuted,
-          List<PleromaStatusEmojiReaction> pleromaEmojiReactions}) =>
+          List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+          bool deleted}) =>
       DbStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -465,6 +615,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
         pleromaEmojiReactions:
             pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+        deleted: deleted ?? this.deleted,
       );
   @override
   String toString() {
@@ -506,7 +657,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('pleromaSpoilerText: $pleromaSpoilerText, ')
           ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
-          ..write('pleromaEmojiReactions: $pleromaEmojiReactions')
+          ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
@@ -554,7 +706,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, deleted.hashCode)))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -598,7 +750,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.pleromaSpoilerText == this.pleromaSpoilerText &&
           other.pleromaExpiresAt == this.pleromaExpiresAt &&
           other.pleromaThreadMuted == this.pleromaThreadMuted &&
-          other.pleromaEmojiReactions == this.pleromaEmojiReactions);
+          other.pleromaEmojiReactions == this.pleromaEmojiReactions &&
+          other.deleted == this.deleted);
 }
 
 class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
@@ -640,6 +793,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<DateTime> pleromaExpiresAt;
   final Value<bool> pleromaThreadMuted;
   final Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions;
+  final Value<bool> deleted;
   const DbStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -679,6 +833,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaExpiresAt = const Value.absent(),
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
+    this.deleted = const Value.absent(),
   });
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
@@ -719,6 +874,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaExpiresAt = const Value.absent(),
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
+    this.deleted = const Value.absent(),
   })  : remoteId = Value(remoteId),
         createdAt = Value(createdAt),
         sensitive = Value(sensitive),
@@ -728,6 +884,98 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         reblogsCount = Value(reblogsCount),
         favouritesCount = Value(favouritesCount),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbStatus> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<DateTime> createdAt,
+    Expression<String> inReplyToRemoteId,
+    Expression<String> inReplyToAccountRemoteId,
+    Expression<bool> sensitive,
+    Expression<String> spoilerText,
+    Expression<String> visibility,
+    Expression<String> uri,
+    Expression<String> url,
+    Expression<int> repliesCount,
+    Expression<int> reblogsCount,
+    Expression<int> favouritesCount,
+    Expression<bool> favourited,
+    Expression<bool> reblogged,
+    Expression<bool> muted,
+    Expression<bool> bookmarked,
+    Expression<bool> pinned,
+    Expression<String> content,
+    Expression<String> reblogStatusRemoteId,
+    Expression<String> application,
+    Expression<String> accountRemoteId,
+    Expression<String> mediaAttachments,
+    Expression<String> mentions,
+    Expression<String> tags,
+    Expression<String> emojis,
+    Expression<String> poll,
+    Expression<String> card,
+    Expression<String> language,
+    Expression<String> pleromaContent,
+    Expression<int> pleromaConversationId,
+    Expression<int> pleromaDirectConversationId,
+    Expression<String> pleromaInReplyToAccountAcct,
+    Expression<bool> pleromaLocal,
+    Expression<String> pleromaSpoilerText,
+    Expression<DateTime> pleromaExpiresAt,
+    Expression<bool> pleromaThreadMuted,
+    Expression<String> pleromaEmojiReactions,
+    Expression<bool> deleted,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (inReplyToRemoteId != null) 'in_reply_to_remote_id': inReplyToRemoteId,
+      if (inReplyToAccountRemoteId != null)
+        'in_reply_to_account_remote_id': inReplyToAccountRemoteId,
+      if (sensitive != null) 'sensitive': sensitive,
+      if (spoilerText != null) 'spoiler_text': spoilerText,
+      if (visibility != null) 'visibility': visibility,
+      if (uri != null) 'uri': uri,
+      if (url != null) 'url': url,
+      if (repliesCount != null) 'replies_count': repliesCount,
+      if (reblogsCount != null) 'reblogs_count': reblogsCount,
+      if (favouritesCount != null) 'favourites_count': favouritesCount,
+      if (favourited != null) 'favourited': favourited,
+      if (reblogged != null) 'reblogged': reblogged,
+      if (muted != null) 'muted': muted,
+      if (bookmarked != null) 'bookmarked': bookmarked,
+      if (pinned != null) 'pinned': pinned,
+      if (content != null) 'content': content,
+      if (reblogStatusRemoteId != null)
+        'reblog_status_remote_id': reblogStatusRemoteId,
+      if (application != null) 'application': application,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (mediaAttachments != null) 'media_attachments': mediaAttachments,
+      if (mentions != null) 'mentions': mentions,
+      if (tags != null) 'tags': tags,
+      if (emojis != null) 'emojis': emojis,
+      if (poll != null) 'poll': poll,
+      if (card != null) 'card': card,
+      if (language != null) 'language': language,
+      if (pleromaContent != null) 'pleroma_content': pleromaContent,
+      if (pleromaConversationId != null)
+        'pleroma_conversation_id': pleromaConversationId,
+      if (pleromaDirectConversationId != null)
+        'pleroma_direct_conversation_id': pleromaDirectConversationId,
+      if (pleromaInReplyToAccountAcct != null)
+        'pleroma_in_reply_to_account_acct': pleromaInReplyToAccountAcct,
+      if (pleromaLocal != null) 'pleroma_local': pleromaLocal,
+      if (pleromaSpoilerText != null)
+        'pleroma_spoiler_text': pleromaSpoilerText,
+      if (pleromaExpiresAt != null) 'pleroma_expires_at': pleromaExpiresAt,
+      if (pleromaThreadMuted != null)
+        'pleroma_thread_muted': pleromaThreadMuted,
+      if (pleromaEmojiReactions != null)
+        'pleroma_emoji_reactions': pleromaEmojiReactions,
+      if (deleted != null) 'deleted': deleted,
+    });
+  }
+
   DbStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -766,7 +1014,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<PleromaContent> pleromaSpoilerText,
       Value<DateTime> pleromaExpiresAt,
       Value<bool> pleromaThreadMuted,
-      Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions}) {
+      Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions,
+      Value<bool> deleted}) {
     return DbStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -811,7 +1060,199 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
       pleromaEmojiReactions:
           pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+      deleted: deleted ?? this.deleted,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (inReplyToRemoteId.present) {
+      map['in_reply_to_remote_id'] = Variable<String>(inReplyToRemoteId.value);
+    }
+    if (inReplyToAccountRemoteId.present) {
+      map['in_reply_to_account_remote_id'] =
+          Variable<String>(inReplyToAccountRemoteId.value);
+    }
+    if (sensitive.present) {
+      map['sensitive'] = Variable<bool>(sensitive.value);
+    }
+    if (spoilerText.present) {
+      map['spoiler_text'] = Variable<String>(spoilerText.value);
+    }
+    if (visibility.present) {
+      final converter = $DbStatusesTable.$converter0;
+      map['visibility'] =
+          Variable<String>(converter.mapToSql(visibility.value));
+    }
+    if (uri.present) {
+      map['uri'] = Variable<String>(uri.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (repliesCount.present) {
+      map['replies_count'] = Variable<int>(repliesCount.value);
+    }
+    if (reblogsCount.present) {
+      map['reblogs_count'] = Variable<int>(reblogsCount.value);
+    }
+    if (favouritesCount.present) {
+      map['favourites_count'] = Variable<int>(favouritesCount.value);
+    }
+    if (favourited.present) {
+      map['favourited'] = Variable<bool>(favourited.value);
+    }
+    if (reblogged.present) {
+      map['reblogged'] = Variable<bool>(reblogged.value);
+    }
+    if (muted.present) {
+      map['muted'] = Variable<bool>(muted.value);
+    }
+    if (bookmarked.present) {
+      map['bookmarked'] = Variable<bool>(bookmarked.value);
+    }
+    if (pinned.present) {
+      map['pinned'] = Variable<bool>(pinned.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (reblogStatusRemoteId.present) {
+      map['reblog_status_remote_id'] =
+          Variable<String>(reblogStatusRemoteId.value);
+    }
+    if (application.present) {
+      final converter = $DbStatusesTable.$converter1;
+      map['application'] =
+          Variable<String>(converter.mapToSql(application.value));
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (mediaAttachments.present) {
+      final converter = $DbStatusesTable.$converter2;
+      map['media_attachments'] =
+          Variable<String>(converter.mapToSql(mediaAttachments.value));
+    }
+    if (mentions.present) {
+      final converter = $DbStatusesTable.$converter3;
+      map['mentions'] = Variable<String>(converter.mapToSql(mentions.value));
+    }
+    if (tags.present) {
+      final converter = $DbStatusesTable.$converter4;
+      map['tags'] = Variable<String>(converter.mapToSql(tags.value));
+    }
+    if (emojis.present) {
+      final converter = $DbStatusesTable.$converter5;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis.value));
+    }
+    if (poll.present) {
+      final converter = $DbStatusesTable.$converter6;
+      map['poll'] = Variable<String>(converter.mapToSql(poll.value));
+    }
+    if (card.present) {
+      final converter = $DbStatusesTable.$converter7;
+      map['card'] = Variable<String>(converter.mapToSql(card.value));
+    }
+    if (language.present) {
+      map['language'] = Variable<String>(language.value);
+    }
+    if (pleromaContent.present) {
+      final converter = $DbStatusesTable.$converter8;
+      map['pleroma_content'] =
+          Variable<String>(converter.mapToSql(pleromaContent.value));
+    }
+    if (pleromaConversationId.present) {
+      map['pleroma_conversation_id'] =
+          Variable<int>(pleromaConversationId.value);
+    }
+    if (pleromaDirectConversationId.present) {
+      map['pleroma_direct_conversation_id'] =
+          Variable<int>(pleromaDirectConversationId.value);
+    }
+    if (pleromaInReplyToAccountAcct.present) {
+      map['pleroma_in_reply_to_account_acct'] =
+          Variable<String>(pleromaInReplyToAccountAcct.value);
+    }
+    if (pleromaLocal.present) {
+      map['pleroma_local'] = Variable<bool>(pleromaLocal.value);
+    }
+    if (pleromaSpoilerText.present) {
+      final converter = $DbStatusesTable.$converter9;
+      map['pleroma_spoiler_text'] =
+          Variable<String>(converter.mapToSql(pleromaSpoilerText.value));
+    }
+    if (pleromaExpiresAt.present) {
+      map['pleroma_expires_at'] = Variable<DateTime>(pleromaExpiresAt.value);
+    }
+    if (pleromaThreadMuted.present) {
+      map['pleroma_thread_muted'] = Variable<bool>(pleromaThreadMuted.value);
+    }
+    if (pleromaEmojiReactions.present) {
+      final converter = $DbStatusesTable.$converter10;
+      map['pleroma_emoji_reactions'] =
+          Variable<String>(converter.mapToSql(pleromaEmojiReactions.value));
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusesCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('inReplyToRemoteId: $inReplyToRemoteId, ')
+          ..write('inReplyToAccountRemoteId: $inReplyToAccountRemoteId, ')
+          ..write('sensitive: $sensitive, ')
+          ..write('spoilerText: $spoilerText, ')
+          ..write('visibility: $visibility, ')
+          ..write('uri: $uri, ')
+          ..write('url: $url, ')
+          ..write('repliesCount: $repliesCount, ')
+          ..write('reblogsCount: $reblogsCount, ')
+          ..write('favouritesCount: $favouritesCount, ')
+          ..write('favourited: $favourited, ')
+          ..write('reblogged: $reblogged, ')
+          ..write('muted: $muted, ')
+          ..write('bookmarked: $bookmarked, ')
+          ..write('pinned: $pinned, ')
+          ..write('content: $content, ')
+          ..write('reblogStatusRemoteId: $reblogStatusRemoteId, ')
+          ..write('application: $application, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('mediaAttachments: $mediaAttachments, ')
+          ..write('mentions: $mentions, ')
+          ..write('tags: $tags, ')
+          ..write('emojis: $emojis, ')
+          ..write('poll: $poll, ')
+          ..write('card: $card, ')
+          ..write('language: $language, ')
+          ..write('pleromaContent: $pleromaContent, ')
+          ..write('pleromaConversationId: $pleromaConversationId, ')
+          ..write('pleromaDirectConversationId: $pleromaDirectConversationId, ')
+          ..write('pleromaInReplyToAccountAcct: $pleromaInReplyToAccountAcct, ')
+          ..write('pleromaLocal: $pleromaLocal, ')
+          ..write('pleromaSpoilerText: $pleromaSpoilerText, ')
+          ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
+          ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
+          ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
+          ..write('deleted: $deleted')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -1299,6 +1740,18 @@ class $DbStatusesTable extends DbStatuses
     );
   }
 
+  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  GeneratedBoolColumn _deleted;
+  @override
+  GeneratedBoolColumn get deleted => _deleted ??= _constructDeleted();
+  GeneratedBoolColumn _constructDeleted() {
+    return GeneratedBoolColumn(
+      'deleted',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1338,7 +1791,8 @@ class $DbStatusesTable extends DbStatuses
         pleromaSpoilerText,
         pleromaExpiresAt,
         pleromaThreadMuted,
-        pleromaEmojiReactions
+        pleromaEmojiReactions,
+        deleted
       ];
   @override
   $DbStatusesTable get asDslTable => this;
@@ -1347,117 +1801,127 @@ class $DbStatusesTable extends DbStatuses
   @override
   final String actualTableName = 'db_statuses';
   @override
-  VerificationContext validateIntegrity(DbStatusesCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbStatus> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
-    if (d.inReplyToRemoteId.present) {
+    if (data.containsKey('in_reply_to_remote_id')) {
       context.handle(
           _inReplyToRemoteIdMeta,
-          inReplyToRemoteId.isAcceptableValue(
-              d.inReplyToRemoteId.value, _inReplyToRemoteIdMeta));
+          inReplyToRemoteId.isAcceptableOrUnknown(
+              data['in_reply_to_remote_id'], _inReplyToRemoteIdMeta));
     }
-    if (d.inReplyToAccountRemoteId.present) {
+    if (data.containsKey('in_reply_to_account_remote_id')) {
       context.handle(
           _inReplyToAccountRemoteIdMeta,
-          inReplyToAccountRemoteId.isAcceptableValue(
-              d.inReplyToAccountRemoteId.value, _inReplyToAccountRemoteIdMeta));
+          inReplyToAccountRemoteId.isAcceptableOrUnknown(
+              data['in_reply_to_account_remote_id'],
+              _inReplyToAccountRemoteIdMeta));
     }
-    if (d.sensitive.present) {
+    if (data.containsKey('sensitive')) {
       context.handle(_sensitiveMeta,
-          sensitive.isAcceptableValue(d.sensitive.value, _sensitiveMeta));
+          sensitive.isAcceptableOrUnknown(data['sensitive'], _sensitiveMeta));
     } else if (isInserting) {
       context.missing(_sensitiveMeta);
     }
-    if (d.spoilerText.present) {
-      context.handle(_spoilerTextMeta,
-          spoilerText.isAcceptableValue(d.spoilerText.value, _spoilerTextMeta));
+    if (data.containsKey('spoiler_text')) {
+      context.handle(
+          _spoilerTextMeta,
+          spoilerText.isAcceptableOrUnknown(
+              data['spoiler_text'], _spoilerTextMeta));
     } else if (isInserting) {
       context.missing(_spoilerTextMeta);
     }
     context.handle(_visibilityMeta, const VerificationResult.success());
-    if (d.uri.present) {
-      context.handle(_uriMeta, uri.isAcceptableValue(d.uri.value, _uriMeta));
+    if (data.containsKey('uri')) {
+      context.handle(
+          _uriMeta, uri.isAcceptableOrUnknown(data['uri'], _uriMeta));
     } else if (isInserting) {
       context.missing(_uriMeta);
     }
-    if (d.url.present) {
-      context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
     }
-    if (d.repliesCount.present) {
+    if (data.containsKey('replies_count')) {
       context.handle(
           _repliesCountMeta,
-          repliesCount.isAcceptableValue(
-              d.repliesCount.value, _repliesCountMeta));
+          repliesCount.isAcceptableOrUnknown(
+              data['replies_count'], _repliesCountMeta));
     } else if (isInserting) {
       context.missing(_repliesCountMeta);
     }
-    if (d.reblogsCount.present) {
+    if (data.containsKey('reblogs_count')) {
       context.handle(
           _reblogsCountMeta,
-          reblogsCount.isAcceptableValue(
-              d.reblogsCount.value, _reblogsCountMeta));
+          reblogsCount.isAcceptableOrUnknown(
+              data['reblogs_count'], _reblogsCountMeta));
     } else if (isInserting) {
       context.missing(_reblogsCountMeta);
     }
-    if (d.favouritesCount.present) {
+    if (data.containsKey('favourites_count')) {
       context.handle(
           _favouritesCountMeta,
-          favouritesCount.isAcceptableValue(
-              d.favouritesCount.value, _favouritesCountMeta));
+          favouritesCount.isAcceptableOrUnknown(
+              data['favourites_count'], _favouritesCountMeta));
     } else if (isInserting) {
       context.missing(_favouritesCountMeta);
     }
-    if (d.favourited.present) {
-      context.handle(_favouritedMeta,
-          favourited.isAcceptableValue(d.favourited.value, _favouritedMeta));
+    if (data.containsKey('favourited')) {
+      context.handle(
+          _favouritedMeta,
+          favourited.isAcceptableOrUnknown(
+              data['favourited'], _favouritedMeta));
     }
-    if (d.reblogged.present) {
+    if (data.containsKey('reblogged')) {
       context.handle(_rebloggedMeta,
-          reblogged.isAcceptableValue(d.reblogged.value, _rebloggedMeta));
+          reblogged.isAcceptableOrUnknown(data['reblogged'], _rebloggedMeta));
     }
-    if (d.muted.present) {
+    if (data.containsKey('muted')) {
       context.handle(
-          _mutedMeta, muted.isAcceptableValue(d.muted.value, _mutedMeta));
+          _mutedMeta, muted.isAcceptableOrUnknown(data['muted'], _mutedMeta));
     }
-    if (d.bookmarked.present) {
-      context.handle(_bookmarkedMeta,
-          bookmarked.isAcceptableValue(d.bookmarked.value, _bookmarkedMeta));
-    }
-    if (d.pinned.present) {
+    if (data.containsKey('bookmarked')) {
       context.handle(
-          _pinnedMeta, pinned.isAcceptableValue(d.pinned.value, _pinnedMeta));
+          _bookmarkedMeta,
+          bookmarked.isAcceptableOrUnknown(
+              data['bookmarked'], _bookmarkedMeta));
     }
-    if (d.content.present) {
+    if (data.containsKey('pinned')) {
+      context.handle(_pinnedMeta,
+          pinned.isAcceptableOrUnknown(data['pinned'], _pinnedMeta));
+    }
+    if (data.containsKey('content')) {
       context.handle(_contentMeta,
-          content.isAcceptableValue(d.content.value, _contentMeta));
+          content.isAcceptableOrUnknown(data['content'], _contentMeta));
     }
-    if (d.reblogStatusRemoteId.present) {
+    if (data.containsKey('reblog_status_remote_id')) {
       context.handle(
           _reblogStatusRemoteIdMeta,
-          reblogStatusRemoteId.isAcceptableValue(
-              d.reblogStatusRemoteId.value, _reblogStatusRemoteIdMeta));
+          reblogStatusRemoteId.isAcceptableOrUnknown(
+              data['reblog_status_remote_id'], _reblogStatusRemoteIdMeta));
     }
     context.handle(_applicationMeta, const VerificationResult.success());
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -1467,52 +1931,56 @@ class $DbStatusesTable extends DbStatuses
     context.handle(_emojisMeta, const VerificationResult.success());
     context.handle(_pollMeta, const VerificationResult.success());
     context.handle(_cardMeta, const VerificationResult.success());
-    if (d.language.present) {
+    if (data.containsKey('language')) {
       context.handle(_languageMeta,
-          language.isAcceptableValue(d.language.value, _languageMeta));
+          language.isAcceptableOrUnknown(data['language'], _languageMeta));
     }
     context.handle(_pleromaContentMeta, const VerificationResult.success());
-    if (d.pleromaConversationId.present) {
+    if (data.containsKey('pleroma_conversation_id')) {
       context.handle(
           _pleromaConversationIdMeta,
-          pleromaConversationId.isAcceptableValue(
-              d.pleromaConversationId.value, _pleromaConversationIdMeta));
+          pleromaConversationId.isAcceptableOrUnknown(
+              data['pleroma_conversation_id'], _pleromaConversationIdMeta));
     }
-    if (d.pleromaDirectConversationId.present) {
+    if (data.containsKey('pleroma_direct_conversation_id')) {
       context.handle(
           _pleromaDirectConversationIdMeta,
-          pleromaDirectConversationId.isAcceptableValue(
-              d.pleromaDirectConversationId.value,
+          pleromaDirectConversationId.isAcceptableOrUnknown(
+              data['pleroma_direct_conversation_id'],
               _pleromaDirectConversationIdMeta));
     }
-    if (d.pleromaInReplyToAccountAcct.present) {
+    if (data.containsKey('pleroma_in_reply_to_account_acct')) {
       context.handle(
           _pleromaInReplyToAccountAcctMeta,
-          pleromaInReplyToAccountAcct.isAcceptableValue(
-              d.pleromaInReplyToAccountAcct.value,
+          pleromaInReplyToAccountAcct.isAcceptableOrUnknown(
+              data['pleroma_in_reply_to_account_acct'],
               _pleromaInReplyToAccountAcctMeta));
     }
-    if (d.pleromaLocal.present) {
+    if (data.containsKey('pleroma_local')) {
       context.handle(
           _pleromaLocalMeta,
-          pleromaLocal.isAcceptableValue(
-              d.pleromaLocal.value, _pleromaLocalMeta));
+          pleromaLocal.isAcceptableOrUnknown(
+              data['pleroma_local'], _pleromaLocalMeta));
     }
     context.handle(_pleromaSpoilerTextMeta, const VerificationResult.success());
-    if (d.pleromaExpiresAt.present) {
+    if (data.containsKey('pleroma_expires_at')) {
       context.handle(
           _pleromaExpiresAtMeta,
-          pleromaExpiresAt.isAcceptableValue(
-              d.pleromaExpiresAt.value, _pleromaExpiresAtMeta));
+          pleromaExpiresAt.isAcceptableOrUnknown(
+              data['pleroma_expires_at'], _pleromaExpiresAtMeta));
     }
-    if (d.pleromaThreadMuted.present) {
+    if (data.containsKey('pleroma_thread_muted')) {
       context.handle(
           _pleromaThreadMutedMeta,
-          pleromaThreadMuted.isAcceptableValue(
-              d.pleromaThreadMuted.value, _pleromaThreadMutedMeta));
+          pleromaThreadMuted.isAcceptableOrUnknown(
+              data['pleroma_thread_muted'], _pleromaThreadMutedMeta));
     }
     context.handle(
         _pleromaEmojiReactionsMeta, const VerificationResult.success());
+    if (data.containsKey('deleted')) {
+      context.handle(_deletedMeta,
+          deleted.isAcceptableOrUnknown(data['deleted'], _deletedMeta));
+    }
     return context;
   }
 
@@ -1522,157 +1990,6 @@ class $DbStatusesTable extends DbStatuses
   DbStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatus.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbStatusesCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.inReplyToRemoteId.present) {
-      map['in_reply_to_remote_id'] =
-          Variable<String, StringType>(d.inReplyToRemoteId.value);
-    }
-    if (d.inReplyToAccountRemoteId.present) {
-      map['in_reply_to_account_remote_id'] =
-          Variable<String, StringType>(d.inReplyToAccountRemoteId.value);
-    }
-    if (d.sensitive.present) {
-      map['sensitive'] = Variable<bool, BoolType>(d.sensitive.value);
-    }
-    if (d.spoilerText.present) {
-      map['spoiler_text'] = Variable<String, StringType>(d.spoilerText.value);
-    }
-    if (d.visibility.present) {
-      final converter = $DbStatusesTable.$converter0;
-      map['visibility'] =
-          Variable<String, StringType>(converter.mapToSql(d.visibility.value));
-    }
-    if (d.uri.present) {
-      map['uri'] = Variable<String, StringType>(d.uri.value);
-    }
-    if (d.url.present) {
-      map['url'] = Variable<String, StringType>(d.url.value);
-    }
-    if (d.repliesCount.present) {
-      map['replies_count'] = Variable<int, IntType>(d.repliesCount.value);
-    }
-    if (d.reblogsCount.present) {
-      map['reblogs_count'] = Variable<int, IntType>(d.reblogsCount.value);
-    }
-    if (d.favouritesCount.present) {
-      map['favourites_count'] = Variable<int, IntType>(d.favouritesCount.value);
-    }
-    if (d.favourited.present) {
-      map['favourited'] = Variable<bool, BoolType>(d.favourited.value);
-    }
-    if (d.reblogged.present) {
-      map['reblogged'] = Variable<bool, BoolType>(d.reblogged.value);
-    }
-    if (d.muted.present) {
-      map['muted'] = Variable<bool, BoolType>(d.muted.value);
-    }
-    if (d.bookmarked.present) {
-      map['bookmarked'] = Variable<bool, BoolType>(d.bookmarked.value);
-    }
-    if (d.pinned.present) {
-      map['pinned'] = Variable<bool, BoolType>(d.pinned.value);
-    }
-    if (d.content.present) {
-      map['content'] = Variable<String, StringType>(d.content.value);
-    }
-    if (d.reblogStatusRemoteId.present) {
-      map['reblog_status_remote_id'] =
-          Variable<String, StringType>(d.reblogStatusRemoteId.value);
-    }
-    if (d.application.present) {
-      final converter = $DbStatusesTable.$converter1;
-      map['application'] =
-          Variable<String, StringType>(converter.mapToSql(d.application.value));
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    if (d.mediaAttachments.present) {
-      final converter = $DbStatusesTable.$converter2;
-      map['media_attachments'] = Variable<String, StringType>(
-          converter.mapToSql(d.mediaAttachments.value));
-    }
-    if (d.mentions.present) {
-      final converter = $DbStatusesTable.$converter3;
-      map['mentions'] =
-          Variable<String, StringType>(converter.mapToSql(d.mentions.value));
-    }
-    if (d.tags.present) {
-      final converter = $DbStatusesTable.$converter4;
-      map['tags'] =
-          Variable<String, StringType>(converter.mapToSql(d.tags.value));
-    }
-    if (d.emojis.present) {
-      final converter = $DbStatusesTable.$converter5;
-      map['emojis'] =
-          Variable<String, StringType>(converter.mapToSql(d.emojis.value));
-    }
-    if (d.poll.present) {
-      final converter = $DbStatusesTable.$converter6;
-      map['poll'] =
-          Variable<String, StringType>(converter.mapToSql(d.poll.value));
-    }
-    if (d.card.present) {
-      final converter = $DbStatusesTable.$converter7;
-      map['card'] =
-          Variable<String, StringType>(converter.mapToSql(d.card.value));
-    }
-    if (d.language.present) {
-      map['language'] = Variable<String, StringType>(d.language.value);
-    }
-    if (d.pleromaContent.present) {
-      final converter = $DbStatusesTable.$converter8;
-      map['pleroma_content'] = Variable<String, StringType>(
-          converter.mapToSql(d.pleromaContent.value));
-    }
-    if (d.pleromaConversationId.present) {
-      map['pleroma_conversation_id'] =
-          Variable<int, IntType>(d.pleromaConversationId.value);
-    }
-    if (d.pleromaDirectConversationId.present) {
-      map['pleroma_direct_conversation_id'] =
-          Variable<int, IntType>(d.pleromaDirectConversationId.value);
-    }
-    if (d.pleromaInReplyToAccountAcct.present) {
-      map['pleroma_in_reply_to_account_acct'] =
-          Variable<String, StringType>(d.pleromaInReplyToAccountAcct.value);
-    }
-    if (d.pleromaLocal.present) {
-      map['pleroma_local'] = Variable<bool, BoolType>(d.pleromaLocal.value);
-    }
-    if (d.pleromaSpoilerText.present) {
-      final converter = $DbStatusesTable.$converter9;
-      map['pleroma_spoiler_text'] = Variable<String, StringType>(
-          converter.mapToSql(d.pleromaSpoilerText.value));
-    }
-    if (d.pleromaExpiresAt.present) {
-      map['pleroma_expires_at'] =
-          Variable<DateTime, DateTimeType>(d.pleromaExpiresAt.value);
-    }
-    if (d.pleromaThreadMuted.present) {
-      map['pleroma_thread_muted'] =
-          Variable<bool, BoolType>(d.pleromaThreadMuted.value);
-    }
-    if (d.pleromaEmojiReactions.present) {
-      final converter = $DbStatusesTable.$converter10;
-      map['pleroma_emoji_reactions'] = Variable<String, StringType>(
-          converter.mapToSql(d.pleromaEmojiReactions.value));
-    }
-    return map;
   }
 
   @override
@@ -1725,6 +2042,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final DateTime lastStatusAt;
   final List<PleromaField> fields;
   final List<PleromaEmoji> emojis;
+  final String pleromaBackgroundImage;
   final List<PleromaTag> pleromaTags;
   final PleromaAccountRelationship pleromaRelationship;
   final bool pleromaIsAdmin;
@@ -1759,6 +2077,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.lastStatusAt,
       this.fields,
       this.emojis,
+      this.pleromaBackgroundImage,
       this.pleromaTags,
       this.pleromaRelationship,
       this.pleromaIsAdmin,
@@ -1815,6 +2134,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
       emojis: $DbAccountsTable.$converter1.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      pleromaBackgroundImage: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_background_image']),
       pleromaTags: $DbAccountsTable.$converter2.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
       pleromaRelationship: $DbAccountsTable.$converter3.mapToDart(
@@ -1844,6 +2165,221 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           data['${effectivePrefix}pleroma_skip_thread_containment']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || username != null) {
+      map['username'] = Variable<String>(username);
+    }
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || locked != null) {
+      map['locked'] = Variable<bool>(locked);
+    }
+    if (!nullToAbsent || headerStatic != null) {
+      map['header_static'] = Variable<String>(headerStatic);
+    }
+    if (!nullToAbsent || header != null) {
+      map['header'] = Variable<String>(header);
+    }
+    if (!nullToAbsent || followingCount != null) {
+      map['following_count'] = Variable<int>(followingCount);
+    }
+    if (!nullToAbsent || followersCount != null) {
+      map['followers_count'] = Variable<int>(followersCount);
+    }
+    if (!nullToAbsent || statusesCount != null) {
+      map['statuses_count'] = Variable<int>(statusesCount);
+    }
+    if (!nullToAbsent || displayName != null) {
+      map['display_name'] = Variable<String>(displayName);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || bot != null) {
+      map['bot'] = Variable<bool>(bot);
+    }
+    if (!nullToAbsent || avatarStatic != null) {
+      map['avatar_static'] = Variable<String>(avatarStatic);
+    }
+    if (!nullToAbsent || avatar != null) {
+      map['avatar'] = Variable<String>(avatar);
+    }
+    if (!nullToAbsent || acct != null) {
+      map['acct'] = Variable<String>(acct);
+    }
+    if (!nullToAbsent || lastStatusAt != null) {
+      map['last_status_at'] = Variable<DateTime>(lastStatusAt);
+    }
+    if (!nullToAbsent || fields != null) {
+      final converter = $DbAccountsTable.$converter0;
+      map['fields'] = Variable<String>(converter.mapToSql(fields));
+    }
+    if (!nullToAbsent || emojis != null) {
+      final converter = $DbAccountsTable.$converter1;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis));
+    }
+    if (!nullToAbsent || pleromaBackgroundImage != null) {
+      map['pleroma_background_image'] =
+          Variable<String>(pleromaBackgroundImage);
+    }
+    if (!nullToAbsent || pleromaTags != null) {
+      final converter = $DbAccountsTable.$converter2;
+      map['pleroma_tags'] = Variable<String>(converter.mapToSql(pleromaTags));
+    }
+    if (!nullToAbsent || pleromaRelationship != null) {
+      final converter = $DbAccountsTable.$converter3;
+      map['pleroma_relationship'] =
+          Variable<String>(converter.mapToSql(pleromaRelationship));
+    }
+    if (!nullToAbsent || pleromaIsAdmin != null) {
+      map['pleroma_is_admin'] = Variable<bool>(pleromaIsAdmin);
+    }
+    if (!nullToAbsent || pleromaIsModerator != null) {
+      map['pleroma_is_moderator'] = Variable<bool>(pleromaIsModerator);
+    }
+    if (!nullToAbsent || pleromaConfirmationPending != null) {
+      map['pleroma_confirmation_pending'] =
+          Variable<bool>(pleromaConfirmationPending);
+    }
+    if (!nullToAbsent || pleromaHideFavorites != null) {
+      map['pleroma_hide_favorites'] = Variable<bool>(pleromaHideFavorites);
+    }
+    if (!nullToAbsent || pleromaHideFollowers != null) {
+      map['pleroma_hide_followers'] = Variable<bool>(pleromaHideFollowers);
+    }
+    if (!nullToAbsent || pleromaHideFollows != null) {
+      map['pleroma_hide_follows'] = Variable<bool>(pleromaHideFollows);
+    }
+    if (!nullToAbsent || pleromaHideFollowersCount != null) {
+      map['pleroma_hide_followers_count'] =
+          Variable<bool>(pleromaHideFollowersCount);
+    }
+    if (!nullToAbsent || pleromaHideFollowsCount != null) {
+      map['pleroma_hide_follows_count'] =
+          Variable<bool>(pleromaHideFollowsCount);
+    }
+    if (!nullToAbsent || pleromaDeactivated != null) {
+      map['pleroma_deactivated'] = Variable<bool>(pleromaDeactivated);
+    }
+    if (!nullToAbsent || pleromaAllowFollowingMove != null) {
+      map['pleroma_allow_following_move'] =
+          Variable<bool>(pleromaAllowFollowingMove);
+    }
+    if (!nullToAbsent || pleromaSkipThreadContainment != null) {
+      map['pleroma_skip_thread_containment'] =
+          Variable<bool>(pleromaSkipThreadContainment);
+    }
+    return map;
+  }
+
+  DbAccountsCompanion toCompanion(bool nullToAbsent) {
+    return DbAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      username: username == null && nullToAbsent
+          ? const Value.absent()
+          : Value(username),
+      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      locked:
+          locked == null && nullToAbsent ? const Value.absent() : Value(locked),
+      headerStatic: headerStatic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(headerStatic),
+      header:
+          header == null && nullToAbsent ? const Value.absent() : Value(header),
+      followingCount: followingCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followingCount),
+      followersCount: followersCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followersCount),
+      statusesCount: statusesCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusesCount),
+      displayName: displayName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayName),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      bot: bot == null && nullToAbsent ? const Value.absent() : Value(bot),
+      avatarStatic: avatarStatic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatarStatic),
+      avatar:
+          avatar == null && nullToAbsent ? const Value.absent() : Value(avatar),
+      acct: acct == null && nullToAbsent ? const Value.absent() : Value(acct),
+      lastStatusAt: lastStatusAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastStatusAt),
+      fields:
+          fields == null && nullToAbsent ? const Value.absent() : Value(fields),
+      emojis:
+          emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      pleromaBackgroundImage: pleromaBackgroundImage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaBackgroundImage),
+      pleromaTags: pleromaTags == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaTags),
+      pleromaRelationship: pleromaRelationship == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaRelationship),
+      pleromaIsAdmin: pleromaIsAdmin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaIsAdmin),
+      pleromaIsModerator: pleromaIsModerator == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaIsModerator),
+      pleromaConfirmationPending:
+          pleromaConfirmationPending == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaConfirmationPending),
+      pleromaHideFavorites: pleromaHideFavorites == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFavorites),
+      pleromaHideFollowers: pleromaHideFollowers == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollowers),
+      pleromaHideFollows: pleromaHideFollows == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollows),
+      pleromaHideFollowersCount:
+          pleromaHideFollowersCount == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaHideFollowersCount),
+      pleromaHideFollowsCount: pleromaHideFollowsCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollowsCount),
+      pleromaDeactivated: pleromaDeactivated == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaDeactivated),
+      pleromaAllowFollowingMove:
+          pleromaAllowFollowingMove == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaAllowFollowingMove),
+      pleromaSkipThreadContainment:
+          pleromaSkipThreadContainment == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaSkipThreadContainment),
+    );
+  }
+
   factory DbAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -1868,6 +2404,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       lastStatusAt: serializer.fromJson<DateTime>(json['lastStatusAt']),
       fields: serializer.fromJson<List<PleromaField>>(json['fields']),
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      pleromaBackgroundImage:
+          serializer.fromJson<String>(json['pleromaBackgroundImage']),
       pleromaTags: serializer.fromJson<List<PleromaTag>>(json['pleromaTags']),
       pleromaRelationship: serializer
           .fromJson<PleromaAccountRelationship>(json['pleromaRelationship']),
@@ -1915,6 +2453,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'lastStatusAt': serializer.toJson<DateTime>(lastStatusAt),
       'fields': serializer.toJson<List<PleromaField>>(fields),
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'pleromaBackgroundImage':
+          serializer.toJson<String>(pleromaBackgroundImage),
       'pleromaTags': serializer.toJson<List<PleromaTag>>(pleromaTags),
       'pleromaRelationship':
           serializer.toJson<PleromaAccountRelationship>(pleromaRelationship),
@@ -1935,100 +2475,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'pleromaSkipThreadContainment':
           serializer.toJson<bool>(pleromaSkipThreadContainment),
     };
-  }
-
-  @override
-  DbAccountsCompanion createCompanion(bool nullToAbsent) {
-    return DbAccountsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      remoteId: remoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(remoteId),
-      username: username == null && nullToAbsent
-          ? const Value.absent()
-          : Value(username),
-      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
-      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
-      locked:
-          locked == null && nullToAbsent ? const Value.absent() : Value(locked),
-      headerStatic: headerStatic == null && nullToAbsent
-          ? const Value.absent()
-          : Value(headerStatic),
-      header:
-          header == null && nullToAbsent ? const Value.absent() : Value(header),
-      followingCount: followingCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(followingCount),
-      followersCount: followersCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(followersCount),
-      statusesCount: statusesCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusesCount),
-      displayName: displayName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(displayName),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      bot: bot == null && nullToAbsent ? const Value.absent() : Value(bot),
-      avatarStatic: avatarStatic == null && nullToAbsent
-          ? const Value.absent()
-          : Value(avatarStatic),
-      avatar:
-          avatar == null && nullToAbsent ? const Value.absent() : Value(avatar),
-      acct: acct == null && nullToAbsent ? const Value.absent() : Value(acct),
-      lastStatusAt: lastStatusAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lastStatusAt),
-      fields:
-          fields == null && nullToAbsent ? const Value.absent() : Value(fields),
-      emojis:
-          emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
-      pleromaTags: pleromaTags == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaTags),
-      pleromaRelationship: pleromaRelationship == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaRelationship),
-      pleromaIsAdmin: pleromaIsAdmin == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaIsAdmin),
-      pleromaIsModerator: pleromaIsModerator == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaIsModerator),
-      pleromaConfirmationPending:
-          pleromaConfirmationPending == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaConfirmationPending),
-      pleromaHideFavorites: pleromaHideFavorites == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaHideFavorites),
-      pleromaHideFollowers: pleromaHideFollowers == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaHideFollowers),
-      pleromaHideFollows: pleromaHideFollows == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaHideFollows),
-      pleromaHideFollowersCount:
-          pleromaHideFollowersCount == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaHideFollowersCount),
-      pleromaHideFollowsCount: pleromaHideFollowsCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaHideFollowsCount),
-      pleromaDeactivated: pleromaDeactivated == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleromaDeactivated),
-      pleromaAllowFollowingMove:
-          pleromaAllowFollowingMove == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaAllowFollowingMove),
-      pleromaSkipThreadContainment:
-          pleromaSkipThreadContainment == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaSkipThreadContainment),
-    );
   }
 
   DbAccount copyWith(
@@ -2052,6 +2498,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           DateTime lastStatusAt,
           List<PleromaField> fields,
           List<PleromaEmoji> emojis,
+          String pleromaBackgroundImage,
           List<PleromaTag> pleromaTags,
           PleromaAccountRelationship pleromaRelationship,
           bool pleromaIsAdmin,
@@ -2086,6 +2533,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         lastStatusAt: lastStatusAt ?? this.lastStatusAt,
         fields: fields ?? this.fields,
         emojis: emojis ?? this.emojis,
+        pleromaBackgroundImage:
+            pleromaBackgroundImage ?? this.pleromaBackgroundImage,
         pleromaTags: pleromaTags ?? this.pleromaTags,
         pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
         pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
@@ -2128,6 +2577,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
+          ..write('pleromaBackgroundImage: $pleromaBackgroundImage, ')
           ..write('pleromaTags: $pleromaTags, ')
           ..write('pleromaRelationship: $pleromaRelationship, ')
           ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
@@ -2188,7 +2638,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode)))))))))))))))))))))))))))))))));
+                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2213,6 +2663,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.lastStatusAt == this.lastStatusAt &&
           other.fields == this.fields &&
           other.emojis == this.emojis &&
+          other.pleromaBackgroundImage == this.pleromaBackgroundImage &&
           other.pleromaTags == this.pleromaTags &&
           other.pleromaRelationship == this.pleromaRelationship &&
           other.pleromaIsAdmin == this.pleromaIsAdmin &&
@@ -2250,6 +2701,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<DateTime> lastStatusAt;
   final Value<List<PleromaField>> fields;
   final Value<List<PleromaEmoji>> emojis;
+  final Value<String> pleromaBackgroundImage;
   final Value<List<PleromaTag>> pleromaTags;
   final Value<PleromaAccountRelationship> pleromaRelationship;
   final Value<bool> pleromaIsAdmin;
@@ -2284,6 +2736,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.pleromaBackgroundImage = const Value.absent(),
     this.pleromaTags = const Value.absent(),
     this.pleromaRelationship = const Value.absent(),
     this.pleromaIsAdmin = const Value.absent(),
@@ -2319,6 +2772,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.pleromaBackgroundImage = const Value.absent(),
     this.pleromaTags = const Value.absent(),
     this.pleromaRelationship = const Value.absent(),
     this.pleromaIsAdmin = const Value.absent(),
@@ -2347,6 +2801,91 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
         avatarStatic = Value(avatarStatic),
         avatar = Value(avatar),
         acct = Value(acct);
+  static Insertable<DbAccount> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<String> username,
+    Expression<String> url,
+    Expression<String> note,
+    Expression<bool> locked,
+    Expression<String> headerStatic,
+    Expression<String> header,
+    Expression<int> followingCount,
+    Expression<int> followersCount,
+    Expression<int> statusesCount,
+    Expression<String> displayName,
+    Expression<DateTime> createdAt,
+    Expression<bool> bot,
+    Expression<String> avatarStatic,
+    Expression<String> avatar,
+    Expression<String> acct,
+    Expression<DateTime> lastStatusAt,
+    Expression<String> fields,
+    Expression<String> emojis,
+    Expression<String> pleromaBackgroundImage,
+    Expression<String> pleromaTags,
+    Expression<String> pleromaRelationship,
+    Expression<bool> pleromaIsAdmin,
+    Expression<bool> pleromaIsModerator,
+    Expression<bool> pleromaConfirmationPending,
+    Expression<bool> pleromaHideFavorites,
+    Expression<bool> pleromaHideFollowers,
+    Expression<bool> pleromaHideFollows,
+    Expression<bool> pleromaHideFollowersCount,
+    Expression<bool> pleromaHideFollowsCount,
+    Expression<bool> pleromaDeactivated,
+    Expression<bool> pleromaAllowFollowingMove,
+    Expression<bool> pleromaSkipThreadContainment,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (username != null) 'username': username,
+      if (url != null) 'url': url,
+      if (note != null) 'note': note,
+      if (locked != null) 'locked': locked,
+      if (headerStatic != null) 'header_static': headerStatic,
+      if (header != null) 'header': header,
+      if (followingCount != null) 'following_count': followingCount,
+      if (followersCount != null) 'followers_count': followersCount,
+      if (statusesCount != null) 'statuses_count': statusesCount,
+      if (displayName != null) 'display_name': displayName,
+      if (createdAt != null) 'created_at': createdAt,
+      if (bot != null) 'bot': bot,
+      if (avatarStatic != null) 'avatar_static': avatarStatic,
+      if (avatar != null) 'avatar': avatar,
+      if (acct != null) 'acct': acct,
+      if (lastStatusAt != null) 'last_status_at': lastStatusAt,
+      if (fields != null) 'fields': fields,
+      if (emojis != null) 'emojis': emojis,
+      if (pleromaBackgroundImage != null)
+        'pleroma_background_image': pleromaBackgroundImage,
+      if (pleromaTags != null) 'pleroma_tags': pleromaTags,
+      if (pleromaRelationship != null)
+        'pleroma_relationship': pleromaRelationship,
+      if (pleromaIsAdmin != null) 'pleroma_is_admin': pleromaIsAdmin,
+      if (pleromaIsModerator != null)
+        'pleroma_is_moderator': pleromaIsModerator,
+      if (pleromaConfirmationPending != null)
+        'pleroma_confirmation_pending': pleromaConfirmationPending,
+      if (pleromaHideFavorites != null)
+        'pleroma_hide_favorites': pleromaHideFavorites,
+      if (pleromaHideFollowers != null)
+        'pleroma_hide_followers': pleromaHideFollowers,
+      if (pleromaHideFollows != null)
+        'pleroma_hide_follows': pleromaHideFollows,
+      if (pleromaHideFollowersCount != null)
+        'pleroma_hide_followers_count': pleromaHideFollowersCount,
+      if (pleromaHideFollowsCount != null)
+        'pleroma_hide_follows_count': pleromaHideFollowsCount,
+      if (pleromaDeactivated != null) 'pleroma_deactivated': pleromaDeactivated,
+      if (pleromaAllowFollowingMove != null)
+        'pleroma_allow_following_move': pleromaAllowFollowingMove,
+      if (pleromaSkipThreadContainment != null)
+        'pleroma_skip_thread_containment': pleromaSkipThreadContainment,
+    });
+  }
+
   DbAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -2368,6 +2907,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<DateTime> lastStatusAt,
       Value<List<PleromaField>> fields,
       Value<List<PleromaEmoji>> emojis,
+      Value<String> pleromaBackgroundImage,
       Value<List<PleromaTag>> pleromaTags,
       Value<PleromaAccountRelationship> pleromaRelationship,
       Value<bool> pleromaIsAdmin,
@@ -2402,6 +2942,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       lastStatusAt: lastStatusAt ?? this.lastStatusAt,
       fields: fields ?? this.fields,
       emojis: emojis ?? this.emojis,
+      pleromaBackgroundImage:
+          pleromaBackgroundImage ?? this.pleromaBackgroundImage,
       pleromaTags: pleromaTags ?? this.pleromaTags,
       pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
       pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
@@ -2421,6 +2963,169 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       pleromaSkipThreadContainment:
           pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (username.present) {
+      map['username'] = Variable<String>(username.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (locked.present) {
+      map['locked'] = Variable<bool>(locked.value);
+    }
+    if (headerStatic.present) {
+      map['header_static'] = Variable<String>(headerStatic.value);
+    }
+    if (header.present) {
+      map['header'] = Variable<String>(header.value);
+    }
+    if (followingCount.present) {
+      map['following_count'] = Variable<int>(followingCount.value);
+    }
+    if (followersCount.present) {
+      map['followers_count'] = Variable<int>(followersCount.value);
+    }
+    if (statusesCount.present) {
+      map['statuses_count'] = Variable<int>(statusesCount.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (bot.present) {
+      map['bot'] = Variable<bool>(bot.value);
+    }
+    if (avatarStatic.present) {
+      map['avatar_static'] = Variable<String>(avatarStatic.value);
+    }
+    if (avatar.present) {
+      map['avatar'] = Variable<String>(avatar.value);
+    }
+    if (acct.present) {
+      map['acct'] = Variable<String>(acct.value);
+    }
+    if (lastStatusAt.present) {
+      map['last_status_at'] = Variable<DateTime>(lastStatusAt.value);
+    }
+    if (fields.present) {
+      final converter = $DbAccountsTable.$converter0;
+      map['fields'] = Variable<String>(converter.mapToSql(fields.value));
+    }
+    if (emojis.present) {
+      final converter = $DbAccountsTable.$converter1;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis.value));
+    }
+    if (pleromaBackgroundImage.present) {
+      map['pleroma_background_image'] =
+          Variable<String>(pleromaBackgroundImage.value);
+    }
+    if (pleromaTags.present) {
+      final converter = $DbAccountsTable.$converter2;
+      map['pleroma_tags'] =
+          Variable<String>(converter.mapToSql(pleromaTags.value));
+    }
+    if (pleromaRelationship.present) {
+      final converter = $DbAccountsTable.$converter3;
+      map['pleroma_relationship'] =
+          Variable<String>(converter.mapToSql(pleromaRelationship.value));
+    }
+    if (pleromaIsAdmin.present) {
+      map['pleroma_is_admin'] = Variable<bool>(pleromaIsAdmin.value);
+    }
+    if (pleromaIsModerator.present) {
+      map['pleroma_is_moderator'] = Variable<bool>(pleromaIsModerator.value);
+    }
+    if (pleromaConfirmationPending.present) {
+      map['pleroma_confirmation_pending'] =
+          Variable<bool>(pleromaConfirmationPending.value);
+    }
+    if (pleromaHideFavorites.present) {
+      map['pleroma_hide_favorites'] =
+          Variable<bool>(pleromaHideFavorites.value);
+    }
+    if (pleromaHideFollowers.present) {
+      map['pleroma_hide_followers'] =
+          Variable<bool>(pleromaHideFollowers.value);
+    }
+    if (pleromaHideFollows.present) {
+      map['pleroma_hide_follows'] = Variable<bool>(pleromaHideFollows.value);
+    }
+    if (pleromaHideFollowersCount.present) {
+      map['pleroma_hide_followers_count'] =
+          Variable<bool>(pleromaHideFollowersCount.value);
+    }
+    if (pleromaHideFollowsCount.present) {
+      map['pleroma_hide_follows_count'] =
+          Variable<bool>(pleromaHideFollowsCount.value);
+    }
+    if (pleromaDeactivated.present) {
+      map['pleroma_deactivated'] = Variable<bool>(pleromaDeactivated.value);
+    }
+    if (pleromaAllowFollowingMove.present) {
+      map['pleroma_allow_following_move'] =
+          Variable<bool>(pleromaAllowFollowingMove.value);
+    }
+    if (pleromaSkipThreadContainment.present) {
+      map['pleroma_skip_thread_containment'] =
+          Variable<bool>(pleromaSkipThreadContainment.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('username: $username, ')
+          ..write('url: $url, ')
+          ..write('note: $note, ')
+          ..write('locked: $locked, ')
+          ..write('headerStatic: $headerStatic, ')
+          ..write('header: $header, ')
+          ..write('followingCount: $followingCount, ')
+          ..write('followersCount: $followersCount, ')
+          ..write('statusesCount: $statusesCount, ')
+          ..write('displayName: $displayName, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('bot: $bot, ')
+          ..write('avatarStatic: $avatarStatic, ')
+          ..write('avatar: $avatar, ')
+          ..write('acct: $acct, ')
+          ..write('lastStatusAt: $lastStatusAt, ')
+          ..write('fields: $fields, ')
+          ..write('emojis: $emojis, ')
+          ..write('pleromaBackgroundImage: $pleromaBackgroundImage, ')
+          ..write('pleromaTags: $pleromaTags, ')
+          ..write('pleromaRelationship: $pleromaRelationship, ')
+          ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
+          ..write('pleromaIsModerator: $pleromaIsModerator, ')
+          ..write('pleromaConfirmationPending: $pleromaConfirmationPending, ')
+          ..write('pleromaHideFavorites: $pleromaHideFavorites, ')
+          ..write('pleromaHideFollowers: $pleromaHideFollowers, ')
+          ..write('pleromaHideFollows: $pleromaHideFollows, ')
+          ..write('pleromaHideFollowersCount: $pleromaHideFollowersCount, ')
+          ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
+          ..write('pleromaDeactivated: $pleromaDeactivated, ')
+          ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
+          ..write('pleromaSkipThreadContainment: $pleromaSkipThreadContainment')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -2677,6 +3382,20 @@ class $DbAccountsTable extends DbAccounts
     );
   }
 
+  final VerificationMeta _pleromaBackgroundImageMeta =
+      const VerificationMeta('pleromaBackgroundImage');
+  GeneratedTextColumn _pleromaBackgroundImage;
+  @override
+  GeneratedTextColumn get pleromaBackgroundImage =>
+      _pleromaBackgroundImage ??= _constructPleromaBackgroundImage();
+  GeneratedTextColumn _constructPleromaBackgroundImage() {
+    return GeneratedTextColumn(
+      'pleroma_background_image',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _pleromaTagsMeta =
       const VerificationMeta('pleromaTags');
   GeneratedTextColumn _pleromaTags;
@@ -2882,6 +3601,7 @@ class $DbAccountsTable extends DbAccounts
         lastStatusAt,
         fields,
         emojis,
+        pleromaBackgroundImage,
         pleromaTags,
         pleromaRelationship,
         pleromaIsAdmin,
@@ -2903,193 +3623,205 @@ class $DbAccountsTable extends DbAccounts
   @override
   final String actualTableName = 'db_accounts';
   @override
-  VerificationContext validateIntegrity(DbAccountsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbAccount> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.username.present) {
+    if (data.containsKey('username')) {
       context.handle(_usernameMeta,
-          username.isAcceptableValue(d.username.value, _usernameMeta));
+          username.isAcceptableOrUnknown(data['username'], _usernameMeta));
     } else if (isInserting) {
       context.missing(_usernameMeta);
     }
-    if (d.url.present) {
-      context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
-    if (d.note.present) {
+    if (data.containsKey('note')) {
       context.handle(
-          _noteMeta, note.isAcceptableValue(d.note.value, _noteMeta));
+          _noteMeta, note.isAcceptableOrUnknown(data['note'], _noteMeta));
     } else if (isInserting) {
       context.missing(_noteMeta);
     }
-    if (d.locked.present) {
-      context.handle(
-          _lockedMeta, locked.isAcceptableValue(d.locked.value, _lockedMeta));
+    if (data.containsKey('locked')) {
+      context.handle(_lockedMeta,
+          locked.isAcceptableOrUnknown(data['locked'], _lockedMeta));
     } else if (isInserting) {
       context.missing(_lockedMeta);
     }
-    if (d.headerStatic.present) {
+    if (data.containsKey('header_static')) {
       context.handle(
           _headerStaticMeta,
-          headerStatic.isAcceptableValue(
-              d.headerStatic.value, _headerStaticMeta));
+          headerStatic.isAcceptableOrUnknown(
+              data['header_static'], _headerStaticMeta));
     } else if (isInserting) {
       context.missing(_headerStaticMeta);
     }
-    if (d.header.present) {
-      context.handle(
-          _headerMeta, header.isAcceptableValue(d.header.value, _headerMeta));
+    if (data.containsKey('header')) {
+      context.handle(_headerMeta,
+          header.isAcceptableOrUnknown(data['header'], _headerMeta));
     } else if (isInserting) {
       context.missing(_headerMeta);
     }
-    if (d.followingCount.present) {
+    if (data.containsKey('following_count')) {
       context.handle(
           _followingCountMeta,
-          followingCount.isAcceptableValue(
-              d.followingCount.value, _followingCountMeta));
+          followingCount.isAcceptableOrUnknown(
+              data['following_count'], _followingCountMeta));
     } else if (isInserting) {
       context.missing(_followingCountMeta);
     }
-    if (d.followersCount.present) {
+    if (data.containsKey('followers_count')) {
       context.handle(
           _followersCountMeta,
-          followersCount.isAcceptableValue(
-              d.followersCount.value, _followersCountMeta));
+          followersCount.isAcceptableOrUnknown(
+              data['followers_count'], _followersCountMeta));
     } else if (isInserting) {
       context.missing(_followersCountMeta);
     }
-    if (d.statusesCount.present) {
+    if (data.containsKey('statuses_count')) {
       context.handle(
           _statusesCountMeta,
-          statusesCount.isAcceptableValue(
-              d.statusesCount.value, _statusesCountMeta));
+          statusesCount.isAcceptableOrUnknown(
+              data['statuses_count'], _statusesCountMeta));
     } else if (isInserting) {
       context.missing(_statusesCountMeta);
     }
-    if (d.displayName.present) {
-      context.handle(_displayNameMeta,
-          displayName.isAcceptableValue(d.displayName.value, _displayNameMeta));
+    if (data.containsKey('display_name')) {
+      context.handle(
+          _displayNameMeta,
+          displayName.isAcceptableOrUnknown(
+              data['display_name'], _displayNameMeta));
     } else if (isInserting) {
       context.missing(_displayNameMeta);
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
-    if (d.bot.present) {
-      context.handle(_botMeta, bot.isAcceptableValue(d.bot.value, _botMeta));
+    if (data.containsKey('bot')) {
+      context.handle(
+          _botMeta, bot.isAcceptableOrUnknown(data['bot'], _botMeta));
     }
-    if (d.avatarStatic.present) {
+    if (data.containsKey('avatar_static')) {
       context.handle(
           _avatarStaticMeta,
-          avatarStatic.isAcceptableValue(
-              d.avatarStatic.value, _avatarStaticMeta));
+          avatarStatic.isAcceptableOrUnknown(
+              data['avatar_static'], _avatarStaticMeta));
     } else if (isInserting) {
       context.missing(_avatarStaticMeta);
     }
-    if (d.avatar.present) {
-      context.handle(
-          _avatarMeta, avatar.isAcceptableValue(d.avatar.value, _avatarMeta));
+    if (data.containsKey('avatar')) {
+      context.handle(_avatarMeta,
+          avatar.isAcceptableOrUnknown(data['avatar'], _avatarMeta));
     } else if (isInserting) {
       context.missing(_avatarMeta);
     }
-    if (d.acct.present) {
+    if (data.containsKey('acct')) {
       context.handle(
-          _acctMeta, acct.isAcceptableValue(d.acct.value, _acctMeta));
+          _acctMeta, acct.isAcceptableOrUnknown(data['acct'], _acctMeta));
     } else if (isInserting) {
       context.missing(_acctMeta);
     }
-    if (d.lastStatusAt.present) {
+    if (data.containsKey('last_status_at')) {
       context.handle(
           _lastStatusAtMeta,
-          lastStatusAt.isAcceptableValue(
-              d.lastStatusAt.value, _lastStatusAtMeta));
+          lastStatusAt.isAcceptableOrUnknown(
+              data['last_status_at'], _lastStatusAtMeta));
     }
     context.handle(_fieldsMeta, const VerificationResult.success());
     context.handle(_emojisMeta, const VerificationResult.success());
+    if (data.containsKey('pleroma_background_image')) {
+      context.handle(
+          _pleromaBackgroundImageMeta,
+          pleromaBackgroundImage.isAcceptableOrUnknown(
+              data['pleroma_background_image'], _pleromaBackgroundImageMeta));
+    }
     context.handle(_pleromaTagsMeta, const VerificationResult.success());
     context.handle(
         _pleromaRelationshipMeta, const VerificationResult.success());
-    if (d.pleromaIsAdmin.present) {
+    if (data.containsKey('pleroma_is_admin')) {
       context.handle(
           _pleromaIsAdminMeta,
-          pleromaIsAdmin.isAcceptableValue(
-              d.pleromaIsAdmin.value, _pleromaIsAdminMeta));
+          pleromaIsAdmin.isAcceptableOrUnknown(
+              data['pleroma_is_admin'], _pleromaIsAdminMeta));
     }
-    if (d.pleromaIsModerator.present) {
+    if (data.containsKey('pleroma_is_moderator')) {
       context.handle(
           _pleromaIsModeratorMeta,
-          pleromaIsModerator.isAcceptableValue(
-              d.pleromaIsModerator.value, _pleromaIsModeratorMeta));
+          pleromaIsModerator.isAcceptableOrUnknown(
+              data['pleroma_is_moderator'], _pleromaIsModeratorMeta));
     }
-    if (d.pleromaConfirmationPending.present) {
+    if (data.containsKey('pleroma_confirmation_pending')) {
       context.handle(
           _pleromaConfirmationPendingMeta,
-          pleromaConfirmationPending.isAcceptableValue(
-              d.pleromaConfirmationPending.value,
+          pleromaConfirmationPending.isAcceptableOrUnknown(
+              data['pleroma_confirmation_pending'],
               _pleromaConfirmationPendingMeta));
     }
-    if (d.pleromaHideFavorites.present) {
+    if (data.containsKey('pleroma_hide_favorites')) {
       context.handle(
           _pleromaHideFavoritesMeta,
-          pleromaHideFavorites.isAcceptableValue(
-              d.pleromaHideFavorites.value, _pleromaHideFavoritesMeta));
+          pleromaHideFavorites.isAcceptableOrUnknown(
+              data['pleroma_hide_favorites'], _pleromaHideFavoritesMeta));
     }
-    if (d.pleromaHideFollowers.present) {
+    if (data.containsKey('pleroma_hide_followers')) {
       context.handle(
           _pleromaHideFollowersMeta,
-          pleromaHideFollowers.isAcceptableValue(
-              d.pleromaHideFollowers.value, _pleromaHideFollowersMeta));
+          pleromaHideFollowers.isAcceptableOrUnknown(
+              data['pleroma_hide_followers'], _pleromaHideFollowersMeta));
     }
-    if (d.pleromaHideFollows.present) {
+    if (data.containsKey('pleroma_hide_follows')) {
       context.handle(
           _pleromaHideFollowsMeta,
-          pleromaHideFollows.isAcceptableValue(
-              d.pleromaHideFollows.value, _pleromaHideFollowsMeta));
+          pleromaHideFollows.isAcceptableOrUnknown(
+              data['pleroma_hide_follows'], _pleromaHideFollowsMeta));
     }
-    if (d.pleromaHideFollowersCount.present) {
+    if (data.containsKey('pleroma_hide_followers_count')) {
       context.handle(
           _pleromaHideFollowersCountMeta,
-          pleromaHideFollowersCount.isAcceptableValue(
-              d.pleromaHideFollowersCount.value,
+          pleromaHideFollowersCount.isAcceptableOrUnknown(
+              data['pleroma_hide_followers_count'],
               _pleromaHideFollowersCountMeta));
     }
-    if (d.pleromaHideFollowsCount.present) {
+    if (data.containsKey('pleroma_hide_follows_count')) {
       context.handle(
           _pleromaHideFollowsCountMeta,
-          pleromaHideFollowsCount.isAcceptableValue(
-              d.pleromaHideFollowsCount.value, _pleromaHideFollowsCountMeta));
+          pleromaHideFollowsCount.isAcceptableOrUnknown(
+              data['pleroma_hide_follows_count'],
+              _pleromaHideFollowsCountMeta));
     }
-    if (d.pleromaDeactivated.present) {
+    if (data.containsKey('pleroma_deactivated')) {
       context.handle(
           _pleromaDeactivatedMeta,
-          pleromaDeactivated.isAcceptableValue(
-              d.pleromaDeactivated.value, _pleromaDeactivatedMeta));
+          pleromaDeactivated.isAcceptableOrUnknown(
+              data['pleroma_deactivated'], _pleromaDeactivatedMeta));
     }
-    if (d.pleromaAllowFollowingMove.present) {
+    if (data.containsKey('pleroma_allow_following_move')) {
       context.handle(
           _pleromaAllowFollowingMoveMeta,
-          pleromaAllowFollowingMove.isAcceptableValue(
-              d.pleromaAllowFollowingMove.value,
+          pleromaAllowFollowingMove.isAcceptableOrUnknown(
+              data['pleroma_allow_following_move'],
               _pleromaAllowFollowingMoveMeta));
     }
-    if (d.pleromaSkipThreadContainment.present) {
+    if (data.containsKey('pleroma_skip_thread_containment')) {
       context.handle(
           _pleromaSkipThreadContainmentMeta,
-          pleromaSkipThreadContainment.isAcceptableValue(
-              d.pleromaSkipThreadContainment.value,
+          pleromaSkipThreadContainment.isAcceptableOrUnknown(
+              data['pleroma_skip_thread_containment'],
               _pleromaSkipThreadContainmentMeta));
     }
     return context;
@@ -3101,131 +3833,6 @@ class $DbAccountsTable extends DbAccounts
   DbAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbAccount.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbAccountsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.username.present) {
-      map['username'] = Variable<String, StringType>(d.username.value);
-    }
-    if (d.url.present) {
-      map['url'] = Variable<String, StringType>(d.url.value);
-    }
-    if (d.note.present) {
-      map['note'] = Variable<String, StringType>(d.note.value);
-    }
-    if (d.locked.present) {
-      map['locked'] = Variable<bool, BoolType>(d.locked.value);
-    }
-    if (d.headerStatic.present) {
-      map['header_static'] = Variable<String, StringType>(d.headerStatic.value);
-    }
-    if (d.header.present) {
-      map['header'] = Variable<String, StringType>(d.header.value);
-    }
-    if (d.followingCount.present) {
-      map['following_count'] = Variable<int, IntType>(d.followingCount.value);
-    }
-    if (d.followersCount.present) {
-      map['followers_count'] = Variable<int, IntType>(d.followersCount.value);
-    }
-    if (d.statusesCount.present) {
-      map['statuses_count'] = Variable<int, IntType>(d.statusesCount.value);
-    }
-    if (d.displayName.present) {
-      map['display_name'] = Variable<String, StringType>(d.displayName.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.bot.present) {
-      map['bot'] = Variable<bool, BoolType>(d.bot.value);
-    }
-    if (d.avatarStatic.present) {
-      map['avatar_static'] = Variable<String, StringType>(d.avatarStatic.value);
-    }
-    if (d.avatar.present) {
-      map['avatar'] = Variable<String, StringType>(d.avatar.value);
-    }
-    if (d.acct.present) {
-      map['acct'] = Variable<String, StringType>(d.acct.value);
-    }
-    if (d.lastStatusAt.present) {
-      map['last_status_at'] =
-          Variable<DateTime, DateTimeType>(d.lastStatusAt.value);
-    }
-    if (d.fields.present) {
-      final converter = $DbAccountsTable.$converter0;
-      map['fields'] =
-          Variable<String, StringType>(converter.mapToSql(d.fields.value));
-    }
-    if (d.emojis.present) {
-      final converter = $DbAccountsTable.$converter1;
-      map['emojis'] =
-          Variable<String, StringType>(converter.mapToSql(d.emojis.value));
-    }
-    if (d.pleromaTags.present) {
-      final converter = $DbAccountsTable.$converter2;
-      map['pleroma_tags'] =
-          Variable<String, StringType>(converter.mapToSql(d.pleromaTags.value));
-    }
-    if (d.pleromaRelationship.present) {
-      final converter = $DbAccountsTable.$converter3;
-      map['pleroma_relationship'] = Variable<String, StringType>(
-          converter.mapToSql(d.pleromaRelationship.value));
-    }
-    if (d.pleromaIsAdmin.present) {
-      map['pleroma_is_admin'] =
-          Variable<bool, BoolType>(d.pleromaIsAdmin.value);
-    }
-    if (d.pleromaIsModerator.present) {
-      map['pleroma_is_moderator'] =
-          Variable<bool, BoolType>(d.pleromaIsModerator.value);
-    }
-    if (d.pleromaConfirmationPending.present) {
-      map['pleroma_confirmation_pending'] =
-          Variable<bool, BoolType>(d.pleromaConfirmationPending.value);
-    }
-    if (d.pleromaHideFavorites.present) {
-      map['pleroma_hide_favorites'] =
-          Variable<bool, BoolType>(d.pleromaHideFavorites.value);
-    }
-    if (d.pleromaHideFollowers.present) {
-      map['pleroma_hide_followers'] =
-          Variable<bool, BoolType>(d.pleromaHideFollowers.value);
-    }
-    if (d.pleromaHideFollows.present) {
-      map['pleroma_hide_follows'] =
-          Variable<bool, BoolType>(d.pleromaHideFollows.value);
-    }
-    if (d.pleromaHideFollowersCount.present) {
-      map['pleroma_hide_followers_count'] =
-          Variable<bool, BoolType>(d.pleromaHideFollowersCount.value);
-    }
-    if (d.pleromaHideFollowsCount.present) {
-      map['pleroma_hide_follows_count'] =
-          Variable<bool, BoolType>(d.pleromaHideFollowsCount.value);
-    }
-    if (d.pleromaDeactivated.present) {
-      map['pleroma_deactivated'] =
-          Variable<bool, BoolType>(d.pleromaDeactivated.value);
-    }
-    if (d.pleromaAllowFollowingMove.present) {
-      map['pleroma_allow_following_move'] =
-          Variable<bool, BoolType>(d.pleromaAllowFollowingMove.value);
-    }
-    if (d.pleromaSkipThreadContainment.present) {
-      map['pleroma_skip_thread_containment'] =
-          Variable<bool, BoolType>(d.pleromaSkipThreadContainment.value);
-    }
-    return map;
   }
 
   @override
@@ -3264,6 +3871,32 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || unread != null) {
+      map['unread'] = Variable<bool>(unread);
+    }
+    return map;
+  }
+
+  DbConversationsCompanion toCompanion(bool nullToAbsent) {
+    return DbConversationsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      unread:
+          unread == null && nullToAbsent ? const Value.absent() : Value(unread),
+    );
+  }
+
   factory DbConversation.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -3281,18 +3914,6 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       'remoteId': serializer.toJson<String>(remoteId),
       'unread': serializer.toJson<bool>(unread),
     };
-  }
-
-  @override
-  DbConversationsCompanion createCompanion(bool nullToAbsent) {
-    return DbConversationsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      remoteId: remoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(remoteId),
-      unread:
-          unread == null && nullToAbsent ? const Value.absent() : Value(unread),
-    );
   }
 
   DbConversation copyWith({int id, String remoteId, bool unread}) =>
@@ -3338,6 +3959,18 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
     @required bool unread,
   })  : remoteId = Value(remoteId),
         unread = Value(unread);
+  static Insertable<DbConversation> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<bool> unread,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (unread != null) 'unread': unread,
+    });
+  }
+
   DbConversationsCompanion copyWith(
       {Value<int> id, Value<String> remoteId, Value<bool> unread}) {
     return DbConversationsCompanion(
@@ -3345,6 +3978,31 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
       remoteId: remoteId ?? this.remoteId,
       unread: unread ?? this.unread,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (unread.present) {
+      map['unread'] = Variable<bool>(unread.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbConversationsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('unread: $unread')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -3392,21 +4050,22 @@ class $DbConversationsTable extends DbConversations
   @override
   final String actualTableName = 'db_conversations';
   @override
-  VerificationContext validateIntegrity(DbConversationsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbConversation> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.unread.present) {
-      context.handle(
-          _unreadMeta, unread.isAcceptableValue(d.unread.value, _unreadMeta));
+    if (data.containsKey('unread')) {
+      context.handle(_unreadMeta,
+          unread.isAcceptableOrUnknown(data['unread'], _unreadMeta));
     } else if (isInserting) {
       context.missing(_unreadMeta);
     }
@@ -3419,21 +4078,6 @@ class $DbConversationsTable extends DbConversations
   DbConversation map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbConversation.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbConversationsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.unread.present) {
-      map['unread'] = Variable<bool, BoolType>(d.unread.value);
-    }
-    return map;
   }
 
   @override
@@ -3454,6 +4098,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final bool unread;
   final String type;
   final DateTime createdAt;
+  final bool dismissed;
   DbNotification(
       {@required this.id,
       @required this.remoteId,
@@ -3465,7 +4110,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.pleroma,
       this.unread,
       this.type,
-      @required this.createdAt});
+      @required this.createdAt,
+      this.dismissed});
   factory DbNotification.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -3495,47 +4141,54 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
       createdAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
-    );
-  }
-  factory DbNotification.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DbNotification(
-      id: serializer.fromJson<int>(json['id']),
-      remoteId: serializer.fromJson<String>(json['remoteId']),
-      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
-      statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
-      chatRemoteId: serializer.fromJson<String>(json['chatRemoteId']),
-      chatMessageRemoteId:
-          serializer.fromJson<String>(json['chatMessageRemoteId']),
-      emoji: serializer.fromJson<String>(json['emoji']),
-      pleroma:
-          serializer.fromJson<PleromaNotificationPleromaPart>(json['pleroma']),
-      unread: serializer.fromJson<bool>(json['unread']),
-      type: serializer.fromJson<String>(json['type']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      dismissed:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}dismissed']),
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'remoteId': serializer.toJson<String>(remoteId),
-      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
-      'statusRemoteId': serializer.toJson<String>(statusRemoteId),
-      'chatRemoteId': serializer.toJson<String>(chatRemoteId),
-      'chatMessageRemoteId': serializer.toJson<String>(chatMessageRemoteId),
-      'emoji': serializer.toJson<String>(emoji),
-      'pleroma': serializer.toJson<PleromaNotificationPleromaPart>(pleroma),
-      'unread': serializer.toJson<bool>(unread),
-      'type': serializer.toJson<String>(type),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    if (!nullToAbsent || chatRemoteId != null) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId);
+    }
+    if (!nullToAbsent || chatMessageRemoteId != null) {
+      map['chat_message_remote_id'] = Variable<String>(chatMessageRemoteId);
+    }
+    if (!nullToAbsent || emoji != null) {
+      map['emoji'] = Variable<String>(emoji);
+    }
+    if (!nullToAbsent || pleroma != null) {
+      final converter = $DbNotificationsTable.$converter0;
+      map['pleroma'] = Variable<String>(converter.mapToSql(pleroma));
+    }
+    if (!nullToAbsent || unread != null) {
+      map['unread'] = Variable<bool>(unread);
+    }
+    if (!nullToAbsent || type != null) {
+      map['type'] = Variable<String>(type);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || dismissed != null) {
+      map['dismissed'] = Variable<bool>(dismissed);
+    }
+    return map;
   }
 
-  @override
-  DbNotificationsCompanion createCompanion(bool nullToAbsent) {
+  DbNotificationsCompanion toCompanion(bool nullToAbsent) {
     return DbNotificationsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       remoteId: remoteId == null && nullToAbsent
@@ -3564,7 +4217,49 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
+      dismissed: dismissed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dismissed),
     );
+  }
+
+  factory DbNotification.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbNotification(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
+      statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      chatRemoteId: serializer.fromJson<String>(json['chatRemoteId']),
+      chatMessageRemoteId:
+          serializer.fromJson<String>(json['chatMessageRemoteId']),
+      emoji: serializer.fromJson<String>(json['emoji']),
+      pleroma:
+          serializer.fromJson<PleromaNotificationPleromaPart>(json['pleroma']),
+      unread: serializer.fromJson<bool>(json['unread']),
+      type: serializer.fromJson<String>(json['type']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      dismissed: serializer.fromJson<bool>(json['dismissed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
+      'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'chatRemoteId': serializer.toJson<String>(chatRemoteId),
+      'chatMessageRemoteId': serializer.toJson<String>(chatMessageRemoteId),
+      'emoji': serializer.toJson<String>(emoji),
+      'pleroma': serializer.toJson<PleromaNotificationPleromaPart>(pleroma),
+      'unread': serializer.toJson<bool>(unread),
+      'type': serializer.toJson<String>(type),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'dismissed': serializer.toJson<bool>(dismissed),
+    };
   }
 
   DbNotification copyWith(
@@ -3578,7 +4273,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           PleromaNotificationPleromaPart pleroma,
           bool unread,
           String type,
-          DateTime createdAt}) =>
+          DateTime createdAt,
+          bool dismissed}) =>
       DbNotification(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -3591,6 +4287,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         unread: unread ?? this.unread,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
+        dismissed: dismissed ?? this.dismissed,
       );
   @override
   String toString() {
@@ -3605,7 +4302,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('pleroma: $pleroma, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('dismissed: $dismissed')
           ..write(')'))
         .toString();
   }
@@ -3629,8 +4327,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                                   pleroma.hashCode,
                                   $mrjc(
                                       unread.hashCode,
-                                      $mrjc(type.hashCode,
-                                          createdAt.hashCode)))))))))));
+                                      $mrjc(
+                                          type.hashCode,
+                                          $mrjc(createdAt.hashCode,
+                                              dismissed.hashCode))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3645,7 +4345,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.pleroma == this.pleroma &&
           other.unread == this.unread &&
           other.type == this.type &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.dismissed == this.dismissed);
 }
 
 class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
@@ -3660,6 +4361,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<bool> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
+  final Value<bool> dismissed;
   const DbNotificationsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -3672,6 +4374,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.dismissed = const Value.absent(),
   });
   DbNotificationsCompanion.insert({
     this.id = const Value.absent(),
@@ -3685,9 +4388,41 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     @required DateTime createdAt,
+    this.dismissed = const Value.absent(),
   })  : remoteId = Value(remoteId),
         accountRemoteId = Value(accountRemoteId),
         createdAt = Value(createdAt);
+  static Insertable<DbNotification> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<String> accountRemoteId,
+    Expression<String> statusRemoteId,
+    Expression<String> chatRemoteId,
+    Expression<String> chatMessageRemoteId,
+    Expression<String> emoji,
+    Expression<String> pleroma,
+    Expression<bool> unread,
+    Expression<String> type,
+    Expression<DateTime> createdAt,
+    Expression<bool> dismissed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+      if (chatRemoteId != null) 'chat_remote_id': chatRemoteId,
+      if (chatMessageRemoteId != null)
+        'chat_message_remote_id': chatMessageRemoteId,
+      if (emoji != null) 'emoji': emoji,
+      if (pleroma != null) 'pleroma': pleroma,
+      if (unread != null) 'unread': unread,
+      if (type != null) 'type': type,
+      if (createdAt != null) 'created_at': createdAt,
+      if (dismissed != null) 'dismissed': dismissed,
+    });
+  }
+
   DbNotificationsCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -3699,7 +4434,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<PleromaNotificationPleromaPart> pleroma,
       Value<bool> unread,
       Value<String> type,
-      Value<DateTime> createdAt}) {
+      Value<DateTime> createdAt,
+      Value<bool> dismissed}) {
     return DbNotificationsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -3712,7 +4448,71 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       unread: unread ?? this.unread,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
+      dismissed: dismissed ?? this.dismissed,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    if (chatRemoteId.present) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId.value);
+    }
+    if (chatMessageRemoteId.present) {
+      map['chat_message_remote_id'] =
+          Variable<String>(chatMessageRemoteId.value);
+    }
+    if (emoji.present) {
+      map['emoji'] = Variable<String>(emoji.value);
+    }
+    if (pleroma.present) {
+      final converter = $DbNotificationsTable.$converter0;
+      map['pleroma'] = Variable<String>(converter.mapToSql(pleroma.value));
+    }
+    if (unread.present) {
+      map['unread'] = Variable<bool>(unread.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (dismissed.present) {
+      map['dismissed'] = Variable<bool>(dismissed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbNotificationsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('chatRemoteId: $chatRemoteId, ')
+          ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
+          ..write('emoji: $emoji, ')
+          ..write('pleroma: $pleroma, ')
+          ..write('unread: $unread, ')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('dismissed: $dismissed')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -3855,6 +4655,18 @@ class $DbNotificationsTable extends DbNotifications
     );
   }
 
+  final VerificationMeta _dismissedMeta = const VerificationMeta('dismissed');
+  GeneratedBoolColumn _dismissed;
+  @override
+  GeneratedBoolColumn get dismissed => _dismissed ??= _constructDismissed();
+  GeneratedBoolColumn _constructDismissed() {
+    return GeneratedBoolColumn(
+      'dismissed',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3867,7 +4679,8 @@ class $DbNotificationsTable extends DbNotifications
         pleroma,
         unread,
         type,
-        createdAt
+        createdAt,
+        dismissed
       ];
   @override
   $DbNotificationsTable get asDslTable => this;
@@ -3876,62 +4689,67 @@ class $DbNotificationsTable extends DbNotifications
   @override
   final String actualTableName = 'db_notifications';
   @override
-  VerificationContext validateIntegrity(DbNotificationsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbNotification> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     }
-    if (d.chatRemoteId.present) {
+    if (data.containsKey('chat_remote_id')) {
       context.handle(
           _chatRemoteIdMeta,
-          chatRemoteId.isAcceptableValue(
-              d.chatRemoteId.value, _chatRemoteIdMeta));
+          chatRemoteId.isAcceptableOrUnknown(
+              data['chat_remote_id'], _chatRemoteIdMeta));
     }
-    if (d.chatMessageRemoteId.present) {
+    if (data.containsKey('chat_message_remote_id')) {
       context.handle(
           _chatMessageRemoteIdMeta,
-          chatMessageRemoteId.isAcceptableValue(
-              d.chatMessageRemoteId.value, _chatMessageRemoteIdMeta));
+          chatMessageRemoteId.isAcceptableOrUnknown(
+              data['chat_message_remote_id'], _chatMessageRemoteIdMeta));
     }
-    if (d.emoji.present) {
+    if (data.containsKey('emoji')) {
       context.handle(
-          _emojiMeta, emoji.isAcceptableValue(d.emoji.value, _emojiMeta));
+          _emojiMeta, emoji.isAcceptableOrUnknown(data['emoji'], _emojiMeta));
     }
     context.handle(_pleromaMeta, const VerificationResult.success());
-    if (d.unread.present) {
-      context.handle(
-          _unreadMeta, unread.isAcceptableValue(d.unread.value, _unreadMeta));
+    if (data.containsKey('unread')) {
+      context.handle(_unreadMeta,
+          unread.isAcceptableOrUnknown(data['unread'], _unreadMeta));
     }
-    if (d.type.present) {
+    if (data.containsKey('type')) {
       context.handle(
-          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+          _typeMeta, type.isAcceptableOrUnknown(data['type'], _typeMeta));
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     } else if (isInserting) {
       context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('dismissed')) {
+      context.handle(_dismissedMeta,
+          dismissed.isAcceptableOrUnknown(data['dismissed'], _dismissedMeta));
     }
     return context;
   }
@@ -3942,51 +4760,6 @@ class $DbNotificationsTable extends DbNotifications
   DbNotification map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbNotification.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbNotificationsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    if (d.chatRemoteId.present) {
-      map['chat_remote_id'] =
-          Variable<String, StringType>(d.chatRemoteId.value);
-    }
-    if (d.chatMessageRemoteId.present) {
-      map['chat_message_remote_id'] =
-          Variable<String, StringType>(d.chatMessageRemoteId.value);
-    }
-    if (d.emoji.present) {
-      map['emoji'] = Variable<String, StringType>(d.emoji.value);
-    }
-    if (d.pleroma.present) {
-      final converter = $DbNotificationsTable.$converter0;
-      map['pleroma'] =
-          Variable<String, StringType>(converter.mapToSql(d.pleroma.value));
-    }
-    if (d.unread.present) {
-      map['unread'] = Variable<bool, BoolType>(d.unread.value);
-    }
-    if (d.type.present) {
-      map['type'] = Variable<String, StringType>(d.type.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    return map;
   }
 
   @override
@@ -4021,6 +4794,33 @@ class DbConversationStatus extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || conversationRemoteId != null) {
+      map['conversation_remote_id'] = Variable<String>(conversationRemoteId);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    return map;
+  }
+
+  DbConversationStatusesCompanion toCompanion(bool nullToAbsent) {
+    return DbConversationStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      conversationRemoteId: conversationRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(conversationRemoteId),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+    );
+  }
+
   factory DbConversationStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4039,19 +4839,6 @@ class DbConversationStatus extends DataClass
       'conversationRemoteId': serializer.toJson<String>(conversationRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
     };
-  }
-
-  @override
-  DbConversationStatusesCompanion createCompanion(bool nullToAbsent) {
-    return DbConversationStatusesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      conversationRemoteId: conversationRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(conversationRemoteId),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-    );
   }
 
   DbConversationStatus copyWith(
@@ -4099,6 +4886,19 @@ class DbConversationStatusesCompanion
     @required String statusRemoteId,
   })  : conversationRemoteId = Value(conversationRemoteId),
         statusRemoteId = Value(statusRemoteId);
+  static Insertable<DbConversationStatus> custom({
+    Expression<int> id,
+    Expression<String> conversationRemoteId,
+    Expression<String> statusRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (conversationRemoteId != null)
+        'conversation_remote_id': conversationRemoteId,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+    });
+  }
+
   DbConversationStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> conversationRemoteId,
@@ -4108,6 +4908,32 @@ class DbConversationStatusesCompanion
       conversationRemoteId: conversationRemoteId ?? this.conversationRemoteId,
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (conversationRemoteId.present) {
+      map['conversation_remote_id'] =
+          Variable<String>(conversationRemoteId.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbConversationStatusesCompanion(')
+          ..write('id: $id, ')
+          ..write('conversationRemoteId: $conversationRemoteId, ')
+          ..write('statusRemoteId: $statusRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -4163,25 +4989,27 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   @override
   final String actualTableName = 'db_conversation_statuses';
   @override
-  VerificationContext validateIntegrity(DbConversationStatusesCompanion d,
+  VerificationContext validateIntegrity(
+      Insertable<DbConversationStatus> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.conversationRemoteId.present) {
+    if (data.containsKey('conversation_remote_id')) {
       context.handle(
           _conversationRemoteIdMeta,
-          conversationRemoteId.isAcceptableValue(
-              d.conversationRemoteId.value, _conversationRemoteIdMeta));
+          conversationRemoteId.isAcceptableOrUnknown(
+              data['conversation_remote_id'], _conversationRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_conversationRemoteIdMeta);
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
@@ -4194,23 +5022,6 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   DbConversationStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbConversationStatus.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbConversationStatusesCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.conversationRemoteId.present) {
-      map['conversation_remote_id'] =
-          Variable<String, StringType>(d.conversationRemoteId.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -4241,6 +5052,33 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}hashtag']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    if (!nullToAbsent || hashtag != null) {
+      map['hashtag'] = Variable<String>(hashtag);
+    }
+    return map;
+  }
+
+  DbStatusHashtagsCompanion toCompanion(bool nullToAbsent) {
+    return DbStatusHashtagsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      hashtag: hashtag == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hashtag),
+    );
+  }
+
   factory DbStatusHashtag.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4258,19 +5096,6 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
       'hashtag': serializer.toJson<String>(hashtag),
     };
-  }
-
-  @override
-  DbStatusHashtagsCompanion createCompanion(bool nullToAbsent) {
-    return DbStatusHashtagsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-      hashtag: hashtag == null && nullToAbsent
-          ? const Value.absent()
-          : Value(hashtag),
-    );
   }
 
   DbStatusHashtag copyWith({int id, String statusRemoteId, String hashtag}) =>
@@ -4316,6 +5141,18 @@ class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
     @required String hashtag,
   })  : statusRemoteId = Value(statusRemoteId),
         hashtag = Value(hashtag);
+  static Insertable<DbStatusHashtag> custom({
+    Expression<int> id,
+    Expression<String> statusRemoteId,
+    Expression<String> hashtag,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+      if (hashtag != null) 'hashtag': hashtag,
+    });
+  }
+
   DbStatusHashtagsCompanion copyWith(
       {Value<int> id, Value<String> statusRemoteId, Value<String> hashtag}) {
     return DbStatusHashtagsCompanion(
@@ -4323,6 +5160,31 @@ class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       hashtag: hashtag ?? this.hashtag,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    if (hashtag.present) {
+      map['hashtag'] = Variable<String>(hashtag.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusHashtagsCompanion(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('hashtag: $hashtag')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -4375,23 +5237,24 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
   @override
   final String actualTableName = 'db_status_hashtags';
   @override
-  VerificationContext validateIntegrity(DbStatusHashtagsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbStatusHashtag> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
-    if (d.hashtag.present) {
+    if (data.containsKey('hashtag')) {
       context.handle(_hashtagMeta,
-          hashtag.isAcceptableValue(d.hashtag.value, _hashtagMeta));
+          hashtag.isAcceptableOrUnknown(data['hashtag'], _hashtagMeta));
     } else if (isInserting) {
       context.missing(_hashtagMeta);
     }
@@ -4404,22 +5267,6 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
   DbStatusHashtag map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusHashtag.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbStatusHashtagsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    if (d.hashtag.present) {
-      map['hashtag'] = Variable<String, StringType>(d.hashtag.value);
-    }
-    return map;
   }
 
   @override
@@ -4449,6 +5296,33 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
           .mapFromDatabaseResponse(data['${effectivePrefix}list_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    if (!nullToAbsent || listRemoteId != null) {
+      map['list_remote_id'] = Variable<String>(listRemoteId);
+    }
+    return map;
+  }
+
+  DbStatusListsCompanion toCompanion(bool nullToAbsent) {
+    return DbStatusListsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      listRemoteId: listRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(listRemoteId),
+    );
+  }
+
   factory DbStatusList.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4466,19 +5340,6 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
       'listRemoteId': serializer.toJson<String>(listRemoteId),
     };
-  }
-
-  @override
-  DbStatusListsCompanion createCompanion(bool nullToAbsent) {
-    return DbStatusListsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-      listRemoteId: listRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(listRemoteId),
-    );
   }
 
   DbStatusList copyWith({int id, String statusRemoteId, String listRemoteId}) =>
@@ -4524,6 +5385,18 @@ class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
     @required String listRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         listRemoteId = Value(listRemoteId);
+  static Insertable<DbStatusList> custom({
+    Expression<int> id,
+    Expression<String> statusRemoteId,
+    Expression<String> listRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+      if (listRemoteId != null) 'list_remote_id': listRemoteId,
+    });
+  }
+
   DbStatusListsCompanion copyWith(
       {Value<int> id,
       Value<String> statusRemoteId,
@@ -4533,6 +5406,31 @@ class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       listRemoteId: listRemoteId ?? this.listRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    if (listRemoteId.present) {
+      map['list_remote_id'] = Variable<String>(listRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusListsCompanion(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('listRemoteId: $listRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -4587,25 +5485,26 @@ class $DbStatusListsTable extends DbStatusLists
   @override
   final String actualTableName = 'db_status_lists';
   @override
-  VerificationContext validateIntegrity(DbStatusListsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbStatusList> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
-    if (d.listRemoteId.present) {
+    if (data.containsKey('list_remote_id')) {
       context.handle(
           _listRemoteIdMeta,
-          listRemoteId.isAcceptableValue(
-              d.listRemoteId.value, _listRemoteIdMeta));
+          listRemoteId.isAcceptableOrUnknown(
+              data['list_remote_id'], _listRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_listRemoteIdMeta);
     }
@@ -4618,23 +5517,6 @@ class $DbStatusListsTable extends DbStatusLists
   DbStatusList map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusList.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbStatusListsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    if (d.listRemoteId.present) {
-      map['list_remote_id'] =
-          Variable<String, StringType>(d.listRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -4666,6 +5548,33 @@ class DbStatusFavouritedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    return map;
+  }
+
+  DbStatusFavouritedAccountsCompanion toCompanion(bool nullToAbsent) {
+    return DbStatusFavouritedAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+    );
+  }
+
   factory DbStatusFavouritedAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4683,19 +5592,6 @@ class DbStatusFavouritedAccount extends DataClass
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
-  }
-
-  @override
-  DbStatusFavouritedAccountsCompanion createCompanion(bool nullToAbsent) {
-    return DbStatusFavouritedAccountsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-    );
   }
 
   DbStatusFavouritedAccount copyWith(
@@ -4743,6 +5639,18 @@ class DbStatusFavouritedAccountsCompanion
     @required String accountRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbStatusFavouritedAccount> custom({
+    Expression<int> id,
+    Expression<String> statusRemoteId,
+    Expression<String> accountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+    });
+  }
+
   DbStatusFavouritedAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> statusRemoteId,
@@ -4752,6 +5660,31 @@ class DbStatusFavouritedAccountsCompanion
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusFavouritedAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('accountRemoteId: $accountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -4807,25 +5740,27 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
   @override
   final String actualTableName = 'db_status_favourited_accounts';
   @override
-  VerificationContext validateIntegrity(DbStatusFavouritedAccountsCompanion d,
+  VerificationContext validateIntegrity(
+      Insertable<DbStatusFavouritedAccount> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -4840,23 +5775,6 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusFavouritedAccount.fromData(data, _db,
         prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbStatusFavouritedAccountsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -4888,6 +5806,33 @@ class DbStatusRebloggedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    return map;
+  }
+
+  DbStatusRebloggedAccountsCompanion toCompanion(bool nullToAbsent) {
+    return DbStatusRebloggedAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+    );
+  }
+
   factory DbStatusRebloggedAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4905,19 +5850,6 @@ class DbStatusRebloggedAccount extends DataClass
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
-  }
-
-  @override
-  DbStatusRebloggedAccountsCompanion createCompanion(bool nullToAbsent) {
-    return DbStatusRebloggedAccountsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-    );
   }
 
   DbStatusRebloggedAccount copyWith(
@@ -4965,6 +5897,18 @@ class DbStatusRebloggedAccountsCompanion
     @required String accountRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbStatusRebloggedAccount> custom({
+    Expression<int> id,
+    Expression<String> statusRemoteId,
+    Expression<String> accountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+    });
+  }
+
   DbStatusRebloggedAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> statusRemoteId,
@@ -4974,6 +5918,31 @@ class DbStatusRebloggedAccountsCompanion
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusRebloggedAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('accountRemoteId: $accountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -5028,25 +5997,27 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
   @override
   final String actualTableName = 'db_status_reblogged_accounts';
   @override
-  VerificationContext validateIntegrity(DbStatusRebloggedAccountsCompanion d,
+  VerificationContext validateIntegrity(
+      Insertable<DbStatusRebloggedAccount> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -5061,23 +6032,6 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbStatusRebloggedAccount.fromData(data, _db,
         prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbStatusRebloggedAccountsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -5109,6 +6063,34 @@ class DbAccountFollowing extends DataClass
           data['${effectivePrefix}following_account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || followingAccountRemoteId != null) {
+      map['following_account_remote_id'] =
+          Variable<String>(followingAccountRemoteId);
+    }
+    return map;
+  }
+
+  DbAccountFollowingsCompanion toCompanion(bool nullToAbsent) {
+    return DbAccountFollowingsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      followingAccountRemoteId: followingAccountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followingAccountRemoteId),
+    );
+  }
+
   factory DbAccountFollowing.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5128,19 +6110,6 @@ class DbAccountFollowing extends DataClass
       'followingAccountRemoteId':
           serializer.toJson<String>(followingAccountRemoteId),
     };
-  }
-
-  @override
-  DbAccountFollowingsCompanion createCompanion(bool nullToAbsent) {
-    return DbAccountFollowingsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-      followingAccountRemoteId: followingAccountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(followingAccountRemoteId),
-    );
   }
 
   DbAccountFollowing copyWith(
@@ -5188,6 +6157,19 @@ class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
     @required String followingAccountRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         followingAccountRemoteId = Value(followingAccountRemoteId);
+  static Insertable<DbAccountFollowing> custom({
+    Expression<int> id,
+    Expression<String> accountRemoteId,
+    Expression<String> followingAccountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (followingAccountRemoteId != null)
+        'following_account_remote_id': followingAccountRemoteId,
+    });
+  }
+
   DbAccountFollowingsCompanion copyWith(
       {Value<int> id,
       Value<String> accountRemoteId,
@@ -5198,6 +6180,32 @@ class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
       followingAccountRemoteId:
           followingAccountRemoteId ?? this.followingAccountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (followingAccountRemoteId.present) {
+      map['following_account_remote_id'] =
+          Variable<String>(followingAccountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbAccountFollowingsCompanion(')
+          ..write('id: $id, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('followingAccountRemoteId: $followingAccountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -5253,25 +6261,27 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   @override
   final String actualTableName = 'db_account_followings';
   @override
-  VerificationContext validateIntegrity(DbAccountFollowingsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbAccountFollowing> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
-    if (d.followingAccountRemoteId.present) {
+    if (data.containsKey('following_account_remote_id')) {
       context.handle(
           _followingAccountRemoteIdMeta,
-          followingAccountRemoteId.isAcceptableValue(
-              d.followingAccountRemoteId.value, _followingAccountRemoteIdMeta));
+          followingAccountRemoteId.isAcceptableOrUnknown(
+              data['following_account_remote_id'],
+              _followingAccountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_followingAccountRemoteIdMeta);
     }
@@ -5284,23 +6294,6 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   DbAccountFollowing map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbAccountFollowing.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbAccountFollowingsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    if (d.followingAccountRemoteId.present) {
-      map['following_account_remote_id'] =
-          Variable<String, StringType>(d.followingAccountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -5332,6 +6325,34 @@ class DbAccountFollower extends DataClass
           data['${effectivePrefix}follower_account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || followerAccountRemoteId != null) {
+      map['follower_account_remote_id'] =
+          Variable<String>(followerAccountRemoteId);
+    }
+    return map;
+  }
+
+  DbAccountFollowersCompanion toCompanion(bool nullToAbsent) {
+    return DbAccountFollowersCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      followerAccountRemoteId: followerAccountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followerAccountRemoteId),
+    );
+  }
+
   factory DbAccountFollower.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5351,19 +6372,6 @@ class DbAccountFollower extends DataClass
       'followerAccountRemoteId':
           serializer.toJson<String>(followerAccountRemoteId),
     };
-  }
-
-  @override
-  DbAccountFollowersCompanion createCompanion(bool nullToAbsent) {
-    return DbAccountFollowersCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-      followerAccountRemoteId: followerAccountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(followerAccountRemoteId),
-    );
   }
 
   DbAccountFollower copyWith(
@@ -5411,6 +6419,19 @@ class DbAccountFollowersCompanion extends UpdateCompanion<DbAccountFollower> {
     @required String followerAccountRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         followerAccountRemoteId = Value(followerAccountRemoteId);
+  static Insertable<DbAccountFollower> custom({
+    Expression<int> id,
+    Expression<String> accountRemoteId,
+    Expression<String> followerAccountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (followerAccountRemoteId != null)
+        'follower_account_remote_id': followerAccountRemoteId,
+    });
+  }
+
   DbAccountFollowersCompanion copyWith(
       {Value<int> id,
       Value<String> accountRemoteId,
@@ -5421,6 +6442,32 @@ class DbAccountFollowersCompanion extends UpdateCompanion<DbAccountFollower> {
       followerAccountRemoteId:
           followerAccountRemoteId ?? this.followerAccountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (followerAccountRemoteId.present) {
+      map['follower_account_remote_id'] =
+          Variable<String>(followerAccountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbAccountFollowersCompanion(')
+          ..write('id: $id, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('followerAccountRemoteId: $followerAccountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -5476,25 +6523,27 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   @override
   final String actualTableName = 'db_account_followers';
   @override
-  VerificationContext validateIntegrity(DbAccountFollowersCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbAccountFollower> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
-    if (d.followerAccountRemoteId.present) {
+    if (data.containsKey('follower_account_remote_id')) {
       context.handle(
           _followerAccountRemoteIdMeta,
-          followerAccountRemoteId.isAcceptableValue(
-              d.followerAccountRemoteId.value, _followerAccountRemoteIdMeta));
+          followerAccountRemoteId.isAcceptableOrUnknown(
+              data['follower_account_remote_id'],
+              _followerAccountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_followerAccountRemoteIdMeta);
     }
@@ -5507,23 +6556,6 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   DbAccountFollower map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbAccountFollower.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbAccountFollowersCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    if (d.followerAccountRemoteId.present) {
-      map['follower_account_remote_id'] =
-          Variable<String, StringType>(d.followerAccountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -5555,6 +6587,33 @@ class DbConversationAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || conversationRemoteId != null) {
+      map['conversation_remote_id'] = Variable<String>(conversationRemoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    return map;
+  }
+
+  DbConversationAccountsCompanion toCompanion(bool nullToAbsent) {
+    return DbConversationAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      conversationRemoteId: conversationRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(conversationRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+    );
+  }
+
   factory DbConversationAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5573,19 +6632,6 @@ class DbConversationAccount extends DataClass
       'conversationRemoteId': serializer.toJson<String>(conversationRemoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
-  }
-
-  @override
-  DbConversationAccountsCompanion createCompanion(bool nullToAbsent) {
-    return DbConversationAccountsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      conversationRemoteId: conversationRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(conversationRemoteId),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-    );
   }
 
   DbConversationAccount copyWith(
@@ -5633,6 +6679,19 @@ class DbConversationAccountsCompanion
     @required String accountRemoteId,
   })  : conversationRemoteId = Value(conversationRemoteId),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbConversationAccount> custom({
+    Expression<int> id,
+    Expression<String> conversationRemoteId,
+    Expression<String> accountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (conversationRemoteId != null)
+        'conversation_remote_id': conversationRemoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+    });
+  }
+
   DbConversationAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> conversationRemoteId,
@@ -5642,6 +6701,32 @@ class DbConversationAccountsCompanion
       conversationRemoteId: conversationRemoteId ?? this.conversationRemoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (conversationRemoteId.present) {
+      map['conversation_remote_id'] =
+          Variable<String>(conversationRemoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbConversationAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('conversationRemoteId: $conversationRemoteId, ')
+          ..write('accountRemoteId: $accountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -5697,25 +6782,27 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   @override
   final String actualTableName = 'db_conversation_accounts';
   @override
-  VerificationContext validateIntegrity(DbConversationAccountsCompanion d,
+  VerificationContext validateIntegrity(
+      Insertable<DbConversationAccount> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.conversationRemoteId.present) {
+    if (data.containsKey('conversation_remote_id')) {
       context.handle(
           _conversationRemoteIdMeta,
-          conversationRemoteId.isAcceptableValue(
-              d.conversationRemoteId.value, _conversationRemoteIdMeta));
+          conversationRemoteId.isAcceptableOrUnknown(
+              data['conversation_remote_id'], _conversationRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_conversationRemoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -5728,23 +6815,6 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   DbConversationAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbConversationAccount.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbConversationAccountsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.conversationRemoteId.present) {
-      map['conversation_remote_id'] =
-          Variable<String, StringType>(d.conversationRemoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -5791,6 +6861,53 @@ class DbScheduledStatus extends DataClass
               data['${effectivePrefix}media_attachments'])),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || scheduledAt != null) {
+      map['scheduled_at'] = Variable<DateTime>(scheduledAt);
+    }
+    if (!nullToAbsent || canceled != null) {
+      map['canceled'] = Variable<bool>(canceled);
+    }
+    if (!nullToAbsent || params != null) {
+      final converter = $DbScheduledStatusesTable.$converter0;
+      map['params'] = Variable<String>(converter.mapToSql(params));
+    }
+    if (!nullToAbsent || mediaAttachments != null) {
+      final converter = $DbScheduledStatusesTable.$converter1;
+      map['media_attachments'] =
+          Variable<String>(converter.mapToSql(mediaAttachments));
+    }
+    return map;
+  }
+
+  DbScheduledStatusesCompanion toCompanion(bool nullToAbsent) {
+    return DbScheduledStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      scheduledAt: scheduledAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduledAt),
+      canceled: canceled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(canceled),
+      params:
+          params == null && nullToAbsent ? const Value.absent() : Value(params),
+      mediaAttachments: mediaAttachments == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaAttachments),
+    );
+  }
+
   factory DbScheduledStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5816,27 +6933,6 @@ class DbScheduledStatus extends DataClass
       'mediaAttachments':
           serializer.toJson<List<PleromaMediaAttachment>>(mediaAttachments),
     };
-  }
-
-  @override
-  DbScheduledStatusesCompanion createCompanion(bool nullToAbsent) {
-    return DbScheduledStatusesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      remoteId: remoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(remoteId),
-      scheduledAt: scheduledAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(scheduledAt),
-      canceled: canceled == null && nullToAbsent
-          ? const Value.absent()
-          : Value(canceled),
-      params:
-          params == null && nullToAbsent ? const Value.absent() : Value(params),
-      mediaAttachments: mediaAttachments == null && nullToAbsent
-          ? const Value.absent()
-          : Value(mediaAttachments),
-    );
   }
 
   DbScheduledStatus copyWith(
@@ -5913,6 +7009,24 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   })  : remoteId = Value(remoteId),
         scheduledAt = Value(scheduledAt),
         canceled = Value(canceled);
+  static Insertable<DbScheduledStatus> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<DateTime> scheduledAt,
+    Expression<bool> canceled,
+    Expression<String> params,
+    Expression<String> mediaAttachments,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (scheduledAt != null) 'scheduled_at': scheduledAt,
+      if (canceled != null) 'canceled': canceled,
+      if (params != null) 'params': params,
+      if (mediaAttachments != null) 'media_attachments': mediaAttachments,
+    });
+  }
+
   DbScheduledStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -5928,6 +7042,46 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
       params: params ?? this.params,
       mediaAttachments: mediaAttachments ?? this.mediaAttachments,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (scheduledAt.present) {
+      map['scheduled_at'] = Variable<DateTime>(scheduledAt.value);
+    }
+    if (canceled.present) {
+      map['canceled'] = Variable<bool>(canceled.value);
+    }
+    if (params.present) {
+      final converter = $DbScheduledStatusesTable.$converter0;
+      map['params'] = Variable<String>(converter.mapToSql(params.value));
+    }
+    if (mediaAttachments.present) {
+      final converter = $DbScheduledStatusesTable.$converter1;
+      map['media_attachments'] =
+          Variable<String>(converter.mapToSql(mediaAttachments.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbScheduledStatusesCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('canceled: $canceled, ')
+          ..write('params: $params, ')
+          ..write('mediaAttachments: $mediaAttachments')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -6016,27 +7170,30 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   @override
   final String actualTableName = 'db_scheduled_statuses';
   @override
-  VerificationContext validateIntegrity(DbScheduledStatusesCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbScheduledStatus> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.scheduledAt.present) {
-      context.handle(_scheduledAtMeta,
-          scheduledAt.isAcceptableValue(d.scheduledAt.value, _scheduledAtMeta));
+    if (data.containsKey('scheduled_at')) {
+      context.handle(
+          _scheduledAtMeta,
+          scheduledAt.isAcceptableOrUnknown(
+              data['scheduled_at'], _scheduledAtMeta));
     } else if (isInserting) {
       context.missing(_scheduledAtMeta);
     }
-    if (d.canceled.present) {
+    if (data.containsKey('canceled')) {
       context.handle(_canceledMeta,
-          canceled.isAcceptableValue(d.canceled.value, _canceledMeta));
+          canceled.isAcceptableOrUnknown(data['canceled'], _canceledMeta));
     } else if (isInserting) {
       context.missing(_canceledMeta);
     }
@@ -6051,35 +7208,6 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   DbScheduledStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbScheduledStatus.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbScheduledStatusesCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.scheduledAt.present) {
-      map['scheduled_at'] =
-          Variable<DateTime, DateTimeType>(d.scheduledAt.value);
-    }
-    if (d.canceled.present) {
-      map['canceled'] = Variable<bool, BoolType>(d.canceled.value);
-    }
-    if (d.params.present) {
-      final converter = $DbScheduledStatusesTable.$converter0;
-      map['params'] =
-          Variable<String, StringType>(converter.mapToSql(d.params.value));
-    }
-    if (d.mediaAttachments.present) {
-      final converter = $DbScheduledStatusesTable.$converter1;
-      map['media_attachments'] = Variable<String, StringType>(
-          converter.mapToSql(d.mediaAttachments.value));
-    }
-    return map;
   }
 
   @override
@@ -6122,6 +7250,44 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || unread != null) {
+      map['unread'] = Variable<int>(unread);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    return map;
+  }
+
+  DbChatsCompanion toCompanion(bool nullToAbsent) {
+    return DbChatsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      unread:
+          unread == null && nullToAbsent ? const Value.absent() : Value(unread),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+    );
+  }
+
   factory DbChat.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6143,24 +7309,6 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
-  }
-
-  @override
-  DbChatsCompanion createCompanion(bool nullToAbsent) {
-    return DbChatsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      remoteId: remoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(remoteId),
-      unread:
-          unread == null && nullToAbsent ? const Value.absent() : Value(unread),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-    );
   }
 
   DbChat copyWith(
@@ -6228,6 +7376,22 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
   })  : remoteId = Value(remoteId),
         unread = Value(unread),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbChat> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<int> unread,
+    Expression<DateTime> updatedAt,
+    Expression<String> accountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (unread != null) 'unread': unread,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+    });
+  }
+
   DbChatsCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -6241,6 +7405,39 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
       updatedAt: updatedAt ?? this.updatedAt,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (unread.present) {
+      map['unread'] = Variable<int>(unread.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbChatsCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('unread: $unread, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('accountRemoteId: $accountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -6314,33 +7511,34 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   @override
   final String actualTableName = 'db_chats';
   @override
-  VerificationContext validateIntegrity(DbChatsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbChat> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.unread.present) {
-      context.handle(
-          _unreadMeta, unread.isAcceptableValue(d.unread.value, _unreadMeta));
+    if (data.containsKey('unread')) {
+      context.handle(_unreadMeta,
+          unread.isAcceptableOrUnknown(data['unread'], _unreadMeta));
     } else if (isInserting) {
       context.missing(_unreadMeta);
     }
-    if (d.updatedAt.present) {
+    if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -6353,28 +7551,6 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   DbChat map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbChat.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbChatsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.unread.present) {
-      map['unread'] = Variable<int, IntType>(d.unread.value);
-    }
-    if (d.updatedAt.present) {
-      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -6430,6 +7606,70 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || chatRemoteId != null) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || content != null) {
+      map['content'] = Variable<String>(content);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || emojis != null) {
+      final converter = $DbChatMessagesTable.$converter0;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis));
+    }
+    if (!nullToAbsent || mediaAttachment != null) {
+      final converter = $DbChatMessagesTable.$converter1;
+      map['media_attachment'] =
+          Variable<String>(converter.mapToSql(mediaAttachment));
+    }
+    if (!nullToAbsent || card != null) {
+      final converter = $DbChatMessagesTable.$converter2;
+      map['card'] = Variable<String>(converter.mapToSql(card));
+    }
+    return map;
+  }
+
+  DbChatMessagesCompanion toCompanion(bool nullToAbsent) {
+    return DbChatMessagesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      chatRemoteId: chatRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      content: content == null && nullToAbsent
+          ? const Value.absent()
+          : Value(content),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      emojis:
+          emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      mediaAttachment: mediaAttachment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaAttachment),
+      card: card == null && nullToAbsent ? const Value.absent() : Value(card),
+    );
+  }
+
   factory DbChatMessage.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6461,34 +7701,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
       'card': serializer.toJson<PleromaCard>(card),
     };
-  }
-
-  @override
-  DbChatMessagesCompanion createCompanion(bool nullToAbsent) {
-    return DbChatMessagesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      remoteId: remoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(remoteId),
-      chatRemoteId: chatRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(chatRemoteId),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-      content: content == null && nullToAbsent
-          ? const Value.absent()
-          : Value(content),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      emojis:
-          emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
-      mediaAttachment: mediaAttachment == null && nullToAbsent
-          ? const Value.absent()
-          : Value(mediaAttachment),
-      card: card == null && nullToAbsent ? const Value.absent() : Value(card),
-    );
   }
 
   DbChatMessage copyWith(
@@ -6595,6 +7807,30 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
         createdAt = Value(createdAt);
+  static Insertable<DbChatMessage> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<String> chatRemoteId,
+    Expression<String> accountRemoteId,
+    Expression<String> content,
+    Expression<DateTime> createdAt,
+    Expression<String> emojis,
+    Expression<String> mediaAttachment,
+    Expression<String> card,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (chatRemoteId != null) 'chat_remote_id': chatRemoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (content != null) 'content': content,
+      if (createdAt != null) 'created_at': createdAt,
+      if (emojis != null) 'emojis': emojis,
+      if (mediaAttachment != null) 'media_attachment': mediaAttachment,
+      if (card != null) 'card': card,
+    });
+  }
+
   DbChatMessagesCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -6616,6 +7852,59 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       mediaAttachment: mediaAttachment ?? this.mediaAttachment,
       card: card ?? this.card,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (chatRemoteId.present) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (emojis.present) {
+      final converter = $DbChatMessagesTable.$converter0;
+      map['emojis'] = Variable<String>(converter.mapToSql(emojis.value));
+    }
+    if (mediaAttachment.present) {
+      final converter = $DbChatMessagesTable.$converter1;
+      map['media_attachment'] =
+          Variable<String>(converter.mapToSql(mediaAttachment.value));
+    }
+    if (card.present) {
+      final converter = $DbChatMessagesTable.$converter2;
+      map['card'] = Variable<String>(converter.mapToSql(card.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbChatMessagesCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('chatRemoteId: $chatRemoteId, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('content: $content, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('emojis: $emojis, ')
+          ..write('mediaAttachment: $mediaAttachment, ')
+          ..write('card: $card')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -6751,41 +8040,42 @@ class $DbChatMessagesTable extends DbChatMessages
   @override
   final String actualTableName = 'db_chat_messages';
   @override
-  VerificationContext validateIntegrity(DbChatMessagesCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbChatMessage> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.remoteId.present) {
+    if (data.containsKey('remote_id')) {
       context.handle(_remoteIdMeta,
-          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
     } else if (isInserting) {
       context.missing(_remoteIdMeta);
     }
-    if (d.chatRemoteId.present) {
+    if (data.containsKey('chat_remote_id')) {
       context.handle(
           _chatRemoteIdMeta,
-          chatRemoteId.isAcceptableValue(
-              d.chatRemoteId.value, _chatRemoteIdMeta));
+          chatRemoteId.isAcceptableOrUnknown(
+              data['chat_remote_id'], _chatRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_chatRemoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
-    if (d.content.present) {
+    if (data.containsKey('content')) {
       context.handle(_contentMeta,
-          content.isAcceptableValue(d.content.value, _contentMeta));
+          content.isAcceptableOrUnknown(data['content'], _contentMeta));
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
@@ -6801,47 +8091,6 @@ class $DbChatMessagesTable extends DbChatMessages
   DbChatMessage map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbChatMessage.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbChatMessagesCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.remoteId.present) {
-      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
-    }
-    if (d.chatRemoteId.present) {
-      map['chat_remote_id'] =
-          Variable<String, StringType>(d.chatRemoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    if (d.content.present) {
-      map['content'] = Variable<String, StringType>(d.content.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.emojis.present) {
-      final converter = $DbChatMessagesTable.$converter0;
-      map['emojis'] =
-          Variable<String, StringType>(converter.mapToSql(d.emojis.value));
-    }
-    if (d.mediaAttachment.present) {
-      final converter = $DbChatMessagesTable.$converter1;
-      map['media_attachment'] = Variable<String, StringType>(
-          converter.mapToSql(d.mediaAttachment.value));
-    }
-    if (d.card.present) {
-      final converter = $DbChatMessagesTable.$converter2;
-      map['card'] =
-          Variable<String, StringType>(converter.mapToSql(d.card.value));
-    }
-    return map;
   }
 
   @override
@@ -6879,6 +8128,33 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || chatRemoteId != null) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    return map;
+  }
+
+  DbChatAccountsCompanion toCompanion(bool nullToAbsent) {
+    return DbChatAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      chatRemoteId: chatRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatRemoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+    );
+  }
+
   factory DbChatAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6896,19 +8172,6 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
       'chatRemoteId': serializer.toJson<String>(chatRemoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
-  }
-
-  @override
-  DbChatAccountsCompanion createCompanion(bool nullToAbsent) {
-    return DbChatAccountsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      chatRemoteId: chatRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(chatRemoteId),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-    );
   }
 
   DbChatAccount copyWith(
@@ -6955,6 +8218,18 @@ class DbChatAccountsCompanion extends UpdateCompanion<DbChatAccount> {
     @required String accountRemoteId,
   })  : chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId);
+  static Insertable<DbChatAccount> custom({
+    Expression<int> id,
+    Expression<String> chatRemoteId,
+    Expression<String> accountRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (chatRemoteId != null) 'chat_remote_id': chatRemoteId,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+    });
+  }
+
   DbChatAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> chatRemoteId,
@@ -6964,6 +8239,31 @@ class DbChatAccountsCompanion extends UpdateCompanion<DbChatAccount> {
       chatRemoteId: chatRemoteId ?? this.chatRemoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (chatRemoteId.present) {
+      map['chat_remote_id'] = Variable<String>(chatRemoteId.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbChatAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('chatRemoteId: $chatRemoteId, ')
+          ..write('accountRemoteId: $accountRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -7018,25 +8318,26 @@ class $DbChatAccountsTable extends DbChatAccounts
   @override
   final String actualTableName = 'db_chat_accounts';
   @override
-  VerificationContext validateIntegrity(DbChatAccountsCompanion d,
+  VerificationContext validateIntegrity(Insertable<DbChatAccount> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.chatRemoteId.present) {
+    if (data.containsKey('chat_remote_id')) {
       context.handle(
           _chatRemoteIdMeta,
-          chatRemoteId.isAcceptableValue(
-              d.chatRemoteId.value, _chatRemoteIdMeta));
+          chatRemoteId.isAcceptableOrUnknown(
+              data['chat_remote_id'], _chatRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_chatRemoteIdMeta);
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
@@ -7049,23 +8350,6 @@ class $DbChatAccountsTable extends DbChatAccounts
   DbChatAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DbChatAccount.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DbChatAccountsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.chatRemoteId.present) {
-      map['chat_remote_id'] =
-          Variable<String, StringType>(d.chatRemoteId.value);
-    }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
-    }
-    return map;
   }
 
   @override
@@ -7097,6 +8381,33 @@ class DbHomeTimelineStatus extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || accountRemoteId != null) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId);
+    }
+    if (!nullToAbsent || statusRemoteId != null) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId);
+    }
+    return map;
+  }
+
+  DbHomeTimelineStatusesCompanion toCompanion(bool nullToAbsent) {
+    return DbHomeTimelineStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+    );
+  }
+
   factory DbHomeTimelineStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -7114,19 +8425,6 @@ class DbHomeTimelineStatus extends DataClass
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
     };
-  }
-
-  @override
-  DbHomeTimelineStatusesCompanion createCompanion(bool nullToAbsent) {
-    return DbHomeTimelineStatusesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      accountRemoteId: accountRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountRemoteId),
-      statusRemoteId: statusRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(statusRemoteId),
-    );
   }
 
   DbHomeTimelineStatus copyWith(
@@ -7174,6 +8472,18 @@ class DbHomeTimelineStatusesCompanion
     @required String statusRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         statusRemoteId = Value(statusRemoteId);
+  static Insertable<DbHomeTimelineStatus> custom({
+    Expression<int> id,
+    Expression<String> accountRemoteId,
+    Expression<String> statusRemoteId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (accountRemoteId != null) 'account_remote_id': accountRemoteId,
+      if (statusRemoteId != null) 'status_remote_id': statusRemoteId,
+    });
+  }
+
   DbHomeTimelineStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> accountRemoteId,
@@ -7183,6 +8493,31 @@ class DbHomeTimelineStatusesCompanion
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (accountRemoteId.present) {
+      map['account_remote_id'] = Variable<String>(accountRemoteId.value);
+    }
+    if (statusRemoteId.present) {
+      map['status_remote_id'] = Variable<String>(statusRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbHomeTimelineStatusesCompanion(')
+          ..write('id: $id, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('statusRemoteId: $statusRemoteId')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -7231,25 +8566,27 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   @override
   final String actualTableName = 'db_home_timeline_statuses';
   @override
-  VerificationContext validateIntegrity(DbHomeTimelineStatusesCompanion d,
+  VerificationContext validateIntegrity(
+      Insertable<DbHomeTimelineStatus> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.accountRemoteId.present) {
+    if (data.containsKey('account_remote_id')) {
       context.handle(
           _accountRemoteIdMeta,
-          accountRemoteId.isAcceptableValue(
-              d.accountRemoteId.value, _accountRemoteIdMeta));
+          accountRemoteId.isAcceptableOrUnknown(
+              data['account_remote_id'], _accountRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_accountRemoteIdMeta);
     }
-    if (d.statusRemoteId.present) {
+    if (data.containsKey('status_remote_id')) {
       context.handle(
           _statusRemoteIdMeta,
-          statusRemoteId.isAcceptableValue(
-              d.statusRemoteId.value, _statusRemoteIdMeta));
+          statusRemoteId.isAcceptableOrUnknown(
+              data['status_remote_id'], _statusRemoteIdMeta));
     } else if (isInserting) {
       context.missing(_statusRemoteIdMeta);
     }
@@ -7265,26 +8602,247 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   }
 
   @override
-  Map<String, Variable> entityToSql(DbHomeTimelineStatusesCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
+  $DbHomeTimelineStatusesTable createAlias(String alias) {
+    return $DbHomeTimelineStatusesTable(_db, alias);
+  }
+}
+
+class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
+  final int id;
+  final DateTime updatedAt;
+  final PostStatusData data;
+  DbDraftStatus(
+      {@required this.id, @required this.updatedAt, @required this.data});
+  factory DbDraftStatus.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return DbDraftStatus(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+      data: $DbDraftStatusesTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}data'])),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
     }
-    if (d.accountRemoteId.present) {
-      map['account_remote_id'] =
-          Variable<String, StringType>(d.accountRemoteId.value);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
-    if (d.statusRemoteId.present) {
-      map['status_remote_id'] =
-          Variable<String, StringType>(d.statusRemoteId.value);
+    if (!nullToAbsent || data != null) {
+      final converter = $DbDraftStatusesTable.$converter0;
+      map['data'] = Variable<String>(converter.mapToSql(data));
+    }
+    return map;
+  }
+
+  DbDraftStatusesCompanion toCompanion(bool nullToAbsent) {
+    return DbDraftStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      data: data == null && nullToAbsent ? const Value.absent() : Value(data),
+    );
+  }
+
+  factory DbDraftStatus.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbDraftStatus(
+      id: serializer.fromJson<int>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      data: serializer.fromJson<PostStatusData>(json['data']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'data': serializer.toJson<PostStatusData>(data),
+    };
+  }
+
+  DbDraftStatus copyWith({int id, DateTime updatedAt, PostStatusData data}) =>
+      DbDraftStatus(
+        id: id ?? this.id,
+        updatedAt: updatedAt ?? this.updatedAt,
+        data: data ?? this.data,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbDraftStatus(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('data: $data')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(updatedAt.hashCode, data.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbDraftStatus &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.data == this.data);
+}
+
+class DbDraftStatusesCompanion extends UpdateCompanion<DbDraftStatus> {
+  final Value<int> id;
+  final Value<DateTime> updatedAt;
+  final Value<PostStatusData> data;
+  const DbDraftStatusesCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.data = const Value.absent(),
+  });
+  DbDraftStatusesCompanion.insert({
+    this.id = const Value.absent(),
+    @required DateTime updatedAt,
+    @required PostStatusData data,
+  })  : updatedAt = Value(updatedAt),
+        data = Value(data);
+  static Insertable<DbDraftStatus> custom({
+    Expression<int> id,
+    Expression<DateTime> updatedAt,
+    Expression<String> data,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (data != null) 'data': data,
+    });
+  }
+
+  DbDraftStatusesCompanion copyWith(
+      {Value<int> id, Value<DateTime> updatedAt, Value<PostStatusData> data}) {
+    return DbDraftStatusesCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      data: data ?? this.data,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (data.present) {
+      final converter = $DbDraftStatusesTable.$converter0;
+      map['data'] = Variable<String>(converter.mapToSql(data.value));
     }
     return map;
   }
 
   @override
-  $DbHomeTimelineStatusesTable createAlias(String alias) {
-    return $DbHomeTimelineStatusesTable(_db, alias);
+  String toString() {
+    return (StringBuffer('DbDraftStatusesCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('data: $data')
+          ..write(')'))
+        .toString();
   }
+}
+
+class $DbDraftStatusesTable extends DbDraftStatuses
+    with TableInfo<$DbDraftStatusesTable, DbDraftStatus> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbDraftStatusesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
+  @override
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dataMeta = const VerificationMeta('data');
+  GeneratedTextColumn _data;
+  @override
+  GeneratedTextColumn get data => _data ??= _constructData();
+  GeneratedTextColumn _constructData() {
+    return GeneratedTextColumn(
+      'data',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, updatedAt, data];
+  @override
+  $DbDraftStatusesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_draft_statuses';
+  @override
+  final String actualTableName = 'db_draft_statuses';
+  @override
+  VerificationContext validateIntegrity(Insertable<DbDraftStatus> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    context.handle(_dataMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbDraftStatus map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbDraftStatus.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $DbDraftStatusesTable createAlias(String alias) {
+    return $DbDraftStatusesTable(_db, alias);
+  }
+
+  static TypeConverter<PostStatusData, String> $converter0 =
+      PostStatusDataDatabaseConverter();
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
@@ -7409,6 +8967,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DbHomeTimelineStatusesTable _dbHomeTimelineStatuses;
   $DbHomeTimelineStatusesTable get dbHomeTimelineStatuses =>
       _dbHomeTimelineStatuses ??= $DbHomeTimelineStatusesTable(this);
+  $DbDraftStatusesTable _dbDraftStatuses;
+  $DbDraftStatusesTable get dbDraftStatuses =>
+      _dbDraftStatuses ??= $DbDraftStatusesTable(this);
   StatusDao _statusDao;
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
   StatusHashtagsDao _statusHashtagsDao;
@@ -7459,6 +9020,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   HomeTimelineStatusesDao _homeTimelineStatusesDao;
   HomeTimelineStatusesDao get homeTimelineStatusesDao =>
       _homeTimelineStatusesDao ??= HomeTimelineStatusesDao(this as AppDatabase);
+  DraftStatusDao _draftStatusDao;
+  DraftStatusDao get draftStatusDao =>
+      _draftStatusDao ??= DraftStatusDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -7496,6 +9060,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbChatMessagesChatRemoteIdIndex,
         dbChatAccounts,
         dbChatAccountsIndex,
-        dbHomeTimelineStatuses
+        dbHomeTimelineStatuses,
+        dbDraftStatuses
       ];
 }

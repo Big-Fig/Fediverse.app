@@ -32,47 +32,73 @@ abstract class INotificationRepository
   Future upsertRemoteNotification(IPleromaNotification remoteNotification,
       {@required bool unread});
 
-  Future<int> countUnreadAnyType();
+  Future<int> countUnreadAnyType({
+    bool onlyNotDismissed = true,
+  });
 
-  Future<int> countUnreadByType({@required PleromaNotificationType type});
+  Future<int> countUnreadByType({
+    @required PleromaNotificationType type,
+    bool onlyNotDismissed = true,
+  });
 
-  Future<int> getUnreadCountExcludeTypes(
-      {@required List<PleromaNotificationType> excludeTypes});
+  Future<int> getUnreadCountExcludeTypes({
+    @required List<PleromaNotificationType> excludeTypes,
+    bool onlyNotDismissed = true,
+  });
 
-  Stream<int> watchUnreadCountExcludeTypes(
-      {@required List<PleromaNotificationType> excludeTypes});
+  Stream<int> watchUnreadCountExcludeTypes({
+    @required List<PleromaNotificationType> excludeTypes,
+    bool onlyNotDismissed = true,
+  });
 
-  Stream<int> watchUnreadCountAnyType();
+  Stream<int> watchUnreadCountAnyType({
+    bool onlyNotDismissed = true,
+  });
 
-  Stream<int> watchUnreadCountByType({@required PleromaNotificationType type});
+  Stream<int> watchUnreadCountByType({
+    @required PleromaNotificationType type,
+    bool onlyNotDismissed = true,
+  });
 
-  Future<List<DbNotificationPopulatedWrapper>> getNotifications(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required int limit,
-      @required int offset,
-      @required NotificationOrderingTermData orderingTermData});
+  Future<List<DbNotificationPopulatedWrapper>> getNotifications({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required int limit,
+    @required int offset,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  });
 
-  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required int limit,
-      @required int offset,
-      @required NotificationOrderingTermData orderingTermData});
+  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required int limit,
+    @required int offset,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  });
 
-  Future<DbNotificationPopulatedWrapper> getNotification(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required NotificationOrderingTermData orderingTermData});
+  Future<DbNotificationPopulatedWrapper> getNotification({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  });
 
-  Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required NotificationOrderingTermData orderingTermData});
+  Stream<DbNotificationPopulatedWrapper> watchNotification({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  });
 
   Future markAsRead({@required INotification notification});
+
+  Future dismiss({@required INotification notification});
+
+  Future dismissAll();
 }

@@ -27,9 +27,11 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   BehaviorSubject<NotificationPushLoaderNotification>
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
+
   @override
   NotificationPushLoaderNotification get launchOrResumePushLoaderNotification =>
       launchOrResumePushLoaderNotificationSubject.value;
+
   @override
   Stream<NotificationPushLoaderNotification>
       get launchOrResumePushLoaderNotificationStream =>

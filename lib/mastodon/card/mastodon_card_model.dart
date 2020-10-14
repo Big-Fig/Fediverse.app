@@ -43,8 +43,8 @@ class MastodonCardTypeTypeConverter
   const MastodonCardTypeTypeConverter();
 
   @override
-  MastodonCardType fromJson(String value) => mastodonCardTypeValues.map[value];
+  MastodonCardType fromJson(String value) => mastodonCardTypeValues.valueToEnumMap[value];
   @override
   String toJson(MastodonCardType value) =>
-      mastodonCardTypeValues.reverse[value];
+      mastodonCardTypeValues.enumToValueMap[value];
 }

@@ -12,10 +12,14 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
   @override
   final FocusNode focusNode = FocusNode();
 
-  FormStringFieldBloc(
-      {@required String originValue,
-      @required List<FormValueFieldValidation<String>> validators})
-      : textEditingController = TextEditingController(text: originValue ?? ""),
+  @override
+  final int maxLength;
+
+  FormStringFieldBloc({
+    @required String originValue,
+    @required List<FormValueFieldValidation<String>> validators,
+    @required this.maxLength,
+  })  : textEditingController = TextEditingController(text: originValue ?? ""),
         super(
           originValue: originValue,
           validators: validators,

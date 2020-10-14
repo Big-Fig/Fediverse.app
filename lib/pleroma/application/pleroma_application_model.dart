@@ -51,25 +51,29 @@ class PleromaApplication implements IPleromaApplication {
   int get hashCode => name.hashCode ^ website.hashCode ^ vapidKey.hashCode;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
-@JsonSerializable()
+// @HiveType(typeId: -32 + 52)
+@JsonSerializable(explicitToJson: true)
 class PleromaClientApplication
     implements IPleromaClientApplication, IPreferencesObject {
   @HiveField(0)
-  String name;
+  final String name;
   @HiveField(1)
-  String website;
+  final String website;
   @JsonKey(name: "vapid_key")
   @HiveField(2)
-  String vapidKey;
+  final String vapidKey;
   @override
   @JsonKey(name: "client_id")
   @HiveField(3)
-  String clientId;
+  final String clientId;
   @override
   @JsonKey(name: "client_secret")
   @HiveField(4)
-  String clientSecret;
+  final String clientSecret;
 
   PleromaClientApplication(
       {this.name,
@@ -84,6 +88,7 @@ class PleromaClientApplication
   factory PleromaClientApplication.fromJsonString(String jsonString) =>
       _$PleromaClientApplicationFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaClientApplicationToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaClientApplicationToJson(this));

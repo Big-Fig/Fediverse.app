@@ -44,7 +44,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.fediverse.app"
+        applicationId "com.fediverse.app2"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -65,6 +65,23 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
    buildTypes {
        release {
            signingConfig signingConfigs.release
+       }
+   }
+
+   flavorDimensions "app"
+
+   productFlavors {
+       dev {
+           dimension "app"
+           resValue "string", "app_name", "Fedi2(dev)"
+           applicationId "com.fediverse.app2"
+           manifestPlaceholders.scheme = "com.fediverse.app2"
+       }
+       prod {
+           dimension "app"
+           resValue "string", "app_name", "Fedi"
+           applicationId "com.fediverse.app"
+           manifestPlaceholders.scheme = "com.fediverse.app"
        }
    }
 }

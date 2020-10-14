@@ -45,7 +45,7 @@ abstract class IStatusRepository
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -55,6 +55,9 @@ abstract class IStatusRepository
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Stream<List<IStatus>> watchStatuses({
@@ -65,7 +68,7 @@ abstract class IStatusRepository
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -75,6 +78,9 @@ abstract class IStatusRepository
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Future<IStatus> getStatus({
@@ -85,7 +91,7 @@ abstract class IStatusRepository
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -93,6 +99,9 @@ abstract class IStatusRepository
     @required bool onlyNoReplies,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Stream<IStatus> watchStatus({
@@ -103,7 +112,7 @@ abstract class IStatusRepository
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -111,19 +120,28 @@ abstract class IStatusRepository
     @required bool onlyNoReplies,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
-  Stream<IStatus> watchConversationLastStatus(
-      {@required IConversation conversation});
+  Stream<IStatus> watchConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  });
 
-  Future<IStatus> getConversationLastStatus(
-      {@required IConversation conversation});
+  Future<IStatus> getConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  });
 
   Future incrementRepliesCount({@required String remoteId});
 
-
-  Future removeHomeStatusesFromAccount({
+  Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
   });
 
+  Future markStatusAsDeleted({@required String statusRemoteId});
+
+  Future clearListStatusesConnection({@required String listRemoteId});
 }

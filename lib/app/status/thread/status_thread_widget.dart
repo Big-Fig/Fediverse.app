@@ -5,6 +5,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
@@ -34,6 +35,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   bool isJumpedToStartState = false;
 
   StreamSubscription newItemsJumpSubscription;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -60,8 +62,6 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
-    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
-
     return Column(
       children: <Widget>[
         Expanded(
@@ -72,7 +72,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             ),
           ),
         ),
-        buildInReplyToStatusWidget(postStatusBloc),
+        buildInReplyToStatusWidget(context),
         FediUltraLightGreyDivider(),
         Container(
           decoration: BoxDecoration(
@@ -89,8 +89,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
     );
   }
 
-  StreamBuilder<IStatus> buildInReplyToStatusWidget(
-      IPostStatusBloc postStatusBloc) {
+  StreamBuilder<IStatus> buildInReplyToStatusWidget(BuildContext context) {
+    var postStatusBloc = IThreadPostStatusBloc.of(context, listen: false);
     return StreamBuilder<IStatus>(
         stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
         initialData: postStatusBloc.notCanceledOriginInReplyToStatus,
@@ -166,13 +166,16 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 //        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
-          if(index < 0) {
+          if (index < 0) {
             // fix non-fatal from firebase. Perhaps ScrollablePositionedList
             // sometimes want to load item out of top bounds
             return SizedBox.shrink();
           }
           var status = statuses[index];
           var isFirstInList = index == 0;
+          var isInFocus =
+              index == statusThreadBloc.initialStatusToFetchThreadIndex;
+          var firstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
           return Provider.value(
             value: status,
             child: Padding(
@@ -180,7 +183,9 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                   ? const EdgeInsets.only(bottom: 3.0)
                   : const EdgeInsets.symmetric(vertical: 4.0),
               child: Container(
-                color: FediColors.white,
+                color: isInFocus
+                    ? FediColors.ultraLightGrey.withOpacity(0.5)
+                    : FediColors.white,
                 child: Column(
                   children: [
                     StatusListItemTimelineWidget.thread(
@@ -193,15 +198,15 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       },
                       collapsible: false,
                       displayAccountHeader:
-                          !statusThreadBloc.isFirstStatusInThread(status),
-                      displayActions: isFirstInList,
+                          !firstStatusInThread,
+                      displayActions: firstStatusInThread || isInFocus,
                       accountMentionCallback:
                           (BuildContext context, IAccount account) {
                         IPostStatusBloc.of(context, listen: false)
-                            .addMentionByAccount(account);
+                            .addAccountMentions([account]);
                       },
                     ),
-                    if (isFirstInList) FediLightGreyDivider(),
+                    FediLightGreyDivider(),
                   ],
                 ),
               ),

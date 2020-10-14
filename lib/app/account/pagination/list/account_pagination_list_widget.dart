@@ -4,6 +4,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -11,7 +12,6 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 
 var _logger = Logger("account_pagination_list_widget.dart");
 
@@ -19,6 +19,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
   final AccountCallback accountSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;
+  final List<Widget> accountActions;
 
   const AccountPaginationListWidget({
     @required Key key,
@@ -27,6 +28,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
+    this.accountActions,
     @required this.accountSelectedCallback,
   }) : super(
             key: key,
@@ -63,7 +65,9 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
                   child: Column(
                     children: [
                       AccountListItemWidget(
-                          accountSelectedCallback: accountSelectedCallback),
+                        accountSelectedCallback: accountSelectedCallback,
+                        accountActions: accountActions,
+                      ),
                       const FediUltraLightGreyDivider()
                     ],
                   )),

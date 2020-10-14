@@ -37,6 +37,7 @@ abstract class INotification {
   bool get isContainsStatus;
 
   bool get isContainsAccount;
+  bool get dismissed;
 
   INotification copyWith(
       {int localId,
@@ -47,7 +48,10 @@ abstract class INotification {
       String emoji,
       PleromaNotificationPleromaPart pleroma,
       IAccount account,
-      MastodonNotificationType type});
+      MastodonNotificationType type,
+      bool dismissed,
+
+      });
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -83,12 +87,12 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   MastodonNotificationType get typeMastodon =>
-      mastodonNotificationTypeValues.map[type];
+      mastodonNotificationTypeValues.valueToEnumMap[type];
 
   @override
   PleromaNotificationType get typePleroma {
-    if (pleromaNotificationTypeValues.map.containsKey(type)) {
-      return pleromaNotificationTypeValues.map[type];
+    if (pleromaNotificationTypeValues.valueToEnumMap.containsKey(type)) {
+      return pleromaNotificationTypeValues.valueToEnumMap[type];
     } else {
       return PleromaNotificationType.unknown;
     }
@@ -115,7 +119,8 @@ class DbNotificationPopulatedWrapper implements INotification {
           IAccount account,
           String emoji,
           PleromaNotificationPleromaPart pleroma,
-          MastodonNotificationType type}) =>
+          MastodonNotificationType type,
+            bool dismissed,}) =>
       DbNotificationPopulatedWrapper(DbNotificationPopulated(
           dbNotification: dbNotificationPopulated.dbNotification.copyWith(
             id: localId ?? this.localId,
@@ -125,6 +130,7 @@ class DbNotificationPopulatedWrapper implements INotification {
             type: type ?? this.type,
             pleroma: pleroma ?? this.pleroma,
             emoji: emoji ?? this.emoji,
+            dismissed: dismissed ?? this.dismissed,
           ),
           dbAccount: dbAccountFromAccount(account) ??
               dbNotificationPopulated.dbAccount,
@@ -153,6 +159,9 @@ class DbNotificationPopulatedWrapper implements INotification {
     return 'DbNotificationPopulatedWrapper{'
         'dbNotificationPopulated: $dbNotificationPopulated}';
   }
+
+  @override
+  bool get dismissed => dbNotificationPopulated.dbNotification.dismissed;
 }
 
 class DbNotificationPopulated {

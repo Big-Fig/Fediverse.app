@@ -40,11 +40,11 @@ class MastodonSearchRequestTypeConverter
 
   @override
   MastodonSearchRequestType fromJson(String value) =>
-      mastodonSearchRequestTypeTypeValues.map[value];
+      mastodonSearchRequestTypeTypeValues.valueToEnumMap[value];
 
   @override
   String toJson(MastodonSearchRequestType value) =>
-      mastodonSearchRequestTypeTypeValues.reverse[value];
+      mastodonSearchRequestTypeTypeValues.enumToValueMap[value];
 }
 
 abstract class IMastodonSearchResult {

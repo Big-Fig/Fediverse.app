@@ -38,12 +38,18 @@ import 'package:fedi/app/push/subscription_settings/push_subscription_settings_b
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
+import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
+import 'package:fedi/app/status/draft/repository/draft_status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -62,6 +68,8 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service_impl.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
@@ -132,7 +140,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var userAtHost = currentInstance.userAtHost;
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
-        currentInstance.userAtHost, preferencesService);
+        preferencesService, currentInstance.userAtHost);
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -155,11 +163,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
+
     var scheduledStatusRepository =
         ScheduledStatusRepository(appDatabase: moorDatabaseService.appDatabase);
     addDisposable(disposable: scheduledStatusRepository);
     await globalProviderService.asyncInitAndRegister<
         IScheduledStatusRepository>(scheduledStatusRepository);
+
+    var draftStatusRepository =
+        DraftStatusRepository(appDatabase: moorDatabaseService.appDatabase);
+    addDisposable(disposable: draftStatusRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
+
     var conversationRepository = ConversationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -224,16 +240,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaAuthRestService>(pleromaAuthRestService);
 
     var pleromaCaptchaService =
-    PleromaCaptchaService(restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaCaptchaService>(pleromaCaptchaService);
+        PleromaCaptchaService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaCaptchaService>(pleromaCaptchaService);
     addDisposable(disposable: pleromaCaptchaService);
-    
+
     var pleromaMediaAttachmentService =
         PleromaMediaAttachmentService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaMediaAttachmentService>(pleromaMediaAttachmentService);
     addDisposable(disposable: pleromaMediaAttachmentService);
+
+    var pleromaListService =
+        PleromaListService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaListService>(pleromaListService);
+    addDisposable(disposable: pleromaListService);
+
     var pleromaMyAccountService =
         PleromaMyAccountService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<IPleromaMyAccountService>(
@@ -337,19 +360,44 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
 
     var customEmojiPickerRecentCategoryLocalPreferenceBloc =
-    EmojiPickerRecentCategoryLocalPreferenceBloc(
+        EmojiPickerRecentCategoryLocalPreferenceBloc(
             preferencesService, userAtHost);
     addDisposable(
         disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IEmojiPickerRecentCategoryLocalPreferenceBloc>(
-        customEmojiPickerRecentCategoryLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
+            customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
-    var timelineLocalPreferenceBloc =
-        TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);
-    addDisposable(disposable: timelineLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        ITimelineSettingsLocalPreferencesBloc>(timelineLocalPreferenceBloc);
+    var homeTimelineLocalPreferenceBloc =
+        HomeTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: homeTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IHomeTimelineSettingsLocalPreferencesBloc>(
+            homeTimelineLocalPreferenceBloc);
+
+    var localTimelineLocalPreferenceBloc =
+        LocalTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: localTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ILocalTimelineSettingsLocalPreferencesBloc>(
+            localTimelineLocalPreferenceBloc);
+
+    var publicTimelineLocalPreferenceBloc =
+        PublicTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: publicTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IPublicTimelineSettingsLocalPreferencesBloc>(
+            publicTimelineLocalPreferenceBloc);
+
     var pushSubscriptionLocalPreferenceBloc =
         PushSubscriptionSettingsLocalPreferencesBloc(
             preferencesService, userAtHost);
@@ -424,7 +472,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var myAccountSettingsLocalPreferenceBloc =
         MyAccountSettingsLocalPreferenceBloc(
-            currentInstance.userAtHost, preferencesService);
+            preferencesService, currentInstance.userAtHost);
 
     addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
     await globalProviderService

@@ -10,49 +10,37 @@ class PushSubscriptionSettingsLocalPreferencesAdapter
     extends TypeAdapter<PushSubscriptionSettingsLocalPreferences> {
   @override
   PushSubscriptionSettingsLocalPreferences read(BinaryReader reader) {
-    var obj = PushSubscriptionSettingsLocalPreferences();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.favourite = reader.read() as bool;
-          break;
-        case 2:
-          obj.follow = reader.read() as bool;
-          break;
-        case 3:
-          obj.mention = reader.read() as bool;
-          break;
-        case 4:
-          obj.reblog = reader.read() as bool;
-          break;
-        case 5:
-          obj.poll = reader.read() as bool;
-          break;
-        case 6:
-          obj.chat = reader.read() as bool;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PushSubscriptionSettingsLocalPreferences(
+      favourite: fields[1] as bool,
+      follow: fields[2] as bool,
+      mention: fields[3] as bool,
+      reblog: fields[4] as bool,
+      poll: fields[5] as bool,
+      chat: fields[6] as bool,
+    );
   }
 
   @override
   void write(
       BinaryWriter writer, PushSubscriptionSettingsLocalPreferences obj) {
-    writer.writeByte(6);
-    writer.writeByte(1);
-    writer.write(obj.favourite);
-    writer.writeByte(2);
-    writer.write(obj.follow);
-    writer.writeByte(3);
-    writer.write(obj.mention);
-    writer.writeByte(4);
-    writer.write(obj.reblog);
-    writer.writeByte(5);
-    writer.write(obj.poll);
-    writer.writeByte(6);
-    writer.write(obj.chat);
+    writer
+      ..writeByte(6)
+      ..writeByte(1)
+      ..write(obj.favourite)
+      ..writeByte(2)
+      ..write(obj.follow)
+      ..writeByte(3)
+      ..write(obj.mention)
+      ..writeByte(4)
+      ..write(obj.reblog)
+      ..writeByte(5)
+      ..write(obj.poll)
+      ..writeByte(6)
+      ..write(obj.chat);
   }
 }
 

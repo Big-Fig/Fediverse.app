@@ -53,6 +53,22 @@ class HtmlTextWidget extends StatelessWidget {
       htmlData = data?.replaceAll("<(/)*br>", "");
     }
 
+    _logger.finest(() => "htmlData $htmlData");
+
+    var textScaleFactor = MediaQuery.textScaleFactorOf(context);
+
+    // todo: remove hack
+    // textScaleFactor used for font size accessibility feature on iOS/Android
+    // html lib handle it in wrong way. I think it is use / instead of *
+    // so to compensate this calculations font size divided by
+    // textScaleFactor twice
+    // Usually textScaleFactor is 1.0 and this don't have any effect
+    var fontSizeValue = fontSize / textScaleFactor / textScaleFactor;
+    _logger.finest(() => "textScaleFactor $textScaleFactor "
+        " fontSize $fontSize "
+        " fontSizeValue $fontSizeValue");
+
+    var fontSizeObject = FontSize(fontSizeValue);
     return Html(
       shrinkWrap: shrinkWrap,
       onImageTap: (String source) {
@@ -65,7 +81,7 @@ class HtmlTextWidget extends StatelessWidget {
           margin: EdgeInsets.zero,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
-          fontSize: FontSize(fontSize),
+          fontSize: fontSizeObject,
           fontWeight: fontWeight,
           color: color,
           textAlign: textAlign,
@@ -89,9 +105,9 @@ class HtmlTextWidget extends StatelessWidget {
         "p": Style(
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-          textLineHeight: lineHeight,
+          lineHeight: lineHeight,
           display: paragraphDisplay,
-          fontSize: FontSize(fontSize),
+          fontSize: fontSizeObject,
           fontWeight: fontWeight,
           color: color,
           textOverflow: textOverflow,
@@ -104,9 +120,9 @@ class HtmlTextWidget extends StatelessWidget {
         "text": Style(
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-          textLineHeight: lineHeight,
+          lineHeight: lineHeight,
           display: Display.INLINE,
-          fontSize: FontSize(fontSize),
+          fontSize: fontSizeObject,
           fontWeight: fontWeight,
           color: color,
           textOverflow: textOverflow,
@@ -117,7 +133,7 @@ class HtmlTextWidget extends StatelessWidget {
       onImageError: (exception, stackTrace) {
         _logger.warning(() => "onImageError", exception, stackTrace);
       },
-      data: htmlData,
+      data: htmlData ?? "",
       onLinkTap: onLinkTap,
     );
   }

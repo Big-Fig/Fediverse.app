@@ -49,8 +49,12 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     }).catchError((error, stackTrace) {
       _logger.warning(
           () => "can't myAccountBloc.refreshFromNetwork()", error, stackTrace);
-      stateSubject.add(
-          CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist);
+      if (myAccountBloc.isLocalCacheExist) {
+        stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
+      } else {
+        stateSubject.add(
+            CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist);
+      }
     });
   }
 

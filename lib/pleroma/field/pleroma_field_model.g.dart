@@ -9,33 +9,27 @@ part of 'pleroma_field_model.dart';
 class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
   @override
   PleromaField read(BinaryReader reader) {
-    var obj = PleromaField();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.name = reader.read() as String;
-          break;
-        case 1:
-          obj.value = reader.read() as String;
-          break;
-        case 2:
-          obj.verifiedAt = reader.read() as DateTime;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaField(
+      name: fields[0] as String,
+      value: fields[1] as String,
+      verifiedAt: fields[2] as DateTime,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaField obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.name);
-    writer.writeByte(1);
-    writer.write(obj.value);
-    writer.writeByte(2);
-    writer.write(obj.verifiedAt);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.value)
+      ..writeByte(2)
+      ..write(obj.verifiedAt);
   }
 }
 

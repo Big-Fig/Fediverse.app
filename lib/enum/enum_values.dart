@@ -1,16 +1,12 @@
 class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> _reverseMap;
+  Map<String, T> valueToEnumMap;
+  final Map<T, String> enumToValueMap;
 
-  EnumValues(this.map);
+  EnumValues(this.valueToEnumMap)
+      : enumToValueMap = valueToEnumMap.map((k, v) => MapEntry(v, k));
 
-  Map<T, String> get reverse {
-    _reverseMap ??= map.map((k, v) => MapEntry(v, k));
-    return _reverseMap;
-  }
-
-  List<T> valuesWithExclude(List<T> valuesToExclude) =>
-      map.values.where((value) => valuesToExclude.contains(value)).toList();
-  List<T> valuesWithExcept(List<T> valuesToExcept) =>
-      map.values.where((value) => !valuesToExcept.contains(value)).toList();
+  List<T> valuesWithoutSelected(List<T> valuesToExclude) =>
+      valueToEnumMap.values
+          .where((value) => !valuesToExclude.contains(value))
+          .toList();
 }

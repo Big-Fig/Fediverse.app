@@ -20,7 +20,9 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
         padding: FediPadding.allSmallPadding,
         child: MediaAttachmentNonMediaItemWidget(
           actionsWidget: null,
-          filePath: mediaAttachment.description ?? mediaAttachment.url,
+          filePath: mediaAttachment.description?.isNotEmpty == true
+              ? mediaAttachment.description
+              : mediaAttachment.url,
         ),
       ),
     );

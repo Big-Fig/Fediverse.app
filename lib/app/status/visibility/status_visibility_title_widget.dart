@@ -39,20 +39,20 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   static String mapVisibilityToTitle(
       BuildContext context, PleromaVisibility visibility) {
     switch (visibility) {
-      case PleromaVisibility.PUBLIC:
+      case PleromaVisibility.public:
         return tr("app.status.post.visibility.state"
             ".public");
         break;
-      case PleromaVisibility.UNLISTED:
+      case PleromaVisibility.unlisted:
         return tr("app.status.post.visibility.state.unlisted");
         break;
-      case PleromaVisibility.DIRECT:
+      case PleromaVisibility.direct:
         return tr("app.status.post.visibility.state.direct");
         break;
-      case PleromaVisibility.LIST:
+      case PleromaVisibility.list:
         return tr("app.status.post.visibility.state.list");
         break;
-      case PleromaVisibility.PRIVATE:
+      case PleromaVisibility.private:
         return tr("app.status.post.visibility.state.private");
         break;
     }

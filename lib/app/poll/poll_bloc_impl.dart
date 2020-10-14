@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
@@ -19,6 +21,15 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     addDisposable(subject: pollSubject);
     addDisposable(subject: selectedVotesSubject);
+
+    if (!poll.expired) {
+      var diff = DateTime.now().difference(poll.expiresAt).abs();
+
+      addDisposable(
+          timer: Timer(diff, () {
+        refreshFromNetwork();
+      }));
+    }
   }
 
   @override
@@ -107,5 +118,17 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   @override
   void onPollUpdated(IPleromaPoll poll) {
     pollSubject.add(poll);
+  }
+
+  @override
+  Future<bool> refreshFromNetwork() async {
+    var remotePoll = await pleromaPollService.getPoll(pollRemoteId: poll.id);
+    var success = remotePoll != null;
+
+    if (success) {
+      pollSubject.add(remotePoll);
+    }
+
+    return success;
   }
 }

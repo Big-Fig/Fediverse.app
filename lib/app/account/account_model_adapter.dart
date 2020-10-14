@@ -47,6 +47,7 @@ DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
     pleromaDeactivated: remoteAccount.pleroma?.deactivated,
     pleromaAllowFollowingMove: remoteAccount.pleroma?.allowFollowingMove,
     pleromaSkipThreadContainment: remoteAccount.pleroma?.skipThreadContainment,
+    pleromaBackgroundImage: remoteAccount.pleroma?.backgroundImage,
   );
 }
 

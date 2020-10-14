@@ -12,10 +12,13 @@ import 'package:provider/provider.dart';
 class ScheduledStatusPaginationListTimelineWidget
     extends ScheduledStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
+  final VoidCallback successCallback;
 
-  ScheduledStatusPaginationListTimelineWidget(
-      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
-      : super(key: key);
+  ScheduledStatusPaginationListTimelineWidget({
+    @required Key key,
+    @required this.needWatchLocalRepositoryForUpdates,
+    @required this.successCallback,
+  }) : super(key: key);
 
   @override
   ScrollView buildItemsCollectionView(
@@ -39,7 +42,9 @@ class ScheduledStatusPaginationListTimelineWidget
                                 needWatchLocalRepositoryForUpdates),
                     child: FediListTile(
                       isFirstInList: index == 0,
-                      child: ScheduledStatusListItemWidget(),
+                      child: ScheduledStatusListItemWidget(
+                        successCallback: successCallback,
+                      ),
                     )),
               ));
 }

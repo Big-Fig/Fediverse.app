@@ -1,10 +1,12 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/device_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
+import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,14 +15,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {
   @override
   final int maximumMediaAttachmentCount;
+  @override
+  final int maximumFileSizeInBytes;
 
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
   DisposableOwner uploadedSubscription;
 
-  UploadMediaAttachmentsCollectionBloc(
-      {@required this.maximumMediaAttachmentCount,
-      @required this.pleromaMediaAttachmentService}) {
+  UploadMediaAttachmentsCollectionBloc({
+    @required this.maximumMediaAttachmentCount,
+    @required this.pleromaMediaAttachmentService,
+    @required this.maximumFileSizeInBytes,
+  }) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: isAllAttachedMediaUploadedSubject);
     addDisposable(disposable: CustomDisposable(() {
@@ -61,30 +67,22 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs =>
-      mediaAttachmentBlocs
-          ?.where((bloc) => bloc.filePickerFile.isMedia)
-          ?.toList();
+      mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
       mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-          mediaAttachmentBlocs
-              ?.where((bloc) => bloc.filePickerFile.isMedia)
-              ?.toList());
+          mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList());
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
-      mediaAttachmentBlocs
-          ?.where((bloc) => !bloc.filePickerFile.isMedia)
-          ?.toList();
+      mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>>
       get onlyNonMediaAttachmentBlocsStream =>
           mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs
-                  ?.where((bloc) => !bloc.filePickerFile.isMedia)
-                  ?.toList());
+              mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList());
 
   @override
   bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
@@ -114,33 +112,39 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocsSubject.stream;
 
   @override
-  void attachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
+  Future attachMedia(IMediaDeviceFile mediaDeviceFile) async {
+    var existedBloc = findMediaAttachmentBlocByFilePickerFile(mediaDeviceFile);
 
     if (existedBloc == null) {
-      var uploadMediaAttachmentBloc = UploadMediaAttachmentBloc(
-          filePickerFile: filePickerFile,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService);
-      uploadMediaAttachmentBloc.startUpload();
+      var uploadMediaAttachmentBloc = DeviceUploadMediaAttachmentBloc(
+        mediaDeviceFile: mediaDeviceFile,
+        pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        maximumFileSizeInBytes: maximumFileSizeInBytes,
+      );
       mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+      await uploadMediaAttachmentBloc.startUpload();
     }
   }
 
   @override
-  void detachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
-    if (existedBloc != null) {
-      existedBloc.dispose();
-      mediaAttachmentBlocs.remove(existedBloc);
+  void detachMediaAttachmentBloc(
+      IUploadMediaAttachmentBloc mediaAttachmentBloc) {
+    if (mediaAttachmentBloc != null) {
+      mediaAttachmentBloc.dispose();
+      mediaAttachmentBlocs.remove(mediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
     }
   }
 
   IUploadMediaAttachmentBloc findMediaAttachmentBlocByFilePickerFile(
-          FilePickerFile filePickerFile) =>
+          IMediaDeviceFile mediaDeviceFile) =>
       mediaAttachmentBlocs.firstWhere((bloc) {
-        return bloc.filePickerFile == filePickerFile;
+        if (bloc is DeviceUploadMediaAttachmentBloc) {
+          return bloc.mediaDeviceFile == mediaDeviceFile;
+        } else {
+          return false;
+        }
       }, orElse: () => null);
 
   static bool isMaximumAttachmentReached(
@@ -162,8 +166,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         true,
         (previousValue, element) =>
             previousValue &&
-            element.uploadState == UploadMediaAttachmentState.uploaded);
+            element.uploadState.type == UploadMediaAttachmentStateType.uploaded);
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
+  }
+
+  @override
+  void addUploadedAttachment(IPleromaMediaAttachment attachment) {
+    mediaAttachmentBlocs.add(
+      UploadedUploadMediaAttachmentBloc(
+        pleromaMediaAttachment: attachment,
+      ),
+    );
+    mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
   }
 }

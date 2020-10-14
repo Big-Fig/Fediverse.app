@@ -24,6 +24,7 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -64,6 +65,10 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         FediChooserDialogBody(
             title: tr("app.status.action.popup.title"),
             actions: [
+              if (isStatusFromMe) buildDeleteAction(context, status),
+              if (isStatusFromMe) buildPinAction(context, status),
+              if (isStatusFromMe) buildMuteConversationAction(context, status),
+              buildBookmarkAction(context, status),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
               buildShareAction(context, status),
@@ -105,11 +110,16 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                             title: title,
                             content: content,
                             actions: [
+                              buildAccountOpenInBrowserAction(
+                                  context, accountBloc),
                               buildAccountFollowAction(context, accountBloc),
                               buildAccountMessageAction(context, accountBloc),
                               buildAccountMuteAction(context, accountBloc),
                               buildAccountReportAction(context, accountBloc),
                               buildAccountBlockAction(context, accountBloc),
+                              if (accountBloc.isOnRemoteDomain)
+                                buildAccountBlockDomainAction(
+                                    context, accountBloc),
                             ],
                             cancelable: cancelable);
                       } else {
@@ -156,6 +166,21 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
             Navigator.of(context).pop();
           });
+
+  DialogAction buildAccountBlockDomainAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+        icon: FediIcons.block,
+        label: accountBloc.accountRelationship.domainBlocking
+            ? tr("app.account.action.unblock_domain",
+                args: [accountBloc.remoteDomainOrNull])
+            : tr("app.account.action.block_domain",
+                args: [accountBloc.remoteDomainOrNull]),
+        onAction: () async {
+          await accountBloc.toggleBlockDomain();
+          Navigator.of(context).pop();
+        },
+      );
 
   DialogAction buildAccountMuteAction(
           BuildContext context, IAccountBloc accountBloc) =>
@@ -208,7 +233,18 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           icon: FediIcons.browser,
           label: tr("app.status.action.open_in_browser"),
           onAction: () async {
-            var url = status.uri;
+            var url = status.url;
+            await UrlHelper.handleUrlClick(context, url);
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildAccountOpenInBrowserAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.browser,
+          label: tr("app.account.action.open_in_browser"),
+          onAction: () async {
+            var url = accountBloc.account.url;
             await UrlHelper.handleUrlClick(context, url);
             Navigator.of(context).pop();
           });
@@ -222,6 +258,56 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
             showInfoFediNotificationOverlay(
                 contentText: tr("app.status.copy_link.toast"), titleText: null);
+          });
+
+  DialogAction buildDeleteAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.remove,
+          label: tr("app.status.action.delete"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.delete());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildPinAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.heart,
+          label: status.pinned
+              ? tr("app.status.action.unpin")
+              : tr("app.status.action.pin"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.togglePin());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildMuteConversationAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.mute,
+          label: status.muted
+              ? tr("app.status.action.unmute")
+              : tr("app.status.action.mute"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.toggleMute());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildBookmarkAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: Icons.bookmark,
+          label: status.bookmarked
+              ? tr("app.status.action.unbookmark")
+              : tr("app.status.action.bookmark"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.toggleBookmark());
+
+            Navigator.of(context).pop();
           });
 
   DialogAction buildShareAction(BuildContext context, IStatus status) =>

@@ -1,4 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -11,8 +14,34 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-    static const Map<String,dynamic> en_US = {
+  static const Map<String,dynamic> en_US = {
   "app": {
+    "custom_list": {
+      "title": "\"{}\" list statuses",
+      "accounts": {
+        "label": "Accounts in list",
+        "action": {
+          "add": "Add following account"
+        }
+      },
+      "create": {
+        "title": "Create list"
+      },
+      "edit": {
+        "title": "Edit list"
+      },
+      "list": {
+        "title": "Lists"
+      },
+      "form": {
+        "field": {
+          "title": {
+            "label": "Title*",
+            "hint": "List name"
+          }
+        }
+      }
+    },
     "emoji": {
       "custom": {
         "empty": "This instance don't have custom emojis"
@@ -77,6 +106,14 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "account": {
+      "statuses": {
+        "tab": {
+          "withReplies": "With replies",
+          "withoutReplies": "Posts",
+          "pinned": "Pinned",
+          "media": "Media"
+        }
+      },
       "list": {
         "privacy": "Some information may be missed due to privacy settings"
       },
@@ -88,12 +125,17 @@ class CodegenLoader extends AssetLoader{
       },
       "action": {
         "follow": "Follow",
+        "request_follow": "Request follow",
         "unfollow": "Unfollow",
+        "follow_requested": "Requested",
         "message": "Message",
         "block": "Block",
         "unblock": "Unblock",
+        "block_domain": "Block domain {}",
+        "unblock_domain": "Unblock domain {}",
         "mute": "Mute",
         "unmute": "Unmute",
+        "open_in_browser": "Open in browser",
         "report": {
           "label": "Report",
           "success": {
@@ -114,6 +156,26 @@ class CodegenLoader extends AssetLoader{
         "statuses": "Statuses"
       },
       "my": {
+        "follow_request": {
+          "title": "Follow requests"
+        },
+        "account_block": {
+          "title": "Account blocks"
+        },
+        "account_mute": {
+          "title": "Account mutes"
+        },
+        "domain_block": {
+          "title": "Domain blocks"
+        },
+        "statuses": {
+          "bookmarked": {
+            "title": "Bookmarks"
+          },
+          "favourited": {
+            "title": "Favourites"
+          }
+        },
         "settings": {
           "title": "Account settings",
           "field": {
@@ -123,13 +185,47 @@ class CodegenLoader extends AssetLoader{
             },
             "new_chats_enabled": {
               "label": "Replace DM with chats",
-              "description": "Not supported on most instances"
+              "description": "Not supported on non-Pleroma instances"
+            },
+            "always_show_spoiler": {
+              "label": "Show spoilers by default"
+            },
+            "always_show_nsfw": {
+              "label": "Show NSFW by default"
+            },
+            "default_visibility": {
+              "label": "Default post visibility"
+            },
+            "media_nsfw_by_default": {
+              "label": "Mark media NSFW by default"
             }
           },
-          "scheduled_posts": "Scheduled posts"
+          "action": {
+            "scheduled_posts": "Scheduled posts",
+            "draft_posts": "Draft posts",
+            "lists": "Lists",
+            "bookmarked": "Bookmarks",
+            "favourited": "Favourites",
+            "follow_requests": "Follow requests",
+            "account_blocks": "Account blocks",
+            "account_mutes": "Account mutes",
+            "domain_blocks": "Domain blocks"
+          }
         },
         "edit": {
           "title": "Edit account",
+          "media": {
+            "upload": {
+              "failed": {
+                "notification": {
+                  "title": "Failed to upload",
+                  "exceed_size": {
+                    "content": "File size is {} MB, but max is {} MB"
+                  }
+                }
+              }
+            }
+          },
           "action": {
             "save": "Save"
           },
@@ -160,6 +256,12 @@ class CodegenLoader extends AssetLoader{
                   "crop": "Crop",
                   "cancel": "Cancel"
                 }
+              }
+            },
+            "background_image": {
+              "label": "Background image",
+              "action": {
+                "add": "Add"
               }
             },
             "display_name": {
@@ -217,6 +319,14 @@ class CodegenLoader extends AssetLoader{
         "error": {
           "dialog": {
             "title": "Check your connection",
+            "content": "No network or remote server unavailable"
+          }
+        }
+      },
+      "timeout": {
+        "error": {
+          "dialog": {
+            "title": "Timeout reached",
             "content": "No network or remote server unavailable"
           }
         }
@@ -292,10 +402,22 @@ class CodegenLoader extends AssetLoader{
               "title": "Instance owner disabled registration",
               "content": "Try any other instance, like fedi.app"
             }
+          },
+          "invites_only": {
+            "dialog": {
+              "title": "Instance owner limit registration to invites-only",
+              "content": "Try any other instance, or register by invite link in your browser"
+            }
           }
         },
         "register": {
           "title": "Create account",
+          "approval_required": {
+            "notification": {
+              "title": "Success registration",
+              "content": "You can once moderators will approve your account"
+            }
+          },
           "field": {
             "username": {
               "label": "Username*",
@@ -510,12 +632,21 @@ class CodegenLoader extends AssetLoader{
         "pleromaEmojiReaction": "{} for \"{}\"",
         "pleromaChatMention": "Chat mention in \"{}\"",
         "unknown": "Unknown: {}"
-      }
+      },
+      "dismissed": "Dismissed"
     },
     "timeline": {
       "display": {
         "settings": {
-          "title": "Timeline settings",
+          "home": {
+            "title": "Home timeline settings"
+          },
+          "local": {
+            "title": "Local timeline settings"
+          },
+          "public": {
+            "title": "Public timeline settings"
+          },
           "field": {
             "only_with_media": {
               "label": "Only with media"
@@ -525,6 +656,15 @@ class CodegenLoader extends AssetLoader{
             },
             "hide_nsfw": {
               "label": "Hide NSFW"
+            },
+            "only_remote": {
+              "label": "Only remote"
+            },
+            "only_local": {
+              "label": "Only local"
+            },
+            "with_muted": {
+              "label": "With muted"
             }
           }
         }
@@ -532,6 +672,7 @@ class CodegenLoader extends AssetLoader{
     },
     "list": {
       "empty": "Items not found",
+      "cant_update_from_network": "Can't update from network",
       "loading": {
         "state": {
           "can_loading": "Can load more",
@@ -567,14 +708,17 @@ class CodegenLoader extends AssetLoader{
             }
           }
         },
-        "preview": {
+        "details": {
           "title": "Media attachment",
           "not_supported_type": "Not supported type {}"
         },
         "upload": {
           "failed": {
             "notification": {
-              "content": "Failed to upload"
+              "title": "Failed to upload",
+              "exceed_size": {
+                "content": "File size is {} MB, but max is {} MB"
+              }
             }
           },
           "remove": {
@@ -598,7 +742,8 @@ class CodegenLoader extends AssetLoader{
       "tab": {
         "all": "All",
         "accounts": "Users",
-        "statuses": "Posts"
+        "statuses": "Posts",
+        "hashtags": "Hashtags"
       },
       "desc": {
         "empty": "Search term is empty",
@@ -616,6 +761,16 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "status": {
+      "draft": {
+        "title": "Drafts",
+        "state": {
+          "canceled": "Canceled",
+          "already_posted": "Already posted"
+        },
+        "edit": {
+          "title": "Edit Draft"
+        }
+      },
       "emoji": {
         "error": {
           "cant_add": {
@@ -654,6 +809,9 @@ class CodegenLoader extends AssetLoader{
           "picker": {
             "title": "Schedule"
           }
+        },
+        "edit": {
+          "title": "Scheduled post"
         }
       },
       "share": {
@@ -669,14 +827,18 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "action": {
+        "delete": "Delete",
         "comment": "Comment",
         "favourite": "Favourite",
         "reblog": "Reblog",
         "report": "Report",
-        "mute": "Mute",
-        "block": "Block",
-        "follow": "Follow",
+        "mute": "Mute conversation",
+        "unmute": "Unmute conversation",
         "open_in_browser": "Open in browser",
+        "pin": "Pin",
+        "unpin": "Unpin",
+        "bookmark": "Bookmark",
+        "unbookmark": "Unbookmark",
         "copy_link": "Copy link",
         "share_as_text": "Share as text",
         "share_as_link": "Share as link",
@@ -690,13 +852,14 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "nsfw": {
-        "desc": "Status contains NSFW content",
         "action": {
           "view": "Tap to view"
         }
       },
+      "deleted": {
+        "desc": "Status deleted"
+      },
       "spoiler": {
-        "desc": "Status contains spoilers",
         "action": {
           "view": "Tap to view"
         }
@@ -804,12 +967,22 @@ class CodegenLoader extends AssetLoader{
           }
         },
         "field": {
+          "subject": "Subject (optional)",
           "message": {
             "hint": "What’s going on today?"
           }
         },
         "new": {
-          "title": "New status"
+          "title": "New status",
+          "unsaved": {
+            "dialog": {
+              "title": "You have unsaved changes",
+              "action": {
+                "save_as_draft": "Save as draft",
+                "discard": "Discard"
+              }
+            }
+          }
         }
       },
       "reblog": {
@@ -957,5 +1130,5 @@ class CodegenLoader extends AssetLoader{
     }
   }
 };
-  static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
 }

@@ -4,6 +4,7 @@ import 'package:fedi/app/status/action/status_actions_list_widget.dart';
 import 'package:fedi/app/status/action/status_show_this_thread_action_widget.dart';
 import 'package:fedi/app/status/body/status_body_widget.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
+import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
@@ -14,7 +15,9 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -126,6 +129,24 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     );
   }
 
+  Widget buildDeletedStreamBuilderOverlay({
+    @required Widget child,
+    @required IStatusBloc statusBloc,
+  }) {
+    return StreamBuilder<bool>(
+        stream: statusBloc.deletedStream.distinct(),
+        initialData: statusBloc.deleted,
+        builder: (context, snapshot) {
+          var deleted = snapshot.data;
+
+          if (deleted == true) {
+            return StatusDeletedOverlayWidget(child: child);
+          } else {
+            return child;
+          }
+        });
+  }
+
   Widget buildOriginalStatus(BuildContext context, bool isReply) {
     var status = Provider.of<IStatus>(context, listen: false);
     var isReplyAndFirstReplyOrDisplayAllReplies = isReply &&
@@ -134,66 +155,84 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
       child: Builder(
-        builder: (context) => Column(
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                if (statusCallback != null) {
-                  var statusBloc = IStatusBloc.of(context, listen: false);
-                  statusCallback(context, statusBloc.status);
-                }
-              },
-              child: Column(
-                children: [
-                  if (status.isHaveReblog) StatusReblogHeaderWidget(),
-                  if (displayAccountHeader)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
-                          FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(child: StatusAccountWidget()),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: FediSizes.smallPadding),
-                            child: StatusCreatedAtWidget(),
+        builder: (context) {
+          var statusBloc = IStatusBloc.of(context, listen: false);
+          return buildDeletedStreamBuilderOverlay(
+            statusBloc: statusBloc,
+            child: Column(
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    if (statusCallback != null) {
+                      var statusBloc = IStatusBloc.of(context, listen: false);
+                      statusCallback(context, statusBloc.status);
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      if (status.isHaveReblog) StatusReblogHeaderWidget(),
+                      if (displayAccountHeader) buildStatusHeader(status),
+                      if (isReply)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              FediSizes.bigPadding + 52.0,
+                              FediSizes.smallPadding,
+                              FediSizes.bigPadding,
+                              0.0),
+                          child: StatusReplySubHeaderWidget(
+                            accountCallback: accountMentionCallback,
                           ),
-                        ],
-                      ),
-                    ),
-                  if (isReply)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          FediSizes.bigPadding + 52.0,
-                          FediSizes.smallPadding,
-                          FediSizes.bigPadding,
-                          0.0),
-                      child: StatusReplySubHeaderWidget(
-                        accountCallback: accountMentionCallback,
-                      ),
-                    ),
-                  buildBody(isReply),
-                  StatusEmojiReactionListWidget(),
-                ],
-              ),
+                        ),
+                      buildBody(isReply),
+                      StatusEmojiReactionListWidget(),
+                    ],
+                  ),
+                ),
+                if (displayActions &&
+                    !(isReply && isFirstReplyAndDisplayReplyToStatus))
+                  StatusActionsListWidget(),
+                if (isReplyAndFirstReplyOrDisplayAllReplies)
+                  Column(
+                    children: [
+                      const FediUltraLightGreyDivider(),
+                      StatusShowThisThreadActionWidget(),
+                    ],
+                  ),
+              ],
             ),
-            if (displayActions &&
-                !(isReply && isFirstReplyAndDisplayReplyToStatus))
-              StatusActionsListWidget(),
-            if (isReplyAndFirstReplyOrDisplayAllReplies)
-              Column(
-                children: [
-                  const FediUltraLightGreyDivider(),
-                  StatusShowThisThreadActionWidget(),
-                ],
-              ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+
+  Widget buildStatusHeader(IStatus status) => Padding(
+        padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
+            FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(child: StatusAccountWidget()),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  StatusVisibilityIconWidget.mapVisibilityToIconData(
+                    status.visibility,
+                  ),
+                  size: FediSizes.mediumIconSize,
+                  color: FediColors.darkGrey,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: FediSizes.smallPadding),
+                  child: StatusCreatedAtWidget(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 
   StatusBloc _createStatusBloc(BuildContext context, IStatus status) {
     var statusBloc = StatusBloc.createFromContext(context, status);

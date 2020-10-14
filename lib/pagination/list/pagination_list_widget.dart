@@ -48,10 +48,11 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       @required IndexedWidgetBuilder itemBuilder}) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
+    var itemCount = items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);
     return ListView.builder(
         itemBuilder: (context, index) {
           var isFirst = index == 0;
-          var isLast = index == (items.length - 1);
+          var isLast = index == (itemCount - 1);
           if (header != null && isFirst) {
             return header;
           } else if (footer != null && isLast) {
@@ -66,7 +67,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           return itemBuilder(context, itemIndex);
         },
         itemCount:
-            items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0));
+            itemCount);
   }
 
   @override

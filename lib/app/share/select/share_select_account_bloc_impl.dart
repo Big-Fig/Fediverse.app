@@ -27,16 +27,25 @@ class ShareSelectAccountBloc extends DisposableOwner
       targetAccountsStream.map((targetAccounts) => targetAccounts.isNotEmpty);
 
   @override
-  void addAccountToShare(IAccount account) {
-    if (!targetAccounts.contains(account)) {
-      targetAccounts.add(account);
-      targetAccountsSubject.add(targetAccounts);
-    }
+  void addAccountsToShare(List<IAccount> accounts) {
+    // avoid duplicated
+    removeAccountsToShare(accounts);
+
+    targetAccounts.addAll(accounts);
+    targetAccountsSubject.add(targetAccounts);
+
   }
 
   @override
-  void removeAccountToShare(IAccount account) {
-    targetAccounts.remove(account);
+  void removeAccountsToShare(List<IAccount> accounts) {
+    targetAccounts.removeWhere((currentTargetAccount) {
+      var firstWhere = accounts.firstWhere(
+          (currentAccount) =>
+              currentTargetAccount.remoteId == currentAccount.remoteId,
+          orElse: () => null);
+
+      return firstWhere != null;
+    });
     targetAccountsSubject.add(targetAccounts);
   }
 }

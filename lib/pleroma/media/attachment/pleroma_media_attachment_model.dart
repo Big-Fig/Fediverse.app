@@ -37,15 +37,16 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   @override
   PleromaMediaAttachmentPleromaPart pleroma;
 
-  PleromaMediaAttachment(
-      {this.description,
-      this.id,
-      this.previewUrl,
-      this.remoteUrl,
-      this.textUrl,
-      this.type,
-      this.url,
-      this.pleroma});
+  PleromaMediaAttachment({
+    this.description,
+    this.id,
+    this.previewUrl,
+    this.remoteUrl,
+    this.textUrl,
+    this.type,
+    this.url,
+    this.pleroma,
+  });
 
   factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
       _$PleromaMediaAttachmentFromJson(json);
@@ -63,6 +64,20 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       case MastodonMediaAttachmentType.audio:
         return true;
         break;
+      case MastodonMediaAttachmentType.unknown:
+      default:
+        return false;
+        break;
+    }
+  }
+
+  bool get isImageOrGif {
+    switch (typeMastodon) {
+      case MastodonMediaAttachmentType.image:
+      case MastodonMediaAttachmentType.gifv:
+      return true;
+      case MastodonMediaAttachmentType.video:
+      case MastodonMediaAttachmentType.audio:
       case MastodonMediaAttachmentType.unknown:
       default:
         return false;

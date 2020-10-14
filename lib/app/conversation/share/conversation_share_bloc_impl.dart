@@ -57,7 +57,7 @@ abstract class ConversationShareBloc extends DisposableOwner
 
   @override
   Future share() async {
-    final pleromaVisibility = PleromaVisibility.DIRECT;
+    final pleromaVisibility = PleromaVisibility.direct;
 
     var accountsPleromaStatus = await pleromaStatusService.postStatus(
         data: createSendData(
@@ -75,7 +75,7 @@ abstract class ConversationShareBloc extends DisposableOwner
   });
 
   @override
-  Future<List<IAccount>> customDefaultLocalAccountListLoader({
+  Future<List<IAccount>> customLocalAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,
@@ -119,7 +119,7 @@ abstract class ConversationShareBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> customDefaultRemoteAccountListLoader({
+  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,

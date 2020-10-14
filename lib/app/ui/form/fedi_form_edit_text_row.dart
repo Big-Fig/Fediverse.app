@@ -13,6 +13,7 @@ class FediFormEditTextRow extends StatelessWidget {
   final FocusNode focusNode;
   final TextInputAction textInputAction;
   final ValueChanged<String> onSubmitted;
+  final int maxLength;
 
   FediFormEditTextRow({
     @required this.label,
@@ -24,6 +25,7 @@ class FediFormEditTextRow extends StatelessWidget {
     @required this.textInputAction,
     @required this.onSubmitted,
     @required this.focusNode,
+    @required this.maxLength,
   });
 
   @override
@@ -46,6 +48,7 @@ class FediFormEditTextRow extends StatelessWidget {
               displayUnderlineBorder: true,
               errorText: errorText,
               highlightMentions: false,
+              maxLength: maxLength,
             ),
           ],
         ),

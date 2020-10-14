@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "45262364737",
+    "firebase_url": "https://fedi2-d1cad.firebaseio.com",
+    "project_id": "fedi2-d1cad",
+    "storage_bucket": "fedi2-d1cad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45262364737:android:f9441a1273159d0aa966c0",
+        "android_client_info": {
+          "package_name": "com.fediverse.app2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45262364737-g2jtg1pemjlfof2ij35hjgbh3kkravd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWpTQSeyQHTW-qytWj7-GmMaiD8aUO2bU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45262364737-g2jtg1pemjlfof2ij35hjgbh3kkravd7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "45262364737-41bpuevnl4u3bumu368pujgba0kmm6q0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fediverse.app2",
+                "app_store_id": "1514926758"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

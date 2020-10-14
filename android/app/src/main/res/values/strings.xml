@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="notification_channel_follow_title">Follow</string>
+    <string name="notification_channel_follow_desc">Follows updates</string>
+    <string name="notification_channel_favourite_title">Favourite</string>
+    <string name="notification_channel_favourite_desc">Favourites updates</string>
+    <string name="notification_channel_reblog_title">Reblog</string>
+    <string name="notification_channel_reblog_desc">Reblogs updates</string>
+    <string name="notification_channel_mention_title">Mention</string>
+    <string name="notification_channel_mention_desc">Mentions updates</string>
+    <string name="notification_channel_poll_title">Poll</string>
+    <string name="notification_channel_poll_desc">Polls updates</string>
+    <string name="notification_channel_move_title">Move</string>
+    <string name="notification_channel_move_desc">Moves updates</string>
+    <string name="notification_channel_follow_request_title">Follow request</string>
+    <string name="notification_channel_follow_request_desc">Follow requests updates</string>
+    <string name="notification_channel_pleroma_emoji_reaction_title">Emoji reaction</string>
+    <string name="notification_channel_pleroma_emoji_reaction_desc">Emoji reactions updates</string>
+    <string name="notification_channel_pleroma_chat_mention_title">Chat mention</string>
+    <string name="notification_channel_pleroma_chat_mention_desc">Chat mention updates</string>
+</resources>

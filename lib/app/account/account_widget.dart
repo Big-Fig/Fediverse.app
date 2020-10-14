@@ -11,8 +11,12 @@ import 'package:flutter/material.dart';
 
 class AccountWidget extends StatelessWidget {
   final VoidCallback onStatusesTapCallback;
+  final Widget footer;
 
-  AccountWidget({this.onStatusesTapCallback});
+  AccountWidget({
+    @required this.onStatusesTapCallback,
+    @required this.footer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class AccountWidget extends StatelessWidget {
                   brightness: Brightness.light,
                 ),
               ),
+              footer
             ],
           ),
         ),

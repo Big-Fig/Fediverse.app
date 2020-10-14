@@ -9,56 +9,48 @@ part of 'mastodon_instance_model.dart';
 class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
   @override
   MastodonInstanceStats read(BinaryReader reader) {
-    var obj = MastodonInstanceStats();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.userCount = reader.read() as int;
-          break;
-        case 1:
-          obj.statusCount = reader.read() as int;
-          break;
-        case 2:
-          obj.domainCount = reader.read() as int;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MastodonInstanceStats(
+      userCount: fields[0] as int,
+      statusCount: fields[1] as int,
+      domainCount: fields[2] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, MastodonInstanceStats obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.userCount);
-    writer.writeByte(1);
-    writer.write(obj.statusCount);
-    writer.writeByte(2);
-    writer.write(obj.domainCount);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.userCount)
+      ..writeByte(1)
+      ..write(obj.statusCount)
+      ..writeByte(2)
+      ..write(obj.domainCount);
   }
 }
 
 class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
   @override
   MastodonUrls read(BinaryReader reader) {
-    var obj = MastodonUrls();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.streamingApi = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MastodonUrls(
+      streamingApi: fields[0] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, MastodonUrls obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.streamingApi);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.streamingApi);
   }
 }
 

@@ -10,38 +10,30 @@ class PleromaPushMessageBodyAdapter
     extends TypeAdapter<PleromaPushMessageBody> {
   @override
   PleromaPushMessageBody read(BinaryReader reader) {
-    var obj = PleromaPushMessageBody();
     var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.notificationId = reader.read() as String;
-          break;
-        case 1:
-          obj.server = reader.read() as String;
-          break;
-        case 2:
-          obj.account = reader.read() as String;
-          break;
-        case 3:
-          obj.notificationType = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaPushMessageBody(
+      notificationId: fields[0] as String,
+      server: fields[1] as String,
+      account: fields[2] as String,
+      notificationType: fields[3] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaPushMessageBody obj) {
-    writer.writeByte(4);
-    writer.writeByte(0);
-    writer.write(obj.notificationId);
-    writer.writeByte(1);
-    writer.write(obj.server);
-    writer.writeByte(2);
-    writer.write(obj.account);
-    writer.writeByte(3);
-    writer.write(obj.notificationType);
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.notificationId)
+      ..writeByte(1)
+      ..write(obj.server)
+      ..writeByte(2)
+      ..write(obj.account)
+      ..writeByte(3)
+      ..write(obj.notificationType);
   }
 }
 

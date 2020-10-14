@@ -36,4 +36,8 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<PaginationListLoadingState> get loadMoreStateStream;
 
   PaginationListLoadingState get loadMoreState;
+
+  Stream<PaginationListLoadingError> get refreshErrorStream;
+
+  Stream<PaginationListLoadingError> get loadMoreErrorStream;
 }

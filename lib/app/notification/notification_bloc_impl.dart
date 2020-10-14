@@ -151,4 +151,19 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   PleromaNotificationType get typePleroma => notification.typePleroma;
+
+  @override
+  Future dismiss() async {
+    await pleromaNotificationService.dismissNotification(
+        notificationRemoteId: notification.remoteId);
+
+    await notificationRepository.dismiss(notification: notification);
+  }
+
+  @override
+  bool get dismissed => notification.dismissed;
+
+  @override
+  Stream<bool> get dismissedStream =>
+      notificationStream.map((notification) => notification.dismissed);
 }

@@ -43,8 +43,8 @@ class ConversationShareMediaBloc extends ConversationShareBloc
     @required PleromaVisibility visibility,
   }) {
     var messageSendData = PleromaPostStatus(
-      status: "${mediaAttachment.url} $message $to",
-      visibility: pleromaVisibilityValues.reverse[visibility],
+      status: "${mediaAttachment.url} ${message ?? ""} ${to ?? ""}"?.trim(),
+      visibility: visibility.toJsonValue(),
     );
     return messageSendData;
   }

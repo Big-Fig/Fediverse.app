@@ -86,26 +86,20 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    try {
-      var remoteStatuses =
-          await pleromaScheduledStatusService.getScheduledStatuses(
-              limit: limit,
-              sinceId: newerThan?.remoteId,
-              maxId: olderThan?.remoteId);
+    var remoteStatuses =
+        await pleromaScheduledStatusService.getScheduledStatuses(
+            limit: limit,
+            sinceId: newerThan?.remoteId,
+            maxId: olderThan?.remoteId);
 
-      if (remoteStatuses != null) {
-        await scheduledStatusRepository
-            .upsertRemoteScheduledStatuses(remoteStatuses);
+    if (remoteStatuses != null) {
+      await scheduledStatusRepository
+          .upsertRemoteScheduledStatuses(remoteStatuses);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "statuses is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "statuses is null");
       return false;
     }
   }

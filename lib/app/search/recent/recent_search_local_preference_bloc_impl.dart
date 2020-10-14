@@ -7,6 +7,12 @@ class RecentSearchLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<RecentSearchList>
     implements IRecentSearchLocalPreferenceBloc {
   RecentSearchLocalPreferenceBloc(
-      String userAtHost, ILocalPreferencesService preferencesService)
-      : super(preferencesService, "$userAtHost.search.recent", 1);
+    ILocalPreferencesService preferencesService,
+    String userAtHost,
+  ) : super(
+          preferencesService,
+          "$userAtHost.search.recent",
+          1,
+          (json) => RecentSearchList.fromJson(json),
+        );
 }

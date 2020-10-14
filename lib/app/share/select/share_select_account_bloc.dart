@@ -16,7 +16,7 @@ abstract class IShareSelectAccountBloc extends Disposable {
 
   Stream<bool> get isTargetAccountsNotEmptyStream;
 
-  void addAccountToShare(IAccount account);
+  void addAccountsToShare(List<IAccount> accounts);
 
-  void removeAccountToShare(IAccount account);
+  void removeAccountsToShare(List<IAccount> accounts);
 }

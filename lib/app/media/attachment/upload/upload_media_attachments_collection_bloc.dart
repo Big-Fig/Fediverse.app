@@ -1,6 +1,7 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,7 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends Disposable {
   Stream<bool> get isAllAttachedMediaUploadedStream;
 
   int get maximumMediaAttachmentCount;
+  int get maximumFileSizeInBytes;
 
   bool get isPossibleToAttachMedia;
 
@@ -37,9 +39,12 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends Disposable {
 
   Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
 
-  void attachMedia(FilePickerFile filePickerFile);
+  Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 
-  void detachMedia(FilePickerFile filePickerFile);
+  void detachMediaAttachmentBloc(IUploadMediaAttachmentBloc
+  mediaAttachmentBloc);
 
   void clear();
+
+  void addUploadedAttachment(IPleromaMediaAttachment attachment);
 }
