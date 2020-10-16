@@ -101,15 +101,13 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
             scrollControllerBloc.longScrollDirectionStream,
             fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
             (scrollDirection, isAtLeastStartExpand) {
-          _logger.finest(() => "scrollDirection $scrollDirection "
-              "$isAtLeastStartExpand");
-
           return scrollDirection == ScrollDirection.forward &&
               isAtLeastStartExpand == false;
-        }),
+        }).distinct(),
         builder: (context, snapshot) {
           var show = snapshot.data;
-//          _logger.finest(() => "show $show");
+
+          _logger.finest(() => "show $show");
           if (show == true) {
             return onLongScrollUpTopOverlayWidget;
           } else {
@@ -145,7 +143,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
 
           var topPadding = isInSafeArea != false ? 0.0 : mediaQueryTopPadding;
 
-          // _logger.finest(() => "topPadding $topPadding");
+          _logger.finest(() => "isInSafeArea $isInSafeArea");
 
           return Padding(
             padding: EdgeInsets.only(top: topPadding),

@@ -6,6 +6,7 @@ import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class ConversationListItemWidget extends StatelessWidget {
   ConversationListItemWidget();
@@ -36,8 +38,7 @@ class ConversationListItemWidget extends StatelessWidget {
         height: FediSizes.chatListItemPreviewHeight,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: FediSizes.bigPadding,
-              vertical: FediSizes.bigPadding),
+              horizontal: FediSizes.bigPadding, vertical: FediSizes.bigPadding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -103,32 +104,36 @@ class ConversationListItemWidget extends StatelessWidget {
           var content = lastMessage.content;
           if (content?.isNotEmpty != true) {
             var mediaAttachments = lastMessage.mediaAttachments;
-            content = mediaAttachments
-                ?.map((mediaAttachment) {
+            content = mediaAttachments?.map((mediaAttachment) {
                   var description = mediaAttachment.description;
-                  if(description?.isNotEmpty == true) {
+                  if (description?.isNotEmpty == true) {
                     return description;
                   } else {
                     return path.basename(mediaAttachment.url);
                   }
-
-                })
-                ?.join(", ") ?? "";
+                })?.join(", ") ??
+                "";
           } else {
             content = extractContent(context, lastMessage, content);
           }
 
           var contentWithEmojis =
               addEmojiToHtmlContent(content, lastMessage.emojis);
-          return HtmlTextWidget(
-            drawNewLines: false,
-            textMaxLines: 1,
-            textOverflow: TextOverflow.ellipsis,
-            data: contentWithEmojis ?? "",
-            onLinkTap: null,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w300,
-            color: FediColors.mediumGrey,
+          return Provider<HtmlTextData>.value(
+            value: HtmlTextData(
+              htmlData: contentWithEmojis ?? "",
+              source: conversationBloc,
+            ),
+            child: HtmlTextWidget(
+              drawNewLines: false,
+              textMaxLines: 1,
+              textOverflow: TextOverflow.ellipsis,
+              // data: contentWithEmojis ?? "",
+              onLinkTap: null,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w300,
+              color: FediColors.mediumGrey,
+            ),
           );
         });
   }

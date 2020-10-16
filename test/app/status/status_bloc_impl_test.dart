@@ -703,38 +703,38 @@ void main() {
     expect(listenedValue, newValue);
     await subscription.cancel();
   });
-
-  test('nsfwSensitiveAndDisplayEnabled', () async {
-    var listenedValue;
-
-    var subscription =
-        statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    await _update(status.copyWith(nsfwSensitive: true));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-    expect(listenedValue, false);
-
-    statusBloc.changeDisplayNsfwSensitive(true);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
-    expect(listenedValue, true);
-
-    statusBloc.changeDisplayNsfwSensitive(false);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-    expect(listenedValue, false);
-
-    await subscription.cancel();
-  });
+  //
+  // test('nsfwSensitiveAndDisplayEnabled', () async {
+  //   var listenedValue;
+  //
+  //   var subscription =
+  //       statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
+  //     listenedValue = newValue;
+  //   });
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await _update(status.copyWith(nsfwSensitive: true));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   statusBloc.changeDisplayNsfwSensitive(true);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
+  //   expect(listenedValue, true);
+  //
+  //   statusBloc.changeDisplayNsfwSensitive(false);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   await subscription.cancel();
+  // });
 
   test('containsSpoiler', () async {
     expect(statusBloc.containsSpoiler, status.spoilerText?.isNotEmpty == true);
@@ -761,37 +761,38 @@ void main() {
     expect(listenedValue, false);
     await subscription.cancel();
   });
-  test('containsSpoilerAndDisplayEnabled', () async {
-    var listenedValue;
-
-    var subscription =
-        statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    await _update(status.copyWith(spoilerText: "newSpoilerText"));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-    expect(listenedValue, false);
-
-    statusBloc.changeDisplaySpoiler(true);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
-    expect(listenedValue, true);
-
-    statusBloc.changeDisplaySpoiler(false);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-    expect(listenedValue, false);
-
-    await subscription.cancel();
-  });
+  //
+  // test('containsSpoilerAndDisplayEnabled', () async {
+  //   var listenedValue;
+  //
+  //   var subscription =
+  //       statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
+  //     listenedValue = newValue;
+  //   });
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await _update(status.copyWith(spoilerText: "newSpoilerText"));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   statusBloc.changeDisplaySpoiler(true);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
+  //   expect(listenedValue, true);
+  //
+  //   statusBloc.changeDisplaySpoiler(false);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   await subscription.cancel();
+  // });
 
   test('createdAt', () async {
     expect(statusBloc.createdAt, status.createdAt);

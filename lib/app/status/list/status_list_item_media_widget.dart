@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -61,12 +62,16 @@ class StatusListItemMediaWidget extends StatelessWidget {
         });
   }
 
-  StreamBuilder<bool> buildBody(IStatusBloc statusBloc, String previewUrl) {
-    return StreamBuilder<bool>(
-        stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
-        initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
+  Widget buildBody(IStatusBloc statusBloc, String previewUrl) {
+    return StreamBuilder<StatusWarningState>(
+        stream: statusBloc.statusWarningStateStream.distinct(),
+        initialData: statusBloc.statusWarningState,
         builder: (context, snapshot) {
-          var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
+          var statusWarningState = snapshot.data;
+
+          var nsfwSensitiveAndDisplayNsfwContentEnabled =
+              statusWarningState.nsfwSensitive != true ||
+                  statusWarningState.displayNsfwSensitive == true;
 
           var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
           if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
