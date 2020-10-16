@@ -139,12 +139,24 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       );
       addDisposable(disposable: pollBloc);
       addDisposable(streamSubscription: pollBloc.pollStream.listen((poll) {
-        if (this.poll != poll) {
+        // update status poll data if something changed in pollBloc
+        var isChanged = this.poll == poll;
+        if (!isChanged) {
+          _logger.finest(() => "update status poll data isChanged $isChanged \n"
+              "old ${this.poll} \n"
+              "new $poll"
+          );
           onPollUpdated(poll);
         }
       }));
       addDisposable(streamSubscription: pollStream.listen((poll) {
-        if (pollBloc.poll != poll) {
+        // update pollBloc after status poll data changed
+        var isChanged = pollBloc.poll == poll;
+        if (!isChanged) {
+          _logger.finest(() => "update pollBloc poll data isChanged $isChanged \n"
+              "old ${pollBloc.poll} \n"
+              "new $poll"
+          );
           pollBloc.onPollUpdated(poll);
         }
       }));

@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -50,7 +51,8 @@ class DraftStatusListItemWidget extends StatelessWidget {
                       initialMediaAttachment: null,
                     )),
               );
-            })
+            }),
+        FediSmallVerticalSpacer(),
       ],
     );
   }

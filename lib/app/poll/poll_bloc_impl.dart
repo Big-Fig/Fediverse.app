@@ -36,12 +36,14 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
 
     if (!poll.expired) {
-      var diff = DateTime.now().difference(poll.expiresAt).abs();
+      if (poll.expiresAt != null) {
+        var diff = DateTime.now().difference(poll.expiresAt).abs();
 
-      addDisposable(
-          timer: Timer(diff, () {
-        refreshFromNetwork();
-      }));
+        addDisposable(
+            timer: Timer(diff, () {
+          refreshFromNetwork();
+        }));
+      }
     }
   }
 

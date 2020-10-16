@@ -119,10 +119,11 @@ class PollMetadataWidget extends StatelessWidget {
           votesCount: poll.votesCount,
         ),
         buildDotSeparatorWidget(),
-        PollMetadataExpiresAtWidget(
-          expiresAt: poll.expiresAt,
-          expired: poll.expired,
-        ),
+        if (poll.expiresAt != null)
+          PollMetadataExpiresAtWidget(
+            expiresAt: poll.expiresAt,
+            expired: poll.expired,
+          ),
         if (poll.isPossibleToVote) buildDotSeparatorWidget(),
         if (poll.isPossibleToVote) PollMetadataShowHideResultsWidget()
       ],
