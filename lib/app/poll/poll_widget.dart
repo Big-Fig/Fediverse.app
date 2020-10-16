@@ -38,17 +38,19 @@ class PollWidget extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(top: FediSizes.mediumPadding),
                     child: InkWell(
-                      onTap: () {
-                        pollBloc.onPollOptionSelected(pollOption);
-                        if (!poll.multiple) {
-                          AsyncOperationHelper.performAsyncOperation(
-                            context: context,
-                            asyncCode: () async {
-                              await pollBloc.vote();
-                            },
-                          );
-                        }
-                      },
+                      onTap: poll.isPossibleToVote
+                          ? () {
+                              pollBloc.onPollOptionSelected(pollOption);
+                              if (!poll.multiple) {
+                                AsyncOperationHelper.performAsyncOperation(
+                                  context: context,
+                                  asyncCode: () async {
+                                    await pollBloc.vote();
+                                  },
+                                );
+                              }
+                            }
+                          : null,
                       child: PollOptionWidget(
                         index: index,
                         isPossibleToVote: poll.isPossibleToVote,
