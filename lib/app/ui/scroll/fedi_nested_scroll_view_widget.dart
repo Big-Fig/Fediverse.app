@@ -123,6 +123,9 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
     var fediNestedScrollViewBloc =
         IFediNestedScrollViewBloc.of(context, listen: false);
+    var mediaQueryTopPadding = MediaQuery.of(context).padding.top;
+
+    var child = tabBodyOverlayBuilder(context);
     return StreamBuilder<bool>(
         stream: Rx.combineLatest2(
             scrollControllerBloc.longScrollDirectionStream,
@@ -136,18 +139,17 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
           var expandedAppBarShowed = isAtLeastStartExpand == true;
           var isInSafeArea = collapsedAppBarShowed || expandedAppBarShowed;
           return isInSafeArea;
-        }),
+        }).distinct(),
         builder: (context, snapshot) {
           var isInSafeArea = snapshot.data;
 
-          var topPadding =
-              isInSafeArea != false ? 0.0 : MediaQuery.of(context).padding.top;
+          var topPadding = isInSafeArea != false ? 0.0 : mediaQueryTopPadding;
 
-          _logger.finest(() => " topPadding $topPadding");
+          // _logger.finest(() => "topPadding $topPadding");
 
           return Padding(
             padding: EdgeInsets.only(top: topPadding),
-            child: tabBodyOverlayBuilder(context),
+            child: child,
           );
         });
   }
