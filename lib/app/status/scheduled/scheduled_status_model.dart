@@ -213,7 +213,7 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   bool get pleromaThreadMuted => null;
 
   @override
-  PleromaPoll get poll => null;
+  PleromaPoll get poll => scheduledStatus.params?.poll?.toPleromaPoll();
 
   @override
   IStatus get reblog => null;

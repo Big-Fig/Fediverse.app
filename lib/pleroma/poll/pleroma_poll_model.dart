@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_poll_model.g.dart';
+
+Function eq = const ListEquality().equals;
 
 abstract class IPleromaPoll implements IMastodonPoll {
   @override
@@ -83,16 +87,17 @@ class PleromaPoll implements IPleromaPoll {
   @JsonKey(name: "votes_count")
   final int votesCount;
 
-  PleromaPoll(
-      {this.expired,
-      this.expiresAt,
-      this.id,
-      this.multiple,
-      this.options,
-      this.ownVotes,
-      this.voted,
-      this.votersCount,
-      this.votesCount});
+  PleromaPoll({
+    this.expired,
+    this.expiresAt,
+    this.id,
+    this.multiple,
+    this.options,
+    this.ownVotes,
+    this.voted,
+    this.votersCount,
+    this.votesCount,
+  });
 
   factory PleromaPoll.fromJson(Map<String, dynamic> json) =>
       _$PleromaPollFromJson(json);
@@ -103,7 +108,6 @@ class PleromaPoll implements IPleromaPoll {
   Map<String, dynamic> toJson() => _$PleromaPollToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaPollToJson(this));
-
 
   @override
   String toString() {
@@ -122,8 +126,8 @@ class PleromaPoll implements IPleromaPoll {
           expiresAt == other.expiresAt &&
           id == other.id &&
           multiple == other.multiple &&
-          options == other.options &&
-          ownVotes == other.ownVotes &&
+          eq(options, other.options) &&
+          eq(ownVotes, other.ownVotes) &&
           voted == other.voted &&
           votersCount == other.votersCount &&
           votesCount == other.votesCount;
@@ -139,4 +143,25 @@ class PleromaPoll implements IPleromaPoll {
       voted.hashCode ^
       votersCount.hashCode ^
       votesCount.hashCode;
+}
+
+extension PleromaPostStatusPollExtension on PleromaPostStatusPoll {
+  PleromaPoll toPleromaPoll() {
+    return PleromaPoll(
+      id: null,
+      expired: false,
+      voted: true,
+      multiple: multiple,
+      options: options
+          ?.map((option) => PleromaPollOption(
+                title: option,
+                votesCount: 0,
+              ))
+          ?.toList(),
+      ownVotes: [],
+      votersCount: 0,
+      votesCount: 0,
+      expiresAt: null,
+    );
+  }
 }

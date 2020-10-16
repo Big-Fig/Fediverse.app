@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -71,4 +72,26 @@ class PostStatusPoll implements IPostStatusPoll {
   Map<String, dynamic> toJson() => _$PostStatusPollToJson(this);
 
   String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
+}
+
+
+extension PostStatusPollExtension on PostStatusPoll {
+  PleromaPoll toPleromaPoll() {
+    return PleromaPoll(
+      id: null,
+      expired: false,
+      voted: true,
+      multiple: multiple,
+      options: options
+          ?.map((option) => PleromaPollOption(
+        title: option,
+        votesCount: 0,
+      ))
+          ?.toList(),
+      ownVotes: [],
+      votersCount: 0,
+      votesCount: 0,
+      expiresAt: null,
+    );
+  }
 }
