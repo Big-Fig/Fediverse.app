@@ -1165,7 +1165,7 @@ class CodegenLoader extends AssetLoader{
     },
     "error": {
       "title": "Something wrong",
-      "content": "An error has occurred. Please retry your action again."
+      "content": "An error has occurred. Please retry your action again. \n{}"
     },
     "action": {
       "ok": "OK",
