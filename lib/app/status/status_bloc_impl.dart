@@ -144,8 +144,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         if (!isChanged) {
           _logger.finest(() => "update status poll data isChanged $isChanged \n"
               "old ${this.poll} \n"
-              "new $poll"
-          );
+              "new $poll");
           onPollUpdated(poll);
         }
       }));
@@ -153,10 +152,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         // update pollBloc after status poll data changed
         var isChanged = pollBloc.poll == poll;
         if (!isChanged) {
-          _logger.finest(() => "update pollBloc poll data isChanged $isChanged \n"
-              "old ${pollBloc.poll} \n"
-              "new $poll"
-          );
+          _logger
+              .finest(() => "update pollBloc poll data isChanged $isChanged \n"
+                  "old ${pollBloc.poll} \n"
+                  "new $poll");
           pollBloc.onPollUpdated(poll);
         }
       }));
@@ -710,6 +709,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get containsSpoilerStream =>
       spoilerTextStream.map((spoilerText) => spoilerText?.isNotEmpty == true);
 
+
   @override
   bool get containsSpoilerAndDisplaySpoilerContentEnabled {
     if (containsSpoiler) {
@@ -751,6 +751,34 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           return true;
         }
       });
+
+  @override
+  StatusWarningState get statusWarningState => StatusWarningState(
+        nsfwSensitive: nsfwSensitive,
+        containsSpoiler: containsSpoiler,
+        displayNsfwSensitive: _displayNsfwSensitiveSubject.value,
+        displayContainsSpoiler: _displaySpoilerSubject.value,
+      );
+
+  @override
+  Stream<StatusWarningState> get statusWarningStateStream => Rx.combineLatest4(
+        nsfwSensitiveStream,
+        containsSpoilerStream,
+        _displayNsfwSensitiveSubject.stream,
+        _displaySpoilerSubject.stream,
+        (
+          nsfwSensitive,
+          containsSpoiler,
+          displayNsfwSensitive,
+          displayContainsSpoiler,
+        ) =>
+            StatusWarningState(
+          nsfwSensitive: nsfwSensitive,
+          containsSpoiler: containsSpoiler,
+          displayNsfwSensitive: displayNsfwSensitive,
+          displayContainsSpoiler: displayContainsSpoiler,
+        ),
+      );
 
   // todo: recheck, regex looks very strange
   String _excludeAccountFromHtmlContent(String htmlContent, String accountURL) {

@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -171,20 +172,25 @@ class ChatMessageListItemWidget extends StatelessWidget {
             var contentWithEmojis = snapshot.data;
 
             if (contentWithEmojis?.isNotEmpty == true) {
-              return HtmlTextWidget(
-                  shrinkWrap: true,
-                  color: isChatMessageFromMe
-                      ? FediColors.white
-                      : FediColors.darkGrey,
-                  linkColor: isChatMessageFromMe
-                      ? FediColors.white
-                      : FediColors.primary,
-                  fontSize: 16.0,
-                  lineHeight: 1.5,
-                  data: contentWithEmojis,
-                  onLinkTap: (String link) async {
-                    await UrlHelper.handleUrlClick(context, link);
-                  });
+              return Provider<HtmlTextData>.value(
+                value: HtmlTextData(
+                  source: messageBloc,
+                  htmlData: contentWithEmojis,
+                ),
+                child: HtmlTextWidget(
+                    shrinkWrap: true,
+                    color: isChatMessageFromMe
+                        ? FediColors.white
+                        : FediColors.darkGrey,
+                    linkColor: isChatMessageFromMe
+                        ? FediColors.white
+                        : FediColors.primary,
+                    fontSize: 16.0,
+                    lineHeight: 1.5,
+                    onLinkTap: (context, htmlTextData, url) async {
+                      await UrlHelper.handleUrlClick(context, url);
+                    }),
+              );
             } else {
               return SizedBox.shrink();
             }

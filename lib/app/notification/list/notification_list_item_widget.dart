@@ -9,6 +9,7 @@ import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
@@ -28,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("notification_list_item_widget.dart");
 
@@ -211,17 +213,20 @@ class NotificationListItemWidget extends StatelessWidget {
 
     htmlText = addEmojiToHtmlContent(rawText, emojis);
 
-    return HtmlTextWidget(
-      data: htmlText,
-      textMaxLines: 1,
-      textOverflow: TextOverflow.ellipsis,
-      color: FediColors.mediumGrey,
-      fontSize: 16,
-      lineHeight: 1.5,
-      fontWeight: FontWeight.w300,
-      onLinkTap: (String url) {
-        // nothing
-      },
+    return Provider<HtmlTextData>.value(
+      value: HtmlTextData(
+        source: notificationBloc,
+        htmlData: htmlText,
+      ),
+      child: const HtmlTextWidget(
+        textMaxLines: 1,
+        textOverflow: TextOverflow.ellipsis,
+        color: FediColors.mediumGrey,
+        fontSize: 16,
+        lineHeight: 1.5,
+        fontWeight: FontWeight.w300,
+        onLinkTap: null,
+      ),
     );
   }
 
