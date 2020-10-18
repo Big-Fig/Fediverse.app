@@ -32,6 +32,8 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
           Widget text;
 
           var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
+
+
           if (isSelected) {
             return FediPrimaryFilledTextButton(
               label,
