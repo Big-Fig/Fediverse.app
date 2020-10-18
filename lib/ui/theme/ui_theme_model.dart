@@ -19,6 +19,10 @@ abstract class IUiColorTheme {
   static IUiColorTheme of(BuildContext context, {bool listen = true}) =>
       Provider.of<IUiColorTheme>(context, listen: listen);
 
+  Color get black;
+
+  Color get transparent;
+
   Color get primary;
 
   Color get primaryDark;

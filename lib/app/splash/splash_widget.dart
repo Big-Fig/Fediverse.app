@@ -1,4 +1,3 @@
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/package_info/package_info_widget.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';

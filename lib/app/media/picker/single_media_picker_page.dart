@@ -34,6 +34,7 @@ class SingleMediaPickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc =
         IMediaDeviceGalleryBloc.of(context, listen: false);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
         centerTitle: true,
@@ -93,7 +94,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                                   }
                                 },
                                 child: Container(
-                                    color: Colors.white,
+                                    color: fediUiColorTheme.white,
                                     width: double.infinity,
                                     height: double.infinity,
                                     child: Icon(

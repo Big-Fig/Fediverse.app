@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -24,12 +25,14 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return Container(
       width: size + borderWidth * 2,
       height: size + borderWidth * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.transparent,
+        color: fediUiColorTheme.transparent,
         border: Border.all(
           color: color,
           width: borderWidth,
@@ -43,4 +46,5 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
           onPressed: onPressed,
         ),
       ));
+  }
 }

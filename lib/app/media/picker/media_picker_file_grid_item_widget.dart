@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/media/device/file/media_device_file_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -34,17 +35,25 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           buildPreviewImage(galleryFileBloc),
-          Center(child: buildIcon(galleryFileBloc))
+          Center(
+            child: buildIcon(
+              context: context,
+              fileBloc: galleryFileBloc,
+            ),
+          )
         ],
       ),
     );
   }
 
-  Widget buildIcon(IMediaDeviceFileBloc fileBloc) {
+  Widget buildIcon(
+      {@required BuildContext context,
+      @required IMediaDeviceFileBloc fileBloc}) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return fileBloc.type == MediaDeviceFileType.video
         ? Icon(
             FediIcons.play,
-            color: Colors.white,
+            color: fediUiColorTheme.white,
           )
         : SizedBox.shrink();
   }

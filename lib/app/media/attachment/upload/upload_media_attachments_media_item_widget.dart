@@ -184,6 +184,7 @@ class _UploadMediaAttachmentMediaItemWidgetState
 
   Widget buildErrorButton(BuildContext context,
       IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return InkWell(
       onTap: () {
         uploadMediaAttachmentBloc.startUpload();
@@ -197,7 +198,7 @@ class _UploadMediaAttachmentMediaItemWidgetState
           child: Icon(
             FediIcons.failed,
             size: 14,
-            color: Colors.white,
+            color: fediUiColorTheme.white,
           ),
         ),
       ),

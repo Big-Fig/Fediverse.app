@@ -30,6 +30,9 @@ class DarkFediUiColorTheme implements IFediUiColorTheme {
   const DarkFediUiColorTheme();
 
   @override
+  Color get transparent => Colors.transparent;
+
+  @override
   Color get primary => const Color(0xff00BCEC);
 
   @override
@@ -40,6 +43,7 @@ class DarkFediUiColorTheme implements IFediUiColorTheme {
 
   @override
   Color get darkGrey => const Color(0xffC8C8C8);
+
   // Color get darkGrey => const Color(0xff2B2B2B);
 
   @override
@@ -67,6 +71,10 @@ class DarkFediUiColorTheme implements IFediUiColorTheme {
   @override
   // Color get white => const Color(0xffFFFFFF);
   Color get white => const Color(0xff000000);
+
+  // Color get black => const Color(0xff000000);
+  @override
+  Color get black => const Color(0xffFFFFFF);
 
   @override
   // Color get imageDarkOverlay => const Color(0x33333333);

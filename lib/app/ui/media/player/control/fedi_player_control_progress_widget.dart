@@ -7,7 +7,7 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
-
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: IFediUiColorTheme.of(context).white,
@@ -17,7 +17,7 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
         trackShape: RoundedRectSliderTrackShape(),
         trackHeight: 1.0,
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 4.0),
-        thumbColor: Colors.white,
+        thumbColor: fediUiColorTheme.white,
         disabledThumbColor: IFediUiColorTheme.of(context).mediumGrey,
       ),
       child: StreamBuilder<bool>(

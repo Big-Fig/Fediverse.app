@@ -236,12 +236,14 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
             tabBodyContentBuilder: (BuildContext context, int index) {
               var tab = _tabs[index];
 
+              var fediUiColorTheme = IFediUiColorTheme.of(context);
+
               switch (tab) {
                 case AccountStatusesTab.withReplies:
                 case AccountStatusesTab.withoutReplies:
                 case AccountStatusesTab.pinned:
                   return Container(
-                    color: Colors.white,
+                    color: fediUiColorTheme.white,
                     child: CollapsibleOwnerWidget(
                       child: AccountStatusesTimelineWidget(),
                     ),
@@ -249,7 +251,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
                   break;
                 case AccountStatusesTab.media:
                   return Container(
-                    color: Colors.white,
+                    color: fediUiColorTheme.white,
                     child: AccountStatusesMediaWidget(),
                   );
                   break;

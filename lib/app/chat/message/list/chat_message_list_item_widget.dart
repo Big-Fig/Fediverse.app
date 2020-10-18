@@ -52,7 +52,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
                   ? isChatMessageFromMe
                       ? IFediUiColorTheme.of(context).primaryDark
                       : IFediUiColorTheme.of(context).ultraLightGrey
-                  : Colors.transparent,
+                  : IFediUiColorTheme.of(context).transparent,
               borderRadius: isHaveTextContent
                   ? isChatMessageFromMe
                       ? BorderRadius.only(

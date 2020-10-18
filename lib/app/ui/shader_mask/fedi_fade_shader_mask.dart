@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class FediFadeShaderMask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return ShaderMask(
       shaderCallback: (rect) {
         return LinearGradient(
@@ -21,8 +23,8 @@ class FediFadeShaderMask extends StatelessWidget {
             end: Alignment.centerRight,
             colors: [
               fadingColor.withOpacity(0.0),
-              Colors.white,
-              Colors.white,
+              fediUiColorTheme.white,
+              fediUiColorTheme.white,
               fadingColor.withOpacity(0.0),
             ],
             stops: [

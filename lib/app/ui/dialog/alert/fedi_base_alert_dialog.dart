@@ -1,9 +1,9 @@
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +47,7 @@ class FediBaseAlertDialog extends BaseDialog {
   @override
   Widget buildDialog(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor: IFediUiColorTheme.of(context).transparent,
       child: Container(
         decoration: BoxDecoration(
           color: IFediUiColorTheme.of(context).white,
@@ -120,7 +120,6 @@ class FediBaseAlertDialog extends BaseDialog {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ...actions?.asMap()?.entries?.map((entry) {
-
                 var action = entry.value;
                 return Padding(
                   padding: FediPadding.verticalSmallPadding,

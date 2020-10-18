@@ -22,6 +22,7 @@ class ConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
 
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return FediDarkStatusBarStyleArea(
       child: Scaffold(
         body: SafeArea(
@@ -30,7 +31,7 @@ class ConversationPage extends StatelessWidget {
               Container(
                 height: 56,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: fediUiColorTheme.white,
                   boxShadow: [FediShadows.forTopBar],
                 ),
                 child: Row(

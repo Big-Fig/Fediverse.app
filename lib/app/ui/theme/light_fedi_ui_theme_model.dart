@@ -30,6 +30,9 @@ class LightFediUiColorTheme implements IFediUiColorTheme {
   const LightFediUiColorTheme();
 
   @override
+  Color get transparent => Colors.transparent;
+
+  @override
   Color get primary => const Color(0xff00BCEC);
 
   @override
@@ -61,6 +64,9 @@ class LightFediUiColorTheme implements IFediUiColorTheme {
 
   @override
   Color get white => const Color(0xffFFFFFF);
+
+  @override
+  Color get black => const Color(0xff000000);
 
   @override
   Color get imageDarkOverlay => const Color(0x33333333);

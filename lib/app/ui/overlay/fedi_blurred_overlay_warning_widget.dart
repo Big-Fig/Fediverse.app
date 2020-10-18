@@ -19,7 +19,9 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return ConstrainedBox(
         constraints: BoxConstraints(minHeight: 100),
         child: Stack(
           children: <Widget>[
@@ -50,8 +52,8 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                         if (buttonText != null && buttonAction != null)
                           FediPrimaryFilledTextButton(
                             buttonText,
-                            enabledBorderColor: Colors.transparent,
-                            disabledBorderColor: Colors.transparent,
+                            enabledBorderColor: fediUiColorTheme.transparent,
+                            disabledBorderColor: fediUiColorTheme.transparent,
                             expanded: false,
                             onPressed: buttonAction,
                           ),
@@ -65,4 +67,5 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
           ],
         ),
       );
+  }
 }
