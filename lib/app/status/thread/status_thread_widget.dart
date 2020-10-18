@@ -69,6 +69,9 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
     );
 
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return StreamBuilder<bool>(
         stream: postMessageBloc.isExpandedStream,
         initialData: postMessageBloc.isExpanded,
@@ -92,7 +95,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                 FediUltraLightGreyDivider(),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: fediUiColorTheme.white,
                     boxShadow: [FediShadows.forBottomBar],
                   ),
                   child: postMessageWidget,

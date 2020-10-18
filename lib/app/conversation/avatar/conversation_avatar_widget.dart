@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -41,11 +42,19 @@ class ConversationAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     )
                   ],
                 );
@@ -56,15 +65,27 @@ class ConversationAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     )
                   ],
                 );
@@ -75,19 +96,35 @@ class ConversationAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[3]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[3],
+                      ),
                     )
                   ],
                 );
@@ -98,23 +135,43 @@ class ConversationAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[3]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[3],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[4]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[4],
+                      ),
                     )
                   ],
                 );
@@ -124,7 +181,12 @@ class ConversationAvatarWidget extends StatelessWidget {
     );
   }
 
-  Widget buildAccountAvatar(double sizeMultiplier, IAccount account) {
+  Widget buildAccountAvatar({
+    @required BuildContext context,
+    @required double sizeMultiplier,
+    @required IAccount account,
+  }) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
       width: baseAvatarSize * sizeMultiplier,
       height: baseAvatarSize * sizeMultiplier,
@@ -132,7 +194,7 @@ class ConversationAvatarWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(
             Radius.circular(baseAvatarSize * sizeMultiplier / 2)),
         border: Border.all(
-          color: Colors.white.withOpacity(0.5),
+          color: fediUiColorTheme.white.withOpacity(0.5),
           width: 2.0,
         ),
       ),

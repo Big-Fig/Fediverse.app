@@ -90,8 +90,11 @@ class _NotificationsHomeTabPageBodyState
 
   @override
   Widget build(BuildContext context) {
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: fediUiColorTheme.transparent,
       body: _buildBodyWidget(context),
     );
   }

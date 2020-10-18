@@ -66,11 +66,12 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
 
   Widget _buildFullScreenPage(BuildContext context, Animation<double> animation,
       IVideoMediaPlayerBloc videoMediaPlayerBloc) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
         alignment: Alignment.center,
-        color: Colors.black,
+        color: fediUiColorTheme.black,
         child: Provider<IMediaPlayerBloc>.value(
           value: videoMediaPlayerBloc,
           child: Provider<IVideoMediaPlayerBloc>.value(

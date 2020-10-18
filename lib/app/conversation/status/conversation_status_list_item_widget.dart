@@ -48,7 +48,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                     ? isStatusFromMe
                         ? IFediUiColorTheme.of(context).primaryDark
                         : IFediUiColorTheme.of(context).ultraLightGrey
-                    : Colors.transparent,
+                    : IFediUiColorTheme.of(context).transparent,
                 borderRadius: isHaveTextContent
                     ? isStatusFromMe
                         ? BorderRadius.only(

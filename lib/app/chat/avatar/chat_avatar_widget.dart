@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,7 @@ class ChatAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IChatBloc chatBloc =
-        IChatBloc.of(context, listen: true);
+    IChatBloc chatBloc = IChatBloc.of(context, listen: true);
     return SizedBox(
       width: baseAvatarSize,
       height: baseAvatarSize,
@@ -42,11 +42,19 @@ class ChatAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     )
                   ],
                 );
@@ -57,15 +65,27 @@ class ChatAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     )
                   ],
                 );
@@ -76,19 +96,35 @@ class ChatAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[3]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[3],
+                      ),
                     )
                   ],
                 );
@@ -99,23 +135,43 @@ class ChatAvatarWidget extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[0]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[0],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[1]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[1],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[2]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[2],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[3]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[3],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: buildAccountAvatar(sizeMultiplier, accounts[4]),
+                      child: buildAccountAvatar(
+                        context: context,
+                        sizeMultiplier: sizeMultiplier,
+                        account: accounts[4],
+                      ),
                     )
                   ],
                 );
@@ -125,7 +181,11 @@ class ChatAvatarWidget extends StatelessWidget {
     );
   }
 
-  Widget buildAccountAvatar(double sizeMultiplier, IAccount account) {
+  Widget buildAccountAvatar({
+    @required BuildContext context,
+    @required double sizeMultiplier,
+    @required IAccount account,
+  }) {
     return Container(
       width: baseAvatarSize * sizeMultiplier,
       height: baseAvatarSize * sizeMultiplier,
@@ -133,7 +193,7 @@ class ChatAvatarWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(
             Radius.circular(baseAvatarSize * sizeMultiplier / 2)),
         border: Border.all(
-          color: Colors.white.withOpacity(0.5),
+          color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
           width: 2.0,
         ),
       ),
