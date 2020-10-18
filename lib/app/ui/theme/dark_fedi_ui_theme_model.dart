@@ -493,7 +493,7 @@ class DarkFediUiTheme implements IFediUiTheme {
           borderRadius: BorderRadius.all(Radius.circular(0.0)),
         )),
         cupertinoOverrideTheme: CupertinoThemeData(
-          primaryColor: Color(0xff1e88e5),
+          primaryColor: _darkFediUiColorTheme.primary,
 //      textTheme: CupertinoTextThemeData(
 //        textStyle: TextStyle(color: Color(0xff1e88e5))
 //
