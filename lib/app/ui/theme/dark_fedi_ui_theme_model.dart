@@ -526,7 +526,7 @@ class DarkFediUiColorTheme implements IFediUiColorTheme {
 
   @override
   // Color get lightGrey => const Color(0xffC8C8C8);
-  Color get lightGrey => const Color(0xff2e2e2e);
+  Color get lightGrey => const Color(0xff171717);
 
   @override
   // Color get darkGrey => const Color(0xff2B2B2B);
@@ -538,7 +538,7 @@ class DarkFediUiColorTheme implements IFediUiColorTheme {
 
   @override
   // Color get ultraLightGrey => const Color(0xffEAEAEA);
-  Color get ultraLightGrey => const Color(0xff171717);
+  Color get ultraLightGrey => const Color(0xff242424);
 
   @override
   Color get offWhite => const Color(0xff0A0A0A);
