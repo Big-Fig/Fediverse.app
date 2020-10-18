@@ -30,14 +30,18 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
     var fediTabIndicatorBloc =
         IFediTabIndicatorBloc.of<T>(context, listen: false);
 
+    var borderHeight = 2.0;
+
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
       labelPadding: FediPadding.horizontalSmallPadding,
       indicator: FediTabIndicator(
-        indicatorHeight: FediSizes.tabIndicatorIconHeight,
+        indicatorHeight: FediSizes.tabIndicatorIconHeight - borderHeight,
+        indicatorRadius: (FediSizes.iconButtonHeight + borderHeight) / 2,
+        // indicatorHeight: FediSizes.tabIndicatorIconHeight,
         indicatorColor: IFediUiColorTheme.of(context).primary,
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(top: borderHeight),
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,
       ),

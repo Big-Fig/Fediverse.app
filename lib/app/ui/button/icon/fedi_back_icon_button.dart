@@ -16,7 +16,7 @@ class FediBackIconButton extends StatelessWidget {
     return FediIconButton(
       icon: Icon(
         FediIcons.chevron_left,
-        color: IFediUiColorTheme.of(context).darkGrey,
+        color: IFediUiColorTheme.of(context, listen: true).darkGrey,
         size: FediSizes.appBarIconSize,
       ),
       onPressed: () {
