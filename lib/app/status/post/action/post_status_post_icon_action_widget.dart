@@ -6,8 +6,8 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostStatusPostTextActionWidget extends StatelessWidget {
-  const PostStatusPostTextActionWidget();
+class PostStatusPostIconActionWidget extends StatelessWidget {
+  const PostStatusPostIconActionWidget();
 
   @override
   Widget build(BuildContext context) {
