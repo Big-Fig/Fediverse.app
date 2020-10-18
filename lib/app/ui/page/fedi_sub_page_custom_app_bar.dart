@@ -21,12 +21,16 @@ class FediSubPageCustomAppBar extends StatelessWidget
   });
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        leading: leading,
-        centerTitle: centerTitle,
-        titleSpacing: 0.0,
-        backgroundColor: IFediUiColorTheme.of(context).white,
-        title: child,
-        actions: actions,
-      );
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return AppBar(
+      leading: leading,
+      centerTitle: centerTitle,
+      titleSpacing: 0.0,
+      brightness: fediUiColorTheme.brightness,
+      backgroundColor: fediUiColorTheme.white,
+      title: child,
+      actions: actions,
+    );
+  }
 }
