@@ -1,5 +1,5 @@
 import 'package:fedi/app/html/html_text_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -37,7 +37,7 @@ class HtmlTextWidget<T> extends StatelessWidget {
     this.lineHeight = 1.0,
     this.imageSize = 20.0,
     this.fontWeight = FontWeight.normal,
-    this.linkColor = FediColors.primaryDark,
+    this.linkColor,
     this.color,
     this.textMaxLines,
     this.paragraphDisplay = Display.INLINE,
@@ -49,6 +49,8 @@ class HtmlTextWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var linkColor = this.linkColor ?? IFediUiColorTheme.of(context).primaryDark;
+
     String htmlData;
 
     var htmlTextData = Provider.of<HtmlTextData>(context, listen: true);

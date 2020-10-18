@@ -1,6 +1,6 @@
 import 'package:fedi/app/ui/background/fedi_background_blur.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                         if (descriptionText != null) ...[
                           Text(
                             descriptionText,
-                            style: FediTextStyles.bigTallDarkGrey,
+                            style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                           ),
                           FediBigVerticalSpacer(),
                         ],

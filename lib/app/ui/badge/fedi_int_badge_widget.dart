@@ -1,5 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,13 +35,13 @@ abstract class FediIntBadgeWidget extends StatelessWidget {
                     width: unreadBadgeSize,
                     height: unreadBadgeSize,
                     decoration: BoxDecoration(
-                      color: FediColors.secondary,
+                      color: IFediUiColorTheme.of(context).secondary,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: Text(
                         count.toString(),
-                        style: FediTextStyles.smallShortWhite,
+                        style: IFediUiTextTheme.of(context).smallShortWhite,
                       ),
                     ),
                   ),

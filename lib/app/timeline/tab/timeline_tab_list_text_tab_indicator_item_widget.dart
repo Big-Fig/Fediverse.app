@@ -2,7 +2,7 @@ import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
@@ -24,7 +24,7 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
         var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
         return FediFadeShaderMask(
           fadingPercent: fadingPercent,
-          fadingColor: FediColors.darkGrey,
+          fadingColor: IFediUiColorTheme.of(context).darkGrey,
           child: DisposableProxyProvider<ITimelineTabListBloc,
               IFediTabIndicatorBloc<ITimelineTabBloc>>(
             update: (context, value, previous) {

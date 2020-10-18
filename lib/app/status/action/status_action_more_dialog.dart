@@ -257,7 +257,10 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             await Clipboard.setData(ClipboardData(text: status.uri));
             Navigator.of(context).pop();
             showInfoFediNotificationOverlay(
-                contentText: tr("app.status.copy_link.toast"), titleText: null);
+              context: context,
+              contentText: tr("app.status.copy_link.toast"),
+              titleText: null,
+            );
           });
 
   DialogAction buildDeleteAction(BuildContext context, IStatus status) =>
@@ -284,7 +287,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
           });
 
-  DialogAction buildMuteConversationAction(BuildContext context, IStatus status) =>
+  DialogAction buildMuteConversationAction(
+          BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.mute,
           label: status.muted

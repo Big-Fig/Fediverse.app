@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -16,7 +16,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: FediColors.ultraLightGrey,
+      color: IFediUiColorTheme.of(context).ultraLightGrey,
       child: CachedNetworkImage(
         imageUrl: mediaAttachment.previewUrl,
         fit: BoxFit.cover,

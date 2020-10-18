@@ -1,7 +1,6 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_error.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
@@ -63,8 +62,8 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                             child: Icon(
                               valueToIconMapper(value),
                               color: enabled
-                                  ? FediColors.darkGrey
-                                  : FediColors.lightGrey,
+                                  ? IFediUiColorTheme.of(context).darkGrey
+                                  : IFediUiColorTheme.of(context).lightGrey,
                             ),
                           ),
                         if (valueToTextMapper != null)
@@ -73,8 +72,8 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                             child: Text(
                               valueToTextMapper(value),
                               style: enabled
-                                  ? FediTextStyles.mediumShortDarkGrey
-                                  : FediTextStyles.mediumShortLightGrey,
+                                  ? IFediUiTextTheme.of(context).mediumShortDarkGrey
+                                  : IFediUiTextTheme.of(context).mediumShortLightGrey,
                             ),
                           ),
                         Padding(
@@ -82,8 +81,8 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                           child: Icon(
                             FediIcons.pen,
                             color: enabled
-                                ? FediColors.darkGrey
-                                : FediColors.lightGrey,
+                                ? IFediUiColorTheme.of(context).darkGrey
+                                : IFediUiColorTheme.of(context).lightGrey,
                           ),
                         ),
                       ],
@@ -99,7 +98,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                         child: Icon(
                           FediIcons.delete,
                           color:
-                          enabled ? FediColors.darkGrey : FediColors.lightGrey,
+                          enabled ? IFediUiColorTheme.of(context).darkGrey : IFediUiColorTheme.of(context).lightGrey,
                         ),
                       ),
                     ),

@@ -9,8 +9,10 @@ OverlaySupportEntry showPostStatusPostOverlayNotification(
     @required IPostStatusBloc postStatusBloc,
     @required bool isScheduled}) {
   return showInfoFediNotificationOverlay(
-      contentText: isScheduled
-          ? tr("app.status.post.toast.success.schedule")
-          : tr("app.status.post.toast.success.post"),
-      titleText: null);
+    context: context,
+    contentText: isScheduled
+        ? tr("app.status.post.toast.success.schedule")
+        : tr("app.status.post.toast.success.post"),
+    titleText: null,
+  );
 }

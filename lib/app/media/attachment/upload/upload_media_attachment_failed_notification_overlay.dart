@@ -25,6 +25,7 @@ OverlaySupportEntry showMediaAttachmentFailedNotificationOverlay(
     contentText = e.toString();
   }
   return showErrorFediNotificationOverlay(
+    context: context,
     contentText: contentText,
     titleText: "app.media.attachment.upload.failed.notification.title".tr(),
   );

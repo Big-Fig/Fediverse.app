@@ -8,7 +8,7 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -45,7 +45,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
 
     return FediIconButton(
       icon: Icon(FediIcons.plus),
-      color: FediColors.darkGrey,
+      color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () {
         goToSingleSelectAccountPage(
           context,

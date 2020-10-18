@@ -1,6 +1,6 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -19,7 +19,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
           var isInitializing = snapshot.data;
 
           if (isInitializing) {
-            return buildLoading();
+            return buildLoading(context);
           } else {
             return StreamBuilder<bool>(
                 stream: mediaPlayerBloc.isPlayingStream,
@@ -33,7 +33,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
                         icon:
                             Icon(isPlaying ? FediIcons.pause : FediIcons.play),
                         iconSize: 16.0,
-                        color: FediColors.white,
+                        color: IFediUiColorTheme.of(context).white,
                         onPressed: onPressed,
                       );
                     },
@@ -46,11 +46,11 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
         });
   }
 
-  Widget buildLoading() {
+  Widget buildLoading(BuildContext context) {
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: FediCircularProgressIndicator(
-        color: FediColors.white,
+        color: IFediUiColorTheme.of(context).white,
         size: 22.0,
       ),
     );

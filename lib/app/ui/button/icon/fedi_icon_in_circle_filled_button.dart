@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -23,12 +23,12 @@ class FediIconInCircleFilledButton extends StatelessWidget {
   const FediIconInCircleFilledButton(
     this.iconData, {
     @required this.onPressed,
-    this.enabledBackgroundColor = FediColors.primary,
-    this.disabledBackgroundColor = FediColors.white,
-    this.enabledBorderColor = FediColors.white,
-    this.disabledBorderColor = FediColors.lightGrey,
-    this.enabledIconColor = FediColors.white,
-    this.disabledIconColor = FediColors.lightGrey,
+    this.enabledBackgroundColor,
+    this.disabledBackgroundColor,
+    this.enabledBorderColor,
+    this.disabledBorderColor,
+    this.enabledIconColor,
+    this.disabledIconColor,
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,
@@ -36,6 +36,18 @@ class FediIconInCircleFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var enabledBackgroundColor =
+        this.enabledBackgroundColor ?? fediUiColorTheme.primary;
+    var disabledBackgroundColor =
+        this.disabledBackgroundColor ?? fediUiColorTheme.white;
+    var enabledBorderColor = this.enabledBorderColor ?? fediUiColorTheme.white;
+    var disabledBorderColor =
+        this.disabledBorderColor ?? fediUiColorTheme.lightGrey;
+    var enabledIconColor = this.enabledIconColor ?? fediUiColorTheme.white;
+    var disabledIconColor =
+        this.disabledIconColor ?? fediUiColorTheme.lightGrey;
+
     var backgroundColor =
         onPressed != null ? enabledBackgroundColor : disabledBackgroundColor;
     var borderColor =

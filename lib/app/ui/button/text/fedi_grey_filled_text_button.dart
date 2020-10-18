@@ -1,9 +1,8 @@
 import 'dart:ui';
 
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -20,19 +19,19 @@ class FediGreyFilledTextButton extends StatelessWidget {
 
   final bool limitMinWidth;
 
-  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldGrey;
-
   FediGreyFilledTextButton(
     this.text, {
     @required this.onPressed,
     this.height = FediSizes.textButtonHeight,
-    this.textStyle = defaultTextStyle,
+    this.textStyle,
     this.borderWidth = 1,
     this.limitMinWidth = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    var textStyle =
+        this.textStyle ?? IFediUiTextTheme.of(context).mediumShortBoldGrey;
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     return InkWell(
@@ -46,11 +45,11 @@ class FediGreyFilledTextButton extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: onPressed != null
-                  ? FediColors.ultraLightGrey
-                  : FediColors.lightGrey,
+                  ? IFediUiColorTheme.of(context).ultraLightGrey
+                  : IFediUiColorTheme.of(context).lightGrey,
               borderRadius: borderRadius,
               border: Border.all(
-                color: FediColors.white,
+                color: IFediUiColorTheme.of(context).white,
                 width: borderWidth,
               ),
             ),
@@ -59,7 +58,7 @@ class FediGreyFilledTextButton extends StatelessWidget {
                 padding: FediPadding.buttonHorizontalPadding,
                 child: Text(
                   text,
-                  style: defaultTextStyle,
+                  style: textStyle,
                 ),
               ),
             )),

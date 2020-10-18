@@ -16,7 +16,7 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -178,7 +178,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       if (status.isHaveReblog) StatusReblogHeaderWidget(),
-                      if (displayAccountHeader) buildStatusHeader(status),
+                      if (displayAccountHeader) buildStatusHeader(context, status),
                       if (isReply)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
@@ -213,7 +213,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     );
   }
 
-  Widget buildStatusHeader(IStatus status) => Padding(
+  Widget buildStatusHeader(BuildContext context, IStatus status) => Padding(
         padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
             FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
         child: Row(
@@ -228,7 +228,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                     status.visibility,
                   ),
                   size: FediSizes.mediumIconSize,
-                  color: FediColors.darkGrey,
+                  color: IFediUiColorTheme.of(context).darkGrey,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: FediSizes.smallPadding),

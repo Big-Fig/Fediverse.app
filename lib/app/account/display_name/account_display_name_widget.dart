@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_widget.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
@@ -11,13 +11,15 @@ class AccountDisplayNameWidget extends StatelessWidget {
 
   AccountDisplayNameWidget({
     this.textOverflow = TextOverflow.ellipsis,
-    this.textStyle = FediTextStyles.bigShortBoldDarkGrey,
+    this.textStyle,
     this.textAlign = TextAlign.start,
   });
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+    var textStyle =
+        this.textStyle ?? IFediUiTextTheme.of(context).bigShortBoldDarkGrey;
     return StreamBuilder<EmojiText>(
         stream: accountBloc.displayNameEmojiTextStream,
         initialData: accountBloc.displayNameEmojiText,

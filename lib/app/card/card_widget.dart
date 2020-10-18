@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,8 +23,7 @@ class CardWidget extends StatelessWidget {
     }
 
     return Padding(
-      padding:
-      const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
+      padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
       child: Container(
         height: _cardImageSize,
         child: ClipRRect(
@@ -40,7 +38,7 @@ class CardWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 if (card.image != null) buildImage(card),
-                buildContent(card)
+                buildContent(context: context, card: card)
               ],
             ),
           ),
@@ -49,13 +47,18 @@ class CardWidget extends StatelessWidget {
     );
   }
 
-  Widget buildContent(IPleromaCard card) => Expanded(
+  Widget buildContent({
+    @required BuildContext context,
+    @required IPleromaCard card,
+  }) =>
+      Expanded(
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(_cardBorderRadius),
                   bottomRight: Radius.circular(_cardBorderRadius)),
-              border: Border.all(color: FediColors.ultraLightGrey)),
+              border: Border.all(
+                  color: IFediUiColorTheme.of(context).ultraLightGrey)),
           child: Padding(
             padding: FediPadding.allMediumPadding,
             child: Column(
@@ -63,37 +66,57 @@ class CardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 if (card.providerName?.isNotEmpty == true)
-                  buildProviderText(card),
-                if (card.title?.isNotEmpty == true) buildTitleText(card),
+                  buildProviderText(
+                    context: context,
+                    card: card,
+                  ),
+                if (card.title?.isNotEmpty == true)
+                  buildTitleText(
+                    context: context,
+                    card: card,
+                  ),
                 if (card.description?.isNotEmpty == true)
-                  buildDescriptionText(card),
+                  buildDescriptionText(
+                    context: context,
+                    card: card,
+                  ),
               ],
             ),
           ),
         ),
       );
 
-  Widget buildDescriptionText(IPleromaCard card) => Expanded(
+  Widget buildDescriptionText({
+    @required BuildContext context,
+    @required IPleromaCard card,
+  }) =>
+      Expanded(
         child: Text(
           card.description,
-          style: FediTextStyles.bigTallDarkGrey,
+          style: IFediUiTextTheme.of(context).bigTallDarkGrey,
         ),
       );
 
-  Text buildTitleText(IPleromaCard card) {
+  Text buildTitleText({
+    @required BuildContext context,
+    @required IPleromaCard card,
+  }) {
     return Text(
       card.title,
       maxLines: 2,
-      style: FediTextStyles.bigTallBoldDarkGrey,
+      style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
       overflow: TextOverflow.ellipsis,
     );
   }
 
-  Widget buildProviderText(IPleromaCard card) {
+  Widget buildProviderText({
+    @required BuildContext context,
+    @required IPleromaCard card,
+  }) {
     return Container(
       child: Text(
         card.providerName,
-        style: FediTextStyles.smallTallGrey,
+        style: IFediUiTextTheme.of(context).smallTallGrey,
         overflow: TextOverflow.ellipsis,
       ),
     );

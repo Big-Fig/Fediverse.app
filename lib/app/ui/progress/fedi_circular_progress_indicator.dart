@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class FediCircularProgressIndicator extends StatefulWidget {
   final double size;
 
   const FediCircularProgressIndicator({
-    this.color = FediColors.darkGrey,
+    this.color,
     this.size = 30.0,
   });
 
@@ -45,6 +45,8 @@ class _FediCircularProgressIndicatorState
 
   @override
   Widget build(BuildContext context) {
+
+    var color = widget.color ?? IFediUiColorTheme.of(context).darkGrey;
     var size = widget.size;
     return AnimatedBuilder(
       animation: _controller,
@@ -60,7 +62,7 @@ class _FediCircularProgressIndicatorState
         child: Icon(
           FediIcons.loading,
           size: size,
-          color: widget.color,
+          color: color,
         ),
       ),
     );

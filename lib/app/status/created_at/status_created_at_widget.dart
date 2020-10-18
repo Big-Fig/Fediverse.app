@@ -1,5 +1,5 @@
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,7 +16,7 @@ class StatusCreatedAtWidget extends StatelessWidget {
 
           return DateTimeDynamicTimeAgoWidget(
             dateTime: createdAt,
-            textStyle: FediTextStyles.smallShortGrey,
+            textStyle: IFediUiTextTheme.of(context).smallShortGrey,
           );
         });
   }

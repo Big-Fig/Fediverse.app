@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_controls_pause_play_button_widget.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
@@ -15,7 +14,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
     return Container(
-      color: FediColors.darkGrey,
+      color: IFediUiColorTheme.of(context).darkGrey,
       child: Stack(
         children: [
           Row(
@@ -41,7 +40,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
             if (isHaveError) {
               return Positioned.fill(
                 child: Container(
-                  color: FediColors.error.withOpacity(0.8),
+                  color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
                   child: Padding(
                     padding: FediPadding.horizontalBigPadding,
                     child: Row(
@@ -51,7 +50,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
                         FediIconButton(
 
                           icon: Icon(FediIcons.reload),
-                          color: FediColors.white,
+                          color: IFediUiColorTheme.of(context).white,
                           onPressed: () {
                             mediaPlayerBloc.reloadAfterError();
                           },
@@ -60,15 +59,16 @@ class FediAudioPlayerWidget extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "app.media.player.error.desc".tr(),
-                            style: FediTextStyles.bigShortBoldWhite,
+                            style: IFediUiTextTheme.of(context).bigShortBoldWhite,
                           ),
                         ),
                         FediIconButton(
 
                           icon: Icon(FediIcons.warning),
-                          color: FediColors.white,
+                          color: IFediUiColorTheme.of(context).white,
                           onPressed: () {
                             showErrorFediNotificationOverlay(
+                              context: context,
                               contentText: mediaPlayerBloc.error.toString(),
                               titleText: null,
                             );

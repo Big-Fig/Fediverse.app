@@ -26,6 +26,7 @@ class _PushSubscriptionSettingsWidgetState
 
     failedToUpdateSubscription = settingsBloc.failedToUpdateStream.listen((_) {
       showErrorFediNotificationOverlay(
+          context: context,
           contentText: "Failed to change subscription settings",
           titleText: null);
     });

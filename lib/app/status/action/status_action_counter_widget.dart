@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class StatusActionCounterWidget extends StatelessWidget {
             constraints: BoxConstraints(minWidth: 10),
             child: Text(
               value == 0 ? "" : value.toString(),
-              style: FediTextStyles.smallShortDarkGrey,
+              style: IFediUiTextTheme.of(context).smallShortDarkGrey,
             ),
           ),
         ),

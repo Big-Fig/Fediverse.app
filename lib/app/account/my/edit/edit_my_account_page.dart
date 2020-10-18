@@ -5,7 +5,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +67,8 @@ class EditMyAccountPage extends StatelessWidget {
                   child: Text(
                     tr("app.account.my.edit.action.save"),
                     style: isReadyToSubmit
-                        ? FediTextStyles.bigShortPrimary
-                        : FediTextStyles.bigShortGrey,
+                        ? IFediUiTextTheme.of(context).bigShortPrimary
+                        : IFediUiTextTheme.of(context).bigShortGrey,
                   ),
                   onPressed: isReadyToSubmit ? onPressed : null,
                 );

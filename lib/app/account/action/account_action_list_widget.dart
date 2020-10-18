@@ -8,12 +8,12 @@ import 'package:fedi/app/chat/chat_helper.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,9 +38,9 @@ class AccountActionListWidget extends StatelessWidget {
         if (relationship?.following == null) {
           return Container(
             height: FediSizes.textButtonHeight + topPadding + bottomPadding,
-            child: const Center(
+            child: Center(
               child: FediCircularProgressIndicator(
-                color: FediColors.white,
+                color: IFediUiColorTheme.of(context).white,
               ),
             ),
           );
@@ -50,7 +50,7 @@ class AccountActionListWidget extends StatelessWidget {
               var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
 
               return FediFadeShaderMask(
-                fadingColor: FediColors.darkGrey,
+                fadingColor: IFediUiColorTheme.of(context).darkGrey,
                 fadingPercent: fadingPercent,
                 child: Padding(
                   padding:

@@ -1,8 +1,7 @@
 import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +33,7 @@ class FediFilledEditTextField extends StatelessWidget {
     @required this.textInputAction,
     this.leading,
     this.border,
-    this.backgroundColor = FediColors.ultraLightGrey,
+    this.backgroundColor,
     this.ending,
     @required this.expanded,
     @required this.autofocus,
@@ -47,6 +46,7 @@ class FediFilledEditTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var backgroundColor = this.backgroundColor ?? IFediUiColorTheme.of(context).ultraLightGrey;
     var containLeading = leading != null;
     var containEnding = ending != null;
     return Container(
@@ -76,9 +76,9 @@ class FediFilledEditTextField extends StatelessWidget {
                 keyboardType: keyboardType,
                 hintText: hintText,
                 errorText: errorText,
-                textStyle: FediTextStyles.bigTallDarkGrey,
+                textStyle: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 minLines: null,
-                hintStyle: FediTextStyles.bigTallGrey,
+                hintStyle: IFediUiTextTheme.of(context).bigTallGrey,
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                 border: InputBorder.none,
                 errorBorder: InputBorder.none,

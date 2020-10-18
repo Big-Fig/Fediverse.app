@@ -8,10 +8,10 @@ import 'package:fedi/app/chat/current/current_chat_bloc.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,8 +49,8 @@ class ChatPage extends StatelessWidget {
         children: <Widget>[
           const ChatAvatarWidget(baseAvatarSize: 36),
           const FediBigHorizontalSpacer(),
-          const ChatTitleWidget(
-            textStyle: FediTextStyles.bigShortBoldDarkGrey,
+          ChatTitleWidget(
+            textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
           ),
         ],
       ),
@@ -69,7 +69,8 @@ MaterialPageRoute createChatPageRoute(IChat chat) {
   return MaterialPageRoute(
       builder: (context) => DisposableProvider<IChatBloc>(
           create: (context) {
-            var chatBloc = ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null);
+            var chatBloc = ChatBloc.createFromContext(context,
+                chat: chat, lastChatMessage: null);
 
             // we don't need to await
             chatBloc.markAsRead();

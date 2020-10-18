@@ -12,10 +12,9 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +82,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
               children: <Widget>[
                 Expanded(
                   child: Container(
-                    color: FediColors.offWhite,
+                    color: IFediUiColorTheme.of(context).offWhite,
                     child: UnfocusOnScrollAreaWidget(
                       child: buildMessageList(context, statusThreadBloc),
                     ),
@@ -114,7 +113,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 
           if (notCanceledOriginInReplyToStatus != null) {
             return Container(
-              color: FediColors.ultraLightGrey,
+              color: IFediUiColorTheme.of(context).ultraLightGrey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: FediSizes.mediumPadding,
@@ -127,7 +126,9 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       "app.status.reply.replying_to".tr(
                         args: [notCanceledOriginInReplyToStatus.account.acct],
                       ),
-                      style: FediTextStyles.mediumShortGrey.copyWith(height: 1),
+                      style: IFediUiTextTheme.of(context)
+                          .mediumShortGrey
+                          .copyWith(height: 1),
                     ),
                     InkWell(
                       child: Icon(Icons.cancel),
@@ -200,8 +201,10 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                   : const EdgeInsets.symmetric(vertical: 4.0),
               child: Container(
                 color: isInFocus
-                    ? FediColors.ultraLightGrey.withOpacity(0.5)
-                    : FediColors.white,
+                    ? IFediUiColorTheme.of(context)
+                        .ultraLightGrey
+                        .withOpacity(0.5)
+                    : IFediUiColorTheme.of(context).white,
                 child: Column(
                   children: [
                     StatusListItemTimelineWidget.thread(

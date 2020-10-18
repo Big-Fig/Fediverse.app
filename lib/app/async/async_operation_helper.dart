@@ -34,6 +34,7 @@ class AsyncOperationHelper {
           }
           if (showNotificationOnError) {
             showErrorFediNotificationOverlay(
+              context: context,
               titleText: errorData.titleText,
               contentText: errorData.contentText,
             );

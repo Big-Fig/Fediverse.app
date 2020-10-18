@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +60,7 @@ class EmojiTextWidget extends StatelessWidget {
             width: emojiSize,
             errorWidget: (context, url, error) => Icon(
               FediIcons.warning,
-              color: FediColors.error,
+              color: IFediUiColorTheme.of(context).error,
               size: textStyle.fontSize,
             ),
           );

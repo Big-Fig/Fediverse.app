@@ -16,6 +16,11 @@ class CodegenLoader extends AssetLoader{
 
   static const Map<String,dynamic> en_US = {
   "app": {
+    "theme": {
+      "dark_light_switch": {
+        "label": "Dark theme"
+      }
+    },
     "custom_list": {
       "title": "\"{}\" list statuses",
       "accounts": {

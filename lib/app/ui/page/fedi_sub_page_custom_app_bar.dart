@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class FediSubPageCustomAppBar extends StatelessWidget
         leading: leading,
         centerTitle: centerTitle,
         titleSpacing: 0.0,
-        backgroundColor: FediColors.white,
+        backgroundColor: IFediUiColorTheme.of(context).white,
         title: child,
         actions: actions,
       );

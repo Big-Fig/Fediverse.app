@@ -1,14 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_buffering_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_content_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_control_toggle_fullscreen_button_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_play_pause_button_widget.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +37,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
                   );
                 } else {
                   return Container(
-                    color: FediColors.mediumGrey,
+                    color: IFediUiColorTheme.of(context).mediumGrey,
                   );
                 }
               }),
@@ -75,7 +74,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
             if (isHaveError) {
               return Positioned.fill(
                 child: Container(
-                  color: FediColors.error.withOpacity(0.8),
+                  color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +82,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
                       FediTransparentTextButton(
                         "app.media.player.error.action.reload".tr(),
                         expanded: false,
-                        color: FediColors.white,
+                        color: IFediUiColorTheme.of(context).white,
                         onPressed: () {
                           mediaPlayerBloc.reloadAfterError();
                         },
@@ -92,15 +91,16 @@ class FediVideoPlayerWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "app.media.player.error.desc".tr(),
-                          style: FediTextStyles.bigShortBoldWhite,
+                          style: IFediUiTextTheme.of(context).bigShortBoldWhite,
                         ),
                       ),
                       FediTransparentTextButton(
                         "app.media.player.error.action.more_details".tr(),
                         expanded: false,
-                        color: FediColors.white,
+                        color: IFediUiColorTheme.of(context).white,
                         onPressed: () {
                           showErrorFediNotificationOverlay(
+                            context: context,
                             contentText: mediaPlayerBloc.error.toString(),
                             titleText: null,
                           );
@@ -124,8 +124,8 @@ class FediVideoPlayerWidget extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            FediColors.imageDarkOverlay.withOpacity(0.0),
-            FediColors.darkGrey.withOpacity(1.0),
+            IFediUiColorTheme.of(context).imageDarkOverlay.withOpacity(0.0),
+            IFediUiColorTheme.of(context).darkGrey.withOpacity(1.0),
           ],
         ),
       ),

@@ -6,11 +6,10 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +45,9 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: FediSizes.bigPadding),
-            child: buildSelectedIcon(),
+            child: buildSelectedIcon(
+              context: context,
+            ),
           ),
         ],
       ),
@@ -73,7 +74,9 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AccountDisplayNameWidget(),
-                buildInstanceUserAtHost(),
+                buildInstanceUserAtHost(
+                  context: context,
+                ),
               ],
             ),
           ),
@@ -82,24 +85,24 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildSelectedIcon() {
+  Widget buildSelectedIcon({@required BuildContext context}) {
     if (isSelected) {
       return FediIconInCircleTransparentButton(
         FediIcons.check,
         size: FediSizes.smallFilledButtonHeight,
         onPressed: null,
-        color: FediColors.primary,
+        color: IFediUiColorTheme.of(context).primary,
       );
     } else {
       return SizedBox(width: FediSizes.smallFilledButtonHeight);
     }
   }
 
-  Text buildInstanceUserAtHost() {
+  Text buildInstanceUserAtHost({@required BuildContext context}) {
     return Text(
       instance.userAtHost,
       overflow: TextOverflow.ellipsis,
-      style: FediTextStyles.mediumShortDarkGrey,
+      style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
   }
 
@@ -122,7 +125,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
   Widget buildLogoutButton(BuildContext context, AuthInstance instance) =>
       FediIconInCircleTransparentButton(
         FediIcons.remove,
-        color: FediColors.darkGrey,
+        color: IFediUiColorTheme.of(context).darkGrey,
         size: FediSizes.smallFilledButtonHeight,
         onPressed: () async {
           var instanceChooserBloc =

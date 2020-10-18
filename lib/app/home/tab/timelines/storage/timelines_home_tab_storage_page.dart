@@ -6,7 +6,7 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_l
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_widget.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -28,7 +28,7 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
             padding: FediPadding.horizontalBigPadding,
             child: FediIconButton(
               icon: Icon(FediIcons.plus),
-              color: FediColors.darkGrey,
+              color: IFediUiColorTheme.of(context).darkGrey,
               onPressed: () {
                 goToCreateItemTimelinesHomeTabStoragePage(context);
               },

@@ -1,7 +1,6 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/material.dart';
@@ -28,22 +27,22 @@ class AccountFieldListItemWidget extends StatelessWidget {
           Icon(
             FediIcons.link,
             color: brightness == Brightness.dark
-                ? FediColors.mediumGrey
-                : FediColors.white,
+                ? IFediUiColorTheme.of(context).mediumGrey
+                : IFediUiColorTheme.of(context).white,
             size: 16.0,
           ),
           FediMediumHorizontalSpacer(),
           Text(
             "${field.name}: ",
             style: brightness == Brightness.dark
-                ? FediTextStyles.mediumTallDarkGrey
-                : FediTextStyles.mediumTallWhite,
+                ? IFediUiTextTheme.of(context).mediumTallDarkGrey
+                : IFediUiTextTheme.of(context).mediumTallWhite,
           ),
           Flexible(
               child: Text(
             field.valueAsRawUrlWithoutSchema,
             overflow: TextOverflow.ellipsis,
-            style: FediTextStyles.mediumTallPrimary,
+            style: IFediUiTextTheme.of(context).mediumTallPrimary,
           )),
         ],
       ),

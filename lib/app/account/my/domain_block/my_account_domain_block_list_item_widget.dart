@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     domain.domain,
-                    style: FediTextStyles.mediumShortBoldDarkGrey,
+                    style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
                   )
                 ],
               ),

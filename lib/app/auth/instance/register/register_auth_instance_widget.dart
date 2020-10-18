@@ -219,6 +219,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       Navigator.of(context).pop();
       if (authInstance.info.approvalRequired == true) {
         showInfoFediNotificationOverlay(
+          context: context,
           titleText: "app.auth.instance.register.approval_required"
                   ".notification.title"
               .tr(),

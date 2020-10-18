@@ -6,7 +6,7 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:fedi/app/status/reblog/status_reblog_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
               child: Text(
                 "app.account.list.privacy".tr(),
                 textAlign: TextAlign.center,
-                style: FediTextStyles.mediumShortBoldGrey,
+                style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
               ),
             ),
             Expanded(

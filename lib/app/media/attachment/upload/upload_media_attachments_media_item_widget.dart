@@ -9,7 +9,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -173,10 +173,10 @@ class _UploadMediaAttachmentMediaItemWidgetState
       child: Container(
         width: 24,
         height: 24,
-        color: FediColors.darkGrey.withOpacity(0.8),
+        color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
         child: FediCircularProgressIndicator(
           size: 20,
-          color: FediColors.white,
+          color: IFediUiColorTheme.of(context).white,
         ),
       ),
     );
@@ -193,7 +193,7 @@ class _UploadMediaAttachmentMediaItemWidgetState
         child: Container(
           width: 24,
           height: 24,
-          color: FediColors.error.withOpacity(0.8),
+          color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
           child: Icon(
             FediIcons.failed,
             size: 14,

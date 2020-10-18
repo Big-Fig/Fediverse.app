@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
-import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -30,7 +30,8 @@ class PostStatusPollWidget extends StatelessWidget {
             context: context,
             multiplyFieldBloc: postStatusPollBloc.multiplyFieldBloc),
         buildPollLengthField(
-            context: context, lengthBloc: postStatusPollBloc.durationLengthFieldBloc),
+            context: context,
+            lengthBloc: postStatusPollBloc.durationLengthFieldBloc),
       ],
     );
   }
@@ -107,6 +108,7 @@ class PostStatusPollWidget extends StatelessWidget {
                                 );
                               } else {
                                 return buildAddItemIconButton(
+                                  context: context,
                                   pollOptionsGroupBloc: pollOptionsGroupBloc,
                                 );
                               }
@@ -120,12 +122,13 @@ class PostStatusPollWidget extends StatelessWidget {
         });
   }
 
-  FediIconButton buildAddItemIconButton(
-      {@required
-          IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc}) {
+  FediIconButton buildAddItemIconButton({
+    @required BuildContext context,
+    @required IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc,
+  }) {
     return FediIconButton(
       icon: Icon(FediIcons.plus),
-      color: FediColors.primary,
+      color: IFediUiColorTheme.of(context).primary,
       onPressed: () {
         pollOptionsGroupBloc.addNewEmptyField();
       },
@@ -144,8 +147,8 @@ class PostStatusPollWidget extends StatelessWidget {
           return FediIconButton(
             icon: Icon(FediIcons.remove),
             color: isPossibleToRemoveFields
-                ? FediColors.darkGrey
-                : FediColors.lightGrey,
+                ? IFediUiColorTheme.of(context).darkGrey
+                : IFediUiColorTheme.of(context).lightGrey,
             onPressed: isPossibleToRemoveFields
                 ? () {
                     pollOptionsGroupBloc.removeField(pollItemBloc);

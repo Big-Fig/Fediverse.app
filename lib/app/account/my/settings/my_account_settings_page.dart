@@ -14,6 +14,12 @@ import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/dark_light_switch_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/dark_light_switch_fedi_ui_theme_bloc_impl.dart';
+import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -149,6 +155,13 @@ void goMyAccountSettingsPage(BuildContext context) {
 
 MaterialPageRoute createMyAccountSettingsPageRoute() {
   return MaterialPageRoute(
-    builder: (context) => MyAccountSettingsPage(),
+    builder: (context) => DisposableProvider<IDarkLightSwitchFediUiThemeBloc>(
+        create: (context) => DarkLightSwitchFediUiThemeBloc(
+              currentFediUiThemeBloc:
+                  ICurrentFediUiThemeBloc.of(context, listen: false),
+              lightTheme: lightFediUiTheme,
+              darkTheme: darkFediUiTheme,
+            ),
+        child: MyAccountSettingsPage()),
   );
 }

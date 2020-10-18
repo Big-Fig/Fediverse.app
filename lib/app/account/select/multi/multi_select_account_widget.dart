@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/account/select/multi/multi_select_account_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +45,8 @@ class MultiSelectAccountWidget extends StatelessWidget {
                 return FediIconInCircleTransparentButton(
                   FediIcons.check,
                   color: isAccountSelected
-                      ? FediColors.primary
-                      : FediColors.darkGrey,
+                      ? IFediUiColorTheme.of(context).primary
+                      : IFediUiColorTheme.of(context).darkGrey,
                   onPressed: () {
                     if (isAccountSelected) {
                       multiSelectAccountBloc.removeAccountSelection(account);

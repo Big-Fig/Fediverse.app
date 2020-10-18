@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +16,7 @@ class FediVideoPlayerBufferingWidget extends StatelessWidget {
           var isBuffering = snapshot.data;
           if (isBuffering) {
             return FediCircularProgressIndicator(
-              color: FediColors.white,
+              color: IFediUiColorTheme.of(context).white,
             );
           } else {
             return SizedBox.shrink();

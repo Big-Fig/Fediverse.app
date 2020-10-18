@@ -5,10 +5,9 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -281,7 +280,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
               theme.customTitle,
-              style: FediTextStyles.dialogTitleBoldDarkGrey,
+              style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
           itemView,
@@ -428,7 +427,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
           ),
           FediTransparentTextButton(
             '$cancel',
-            color: FediColors.darkGrey,
+            color: IFediUiColorTheme.of(context).darkGrey,
             onPressed: () {
               Navigator.pop(context);
               if (widget.onCancel != null) {
@@ -479,12 +478,14 @@ class FediDatePickerTheme {
     @required this.customCancel,
   });
 
-  FediDatePickerTheme.byDefault({String customTitle})
-      : this(
-          headerColor: FediColors.white,
-          backgroundColor: FediColors.white,
-          itemStyle: FediTextStyles.mediumShortBoldDarkGrey,
-          doneStyle: FediTextStyles.mediumShortBoldPrimary,
+  FediDatePickerTheme.byDefault({
+    @required BuildContext context,
+    String customTitle,
+  }) : this(
+          headerColor: IFediUiColorTheme.of(context).white,
+          backgroundColor: IFediUiColorTheme.of(context).white,
+          itemStyle: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+          doneStyle: IFediUiTextTheme.of(context).mediumShortBoldPrimary,
           customTitle: customTitle ?? "app.datetime.picker.title".tr(),
           customDone: "app.datetime.picker.action.ok".tr(),
           customCancel: "app.datetime.picker.action.cancel".tr(),

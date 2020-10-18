@@ -7,12 +7,11 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -93,7 +92,8 @@ class DraftStatusListItemWidget extends StatelessWidget {
                         padding: FediPadding.allSmallPadding,
                         child: Text(
                           tr("app.status.draft.state.canceled"),
-                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                          style: IFediUiTextTheme.of(context)
+                              .mediumShortBoldDarkGrey,
                         ),
                       )
                     ],
@@ -109,7 +109,8 @@ class DraftStatusListItemWidget extends StatelessWidget {
                         padding: FediPadding.allSmallPadding,
                         child: Text(
                           tr("app.status.draft.state.already_posted"),
-                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                          style: IFediUiTextTheme.of(context)
+                              .mediumShortBoldDarkGrey,
                         ),
                       )
                     ],
@@ -128,7 +129,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
             var draftAt = snapshot.data;
             return Text(
               dateFormat.format(draftAt),
-              style: FediTextStyles.mediumShortBoldDarkGrey,
+              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
             );
           });
 
@@ -138,7 +139,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
         builder: (context, onPressed) => IconButton(
             icon: Icon(
               FediIcons.delete,
-              color: FediColors.darkGrey,
+              color: IFediUiColorTheme.of(context).darkGrey,
             ),
             iconSize: FediSizes.bigIconSize,
             onPressed: onPressed),
@@ -150,7 +151,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
       IconButton(
         icon: Icon(
           FediIcons.pen,
-          color: FediColors.darkGrey,
+          color: IFediUiColorTheme.of(context).darkGrey,
         ),
         iconSize: FediSizes.bigIconSize,
         onPressed: () async {

@@ -27,7 +27,9 @@ Future<DateTime> showScheduledStatusDateTimePickerDialog(
     maxDateTime: now.add(Duration(days: 365)),
     currentDateTime: initialDate,
     theme: FediDatePickerTheme.byDefault(
-        customTitle: "app.status.scheduled.datetime.picker.title".tr()),
+      context: context,
+      customTitle: "app.status.scheduled.datetime.picker.title".tr(),
+    ),
     onCancel: () {},
     onConfirm: (date) {},
   );

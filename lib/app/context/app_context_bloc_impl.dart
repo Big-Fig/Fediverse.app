@@ -25,6 +25,10 @@ import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_pre
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
+import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc_impl.dart';
+import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
@@ -45,6 +49,8 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
+import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc.dart';
+import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
 import 'package:fedi/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
@@ -88,15 +94,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
 
-    var sharedPreferencesService = SharedPreferencesLocalPreferencesService();
+    var localPreferencesService = SharedPreferencesLocalPreferencesService();
 
-    await sharedPreferencesService.performAsyncInit();
+    await localPreferencesService.performAsyncInit();
 
     final sharedPreferencesStorageExist =
-        await sharedPreferencesService.isStorageExist();
-    _logger.finest(() => "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
+        await localPreferencesService.isStorageExist();
+    _logger.finest(() =>
+        "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
     if (!sharedPreferencesStorageExist) {
-
       var hivePreferencesService =
           HiveLocalPreferencesService(boxName: "local_preferences");
       await hivePreferencesService.performAsyncInit();
@@ -105,18 +111,18 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       if (hivePreferencesExist) {
         var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
           inputService: hivePreferencesService,
-          outputService: sharedPreferencesService,
+          outputService: localPreferencesService,
         );
 
         await migrationBloc.migrateData();
         await hivePreferencesService.clearAllValuesAndDeleteStorage();
       }
 
-      await sharedPreferencesService.putStorageCreatedKey();
+      await localPreferencesService.putStorageCreatedKey();
     }
 
     await globalProviderService.asyncInitAndRegister<ILocalPreferencesService>(
-        sharedPreferencesService);
+        localPreferencesService);
 
     var cameraPermissionBloc =
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
@@ -136,13 +142,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
         PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
-            sharedPreferencesService);
+            localPreferencesService);
     await globalProviderService.asyncInitAndRegister<
             IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
 
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(sharedPreferencesService);
+        AuthInstanceListLocalPreferenceBloc(localPreferencesService);
     await globalProviderService.asyncInitAndRegister<
         IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
@@ -152,7 +158,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(sharedPreferencesService);
+        CurrentAuthInstanceLocalPreferenceBloc(localPreferencesService);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
@@ -183,7 +189,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
     var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferencesBloc(sharedPreferencesService);
+        PushHandlerUnhandledLocalPreferencesBloc(localPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
@@ -200,5 +206,25 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var webSocketsService = WebSocketsService();
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
+
+    var currentUiThemeIdLocalPreferenceBloc =
+        CurrentUiThemeIdLocalPreferenceBloc(localPreferencesService,
+            defaultValue: lightFediUiTheme.id);
+
+    await globalProviderService
+        .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
+            currentUiThemeIdLocalPreferenceBloc);
+
+    var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
+        currentUiThemeIdLocalPreferenceBloc:
+            currentUiThemeIdLocalPreferenceBloc,
+        availableThemes: [
+          lightFediUiTheme,
+          darkFediUiTheme,
+        ],
+        defaultTheme: lightFediUiTheme);
+
+    await globalProviderService
+        .asyncInitAndRegister<ICurrentFediUiThemeBloc>(currentFediUiThemeBloc);
   }
 }

@@ -10,11 +10,11 @@ import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -74,7 +74,7 @@ class ChatListItemWidget extends StatelessWidget {
   Widget buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
     return FediIconButton(
       tooltip: tr("app.chat.action.more"),
-      color: FediColors.darkGrey,
+      color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
@@ -112,14 +112,14 @@ class ChatListItemWidget extends StatelessWidget {
               htmlData: contentWithEmojis,
               source: chatBloc,
             ),
-            child: const HtmlTextWidget(
+            child: HtmlTextWidget(
               drawNewLines: false,
               textMaxLines: 1,
               textOverflow: TextOverflow.ellipsis,
               onLinkTap: null,
               fontSize: 16.0,
               fontWeight: FontWeight.w300,
-              color: FediColors.mediumGrey,
+              color: IFediUiColorTheme.of(context).mediumGrey,
             ),
           );
         });

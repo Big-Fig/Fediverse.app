@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -45,7 +44,8 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: FediBorderRadius.allBigBorderRadius,
-                    border: Border.all(color: FediColors.ultraLightGrey),
+                    border: Border.all(
+                        color: IFediUiColorTheme.of(context).ultraLightGrey),
                   ),
                   child: Row(
                     children: [
@@ -56,7 +56,8 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                           border: Border(
                             right: BorderSide(
                               width: 1,
-                              color: FediColors.ultraLightGrey,
+                              color:
+                                  IFediUiColorTheme.of(context).ultraLightGrey,
                             ),
                           ),
                         ),
@@ -67,7 +68,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                                 border: Border.all(
                               width: 1,
-                              color: FediColors.darkGrey,
+                              color: IFediUiColorTheme.of(context).darkGrey,
                             )),
                             child: Padding(
                               padding: const EdgeInsets.all(1.0),
@@ -77,7 +78,8 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                                     fileExtension?.toUpperCase(),
                                     maxLines: 1,
                                     minFontSize: 8.0,
-                                    style: FediTextStyles.mediumShortDarkGrey,
+                                    style: IFediUiTextTheme.of(context)
+                                        .mediumShortDarkGrey,
                                   )),
                             ),
                           ),
@@ -93,12 +95,14 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                               Text(
                                 fileExtension?.toUpperCase(),
                                 overflow: TextOverflow.ellipsis,
-                                style: FediTextStyles.smallTallGrey,
+                                style:
+                                    IFediUiTextTheme.of(context).smallTallGrey,
                               ),
                               Text(
                                 fileName,
                                 overflow: TextOverflow.ellipsis,
-                                style: FediTextStyles.mediumTallDarkGrey,
+                                style: IFediUiTextTheme.of(context)
+                                    .mediumTallDarkGrey,
                               ),
                             ],
                           ),

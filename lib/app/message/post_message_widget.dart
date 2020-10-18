@@ -7,7 +7,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +42,7 @@ class PostMessageWidget extends StatelessWidget {
                       icon: Icon(isExpanded
                           ? FediIcons.fullscreen_exit
                           : FediIcons.fullscreen),
-                      color: FediColors.darkGrey,
+                      color: IFediUiColorTheme.of(context).darkGrey,
                       onPressed: () {
                         postMessageBloc.toggleExpanded();
                       },

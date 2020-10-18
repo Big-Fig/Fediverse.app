@@ -8,11 +8,10 @@ import 'package:fedi/app/auth/instance/current/context/init/current_auth_instanc
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_indeterminate_progress_dialog.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -121,7 +120,7 @@ class _CurrentAuthInstanceContextInitWidgetState
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return FediLightStatusBarStyleArea(
       child: Scaffold(
-        backgroundColor: FediColors.primaryDark,
+        backgroundColor: IFediUiColorTheme.of(context).primaryDark,
         body: SafeArea(
           child: Center(
             child: Column(
@@ -138,7 +137,7 @@ class _CurrentAuthInstanceContextInitWidgetState
                           currentAuthInstanceBloc.currentInstance.userAtHost
                         ]),
                     textAlign: TextAlign.center,
-                    style: FediTextStyles.mediumShortBoldWhite,
+                    style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
                   ),
                 ),
                 Padding(

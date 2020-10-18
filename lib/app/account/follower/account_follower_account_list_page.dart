@@ -6,7 +6,7 @@ import 'package:fedi/app/account/pagination/cached/account_cached_pagination_blo
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class AccountFollowerAccountListPage extends StatelessWidget {
               child: Text(
                 "app.account.list.privacy".tr(),
                 textAlign: TextAlign.center,
-                style: FediTextStyles.mediumShortBoldGrey,
+                style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
               ),
             ),
             Expanded(
