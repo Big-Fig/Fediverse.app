@@ -7,7 +7,7 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_widget.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -70,7 +70,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           });
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
-    var color = isSelected ? FediColors.primary : FediColors.darkGrey;
+    var color = isSelected ? IFediUiColorTheme.of(context).primary : IFediUiColorTheme.of(context).darkGrey;
 
     // todo: refactor UI
     const insets = FediPadding.allBigPadding;

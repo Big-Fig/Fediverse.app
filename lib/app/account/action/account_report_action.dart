@@ -15,6 +15,7 @@ Future<bool> doAsyncActionReport(
   var success = dialogResult.success;
   if (success) {
     showInfoFediNotificationOverlay(
+        context: context,
         contentText: tr("app.account.action.report.success.toast"),
         titleText: null);
   } else {

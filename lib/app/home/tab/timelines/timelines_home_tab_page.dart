@@ -21,11 +21,9 @@ import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/button/fedi_transparent_icon_text_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
@@ -34,6 +32,7 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -97,7 +96,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
             builder: (context, snapshot) {
               var timelineTabBlocsList = snapshot.data;
 
-              _logger.finest(() => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
+              _logger.finest(() =>
+                  "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
               return Provider<TimelineTabBlocsList>.value(
                 value: timelineTabBlocsList,
                 child: TimelinesHomeTabPageBody(),
@@ -130,17 +130,17 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
     return DisposableProxyProvider<TimelineTabBlocsList,
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       update: (context, value, previous) {
-
-        _logger.finest(() => "IFediNestedScrollViewWithNestedScrollableTabsBloc update");
+        _logger.finest(
+            () => "IFediNestedScrollViewWithNestedScrollableTabsBloc update");
 
         return FediNestedScrollViewWithNestedScrollableTabsBloc(
-        nestedScrollControllerBloc:
-            timelinesHomeTabBloc.nestedScrollControllerBloc,
-        tabController: value?.tabController,
-      );
+          nestedScrollControllerBloc:
+              timelinesHomeTabBloc.nestedScrollControllerBloc,
+          tabController: value?.tabController,
+        );
       },
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
-        tabsEmptyBuilder: (context) => _buildLoading(),
+        tabsEmptyBuilder: (context) => _buildLoading(context),
         onLongScrollUpTopOverlayWidget:
             const TimelinesHomeTabOverlayOnLongScrollWidget(),
         topSliverWidgets: [
@@ -180,7 +180,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
             child: ClipRRect(
               borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
               child: Container(
-                color: FediColors.offWhite,
+                color: IFediUiColorTheme.of(context).offWhite,
                 child: FediListTile(
                   isFirstInList: true,
                   child: TimelinesHomeTabPostStatusHeaderWidget(),
@@ -295,11 +295,11 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
     );
   }
 
-  Widget _buildLoading() {
+  Widget _buildLoading(BuildContext context) {
     _logger.finest(() => "_buildLoading");
     return Container(
       width: double.infinity,
-      color: FediColors.white,
+      color: IFediUiColorTheme.of(context).white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -307,7 +307,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
           FediCircularProgressIndicator(),
           Text(
             "app.timeline.loading".tr(),
-            style: FediTextStyles.bigShortBoldDarkGrey,
+            style: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
           )
         ],
       ),

@@ -40,6 +40,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
       if (difference > _throttleDuration) {
         _lastRefreshErrorShowedDateTime = now;
         showErrorFediNotificationOverlay(
+            context: context,
             contentText: "${_errorToString(paginationListLoadingError)}",
             titleText: "app.list.refresh.unable_to_fetch".tr());
       }
@@ -52,6 +53,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
       if (difference > _throttleDuration) {
         _lastLoadMoreErrorShowedDateTime = now;
         showErrorFediNotificationOverlay(
+            context: context,
             contentText: "${_errorToString(paginationListLoadingError)}",
             titleText: "app.list.loading.unable_to_fetch".tr());
       }

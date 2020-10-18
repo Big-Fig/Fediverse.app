@@ -1,6 +1,6 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -29,7 +29,7 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
           var isInitializing = snapshot.data;
 
           if (isInitializing) {
-            return buildLoading();
+            return buildLoading(context);
           } else {
             return StreamBuilder<bool>(
                 stream: videoMediaPlayerBloc.isControlsVisibleStream,
@@ -46,7 +46,7 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
                           height: size,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: FediColors.darkGrey.withOpacity(0.6),
+                            color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.6),
                           ),
                           child: StreamBuilder<bool>(
                               stream: videoMediaPlayerBloc.isPlayingStream,
@@ -65,7 +65,7 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
                                               ? FediIcons.pause
                                               : FediIcons.play,
                                           size: iconSize,
-                                          color: FediColors.white,
+                                          color: IFediUiColorTheme.of(context).white,
                                         ),
                                         onPressed: onPressed,
                                       ),
@@ -87,9 +87,9 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
         });
   }
 
-  FediCircularProgressIndicator buildLoading() {
+  FediCircularProgressIndicator buildLoading(BuildContext context) {
     return FediCircularProgressIndicator(
-      color: FediColors.white,
+      color: IFediUiColorTheme.of(context).white,
     );
   }
 }

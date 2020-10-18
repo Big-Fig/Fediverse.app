@@ -4,16 +4,15 @@ import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/permission/fedi_grant_permission_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/folder/media_device_folder_bloc.dart';
@@ -99,7 +98,8 @@ class SingleMediaPickerPage extends StatelessWidget {
                                     height: double.infinity,
                                     child: Icon(
                                       FediIcons.camera,
-                                      color: FediColors.darkGrey,
+                                      color: IFediUiColorTheme.of(context)
+                                          .darkGrey,
                                       size: 40.0,
                                     )),
                               );
@@ -160,7 +160,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                         FediSmallHorizontalSpacer(),
                         Icon(
                           FediIcons.chevron_down,
-                          color: FediColors.darkGrey,
+                          color: IFediUiColorTheme.of(context).darkGrey,
                           size: 14.0,
                         )
                       ],
@@ -195,8 +195,10 @@ class SingleMediaPickerPage extends StatelessWidget {
                         title: Text(
                           _calculateFolderTitle(folder),
                           style: folder == mediaDeviceGalleryBloc.selectedFolder
-                              ? FediTextStyles.mediumShortBoldDarkGrey
-                              : FediTextStyles.mediumShortDarkGrey,
+                              ? IFediUiTextTheme.of(context)
+                                  .mediumShortBoldDarkGrey
+                              : IFediUiTextTheme.of(context)
+                                  .mediumShortDarkGrey,
                         ),
                       ))
                   .toList(),

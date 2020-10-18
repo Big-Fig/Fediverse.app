@@ -1,7 +1,6 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -39,6 +38,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
   });
 
   Widget _buildAction({
+    @required BuildContext context,
     @required DialogAction action,
     @required bool isSelected,
   }) =>
@@ -59,15 +59,15 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
                   if (action.icon != null)
                     Icon(action.icon,
                         color: isSelected
-                            ? FediColors.primary
-                            : FediColors.darkGrey),
+                            ? IFediUiColorTheme.of(context).primary
+                            : IFediUiColorTheme.of(context).darkGrey),
                   Padding(
                     padding: FediPadding.allMediumPadding,
                     child: Text(
                       action.label,
                       style: isSelected
-                          ? FediTextStyles.bigTallPrimary
-                          : FediTextStyles.bigTallDarkGrey,
+                          ? IFediUiTextTheme.of(context).bigTallPrimary
+                          : IFediUiTextTheme.of(context).bigTallDarkGrey,
                     ),
                   ),
                 ],
@@ -88,7 +88,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
               title,
-              style: FediTextStyles.dialogTitleBoldDarkGrey,
+              style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
         if (content != null)
@@ -96,7 +96,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
               content,
-              style: FediTextStyles.dialogContentDarkGrey,
+              style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
         Align(
@@ -107,6 +107,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             children: [
               ...actions
                   .map((action) => _buildAction(
+                context: context,
                         action: action,
                         isSelected: action.isSelected,
                       ))
@@ -116,6 +117,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
         ),
         if (cancelable)
           _buildAction(
+            context: context,
             action: BaseDialog.createDefaultCancelAction(
               context,
             ),

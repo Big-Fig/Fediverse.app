@@ -3,10 +3,9 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -47,7 +46,7 @@ class _TimelinesHomeTabStorageWidgetState
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       FediIconButton(
-                        color: FediColors.darkGrey,
+                        color: IFediUiColorTheme.of(context).darkGrey,
                         icon: Icon(FediIcons.settings),
                         onPressed: () {
                           goToTimelineSettingsPage(
@@ -58,7 +57,7 @@ class _TimelinesHomeTabStorageWidgetState
                       ),
                       if (isPossibleToDelete)
                         FediIconButton(
-                          color: FediColors.darkGrey,
+                          color: IFediUiColorTheme.of(context).darkGrey,
                           icon: Icon(FediIcons.remove),
                           onPressed: () {
                             timelinesHomeTabStorageBloc.remove(item);
@@ -72,14 +71,14 @@ class _TimelinesHomeTabStorageWidgetState
                   ),
                   leading: Icon(
                     FediIcons.reorder,
-                    color: FediColors.darkGrey,
+                    color: IFediUiColorTheme.of(context).darkGrey,
                   ),
                   key: Key(
                     item.id,
                   ),
                   title: Text(
                     item.label,
-                    style: FediTextStyles.mediumShortDarkGrey,
+                    style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
                   ),
                 );
               },

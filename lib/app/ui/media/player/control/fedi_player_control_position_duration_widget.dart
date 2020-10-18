@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_duration_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
@@ -17,7 +17,7 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
 
           if (isBuffering) {
             return FediCircularProgressIndicator(
-              color: FediColors.white,
+              color: IFediUiColorTheme.of(context).white,
               size: 22.0,
             );
           } else {

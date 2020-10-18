@@ -1,6 +1,6 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
@@ -39,7 +39,7 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
                         icon: Icon(isFullscreen
                             ? FediIcons.fullscreen_exit
                             : FediIcons.fullscreen),
-                        color: FediColors.white,
+                        color: IFediUiColorTheme.of(context).white,
                         onPressed: onPressed,
                       );
                     },
@@ -57,7 +57,7 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
           } else {
             return FediIconButton(
               icon: Icon(FediIcons.fullscreen),
-              color: FediColors.grey,
+              color: IFediUiColorTheme.of(context).grey,
               onPressed: () {},
             );
           }

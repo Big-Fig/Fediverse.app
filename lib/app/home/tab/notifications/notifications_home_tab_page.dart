@@ -10,7 +10,7 @@ import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
@@ -135,7 +135,7 @@ class _NotificationsHomeTabPageBodyState
           return ClipRRect(
             borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
             child: Container(
-              color: FediColors.white,
+              color: IFediUiColorTheme.of(context).white,
               child: child,
             ),
           );

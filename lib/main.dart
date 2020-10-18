@@ -29,12 +29,15 @@ import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
-import 'package:fedi/app/ui/fedi_theme.dart';
+import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc_proxy_provider.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
+import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -89,14 +92,14 @@ void main() async {
     } else if (newState == AsyncInitLoadingState.failed) {
       runApp(MaterialApp(
           home: Scaffold(
-        backgroundColor: FediColors.primaryDark,
+        backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             // todo: localization
             child: Text(
               "Failed to start app.\nTry restart or re-install app.",
-              style: FediTextStyles.mediumShortBoldWhite,
+              style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
             ),
           ),
         ),
@@ -277,7 +280,7 @@ Widget _buildEasyLocalization({@required Widget child}) {
     builder: (context) => LocalizationProvider(
       key: PageStorageKey("EasyLocalization"),
       assetLoader: CodegenLoader(),
-      preloaderColor: FediColors.primaryDark,
+      preloaderColor: lightFediUiTheme.colorTheme.primaryDark,
       preloaderWidget: MaterialApp(home: SplashPage()),
       supportedLocales: [Locale('en', 'US')],
       path: "assets/langs",
@@ -302,22 +305,46 @@ class FediApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     var localizationProvider = LocalizationProvider.of(context);
-    var app = MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: appTitle,
-      localizationsDelegates: localizationProvider.delegates,
-      supportedLocales: localizationProvider.supportedLocales,
-      locale: localizationProvider.locale,
-      theme: fediTheme,
-      initialRoute: "/",
-      home: child,
-      navigatorKey: navigatorKey,
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(
-            analytics:
-                IAnalyticsService.of(context, listen: false).firebaseAnalytics),
-      ],
+    var currentFediUiThemeBloc =
+        ICurrentFediUiThemeBloc.of(context, listen: false);
+
+    return CurrentFediUiThemeBlocProxyProvider(
+      child: StreamBuilder<IFediUiTheme>(
+          stream: currentFediUiThemeBloc.currentThemeStream,
+          builder: (context, snapshot) {
+            var currentTheme = snapshot.data;
+
+            if (currentTheme == null) {
+              return SizedBox.shrink();
+            } else {
+              return Provider<IFediUiTheme>.value(
+                value: currentTheme,
+                child: FediUiThemeProxyProvider(
+                  child: UiThemeProxyProvider(
+                    child: OverlaySupport(
+                      child: MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        localizationsDelegates: localizationProvider.delegates,
+                        supportedLocales: localizationProvider.supportedLocales,
+                        locale: localizationProvider.locale,
+                        theme: currentTheme.themeData,
+                        initialRoute: "/",
+                        home: child,
+                        navigatorKey: navigatorKey,
+                        navigatorObservers: [
+                          FirebaseAnalyticsObserver(
+                              analytics:
+                                  IAnalyticsService.of(context, listen: false)
+                                      .firebaseAnalytics),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          }),
     );
-    return OverlaySupport(child: app);
   }
 }

@@ -4,10 +4,9 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
@@ -91,7 +90,7 @@ class EmojiPickerWidget extends StatelessWidget {
           }
           return Text(
             text,
-            style: FediTextStyles.mediumTallDarkGrey,
+            style: IFediUiTextTheme.of(context).mediumTallDarkGrey,
           );
         },
         useImageEmoji: useImageEmoji,
@@ -105,9 +104,9 @@ class EmojiPickerWidget extends StatelessWidget {
           }
         },
         loadingWidget: const FediCircularProgressIndicator(),
-        selectedIndicatorColor: FediColors.primary,
-        unselectedIndicatorColor: FediColors.darkGrey,
-        separatorColor: FediColors.ultraLightGrey,
+        selectedIndicatorColor: IFediUiColorTheme.of(context).primary,
+        unselectedIndicatorColor: IFediUiColorTheme.of(context).darkGrey,
+        separatorColor: IFediUiColorTheme.of(context).ultraLightGrey,
         onEmojiSelected: onEmojiSelected,
       ),
     );

@@ -10,7 +10,7 @@ import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
@@ -79,7 +79,7 @@ class ConversationListItemWidget extends StatelessWidget {
       BuildContext context, IConversationBloc conversationBloc) {
     return FediIconButton(
       tooltip: tr("app.conversation.action.more"),
-      color: FediColors.darkGrey,
+      color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
@@ -132,7 +132,7 @@ class ConversationListItemWidget extends StatelessWidget {
               onLinkTap: null,
               fontSize: 16.0,
               fontWeight: FontWeight.w300,
-              color: FediColors.mediumGrey,
+              color: IFediUiColorTheme.of(context).mediumGrey,
             ),
           );
         });

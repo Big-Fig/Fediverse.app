@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -32,15 +32,15 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: FediColors.darkGrey.withOpacity(0.3),
+              color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.3),
               border: Border.all(
-                color: FediColors.white,
+                color: IFediUiColorTheme.of(context).white,
                 width: borderWidth,
               ),
             ),
             child: FediIconButton(
               padding: EdgeInsets.zero,
-              icon: Icon(iconData, size: iconSize, color: FediColors.white),
+              icon: Icon(iconData, size: iconSize, color: IFediUiColorTheme.of(context).white),
               onPressed: onPressed,
             ),
           ),

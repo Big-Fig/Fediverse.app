@@ -1,5 +1,5 @@
 import 'package:extended_text_field/extended_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +59,9 @@ class FediBaseEditTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedTextField(
       enabled: enabled,
-      specialTextSpanBuilder: _SpecialTextSpanBuilder(),
+      specialTextSpanBuilder: _SpecialTextSpanBuilder(
+        color: IFediUiColorTheme.of(context).primary,
+      ),
 //    return TextField(
       maxLength: maxLength,
       autocorrect: autocorrect,
@@ -75,7 +77,7 @@ class FediBaseEditTextField extends StatelessWidget {
         errorBorder: displayBorder ? errorBorder : InputBorder.none,
         focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
         errorStyle: textStyle.copyWith(
-          color: FediColors.error,
+          color: IFediUiColorTheme.of(context).error,
         ),
         hintText: hintText,
         errorText: errorText,
@@ -128,13 +130,21 @@ class _MentionSpecialText extends SpecialText {
 }
 
 class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
+  final Color color;
+
+  _SpecialTextSpanBuilder({
+    @required this.color,
+  });
+
   @override
   SpecialText createSpecialText(String flag,
       {TextStyle textStyle, SpecialTextGestureTapCallback onTap, int index}) {
     ///index is end index of start flag, so text start index should be index-(flag.length-1)
     if (flag?.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(
-        textStyle: textStyle?.copyWith(color: FediColors.primary),
+        textStyle: textStyle?.copyWith(
+          color: color,
+        ),
         onTap: onTap,
         start: index - (_MentionSpecialText.flag.length - 1),
       );

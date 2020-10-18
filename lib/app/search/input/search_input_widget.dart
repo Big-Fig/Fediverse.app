@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -26,17 +26,17 @@ class SearchInputWidget extends StatelessWidget {
             child: Container(
               height: 40.0,
               child: FediFilledEditTextField(
-                border: Border.all(color: FediColors.darkGrey),
+                border: Border.all(color: IFediUiColorTheme.of(context).darkGrey),
                 leading: Padding(
                   padding: FediPadding.horizontalBigPadding,
                   child: Icon(
                     FediIcons.search,
-                    color: FediColors.grey,
+                    color: IFediUiColorTheme.of(context).grey,
                     size: 20.0,
                   ),
                 ),
                 autofocus: autofocus,
-                backgroundColor: FediColors.white,
+                backgroundColor: IFediUiColorTheme.of(context).white,
                 textEditingController:
                     searchInputBloc.searchTextEditingController,
                 expanded: false,

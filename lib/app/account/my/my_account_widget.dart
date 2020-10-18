@@ -4,9 +4,8 @@ import 'package:fedi/app/account/field/account_field_list_widget.dart';
 import 'package:fedi/app/account/my/info/my_account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountWidget extends StatelessWidget {
@@ -25,11 +24,11 @@ class MyAccountWidget extends StatelessWidget {
           MyAccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
             Container(
-              color: FediColors.primary,
+              color: IFediUiColorTheme.of(context).primary,
               child: const AccountActionListWidget(),
             ),
           AccountNoteWidget(
-            textStyle: FediTextStyles.bigTallBoldDarkGrey,
+            textStyle: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
           ),
           Padding(
             padding: const EdgeInsets.only(

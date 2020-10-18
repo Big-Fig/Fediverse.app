@@ -4,7 +4,7 @@ import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,8 +30,8 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                   builder: (context, onPressed) => FediIconButton(
                         iconSize: FediSizes.bigIconSize,
                         color: favourited
-                            ? FediColors.secondary
-                            : FediColors.darkGrey,
+                            ? IFediUiColorTheme.of(context).secondary
+                            : IFediUiColorTheme.of(context).darkGrey,
                         icon: favourited
                             ? Icon(FediIcons.heart_active)
                             : Icon(FediIcons.heart),

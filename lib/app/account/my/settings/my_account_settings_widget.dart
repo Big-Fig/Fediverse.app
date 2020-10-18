@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_visibility_field_form_row_widget.dart';
+import 'package:fedi/app/ui/theme/dark_light_switch_fedi_ui_theme_form_row_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class MyAccountSettingsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        DarkLightSwitchFediUiThemeFormRowWidget(),
         FormBoolFieldFormRowWidget(
           label: tr("app.account.my.settings.field.websockets_enabled.label"),
           desc: tr(

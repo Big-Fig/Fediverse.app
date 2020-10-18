@@ -3,12 +3,11 @@ import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
@@ -120,25 +119,23 @@ class PollMetadataWidget extends StatelessWidget {
         PollMetadataTotalVotesCountWidget(
           votesCount: poll.votesCount,
         ),
-        buildDotSeparatorWidget(),
+        buildDotSeparatorWidget(context),
         if (poll.expiresAt != null)
           PollMetadataExpiresAtWidget(
             expiresAt: poll.expiresAt,
             expired: poll.expired,
           ),
-        if (poll.isPossibleToVote) buildDotSeparatorWidget(),
+        if (poll.isPossibleToVote) buildDotSeparatorWidget(context),
         if (poll.isPossibleToVote) PollMetadataShowHideResultsWidget()
       ],
     );
   }
 }
 
-Text buildDotSeparatorWidget() {
-  return Text(
-    " · ",
-    style: FediTextStyles.mediumShortGrey,
-  );
-}
+Text buildDotSeparatorWidget(BuildContext context) => Text(
+      " · ",
+      style: IFediUiTextTheme.of(context).mediumShortGrey,
+    );
 
 class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   final int votesCount;
@@ -149,7 +146,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "app.poll.metadata.total_votes".tr(args: [votesCount.toString()]),
-      style: FediTextStyles.mediumShortGrey,
+      style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
 }
@@ -177,7 +174,7 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
               isNeedShowResultsWithoutVote
                   ? "app.poll.metadata.hide_results".tr()
                   : "app.poll.metadata.show_results".tr(),
-              style: FediTextStyles.mediumShortPrimary,
+              style: IFediUiTextTheme.of(context).mediumShortPrimary,
             ),
           );
         });
@@ -195,12 +192,12 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      expired ? buildExpired() : buildNotExpired();
+      expired ? buildExpired(context) : buildNotExpired(context);
 
-  Widget buildNotExpired() {
+  Widget buildNotExpired(BuildContext context) {
     return DateTimeDynamicTimeAgoWidget(
       dateTime: expiresAt,
-      textStyle: FediTextStyles.mediumShortGrey,
+      textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
       customTextBuilder: (String timeAgoString) {
         return "app.poll.metadata.expires.not_expired"
             .tr(args: [timeAgoString]);
@@ -208,9 +205,9 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
     );
   }
 
-  Widget buildExpired() => Text(
+  Widget buildExpired(BuildContext context) => Text(
         "app.poll.metadata.expires.expired".tr(),
-        style: FediTextStyles.mediumShortGrey,
+        style: IFediUiTextTheme.of(context).mediumShortGrey,
       );
 }
 
@@ -234,10 +231,12 @@ class PollOptionWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context, listen: false);
 
     var fillColor = isPossibleToVote
-        ? FediColors.white
-        : isOwnVote ? FediColors.primary : FediColors.ultraLightGrey;
+        ? IFediUiColorTheme.of(context).white
+        : isOwnVote
+            ? IFediUiColorTheme.of(context).primary
+            : IFediUiColorTheme.of(context).ultraLightGrey;
 
-    var backgroundColor = FediColors.white;
+    var backgroundColor = IFediUiColorTheme.of(context).white;
 
     // votes count can be hidden until poll ends
     var votesCount = pollOption.votesCount ?? 0;
@@ -258,10 +257,10 @@ class PollOptionWidget extends StatelessWidget {
               color: backgroundColor,
               border: Border.all(
                   color: isPossibleToVote
-                      ? FediColors.primaryDark
+                      ? IFediUiColorTheme.of(context).primaryDark
                       : isOwnVote
-                          ? FediColors.primaryDark
-                          : FediColors.ultraLightGrey),
+                          ? IFediUiColorTheme.of(context).primaryDark
+                          : IFediUiColorTheme.of(context).ultraLightGrey),
             ),
             child: Stack(
               alignment: Alignment.centerLeft,
@@ -318,10 +317,12 @@ class PollOptionWidget extends StatelessWidget {
                   var multiple = poll.multiple;
 
                   var isSelected = selectedVotes?.contains(pollOption) ?? false;
-                  var borderColor =
-                      isSelected ? FediColors.primary : FediColors.grey;
-                  var backgroundColor =
-                      isSelected ? FediColors.primary : FediColors.white;
+                  var borderColor = isSelected
+                      ? IFediUiColorTheme.of(context).primary
+                      : IFediUiColorTheme.of(context).grey;
+                  var backgroundColor = isSelected
+                      ? IFediUiColorTheme.of(context).primary
+                      : IFediUiColorTheme.of(context).white;
                   var size = 28.0;
                   return Padding(
                     padding: const EdgeInsets.only(left: FediSizes.bigPadding),
@@ -341,7 +342,7 @@ class PollOptionWidget extends StatelessWidget {
                           ? Center(
                               child: Icon(
                                 FediIcons.check,
-                                color: FediColors.white,
+                                color: IFediUiColorTheme.of(context).white,
                                 size: 16.0,
                               ),
                             )
@@ -393,7 +394,7 @@ class PollOptionVotesCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         "(${votesCount.toString()})",
-        style: FediTextStyles.mediumShortDarkGrey,
+        style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
       );
 }
 
@@ -415,8 +416,8 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
           child: Text(
             _format.format(votesPercent),
             style: isOwnVote
-                ? FediTextStyles.bigTallPrimaryDark
-                : FediTextStyles.bigTallGrey,
+                ? IFediUiTextTheme.of(context).bigTallPrimaryDark
+                : IFediUiTextTheme.of(context).bigTallGrey,
           ),
         ),
       );
@@ -437,10 +438,10 @@ class PollOptionTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) => Text(
         title,
         style: isPossibleToVote
-            ? FediTextStyles.bigTallPrimaryDark
+            ? IFediUiTextTheme.of(context).bigTallPrimaryDark
             : isOwnVote
-                ? FediTextStyles.bigTallWhite
-                : FediTextStyles.bigTallGrey,
+                ? IFediUiTextTheme.of(context).bigTallWhite
+                : IFediUiTextTheme.of(context).bigTallGrey,
         overflow: TextOverflow.ellipsis,
       );
 }

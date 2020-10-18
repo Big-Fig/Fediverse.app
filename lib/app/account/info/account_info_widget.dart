@@ -4,7 +4,7 @@ import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/header/account_header_followers_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_following_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_statuses_count_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,13 +33,13 @@ class AccountInfoWidget extends StatelessWidget {
                   children: <Widget>[
                     AccountHeaderStatusesCountWidget(
                       onStatusesTapCallback: onStatusesTapCallback,
-                      color: FediColors.white,
+                      color: IFediUiColorTheme.of(context).white,
                     ),
                     AccountHeaderFollowingCountWidget(
-                      color: FediColors.white,
+                      color: IFediUiColorTheme.of(context).white,
                     ),
                     AccountHeaderFollowersCountWidget(
-                      color: FediColors.white,
+                      color: IFediUiColorTheme.of(context).white,
                     ),
                   ],
                 ),

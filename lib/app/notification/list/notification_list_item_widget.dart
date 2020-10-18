@@ -15,13 +15,12 @@ import 'package:fedi/app/notification/created_at/notification_created_at_widget.
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -91,42 +90,42 @@ class NotificationListItemWidget extends StatelessWidget {
   Widget buildNotificationIcon(
       BuildContext context, INotificationBloc notificationBloc) {
     IconData iconData;
-    Color iconColor = FediColors.primary;
+    Color iconColor = IFediUiColorTheme.of(context).primary;
 
     switch (notificationBloc.typePleroma) {
       case PleromaNotificationType.follow:
         iconData = FediIcons.follow;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.favourite:
         iconData = FediIcons.heart_active;
-        iconColor = FediColors.secondary;
+        iconColor = IFediUiColorTheme.of(context).secondary;
         break;
       case PleromaNotificationType.reblog:
         iconData = FediIcons.reply;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.mention:
         iconData = null;
         break;
       case PleromaNotificationType.poll:
         iconData = FediIcons.poll;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.move:
         iconData = FediIcons.forward;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.followRequest:
         iconData = FediIcons.add_user;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
         iconData = null;
         break;
       case PleromaNotificationType.pleromaChatMention:
         iconData = FediIcons.chat;
-        iconColor = FediColors.primary;
+        iconColor = IFediUiColorTheme.of(context).primary;
         break;
       case PleromaNotificationType.unknown:
         iconData = null;
@@ -218,10 +217,10 @@ class NotificationListItemWidget extends StatelessWidget {
         source: notificationBloc,
         htmlData: htmlText,
       ),
-      child: const HtmlTextWidget(
+      child: HtmlTextWidget(
         textMaxLines: 1,
         textOverflow: TextOverflow.ellipsis,
-        color: FediColors.mediumGrey,
+        color: IFediUiColorTheme.of(context).mediumGrey,
         fontSize: 16,
         lineHeight: 1.5,
         fontWeight: FontWeight.w300,
@@ -274,7 +273,7 @@ class NotificationListItemWidget extends StatelessWidget {
                   IconSlideAction(
                     icon: FediIcons.check,
                     caption: "app.notification.action.mark_as_read".tr(),
-                    color: FediColors.white,
+                    color: IFediUiColorTheme.of(context).white,
                     onTap: () {
                       notificationBloc.markAsRead();
                     },
@@ -283,7 +282,7 @@ class NotificationListItemWidget extends StatelessWidget {
                   IconSlideAction(
                     icon: FediIcons.delete,
                     caption: "app.notification.action.dismiss".tr(),
-                    color: FediColors.white,
+                    color: IFediUiColorTheme.of(context).white,
                     onTap: () {
                       notificationBloc.dismiss();
                     },
@@ -355,7 +354,8 @@ class NotificationListItemWidget extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   AccountDisplayNameWidget(
-                                    textStyle: FediTextStyles.bigTallDarkGrey,
+                                    textStyle: IFediUiTextTheme.of(context)
+                                        .bigTallDarkGrey,
                                   ),
                                   Row(
                                     children: [
@@ -378,8 +378,9 @@ class NotificationListItemWidget extends StatelessWidget {
                           const FediBigHorizontalSpacer(),
                           NotificationCreatedAtWidget(
                             textStyle: unread
-                                ? FediTextStyles.smallShortPrimaryDark
-                                : FediTextStyles.smallShortGrey,
+                                ? IFediUiTextTheme.of(context)
+                                    .smallShortPrimaryDark
+                                : IFediUiTextTheme.of(context).smallShortGrey,
                           ),
                         ],
                       ),

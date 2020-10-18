@@ -1,8 +1,7 @@
 import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -26,7 +25,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
       height: 45,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: FediColors.lightGrey)),
+          border: Border.all(color: IFediUiColorTheme.of(context).lightGrey)),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
         child: Stack(
@@ -40,7 +39,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                 focusNode: formStringFieldBloc.focusNode,
                 textInputAction: textInputAction,
                 onSubmitted: onSubmitted,
-                textStyle: FediTextStyles.bigTallMediumGrey,
+                textStyle: IFediUiTextTheme.of(context).bigTallMediumGrey,
                 obscureText: false,
                 autofocus: false,
                 textEditingController:
@@ -56,7 +55,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                 focusedBorder: null,
                 contentPadding: null,
                 displayBorder: false,
-                hintStyle: FediTextStyles.bigTallGrey,
+                hintStyle: IFediUiTextTheme.of(context).bigTallGrey,
                 maxLength: formStringFieldBloc.maxLength,
               ),
             ),
@@ -72,7 +71,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                     if (isHaveAtLeastOneError) {
                       return Icon(
                         FediIcons.warning,
-                        color: FediColors.error,
+                        color: IFediUiColorTheme.of(context).error,
                       );
                     } else {
                       return SizedBox.shrink();

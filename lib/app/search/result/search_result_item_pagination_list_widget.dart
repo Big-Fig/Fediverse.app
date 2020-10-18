@@ -12,7 +12,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -82,7 +82,7 @@ class SearchResultItemPaginationListWidget
               padding: FediPadding.allMediumPadding,
               child: Text(
                 itemOrSeparator.separator,
-                style: FediTextStyles.bigTallBoldDarkGrey,
+                style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
               ),
             );
           } else {

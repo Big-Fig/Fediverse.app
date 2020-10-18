@@ -2,11 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,21 +33,26 @@ class RecentSearchWidget extends StatelessWidget {
                   children: [
                     Text(
                       "app.search.recent.title".tr(),
-                      style: FediTextStyles.bigTallBoldDarkGrey,
+                      style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
                     ),
                     if (recentItemsIsNotEmpty)
-                      buildClearButton(recentSearchBloc)
+                      buildClearButton(context, recentSearchBloc)
                   ],
                 ),
                 FediSmallVerticalSpacer(),
                 FediUltraLightGreyDivider(),
                 Expanded(
                   child: recentItemsIsNotEmpty
-                      ? buildListView(recentSearchBloc, recentItems)
+                      ? buildListView(
+                          context,
+                          recentSearchBloc,
+                          recentItems,
+                        )
                       : Center(
                           child: Text(
                             "app.search.recent.empty".tr(),
-                            style: FediTextStyles.mediumShortDarkGrey,
+                            style: IFediUiTextTheme.of(context)
+                                .mediumShortDarkGrey,
                           ),
                         ),
                 ),
@@ -58,11 +62,12 @@ class RecentSearchWidget extends StatelessWidget {
         });
   }
 
-  IconButton buildClearButton(IRecentSearchBloc recentSearchBloc) {
+  IconButton buildClearButton(
+      BuildContext context, IRecentSearchBloc recentSearchBloc) {
     return IconButton(
       icon: Icon(
         FediIcons.remove,
-        color: FediColors.darkGrey,
+        color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
         recentSearchBloc.clearRecentSearch();
@@ -70,8 +75,11 @@ class RecentSearchWidget extends StatelessWidget {
     );
   }
 
-  ListView buildListView(IRecentSearchBloc recentSearchBloc, Iterable<String>
-  recentItems) {
+  ListView buildListView(
+    BuildContext context,
+    IRecentSearchBloc recentSearchBloc,
+    Iterable<String> recentItems,
+  ) {
     return ListView(
       children: recentItems
           .map(
@@ -83,7 +91,7 @@ class RecentSearchWidget extends StatelessWidget {
                 padding: FediPadding.verticalSmallPadding,
                 child: Text(
                   recentItem,
-                  style: FediTextStyles.bigTallDarkGrey,
+                  style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 ),
               ),
             ),

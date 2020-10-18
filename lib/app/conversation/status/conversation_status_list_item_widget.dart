@@ -3,8 +3,7 @@ import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,8 +46,8 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isHaveTextContent
                     ? isStatusFromMe
-                        ? FediColors.primaryDark
-                        : FediColors.ultraLightGrey
+                        ? IFediUiColorTheme.of(context).primaryDark
+                        : IFediUiColorTheme.of(context).ultraLightGrey
                     : Colors.transparent,
                 borderRadius: isHaveTextContent
                     ? isStatusFromMe
@@ -101,7 +100,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Text(
                   TimeOfDay.fromDateTime(statusBloc.createdAt).format(context),
-                  style: FediTextStyles.smallShortMediumGrey,
+                  style: IFediUiTextTheme.of(context).smallShortMediumGrey,
                 ),
               ),
             )
@@ -148,10 +147,12 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                 ),
                 child: HtmlTextWidget(
                     shrinkWrap: true,
-                    color:
-                        isStatusFromMe ? FediColors.white : FediColors.darkGrey,
-                    linkColor:
-                        isStatusFromMe ? FediColors.white : FediColors.primary,
+                    color: isStatusFromMe
+                        ? IFediUiColorTheme.of(context).white
+                        : IFediUiColorTheme.of(context).darkGrey,
+                    linkColor: isStatusFromMe
+                        ? IFediUiColorTheme.of(context).white
+                        : IFediUiColorTheme.of(context).primary,
                     fontSize: 16.0,
                     lineHeight: 1.5,
                     // data: contentWithEmojis,

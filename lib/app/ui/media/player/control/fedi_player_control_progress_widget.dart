@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +10,15 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
 
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        activeTrackColor: FediColors.white,
-        inactiveTrackColor: FediColors.grey,
-        disabledActiveTrackColor: FediColors.mediumGrey,
-        disabledInactiveTrackColor: FediColors.mediumGrey,
+        activeTrackColor: IFediUiColorTheme.of(context).white,
+        inactiveTrackColor: IFediUiColorTheme.of(context).grey,
+        disabledActiveTrackColor: IFediUiColorTheme.of(context).mediumGrey,
+        disabledInactiveTrackColor: IFediUiColorTheme.of(context).mediumGrey,
         trackShape: RoundedRectSliderTrackShape(),
         trackHeight: 1.0,
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 4.0),
         thumbColor: Colors.white,
-        disabledThumbColor: FediColors.mediumGrey,
+        disabledThumbColor: IFediUiColorTheme.of(context).mediumGrey,
       ),
       child: StreamBuilder<bool>(
           stream: mediaPlayerBloc.isInitializedStream,

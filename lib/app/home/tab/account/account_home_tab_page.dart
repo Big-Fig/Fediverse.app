@@ -24,10 +24,8 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
@@ -36,6 +34,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -85,7 +84,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FediColors.white,
+      backgroundColor: IFediUiColorTheme.of(context).white,
       body: Stack(
         children: [
           ProxyProvider<IMyAccountBloc, IAccountBloc>(
@@ -139,7 +138,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
               child: ClipRRect(
                 borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
                 child: Container(
-                  color: FediColors.offWhite,
+                  color: IFediUiColorTheme.of(context).offWhite,
                   child: FediListTile(
                     isFirstInList: true,
                     child: MyAccountWidget(
@@ -316,10 +315,10 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
         children: <Widget>[
           Flexible(child: buildCurrentInstanceNameWidget(context)),
           const FediSmallHorizontalSpacer(),
-          const Icon(
+          Icon(
             FediIcons.chevron_down,
             size: 18.0,
-            color: FediColors.white,
+            color: IFediUiColorTheme.of(context).white,
           ),
         ],
       ),
@@ -340,10 +339,11 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
-      minFontSize: FediTextStyles.smallShortBoldWhite.fontSize,
-      maxFontSize: FediTextStyles.subHeaderShortBoldWhite.fontSize,
+      minFontSize: IFediUiTextTheme.of(context).smallShortBoldWhite.fontSize,
+      maxFontSize:
+          IFediUiTextTheme.of(context).subHeaderShortBoldWhite.fontSize,
       maxLines: 1,
-      style: FediTextStyles.subHeaderShortBoldWhite,
+      style: IFediUiTextTheme.of(context).subHeaderShortBoldWhite,
     );
   }
 }

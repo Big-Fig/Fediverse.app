@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class TosPage extends StatelessWidget {
               builder: (context, snapshot) {
                 return Text(
                   snapshot.data ?? '',
-                  style: FediTextStyles.mediumShortDarkGrey,
+                  style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
                   softWrap: true,
                 );
               },

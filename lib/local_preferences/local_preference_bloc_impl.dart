@@ -92,12 +92,13 @@ abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
       _preferenceService.getObjectPreference(key, jsonConverter);
 }
 
-abstract class SimplePreferencesBloc<T> extends LocalPreferenceBloc<T> {
-  SimplePreferencesBloc(ILocalPreferencesService preferencesService, String key)
+abstract class SimpleLocalPreferencesBloc<T> extends LocalPreferenceBloc<T> {
+  SimpleLocalPreferencesBloc(
+      ILocalPreferencesService preferencesService, String key)
       : super(preferencesService, key);
 }
 
-abstract class IntPreferenceBloc extends SimplePreferencesBloc<int> {
+abstract class IntPreferenceBloc extends SimpleLocalPreferencesBloc<int> {
   IntPreferenceBloc(ILocalPreferencesService preferencesService, String key)
       : super(preferencesService, key);
 
@@ -111,8 +112,10 @@ abstract class IntPreferenceBloc extends SimplePreferencesBloc<int> {
       );
 }
 
-abstract class BoolPreferenceBloc extends SimplePreferencesBloc<bool> {
-  BoolPreferenceBloc(ILocalPreferencesService preferencesService, String key)
+abstract class BoolLocalPreferenceBloc
+    extends SimpleLocalPreferencesBloc<bool> {
+  BoolLocalPreferenceBloc(
+      ILocalPreferencesService preferencesService, String key)
       : super(preferencesService, key);
 
   @override
@@ -125,8 +128,10 @@ abstract class BoolPreferenceBloc extends SimplePreferencesBloc<bool> {
       );
 }
 
-abstract class StringPreferenceBloc extends SimplePreferencesBloc<String> {
-  StringPreferenceBloc(ILocalPreferencesService preferencesService, String key)
+abstract class StringLocalPreferenceBloc
+    extends SimpleLocalPreferencesBloc<String> {
+  StringLocalPreferenceBloc(
+      ILocalPreferencesService preferencesService, String key)
       : super(preferencesService, key);
 
   @override

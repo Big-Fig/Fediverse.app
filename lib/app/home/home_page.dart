@@ -25,7 +25,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_provid
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_background_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             body: Stack(
               children: [
-                _buildBackground(),
+                _buildBackground(context),
                 buildBody(context, selectedTab),
               ],
             ),
@@ -81,9 +81,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  FediLightStatusBarStyleArea _buildBackground() => FediLightStatusBarStyleArea(
+  FediLightStatusBarStyleArea _buildBackground(BuildContext context) => FediLightStatusBarStyleArea(
         child: Container(
-          color: FediColors.primary,
+          color: IFediUiColorTheme.of(context).primary,
           child: FediInstanceImageBackgroundWidget(
             child: Container(),
           ),

@@ -14,7 +14,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -232,7 +232,7 @@ class EditMyAccountWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(editAccountAvatarAndBorderSize / 2),
         border: Border.all(
           width: editAccountAvatarCircleBorderWidth,
-          color: FediColors.white,
+          color: IFediUiColorTheme.of(context).white,
           style: BorderStyle.solid,
         ),
       ),
@@ -553,6 +553,7 @@ class EditMyAccountWidget extends StatelessWidget {
       contentText = e.toString();
     }
     return showErrorFediNotificationOverlay(
+      context: context,
       contentText: contentText,
       titleText:
           "app.account.my.edit.media.upload.failed.notification.title".tr(),

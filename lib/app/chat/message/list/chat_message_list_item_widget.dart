@@ -4,9 +4,8 @@ import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -51,8 +50,8 @@ class ChatMessageListItemWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: isHaveTextContent
                   ? isChatMessageFromMe
-                      ? FediColors.primaryDark
-                      : FediColors.ultraLightGrey
+                      ? IFediUiColorTheme.of(context).primaryDark
+                      : IFediUiColorTheme.of(context).ultraLightGrey
                   : Colors.transparent,
               borderRadius: isHaveTextContent
                   ? isChatMessageFromMe
@@ -109,7 +108,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
                   child: Text(
                     TimeOfDay.fromDateTime(messageBloc.createdAt)
                         .format(context),
-                    style: FediTextStyles.smallShortGrey,
+                    style: IFediUiTextTheme.of(context).smallShortGrey,
                   ),
                 ))
         ],
@@ -180,11 +179,11 @@ class ChatMessageListItemWidget extends StatelessWidget {
                 child: HtmlTextWidget(
                     shrinkWrap: true,
                     color: isChatMessageFromMe
-                        ? FediColors.white
-                        : FediColors.darkGrey,
+                        ? IFediUiColorTheme.of(context).white
+                        : IFediUiColorTheme.of(context).darkGrey,
                     linkColor: isChatMessageFromMe
-                        ? FediColors.white
-                        : FediColors.primary,
+                        ? IFediUiColorTheme.of(context).white
+                        : IFediUiColorTheme.of(context).primary,
                     fontSize: 16.0,
                     lineHeight: 1.5,
                     onLinkTap: (context, htmlTextData, url) async {

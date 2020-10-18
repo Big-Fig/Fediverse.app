@@ -1,9 +1,8 @@
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +29,8 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                 statusEmojiReactionBloc.toggleEmojiReaction(),
             builder: (BuildContext context, void Function() onPressed) {
               var color = emojiReaction.me
-                  ? FediColors.primary
-                  : FediColors.lightGrey;
+                  ? IFediUiColorTheme.of(context).primary
+                  : IFediUiColorTheme.of(context).lightGrey;
               return Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: FediSizes.smallPadding),
@@ -61,7 +60,8 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                           const FediSmallHorizontalSpacer(),
                           Text(
                             "${emojiReaction.count}",
-                            style: FediTextStyles.mediumShortDarkGrey
+                            style: IFediUiTextTheme.of(context)
+                                .mediumShortDarkGrey
                                 .copyWith(color: color),
                           ),
                         ],

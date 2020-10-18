@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -17,7 +17,7 @@ class TimelineWidget extends StatelessWidget {
         ITimelineLocalPreferencesBloc.of(context, listen: false);
 
     return Container(
-      color: FediColors.offWhite,
+      color: IFediUiColorTheme.of(context).offWhite,
       child: StreamBuilder<bool>(
           stream: timelineLocalPreferencesBloc.stream
               .map((timeline) => timeline?.onlyWithMedia == true),

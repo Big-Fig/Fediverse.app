@@ -9,7 +9,7 @@ import 'package:fedi/app/timeline/create/create_timeline_bloc_impl.dart';
 import 'package:fedi/app/timeline/create/create_timeline_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -34,7 +34,7 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
                 return AsyncOperationButtonBuilderWidget(
                   builder: (context, onPressed) => FediIconButton(
                     icon: Icon(Icons.check),
-                    color: FediColors.darkGrey,
+                    color: IFediUiColorTheme.of(context).darkGrey,
                     onPressed: isReadyToSubmit ? onPressed : null,
                   ),
                   asyncButtonAction: createTimelineBloc.save,

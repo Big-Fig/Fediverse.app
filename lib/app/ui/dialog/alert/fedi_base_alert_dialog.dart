@@ -1,9 +1,8 @@
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -51,7 +50,7 @@ class FediBaseAlertDialog extends BaseDialog {
       backgroundColor: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: FediColors.white,
+          color: IFediUiColorTheme.of(context).white,
           borderRadius: FediBorderRadius.allBigBorderRadius,
         ),
         child: Padding(
@@ -66,7 +65,7 @@ class FediBaseAlertDialog extends BaseDialog {
                       const EdgeInsets.only(bottom: FediSizes.smallPadding),
                   child: Text(
                     title,
-                    style: FediTextStyles.dialogTitleBoldDarkGrey,
+                    style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
                   ),
                 ),
               if (content != null)
@@ -75,7 +74,7 @@ class FediBaseAlertDialog extends BaseDialog {
                       const EdgeInsets.only(bottom: FediSizes.smallPadding),
                   child: Text(
                     content,
-                    style: FediTextStyles.dialogContentDarkGrey,
+                    style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
                   ),
                 ),
               FediBigVerticalSpacer(),
@@ -107,7 +106,7 @@ class FediBaseAlertDialog extends BaseDialog {
                   child: buildButton(
                     context: context,
                     action: action,
-                    color: FediColors.primary,
+                    color: IFediUiColorTheme.of(context).primary,
                     notAddRightPadding: isLast,
                   ),
                 );
@@ -128,7 +127,7 @@ class FediBaseAlertDialog extends BaseDialog {
                   child: buildButton(
                     context: context,
                     action: action,
-                    color: FediColors.primary,
+                    color: IFediUiColorTheme.of(context).primary,
                     notAddRightPadding: true,
                   ),
                 );
@@ -154,7 +153,7 @@ class FediBaseAlertDialog extends BaseDialog {
       buildButton(
         context: context,
         action: BaseDialog.createDefaultCancelAction(context),
-        color: FediColors.mediumGrey,
+        color: IFediUiColorTheme.of(context).mediumGrey,
         notAddRightPadding: isLast,
       );
 }
