@@ -8,9 +8,13 @@ import 'package:flutter/material.dart';
 
 class PostMessageContentWidget extends StatelessWidget {
   final String hintText;
+  final bool expanded;
+  final Widget ending;
 
   const PostMessageContentWidget({
     @required this.hintText,
+    this.expanded = false,
+    this.ending,
   });
 
   @override
@@ -22,7 +26,8 @@ class PostMessageContentWidget extends StatelessWidget {
       hintText: hintText,
       textEditingController: postMessageBloc.inputTextController,
       focusNode: postMessageBloc.inputFocusNode,
-      expanded: false,
+      expanded: expanded,
+      ending: ending,
       autofocus: false,
       textInputAction: TextInputAction.send,
       onSubmitted: (String value) async {

@@ -7,9 +7,9 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,26 +30,39 @@ class PostMessageWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           buildMediaAttachments(context, postMessageBloc),
-          Row(
-            children: [
-              Expanded(child: PostMessageContentWidget(hintText: hintText)),
-              StreamBuilder<bool>(
-                  stream: postMessageBloc.isExpandedStream,
-                  initialData: postMessageBloc.isExpanded,
-                  builder: (context, snapshot) {
-                    var isExpanded = snapshot.data;
-                    return FediIconButton(
-                      icon: Icon(isExpanded
-                          ? FediIcons.fullscreen_exit
-                          : FediIcons.fullscreen),
-                      color: IFediUiColorTheme.of(context).darkGrey,
-                      onPressed: () {
-                        postMessageBloc.toggleExpanded();
-                      },
-                    );
-                  })
-            ],
-          ),
+          StreamBuilder<bool>(
+              stream: postMessageBloc.isExpandedStream,
+              initialData: postMessageBloc.isExpanded,
+              builder: (context, snapshot) {
+                var isExpanded = snapshot.data;
+                var child = PostMessageContentWidget(
+                  hintText: hintText,
+                  expanded: isExpanded,
+                  ending: StreamBuilder<bool>(
+                      stream: postMessageBloc.isExpandedStream,
+                      initialData: postMessageBloc.isExpanded,
+                      builder: (context, snapshot) {
+                        var isExpanded = snapshot.data;
+                        return Align(
+                          alignment: Alignment.topRight,
+                          child: FediIconButton(
+                            icon: Icon(isExpanded
+                                ? FediIcons.fullscreen_exit
+                                : FediIcons.fullscreen),
+                            color: IFediUiColorTheme.of(context).darkGrey,
+                            onPressed: () {
+                              postMessageBloc.toggleExpanded();
+                            },
+                          ),
+                        );
+                      }),
+                );
+                if (isExpanded) {
+                  return Expanded(child: child);
+                } else {
+                  return child;
+                }
+              }),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
