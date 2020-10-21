@@ -6,8 +6,12 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-const _nonMediaIconSize = 70.0;
-var _rowHeight = 70.0;
+// const _nonMediaIconSize = 48.0 + 17.0;
+// var _rowHeight = 48.0 + 17.0;
+
+const _nonMediaIconSize = 48.0 + 6.0;
+
+var _rowHeight = 48.0 + 6.0;
 
 class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
   final double opacity;
@@ -43,71 +47,14 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 opacity: opacity,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: FediBorderRadius.allBigBorderRadius,
+                    borderRadius: FediBorderRadius.allSmallBorderRadius,
                     border: Border.all(
                         color: IFediUiColorTheme.of(context).ultraLightGrey),
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        width: _nonMediaIconSize,
-                        height: _nonMediaIconSize,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              width: 1,
-                              color:
-                                  IFediUiColorTheme.of(context).ultraLightGrey,
-                            ),
-                          ),
-                        ),
-                        child: Center(
-                            child: Padding(
-                          padding: FediPadding.allBigPadding,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                              width: 1,
-                              color: IFediUiColorTheme.of(context).darkGrey,
-                            )),
-                            child: Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: AutoSizeText(
-                                    fileExtension?.toUpperCase(),
-                                    maxLines: 1,
-                                    minFontSize: 8.0,
-                                    style: IFediUiTextTheme.of(context)
-                                        .mediumShortDarkGrey,
-                                  )),
-                            ),
-                          ),
-                        )),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: FediPadding.allMediumPadding,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                fileExtension?.toUpperCase(),
-                                overflow: TextOverflow.ellipsis,
-                                style:
-                                    IFediUiTextTheme.of(context).smallTallGrey,
-                              ),
-                              Text(
-                                fileName,
-                                overflow: TextOverflow.ellipsis,
-                                style: IFediUiTextTheme.of(context)
-                                    .mediumTallDarkGrey,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
+                      buildIconWidget(context, fileExtension),
+                      buildBody(fileExtension, context, fileName)
                     ],
                   ),
                 ),
@@ -130,4 +77,64 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
       ],
     );
   }
+
+  Widget buildBody(
+          String fileExtension, BuildContext context, String fileName) =>
+      Expanded(
+        child: Padding(
+          padding: FediPadding.allSmallPadding,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                fileExtension?.toUpperCase(),
+                overflow: TextOverflow.ellipsis,
+                style: IFediUiTextTheme.of(context).smallShortGrey,
+              ),
+              Text(
+                fileName,
+                overflow: TextOverflow.ellipsis,
+                style: IFediUiTextTheme.of(context).smallShortDarkGrey,
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget buildIconWidget(BuildContext context, String fileExtension) =>
+      Container(
+        width: _nonMediaIconSize,
+        height: _nonMediaIconSize,
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              width: 1,
+              color: IFediUiColorTheme.of(context).ultraLightGrey,
+            ),
+          ),
+        ),
+        child: Center(
+            child: Padding(
+          padding: FediPadding.allMediumPadding,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+              width: 1,
+              color: IFediUiColorTheme.of(context).darkGrey,
+            )),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AutoSizeText(
+                    fileExtension?.toUpperCase(),
+                    maxLines: 1,
+                    minFontSize: 8.0,
+                    style: IFediUiTextTheme.of(context).smallShortDarkGrey,
+                  )),
+            ),
+          ),
+        )),
+      );
 }
