@@ -92,4 +92,7 @@ class FediIcons {
   static const IconData reorder = Icons.reorder;
   static const IconData bookmark = Icons.bookmark;
   static const IconData list = Icons.list;
+  static const IconData theme_system = Icons.brightness_6;
+  static const IconData theme_light = Icons.brightness_7;
+  static const IconData theme_night = Icons.brightness_3;
 }

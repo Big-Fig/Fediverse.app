@@ -11,12 +11,11 @@ class CurrentFediUiThemeBloc extends CurrentUiThemeBloc<IFediUiTheme>
         ICurrentUiThemeIdLocalPreferenceBloc
             currentUiThemeIdLocalPreferenceBloc,
     @required List<IFediUiTheme> availableThemes,
-    @required IFediUiTheme defaultTheme,
   }) : super(
           currentUiThemeIdLocalPreferenceBloc:
               currentUiThemeIdLocalPreferenceBloc,
           availableThemes: availableThemes,
-          defaultTheme: defaultTheme,
+
         );
 
 

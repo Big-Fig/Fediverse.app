@@ -7,25 +7,21 @@ import 'package:flutter/widgets.dart';
 class CurrentUiThemeBloc<T extends IUiTheme> extends DisposableOwner
     implements ICurrentUiThemeBloc<T> {
   final ICurrentUiThemeIdLocalPreferenceBloc
-      currentUiThemeIdLocalPreferenceBloc;
+  currentUiThemeIdLocalPreferenceBloc;
   final List<T> availableThemes;
-  final T defaultTheme;
 
   CurrentUiThemeBloc({
     @required this.currentUiThemeIdLocalPreferenceBloc,
     @required this.availableThemes,
-    @required this.defaultTheme,
   });
 
   @override
-  T get currentTheme =>
-      mapIdToTheme(currentUiThemeIdLocalPreferenceBloc.value) ?? defaultTheme;
+  T get currentTheme => mapIdToTheme(currentUiThemeIdLocalPreferenceBloc.value);
 
   @override
   Stream<T> get currentThemeStream =>
       currentUiThemeIdLocalPreferenceBloc.stream.map((currentUiThemeId) =>
-          mapIdToTheme(currentUiThemeIdLocalPreferenceBloc.value) ??
-          defaultTheme);
+          mapIdToTheme(currentUiThemeIdLocalPreferenceBloc.value));
 
   T mapIdToTheme(String id) {
     if (id == null) {
@@ -39,7 +35,7 @@ class CurrentUiThemeBloc<T extends IUiTheme> extends DisposableOwner
 
   @override
   Future changeTheme(T theme) async {
-    var newId = theme.id;
+    var newId = theme?.id;
     if (currentUiThemeIdLocalPreferenceBloc.value != newId) {
       await currentUiThemeIdLocalPreferenceBloc.setValue(newId);
     }

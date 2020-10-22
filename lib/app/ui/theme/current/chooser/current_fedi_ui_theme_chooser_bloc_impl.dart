@@ -6,6 +6,7 @@ import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
 import 'package:fedi/ui/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 
+// todo: this shouldn't be form field bloc
 class CurrentFediUiThemeChooserBloc extends DisposableOwner
     implements ICurrentFediUiThemeChooserBloc {
   final ICurrentFediUiThemeBloc currentFediUiThemeBloc;
@@ -29,12 +30,11 @@ class CurrentFediUiThemeChooserBloc extends DisposableOwner
   }
 
   @override
-  bool get currentValue => currentFediUiThemeBloc.currentTheme == darkTheme;
+  IFediUiTheme get currentValue => currentFediUiThemeBloc.currentTheme;
 
   @override
-  Stream<bool> get currentValueStream =>
-      currentFediUiThemeBloc.currentThemeStream
-          .map((currentTheme) => currentTheme == darkTheme);
+  Stream<IFediUiTheme> get currentValueStream =>
+      currentFediUiThemeBloc.currentThemeStream;
 
   @override
   List<FormItemValidationError> get errors => [];
@@ -57,11 +57,11 @@ class CurrentFediUiThemeChooserBloc extends DisposableOwner
   Stream<bool> get isSomethingChangedStream => Stream.value(isSomethingChanged);
 
   @override
-  bool get originValue => false;
+  IFediUiTheme get originValue => null;
 
   @override
-  void updateValidators(List<FormValueFieldValidation<bool>> validators) {}
+  void updateValidators(List<FormValueFieldValidation<IFediUiTheme>> validators) {}
 
   @override
-  List<FormValueFieldValidation<bool>> get validators => [];
+  List<FormValueFieldValidation<IFediUiTheme>> get validators => [];
 }
