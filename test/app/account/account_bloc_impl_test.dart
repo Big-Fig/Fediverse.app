@@ -388,7 +388,7 @@ void main() {
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
-    await accountBloc.refreshFromNetwork(true);
+    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 

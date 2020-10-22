@@ -99,7 +99,8 @@ class AccountBloc extends IAccountBloc {
       }
 
       if (needRefreshFromNetworkOnInit == true) {
-        refreshFromNetwork(isNeedPreFetchRelationship);
+        refreshFromNetwork
+          (isNeedPreFetchRelationship:isNeedPreFetchRelationship);
       } else {
         if (isNeedPreFetchRelationship &&
             accountRelationship?.following == null) {
@@ -267,7 +268,7 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship) async {
+  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship}) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     IPleromaAccount remoteAccount;

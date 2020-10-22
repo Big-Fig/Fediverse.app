@@ -16,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("current_instance_context_loading_widget.dart");
+var _logger = Logger("current_auth_instance_context_init_widget.dart");
 
 class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
@@ -42,31 +42,49 @@ class _CurrentAuthInstanceContextInitWidgetState
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
 
+    var isLoading = currentInstanceContextLoadingBloc.state ==
+        CurrentAuthInstanceContextInitState.loading;
+    _logger.finest(() => "didChangeDependencies "
+        "isLoading $isLoading disposed $disposed");
     Future.delayed(Duration(milliseconds: 100), () {
-      if (currentInstanceContextLoadingBloc.state ==
-              CurrentAuthInstanceContextInitState.loading &&
-          !disposed) {
-        var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-        progressDialog = FediIndeterminateProgressDialog(
-            cancelableOperation: null,
-            titleMessage: "app.auth.instance.current.context.loading.loading"
-                    ".title"
-                .tr(),
-            contentMessage: tr(
-                "app.auth.instance.current.context.loading.loading.content",
-                args: [myAccountBloc.instance.userAtHost]));
-
-        progressDialog.show(context);
-
-        subscription =
-            currentInstanceContextLoadingBloc.stateStream.listen((state) {
-          if (currentInstanceContextLoadingBloc.state !=
-              CurrentAuthInstanceContextInitState.loading) {
-            hideDialog();
-          }
-        });
+      if (isLoading && !disposed) {
+        showProgressDialog(context, currentInstanceContextLoadingBloc);
       }
     });
+  }
+
+  void showProgressDialog(BuildContext context,
+      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var isAlreadyShown = progressDialog?.isShowing == true;
+    _logger.finest(() => "showProgressDialog isAlreadyShown = $isAlreadyShown");
+    if (!isAlreadyShown) {
+      progressDialog = FediIndeterminateProgressDialog(
+          cancelableOperation: null,
+          titleMessage: "app.auth.instance.current.context.loading.loading"
+                  ".title"
+              .tr(),
+          contentMessage: tr(
+              "app.auth.instance.current.context.loading.loading.content",
+              args: [myAccountBloc.instance.userAtHost]));
+
+      progressDialog.show(context);
+
+      subscription =
+          currentInstanceContextLoadingBloc.stateStream.listen((state) {
+        onStateChanged(currentInstanceContextLoadingBloc);
+      });
+    }
+  }
+
+  void onStateChanged(
+      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
+    var state = CurrentAuthInstanceContextInitState.loading;
+    var isNotLoading = currentInstanceContextLoadingBloc.state != state;
+    _logger.finest(() => "onStateChanged $state isNotLoading $isNotLoading");
+    if (isNotLoading) {
+      hideDialog();
+    }
   }
 
   @override
@@ -78,7 +96,9 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 
   void hideDialog() {
-    if (progressDialog?.isShowing == true) {
+    var isShowing = progressDialog?.isShowing == true;
+    _logger.finest(() => "hideDialog isShowing $isShowing");
+    if (isShowing) {
       progressDialog.hide(context);
     }
   }

@@ -38,7 +38,6 @@ import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
-import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -68,7 +67,12 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   var appTitle = await FediPackageInfoHelper.getAppName();
-  runApp(MaterialApp(home: SplashPage()));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashPage(),
+    ),
+  );
 
   IInitBloc initBloc = InitBloc();
   unawaited(initBloc.performAsyncInit());
@@ -160,6 +164,9 @@ void buildCurrentInstanceApp(
             child: currentInstanceContextBloc.provideContextToChild(
                 child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
                     create: (context) {
+                      _logger.finest(
+                              () => "currentAuthInstanceContextLoadingBloc "
+                                  "create");
                       var currentAuthInstanceContextLoadingBloc =
                           CurrentAuthInstanceContextInitBloc(
                         myAccountBloc:
@@ -283,7 +290,10 @@ Widget _buildEasyLocalization({@required Widget child}) {
       key: PageStorageKey("EasyLocalization"),
       assetLoader: CodegenLoader(),
       preloaderColor: lightFediUiTheme.colorTheme.primaryDark,
-      preloaderWidget: MaterialApp(home: SplashPage()),
+      preloaderWidget: MaterialApp(
+        home: SplashPage(),
+        debugShowCheckedModeBanner: false,
+      ),
       supportedLocales: [Locale('en', 'US')],
       path: "assets/langs",
       localizationBloc:
@@ -320,9 +330,12 @@ class FediApp extends StatelessWidget {
               : currentTheme == darkFediUiTheme
                   ? ThemeMode.dark
                   : ThemeMode.light;
+
+          _logger.finest(() => "currentTheme $currentTheme "
+              "themeMode $themeMode");
           return CurrentFediUiThemeBlocProxyProvider(
             child: OverlaySupport(
-              child: buildCurrentTheme(
+              child: provideCurrentTheme(
                 currentTheme: currentTheme ?? lightFediUiTheme,
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,
@@ -348,7 +361,7 @@ class FediApp extends StatelessWidget {
         });
   }
 
-  Widget buildCurrentTheme({
+  Widget provideCurrentTheme({
     @required Widget child,
     @required IFediUiTheme currentTheme,
   }) =>
@@ -356,9 +369,10 @@ class FediApp extends StatelessWidget {
         value: currentTheme,
         child: FediUiThemeProxyProvider(
           child: UiThemeProxyProvider(
-            child: UiThemeSystemBrightnessHandlerWidget(
-              child: child,
-            ),
+            child: child,
+            // child: UiThemeSystemBrightnessHandlerWidget(
+            //   child: child,
+            // ),
           ),
         ),
       );
