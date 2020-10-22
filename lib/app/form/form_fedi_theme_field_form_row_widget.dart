@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
@@ -34,6 +35,7 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
           var currentValue = snapshot.data;
 
           _logger.finest(() => "currentValue $currentValue");
+          var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,22 +45,34 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FediFormRowLabel(label),
-                    FediIconButton(
-                      onPressed: () {
-                        showFediSelectionChooserDialog(
-                            context: context,
-                            title: "app.status.post.visibility.title".tr(),
-                            actions: [
-                              buildThemeDialogAction(
-                                  context, field, null, currentValue),
-                              buildThemeDialogAction(context, field,
-                                  lightFediUiTheme, currentValue),
-                              buildThemeDialogAction(context, field,
-                                  darkFediUiTheme, currentValue),
-                            ]);
-                      },
-                      icon: null,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          mapThemeToTitle(context, currentValue),
+                          style: fediUiTextTheme.mediumShortDarkGrey,
+                        ),
+                        FediIconButton(
+                          onPressed: () {
+                            showFediSelectionChooserDialog(
+                                context: context,
+                                title: "app.status.post.visibility.title".tr(),
+                                actions: [
+                                  buildThemeDialogAction(
+                                      context, field, null, currentValue),
+                                  buildThemeDialogAction(context, field,
+                                      lightFediUiTheme, currentValue),
+                                  buildThemeDialogAction(context, field,
+                                      darkFediUiTheme, currentValue),
+                                ]);
+                          },
+                          icon: Icon(
+                            mapThemeToIcon(context, currentValue),
+                          ),
+                        ),
+                      ],
                     ),
+
                   ],
                 ),
               ),
@@ -75,7 +89,7 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
     IFediUiTheme currentValue,
   ) {
     return SelectionDialogAction(
-      icon: null,
+      icon: mapThemeToIcon(context, theme),
       label: mapThemeToTitle(context, theme),
       onAction: () {
         field.changeCurrentValue(theme);
@@ -92,6 +106,18 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
       return "app.theme.type.light".tr();
     } else if (theme == darkFediUiTheme) {
       return "app.theme.type.dark".tr();
+    } else {
+      throw "unsupported theme $theme";
+    }
+  }
+
+  IconData mapThemeToIcon(BuildContext context, IFediUiTheme theme) {
+    if (theme == null) {
+      return FediIcons.theme_system;
+    } else if (theme == lightFediUiTheme) {
+      return FediIcons.theme_light;
+    } else if (theme == darkFediUiTheme) {
+      return FediIcons.theme_night;
     } else {
       throw "unsupported theme $theme";
     }

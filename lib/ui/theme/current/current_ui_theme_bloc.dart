@@ -12,5 +12,6 @@ abstract class ICurrentUiThemeBloc<T extends IUiTheme> extends Disposable {
   T get currentTheme;
   Stream<T> get currentThemeStream;
 
+
   Future changeTheme(T theme);
 }

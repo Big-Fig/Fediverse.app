@@ -31,12 +31,14 @@ import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc_proxy_provider.dart';
+import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -308,47 +310,56 @@ class FediApp extends StatelessWidget {
     var currentFediUiThemeBloc =
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
-    return CurrentFediUiThemeBlocProxyProvider(
-      child: OverlaySupport(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: appTitle,
-          localizationsDelegates: localizationProvider.delegates,
-          supportedLocales: localizationProvider.supportedLocales,
-          locale: localizationProvider.locale,
-          theme: currentTheme.themeData,
-          initialRoute: "/",
-          home: child,
-          navigatorKey: navigatorKey,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(
-                analytics:
-                IAnalyticsService.of(context, listen: false)
-                    .firebaseAnalytics),
-          ],
-        ),
-      ),
-    );
+    return StreamBuilder<IFediUiTheme>(
+        stream: currentFediUiThemeBloc.currentThemeStream,
+        builder: (context, snapshot) {
+          var currentTheme = snapshot.data;
 
-    return CurrentFediUiThemeBlocProxyProvider(
-      child: StreamBuilder<IFediUiTheme>(
-          stream: currentFediUiThemeBloc.currentThemeStream,
-          builder: (context, snapshot) {
-            var currentTheme = snapshot.data;
-
-            if (currentTheme == null) {
-              return SizedBox.shrink();
-            } else {
-              return Provider<IFediUiTheme>.value(
-                value: currentTheme,
-                child: FediUiThemeProxyProvider(
-                  child: UiThemeProxyProvider(
-                    child: ,
-                  ),
+          var themeMode = currentTheme == null
+              ? ThemeMode.system
+              : currentTheme == darkFediUiTheme
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
+          return CurrentFediUiThemeBlocProxyProvider(
+            child: OverlaySupport(
+              child: buildCurrentTheme(
+                currentTheme: currentTheme ?? lightFediUiTheme,
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: appTitle,
+                  localizationsDelegates: localizationProvider.delegates,
+                  supportedLocales: localizationProvider.supportedLocales,
+                  locale: localizationProvider.locale,
+                  theme: lightFediUiTheme.themeData,
+                  darkTheme: darkFediUiTheme.themeData,
+                  themeMode: themeMode,
+                  initialRoute: "/",
+                  home: child,
+                  navigatorKey: navigatorKey,
+                  navigatorObservers: [
+                    FirebaseAnalyticsObserver(
+                        analytics: IAnalyticsService.of(context, listen: false)
+                            .firebaseAnalytics),
+                  ],
                 ),
-              );
-            }
-          }),
-    );
+              ),
+            ),
+          );
+        });
   }
+
+  Widget buildCurrentTheme({
+    @required Widget child,
+    @required IFediUiTheme currentTheme,
+  }) =>
+      Provider<IFediUiTheme>.value(
+        value: currentTheme,
+        child: FediUiThemeProxyProvider(
+          child: UiThemeProxyProvider(
+            child: UiThemeSystemBrightnessHandlerWidget(
+              child: child,
+            ),
+          ),
+        ),
+      );
 }

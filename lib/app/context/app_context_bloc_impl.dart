@@ -210,28 +210,26 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
 
     var currentUiThemeIdLocalPreferenceBloc =
-        CurrentUiThemeIdLocalPreferenceBloc(localPreferencesService,
-            defaultValue: lightFediUiTheme.id);
+        CurrentUiThemeIdLocalPreferenceBloc(localPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
             currentUiThemeIdLocalPreferenceBloc);
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
-        currentUiThemeIdLocalPreferenceBloc:
-            currentUiThemeIdLocalPreferenceBloc,
-        availableThemes: [
-          lightFediUiTheme,
-          darkFediUiTheme,
-        ],
-        defaultTheme: lightFediUiTheme);
+      currentUiThemeIdLocalPreferenceBloc: currentUiThemeIdLocalPreferenceBloc,
+      availableThemes: [
+        lightFediUiTheme,
+        darkFediUiTheme,
+      ],
+    );
 
     await globalProviderService
         .asyncInitAndRegister<ICurrentFediUiThemeBloc>(currentFediUiThemeBloc);
 
     var uiThemeSystemHandlerBloc = UiThemeSystemBrightnessHandlerBloc();
 
-    await globalProviderService.asyncInitAndRegister<IUiThemeSystemBrightnessHandlerBloc>(
-        uiThemeSystemHandlerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IUiThemeSystemBrightnessHandlerBloc>(uiThemeSystemHandlerBloc);
   }
 }
