@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_visibility_field_form_row_widget.dart';
-import 'package:fedi/app/ui/theme/dark_light_switch_fedi_ui_theme_form_row_widget.dart';
+import 'package:fedi/app/form/form_pleroma_visibility_field_form_row_widget.dart';
+import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_form_row_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class MyAccountSettingsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DarkLightSwitchFediUiThemeFormRowWidget(),
+        CurrentFediUiThemeChooserFormRowWidget(),
         FormBoolFieldFormRowWidget(
           label: tr("app.account.my.settings.field.websockets_enabled.label"),
           desc: tr(
@@ -37,8 +37,7 @@ class MyAccountSettingsWidget extends StatelessWidget {
         ),
         FormBoolFieldFormRowWidget(
           label: tr("app.account.my.settings.field.always_show_nsfw.label"),
-          desc:
-              null,
+          desc: null,
           field: myAccountSettingsBloc.isAlwaysShowNsfwFieldBloc,
         ),
         FormPleromaVisibilityFieldFormRowWidget(
@@ -53,14 +52,12 @@ class MyAccountSettingsWidget extends StatelessWidget {
           field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label:
-              tr("app.account.my.settings.field.media_auto_init.label"),
+          label: tr("app.account.my.settings.field.media_auto_init.label"),
           desc: null,
           field: myAccountSettingsBloc.mediaAutoInitFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label:
-              tr("app.account.my.settings.field.media_auto_play.label"),
+          label: tr("app.account.my.settings.field.media_auto_play.label"),
           desc: null,
           field: myAccountSettingsBloc.mediaAutoPlayFieldBloc,
         ),
