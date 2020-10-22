@@ -59,7 +59,10 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (!isSelected) {
-          _showConfirmChooseInstance(context, instanceChooserBloc);
+          Navigator.of(context).pop();
+          Future.delayed(Duration(milliseconds: 500), () {
+            instanceChooserBloc.chooseInstance(instance);
+          });
         }
       },
       child: Row(
@@ -104,22 +107,6 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
-  }
-
-  void _showConfirmChooseInstance(
-      BuildContext context, IAuthInstanceChooserBloc instanceChooserBloc) {
-    FediConfirmAlertDialog(
-      context: context,
-      title: tr("app.auth.instance.chooser.dialog.title"),
-      content: tr("app.auth.instance.chooser.dialog.content"),
-      onAction: () async {
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Future.delayed(Duration(milliseconds: 500), () {
-          instanceChooserBloc.chooseInstance(instance);
-        });
-      },
-    ).show(context);
   }
 
   Widget buildLogoutButton(BuildContext context, AuthInstance instance) =>
