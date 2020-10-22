@@ -29,8 +29,8 @@ import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc.dart';
-import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc_proxy_provider.dart';
+import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
@@ -309,6 +309,28 @@ class FediApp extends StatelessWidget {
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
     return CurrentFediUiThemeBlocProxyProvider(
+      child: OverlaySupport(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: appTitle,
+          localizationsDelegates: localizationProvider.delegates,
+          supportedLocales: localizationProvider.supportedLocales,
+          locale: localizationProvider.locale,
+          theme: currentTheme.themeData,
+          initialRoute: "/",
+          home: child,
+          navigatorKey: navigatorKey,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(
+                analytics:
+                IAnalyticsService.of(context, listen: false)
+                    .firebaseAnalytics),
+          ],
+        ),
+      ),
+    );
+
+    return CurrentFediUiThemeBlocProxyProvider(
       child: StreamBuilder<IFediUiTheme>(
           stream: currentFediUiThemeBloc.currentThemeStream,
           builder: (context, snapshot) {
@@ -321,25 +343,7 @@ class FediApp extends StatelessWidget {
                 value: currentTheme,
                 child: FediUiThemeProxyProvider(
                   child: UiThemeProxyProvider(
-                    child: OverlaySupport(
-                      child: MaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: appTitle,
-                        localizationsDelegates: localizationProvider.delegates,
-                        supportedLocales: localizationProvider.supportedLocales,
-                        locale: localizationProvider.locale,
-                        theme: currentTheme.themeData,
-                        initialRoute: "/",
-                        home: child,
-                        navigatorKey: navigatorKey,
-                        navigatorObservers: [
-                          FirebaseAnalyticsObserver(
-                              analytics:
-                                  IAnalyticsService.of(context, listen: false)
-                                      .firebaseAnalytics),
-                        ],
-                      ),
-                    ),
+                    child: ,
                   ),
                 ),
               );

@@ -1,35 +1,31 @@
-import 'package:fedi/app/ui/theme/current_fedi_ui_theme_bloc.dart';
-import 'package:fedi/app/ui/theme/dark_light_switch_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_bloc.dart';
+import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
 import 'package:fedi/ui/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 
-class DarkLightSwitchFediUiThemeBloc extends DisposableOwner
-    implements IDarkLightSwitchFediUiThemeBloc {
+class CurrentFediUiThemeChooserBloc extends DisposableOwner
+    implements ICurrentFediUiThemeChooserBloc {
   final ICurrentFediUiThemeBloc currentFediUiThemeBloc;
   final IFediUiTheme lightTheme;
   final IFediUiTheme darkTheme;
 
-  DarkLightSwitchFediUiThemeBloc({
+  CurrentFediUiThemeChooserBloc({
     @required this.currentFediUiThemeBloc,
     @required this.lightTheme,
     @required this.darkTheme,
   });
 
   @override
-  void changeCurrentValue(bool newValue) {
-    if (newValue == true) {
-      currentFediUiThemeBloc.changeTheme(darkTheme);
-    } else {
-      currentFediUiThemeBloc.changeTheme(lightTheme);
-    }
+  void changeCurrentValue(IFediUiTheme newValue) {
+    currentFediUiThemeBloc.changeTheme(newValue);
   }
 
   @override
   void clear() {
-    currentFediUiThemeBloc.changeTheme(lightTheme);
+    currentFediUiThemeBloc.changeTheme(null);
   }
 
   @override

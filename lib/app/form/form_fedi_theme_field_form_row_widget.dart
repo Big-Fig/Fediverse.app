@@ -1,30 +1,33 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
-import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
+import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("form_bool_field_form_row_widget.dart");
+var _logger = Logger("form_fedi_theme_field_form_row_widget.dart");
 
-class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
+class FormFediThemeFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
-  final IFormValueFieldBloc<PleromaVisibility> field;
+  final IFormValueFieldBloc<IFediUiTheme> field;
 
-  FormPleromaVisibilityFieldFormRowWidget(
-      {@required this.label, this.desc, @required this.field});
+  FormFediThemeFieldFormRowWidget({
+    @required this.label,
+    this.desc,
+    @required this.field,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PleromaVisibility>(
+    return StreamBuilder<IFediUiTheme>(
         stream: field.currentValueStream.distinct(),
         initialData: field.currentValue,
         builder: (context, snapshot) {
@@ -46,20 +49,15 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                             context: context,
                             title: "app.status.post.visibility.title".tr(),
                             actions: [
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.public, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.direct, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.unlisted, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.private, currentValue),
+                              buildThemeDialogAction(
+                                  context, field, null, currentValue),
+                              buildThemeDialogAction(context, field,
+                                  lightFediUiTheme, currentValue),
+                              buildThemeDialogAction(context, field,
+                                  darkFediUiTheme, currentValue),
                             ]);
                       },
-                      icon: Icon(
-                        StatusVisibilityIconWidget.mapVisibilityToIconData(
-                            currentValue),
-                      ),
+                      icon: null,
                     ),
                   ],
                 ),
@@ -70,21 +68,32 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
         });
   }
 
-  SelectionDialogAction buildVisibilityDialogAction(
+  SelectionDialogAction buildThemeDialogAction(
     BuildContext context,
-    IFormValueFieldBloc<PleromaVisibility> field,
-    PleromaVisibility visibility,
-    PleromaVisibility currentValue,
+    IFormValueFieldBloc<IFediUiTheme> field,
+    IFediUiTheme theme,
+    IFediUiTheme currentValue,
   ) {
     return SelectionDialogAction(
-      icon: StatusVisibilityIconWidget.mapVisibilityToIconData(visibility),
-      label:
-          StatusVisibilityTitleWidget.mapVisibilityToTitle(context, visibility),
+      icon: null,
+      label: mapThemeToTitle(context, theme),
       onAction: () {
-        field.changeCurrentValue(visibility);
+        field.changeCurrentValue(theme);
         Navigator.of(context).pop();
       },
-      isSelected: visibility == currentValue,
+      isSelected: theme == currentValue,
     );
+  }
+
+  String mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
+    if (theme == null) {
+      return "app.theme.type.system".tr();
+    } else if (theme == lightFediUiTheme) {
+      return "app.theme.type.light".tr();
+    } else if (theme == darkFediUiTheme) {
+      return "app.theme.type.dark".tr();
+    } else {
+      throw "unsupported theme $theme";
+    }
   }
 }
