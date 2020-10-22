@@ -359,11 +359,7 @@ class CodegenLoader extends AssetLoader{
         },
         "chooser": {
           "action": {
-            "add_instance": "Add instance"
-          },
-          "dialog": {
-            "title": "Change active instance?",
-            "content": "Are you sure?"
+            "add_instance": "Add account"
           }
         },
         "current": {
