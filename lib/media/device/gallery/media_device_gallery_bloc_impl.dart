@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
-    implements Disposable, IPermissionBloc, IMediaDeviceGalleryBloc {
+    implements IDisposable, IPermissionBloc, IMediaDeviceGalleryBloc {
   final IStoragePermissionBloc storagePermissionBloc;
   final List<MediaDeviceFileType> typesToPick;
 

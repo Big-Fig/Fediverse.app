@@ -159,8 +159,9 @@ class PleromaChatService implements IPleromaChatService {
     return parseChatMessageResponse(httpResponse);
   }
 
+
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

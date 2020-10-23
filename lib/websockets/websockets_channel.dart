@@ -5,7 +5,7 @@ import 'package:fedi/websockets/websockets_channel_model.dart';
 import 'package:fedi/websockets/websockets_model.dart';
 
 abstract class IWebSocketsChannel<T extends WebSocketsEvent>
-    implements Disposable {
+    implements IDisposable {
   IWebSocketsChannelConfig<T> get config;
 
   Stream<T> get eventsStream;

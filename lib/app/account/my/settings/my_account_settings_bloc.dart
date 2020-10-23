@@ -5,7 +5,7 @@ import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IMyAccountSettingsBloc extends Disposable {
+abstract class IMyAccountSettingsBloc extends IDisposable {
   static IMyAccountSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IMyAccountSettingsBloc>(context, listen: listen);

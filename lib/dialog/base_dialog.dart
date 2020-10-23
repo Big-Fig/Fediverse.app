@@ -25,7 +25,7 @@ abstract class BaseDialog extends DisposableOwner {
   void hide(BuildContext context) async {
     assert(isShowing);
     _isShowing = false;
-    dispose();
+    await dispose();
     Navigator.of(context).pop();
   }
 

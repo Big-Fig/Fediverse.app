@@ -233,7 +233,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                   instanceBaseUrl: hostUri);
               await authHostBloc.checkApplicationRegistration();
               await authHostBloc.checkIsRegistrationsEnabled();
-              authHostBloc?.dispose();
+              await authHostBloc?.dispose();
             },
             errorDataBuilders: [
           (
@@ -328,7 +328,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
                 return instance;
               } finally {
-                bloc?.dispose();
+                await bloc?.dispose();
               }
             },
             errorDataBuilders: [

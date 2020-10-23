@@ -4,7 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAnalyticsService implements IAsyncInitLoadingBloc, Disposable {
+abstract class IAnalyticsService implements IAsyncInitLoadingBloc, IDisposable {
   static IAnalyticsService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAnalyticsService>(context, listen: listen);
 

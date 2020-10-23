@@ -2,7 +2,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IFediTabIndicatorItemBloc<T> implements Disposable {
+abstract class IFediTabIndicatorItemBloc<T> implements IDisposable {
   static IFediTabIndicatorItemBloc of<T>(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IFediTabIndicatorItemBloc<T>>(context, listen: listen);

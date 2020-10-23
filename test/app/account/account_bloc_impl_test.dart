@@ -60,8 +60,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountBloc.dispose();
-    accountRepository.dispose();
+    await accountBloc.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 

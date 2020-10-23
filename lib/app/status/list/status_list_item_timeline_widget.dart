@@ -16,8 +16,8 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -178,7 +178,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       if (status.isHaveReblog) StatusReblogHeaderWidget(),
-                      if (displayAccountHeader) buildStatusHeader(context, status),
+                      if (displayAccountHeader)
+                        buildStatusHeader(context, status),
                       if (isReply)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
@@ -246,8 +247,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     if (collapsible) {
       var collapsibleBloc = ICollapsibleBloc.of(context, listen: false);
       collapsibleBloc.addVisibleItem(statusBloc);
-      statusBloc.addDisposable(disposable: CustomDisposable(() {
-        collapsibleBloc.removeVisibleItem(statusBloc);
+      statusBloc.addDisposable(disposable: CustomDisposable(() async {
+        await collapsibleBloc.removeVisibleItem(statusBloc);
       }));
     }
 

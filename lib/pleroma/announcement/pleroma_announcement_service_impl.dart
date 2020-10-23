@@ -113,8 +113,9 @@ class PleromaAnnouncementService implements IPleromaAnnouncementService {
     }
   }
 
+
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

@@ -30,8 +30,8 @@ class MemoryCachedPaginationListWithNewItemsBloc<
             mergeNewItemsImmediatelyWhenItemsIsEmpty:
                 mergeNewItemsImmediatelyWhenItemsIsEmpty,
             paginationBloc: paginationBloc) {
-    addDisposable(disposable: CustomDisposable(() {
-      newItemsStreamController.close();
+    addDisposable(disposable: CustomDisposable(() async {
+      await newItemsStreamController.close();
     }));
   }
 

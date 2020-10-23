@@ -12,7 +12,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc implements Disposable, ICollapsibleItem {
+abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 

@@ -14,7 +14,6 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
 
   PleromaMediaAttachmentService({@required this.restService});
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -27,6 +26,7 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
+
   @override
   bool get isApiReadyToUse => restService.isApiReadyToUse;
 
@@ -53,7 +53,7 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

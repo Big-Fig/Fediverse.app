@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 abstract class IDraftStatusRepository
     implements
-        Disposable,
+        IDisposable,
         IReadIdListRepository<IDraftStatus, int>,
         IWriteIdListRepository<DbDraftStatus, int> {
   static IDraftStatusRepository of(BuildContext context,

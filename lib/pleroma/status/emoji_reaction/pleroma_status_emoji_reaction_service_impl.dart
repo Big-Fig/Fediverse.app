@@ -43,7 +43,7 @@ class PleromaStatusEmojiReactionService
   PleromaStatusEmojiReactionService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

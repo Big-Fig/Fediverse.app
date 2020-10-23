@@ -39,7 +39,7 @@ class PleromaPollService implements IPleromaPollService {
   PleromaPollService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 
@@ -57,9 +57,7 @@ class PleromaPollService implements IPleromaPollService {
       {@required String pollRemoteId, @required List<int> voteIndexes}) async {
     var request = RestRequest.post(
         relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
-        bodyJson: {
-          "choices" : voteIndexes
-        });
+        bodyJson: {"choices": voteIndexes});
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePollResponse(httpResponse);

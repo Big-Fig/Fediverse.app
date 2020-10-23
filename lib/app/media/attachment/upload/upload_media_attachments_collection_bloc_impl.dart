@@ -1,8 +1,8 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/device_upload_media_attachment_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
-import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -29,11 +29,11 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: isAllAttachedMediaUploadedSubject);
-    addDisposable(disposable: CustomDisposable(() {
-      clear();
+    addDisposable(disposable: CustomDisposable(() async {
+      await clear();
     }));
-    addDisposable(disposable: CustomDisposable(() {
-      uploadedSubscription?.dispose();
+    addDisposable(disposable: CustomDisposable(() async {
+      await uploadedSubscription?.dispose();
     }));
 
     addDisposable(streamSubscription:
@@ -153,12 +153,15 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
 
   @override
-  void clear() {
-    mediaAttachmentBlocs.forEach((bloc) {
-      bloc.dispose();
-    });
+  Future clear() async {
     mediaAttachmentBlocs.clear();
-    mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+    if (!mediaAttachmentBlocsSubject.isClosed) {
+      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+    }
+
+    for (var mediaAttachmentBloc in mediaAttachmentBlocs) {
+      await mediaAttachmentBloc.dispose();
+    }
   }
 
   void _recalculateIsAllAttachedMediaUploaded() {
@@ -166,7 +169,8 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         true,
         (previousValue, element) =>
             previousValue &&
-            element.uploadState.type == UploadMediaAttachmentStateType.uploaded);
+            element.uploadState.type ==
+                UploadMediaAttachmentStateType.uploaded);
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
   }

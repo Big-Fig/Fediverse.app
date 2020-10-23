@@ -2,34 +2,34 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IWebSocketsHandlerManagerBloc implements Disposable {
+abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
   static IWebSocketsHandlerManagerBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IWebSocketsHandlerManagerBloc>(context, listen: listen);
 
-  Disposable listenMyAccountChannel({
+  IDisposable listenMyAccountChannel({
     @required bool notification,
     @required bool chat,
   });
 
-  Disposable listenAccountChannel({
+  IDisposable listenAccountChannel({
     @required String accountId,
     @required bool notification,
   });
 
-  Disposable listenDirectChannel();
+  IDisposable listenDirectChannel();
 
-  Disposable listenPublicChannel({
+  IDisposable listenPublicChannel({
     @required bool local,
     @required bool onlyMedia,
   });
 
-  Disposable listenHashtagChannel({
+  IDisposable listenHashtagChannel({
     @required String hashtag,
     @required bool local,
   });
 
-  Disposable listenListChannel({
+  IDisposable listenListChannel({
     @required String listId,
   });
 }

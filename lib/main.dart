@@ -143,7 +143,7 @@ void buildCurrentInstanceApp(
   _logger.finest(() => "buildCurrentInstanceApp $buildCurrentInstanceApp");
   if (currentInstance != null) {
     showSplashPage(appContextBloc, appTitle);
-    currentInstanceContextBloc?.dispose();
+    await currentInstanceContextBloc?.dispose();
 
     currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
         currentInstance: currentInstance,

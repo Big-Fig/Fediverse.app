@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusRepository
     implements
-        Disposable,
+        IDisposable,
         IReadIdListRepository<IScheduledStatus, int>,
         IWriteIdListRepository<DbScheduledStatus, int> {
   static IScheduledStatusRepository of(BuildContext context,

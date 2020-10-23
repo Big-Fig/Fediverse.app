@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMediaDeviceGalleryBloc
-    implements Disposable, IPermissionBloc, IAsyncInitLoadingBloc {
+    implements IDisposable, IPermissionBloc, IAsyncInitLoadingBloc {
   static IMediaDeviceGalleryBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMediaDeviceGalleryBloc>(context, listen: listen);
 

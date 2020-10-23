@@ -2,7 +2,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class DisposableProvider<T extends Disposable> extends Provider<T> {
+class DisposableProvider<T extends IDisposable> extends Provider<T> {
   DisposableProvider({
     Key key,
     @required Create<T> create,
@@ -16,7 +16,7 @@ class DisposableProvider<T extends Disposable> extends Provider<T> {
             dispose: (_, disposable) => disposable.dispose());
 }
 
-class DisposableProxyProvider<T, R extends Disposable>
+class DisposableProxyProvider<T, R extends IDisposable>
     extends ProxyProvider<T, R> {
   DisposableProxyProvider({
     Key key,

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ILocalizationService
-    implements IAsyncInitLoadingBloc, Disposable {
+    implements IAsyncInitLoadingBloc, IDisposable {
   static ILocalizationService of(BuildContext context, {bool listen = true}) =>
       Provider.of<ILocalizationService>(context, listen: listen);
 

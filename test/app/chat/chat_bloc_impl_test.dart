@@ -96,13 +96,13 @@ void main() {
   });
 
   tearDown(() async {
-    chatBloc.dispose();
-    chatRepository.dispose();
-    chatMessageRepository.dispose();
-    accountRepository.dispose();
+    await chatBloc.dispose();
+    await chatRepository.dispose();
+    await chatMessageRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
   });
 
   Future _update(IChat chat,

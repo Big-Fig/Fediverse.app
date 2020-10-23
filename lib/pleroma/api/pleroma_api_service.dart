@@ -2,7 +2,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class IPleromaApi implements Disposable {
+abstract class IPleromaApi implements IDisposable {
   IRestService get restService;
   Stream<PleromaApiState> get pleromaStateStream;
 

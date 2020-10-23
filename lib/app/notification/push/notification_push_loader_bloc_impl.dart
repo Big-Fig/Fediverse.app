@@ -46,7 +46,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       pushHandlerBloc.removeRealTimeHandler(handlePush);
     }));
   }

@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUploadMediaAttachmentsCollectionBloc extends Disposable {
+abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
   static IUploadMediaAttachmentsCollectionBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IUploadMediaAttachmentsCollectionBloc>(context,
@@ -44,7 +44,7 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends Disposable {
   void detachMediaAttachmentBloc(IUploadMediaAttachmentBloc
   mediaAttachmentBloc);
 
-  void clear();
+  Future clear();
 
   void addUploadedAttachment(IPleromaMediaAttachment attachment);
 }

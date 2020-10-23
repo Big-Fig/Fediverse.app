@@ -9,7 +9,7 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatListContainerBloc extends Disposable {
+abstract class IChatListContainerBloc extends IDisposable {
   static IChatListContainerBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IChatListContainerBloc>(context, listen: listen);

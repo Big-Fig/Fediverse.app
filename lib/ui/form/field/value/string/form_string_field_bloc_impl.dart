@@ -33,7 +33,7 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
 
     addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       textEditingController.removeListener(listener);
     }));
   }

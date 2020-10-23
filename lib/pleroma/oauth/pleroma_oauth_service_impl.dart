@@ -15,7 +15,6 @@ import 'package:path/path.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 var _logger = Logger("pleroma_oauth_service_impl.dart");
 
 class PleromaOAuthService extends DisposableOwner
@@ -23,7 +22,6 @@ class PleromaOAuthService extends DisposableOwner
   final oauthRelativeUrlPath = "/oauth/";
   @override
   final IPleromaRestService restService;
-
 
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
@@ -50,9 +48,8 @@ class PleromaOAuthService extends DisposableOwner
   PleromaOAuthService({@required this.restService});
 
   @override
-  void dispose() {
-    super.dispose();
-// nothing
+  Future dispose() async {
+    return super.dispose();
   }
 
   PleromaOAuthToken parseTokenResponse(Response httpResponse) {
@@ -114,7 +111,8 @@ class PleromaOAuthService extends DisposableOwner
     return completer.future;
   }
 
-  String extractAuthCodeFromUri(Uri uri) => uri.queryParameters['code'].toString();
+  String extractAuthCodeFromUri(Uri uri) =>
+      uri.queryParameters['code'].toString();
 
   @override
   Future<PleromaOAuthToken> retrieveAccountAccessToken(

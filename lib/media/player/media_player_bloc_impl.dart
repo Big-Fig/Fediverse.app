@@ -43,7 +43,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   BehaviorSubject<MediaPlayerState> playerStateSubject =
       BehaviorSubject.seeded(MediaPlayerState.notInitialized);
 
-  Disposable videoPlayerDisposable;
+  IDisposable videoPlayerDisposable;
   @override
   dynamic error;
 
@@ -64,10 +64,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     playerStateSubject.add(MediaPlayerState.disposed);
-    super.dispose();
-    videoPlayerDisposable?.dispose();
+    await super.dispose();
+    await videoPlayerDisposable?.dispose();
   }
 
   @override
@@ -159,12 +159,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     videoPlayerController.addListener(listener);
 
     // dispose old init if it is exist
-    videoPlayerDisposable?.dispose();
+    await videoPlayerDisposable?.dispose();
 
     videoPlayerDisposable = CompositeDisposable([
-      CustomDisposable(() {
+      CustomDisposable(() async {
         videoPlayerController.removeListener(listener);
-        videoPlayerController.dispose();
+        await videoPlayerController.dispose();
       }),
     ]);
 

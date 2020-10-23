@@ -15,7 +15,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   final Map<Uri, IWebSocketsChannel> urlToChannel = {};
 
   WebSocketsService() {
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       urlToChannel.values.forEach((channel) => channel.dispose());
       urlToChannel.clear();
     }));

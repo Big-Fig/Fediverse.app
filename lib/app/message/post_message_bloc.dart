@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPostMessageBloc implements Disposable {
+abstract class IPostMessageBloc implements IDisposable {
   static IPostMessageBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostMessageBloc>(context, listen: listen);
 

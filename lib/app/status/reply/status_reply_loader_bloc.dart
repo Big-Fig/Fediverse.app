@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusReplyLoaderBloc
-    implements IAsyncInitLoadingBloc, Disposable {
+    implements IAsyncInitLoadingBloc, IDisposable {
   static IStatusReplyLoaderBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IStatusReplyLoaderBloc>(context, listen: listen);

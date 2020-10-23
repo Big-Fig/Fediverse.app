@@ -9,7 +9,7 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class IConversationsListBloc extends Disposable {
+abstract class IConversationsListBloc extends IDisposable {
   static IConversationsListBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IConversationsListBloc>(context, listen: listen);

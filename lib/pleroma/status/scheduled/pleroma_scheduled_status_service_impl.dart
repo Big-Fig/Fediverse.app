@@ -39,7 +39,7 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
   PleromaScheduledStatusService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 
