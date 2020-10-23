@@ -11,6 +11,7 @@ class EmojiTextWidget extends StatelessWidget {
   final TextOverflow textOverflow;
   final double emojiSize;
   final TextAlign textAlign;
+  final bool drawNewLines;
 
   const EmojiTextWidget({
     @required this.emojiText,
@@ -18,6 +19,7 @@ class EmojiTextWidget extends StatelessWidget {
     this.textStyle,
     this.textAlign = TextAlign.start,
     this.textOverflow = TextOverflow.ellipsis,
+    this.drawNewLines = true,
   });
 
   @override
@@ -25,8 +27,13 @@ class EmojiTextWidget extends StatelessWidget {
     if (emojiText.emojis?.isNotEmpty == true) {
       return buildEmojifiedText(context);
     } else {
+      var text = emojiText.text;
+
+      if (!drawNewLines) {
+        text = text.replaceAll("\n", "");
+      }
       return Text(
-        emojiText.text,
+        text,
         style: textStyle,
         textAlign: textAlign,
         overflow: textOverflow,
