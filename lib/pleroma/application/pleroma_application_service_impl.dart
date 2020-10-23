@@ -17,7 +17,6 @@ class PleromaApplicationService implements IPleromaApplicationService {
   @override
   final IPleromaRestService restService;
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -43,7 +42,7 @@ class PleromaApplicationService implements IPleromaApplicationService {
   PleromaApplicationService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

@@ -14,8 +14,10 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   // ignore: close_sinks
   BehaviorSubject<List<ICollapsibleItem>> visibleItemsSubject =
       BehaviorSubject.seeded([]);
+
   @override
   List<ICollapsibleItem> get visibleItems => visibleItemsSubject.value;
+
   @override
   Stream<List<ICollapsibleItem>> get visibleItemsStream =>
       visibleItemsSubject.stream;
@@ -37,7 +39,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   CollapsibleBloc() {
     addDisposable(subject: visibleItemsSubject);
     addDisposable(subject: isAtLeastOneVisibleItemExpandedSubject);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       itemCollapsibleSubscriptionMap.values
           .forEach((subscription) => subscription.cancel());
     }));
@@ -45,7 +47,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
 
   @override
   // ignore: always_declare_return_types
-  void addVisibleItem(ICollapsibleItem item) {
+  Future addVisibleItem(ICollapsibleItem item) async {
     visibleItems.add(item);
     itemCollapsibleSubscriptionMap[item] = item.isCollapsedStream.listen((_) {
       checkIsAtLeastOneVisibleItemExpanded();
@@ -55,12 +57,14 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
 
   void onVisibleItemsChanged(List<ICollapsibleItem> newVisibleItems) {
     _logger.finest(() => "onVisibleItemsChanged ${newVisibleItems.length}");
-    visibleItemsSubject.add(newVisibleItems);
+    if (!visibleItemsSubject.isClosed) {
+      visibleItemsSubject.add(newVisibleItems);
+    }
   }
 
   @override
-  void removeVisibleItem(ICollapsibleItem item) {
-    itemCollapsibleSubscriptionMap.remove(item)?.cancel();
+  Future removeVisibleItem(ICollapsibleItem item) async {
+    await itemCollapsibleSubscriptionMap.remove(item)?.cancel();
     visibleItems.remove(item);
     onVisibleItemsChanged(visibleItems);
   }

@@ -75,9 +75,9 @@ void main() {
   });
 
   tearDown(() async {
-    conversationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await conversationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 

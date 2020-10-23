@@ -23,8 +23,8 @@ void main() {
   });
 
   tearDown(() async {
-    webSocketsService.dispose();
-    pleromaWebSocketsService.dispose();
+    await webSocketsService.dispose();
+    await pleromaWebSocketsService.dispose();
   });
 
   test('getHashtagChannel', () async {

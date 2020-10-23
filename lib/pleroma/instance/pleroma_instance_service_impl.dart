@@ -94,7 +94,7 @@ class PleromaInstanceService implements IPleromaInstanceService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

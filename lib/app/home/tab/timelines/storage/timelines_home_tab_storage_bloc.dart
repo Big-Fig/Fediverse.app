@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabStorageBloc
-    implements IAsyncInitLoadingBloc, Disposable {
+    implements IAsyncInitLoadingBloc, IDisposable {
   static ITimelinesHomeTabStorageBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<ITimelinesHomeTabStorageBloc>(context, listen: listen);

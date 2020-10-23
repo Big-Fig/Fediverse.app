@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountRepository
     implements
-        Disposable,
+        IDisposable,
         IReadIdListRepository<IAccount, int>,
         IWriteIdListRepository<DbAccount, int> {
   static IAccountRepository of(BuildContext context, {bool listen = true}) =>

@@ -40,7 +40,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
   PleromaNotificationService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 
@@ -121,8 +121,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
   Future dismissAll() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-        join(notificationRelativeUrlPath, "clear"),
+        relativePath: join(notificationRelativeUrlPath, "clear"),
       ),
     );
 

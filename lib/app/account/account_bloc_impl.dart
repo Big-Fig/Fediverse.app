@@ -80,9 +80,9 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  Future dispose() {
     // _logger.finest(() => "AccountBloc dispose");
+    return super.dispose();
   }
 
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
@@ -99,8 +99,8 @@ class AccountBloc extends IAccountBloc {
       }
 
       if (needRefreshFromNetworkOnInit == true) {
-        refreshFromNetwork
-          (isNeedPreFetchRelationship:isNeedPreFetchRelationship);
+        refreshFromNetwork(
+            isNeedPreFetchRelationship: isNeedPreFetchRelationship);
       } else {
         if (isNeedPreFetchRelationship &&
             accountRelationship?.following == null) {
@@ -268,7 +268,8 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship}) async {
+  Future<bool> refreshFromNetwork(
+      {@required bool isNeedPreFetchRelationship}) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     IPleromaAccount remoteAccount;

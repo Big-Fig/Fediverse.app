@@ -656,10 +656,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
+  Future dispose() {
     _logger.finest(() => "dispose");
+    return super.dispose();
   }
 
   @override
@@ -708,7 +707,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<bool> get containsSpoilerStream =>
       spoilerTextStream.map((spoilerText) => spoilerText?.isNotEmpty == true);
-
 
   @override
   bool get containsSpoilerAndDisplaySpoilerContentEnabled {

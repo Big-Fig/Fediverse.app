@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMyAccountDomainBlockNetworkOnlyListBloc
-    implements Disposable, INetworkOnlyListBloc<DomainBlock> {
+    implements IDisposable, INetworkOnlyListBloc<DomainBlock> {
   static IMyAccountDomainBlockNetworkOnlyListBloc of(
           BuildContext context,
           {bool listen = true}) =>

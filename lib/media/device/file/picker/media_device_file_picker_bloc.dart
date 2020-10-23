@@ -4,7 +4,7 @@ import 'package:fedi/media/device/file/picker/media_device_file_picker_model.dar
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IMediaDeviceFilePickerBloc implements Disposable {
+abstract class IMediaDeviceFilePickerBloc implements IDisposable {
   static IMediaDeviceFilePickerBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IMediaDeviceFilePickerBloc>(context, listen: listen);

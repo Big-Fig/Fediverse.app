@@ -39,8 +39,9 @@ class PleromaPushService implements IPleromaPushService {
 
   PleromaPushService({@required this.restService, @required this.keys});
 
+
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

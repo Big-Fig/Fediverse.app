@@ -3,7 +3,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusEmojiReactionBloc implements Disposable {
+abstract class IStatusEmojiReactionBloc implements IDisposable {
   static IStatusEmojiReactionBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IStatusEmojiReactionBloc>(context, listen: listen);

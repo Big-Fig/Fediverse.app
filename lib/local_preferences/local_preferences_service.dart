@@ -45,7 +45,7 @@ abstract class ILocalPreferencesService extends DisposableOwner
     T jsonConverter(Map<String, dynamic> jsonData),
   );
 
-  Disposable listenKeyPreferenceChanged<T>(String key, ValueCallback onChanged);
+  IDisposable listenKeyPreferenceChanged<T>(String key, ValueCallback onChanged);
 
   static ILocalPreferencesService of(BuildContext context,
           {bool listen = true}) =>

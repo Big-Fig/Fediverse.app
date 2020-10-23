@@ -15,13 +15,13 @@ class LocalizationService extends AsyncInitLoadingBloc
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    localizationBloc.dispose();
+  Future dispose() async {
+    await super.dispose();
+    await localizationBloc.dispose();
   }
 }
 
-class LocalizationBloc extends Disposable {
+class LocalizationBloc extends IDisposable {
   //
   // Constructor
   //
@@ -58,9 +58,9 @@ class LocalizationBloc extends Disposable {
   // Function get onError => _actionController.sink.addError;
 
   @override
-  void dispose() {
-    _actionController.close();
-    _controller.close();
+  Future dispose() async {
+    await _actionController.close();
+    await _controller.close();
   }
 
   void reassemble() async {

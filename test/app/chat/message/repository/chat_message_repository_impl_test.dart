@@ -47,8 +47,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountRepository.dispose();
-    chatMessageRepository.dispose();
+    await accountRepository.dispose();
+    await chatMessageRepository.dispose();
     await database.close();
   });
 

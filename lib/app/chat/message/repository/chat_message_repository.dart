@@ -12,7 +12,7 @@ abstract class IChatMessageRepository
     implements
         IReadIdListRepository<IChatMessage, int>,
         IWriteIdListRepository<DbChatMessage, int>,
-        Disposable {
+        IDisposable {
   static IChatMessageRepository of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IChatMessageRepository>(context, listen: listen);

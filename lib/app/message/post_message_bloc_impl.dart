@@ -32,19 +32,21 @@ abstract class PostMessageBloc extends DisposableOwner
 
     addDisposable(subject: inputTextSubject);
 
-    addDisposable(textEditingController: inputTextController);
     addDisposable(focusNode: inputFocusNode);
 
     addDisposable(subject: selectedActionSubject);
+    addDisposable(textEditingController: inputTextController);
 
     var editTextListener = () {
       onInputTextChanged();
     };
     inputTextController.addListener(editTextListener);
 
-    addDisposable(disposable: CustomDisposable(() {
-      inputTextController.removeListener(editTextListener);
-    }));
+    addDisposable(
+      disposable: CustomDisposable(() async {
+        inputTextController.removeListener(editTextListener);
+      }),
+    );
   }
 
   @override

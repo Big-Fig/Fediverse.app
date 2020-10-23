@@ -3,7 +3,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAuthInstanceListBloc implements Disposable {
+abstract class IAuthInstanceListBloc implements IDisposable {
   static IAuthInstanceListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAuthInstanceListBloc>(context, listen: listen);
 

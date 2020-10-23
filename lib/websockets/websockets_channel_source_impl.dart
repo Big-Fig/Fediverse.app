@@ -30,8 +30,8 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     @required this.url,
     @required this.eventParser,
   }) {
-    addDisposable(disposable: CustomDisposable(() {
-      _disconnect();
+    addDisposable(disposable: CustomDisposable(() async {
+      await _disconnect();
     }));
     if (connectionService.isConnected) {
       _connect();
@@ -68,10 +68,10 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     }
   }
 
-  void _disconnect() {
+  Future _disconnect() async {
     _logger.finest(() => "_disconnect $url");
-    _channelSubscription?.cancel();
-    _channel?.sink?.close();
+    await _channelSubscription?.cancel();
+    await _channel?.sink?.close();
     _channel = null;
   }
 

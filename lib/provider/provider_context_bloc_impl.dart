@@ -7,9 +7,9 @@ import 'package:provider/provider.dart' as provider_lib;
 
 var _logger = Logger("provider_context_bloc_impl.dart");
 
-typedef provider_lib.Provider<T> ProviderBuilder<T extends Disposable>();
+typedef provider_lib.Provider<T> ProviderBuilder<T extends IDisposable>();
 
-class DisposableEntry<T extends Disposable> {
+class DisposableEntry<T extends IDisposable> {
   T disposable;
   ProviderBuilder<T> providerBuilder;
 
@@ -21,10 +21,10 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   final Map<Type, DisposableEntry> _storage = {};
 
   @override
-  Disposable register<T extends Disposable>(T disposable) {
+  IDisposable register<T extends IDisposable>(T disposable) {
     var type = T;
     if (_storage.containsKey(type)) {
-      throw "Can't register $Disposable because {$type} already registred";
+      throw "Can't register $IDisposable because {$type} already registred";
     }
 
     ProviderBuilder<T> providerCreator = () {
@@ -34,11 +34,11 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
     _storage[type] = DisposableEntry<T>(disposable, providerCreator);
 
-    return CustomDisposable(() => unregister<T>(disposable));
+    return CustomDisposable(() async => await unregister<T>(disposable));
   }
 
   @override
-  void unregister<T extends Disposable>(T object) {
+  Future unregister<T extends IDisposable>(T object) async {
     var type = T;
     if (!_storage.containsKey(type)) {
       throw "Can't unregister $object because {$type} not registred";
@@ -50,7 +50,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
           "registered $objInStorage";
     }
 
-    objInStorage.disposable.dispose();
+    await objInStorage.disposable.dispose();
 
     _storage.remove(type);
   }
@@ -68,7 +68,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<Disposable> asyncInitAndRegister<T extends Disposable>(T obj,
+  Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(T obj,
       {Future Function(T obj) additionalAsyncInit}) async {
     if (obj is AsyncInitLoadingBloc) {
       await obj.performAsyncInit();
@@ -82,5 +82,5 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  T get<T extends Disposable>() => _storage[T].disposable;
+  T get<T extends IDisposable>() => _storage[T].disposable;
 }

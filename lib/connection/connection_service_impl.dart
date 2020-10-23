@@ -43,7 +43,7 @@ class ConnectionService extends AsyncInitLoadingBloc
       }
     });
     WidgetsBinding.instance.addObserver(observer);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       WidgetsBinding.instance.removeObserver(observer);
     }));
 

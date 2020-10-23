@@ -48,7 +48,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
       var timeline = bloc.value;
       timelines.add(timeline);
-      bloc.dispose();
+      await bloc.dispose();
     }
 
     timelinesSubject.add(timelines);
@@ -94,7 +94,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
     await settingsLocalPreferencesBloc.setValue(timeline);
 
-    settingsLocalPreferencesBloc.dispose();
+    await settingsLocalPreferencesBloc.dispose();
 
     timelines.add(timeline);
 
@@ -115,7 +115,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
     await settingsLocalPreferencesBloc.clearValue();
 
-    settingsLocalPreferencesBloc.dispose();
+    await settingsLocalPreferencesBloc.dispose();
   }
 
   @override

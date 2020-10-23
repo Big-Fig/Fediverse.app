@@ -27,7 +27,7 @@ void main() {
   });
 
   tearDown(() async {
-    scheduledStatusRepository.dispose();
+    await scheduledStatusRepository.dispose();
     await database.close();
   });
 

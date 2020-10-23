@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 typedef Future<bool> IPushRealTimeHandler(
     PushHandlerMessage pushHandlerMessage);
 
-abstract class IPushHandlerBloc extends Disposable {
+abstract class IPushHandlerBloc extends IDisposable {
   static IPushHandlerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushHandlerBloc>(context, listen: listen);
 

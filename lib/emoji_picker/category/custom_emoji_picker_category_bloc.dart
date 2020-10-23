@@ -3,7 +3,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 
 abstract class ICustomEmojiPickerCategoryBloc
-    implements IAsyncInitLoadingBloc, Disposable {
+    implements IAsyncInitLoadingBloc, IDisposable {
   List<CustomEmojiPickerItem> get items;
 
   Stream<List<CustomEmojiPickerItem>> get itemsStream;

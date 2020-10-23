@@ -75,8 +75,8 @@ void goToRegisterAuthInstancePage(
       } catch (stackTrace, e) {
         _logger.warning(() => "getCaptcha error", stackTrace, e);
       } finally {
-        pleromaCaptchaService.dispose();
-        pleromaRestService.dispose();
+        await pleromaCaptchaService.dispose();
+        await pleromaRestService.dispose();
       }
     },
   );

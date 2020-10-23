@@ -79,7 +79,7 @@ MaterialPageRoute createChatPageRoute(IChat chat) {
 
             currentChatBloc.onChatOpened(chat);
 
-            chatBloc.addDisposable(disposable: CustomDisposable(() {
+            chatBloc.addDisposable(disposable: CustomDisposable(() async {
               currentChatBloc.onChatClosed(chat);
             }));
 

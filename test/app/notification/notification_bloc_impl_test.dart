@@ -62,10 +62,10 @@ void main() {
   });
 
   tearDown(() async {
-    notificationBloc.dispose();
-    notificationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await notificationBloc.dispose();
+    await notificationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 

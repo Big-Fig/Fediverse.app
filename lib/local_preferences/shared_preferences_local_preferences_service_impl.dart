@@ -128,7 +128,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
       preferences.containsKey(_specialStorageKeyCreatedKey);
 
   @override
-  Disposable listenKeyPreferenceChanged<T>(
+  IDisposable listenKeyPreferenceChanged<T>(
       String key, ValueCallback<T> onChanged) {
     if (!listeners.containsKey(key)) {
       listeners[key] = [];
@@ -136,7 +136,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
 
     listeners[key].add(onChanged);
 
-    return CustomDisposable(() {
+    return CustomDisposable(() async {
       listeners[key].remove(onChanged);
     });
   }

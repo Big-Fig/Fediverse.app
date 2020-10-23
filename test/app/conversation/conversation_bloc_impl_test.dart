@@ -92,13 +92,13 @@ void main() {
   });
 
   tearDown(() async {
-    conversationBloc.dispose();
-    conversationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await conversationBloc.dispose();
+    await conversationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
   });
 
   Future _update(IConversation conversation,

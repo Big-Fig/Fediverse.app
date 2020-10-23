@@ -57,8 +57,8 @@ void main() {
 
     await serviceMigrationBloc.migrateData();
 
-    inputLocalPreferenceBloc.dispose();
-    outputLocalPreferenceBloc.dispose();
+    await inputLocalPreferenceBloc.dispose();
+    await outputLocalPreferenceBloc.dispose();
 
     inputLocalPreferenceBloc =
         CurrentAuthInstanceLocalPreferenceBloc(inputPreferencesService);
@@ -70,7 +70,7 @@ void main() {
 
     expect(outputLocalPreferenceBloc.value, inputLocalPreferenceBloc.value);
 
-    inputLocalPreferenceBloc.dispose();
-    outputLocalPreferenceBloc.dispose();
+    await inputLocalPreferenceBloc.dispose();
+    await outputLocalPreferenceBloc.dispose();
   });
 }

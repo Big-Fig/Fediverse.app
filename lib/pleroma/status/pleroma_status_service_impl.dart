@@ -41,7 +41,7 @@ class PleromaStatusService implements IPleromaStatusService {
   PleromaStatusService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

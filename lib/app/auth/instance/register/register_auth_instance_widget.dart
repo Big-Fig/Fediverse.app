@@ -201,7 +201,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                   ),
                 );
               } finally {
-                authApplicationBloc?.dispose();
+                await authApplicationBloc?.dispose();
               }
               return authInstance;
             },

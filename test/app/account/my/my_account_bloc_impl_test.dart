@@ -60,10 +60,10 @@ void main() {
   });
 
   tearDown(() async {
-    myAccountBloc.dispose();
-    accountRepository.dispose();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountBloc.dispose();
+    await accountRepository.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
 
     await Future.delayed(Duration(microseconds: 100));
     await database.close();

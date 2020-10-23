@@ -23,7 +23,7 @@ class PleromaRestServiceMock extends IPleromaRestService {
   });
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

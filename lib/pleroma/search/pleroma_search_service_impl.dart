@@ -24,6 +24,7 @@ class PleromaSearchService implements IPleromaSearchService {
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
+
   @override
   bool get isApiReadyToUse => restService.isApiReadyToUse;
 
@@ -34,7 +35,7 @@ class PleromaSearchService implements IPleromaSearchService {
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

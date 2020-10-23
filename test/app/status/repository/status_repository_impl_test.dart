@@ -51,8 +51,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountRepository.dispose();
-    statusRepository.dispose();
+    await accountRepository.dispose();
+    await statusRepository.dispose();
     await database.close();
   });
 

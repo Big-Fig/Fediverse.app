@@ -66,6 +66,9 @@ class PleromaAccountPublicService extends IPleromaAccountPublicService {
     }
   }
 
+
   @override
-  void dispose() {}
+  Future dispose() async {
+    // nothing
+  }
 }

@@ -540,7 +540,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         );
         await timelineLocalPreferencesBloc.performAsyncInit();
         await timelineLocalPreferencesBloc.setValue(timeline);
-        timelineLocalPreferencesBloc.dispose();
+        await timelineLocalPreferencesBloc.dispose();
       }
 
       await timelinesHomeTabStorageLocalPreferences.setValue(storage);

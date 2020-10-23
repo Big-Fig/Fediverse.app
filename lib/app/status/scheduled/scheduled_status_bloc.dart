@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IScheduledStatusBloc implements Disposable {
+abstract class IScheduledStatusBloc implements IDisposable {
 
   static IScheduledStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScheduledStatusBloc>(context, listen: listen);

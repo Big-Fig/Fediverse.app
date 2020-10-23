@@ -168,9 +168,8 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
       .distinct();
 
   @override
-  void dispose() {
-    super.dispose();
-
+  Future dispose() {
     _logger.finest(() => "dispose");
+    return super.dispose();
   }
 }

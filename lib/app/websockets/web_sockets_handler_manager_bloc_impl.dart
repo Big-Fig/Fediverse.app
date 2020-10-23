@@ -33,7 +33,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   });
 
   @override
-  Disposable listenMyAccountChannel({
+  IDisposable listenMyAccountChannel({
     @required bool notification,
     @required bool chat,
   }) =>
@@ -48,7 +48,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  Disposable listenAccountChannel({
+  IDisposable listenAccountChannel({
     @required String accountId,
     @required bool notification,
   }) =>
@@ -63,7 +63,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  Disposable listenDirectChannel() => MyAccountConversationsWebSocketsHandler(
+  IDisposable listenDirectChannel() => MyAccountConversationsWebSocketsHandler(
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
@@ -73,7 +73,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  Disposable listenPublicChannel({
+  IDisposable listenPublicChannel({
     @required bool local,
     @required bool onlyMedia,
   }) =>
@@ -88,7 +88,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  Disposable listenHashtagChannel({
+  IDisposable listenHashtagChannel({
     @required String hashtag,
     @required bool local,
   }) =>
@@ -103,7 +103,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  Disposable listenListChannel({
+  IDisposable listenListChannel({
     @required String listId,
   }) =>
       CustomListStatusListWebSocketsHandler(

@@ -128,7 +128,7 @@ class PleromaListService implements IPleromaListService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

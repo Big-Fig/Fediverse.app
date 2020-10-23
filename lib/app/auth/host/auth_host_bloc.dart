@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class IAuthHostBloc extends Disposable {
+abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
   PleromaClientApplication get hostApplication;

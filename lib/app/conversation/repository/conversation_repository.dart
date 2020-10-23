@@ -11,7 +11,7 @@ abstract class IConversationRepository
     implements
         IReadIdListRepository<DbConversationWrapper, int>,
         IWriteIdListRepository<DbConversation, int>,
-        Disposable {
+        IDisposable {
   static IConversationRepository of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IConversationRepository>(context, listen: listen);

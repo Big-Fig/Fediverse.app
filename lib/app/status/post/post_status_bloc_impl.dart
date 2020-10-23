@@ -82,7 +82,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     inputFocusNode.addListener(focusListener);
 
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       inputFocusNode.removeListener(focusListener);
     }));
 
@@ -95,7 +95,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     };
     subjectTextController.addListener(editTextListener);
 
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       subjectTextController.removeListener(editTextListener);
     }));
 

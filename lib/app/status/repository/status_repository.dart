@@ -14,7 +14,7 @@ abstract class IStatusRepository
     implements
         IReadIdListRepository<IStatus, int>,
         IWriteIdListRepository<DbStatus, int>,
-        Disposable {
+        IDisposable {
   static IStatusRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusRepository>(context, listen: listen);
 
