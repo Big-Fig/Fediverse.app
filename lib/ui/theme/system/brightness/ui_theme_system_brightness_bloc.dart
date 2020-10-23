@@ -4,10 +4,10 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUiThemeSystemBrightnessHandlerBloc extends Disposable {
-  static IUiThemeSystemBrightnessHandlerBloc of(BuildContext context,
+abstract class IUiThemeSystemBrightnessBloc extends Disposable {
+  static IUiThemeSystemBrightnessBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IUiThemeSystemBrightnessHandlerBloc>(context, listen: listen);
+      Provider.of<IUiThemeSystemBrightnessBloc>(context, listen: listen);
 
   Brightness get systemBrightness;
 

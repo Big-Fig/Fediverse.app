@@ -51,8 +51,8 @@ import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc.dart';
 import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc_impl.dart';
-import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_bloc.dart';
-import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_bloc_impl.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
 import 'package:fedi/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
@@ -216,20 +216,19 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
             currentUiThemeIdLocalPreferenceBloc);
 
+    var uiThemeSystemBrightnessBloc = UiThemeSystemBrightnessBloc();
+
+    await globalProviderService.asyncInitAndRegister<
+        IUiThemeSystemBrightnessBloc>(uiThemeSystemBrightnessBloc);
+
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
       currentUiThemeIdLocalPreferenceBloc: currentUiThemeIdLocalPreferenceBloc,
-      availableThemes: [
-        lightFediUiTheme,
-        darkFediUiTheme,
-      ],
+      lightTheme: lightFediUiTheme,
+      darkTheme: darkFediUiTheme,
+      systemBrightnessHandlerBloc: uiThemeSystemBrightnessBloc,
     );
 
     await globalProviderService
         .asyncInitAndRegister<ICurrentFediUiThemeBloc>(currentFediUiThemeBloc);
-
-    var uiThemeSystemHandlerBloc = UiThemeSystemBrightnessHandlerBloc();
-
-    await globalProviderService.asyncInitAndRegister<
-        IUiThemeSystemBrightnessHandlerBloc>(uiThemeSystemHandlerBloc);
   }
 }

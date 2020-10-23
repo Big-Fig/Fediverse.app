@@ -9,7 +9,7 @@ void showFediModalBottomSheetDialog({
   @required BuildContext context,
   @required Widget child,
 }) {
-  var fediUiColorTheme = IFediUiColorTheme.of(context);
+  var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
   showModalBottomSheet(
       context: context,
       backgroundColor: fediUiColorTheme.transparent,
