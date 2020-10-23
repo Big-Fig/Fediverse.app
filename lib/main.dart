@@ -38,6 +38,7 @@ import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -320,45 +321,47 @@ class FediApp extends StatelessWidget {
     var currentFediUiThemeBloc =
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
-    return StreamBuilder<IFediUiTheme>(
-        stream: currentFediUiThemeBloc.currentThemeStream,
-        builder: (context, snapshot) {
-          var currentTheme = snapshot.data;
+    return UiThemeSystemBrightnessHandlerWidget(
+      child: StreamBuilder<IFediUiTheme>(
+          stream: currentFediUiThemeBloc.adaptiveBrightnessCurrentThemeStream,
+          builder: (context, snapshot) {
+            var currentTheme = snapshot.data;
 
-          var themeMode = currentTheme == null
-              ? ThemeMode.system
-              : currentTheme == darkFediUiTheme
-                  ? ThemeMode.dark
-                  : ThemeMode.light;
+            var themeMode = currentTheme == null
+                ? ThemeMode.system
+                : currentTheme == darkFediUiTheme
+                    ? ThemeMode.dark
+                    : ThemeMode.light;
 
-          _logger.finest(() => "currentTheme $currentTheme "
-              "themeMode $themeMode");
-          return CurrentFediUiThemeBlocProxyProvider(
-            child: OverlaySupport(
-              child: provideCurrentTheme(
-                currentTheme: currentTheme ?? lightFediUiTheme,
-                child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  title: appTitle,
-                  localizationsDelegates: localizationProvider.delegates,
-                  supportedLocales: localizationProvider.supportedLocales,
-                  locale: localizationProvider.locale,
-                  theme: lightFediUiTheme.themeData,
-                  darkTheme: darkFediUiTheme.themeData,
-                  themeMode: themeMode,
-                  initialRoute: "/",
-                  home: child,
-                  navigatorKey: navigatorKey,
-                  navigatorObservers: [
-                    FirebaseAnalyticsObserver(
-                        analytics: IAnalyticsService.of(context, listen: false)
-                            .firebaseAnalytics),
-                  ],
+            _logger.finest(() => "currentTheme $currentTheme "
+                "themeMode $themeMode");
+            return CurrentFediUiThemeBlocProxyProvider(
+              child: OverlaySupport(
+                child: provideCurrentTheme(
+                  currentTheme: currentTheme ?? lightFediUiTheme,
+                  child: MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: appTitle,
+                    localizationsDelegates: localizationProvider.delegates,
+                    supportedLocales: localizationProvider.supportedLocales,
+                    locale: localizationProvider.locale,
+                    theme: lightFediUiTheme.themeData,
+                    darkTheme: darkFediUiTheme.themeData,
+                    themeMode: themeMode,
+                    initialRoute: "/",
+                    home: child,
+                    navigatorKey: navigatorKey,
+                    navigatorObservers: [
+                      FirebaseAnalyticsObserver(
+                          analytics: IAnalyticsService.of(context, listen: false)
+                              .firebaseAnalytics),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   Widget provideCurrentTheme({

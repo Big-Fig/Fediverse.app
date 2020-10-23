@@ -29,13 +29,13 @@ abstract class IFediUiTheme extends IUiTheme {
 
 abstract class IFediUiColorTheme implements IUiColorTheme {
   static IFediUiColorTheme of(BuildContext context,
-      {bool listen = false}) =>
+      {bool listen = true}) =>
       Provider.of<IFediUiColorTheme>(context, listen: listen);
 }
 
 abstract class IFediUiTextTheme implements IUiTextTheme {
   static IFediUiTextTheme of(BuildContext context,
-      {bool listen = false}) =>
+      {bool listen = true}) =>
       Provider.of<IFediUiTextTheme>(context, listen: listen);
 
   TextStyle get smallShortWhite;

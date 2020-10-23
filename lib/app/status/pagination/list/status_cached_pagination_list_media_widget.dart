@@ -5,6 +5,7 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -86,34 +87,39 @@ class StatusCachedPaginationListMediaWidget
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 
-        return Provider<IStatus>.value(
-          value: statusWithMediaAttachment.status,
-          child: DisposableProxyProvider<IStatus, IStatusBloc>(
-              update: (context, status, oldValue) =>
-                  StatusBloc.createFromContext(context, status),
-              child: InkWell(
-                onTap: () {
-                  goToStatusThreadPage(
-                    context,
-                    status: statusWithMediaAttachment.status,
-                    initialMediaAttachment: statusWithMediaAttachment.mediaAttachment,
-                  );
-                },
-                child: Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: Center(
-                    child: Provider<IPleromaMediaAttachment>.value(
-                        value: statusWithMediaAttachment.mediaAttachment,
-                        child: StatusListItemMediaWidget()),
-                  ),
-                ),
-              )),
+        return Container(
+          color: IFediUiColorTheme.of(context).offWhite,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Provider<IStatus>.value(
+              value: statusWithMediaAttachment.status,
+              child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                  update: (context, status, oldValue) =>
+                      StatusBloc.createFromContext(context, status),
+                  child: InkWell(
+                    onTap: () {
+                      goToStatusThreadPage(
+                        context,
+                        status: statusWithMediaAttachment.status,
+                        initialMediaAttachment:
+                            statusWithMediaAttachment.mediaAttachment,
+                      );
+                    },
+                    child: Padding(
+                      padding: FediPadding.allSmallPadding,
+                      child: Center(
+                        child: Provider<IPleromaMediaAttachment>.value(
+                            value: statusWithMediaAttachment.mediaAttachment,
+                            child: StatusListItemMediaWidget()),
+                      ),
+                    ),
+                  )),
+            ),
+          ),
         );
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.count(2, index.isEven ? 2 : 1),
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
     );
   }
 

@@ -1,14 +1,14 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_bloc.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UiThemeSystemBrightnessHandlerBloc extends DisposableOwner
-    implements IUiThemeSystemBrightnessHandlerBloc {
+class UiThemeSystemBrightnessBloc extends DisposableOwner
+    implements IUiThemeSystemBrightnessBloc {
   final BehaviorSubject<Brightness> systemBrightnessSubject =
       BehaviorSubject.seeded(Brightness.light);
 
-  UiThemeSystemBrightnessHandlerBloc() {
+  UiThemeSystemBrightnessBloc() {
     addDisposable(subject: systemBrightnessSubject);
   }
 

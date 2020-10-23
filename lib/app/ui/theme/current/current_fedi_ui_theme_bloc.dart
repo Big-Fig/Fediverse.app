@@ -8,4 +8,8 @@ abstract class ICurrentFediUiThemeBloc
   static ICurrentFediUiThemeBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<ICurrentFediUiThemeBloc>(context, listen: listen);
+
+  IFediUiTheme get adaptiveBrightnessCurrentTheme;
+
+  Stream<IFediUiTheme> get adaptiveBrightnessCurrentThemeStream;
 }

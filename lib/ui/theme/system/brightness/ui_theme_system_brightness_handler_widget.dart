@@ -1,4 +1,4 @@
-import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_bloc.dart';
+import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/material.dart';
 
 class UiThemeSystemBrightnessHandlerWidget extends StatefulWidget {
@@ -29,7 +29,7 @@ class _UiThemeSystemBrightnessHandlerWidgetState
     oldOnPlatformBrightnessChanged = window.onPlatformBrightnessChanged;
 
     var uiThemeSystemHandlerBloc =
-    IUiThemeSystemBrightnessHandlerBloc.of(context, listen: false);
+    IUiThemeSystemBrightnessBloc.of(context, listen: false);
     window.onPlatformBrightnessChanged = () {
       uiThemeSystemHandlerBloc
           .onSystemBrightnessChanged(window.platformBrightness);
