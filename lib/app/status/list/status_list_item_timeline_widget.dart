@@ -107,8 +107,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
     var isReply = status.isReply;
 
+    Widget child;
     if (isReply && isFirstReplyAndDisplayReplyToStatus) {
-      return Column(
+      child = Column(
         children: [
           buildReplyToStatus(context),
           const FediUltraLightGreyDivider(),
@@ -116,8 +117,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         ],
       );
     } else {
-      return buildOriginalStatus(context, isReply);
+      child = buildOriginalStatus(context, isReply);
     }
+    return child;
   }
 
   Widget buildReplyToStatus(BuildContext context) {

@@ -12,8 +12,12 @@ var _logger = Logger("fedi_instance_image_background_widget.dart");
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
   final Widget child;
+  final Image defaultImage;
 
-  const FediInstanceImageBackgroundWidget({@required this.child});
+  const FediInstanceImageBackgroundWidget({
+    @required this.child,
+    this.defaultImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +52,32 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
     _logger.finest(
         () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
     if (backgroundImageAbsolutePath?.isNotEmpty == true) {
-      // todo: think about unnecessary redraw performance
-      return CachedNetworkImage(
-        imageUrl: backgroundImageAbsolutePath,
-        errorWidget: (BuildContext context, String url, Object error) =>
-            buildDefault(
-          context: context,
-          child: child,
-        ),
-        placeholder: (_, __) => Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: IFediUiColorTheme.of(context).primaryDark,
-          child: child,
-        ),
-        imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
-            buildWithImageProvider(
-          context: context,
-          imageProvider: imageProvider,
-          child: child,
-        ),
-      );
+      return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        // todo: think about unnecessary redraw performance
+        return CachedNetworkImage(
+          imageUrl: backgroundImageAbsolutePath,
+          width: constraints.maxWidth,
+          memCacheWidth: constraints.maxWidth.toInt(),
+          errorWidget: (BuildContext context, String url, Object error) =>
+              buildDefault(
+            context: context,
+            child: child,
+          ),
+          placeholder: (_, __) => Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: IFediUiColorTheme.of(context).primaryDark,
+            child: child,
+          ),
+          imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
+              buildWithImageProvider(
+            context: context,
+            imageProvider: imageProvider,
+            child: child,
+          ),
+        );
+      });
     } else {
       return buildDefault(
         context: context,
@@ -81,7 +90,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
     @required BuildContext context,
     @required Widget child,
   }) {
-    var imageProvider = getDefaultBackgroundImage().image;
+    var imageProvider = defaultImage.image;
     return buildWithImageProvider(
       context: context,
       imageProvider: imageProvider,
@@ -98,10 +107,12 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
       children: [
         Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.topCenter,
-                    image: imageProvider)),
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter,
+                image: imageProvider,
+              ),
+            ),
             child: child),
         Positioned(
           top: 0,
@@ -114,7 +125,4 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
       ],
     );
   }
-
-  Image getDefaultBackgroundImage() =>
-      Image.asset("assets/images/default_timeline_header.png");
 }

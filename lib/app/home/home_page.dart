@@ -85,6 +85,8 @@ class HomePage extends StatelessWidget {
         child: Container(
           color: IFediUiColorTheme.of(context).primary,
           child: FediInstanceImageBackgroundWidget(
+            defaultImage:
+                Image.asset("assets/images/default_timeline_header.png"),
             child: Container(),
           ),
         ),
