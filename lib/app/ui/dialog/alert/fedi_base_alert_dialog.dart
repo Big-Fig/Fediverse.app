@@ -31,7 +31,9 @@ class FediBaseAlertDialog extends BaseDialog {
   }) {
     var button = FediTransparentTextButton(
       action.label,
-      onPressed: action.onAction,
+      onPressed: () {
+        action.onAction(context);
+      },
       color: color,
     );
     if (notAddRightPadding) {
@@ -94,7 +96,7 @@ class FediBaseAlertDialog extends BaseDialog {
         children: <Widget>[
           if (cancelable)
             Expanded(
-                child: buildCancelAction(
+                child: buildDismissAction(
               context: context,
               isLast: actions?.isNotEmpty != true,
             )),
@@ -135,7 +137,7 @@ class FediBaseAlertDialog extends BaseDialog {
           if (cancelable)
             Padding(
               padding: FediPadding.verticalSmallPadding,
-              child: buildCancelAction(
+              child: buildDismissAction(
                 context: context,
                 isLast: true,
               ),
@@ -145,7 +147,7 @@ class FediBaseAlertDialog extends BaseDialog {
     }
   }
 
-  Widget buildCancelAction({
+  Widget buildDismissAction({
     @required BuildContext context,
     @required bool isLast,
   }) =>

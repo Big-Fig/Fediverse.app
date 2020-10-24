@@ -216,7 +216,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
     var authInstance = dialogResult.result;
     if (authInstance != null) {
-      Navigator.of(context).pop();
+
       if (authInstance.info.approvalRequired == true) {
         showInfoFediNotificationOverlay(
           context: context,
@@ -230,6 +230,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       } else {
         await ICurrentAuthInstanceBloc.of(context, listen: false)
             .changeCurrentInstance(authInstance);
+        Navigator.of(context).pop();
       }
 
       if (successRegistrationCallback != null) {

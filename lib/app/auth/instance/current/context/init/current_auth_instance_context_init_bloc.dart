@@ -14,5 +14,5 @@ abstract class ICurrentAuthInstanceContextInitBloc
 
   Stream<CurrentAuthInstanceContextInitState> get stateStream;
 
-  Future refresh();
+  Future refreshFromNetwork();
 }

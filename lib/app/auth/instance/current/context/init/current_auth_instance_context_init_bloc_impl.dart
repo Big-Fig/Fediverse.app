@@ -25,7 +25,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future refresh() async {
+  Future refreshFromNetwork() async {
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
     var isApiReadyToUse = pleromaInstanceService.isApiReadyToUse;
     _logger.finest(() => "refresh isApiReadyToUse $isApiReadyToUse");
@@ -75,6 +75,6 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    await refresh();
+    await refreshFromNetwork();
   }
 }

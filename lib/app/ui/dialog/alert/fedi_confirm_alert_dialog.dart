@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 class FediConfirmAlertDialog extends FediBaseAlertDialog {
   FediConfirmAlertDialog(
       {@required BuildContext context,
-      @required VoidCallback onAction,
+      @required DialogActionCallback onAction,
       String title,
       String content,
       String okActionLabel})

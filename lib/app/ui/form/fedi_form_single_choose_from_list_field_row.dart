@@ -72,7 +72,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                                       icon: valueToIconMapper != null
                                           ? valueToIconMapper(possibleValue)
                                           : null,
-                                      onAction: () {
+                                      onAction: (context) {
                                         onChanged(value, possibleValue);
                                         Navigator.of(context).pop();
                                       },

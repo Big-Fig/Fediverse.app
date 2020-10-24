@@ -72,7 +72,7 @@ class NewPostStatusPage extends StatelessWidget {
         actions: [
           DialogAction(
             label: tr("app.status.post.new.unsaved.dialog.action.discard"),
-            onAction: () {
+            onAction: (context) {
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -80,7 +80,7 @@ class NewPostStatusPage extends StatelessWidget {
           DialogAction(
             label: tr("app.status.post.new.unsaved.dialog.action"
                 ".save_as_draft"),
-            onAction: () async {
+            onAction: (context) async {
               var postStatusData =
                   postStatusBloc.calculateCurrentPostStatusData();
 

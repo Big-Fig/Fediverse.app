@@ -91,7 +91,7 @@ class EditMyAccountPage extends StatelessWidget {
       context: context,
       title: tr("app.account.my.edit.unsaved.dialog.title"),
       okActionLabel: tr("app.account.my.edit.unsaved.dialog.action.discard"),
-      onAction: () {
+      onAction: (context) {
         Navigator.pop(context);
         Navigator.pop(context);
       },

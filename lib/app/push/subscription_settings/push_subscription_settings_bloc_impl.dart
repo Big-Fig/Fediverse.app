@@ -18,7 +18,8 @@ var _logger = Logger("push_subscription_settings_bloc_impl.dart");
 
 class PushSubscriptionSettingsBloc extends DisposableOwner
     implements IPushSubscriptionSettingsBloc {
-  final IPushSubscriptionSettingsLocalPreferencesBloc localPreferencesBloc;
+  final IPushSubscriptionSettingsLocalPreferencesBloc
+      pushSubscriptionSettingsLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
@@ -44,23 +45,35 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   final IFormBoolFieldBloc chatFieldBloc;
 
   PushSubscriptionSettingsBloc({
-    @required this.localPreferencesBloc,
+    @required this.pushSubscriptionSettingsLocalPreferencesBloc,
     @required this.pleromaPushService,
     @required this.pushRelayService,
     @required this.currentInstance,
     @required this.fcmPushService,
   })  : favouriteFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.favourite ?? true),
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.favourite ??
+                    true),
         followFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.follow ?? true),
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.follow ??
+                    true),
         mentionFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.mention ?? true),
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.mention ??
+                    true),
         reblogFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.reblog ?? true),
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.reblog ??
+                    true),
         pollFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.poll ?? true),
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.poll ??
+                    true),
         chatFieldBloc = FormBoolFieldBloc(
-            originValue: localPreferencesBloc.value?.chat ?? true) {
+            originValue:
+                pushSubscriptionSettingsLocalPreferencesBloc.value?.chat ??
+                    true) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);
     addDisposable(disposable: mentionFieldBloc);
@@ -94,10 +107,18 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
         streamSubscription: chatFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
+
+    addDisposable(
+      streamSubscription:
+          pushSubscriptionSettingsLocalPreferencesBloc.stream.listen(
+        (newPreferences) {
+          fillNewPreferencesValues(newPreferences);
+        },
+      ),
+    );
   }
 
   void _onSomethingChanged() async {
-
     var newPreferences = PushSubscriptionSettingsLocalPreferences(
       favourite: favouriteFieldBloc.currentValue,
       follow: followFieldBloc.currentValue,
@@ -107,7 +128,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
       chat: chatFieldBloc.currentValue,
     );
 
-    var oldPreferences = localPreferencesBloc.value;
+    var oldPreferences = pushSubscriptionSettingsLocalPreferencesBloc.value;
     var changed = newPreferences != oldPreferences;
     if (changed) {
       var success = await updateSubscriptionPreferences(newPreferences);
@@ -121,7 +142,6 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
         reblogFieldBloc.changeCurrentValue(oldPreferences.reblog);
         pollFieldBloc.changeCurrentValue(oldPreferences.poll);
         chatFieldBloc.changeCurrentValue(oldPreferences.chat);
-
       }
     }
   }
@@ -129,9 +149,13 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   Future<bool> updateSubscriptionPreferences(
       PushSubscriptionSettingsLocalPreferences newPreferences) async {
     var deviceToken = fcmPushService.deviceToken;
+    var permissionGranted = await fcmPushService.askPermissions();
 
     bool success;
-    if (deviceToken != null) {
+
+    _logger.finest(() => "updateSubscriptionPreferences "
+        "deviceToken $deviceToken permissionGranted $permissionGranted");
+    if (deviceToken != null && permissionGranted) {
       try {
         var subscription = await pleromaPushService.subscribe(
             endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
@@ -156,7 +180,8 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
       }
 
       if (success) {
-        await localPreferencesBloc.setValue(newPreferences);
+        await pushSubscriptionSettingsLocalPreferencesBloc
+            .setValue(newPreferences);
       }
     } else {
       success = false;
@@ -178,9 +203,26 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   }
 
   @override
-  bool get isHaveSubscription => localPreferencesBloc.isSavedPreferenceExist;
+  bool get isHaveSubscription =>
+      pushSubscriptionSettingsLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeWithDefaultPreferences() => updateSubscriptionPreferences(
+  Future subscribeAllEnabled() => updateSubscriptionPreferences(
       PushSubscriptionSettingsLocalPreferences.defaultAllEnabled());
+
+  void fillNewPreferencesValues(
+      PushSubscriptionSettingsLocalPreferences newPreferences) {
+    favouriteFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.favourite);
+    followFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.follow);
+    mentionFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.mention);
+    reblogFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.reblog);
+    pollFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.poll);
+    chatFieldBloc.changeCurrentValue(
+        pushSubscriptionSettingsLocalPreferencesBloc.value?.chat);
+  }
 }

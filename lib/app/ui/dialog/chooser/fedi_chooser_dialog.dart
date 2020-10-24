@@ -105,7 +105,7 @@ class FediChooserDialogBody extends StatelessWidget {
           InkWell(
             onTap: () {
               if (action.onAction != null) {
-                action.onAction();
+                action.onAction(context);
               }
             },
             child: Row(

@@ -327,7 +327,7 @@ class NotificationListItemWidget extends StatelessWidget {
                                           label:
                                               "app.notification.action.mark_as_read"
                                                   .tr(),
-                                          onAction: () {
+                                          onAction: (context) {
                                             notificationBloc.markAsRead();
                                             Navigator.of(context).pop();
                                           },
@@ -338,7 +338,7 @@ class NotificationListItemWidget extends StatelessWidget {
                                           label:
                                               "app.notification.action.dismiss"
                                                   .tr(),
-                                          onAction: () {
+                                          onAction: (context) {
                                             notificationBloc.dismiss();
                                             Navigator.of(context).pop();
                                           },

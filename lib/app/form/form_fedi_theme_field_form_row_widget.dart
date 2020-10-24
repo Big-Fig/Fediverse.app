@@ -91,7 +91,7 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
     return SelectionDialogAction(
       icon: mapThemeToIcon(context, theme),
       label: mapThemeToTitle(context, theme),
-      onAction: () {
+      onAction: (context) {
         field.changeCurrentValue(theme);
         Navigator.of(context).pop();
       },
