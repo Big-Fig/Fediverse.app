@@ -8,7 +8,7 @@ import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_poll_action_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_post_icon_in_circle_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
@@ -98,8 +98,7 @@ class PostStatusComposeWidget extends StatelessWidget {
             scrollable: false,
             heightOnKeyboardOpen: null,
           ),
-          if (!displayAccountAvatar && expanded)
-            FediLightGreyDivider(),
+          if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(context),
           PostMessageSelectedActionWidget()
         ],
@@ -145,11 +144,10 @@ class PostStatusComposeWidget extends StatelessWidget {
             ),
           ),
           if (showPostAction)
-            PostStatusPostTextActionWidget(successCallback: (context) {
-              if (goBackOnSuccess) {
-                Navigator.of(context).pop();
-              }
-            }),
+            Padding(
+              padding: FediPadding.horizontalSmallPadding,
+              child: PostStatusPostIconInCircleActionWidget(),
+            ),
         ],
       ),
     );
