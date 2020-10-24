@@ -62,30 +62,44 @@ class SearchWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          buildTabBar(context, tabs, searchBloc),
+          buildTabBar(
+            context: context,
+            tabs: tabs,
+            searchBloc: searchBloc,
+          ),
           FediUltraLightGreyDivider(),
-          Expanded(child: buildTabsWidget(context, tabs, searchBloc))
+          Expanded(
+              child: buildTabsWidget(
+            context: context,
+            tabs: tabs,
+            searchBloc: searchBloc,
+          ))
         ],
       ),
     );
   }
 
-  Widget buildTabBar(
-          BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
+  Widget buildTabBar({
+    @required BuildContext context,
+    @required List<SearchTab> tabs,
+    @required ISearchBloc searchBloc,
+  }) =>
       Padding(
         padding: FediPadding.allBigPadding,
         child: Builder(
-          builder: (context) =>
-              DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
-            create: (context) => FediTabIndicatorBloc<SearchTab>(
-              items: tabs,
-              tabController: DefaultTabController.of(context),
-            ),
-            child: FediTextTabIndicatorWidget(
-              isTransparent: false,
-              tabToTextMapper: mapTabToTitle,
-            ),
-          ),
+          builder: (context) {
+            var tabController = DefaultTabController.of(context);
+            return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
+              create: (context) => FediTabIndicatorBloc<SearchTab>(
+                items: tabs,
+                tabController: tabController,
+              ),
+              child: FediTextTabIndicatorWidget(
+                isTransparent: false,
+                tabToTextMapper: mapTabToTitle,
+              ),
+            );
+          },
         ),
       );
 
@@ -108,8 +122,11 @@ class SearchWidget extends StatelessWidget {
     throw "Invalid tab $tab";
   }
 
-  Widget buildTabsWidget(
-          BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
+  Widget buildTabsWidget({
+    @required BuildContext context,
+    @required List<SearchTab> tabs,
+    @required ISearchBloc searchBloc,
+  }) =>
       TabBarView(
           children: List<Widget>.generate(
         tabs.length,
