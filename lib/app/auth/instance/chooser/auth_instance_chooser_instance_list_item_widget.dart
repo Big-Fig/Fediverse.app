@@ -123,7 +123,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             title: tr("app.auth.instance.logout.dialog.title"),
             content: tr("app.auth.instance.logout.dialog.content",
                 args: [instance.userAtHost]),
-            onAction: () async {
+            onAction: (context) async {
               if (isSelected) {
                 await Navigator.of(context).pop();
                 await Navigator.of(context).pop();

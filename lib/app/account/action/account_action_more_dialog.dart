@@ -43,7 +43,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
         DialogAction(
             icon: FediIcons.browser,
             label: tr("app.account.action.open_in_browser"),
-            onAction: () async {
+            onAction: (context) async {
               var url = accountBloc.account.url;
               await UrlHelper.handleUrlClick(context, url);
               Navigator.of(context).pop();
@@ -53,7 +53,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           label: relationship.muting
               ? tr("app.account.action.unmute")
               : tr("app.account.action.mute"),
-          onAction: () async {
+          onAction: (context) async {
             await accountBloc.toggleMute();
             Navigator.of(context).pop();
           },
@@ -63,7 +63,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           label: relationship.blocking
               ? tr("app.account.action.unblock")
               : tr("app.account.action.block"),
-          onAction: () async {
+          onAction: (context) async {
             await accountBloc.toggleBlock();
             Navigator.of(context).pop();
           },
@@ -76,7 +76,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
                     args: [accountBloc.remoteDomainOrNull])
                 : tr("app.account.action.block_domain",
                     args: [accountBloc.remoteDomainOrNull]),
-            onAction: () async {
+            onAction: (context) async {
               await accountBloc.toggleBlockDomain();
               Navigator.of(context).pop();
             },
@@ -84,7 +84,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
         DialogAction(
             icon: FediIcons.report,
             label: tr("app.account.action.report.label"),
-            onAction: () async {
+            onAction: (context) async {
               var success = await doAsyncActionReport(context, accountBloc);
 
               if (success) {

@@ -20,13 +20,13 @@ void showShareChooserDialog(
         DialogAction(
             icon: FediIcons.share,
             label: tr("app.share.action.share_to_external"),
-            onAction: () {
+            onAction: (context) {
               externalShareAction();
             }),
         DialogAction(
           icon: FediIcons.envelope,
           label: tr("app.share.action.share_to_conversations"),
-          onAction: () {
+          onAction: (context) {
             conversationsShareAction();
           },
         ),
@@ -34,7 +34,7 @@ void showShareChooserDialog(
           DialogAction(
             icon: FediIcons.chat,
             label: tr("app.share.action.share_to_chats"),
-            onAction: () {
+            onAction: (context) {
               chatsShareAction();
             },
           ),

@@ -83,7 +83,7 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
       icon: StatusVisibilityIconWidget.mapVisibilityToIconData(visibility),
       label:
           StatusVisibilityTitleWidget.mapVisibilityToTitle(context, visibility),
-      onAction: () {
+      onAction: (context) {
         field.changeCurrentValue(visibility);
         Navigator.of(context).pop();
       },

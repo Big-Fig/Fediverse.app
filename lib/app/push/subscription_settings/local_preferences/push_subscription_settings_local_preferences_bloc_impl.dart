@@ -7,8 +7,9 @@ class PushSubscriptionSettingsLocalPreferencesBloc
     extends ObjectLocalPreferenceBloc<PushSubscriptionSettingsLocalPreferences>
     implements IPushSubscriptionSettingsLocalPreferencesBloc {
   PushSubscriptionSettingsLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService, String userAtHost)
-      : super(
+    ILocalPreferencesService preferencesService,
+    String userAtHost,
+  ) : super(
           preferencesService,
           "$userAtHost.push.subscription",
           1,
@@ -17,5 +18,5 @@ class PushSubscriptionSettingsLocalPreferencesBloc
 
   @override
   PushSubscriptionSettingsLocalPreferences get defaultValue =>
-      PushSubscriptionSettingsLocalPreferences.defaultAllEnabled();
+      PushSubscriptionSettingsLocalPreferences.defaultAllDisabled();
 }

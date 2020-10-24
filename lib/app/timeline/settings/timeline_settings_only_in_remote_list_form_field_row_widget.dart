@@ -63,7 +63,7 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
                         isSelected: remoteList?.id ==
                             formValueFieldBloc.currentValue?.id,
                         label: remoteList.title,
-                        onAction: () {
+                        onAction: (context) {
                           formValueFieldBloc.changeCurrentValue(remoteList);
                           Navigator.of(context).pop();
                         },

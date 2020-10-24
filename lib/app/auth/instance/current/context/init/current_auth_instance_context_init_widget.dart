@@ -21,7 +21,9 @@ var _logger = Logger("current_auth_instance_context_init_widget.dart");
 class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
 
-  const CurrentAuthInstanceContextInitWidget({@required this.child});
+  const CurrentAuthInstanceContextInitWidget({
+    @required this.child,
+  });
 
   @override
   _CurrentAuthInstanceContextInitWidgetState createState() =>
@@ -30,7 +32,7 @@ class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
 
 class _CurrentAuthInstanceContextInitWidgetState
     extends State<CurrentAuthInstanceContextInitWidget> {
-  FediIndeterminateProgressDialog progressDialog;
+  FediIndeterminateProgressDialog loadingInstanceProgressDialog;
   StreamSubscription subscription;
 
   var disposed = false;
@@ -56,10 +58,10 @@ class _CurrentAuthInstanceContextInitWidgetState
   void showProgressDialog(BuildContext context,
       ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-    var isAlreadyShown = progressDialog?.isShowing == true;
+    var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
     _logger.finest(() => "showProgressDialog isAlreadyShown = $isAlreadyShown");
     if (!isAlreadyShown) {
-      progressDialog = FediIndeterminateProgressDialog(
+      loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
           cancelableOperation: null,
           titleMessage: "app.auth.instance.current.context.loading.loading"
                   ".title"
@@ -68,7 +70,7 @@ class _CurrentAuthInstanceContextInitWidgetState
               "app.auth.instance.current.context.loading.loading.content",
               args: [myAccountBloc.instance.userAtHost]));
 
-      progressDialog.show(context);
+      loadingInstanceProgressDialog.show(context);
 
       subscription =
           currentInstanceContextLoadingBloc.stateStream.listen((state) {
@@ -96,10 +98,10 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 
   void hideDialog() {
-    var isShowing = progressDialog?.isShowing == true;
+    var isShowing = loadingInstanceProgressDialog?.isShowing == true;
     _logger.finest(() => "hideDialog isShowing $isShowing");
     if (isShowing) {
-      progressDialog.hide(context);
+      loadingInstanceProgressDialog.hide(context);
     }
   }
 
@@ -107,6 +109,8 @@ class _CurrentAuthInstanceContextInitWidgetState
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
+
+
 
     _logger.finest(() => "build");
 
@@ -166,7 +170,7 @@ class _CurrentAuthInstanceContextInitWidgetState
                     tr("app.auth.instance.current.context.loading.cant_load"
                         ".action.refresh"),
                     onPressed: () {
-                      currentInstanceContextLoadingBloc.refresh();
+                      currentInstanceContextLoadingBloc.refreshFromNetwork();
                     },
                   ),
                 ),

@@ -8,7 +8,7 @@ abstract class IPushSubscriptionSettingsBloc extends IDisposable {
           {bool listen = true}) =>
       Provider.of<IPushSubscriptionSettingsBloc>(context, listen: listen);
 
-  Future subscribeWithDefaultPreferences();
+  Future subscribeAllEnabled();
 
   bool get isHaveSubscription;
 

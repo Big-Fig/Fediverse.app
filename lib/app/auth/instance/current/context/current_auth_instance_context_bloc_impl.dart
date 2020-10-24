@@ -35,6 +35,10 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
@@ -138,11 +142,20 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
 
-    await fcmPushService.askPermissions();
-
     var globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
+
+    var fcmPushPermissionAskedLocalPreferencesBloc =
+        FcmPushPermissionAskedLocalPreferencesBloc(
+      preferencesService,
+      userAtHost,
+    );
+
+    addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferencesBloc>(
+            fcmPushPermissionAskedLocalPreferencesBloc);
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
         preferencesService, currentInstance.userAtHost);
@@ -407,21 +420,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSubscriptionBloc = PushSubscriptionSettingsBloc(
-        pushRelayService: pushRelayService,
-        localPreferencesBloc: pushSubscriptionLocalPreferenceBloc,
-        pleromaPushService: pleromaPushService,
-        currentInstance: currentInstance,
-        fcmPushService: fcmPushService);
+    var pushSubscriptionSettingsBloc = PushSubscriptionSettingsBloc(
+      pushRelayService: pushRelayService,
+      pushSubscriptionSettingsLocalPreferencesBloc:
+          pushSubscriptionLocalPreferenceBloc,
+      pleromaPushService: pleromaPushService,
+      currentInstance: currentInstance,
+      fcmPushService: fcmPushService,
+    );
 
-    addDisposable(disposable: pushSubscriptionBloc);
+    addDisposable(disposable: pushSubscriptionSettingsBloc);
     await globalProviderService.asyncInitAndRegister<
-        IPushSubscriptionSettingsBloc>(pushSubscriptionBloc);
-
-    var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
-    if (!isHaveSubscription) {
-      await pushSubscriptionBloc.subscribeWithDefaultPreferences();
-    }
+        IPushSubscriptionSettingsBloc>(pushSubscriptionSettingsBloc);
 
     var currentChatBloc = CurrentChatBloc();
 
@@ -545,5 +555,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
       await timelinesHomeTabStorageLocalPreferences.setValue(storage);
     }
+
+    var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
+      fcmPushService: fcmPushService,
+      fcmPushPermissionAskedLocalPreferencesBloc:
+          fcmPushPermissionAskedLocalPreferencesBloc,
+      pushSubscriptionSettingsBloc: pushSubscriptionSettingsBloc,
+    );
+
+    addDisposable(disposable: fcmPushPermissionCheckerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
   }
 }

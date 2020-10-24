@@ -617,8 +617,23 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "push": {
+        "permission": {
+          "ask": {
+            "dialog": {
+              "title": "Push notifications",
+              "content": "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server"
+            }
+          },
+          "declined": {
+            "dialog": {
+              "title": "Permission required",
+              "content": "Please enable push notification in app settings to receive updates"
+            }
+          }
+        },
         "settings": {
           "title": "Push notifications settings",
+          "desc": "All messages will be forwarded through Fedi proxy server",
           "field": {
             "favourites": {
               "label": "Favourites"
@@ -1174,6 +1189,8 @@ class CodegenLoader extends AssetLoader{
       "content": "An error has occurred. Please retry your action again. \n{}"
     },
     "action": {
+      "yes": "Yes",
+      "no": "No",
       "ok": "OK",
       "cancel": "Cancel"
     }

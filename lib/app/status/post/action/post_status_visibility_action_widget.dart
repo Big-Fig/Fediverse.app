@@ -50,12 +50,12 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     IPostStatusBloc postStatusBloc,
     PleromaVisibility visibility,
   ) {
-    Null Function() onPressed;
+    DialogActionCallback onPressed;
     var isPossibleToChangeVisibility =
         postStatusBloc.isPossibleToChangeVisibility;
     var isSelectedVisibility = postStatusBloc.visibility == visibility;
     if (isPossibleToChangeVisibility) {
-      onPressed = () {
+      onPressed = (context) {
         postStatusBloc.changeVisibility(visibility);
         Navigator.of(context).pop();
       };

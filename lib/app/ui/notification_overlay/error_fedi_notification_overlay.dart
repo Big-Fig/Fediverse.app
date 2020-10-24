@@ -12,14 +12,14 @@ OverlaySupportEntry showErrorFediNotificationOverlay({
   return showFediNotificationOverlay(
       Text(
         contentText,
-        style: IFediUiTextTheme.of(context).smallShortWhite,
+        style: IFediUiTextTheme.of(context, listen: false).smallShortWhite,
       ),
       subtitle: titleText != null
           ? Text(
               titleText,
-              style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
+              style: IFediUiTextTheme.of(context, listen: false).mediumShortBoldWhite,
             )
           : null,
       slideDismiss: true,
-      background: IFediUiColorTheme.of(context).error);
+      background: IFediUiColorTheme.of(context, listen: false).error);
 }

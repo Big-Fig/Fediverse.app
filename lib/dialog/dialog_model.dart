@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
+typedef DialogActionCallback = Function(BuildContext context);
+
 class DialogAction {
   final String label;
   final IconData icon;
-  final VoidCallback onAction;
+  final DialogActionCallback onAction;
 
   DialogAction({
     @required this.label,
@@ -24,7 +26,7 @@ class SelectionDialogAction extends DialogAction {
     @required this.isSelected,
     @required String label,
     IconData icon,
-    @required VoidCallback onAction,
+    @required DialogActionCallback onAction,
   }) : super(
           label: label,
           icon: icon,

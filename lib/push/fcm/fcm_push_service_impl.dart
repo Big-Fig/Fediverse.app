@@ -53,8 +53,10 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   }
 
   @override
-  Future askPermissions() async {
-    _fcm.requestNotificationPermissions(IosNotificationSettings());
+  Future<bool> askPermissions() async {
+    var granted =
+        _fcm.requestNotificationPermissions(IosNotificationSettings());
+    return granted != false;
   }
 
   @override
@@ -149,9 +151,10 @@ PushMessage _parsePushMessageOnAndroid(
       "\t dataJson $dataJson \n"
       "\t notificationJson $notificationJson");
   return PushMessage(
-      notification: notificationJson != null
-          ? PushNotification.fromJson(notificationJson)
-          : null,
-      data: dataJson,
-    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],);
+    notification: notificationJson != null
+        ? PushNotification.fromJson(notificationJson)
+        : null,
+    data: dataJson,
+    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],
+  );
 }

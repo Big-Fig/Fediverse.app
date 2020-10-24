@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
-import 'package:fedi/app/local_prefernces/fedi_local_preferences_service_migration_bloc_impl.dart';
+import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter_test/flutter_test.dart';
