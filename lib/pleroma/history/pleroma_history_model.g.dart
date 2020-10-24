@@ -14,9 +14,9 @@ class PleromaHistoryAdapter extends TypeAdapter<PleromaHistory> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaHistory(
-      accounts: fields[0] as int,
+      accounts: fields[0] as dynamic,
       dayInUnixTimestamp: fields[1] as int,
-      uses: fields[2] as int,
+      uses: fields[2] as dynamic,
     );
   }
 
@@ -39,9 +39,9 @@ class PleromaHistoryAdapter extends TypeAdapter<PleromaHistory> {
 
 PleromaHistory _$PleromaHistoryFromJson(Map<String, dynamic> json) {
   return PleromaHistory(
-    accounts: json['accounts'] as int,
+    accounts: json['accounts'],
     dayInUnixTimestamp: json['dayInUnixTimestamp'] as int,
-    uses: json['uses'] as int,
+    uses: json['uses'],
   );
 }
 
