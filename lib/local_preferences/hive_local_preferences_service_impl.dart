@@ -103,7 +103,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       StreamSubscriptionDisposable(
         _box.watch().listen(
           (boxEvent) {
-            onChanged(boxEvent.value);
+            if(boxEvent.key == key) {
+              onChanged(boxEvent.value);
+            }
           },
         ),
       );
