@@ -17,7 +17,8 @@ abstract class IPleromaHistory extends IMastodonHistory {}
 class PleromaHistory implements IPleromaHistory {
   @override
   @HiveField(0)
-  final int accounts;
+  // int(pleroma) or String(mastodon)
+  final dynamic accounts;
 
   @override
   @HiveField(1)
@@ -25,7 +26,8 @@ class PleromaHistory implements IPleromaHistory {
 
   @override
   @HiveField(2)
-  final int uses;
+  // int(pleroma) or String(mastodon)
+  final dynamic uses;
   PleromaHistory({this.accounts, this.dayInUnixTimestamp, this.uses});
 
   factory PleromaHistory.fromJson(Map<String, dynamic> json) =>

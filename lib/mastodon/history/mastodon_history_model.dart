@@ -1,7 +1,9 @@
 abstract class IMastodonHistory {
   int get dayInUnixTimestamp;
 
-  int get uses;
+  // int(pleroma) or String(mastodon)
+  dynamic get uses;
 
-  int get accounts;
+  // int(pleroma) or String(mastodon)
+  dynamic get accounts;
 }
