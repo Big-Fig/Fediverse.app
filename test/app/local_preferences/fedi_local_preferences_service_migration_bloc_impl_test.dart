@@ -19,6 +19,11 @@ void main() {
   ILocalPreferencesService outputPreferencesService;
 
   setUp(() async {
+    var outputFile = File("$folder$outputFileName");
+
+    if (outputFile.existsSync()) {
+      outputFile.deleteSync();
+    }
     Hive.init(folder);
 
     HiveService.registerAdapters();
@@ -32,10 +37,9 @@ void main() {
   });
 
   tearDown(() async {
+    await File("$folder$outputFileName").delete();
     await inputPreferencesService.dispose();
     await outputPreferencesService.dispose();
-
-    await File("$folder$outputFileName").delete();
   });
 
   test('test migration', () async {
