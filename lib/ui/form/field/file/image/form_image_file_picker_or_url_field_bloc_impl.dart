@@ -29,7 +29,7 @@ class FormImageFilePickerOrUrlFieldBloc extends FormFilePickerOrUrlFieldBloc
           originalUrl,
           isOriginalDeleted,
         ),
-      ).asyncMap((future) async => await future);
+      ).asyncMap((future) async => await future).asBroadcastStream();
 
   @override
   Future<MediaImageSource> get imageSource =>

@@ -179,6 +179,7 @@ class SingleMediaPickerPage extends StatelessWidget {
 
   void _showFolderChooserModalBottomSheet(
       BuildContext context, IMediaDeviceGalleryBloc mediaDeviceGalleryBloc) {
+    var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
     return showFediModalBottomSheetDialog(
         context: context,
         child: Provider.value(
@@ -187,22 +188,20 @@ class SingleMediaPickerPage extends StatelessWidget {
             padding: FediPadding.allBigPadding,
             child: ListView(
               shrinkWrap: true,
-              children: mediaDeviceGalleryBloc.folders
-                  .map((folder) => ListTile(
-                        onTap: () {
-                          mediaDeviceGalleryBloc.selectFolder(folder);
-                          Navigator.of(context).pop();
-                        },
-                        title: Text(
-                          _calculateFolderTitle(folder),
-                          style: folder == mediaDeviceGalleryBloc.selectedFolder
-                              ? IFediUiTextTheme.of(context)
-                                  .mediumShortBoldDarkGrey
-                              : IFediUiTextTheme.of(context)
-                                  .mediumShortDarkGrey,
-                        ),
-                      ))
-                  .toList(),
+              children: mediaDeviceGalleryBloc.folders.map((folder) {
+                return ListTile(
+                  onTap: () {
+                    mediaDeviceGalleryBloc.selectFolder(folder);
+                    Navigator.of(context).pop();
+                  },
+                  title: Text(
+                    _calculateFolderTitle(folder),
+                    style: folder == mediaDeviceGalleryBloc.selectedFolder
+                        ? fediUiTextTheme.mediumShortBoldDarkGrey
+                        : fediUiTextTheme.mediumShortDarkGrey,
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ));
