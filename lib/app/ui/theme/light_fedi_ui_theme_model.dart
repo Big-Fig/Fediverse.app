@@ -540,4 +540,7 @@ class LightFediUiColorTheme implements IFediUiColorTheme {
 
   @override
   Color get imageDarkOverlay => const Color(0x33333333);
+
+  @override
+  Color get modalBottomSheetDarkOverlay => const Color(0x66333333);
 }
