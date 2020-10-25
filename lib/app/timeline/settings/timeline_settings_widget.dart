@@ -7,7 +7,6 @@ import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_exte
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_account_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_in_remote_list_form_field_row_widget.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_reply_visibility_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +39,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
-          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.public:
@@ -50,7 +49,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildOnlyRemoteField(context, settingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
-          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.customList:
@@ -203,24 +202,24 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  Widget buildReplyVisibilityFilterField(
-    BuildContext context,
-    ITimelineSettingsFormBloc settingsBloc,
-    AuthInstance authInstance,
-  ) {
-    // TODO: not supported in local repository yet
-    return SizedBox.shrink();
-    var isSupported =
-        type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
-
-    return TimelineSettingsReplyVisibilityFormFieldRowWidget(
-      formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
-      enabled: isSupported,
-      desc: isSupported
-          ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
-    );
-  }
+  // Widget buildReplyVisibilityFilterField(
+  //   BuildContext context,
+  //   ITimelineSettingsFormBloc settingsBloc,
+  //   AuthInstance authInstance,
+  // ) {
+  //   // TODO: not supported in local repository yet
+  //   return SizedBox.shrink();
+  //   var isSupported =
+  //       type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
+  //
+  //   return TimelineSettingsReplyVisibilityFormFieldRowWidget(
+  //     formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
+  //     enabled: isSupported,
+  //     desc: isSupported
+  //         ? null
+  //         : "app.timeline.settings.field.not_supported.desc".tr(),
+  //   );
+  // }
 
   Widget buildCustomListField(
     BuildContext context,
