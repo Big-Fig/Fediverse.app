@@ -4,6 +4,7 @@ import 'package:fedi/app/share/external/external_share_media_bloc_impl.dart';
 import 'package:fedi/app/share/media/share_media_with_message_widget.dart';
 import 'package:fedi/app/share/share_icon_button_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,9 @@ class ExternalShareMediaPage extends StatelessWidget {
         appBar: FediSubPageTitleAppBar(
           title: "app.share.external.title".tr(),
           actions: [
-            ShareIconButtonWidget(),
+            ShareIconButtonWidget(
+              iconSize: FediSizes.appBarIconSize,
+            ),
           ],
         ),
         body: ShareMediaWithMessageWidget(

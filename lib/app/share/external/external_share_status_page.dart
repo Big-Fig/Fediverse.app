@@ -7,6 +7,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,9 @@ class ExternalShareStatusPage extends StatelessWidget {
         appBar: FediSubPageTitleAppBar(
           title: "app.share.external.title".tr(),
           actions: [
-            ShareIconButtonWidget(),
+            ShareIconButtonWidget(
+              iconSize: FediSizes.appBarIconSize,
+            ),
           ],
         ),
         body: ShareStatusWithMessageWidget(
