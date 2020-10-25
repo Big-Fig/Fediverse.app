@@ -32,19 +32,20 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final Widget loadingWidget;
   final bool useImageEmoji;
 
-  CustomEmojiPickerWidget(
-      {@required this.rowsCount,
-      @required this.onEmojiSelected,
-      this.unselectedIndicatorColor = Colors.black,
-      this.separatorColor = Colors.grey,
-      this.selectedIndicatorColor = Colors.blue,
-      this.customCategoryIconBuilder,
-      this.customCategoryBodyBuilder,
-      this.loadingWidget,
-      this.indicatorHeight = 50.0,
-      this.selectedCategoryItemsGridHeight = 200.0,
-      this.useImageEmoji = true,
-      this.emptyCategoryBuilder});
+  CustomEmojiPickerWidget({
+    @required this.rowsCount,
+    @required this.onEmojiSelected,
+    this.unselectedIndicatorColor = Colors.black,
+    this.separatorColor = Colors.grey,
+    this.selectedIndicatorColor = Colors.blue,
+    this.customCategoryIconBuilder,
+    this.customCategoryBodyBuilder,
+    this.loadingWidget,
+    this.indicatorHeight = 50.0,
+    this.selectedCategoryItemsGridHeight = 200.0,
+    this.useImageEmoji = true,
+    this.emptyCategoryBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,11 @@ class CustomEmojiPickerWidget extends StatelessWidget {
                     stream: selectedCategoryBloc.itemsStream,
                     initialData: selectedCategoryBloc.items,
                     builder: (context, snapshot) {
-                      var items = snapshot.data ?? [];
+                      var items = snapshot.data;
+
+                      if (items == null) {
+                        return loadingWidget;
+                      }
 
                       if (!useImageEmoji) {
                         items = items.where((item) {

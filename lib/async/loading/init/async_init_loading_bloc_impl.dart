@@ -31,6 +31,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
 
   @override
   Future performAsyncInit() async {
+    _logger.finest(() => "performAsyncInit");
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
       if (!_isInitLoadingSubject.isClosed) {
         _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
