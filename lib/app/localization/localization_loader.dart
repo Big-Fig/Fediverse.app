@@ -177,7 +177,17 @@ class CodegenLoader extends AssetLoader{
           "title": "Account mutes"
         },
         "domain_block": {
-          "title": "Domain blocks"
+          "title": "Domain blocks",
+          "add": {
+            "dialog": {
+              "title": "Add domain block",
+              "field": {
+                "domain": {
+                  "hint": "mastodon.social"
+                }
+              }
+            }
+          }
         },
         "statuses": {
           "bookmarked": {

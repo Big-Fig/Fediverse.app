@@ -1,7 +1,7 @@
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,31 +48,50 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                if (action.onAction != null) {
-                  action.onAction(context);
-                }
-              },
-              child: Row(
-                children: [
-                  if (action.icon != null)
-                    Icon(action.icon,
-                        color: isSelected
-                            ? IFediUiColorTheme.of(context).primary
-                            : IFediUiColorTheme.of(context).darkGrey),
-                  Padding(
-                    padding: FediPadding.allMediumPadding,
-                    child: Text(
-                      action.label,
-                      style: isSelected
-                          ? IFediUiTextTheme.of(context).bigTallPrimary
-                          : IFediUiTextTheme.of(context).bigTallDarkGrey,
+            StreamBuilder<bool>(
+                initialData: action.isActionEnabledFetcher != null
+                    ? action.isActionEnabledFetcher(context)
+                    : true,
+                stream: action.isActionEnabledStreamFetcher != null
+                    ? action.isActionEnabledStreamFetcher(context)
+                    : Stream.value(true),
+                builder: (context, snapshot) {
+                  var enabled = snapshot.data;
+                  var fediUiColorTheme = IFediUiColorTheme.of(context);
+                  var fediUiTextTheme = IFediUiTextTheme.of(context);
+                  return InkWell(
+                    onTap: enabled
+                        ? () {
+                            if (action.onAction != null) {
+                              action.onAction(context);
+                            }
+                          }
+                        : null,
+                    child: Row(
+                      children: [
+                        if (action.icon != null)
+                          Icon(action.icon,
+                              color: isSelected
+                                  ? fediUiColorTheme.primary
+                                  : enabled
+                                      ? IFediUiColorTheme.of(context).darkGrey
+                                      : IFediUiColorTheme.of(context)
+                                          .lightGrey),
+                        Padding(
+                          padding: FediPadding.allMediumPadding,
+                          child: Text(
+                            action.label,
+                            style: isSelected
+                                ? fediUiTextTheme.bigTallPrimary
+                                : enabled
+                                    ? fediUiTextTheme.bigTallDarkGrey
+                                    : fediUiTextTheme.bigTallLightGrey,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  );
+                }),
           ],
         ),
       );
@@ -107,7 +126,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             children: [
               ...actions
                   .map((action) => _buildAction(
-                context: context,
+                        context: context,
                         action: action,
                         isSelected: action.isSelected,
                       ))
@@ -119,7 +138,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
           _buildAction(
             context: context,
             action: BaseDialog.createDefaultCancelAction(
-              context,
+              context: context,
             ),
             isSelected: true,
           ),

@@ -88,7 +88,9 @@ class FediChooserDialogBody extends StatelessWidget {
         if (cancelable)
           _buildAction(
             context: context,
-            action: BaseDialog.createDefaultCancelAction(context),
+            action: BaseDialog.createDefaultCancelAction(
+              context: context,
+            ),
           ),
       ],
     );

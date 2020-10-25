@@ -22,7 +22,7 @@ Future<bool> doAsyncActionReport(
     await FediSimpleAlertDialog(
       context: context,
       title: tr("app.account.action.report.fail.dialog.title"),
-      content: tr("app.account.action.report.fail.dialog.content"),
+      contentText: tr("app.account.action.report.fail.dialog.content"),
     ).show(context);
   }
   return success;

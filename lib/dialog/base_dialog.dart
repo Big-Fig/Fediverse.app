@@ -4,49 +4,73 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class BaseDialog extends DisposableOwner {
+abstract class IDialog {
+  bool get isShowing;
+
+  bool get cancelable;
+
+  Future show(BuildContext context);
+
+  Future hide(BuildContext context);
+}
+
+abstract class BaseDialog extends DisposableOwner implements IDialog {
+  @override
   final bool cancelable;
 
   BaseDialog({this.cancelable = true});
 
   bool _isShowing = false;
 
+  @override
   bool get isShowing => _isShowing;
 
+  @override
   Future show(BuildContext context) {
     assert(!isShowing);
     _isShowing = true;
     return showDialog(
-        barrierDismissible: cancelable,
-        context: context,
-        builder: (BuildContext context) => buildDialog(context));
+      barrierDismissible: cancelable,
+      context: context,
+      builder: (BuildContext context) => buildDialogBody(context),
+    );
   }
 
-  void hide(BuildContext context) async {
+  @override
+  Future hide(BuildContext context) async {
     assert(isShowing);
     _isShowing = false;
     await dispose();
     Navigator.of(context).pop();
   }
 
-  Widget buildDialog(BuildContext context);
+  Widget buildDialogBody(BuildContext context);
 
-  static DialogAction createDefaultCancelAction(BuildContext context) {
-    return DialogAction(
+  static DialogAction createDefaultCancelAction({
+    @required BuildContext context,
+  }) =>
+      DialogAction(
         onAction: (context) {
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.cancel"));
-  }
+        label: tr("dialog.action.cancel"),
+      );
 
-  static DialogAction createDefaultOkAction({@required BuildContext context, DialogActionCallback action}) {
-    return DialogAction(
+  static DialogAction createDefaultOkAction({
+    @required BuildContext context,
+    @required DialogActionCallback action,
+    DialogActionEnabledFetcher isActionEnabledFetcher,
+    DialogActionEnabledStreamFetcher isActionEnabledStreamFetcher,
+  }) =>
+      DialogAction(
         onAction: (context) {
-          if(action != null) {
+          if (action != null) {
             action(context);
           }
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.ok"));
-  }
+        label: tr("dialog.action.ok"),
+        isActionEnabledFetcher: isActionEnabledFetcher,
+        isActionEnabledStreamFetcher: isActionEnabledStreamFetcher,
+      );
 }

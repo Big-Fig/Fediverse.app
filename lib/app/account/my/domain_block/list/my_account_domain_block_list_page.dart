@@ -1,11 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_dialog.dart';
+import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc_impl.dart';
+import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_pagination_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_pagination_bloc_impl.dart';
+import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc_impl.dart';
+import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_network_only_list_bloc.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_network_only_list_bloc_impl.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_network_only_pagination_bloc.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_network_only_pagination_bloc_impl.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_pagination_list_bloc_impl.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_pagination_list_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -26,6 +27,19 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: "app.account.my.domain_block.title".tr(),
+        actions: [
+          FediIconButton(
+            icon: Icon(FediIcons.plus),
+            onPressed: () {
+              AddMyAccountDomainBlockDialog.createFromContext(
+                  context: context,
+                  successCallback: () {
+                    IPaginationListBloc.of(context, listen: false)
+                        .refreshWithController();
+                  }).show(context);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: MyAccountDomainBlockPaginationListWidget(
@@ -34,9 +48,7 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
               (BuildContext context, DomainBlock domain) {
             // nothing
           },
-          domainBlockActions: <Widget>[
-            buildRemoveDomainBlockButton(context)
-          ],
+          domainBlockActions: <Widget>[buildRemoveDomainBlockButton(context)],
         ),
       ),
     );

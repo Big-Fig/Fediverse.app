@@ -41,7 +41,7 @@ class _FcmPushPermissionCheckerWidgetState
         askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
           context: context,
           yesAction: (context) async {
-            askFcmPushPermissionDialog.hide(context);
+            await askFcmPushPermissionDialog.hide(context);
             var success = await fcmPushPermissionCheckerBloc.checkAndSubscribe();
             if (!success) {
               showDeclinedDialog(context);

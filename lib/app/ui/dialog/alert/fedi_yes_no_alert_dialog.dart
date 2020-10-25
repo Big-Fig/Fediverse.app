@@ -9,12 +9,12 @@ class FediYesNoAlertDialog extends FediBaseAlertDialog {
     @required DialogActionCallback yesAction,
     @required DialogActionCallback noAction,
     String title,
-    String content,
+    String contentText,
     String yesActionLabel,
     String noActionLabel,
   }) : super(
             title: title,
-            content: content,
+            contentText: contentText,
             actions: [
               DialogAction(
                 label: yesActionLabel ?? tr("dialog.action.yes"),

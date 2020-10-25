@@ -58,7 +58,7 @@ abstract class FediProgressDialog extends BaseDialog {
   }
 
   @override
-  Widget buildDialog(BuildContext context) => Dialog(
+  Widget buildDialogBody(BuildContext context) => Dialog(
       insetAnimationCurve: Curves.easeInOut,
       insetAnimationDuration: Duration(milliseconds: 100),
       elevation: 10.0,
@@ -95,7 +95,7 @@ abstract class FediProgressDialog extends BaseDialog {
                       _isCanceledSubject.add(true);
                       await cancelableOperation.cancel();
                       if(isShowing) {
-                        hide(context);
+                        await hide(context);
                       }
                     };
                   }

@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_pagination_list_bloc.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_pagination_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc_proxy_provider.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
