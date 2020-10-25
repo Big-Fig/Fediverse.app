@@ -1,7 +1,6 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -171,25 +170,20 @@ class ChatMessageListItemWidget extends StatelessWidget {
             var contentWithEmojis = snapshot.data;
 
             if (contentWithEmojis?.isNotEmpty == true) {
-              return Provider<HtmlTextData>.value(
-                value: HtmlTextData(
-                  source: messageBloc,
+              return HtmlTextWidget(
                   htmlData: contentWithEmojis,
-                ),
-                child: HtmlTextWidget(
-                    shrinkWrap: true,
-                    color: isChatMessageFromMe
-                        ? IFediUiColorTheme.of(context).white
-                        : IFediUiColorTheme.of(context).darkGrey,
-                    linkColor: isChatMessageFromMe
-                        ? IFediUiColorTheme.of(context).white
-                        : IFediUiColorTheme.of(context).primary,
-                    fontSize: 16.0,
-                    lineHeight: 1.5,
-                    onLinkTap: (context, htmlTextData, url) async {
-                      await UrlHelper.handleUrlClick(context, url);
-                    }),
-              );
+                  shrinkWrap: true,
+                  color: isChatMessageFromMe
+                      ? IFediUiColorTheme.of(context).white
+                      : IFediUiColorTheme.of(context).darkGrey,
+                  linkColor: isChatMessageFromMe
+                      ? IFediUiColorTheme.of(context).white
+                      : IFediUiColorTheme.of(context).primary,
+                  fontSize: 16.0,
+                  lineHeight: 1.5,
+                  onLinkTap: (context, url) async {
+                    await UrlHelper.handleUrlClick(context, url);
+                  });
             } else {
               return SizedBox.shrink();
             }

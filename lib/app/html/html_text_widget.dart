@@ -1,4 +1,3 @@
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +5,17 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
 var _logger = Logger("html_text_widget.dart");
 
 typedef HtmlTextOnLinkClick<T> = Function(
   BuildContext context,
-  HtmlTextData<T> htmlTextData,
   String url,
 );
 
-class HtmlTextWidget<T> extends StatelessWidget {
-  final HtmlTextOnLinkClick<T> onLinkTap;
+// handle generic HtmlTextOnLinkClick<T> and HtmlTextData<T> from provider
+class HtmlTextWidget extends StatelessWidget {
+  final HtmlTextOnLinkClick onLinkTap;
   final double fontSize;
   final FontWeight fontWeight;
   final double lineHeight;
@@ -30,8 +28,9 @@ class HtmlTextWidget<T> extends StatelessWidget {
   final TextAlign textAlign;
   final double imageSize;
   final Display paragraphDisplay;
+  final String htmlData;
 
-  const HtmlTextWidget({
+  HtmlTextWidget({
     @required this.onLinkTap,
     this.fontSize = 18.0,
     this.lineHeight = 1.0,
@@ -45,22 +44,20 @@ class HtmlTextWidget<T> extends StatelessWidget {
     this.shrinkWrap = false,
     this.drawNewLines = true,
     this.textAlign = TextAlign.start,
+    @required this.htmlData,
   });
 
   @override
   Widget build(BuildContext context) {
     var linkColor = this.linkColor ?? IFediUiColorTheme.of(context).primaryDark;
 
-    String htmlData;
-
-    var htmlTextData = Provider.of<HtmlTextData>(context, listen: true);
-    var currentData = htmlTextData.htmlData;
+    var currentData = htmlData;
     if (drawNewLines) {
       // draw both new line types
-      htmlData = currentData?.replaceAll("\n", "</br>");
+      currentData = currentData?.replaceAll("\n", "</br>");
     } else {
-      htmlData = currentData?.replaceAll("\n", "");
-      htmlData = currentData?.replaceAll("<(/)*br>", "");
+      currentData = currentData?.replaceAll("\n", "");
+      currentData = currentData?.replaceAll("<(/)*br>", "");
     }
 
     _logger.finest(() => "htmlData $htmlData");
@@ -143,9 +140,9 @@ class HtmlTextWidget<T> extends StatelessWidget {
       onImageError: (exception, stackTrace) {
         _logger.warning(() => "onImageError", exception, stackTrace);
       },
-      data: htmlData ?? "",
+      data: currentData ?? "",
       onLinkTap: (url) {
-        onLinkTap(context, htmlTextData, url);
+        onLinkTap(context, url);
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const _borderRadius = Radius.circular(16.0);
 
@@ -140,26 +138,21 @@ class ConversationStatusListItemWidget extends StatelessWidget {
             var contentWithEmojis = snapshot.data;
 
             if (contentWithEmojis?.isNotEmpty == true) {
-              return Provider<HtmlTextData>.value(
-                value: HtmlTextData(
-                  source: statusBloc,
+              return HtmlTextWidget(
                   htmlData: contentWithEmojis,
-                ),
-                child: HtmlTextWidget(
-                    shrinkWrap: true,
-                    color: isStatusFromMe
-                        ? IFediUiColorTheme.of(context).white
-                        : IFediUiColorTheme.of(context).darkGrey,
-                    linkColor: isStatusFromMe
-                        ? IFediUiColorTheme.of(context).white
-                        : IFediUiColorTheme.of(context).primary,
-                    fontSize: 16.0,
-                    lineHeight: 1.5,
-                    // data: contentWithEmojis,
-                    onLinkTap: (context, htmlTextData, url) async {
-                      await UrlHelper.handleUrlClick(context, url);
-                    }),
-              );
+                  shrinkWrap: true,
+                  color: isStatusFromMe
+                      ? IFediUiColorTheme.of(context).white
+                      : IFediUiColorTheme.of(context).darkGrey,
+                  linkColor: isStatusFromMe
+                      ? IFediUiColorTheme.of(context).white
+                      : IFediUiColorTheme.of(context).primary,
+                  fontSize: 16.0,
+                  lineHeight: 1.5,
+                  // data: contentWithEmojis,
+                  onLinkTap: (context, url) async {
+                    await UrlHelper.handleUrlClick(context, url);
+                  });
             } else {
               return SizedBox.shrink();
             }

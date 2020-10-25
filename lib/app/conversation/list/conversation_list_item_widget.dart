@@ -6,19 +6,17 @@ import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
-import 'package:provider/provider.dart';
 
 class ConversationListItemWidget extends StatelessWidget {
   ConversationListItemWidget();
@@ -119,21 +117,16 @@ class ConversationListItemWidget extends StatelessWidget {
 
           var contentWithEmojis =
               addEmojiToHtmlContent(content, lastMessage.emojis);
-          return Provider<HtmlTextData>.value(
-            value: HtmlTextData(
-              htmlData: contentWithEmojis ?? "",
-              source: conversationBloc,
-            ),
-            child: HtmlTextWidget(
-              drawNewLines: false,
-              textMaxLines: 1,
-              textOverflow: TextOverflow.ellipsis,
-              // data: contentWithEmojis ?? "",
-              onLinkTap: null,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w300,
-              color: IFediUiColorTheme.of(context).mediumGrey,
-            ),
+          return HtmlTextWidget(
+            htmlData: contentWithEmojis ?? "",
+            drawNewLines: false,
+            textMaxLines: 1,
+            textOverflow: TextOverflow.ellipsis,
+            // data: contentWithEmojis ?? "",
+            onLinkTap: null,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w300,
+            color: IFediUiColorTheme.of(context).mediumGrey,
           );
         });
   }

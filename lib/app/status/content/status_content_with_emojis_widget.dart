@@ -1,22 +1,19 @@
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/content/status_content_link_helper.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
 final _logger = Logger("status_content_with_emojis_widget.dart");
 
 void _onLinkTap(
   BuildContext context,
-  HtmlTextData<IStatusBloc> htmlTextData,
   String url,
 ) async {
   await handleStatusContentLinkClick(
     context: context,
-    statusBloc: htmlTextData.source,
+    statusBloc: IStatusBloc.of(context, listen: false),
     link: url,
   );
 }
@@ -24,7 +21,7 @@ void _onLinkTap(
 class StatusContentWithEmojisWidget extends StatelessWidget {
   final bool collapsible;
 
-  const StatusContentWithEmojisWidget({
+   StatusContentWithEmojisWidget({
     @required this.collapsible,
   });
 
@@ -50,30 +47,23 @@ class StatusContentWithEmojisWidget extends StatelessWidget {
           // }
 
           if (contentWithEmojisEmojis?.isNotEmpty == true) {
-            var htmlTextWidget = Provider<HtmlTextData>.value(
-                value: HtmlTextData(
-                  source: statusBloc,
-                  htmlData: contentWithEmojisEmojis,
-                ),
-                child: const HtmlTextWidget(
-                  // data: contentWithEmojisEmojis,
-                  // data: null,
-
-                  lineHeight: 1.5,
-                  fontSize: 16.0,
-                  // todo: 1000 is hack, actually it should be null, but don't
-                  //  work as expected
-                  textMaxLines: 1000,
-                  textOverflow: TextOverflow.ellipsis,
-                  onLinkTap: _onLinkTap,
-                  // onLinkTap: (String link) async {
-                  //   await handleStatusContentLinkClick(
-                  //     context: context,
-                  //     statusBloc: statusBloc,
-                  //     link: link,
-                  //   );
-                  // }),
-                ));
+            var htmlTextWidget = HtmlTextWidget(
+              htmlData: contentWithEmojisEmojis,
+              lineHeight: 1.5,
+              fontSize: 16.0,
+              // todo: 1000 is hack, actually it should be null, but don't
+              //  work as expected
+              textMaxLines: 1000,
+              textOverflow: TextOverflow.ellipsis,
+              onLinkTap: _onLinkTap,
+              // onLinkTap: (String link) async {
+              //   await handleStatusContentLinkClick(
+              //     context: context,
+              //     statusBloc: statusBloc,
+              //     link: link,
+              //   );
+              // }),
+            );
             //
             // var htmlTextWidget = HtmlTextWidget(
             //     data: contentWithEmojisEmojis,
