@@ -131,10 +131,10 @@ class StatusBodyWidget extends StatelessWidget {
             children: [
               if (showSpoiler) StatusSpoilerWidget(),
               collapsible
-                  ? const StatusContentWithEmojisWidget(
+                  ? StatusContentWithEmojisWidget(
                       collapsible: true,
                     )
-                  : const StatusContentWithEmojisWidget(
+                  : StatusContentWithEmojisWidget(
                       collapsible: false,
                     ),
               if (collapsible && statusBloc.isPossibleToCollapse)
