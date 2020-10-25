@@ -10,6 +10,8 @@ var _logger = Logger("form_image_file_picker_or_url_field_bloc_impl.dart");
 
 class FormImageFilePickerOrUrlFieldBloc extends FormFilePickerOrUrlFieldBloc
     implements IFormImageFilePickerOrUrlFieldBloc {
+  BehaviorSubject<MediaImageSource> imageSourceSubject = BehaviorSubject();
+
   FormImageFilePickerOrUrlFieldBloc({
     @required String originalUrl,
     @required int maxFileSizeInBytes,
@@ -18,28 +20,38 @@ class FormImageFilePickerOrUrlFieldBloc extends FormFilePickerOrUrlFieldBloc
           originalUrl: originalUrl,
           maximumFileSizeInBytes: maxFileSizeInBytes,
           isPossibleToDeleteOriginal: isPossibleToDeleteOriginal,
-        );
-
-  @override
-  Stream<MediaImageSource> get imageSourceStream => Rx.combineLatest2(
+        ) {
+    addDisposable(subject: imageSourceSubject);
+    addDisposable(
+      streamSubscription: Rx.combineLatest2(
         currentFilePickerFileStream,
         isOriginalDeletedStream,
         (currentFilePickerFile, isOriginalDeleted) => createMediaSource(
-          currentFilePickerFile,
-          originalUrl,
-          isOriginalDeleted,
+          filePickerFile: currentFilePickerFile,
+          url: originalUrl,
+          isOriginalDeleted: isOriginalDeleted,
         ),
-      ).asyncMap((future) async => await future).asBroadcastStream();
+      ).listen(
+        (mediaSourceFuture) {
+          mediaSourceFuture.then((mediaSource) {
+            imageSourceSubject.add(mediaSource);
+          });
+        },
+      ),
+    );
+  }
 
   @override
-  Future<MediaImageSource> get imageSource =>
-      createMediaSource(currentMediaDeviceFile, originalUrl, isOriginalDeleted);
+  Stream<MediaImageSource> get imageSourceStream => imageSourceSubject.stream;
 
-  Future<MediaImageSource> createMediaSource(
-    IMediaDeviceFile filePickerFile,
-    String url,
-    bool isOriginalDeleted,
-  ) async {
+  @override
+  MediaImageSource get imageSource => imageSourceSubject.value;
+
+  Future<MediaImageSource> createMediaSource({
+    @required IMediaDeviceFile filePickerFile,
+    @required String url,
+    @required bool isOriginalDeleted,
+  }) async {
     _logger.finest(() => "createMediaSource filePickerFile = $filePickerFile "
         "url = $url "
         "isOriginalDeleted = $isOriginalDeleted ");

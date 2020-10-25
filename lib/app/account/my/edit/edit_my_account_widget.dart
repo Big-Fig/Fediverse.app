@@ -14,7 +14,6 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -23,6 +22,7 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -236,34 +236,41 @@ class EditMyAccountWidget extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      child: StreamBuilder<MediaImageSource>(
-          stream: editMyAccountBloc.avatarField.imageSourceStream,
-          builder: (context, snapshot) {
-            var source = snapshot.data;
+      child: buildAvatarMediaImageSourceStreamBuilder(editMyAccountBloc),
+      // child: FediCircularProgressIndicator(),
+    );
+  }
 
-            if (source == null) {
-              return FediCircularProgressIndicator();
-            }
-            if (source.url != null) {
-              var url = source.url;
-              return CachedNetworkImage(
-                imageUrl: url,
-                placeholder: (context, url) => Container(
-                  width: editAccountProgressSize,
-                  height: editAccountProgressSize,
-                  child: FediCircularProgressIndicator(),
-                ),
-                imageBuilder: (context, imageProvider) {
-                  return buildAvatarImageContainer(imageProvider);
-                },
-                errorWidget: (context, url, error) => Icon(FediIcons.warning),
-                height: editAccountAvatarSize,
-                width: editAccountAvatarSize,
-              );
-            } else {
-              return buildAvatarImageContainer(Image.file(source.file).image);
-            }
-          }),
+  StreamBuilder<MediaImageSource> buildAvatarMediaImageSourceStreamBuilder(
+      IEditMyAccountBloc editMyAccountBloc) {
+    return StreamBuilder<MediaImageSource>(
+      stream: editMyAccountBloc.avatarField.imageSourceStream,
+      builder: (context, snapshot) {
+        var source = snapshot.data;
+
+        if (source == null) {
+          return FediCircularProgressIndicator();
+        }
+        if (source.url != null) {
+          var url = source.url;
+          return CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => Container(
+              width: editAccountProgressSize,
+              height: editAccountProgressSize,
+              child: FediCircularProgressIndicator(),
+            ),
+            imageBuilder: (context, imageProvider) {
+              return buildAvatarImageContainer(imageProvider);
+            },
+            errorWidget: (context, url, error) => Icon(FediIcons.warning),
+            height: editAccountAvatarSize,
+            width: editAccountAvatarSize,
+          );
+        } else {
+          return buildAvatarImageContainer(Image.file(source.file).image);
+        }
+      },
     );
   }
 
@@ -300,35 +307,42 @@ class EditMyAccountWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: StreamBuilder<MediaImageSource>(
-          stream: editMyAccountBloc.headerField.imageSourceStream,
-          builder: (context, snapshot) {
-            var source = snapshot.data;
-            if (source == null) {
-              return FediCircularProgressIndicator();
-            }
-            if (source.url != null) {
-              var url = source.url;
-              return CachedNetworkImage(
-                imageUrl: url,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: Container(
-                    width: editAccountProgressSize,
-                    height: editAccountProgressSize,
-                    child: FediCircularProgressIndicator(),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Icon(FediIcons.warning),
-              );
-            } else {
-              return Image.file(
-                source.file,
-                fit: BoxFit.cover,
-              );
-            }
-          }),
+      child: buildHeaderImageSourceStreamBuilder(editMyAccountBloc),
+      // child: FediCircularProgressIndicator(),
     );
+  }
+
+  StreamBuilder<MediaImageSource> buildHeaderImageSourceStreamBuilder(
+      IEditMyAccountBloc editMyAccountBloc) {
+    return StreamBuilder<MediaImageSource>(
+        stream: editMyAccountBloc.headerField.imageSourceStream,
+        builder: (context, snapshot) {
+          var source = snapshot.data;
+
+          if (source == null) {
+            return FediCircularProgressIndicator();
+          }
+          if (source.url != null) {
+            var url = source.url;
+            return CachedNetworkImage(
+              imageUrl: url,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Center(
+                child: Container(
+                  width: editAccountProgressSize,
+                  height: editAccountProgressSize,
+                  child: FediCircularProgressIndicator(),
+                ),
+              ),
+              errorWidget: (context, url, error) => Icon(FediIcons.warning),
+            );
+          } else {
+            return Image.file(
+              source.file,
+              fit: BoxFit.cover,
+            );
+          }
+        });
   }
 
   Widget buildPleromaBackgroundFieldImage(
