@@ -31,7 +31,7 @@ class CodegenLoader extends AssetLoader{
       "accounts": {
         "label": "Accounts in list",
         "action": {
-          "add": "Add following account"
+          "add": "Add account from followings"
         }
       },
       "create": {
