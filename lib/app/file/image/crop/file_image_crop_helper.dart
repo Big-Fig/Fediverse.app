@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 Future<File> cropImageToSquare(File file, BuildContext context) {
-
-  var fediUiColorTheme = IFediUiColorTheme.of(context);
+  var fediUiColorTheme = IFediUiColorTheme.of(
+    context,
+    listen: false,
+  );
   return ImageCropper.cropImage(
       sourcePath: file.path,
       aspectRatio: CropAspectRatio(ratioY: 1, ratioX: 1),
       aspectRatioPresets: [CropAspectRatioPreset.square],
       androidUiSettings: AndroidUiSettings(
-          toolbarTitle:
-              tr("app.file.image.crop.title"),
+          toolbarTitle: tr("app.file.image.crop.title"),
           toolbarColor: fediUiColorTheme.primary,
           toolbarWidgetColor: fediUiColorTheme.white,
           initAspectRatio: CropAspectRatioPreset.square,
@@ -37,8 +38,7 @@ Future<File> cropImage(File file, BuildContext context) {
         CropAspectRatioPreset.ratio16x9
       ],
       androidUiSettings: AndroidUiSettings(
-          toolbarTitle:
-              tr("app.file.image.crop.title"),
+          toolbarTitle: tr("app.file.image.crop.title"),
           toolbarColor: fediUiColorTheme.primary,
           toolbarWidgetColor: fediUiColorTheme.white,
           initAspectRatio: CropAspectRatioPreset.original,

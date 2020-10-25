@@ -30,6 +30,8 @@ class HtmlTextWidget extends StatelessWidget {
   final Display paragraphDisplay;
   final String htmlData;
 
+  final String currentData;
+
   HtmlTextWidget({
     @required this.onLinkTap,
     this.fontSize = 18.0,
@@ -45,22 +47,21 @@ class HtmlTextWidget extends StatelessWidget {
     this.drawNewLines = true,
     this.textAlign = TextAlign.start,
     @required this.htmlData,
-  });
+  }) : currentData = drawNewLines
+            ? processAllNewLinesChars(htmlData)
+            : removeAllNewLineChars(htmlData);
+
+  static String removeAllNewLineChars(String htmlData) =>
+      htmlData?.replaceAll("\n", "")?.replaceAll("<(/)*br>", "");
+
+  static String processAllNewLinesChars(String htmlData) =>
+      htmlData?.replaceAll("\n", "</br>");
 
   @override
   Widget build(BuildContext context) {
     var linkColor = this.linkColor ?? IFediUiColorTheme.of(context).primaryDark;
 
-    var currentData = htmlData;
-    if (drawNewLines) {
-      // draw both new line types
-      currentData = currentData?.replaceAll("\n", "</br>");
-    } else {
-      currentData = currentData?.replaceAll("\n", "");
-      currentData = currentData?.replaceAll("<(/)*br>", "");
-    }
-
-    _logger.finest(() => "htmlData $htmlData");
+    _logger.finest(() => "htmlData $currentData");
 
     var textScaleFactor = MediaQuery.textScaleFactorOf(context);
 
