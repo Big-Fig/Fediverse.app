@@ -13,6 +13,7 @@ void showFediModalBottomSheetDialog({
   showModalBottomSheet(
       context: context,
       backgroundColor: fediUiColorTheme.transparent,
+      barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
       isScrollControlled: true,
       builder: (BuildContext context) => ClipRRect(
             borderRadius: FediBorderRadius.topOnlyBigBorderRadius,

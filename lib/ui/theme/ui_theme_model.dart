@@ -48,6 +48,8 @@ abstract class IUiColorTheme {
   Color get white;
 
   Color get imageDarkOverlay;
+
+  Color get modalBottomSheetDarkOverlay;
 }
 
 abstract class IUiTextTheme {
