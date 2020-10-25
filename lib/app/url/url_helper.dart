@@ -23,9 +23,13 @@ class UrlHelper {
       await launch(url);
     } else {
       await FediSimpleAlertDialog(
-          context: context,
-          title: tr("link.error.dialog.title"),
-          content: tr("link.error.dialog.content", args: [url])).show(context);
+        context: context,
+        title: tr("link.error.dialog.title"),
+        contentText: tr(
+          "link.error.dialog.content",
+          args: [url],
+        ),
+      ).show(context);
     }
   }
 

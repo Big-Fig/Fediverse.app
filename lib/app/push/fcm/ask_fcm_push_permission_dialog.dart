@@ -11,7 +11,7 @@ FediBaseAlertDialog createAskFcmPushPermissionDialog({
 }) {
   return FediYesNoAlertDialog(
     title: "app.notification.push.permission.ask.dialog.title".tr(),
-    content: "app.notification.push.permission.ask.dialog.content".tr(),
+    contentText: "app.notification.push.permission.ask.dialog.content".tr(),
     context: context,
     yesAction: yesAction,
     noAction: noAction,

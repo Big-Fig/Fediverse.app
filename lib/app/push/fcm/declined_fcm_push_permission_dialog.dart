@@ -10,7 +10,7 @@ FediBaseAlertDialog createDeclinedFcmPushPermissionDialog({
 }) =>
     FediSimpleAlertDialog(
       title: "app.notification.push.permission.declined.dialog.title".tr(),
-      content: "app.notification.push.permission.declined.dialog.content".tr(),
+      contentText: "app.notification.push.permission.declined.dialog.content".tr(),
       context: context,
       action: action,
     );

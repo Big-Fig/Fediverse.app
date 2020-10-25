@@ -8,11 +8,11 @@ class FediConfirmAlertDialog extends FediBaseAlertDialog {
       {@required BuildContext context,
       @required DialogActionCallback onAction,
       String title,
-      String content,
+      String contentText,
       String okActionLabel})
       : super(
             title: title,
-            content: content,
+      contentText: contentText,
             actions: [
               DialogAction(
                   label: okActionLabel ??

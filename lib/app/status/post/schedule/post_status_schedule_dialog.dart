@@ -20,7 +20,7 @@ void showPostStatusScheduleDialog(
       context: context,
       title: tr("app.status.post.schedule.error.not_in_future.dialog"
           ".title"),
-      content: tr("app.status.post.schedule.error.not_in_future.dialog"
+      contentText: tr("app.status.post.schedule.error.not_in_future.dialog"
           ".content"),
     ).show(context);
   } else {

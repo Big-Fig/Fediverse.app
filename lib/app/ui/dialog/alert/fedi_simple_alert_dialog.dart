@@ -10,9 +10,13 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
   FediSimpleAlertDialog({
     @required BuildContext context,
     String title,
-    String content,
+    String contentText,
     this.action,
-  }) : super(title: title, content: content, cancelable: true);
+  }) : super(
+          title: title,
+          contentText: contentText,
+          cancelable: true,
+        );
 
   @override
   Widget buildDismissAction({
@@ -25,5 +29,6 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
             BaseDialog.createDefaultOkAction(context: context, action: action),
         color: IFediUiColorTheme.of(context).mediumGrey,
         notAddRightPadding: isLast,
+        disabledColor: IFediUiColorTheme.of(context).lightGrey,
       );
 }

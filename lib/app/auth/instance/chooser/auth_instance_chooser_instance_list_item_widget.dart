@@ -121,7 +121,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           await FediConfirmAlertDialog(
             context: context,
             title: tr("app.auth.instance.logout.dialog.title"),
-            content: tr("app.auth.instance.logout.dialog.content",
+            contentText: tr("app.auth.instance.logout.dialog.content",
                 args: [instance.userAtHost]),
             onAction: (context) async {
               if (isSelected) {

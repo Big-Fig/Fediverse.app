@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_network_only_list_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';

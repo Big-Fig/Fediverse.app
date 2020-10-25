@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_list_page.dart';
+import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
