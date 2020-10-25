@@ -277,7 +277,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildPinAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.heart,
-          label: status.pinned
+          label: status.pinned == true
               ? tr("app.status.action.unpin")
               : tr("app.status.action.pin"),
           onAction: (context) async {

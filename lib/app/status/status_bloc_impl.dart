@@ -483,7 +483,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> toggleFavourite() async {
     IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.favourited) {
+    if (reblogOrOriginal.favourited == true) {
       remoteStatus = await pleromaStatusService.unFavouriteStatus(
           statusRemoteId: reblogOrOriginal.remoteId);
     } else {
@@ -502,7 +502,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     _logger.finest(() =>
         "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
     IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.reblogged) {
+    if (reblogOrOriginal.reblogged == true) {
       remoteStatus = await pleromaStatusService.unReblogStatus(
           statusRemoteId: reblogOrOriginal.remoteId);
     } else {
@@ -519,7 +519,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> toggleMute() async {
     IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.muted) {
+    if (reblogOrOriginal.muted == true) {
       remoteStatus = await pleromaStatusService.unMuteStatus(
           statusRemoteId: reblogOrOriginal.remoteId);
     } else {
@@ -536,7 +536,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> toggleBookmark() async {
     IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.bookmarked) {
+    if (reblogOrOriginal.bookmarked == true) {
       remoteStatus = await pleromaStatusService.unBookmarkStatus(
           statusRemoteId: reblogOrOriginal.remoteId);
     } else {
@@ -553,7 +553,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> togglePin() async {
     IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.pinned) {
+    if (reblogOrOriginal.pinned == true) {
       remoteStatus = await pleromaStatusService.unPinStatus(
           statusRemoteId: reblogOrOriginal.remoteId);
     } else {
