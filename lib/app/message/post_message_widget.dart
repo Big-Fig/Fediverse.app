@@ -31,38 +31,34 @@ class PostMessageWidget extends StatelessWidget {
         children: <Widget>[
           buildMediaAttachments(context, postMessageBloc),
           StreamBuilder<bool>(
-              stream: postMessageBloc.isExpandedStream,
-              initialData: postMessageBloc.isExpanded,
-              builder: (context, snapshot) {
-                var isExpanded = snapshot.data;
-                var child = PostMessageContentWidget(
-                  hintText: hintText,
-                  expanded: isExpanded,
-                  ending: StreamBuilder<bool>(
-                      stream: postMessageBloc.isExpandedStream,
-                      initialData: postMessageBloc.isExpanded,
-                      builder: (context, snapshot) {
-                        var isExpanded = snapshot.data;
-                        return Align(
-                          alignment: Alignment.topRight,
-                          child: FediIconButton(
-                            icon: Icon(isExpanded
-                                ? FediIcons.minimize
-                                : FediIcons.maximize),
-                            color: IFediUiColorTheme.of(context).darkGrey,
-                            onPressed: () {
-                              postMessageBloc.toggleExpanded();
-                            },
-                          ),
-                        );
-                      }),
+            stream: postMessageBloc.isExpandedStream,
+            initialData: postMessageBloc.isExpanded,
+            builder: (context, snapshot) {
+              var isExpanded = snapshot.data;
+              if (isExpanded) {
+                return Expanded(
+                  child: PostMessageContentWidget(
+                    filled: false,
+                    hintText: hintText,
+                    expanded: isExpanded,
+                    ending: buildMaximizeAction(postMessageBloc),
+                  ),
                 );
-                if (isExpanded) {
-                  return Expanded(child: child);
-                } else {
-                  return child;
-                }
-              }),
+              } else {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: PostMessageContentWidget(
+                        hintText: hintText,
+                        expanded: isExpanded,
+                      ),
+                    ),
+                    buildMaximizeAction(postMessageBloc)
+                  ],
+                );
+              }
+            },
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -76,6 +72,25 @@ class PostMessageWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  StreamBuilder<bool> buildMaximizeAction(IPostMessageBloc postMessageBloc) {
+    return StreamBuilder<bool>(
+        stream: postMessageBloc.isExpandedStream,
+        initialData: postMessageBloc.isExpanded,
+        builder: (context, snapshot) {
+          var isExpanded = snapshot.data;
+          return Align(
+            alignment: Alignment.topRight,
+            child: FediIconButton(
+              icon: Icon(isExpanded ? FediIcons.minimize : FediIcons.maximize),
+              color: IFediUiColorTheme.of(context).darkGrey,
+              onPressed: () {
+                postMessageBloc.toggleExpanded();
+              },
+            ),
+          );
+        });
   }
 
   List<Widget> buildActions() {
