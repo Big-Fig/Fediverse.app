@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
@@ -15,11 +16,16 @@ import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
 import 'package:fedi/media/device/folder/media_device_folder_bloc.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
-import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_bloc_impl.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
 import 'package:fedi/media/device/gallery/photo_manager/photo_manager_device_gallery_bloc_impl.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/local_only/local_only_pagination_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,76 +57,64 @@ class SingleMediaPickerPage extends StatelessWidget {
                 }
                 var storagePermissionBloc =
                     IStoragePermissionBloc.of(context, listen: false);
-                return StreamBuilder<IMediaDeviceFolder>(
-                    stream: mediaDeviceGalleryBloc.selectedFolderStream
-                        .distinct((old, current) => old?.id == current?.id),
-                    initialData: mediaDeviceGalleryBloc.selectedFolder,
-                    builder: (context, snapshot) {
-                      var folder = snapshot.data;
-                      if (folder == null) {
-                        return Center(child: FediCircularProgressIndicator());
-                      }
-                      return Provider<IMediaDeviceFolder>.value(
-                        value: folder,
-                        child: DisposableProxyProvider<IMediaDeviceFolder,
-                            IMediaDeviceFolderBloc>(
-                          update: (BuildContext context, value, previous) {
-                            var folderBloc = PhotoManagerFileGalleryFolderBloc(
-                              storagePermissionBloc: storagePermissionBloc,
-                              folder: value,
-                            );
-                            folderBloc.performAsyncInit();
-                            return folderBloc;
-                          },
-                          child: FileGalleryFolderWidget(
-                            headerItemBuilder: (BuildContext context) {
-                              return InkWell(
-                                onTap: () async {
-                                  var mediaPickerService =
-                                      IMediaPickerService.of(context,
-                                          listen: false);
+                return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+                  stream: mediaDeviceGalleryBloc.selectedFolderDataStream
+                      .distinct((old, current) =>
+                          old?.folder?.id == current?.folder?.id),
+                  builder: (context, snapshot) {
+                    var folderData = snapshot.data;
+                    var folder = folderData?.folder;
+                    if (folder == null) {
+                      return Center(child: FediCircularProgressIndicator());
+                    }
 
-                                  var pickedFile = await mediaPickerService
-                                      .pickImageFromCamera();
-
-                                  if (pickedFile != null) {
-                                    fileSelectedCallback(
-                                      FileMediaDeviceFile(
-                                        type: MediaDeviceFileType.image,
-                                        isNeedDeleteAfterUsage: true,
-                                        originalFile: pickedFile,
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                    color: fediUiColorTheme.white,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    child: Icon(
-                                      FediIcons.camera,
-                                      color: IFediUiColorTheme.of(context)
-                                          .darkGrey,
-                                      size: 40.0,
-                                    )),
-                              );
-                            },
-                            onFileSelectedCallback:
-                                (IMediaDeviceFile mediaDeviceFile) {
-                              fileSelectedCallback(mediaDeviceFile);
-                            },
-                            loadingWidget: FediCircularProgressIndicator(),
-                            permissionButtonBuilder: (context, grantedBuilder) {
-                              return FediGrantPermissionWidget(
-                                grantedBuilder: grantedBuilder,
-                                permissionBloc: storagePermissionBloc,
-                              );
-                            },
-//                        galleryFileTapped: galleryFileTapped,
+                    return Provider<IMediaDeviceFolder>.value(
+                      value: folder,
+                      child: Provider<IMediaDeviceFolderBloc>.value(
+                        value: folderData.folderBloc,
+                        child:
+                            Provider<IMediaDeviceFileLocalOnlyListBloc>.value(
+                          value: folderData.filesListBloc,
+                          child: Provider<IMediaDeviceFilePaginationBloc>.value(
+                            value: folderData.filesPaginationBloc,
+                            child: Provider<
+                                IMediaDeviceFilePaginationListBloc>.value(
+                              value: folderData.filesPaginationListBloc,
+                              child: ProxyProvider<
+                                  IMediaDeviceFileLocalOnlyListBloc,
+                                  ILocalOnlyListBloc<IMediaDeviceFile>>(
+                                update: (context, value, previous) => value,
+                                child: ProxyProvider<
+                                    IMediaDeviceFilePaginationBloc,
+                                    ILocalOnlyPaginationBloc<
+                                        PaginationPage<IMediaDeviceFile>,
+                                        IMediaDeviceFile>>(
+                                  update: (context, value, previous) => value,
+                                  child: ProxyProvider<
+                                      IMediaDeviceFilePaginationListBloc,
+                                      IPaginationListBloc<
+                                          PaginationPage<IMediaDeviceFile>,
+                                          IMediaDeviceFile>>(
+                                    update: (context, value, previous) => value,
+                                    child: ProxyProvider<
+                                        IMediaDeviceFilePaginationListBloc,
+                                        IPaginationListBloc>(
+                                      update: (context, value, previous) =>
+                                          value,
+                                      child: buildGalleryFolderWidget(
+                                          fediUiColorTheme,
+                                          storagePermissionBloc),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      );
-                    });
+                      ),
+                    );
+                  },
+                );
               },
               asyncInitLoadingBloc: mediaDeviceGalleryBloc,
             );
@@ -132,6 +126,51 @@ class SingleMediaPickerPage extends StatelessWidget {
     );
   }
 
+  Widget buildGalleryFolderWidget(IFediUiColorTheme fediUiColorTheme,
+          IStoragePermissionBloc storagePermissionBloc) =>
+      FileGalleryFolderWidget(
+        headerItemBuilder: (BuildContext context) {
+          return InkWell(
+            onTap: () async {
+              var mediaPickerService =
+                  IMediaPickerService.of(context, listen: false);
+
+              var pickedFile = await mediaPickerService.pickImageFromCamera();
+
+              if (pickedFile != null) {
+                fileSelectedCallback(
+                  FileMediaDeviceFile(
+                    type: MediaDeviceFileType.image,
+                    isNeedDeleteAfterUsage: true,
+                    originalFile: pickedFile,
+                  ),
+                );
+              }
+            },
+            child: Container(
+                color: fediUiColorTheme.white,
+                width: double.infinity,
+                height: double.infinity,
+                child: Icon(
+                  FediIcons.camera,
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                  size: 40.0,
+                )),
+          );
+        },
+        onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) {
+          fileSelectedCallback(mediaDeviceFile);
+        },
+        loadingWidget: FediCircularProgressIndicator(),
+        permissionButtonBuilder: (context, grantedBuilder) {
+          return FediGrantPermissionWidget(
+            grantedBuilder: grantedBuilder,
+            permissionBloc: storagePermissionBloc,
+          );
+        },
+//                        galleryFileTapped: galleryFileTapped,
+      );
+
   Widget _buildAppBarTitle(BuildContext context) {
     var mediaDeviceGalleryBloc =
         IMediaDeviceGalleryBloc.of(context, listen: false);
@@ -142,11 +181,15 @@ class SingleMediaPickerPage extends StatelessWidget {
           var folders = snapshot.data;
 
           if (folders?.isNotEmpty == true) {
-            return StreamBuilder<IMediaDeviceFolder>(
-                stream: mediaDeviceGalleryBloc.selectedFolderStream,
-                initialData: mediaDeviceGalleryBloc.selectedFolder,
+            return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+                stream: mediaDeviceGalleryBloc.selectedFolderDataStream,
                 builder: (context, snapshot) {
-                  var selectedFolder = snapshot.data;
+                  var selectedFolderData = snapshot.data;
+                  var selectedFolder = selectedFolderData?.folder;
+
+                  if (selectedFolder == null) {
+                    return SizedBox.shrink();
+                  }
 
                   return InkWell(
                     onTap: () {
@@ -196,7 +239,8 @@ class SingleMediaPickerPage extends StatelessWidget {
                   },
                   title: Text(
                     _calculateFolderTitle(folder),
-                    style: folder == mediaDeviceGalleryBloc.selectedFolder
+                    style: folder ==
+                            mediaDeviceGalleryBloc.selectedFolderData?.folder
                         ? fediUiTextTheme.mediumShortBoldDarkGrey
                         : fediUiTextTheme.mediumShortDarkGrey,
                   ),

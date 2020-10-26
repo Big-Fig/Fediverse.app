@@ -20,7 +20,7 @@ class DisposableOwner extends IDisposable {
     Subject subject,
     StreamController streamController,
     Timer timer,
-    VoidCallback custom,
+    FutureOr Function() custom,
   }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);

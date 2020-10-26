@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
 abstract class IDisposable {
@@ -6,7 +8,7 @@ abstract class IDisposable {
 }
 
 class CustomDisposable extends IDisposable {
-  final Future Function() _disposeCallback;
+  final FutureOr Function() _disposeCallback;
 
   CustomDisposable(this._disposeCallback);
 
