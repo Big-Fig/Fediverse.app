@@ -1,8 +1,8 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,8 +37,8 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
                     builder: (BuildContext context, void Function() onPressed) {
                       return FediIconButton(
                         icon: Icon(isFullscreen
-                            ? FediIcons.fullscreen_exit
-                            : FediIcons.fullscreen),
+                            ? FediIcons.minimize
+                            : FediIcons.maximize),
                         color: IFediUiColorTheme.of(context).white,
                         onPressed: onPressed,
                       );
@@ -56,7 +56,7 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
                 });
           } else {
             return FediIconButton(
-              icon: Icon(FediIcons.fullscreen),
+              icon: Icon(FediIcons.maximize),
               color: IFediUiColorTheme.of(context).grey,
               onPressed: () {},
             );

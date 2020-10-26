@@ -47,8 +47,8 @@ class PostMessageWidget extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: FediIconButton(
                             icon: Icon(isExpanded
-                                ? FediIcons.fullscreen_exit
-                                : FediIcons.fullscreen),
+                                ? FediIcons.minimize
+                                : FediIcons.maximize),
                             color: IFediUiColorTheme.of(context).darkGrey,
                             onPressed: () {
                               postMessageBloc.toggleExpanded();
