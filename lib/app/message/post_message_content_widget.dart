@@ -10,11 +10,13 @@ class PostMessageContentWidget extends StatelessWidget {
   final String hintText;
   final bool expanded;
   final Widget ending;
+  final bool filled;
 
   const PostMessageContentWidget({
     @required this.hintText,
     this.expanded = false,
     this.ending,
+    this.filled = true,
   });
 
   @override
@@ -22,6 +24,7 @@ class PostMessageContentWidget extends StatelessWidget {
     IPostMessageBloc postMessageBloc = IPostMessageBloc.of(context);
 
     return FediFilledEditTextField(
+      filled: filled,
       leading: null,
       hintText: hintText,
       textEditingController: postMessageBloc.inputTextController,

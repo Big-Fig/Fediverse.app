@@ -1,7 +1,7 @@
 import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +23,8 @@ class FediFilledEditTextField extends StatelessWidget {
   final Color backgroundColor;
   final bool highlightMentions;
   final int maxLength;
+  // todo: refactor to own widget
+  final bool filled;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -42,18 +44,23 @@ class FediFilledEditTextField extends StatelessWidget {
     this.keyboardType,
     @required this.highlightMentions,
     @required this.maxLength,
+    this.filled = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    var backgroundColor = this.backgroundColor ?? IFediUiColorTheme.of(context).ultraLightGrey;
+    var backgroundColor =
+        this.backgroundColor ?? IFediUiColorTheme.of(context).ultraLightGrey;
     var containLeading = leading != null;
     var containEnding = ending != null;
     return Container(
-      decoration: BoxDecoration(
-          color: backgroundColor,
-          border: border,
-          borderRadius: BorderRadius.circular(30.0)),
+      decoration: filled
+          ? BoxDecoration(
+              color: backgroundColor,
+              border: border,
+              borderRadius: BorderRadius.circular(30.0),
+            )
+          : null,
       child: Padding(
         padding: calculatePadding(containLeading, containEnding),
         child: Row(
