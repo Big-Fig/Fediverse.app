@@ -1,9 +1,6 @@
 import 'package:fedi/app/media/picker/media_picker_file_grid_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc_impl.dart';
-import 'package:fedi/media/device/file/pagination/media_device_file_local_only_pagination_bloc_impl.dart';
-import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc_impl.dart';
 import 'package:fedi/media/device/folder/media_device_folder_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,29 +28,17 @@ class FileGalleryFolderWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
       loadingFinishedBuilder: (context) => permissionButtonBuilder(
         context,
-        (context) => buildPermissionGrantedView(context, folderBloc),
-      ),
-      loadingWidget: loadingWidget,
-      asyncInitLoadingBloc: folderBloc,
-    );
-  }
-
-  Widget buildPermissionGrantedView(
-      BuildContext context, IMediaDeviceFolderBloc folderBloc) {
-    return MediaDeviceFileLocalOnlyListBloc.provideToContext(
-      context,
-      folderBloc: folderBloc,
-      child: MediaDeviceFileLocalOnlyPaginationBloc.provideToContext(
-        context,
-        child: MediaDeviceFilePaginationListBloc.provideToContext(
-          context,
-          child: MediaPickerFileGridWidget(
+        (context) {
+          return MediaPickerFileGridWidget(
             onFileSelectedCallback: onFileSelectedCallback,
             loadingWidget: loadingWidget,
             headerItemBuilder: headerItemBuilder,
-          ),
-        ),
+          );
+          // return buildPermissionGrantedView(context);
+        },
       ),
+      loadingWidget: loadingWidget,
+      asyncInitLoadingBloc: folderBloc,
     );
   }
 }
