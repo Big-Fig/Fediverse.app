@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -23,6 +22,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +63,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       shrinkWrap: true,
       children: [
         FediChooserDialogBody(
-            title: tr("app.status.action.popup.title"),
+            title: S.of(context).app_status_action_popup_title,
             actions: [
               if (isStatusFromMe) buildDeleteAction(context, status),
               if (isStatusFromMe) buildPinAction(context, status),
@@ -101,7 +101,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                           () => "accountRelationship $accountRelationship");
 
                       var title =
-                          tr("app.status.action.popup.more_actions_for");
+                          S.of(context).app_status_action_popup_moreActionsFor;
+
                       var content = "${status.account.acct}";
                       // todo: remove hack
                       //  we should compare accountRelationship with null
@@ -143,7 +144,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.report,
-          label: tr("app.account.action.report.label"),
+          label: S.of(context).app_account_action_report_label,
           onAction: (context) async {
             var success = await doAsyncActionReport(context, accountBloc);
 
@@ -156,9 +157,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.block,
-          label: tr(accountBloc.accountRelationship?.blocking == true
-              ? "app.account.action.unblock"
-              : "app.account.action.block"),
+          label: accountBloc.accountRelationship?.blocking == true
+              ? S.of(context).app_account_action_unblock
+              : S.of(context).app_account_action_block,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
@@ -171,11 +172,12 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
         icon: FediIcons.block,
-        label: accountBloc.accountRelationship.domainBlocking
-            ? tr("app.account.action.unblock_domain",
-                args: [accountBloc.remoteDomainOrNull])
-            : tr("app.account.action.block_domain",
-                args: [accountBloc.remoteDomainOrNull]),
+        label: accountBloc.accountRelationship.domainBlocking == true
+            ? S.of(context).app_account_action_unblockDomain(
+                accountBloc.remoteDomainOrNull)
+            : S
+                .of(context)
+                .app_account_action_blockDomain(accountBloc.remoteDomainOrNull),
         onAction: (context) async {
           await accountBloc.toggleBlockDomain();
           Navigator.of(context).pop();
@@ -185,24 +187,25 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountMuteAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
-          icon: FediIcons.mute,
-          label: tr(accountBloc.accountRelationship?.muting == true
-              ? "app.account.action.unmute"
-              : "app.account.action.mute"),
-          onAction: (context) async {
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                context: context, asyncCode: () => accountBloc.toggleMute());
+        icon: FediIcons.mute,
+        label: accountBloc.accountRelationship?.muting == true
+            ? S.of(context).app_account_action_unmute
+            : S.of(context).app_account_action_mute,
+        onAction: (context) async {
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              context: context, asyncCode: () => accountBloc.toggleMute());
 
-            Navigator.of(context).pop();
-          });
+          Navigator.of(context).pop();
+        },
+      );
 
   DialogAction buildAccountFollowAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.follow,
-          label: tr(accountBloc.accountRelationship?.following == true
-              ? "app.account.action.unfollow"
-              : "app.account.action.follow"),
+          label: accountBloc.accountRelationship?.following == true
+              ? S.of(context).app_account_action_unfollow
+              : S.of(context).app_account_action_follow,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => accountBloc.toggleFollow());
@@ -214,7 +217,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.message,
-          label: tr("app.account.action.message"),
+          label: S.of(context).app_account_action_message,
           onAction: (context) async {
             var authInstanceBloc =
                 ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -231,7 +234,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildOpenInBrowserAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.browser,
-          label: tr("app.status.action.open_in_browser"),
+          label: S.of(context).app_status_action_openInBrowser,
           onAction: (context) async {
             var url = status.url;
             await UrlHelper.handleUrlClick(context, url);
@@ -242,7 +245,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.browser,
-          label: tr("app.account.action.open_in_browser"),
+          label: S.of(context).app_account_action_openInBrowser,
           onAction: (context) async {
             var url = accountBloc.account.url;
             await UrlHelper.handleUrlClick(context, url);
@@ -252,13 +255,13 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildCopyAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.link,
-          label: tr("app.status.action.copy_link"),
+          label: S.of(context).app_status_action_copyLink,
           onAction: (context) async {
             await Clipboard.setData(ClipboardData(text: status.uri));
             Navigator.of(context).pop();
             showInfoFediNotificationOverlay(
               context: context,
-              contentText: tr("app.status.copy_link.toast"),
+              contentText: S.of(context).app_status_copyLink_toast,
               titleText: null,
             );
           });
@@ -266,7 +269,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildDeleteAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.remove,
-          label: tr("app.status.action.delete"),
+          label: S.of(context).app_status_action_delete,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.delete());
@@ -278,8 +281,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       DialogAction(
           icon: FediIcons.heart,
           label: status.pinned == true
-              ? tr("app.status.action.unpin")
-              : tr("app.status.action.pin"),
+              ? S.of(context).app_status_action_unpin
+              : S.of(context).app_status_action_pin,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.togglePin());
@@ -291,9 +294,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.mute,
-          label: status.muted
-              ? tr("app.status.action.unmute")
-              : tr("app.status.action.mute"),
+          label: status.muted == true
+              ? S.of(context).app_status_action_unmute
+              : S.of(context).app_status_action_mute,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.toggleMute());
@@ -305,8 +308,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       DialogAction(
           icon: FediIcons.bookmark,
           label: status.bookmarked == true
-              ? tr("app.status.action.unbookmark")
-              : tr("app.status.action.bookmark"),
+              ? S.of(context).app_status_action_unbookmark
+              : S.of(context).app_status_action_bookmark,
           onAction: (context) async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.toggleBookmark());
@@ -317,7 +320,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildShareAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.share,
-          label: tr("app.share.action.share"),
+          label: S.of(context).app_share_action_share,
           onAction: (context) async {
             showShareChooserDialog(
               context,

@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';
@@ -20,6 +19,7 @@ import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,7 @@ class MyAccountSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.account.my.settings.title"),
+        title: S.of(context).app_account_my_settings_title,
       ),
       body: Padding(
         padding: FediPadding.allBigPadding,
@@ -64,7 +64,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildScheduledButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.scheduled_posts"),
+      S.of(context).app_account_my_settings_action_scheduledPosts,
       onPressed: () {
         goToScheduledStatusListPage(context);
       },
@@ -73,7 +73,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildDraftsButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.draft_posts"),
+      S.of(context).app_account_my_settings_action_draftPosts,
       onPressed: () {
         goToDraftStatusListPage(context);
       },
@@ -82,7 +82,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildListsButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.lists"),
+      S.of(context).app_account_my_settings_action_lists,
       onPressed: () {
         goToCustomListListPage(context: context);
       },
@@ -91,7 +91,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildBookmarkedButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.bookmarked"),
+      S.of(context).app_account_my_settings_action_bookmarked,
       onPressed: () {
         goToMyAccountBookmarkedStatusesPage(context);
       },
@@ -100,7 +100,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildFavouritedButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.favourited"),
+      S.of(context).app_account_my_settings_action_favourited,
       onPressed: () {
         goToMyAccountFavouritedStatusesPage(context);
       },
@@ -109,7 +109,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildFollowRequestsButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.follow_requests"),
+      S.of(context).app_account_my_settings_action_followRequests,
       onPressed: () {
         goToMyAccountFollowRequestListPage(context);
       },
@@ -118,7 +118,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildAccountBlocksButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.account_blocks"),
+      S.of(context).app_account_my_settings_action_accountBlocks,
       onPressed: () {
         goToMyAccountAccountBlockListPage(context);
       },
@@ -127,7 +127,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildAccountMutesButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.account_mutes"),
+      S.of(context).app_account_my_settings_action_accountMutes,
       onPressed: () {
         goToMyAccountAccountMuteListPage(context);
       },
@@ -136,7 +136,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildDomainBlocksButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.action.domain_blocks"),
+      S.of(context).app_account_my_settings_action_domainBlocks,
       onPressed: () {
         goToMyAccountDomainBlockListPage(context);
       },

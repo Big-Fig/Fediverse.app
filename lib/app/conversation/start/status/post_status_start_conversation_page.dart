@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
@@ -13,7 +13,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.conversation.start.title"),
+        title: S.of(context).app_conversation_start_title,
       ),
       body: SafeArea(
         child: CustomScrollView(

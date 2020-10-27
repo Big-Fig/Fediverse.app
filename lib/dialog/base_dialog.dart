@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
         onAction: (context) {
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.cancel"),
+        label: S.of(context).dialog_action_cancel,
       );
 
   static DialogAction createDefaultOkAction({
@@ -69,7 +69,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
           }
           Navigator.of(context).pop();
         },
-        label: tr("dialog.action.ok"),
+        label: S.of(context).dialog_action_ok,
         isActionEnabledFetcher: isActionEnabledFetcher,
         isActionEnabledStreamFetcher: isActionEnabledStreamFetcher,
       );

@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
@@ -13,6 +12,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -84,18 +84,18 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              text: tr("app.auth.instance.join.action.tos.prefix"),
+              text: S.of(context).app_auth_instance_join_action_tos_prefix,
               style: textStyle,
             ),
             TextSpan(
-              text: tr("app.auth.instance.join.action.tos.terms"),
+              text: S.of(context).app_auth_instance_join_action_tos_terms,
               style: textStyle.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: TextDecoration.underline,
               ),
             ),
             TextSpan(
-              text: tr("app.auth.instance.join.action.tos.postfix"),
+              text: S.of(context).app_auth_instance_join_action_tos_postfix,
               style: textStyle,
             ),
           ],
@@ -116,7 +116,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     left: FediSizes.smallPadding,
                     right: FediSizes.smallPadding),
                 child: FediTransparentTextButton(
-                  tr("app.auth.instance.join.action.sign_up"),
+                  S.of(context).app_auth_instance_join_action_signUp,
                   onPressed: () {
                     signUpToInstance(context);
                   },
@@ -131,7 +131,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     left: FediSizes.smallPadding,
                     right: FediSizes.smallPadding),
                 child: FediTransparentTextButton(
-                  tr("app.auth.instance.join.action.login"),
+                  S.of(context).app_auth_instance_join_action_login,
                   onPressed: () {
                     logInToInstance(context);
                   },
@@ -152,8 +152,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         FediTransparentEditTextField(
           autocorrect: false,
           expanded: false,
-          hintText: tr("app.auth.instance.join"
-              ".field.host.hint"),
+          hintText: S.of(context).app_auth_instance_join_field_host_hint,
           onSubmitted: (String value) {
             logInToInstance(context);
           },
@@ -172,7 +171,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           maxLength: null,
         ),
         Text(
-          "app.auth.instance.join.field.host.helper".tr(),
+          S.of(context).app_auth_instance_join_field_host_helper,
           style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
               color: IFediUiColorTheme.of(context).white.withOpacity(0.5)),
         )
@@ -225,12 +224,14 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     var asyncDialogResult =
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            contentMessage: tr("app.auth.instance.join"
-                ".progress.dialog.content"),
+            contentMessage:
+                S.of(context).app_auth_instance_join_progress_dialog_content,
             asyncCode: () async {
               AuthHostBloc authHostBloc;
-              authHostBloc = AuthHostBloc.createFromContext(context,
-                  instanceBaseUrl: hostUri);
+              authHostBloc = AuthHostBloc.createFromContext(
+                context,
+                instanceBaseUrl: hostUri,
+              );
               await authHostBloc.checkApplicationRegistration();
               await authHostBloc.checkIsRegistrationsEnabled();
               await authHostBloc?.dispose();
@@ -285,7 +286,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   ErrorData createInstanceDeadErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
-      AuthInstancePleromaRestErrorData(
+      AuthInstancePleromaRestErrorData.createFromContext(
+        context: context,
         error: error,
         stackTrace: stackTrace,
       );
@@ -293,30 +295,34 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   ErrorData createRegistrationDisabledErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
       ErrorData(
-          error: error,
-          stackTrace: stackTrace,
-          titleText: tr("app.auth.instance.join"
-              ".registration_disabled.dialog.title"),
-          contentText: tr("app.auth.instance.join"
-              ".registration_disabled.dialog.content"));
+        error: error,
+        stackTrace: stackTrace,
+        titleText: S
+            .of(context)
+            .app_auth_instance_join_registrationDisabled_dialog_title,
+        contentText: S
+            .of(context)
+            .app_auth_instance_join_registrationDisabled_dialog_content,
+      );
 
   ErrorData createRegistrationInvitesOnlyErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
       ErrorData(
-          error: error,
-          stackTrace: stackTrace,
-          titleText: tr("app.auth.instance.join"
-              ".invites_only.dialog.title"),
-          contentText: tr("app.auth.instance.join"
-              ".invites_only.dialog.content"));
+        error: error,
+        stackTrace: stackTrace,
+        titleText:
+            S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
+        contentText:
+            S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
+      );
 
   Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
     var dialogResult =
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            contentMessage: tr("app.auth.instance.join"
-                ".progress.dialog.content"),
+            contentMessage:
+            S.of(context).app_auth_instance_join_progress_dialog_content,
             cancelable: true,
             asyncCode: () async {
               var hostUri = extractCurrentUri(joinInstanceBloc);

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/chat/share/chat_share_media_bloc_impl.dart';
 import 'package:fedi/app/share/media/share_media_with_message_widget.dart';
 import 'package:fedi/app/share/select/share_select_account_widget.dart';
@@ -18,7 +18,8 @@ class ChatShareMediaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.chat.share.title".tr(),
+        title:
+        S.of(context).app_chat_share_title,
         actions: [
           ShareToAccountIconButtonWidget(),
         ],

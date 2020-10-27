@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_account_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
@@ -25,7 +25,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.account_mute.title".tr(),
+        title: S.of(context).app_account_my_accountMute_title,
         actions: [
           buildAddAction(context),
         ],

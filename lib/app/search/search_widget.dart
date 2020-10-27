@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
@@ -106,16 +106,16 @@ class SearchWidget extends StatelessWidget {
   String mapTabToTitle(BuildContext context, SearchTab tab) {
     switch (tab) {
       case SearchTab.accounts:
-        return tr("app.search.tab.accounts");
+        return S.of(context).app_search_tab_accounts;
         break;
       case SearchTab.statuses:
-        return tr("app.search.tab.statuses");
+        return S.of(context).app_search_tab_statuses;
         break;
       case SearchTab.all:
-        return tr("app.search.tab.all");
+        return S.of(context).app_search_tab_all;
         break;
       case SearchTab.hashtags:
-        return tr("app.search.tab.hashtags");
+        return S.of(context).app_search_tab_hashtags;
         break;
     }
 

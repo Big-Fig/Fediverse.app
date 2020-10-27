@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
@@ -41,7 +41,7 @@ class PostStatusPollWidget extends StatelessWidget {
           @required IFormBoolFieldBloc multiplyFieldBloc}) =>
       FormBoolFieldFormRowWidget(
         field: multiplyFieldBloc,
-        label: "app.status.post.poll.field.multiply.label".tr(),
+        label: S.of(context).app_status_post_poll_field_multiply_label,
       );
 
   Widget buildPollLengthField(
@@ -49,8 +49,8 @@ class PostStatusPollWidget extends StatelessWidget {
           @required IFormDurationFieldBloc lengthBloc}) =>
       FormDurationFieldFormRowWidget(
         field: lengthBloc,
-        label: "app.status.post.poll.field.length.label".tr(),
-        popupTitle: "app.status.post.poll.field.length.picker.title".tr(),
+        label: S.of(context).app_status_post_poll_field_length_label,
+        popupTitle: S.of(context).app_status_post_poll_field_length_picker_title,
       );
 
   Widget buildPollOptionFields(
@@ -85,8 +85,8 @@ class PostStatusPollWidget extends StatelessWidget {
                           textInputAction: isLast
                               ? TextInputAction.done
                               : TextInputAction.next,
-                          hint: "app.status.post.poll.field.option.hint"
-                              .tr(args: [number.toString()]),
+
+                          hint: S.of(context).app_status_post_poll_field_option_hint(number.toString()),
                         ),
                       ),
                       if (!isLast)

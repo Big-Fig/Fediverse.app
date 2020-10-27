@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/chat/share/chat_share_media_page.dart';
@@ -9,7 +8,6 @@ import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to
 import 'package:fedi/app/share/external/external_share_media_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
@@ -17,7 +15,9 @@ import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
@@ -91,7 +91,7 @@ class _MediaAttachmentDetailsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.media.attachment.details.title"),
+        title: S.of(context).app_media_attachment_details_title,
         actions: <Widget>[
           buildAddToGalleryAction(context),
           buildShareAction(context)
@@ -133,7 +133,7 @@ class _MediaAttachmentDetailsPageState
   Widget buildAddToGalleryAction(BuildContext context) {
     return PleromaAsyncOperationButtonBuilderWidget(
       progressContentMessage:
-          tr("app.media.attachment.add_to_gallery.progress.content"),
+          S.of(context).app_media_attachment_addToGallery_progress_content,
       builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
           icon: Icon(
             Icons.file_download,
@@ -141,8 +141,8 @@ class _MediaAttachmentDetailsPageState
             size: FediSizes.appBarIconSize,
           ),
           onPressed: onPressed),
-      successToastMessage: tr("app.media.attachment.add_to_gallery.success"
-          ".toast"),
+      successToastMessage:
+          S.of(context).app_media_attachment_addToGallery_progress_content,
       asyncButtonAction: () async {
         var saved = await addMediaAttachmentToGallery(
             context: context, mediaAttachment: mediaAttachment);
@@ -156,10 +156,12 @@ class _MediaAttachmentDetailsPageState
           return ErrorData(
             error: error,
             stackTrace: stackTrace,
-            titleText: tr("app.media.attachment.add_to_gallery.error.dialog"
-                ".title"),
-            contentText: tr("app.media.attachment.add_to_gallery.error.dialog"
-                ".content"),
+            titleText: S
+                .of(context)
+                .app_media_attachment_addToGallery_error_dialog_title,
+            contentText: S
+                .of(context)
+                .app_media_attachment_addToGallery_error_dialog_content,
           );
         }
       ],
@@ -175,8 +177,8 @@ class _MediaAttachmentDetailsPageState
           imageBuilder: (context, imageProvider) {
             return Container(
               child: PhotoView(
-                backgroundDecoration:
-                    BoxDecoration(color: IFediUiColorTheme.of(context).ultraLightGrey),
+                backgroundDecoration: BoxDecoration(
+                    color: IFediUiColorTheme.of(context).ultraLightGrey),
                 imageProvider: imageProvider,
               ),
             );
@@ -212,8 +214,11 @@ class _MediaAttachmentDetailsPageState
       case MastodonMediaAttachmentType.unknown:
       default:
         return Center(
-            child: Text(tr("app.media.attachment.details.not_supported_type",
-                args: [mediaAttachment.type])));
+          child: Text(
+            S.of(context).app_media_attachment_details_notSupported_type(
+                mediaAttachment.type),
+          ),
+        );
         break;
     }
   }
@@ -262,8 +267,8 @@ class _MediaAttachmentDetailsPageState
         imageBuilder: (context, imageProvider) {
           return Container(
             child: PhotoView(
-              backgroundDecoration:
-                  BoxDecoration(color: IFediUiColorTheme.of(context).ultraLightGrey),
+              backgroundDecoration: BoxDecoration(
+                  color: IFediUiColorTheme.of(context).ultraLightGrey),
               imageProvider: imageProvider,
             ),
           );

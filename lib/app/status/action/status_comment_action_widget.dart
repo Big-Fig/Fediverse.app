@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
@@ -19,7 +19,7 @@ class StatusCommentActionWidget extends StatelessWidget {
           color: IFediUiColorTheme.of(context).darkGrey,
           iconSize: FediSizes.bigIconSize,
           icon: Icon(FediIcons.message),
-          tooltip: tr("app.status.action.comment"),
+          tooltip: S.of(context).app_status_action_comment,
           onPressed: () {
             goToStatusThreadPage(
               context,

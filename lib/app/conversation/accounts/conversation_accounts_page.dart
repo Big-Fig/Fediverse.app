@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/conversation/accounts/conversation_accounts_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/conversation/conversation_bloc_impl.dart';
@@ -13,7 +13,7 @@ class ConversationAccountsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.conversation.accounts.title"),
+        title: S.of(context).app_conversation_accounts_title,
       ),
       body: SafeArea(child: ConversationAccountsWidget()),
     );

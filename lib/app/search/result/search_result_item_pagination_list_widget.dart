@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -12,15 +11,16 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/generated/l10n.dart';
 
 class SearchResultItemPaginationListWidget
     extends FediPaginationListWidget<ISearchResultItem> {
@@ -50,16 +50,28 @@ class SearchResultItemPaginationListWidget
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.statuses".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_statuses,
+              ),
+            );
             break;
           case SearchResultItemType.account:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.accounts".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_accounts,
+              ),
+            );
             break;
           case SearchResultItemType.hashtag:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.hashtags".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_hashtags,
+              ),
+            );
             break;
         }
       }
@@ -127,7 +139,8 @@ class SearchResultItemPaginationListWidget
           statusCallback: (BuildContext context, IStatus status) {
             goToStatusThreadPage(context,
                 status: status, initialMediaAttachment: null);
-          }, initialMediaAttachment: null,
+          },
+          initialMediaAttachment: null,
         ),
       ),
     );

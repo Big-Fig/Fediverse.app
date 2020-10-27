@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -6,6 +5,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ class RecentSearchWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "app.search.recent.title".tr(),
+                      S.of(context).app_search_recent_title,
                       style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
                     ),
                     if (recentItemsIsNotEmpty)
@@ -50,7 +50,7 @@ class RecentSearchWidget extends StatelessWidget {
                         )
                       : Center(
                           child: Text(
-                            "app.search.recent.empty".tr(),
+                            S.of(context).app_search_recent_empty,
                             style: IFediUiTextTheme.of(context)
                                 .mediumShortDarkGrey,
                           ),

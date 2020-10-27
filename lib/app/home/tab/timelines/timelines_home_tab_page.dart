@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_page.dart';
@@ -275,7 +275,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
 
   Widget buildSearchActionButton(BuildContext context) =>
       FediTransparentIconTextButton(
-        "app.search.title".tr(),
+        S.of(context).app_search_title,
         FediIcons.search,
         onPressed: () {
           goToSearchPage(context);
@@ -306,8 +306,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FediCircularProgressIndicator(),
-          Text(
-            "app.timeline.loading".tr(),
+          Text(S.of(context).app_timeline_loading,
             style: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
           )
         ],

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
@@ -63,9 +63,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
     var postMessageWidget = PostStatusWidget(
-      hintText: "app.status.thread.post.hint".tr(
-        args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
-      ),
+      hintText: S.of(context).app_status_thread_post_hint(
+          statusThreadBloc.initialStatusToFetchThread.account.acct),
     );
 
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
@@ -126,9 +125,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "app.status.reply.replying_to".tr(
-                        args: [notCanceledOriginInReplyToStatus.account.acct],
-                      ),
+                      S.of(context).app_status_reply_replyingTo(
+                          notCanceledOriginInReplyToStatus.account.acct),
                       style: IFediUiTextTheme.of(context)
                           .mediumShortGrey
                           .copyWith(height: 1),
@@ -165,7 +163,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 
   Widget buildList(IStatusThreadBloc statusThreadBloc, List<IStatus> statuses) {
     if (statuses.isEmpty) {
-      return Text(tr("app.list.empty"));
+      return Text(S.of(context).app_list_empty);
     } else {
       // jump only after context messages loaded
       if (!isJumpedToStartState && statuses.length > 1) {

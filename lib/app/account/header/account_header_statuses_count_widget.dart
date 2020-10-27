@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountHeaderStatusesCountWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var statusesCount = snapshot.data;
           return AccountHeaderStatisticWidget(
-            label: tr("app.account.info.statuses"),
+            label: S.of(context).app_account_info_statuses,
             onPressed: () {
               if (onStatusesTapCallback != null) {
                 onStatusesTapCallback();

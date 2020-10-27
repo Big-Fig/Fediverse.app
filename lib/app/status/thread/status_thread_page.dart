@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -53,7 +53,7 @@ class StatusThreadPage extends StatelessWidget {
 
           if (status == null) {
             return Text(
-              tr("app.status.thread.start.loading"),
+              S.of(context).app_status_thread_start_loading,
               style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
             );
           }

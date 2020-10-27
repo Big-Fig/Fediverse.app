@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -10,6 +9,7 @@ import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
@@ -82,8 +82,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formStringFieldBloc: bloc.usernameFieldBloc,
-        labelText: tr("app.auth.instance.register.field.username.label"),
-        hintText: tr("app.auth.instance.register.field.username.hint"),
+        labelText:
+            S.of(context).app_auth_instance_register_field_username_label,
+        hintText: S.of(context).app_auth_instance_register_field_username_hint,
         autocorrect: false,
         nextFormStringFieldBloc: bloc.emailFieldBloc,
         obscureText: false,
@@ -94,8 +95,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formStringFieldBloc: bloc.emailFieldBloc,
-        labelText: tr("app.auth.instance.register.field.email.label"),
-        hintText: tr("app.auth.instance.register.field.email.hint"),
+        labelText: S.of(context).app_auth_instance_register_field_email_label,
+        hintText: S.of(context).app_auth_instance_register_field_email_hint,
         autocorrect: false,
         nextFormStringFieldBloc: bloc.passwordFieldBloc,
         obscureText: false,
@@ -106,8 +107,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formStringFieldBloc: bloc.passwordFieldBloc,
-        labelText: tr("app.auth.instance.register.field.password.label"),
-        hintText: tr("app.auth.instance.register.field.password.hint"),
+        labelText:
+            S.of(context).app_auth_instance_register_field_password_label,
+        hintText: S.of(context).app_auth_instance_register_field_password_hint,
         autocorrect: false,
         nextFormStringFieldBloc: bloc.confirmPasswordFieldBloc,
         obscureText: true,
@@ -118,9 +120,11 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formStringFieldBloc: bloc.confirmPasswordFieldBloc,
-        labelText:
-            tr("app.auth.instance.register.field.confirm_password.label"),
-        hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
+        labelText: S
+            .of(context)
+            .app_auth_instance_register_field_confirmPassword_label,
+        hintText:
+            S.of(context).app_auth_instance_register_field_confirmPassword_hint,
         autocorrect: false,
         obscureText: true,
         nextFormStringFieldBloc:
@@ -133,8 +137,11 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       padding: FediPadding.horizontalBigPadding,
       child: FormCaptchaStringFieldFormRowWidget(
         formCaptchaStringFieldBloc: bloc.captchaFieldBloc,
-        hint: tr("app.auth.instance.register.field.captcha.hint"),
-        label: tr("app.auth.instance.register.field.captcha.label"),
+        label: S
+            .of(context)
+            .app_auth_instance_register_field_confirmPassword_label,
+        hint:
+            S.of(context).app_auth_instance_register_field_confirmPassword_hint,
         obscureText: false,
         autocorrect: false,
         onSubmitted: null,
@@ -159,7 +166,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             };
           }
           return FediPrimaryFilledTextButton(
-            tr("app.auth.instance.register.action.create_account"),
+            S.of(context).app_auth_instance_register_action_createAccount,
             onPressed: onPressed,
           );
         },
@@ -207,7 +214,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             },
             errorDataBuilders: [
           (context, error, stackTrace) {
-            return AuthInstancePleromaRestErrorData(
+            return AuthInstancePleromaRestErrorData.createFromContext(
+              context: context,
               error: error,
               stackTrace: stackTrace,
             );
@@ -216,16 +224,15 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
     var authInstance = dialogResult.result;
     if (authInstance != null) {
-
       if (authInstance.info.approvalRequired == true) {
         showInfoFediNotificationOverlay(
           context: context,
-          titleText: "app.auth.instance.register.approval_required"
-                  ".notification.title"
-              .tr(),
-          contentText: "app.auth.instance.register.approval_required"
-                  ".notification.content"
-              .tr(),
+          titleText: S
+              .of(context)
+              .app_auth_instance_register_approvalRequired_notification_title,
+          contentText: S
+              .of(context)
+              .app_auth_instance_register_approvalRequired_notification_content,
         );
       } else {
         await ICurrentAuthInstanceBloc.of(context, listen: false)

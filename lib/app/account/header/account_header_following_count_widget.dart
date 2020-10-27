@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/following/account_following_account_list_page.dart';
 import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
@@ -19,7 +19,7 @@ class AccountHeaderFollowingCountWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var followingCount = snapshot.data;
           return AccountHeaderStatisticWidget(
-            label: tr("app.account.info.following"),
+            label:  S.of(context).app_account_info_following,
             onPressed: () {
               goToAccountFollowingAccountListPage(context, accountBloc.account);
             },

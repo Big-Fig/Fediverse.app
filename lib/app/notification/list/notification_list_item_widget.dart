@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
@@ -22,6 +21,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -44,7 +44,7 @@ class NotificationListItemWidget extends StatelessWidget {
           var dismissed = snapshot.data;
           if (dismissed == true) {
             return FediBlurredOverlayWarningWidget(
-              descriptionText: "app.notification.dismissed".tr(),
+              descriptionText: S.of(context).app_notification_dismissed,
               child: buildNotificationWidget(
                 context,
                 notificationBloc,
@@ -149,38 +149,42 @@ class NotificationListItemWidget extends StatelessWidget {
 
     switch (notificationBloc.typePleroma) {
       case PleromaNotificationType.follow:
-        rawText = tr("app.notification.header.follow");
+        rawText = S.of(context).app_notification_header_follow;
         break;
       case PleromaNotificationType.favourite:
-        rawText = tr("app.notification.header.favourite",
-            args: [extractStatusRawContent(notificationBloc)]);
+        rawText = S.of(context).app_notification_header_favourite(
+              extractStatusRawContent(notificationBloc),
+            );
         break;
       case PleromaNotificationType.reblog:
-        rawText = tr("app.notification.header.reblog",
-            args: [extractStatusRawContent(notificationBloc)]);
+        rawText = S.of(context).app_notification_header_reblog(
+              extractStatusRawContent(notificationBloc),
+            );
         break;
       case PleromaNotificationType.mention:
-        rawText = tr("app.notification.header.mention",
-            args: [extractStatusRawContent(notificationBloc)]);
+        rawText = S.of(context).app_notification_header_mention(
+              extractStatusRawContent(notificationBloc),
+            );
         break;
       case PleromaNotificationType.poll:
-        rawText = tr("app.notification.header.poll");
+        rawText = S.of(context).app_notification_header_poll;
         break;
       case PleromaNotificationType.move:
-        rawText = tr("app.notification.header.move");
+        rawText = S.of(context).app_notification_header_move;
         break;
       case PleromaNotificationType.followRequest:
-        rawText = tr("app.notification.header.followRequest");
+        rawText = S.of(context).app_notification_header_followRequest;
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
-        rawText = tr("app.notification.header.pleromaEmojiReaction", args: [
-          notificationBloc.notification.emoji,
-          extractStatusRawContent(notificationBloc)
-        ]);
+        rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
+              extractStatusRawContent(notificationBloc),
+              notificationBloc.notification.emoji,
+            );
         break;
       case PleromaNotificationType.pleromaChatMention:
-        rawText = tr("app.notification.header.pleromaChatMention",
-            args: [extractStatusRawContent(notificationBloc)]);
+        rawText = S.of(context).app_notification_header_pleromaChatMention(
+              extractStatusRawContent(notificationBloc),
+            );
         break;
       case PleromaNotificationType.unknown:
         var isHaveStatus = notificationBloc.status != null;
@@ -198,9 +202,9 @@ class NotificationListItemWidget extends StatelessWidget {
         } else {
           emojiText = "";
         }
-
-        rawText = tr("app.notification.header.unknown",
-            args: ["${notificationBloc.type}: $emojiText $statusText"]);
+        rawText = S.of(context).app_notification_header_unknown(
+              "${notificationBloc.type}: $emojiText $statusText",
+            );
         break;
     }
 
@@ -265,7 +269,7 @@ class NotificationListItemWidget extends StatelessWidget {
                 if (unread == true)
                   IconSlideAction(
                     icon: FediIcons.check,
-                    caption: "app.notification.action.mark_as_read".tr(),
+                    caption: S.of(context).app_notification_action_markAsRead,
                     color: IFediUiColorTheme.of(context).white,
                     onTap: () {
                       notificationBloc.markAsRead();
@@ -274,7 +278,7 @@ class NotificationListItemWidget extends StatelessWidget {
                 if (dismissed != true)
                   IconSlideAction(
                     icon: FediIcons.delete,
-                    caption: "app.notification.action.dismiss".tr(),
+                    caption: S.of(context).app_notification_action_dismiss,
                     color: IFediUiColorTheme.of(context).white,
                     onTap: () {
                       notificationBloc.dismiss();
@@ -311,15 +315,16 @@ class NotificationListItemWidget extends StatelessWidget {
                                 showFediModalBottomSheetDialog(
                                   context: context,
                                   child: FediChooserDialogBody(
-                                    title: tr(
-                                        "app.notification.action.popup.title"),
+                                    title: S
+                                        .of(context)
+                                        .app_notification_action_popup_title,
                                     actions: [
                                       if (unread == true)
                                         DialogAction(
                                           icon: FediIcons.check,
-                                          label:
-                                              "app.notification.action.mark_as_read"
-                                                  .tr(),
+                                          label: S
+                                              .of(context)
+                                              .app_notification_action_markAsRead,
                                           onAction: (context) {
                                             notificationBloc.markAsRead();
                                             Navigator.of(context).pop();
@@ -328,9 +333,9 @@ class NotificationListItemWidget extends StatelessWidget {
                                       if (dismissed != true)
                                         DialogAction(
                                           icon: FediIcons.delete,
-                                          label:
-                                              "app.notification.action.dismiss"
-                                                  .tr(),
+                                          label: S
+                                              .of(context)
+                                              .app_notification_action_dismiss,
                                           onAction: (context) {
                                             notificationBloc.dismiss();
                                             Navigator.of(context).pop();

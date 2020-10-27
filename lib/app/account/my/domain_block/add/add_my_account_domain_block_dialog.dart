@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
@@ -18,7 +18,8 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
     @required BuildContext context,
     @required VoidCallback successCallback,
   }) : super(
-            title: "app.account.my.domain_block.add.dialog.title".tr(),
+
+            title: S.of(context).app_account_my_domainBlock_add_dialog_title,
             actions: [
               BaseDialog.createDefaultOkAction(
                 context: context,
@@ -67,7 +68,8 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
       FormStringFieldFormRowWidget(
         label: null,
         autocorrect: false,
-        hint: "app.account.my.domain_block.add.dialog.field.domain.hint".tr(),
+        hint: S.of(context)
+            .app_account_my_domainBlock_add_dialog_field_domain_hint,
         formStringFieldBloc: addMyAccountDomainBlockBloc.domainField,
         onSubmitted: (_) {
           // nothing

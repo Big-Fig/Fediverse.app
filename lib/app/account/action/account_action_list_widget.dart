@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
@@ -14,6 +13,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,11 +59,22 @@ class AccountActionListWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      buildFollowButton(accountBloc, relationship),
+                      buildFollowButton(
+                        context: context,
+                        accountBloc: accountBloc,
+                        relationship: relationship,
+                      ),
                       const FediBigHorizontalSpacer(),
-                      buildMessageButton(context, accountBloc),
+                      buildMessageButton(
+                        context: context,
+                        accountBloc: accountBloc,
+                      ),
                       const FediBigHorizontalSpacer(),
-                      buildMoreButton(context, accountBloc, relationship),
+                      buildMoreButton(
+                        context: context,
+                        accountBloc: accountBloc,
+                        relationship: relationship,
+                      ),
                     ],
                   ),
                 ),
@@ -75,8 +86,11 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
-      IPleromaAccountRelationship relationship) {
+  Widget buildMoreButton({
+    @required BuildContext context,
+    @required IAccountBloc accountBloc,
+    @required IPleromaAccountRelationship relationship,
+  }) {
     return FediIconInCircleBlurredButton(
       FediIcons.menu,
       onPressed: () async {
@@ -89,9 +103,12 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
+  Widget buildMessageButton({
+    @required BuildContext context,
+    @required IAccountBloc accountBloc,
+  }) {
     return FediBlurredTextButton(
-      tr("app.account.action.message"),
+      S.of(context).app_account_action_message,
       onPressed: () async {
         var authInstanceBloc =
             ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -107,11 +124,14 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  Widget buildFollowButton(
-      IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
+  Widget buildFollowButton({
+    @required BuildContext context,
+    @required IAccountBloc accountBloc,
+    @required IPleromaAccountRelationship relationship,
+  }) {
     if (relationship.requested && !relationship.following) {
       return FediBlurredTextButton(
-        tr("app.account.action.follow_requested"),
+        S.of(context).app_account_action_followRequested,
         onPressed: null,
       );
     } else {
@@ -121,8 +141,8 @@ class AccountActionListWidget extends StatelessWidget {
         builder: (BuildContext context, VoidCallback onPressed) {
           return FediBlurredTextButton(
             relationship?.following == true
-                ? tr("app.account.action.unfollow")
-                : tr("app.account.action.follow"),
+                ? S.of(context).app_account_action_unfollow
+                : S.of(context).app_account_action_follow,
             onPressed: onPressed,
           );
         },

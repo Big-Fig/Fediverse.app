@@ -1,13 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -54,13 +54,16 @@ class StatusEmojiActionWidget extends StatelessWidget {
           errorDataBuilders: [
             (BuildContext context, dynamic error, StackTrace stackTrace) =>
                 ErrorData(
-                    error: error,
-                    stackTrace: stackTrace,
-                    titleText:
-                        "app.status.emoji.error.cant_add.dialog.title".tr(),
-                    contentText:
-                        "app.status.emoji.error.cant_add.dialog.content"
-                            .tr(args: [error.toString()]))
+                  error: error,
+                  stackTrace: stackTrace,
+                  titleText:
+                      S.of(context).app_status_emoji_error_cantAdd_dialog_title,
+                  contentText: S
+                      .of(context)
+                      .app_status_emoji_error_cantAdd_dialog_content(
+                        error.toString(),
+                      ),
+                )
           ]);
     });
   }

@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -39,7 +39,6 @@ class PleromaAsyncOperationHelper {
       showNotificationOnError: showNotificationOnError,
       showProgressDialog: showProgressDialog,
       errorCallback: (context, errorData) {
-        
         if (errorData.error is PleromaInvalidCredentialsRestException) {
           // todo: if auto-logout needed in all invalid credentials cases
           _autoLogoutOnSessionExpired(context);
@@ -54,7 +53,7 @@ class PleromaAsyncOperationHelper {
   }
 
   static void _autoLogoutOnSessionExpired(BuildContext context) {
-       try {
+    try {
       var currentAuthInstanceBloc =
           ICurrentAuthInstanceBloc.of(context, listen: false);
       currentAuthInstanceBloc.logoutCurrentInstance();
@@ -73,13 +72,15 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.throttled.dialog.title"),
-        contentText: tr("app.async.pleroma.error.throttled.dialog.content"),
+        titleText: S.of(context).app_async_pleroma_error_throttled_dialog_title,
+        contentText:
+            S.of(context).app_async_pleroma_error_throttled_dialog_content,
       );
     } else {
       return null;
     }
   }
+
   static ErrorData pleromaInvalidCredentialsErrorAlertDialogBuilder(
     BuildContext context,
     dynamic error,
@@ -89,9 +90,12 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.invalid_credentials.dialog"
-            ".title"),
-        contentText: tr("app.async.pleroma.error.invalid_credentials.dialog.content"),
+        titleText: S
+            .of(context)
+            .app_async_pleroma_error_invalidCredentials_dialog_title,
+        contentText: S
+            .of(context)
+            .app_async_pleroma_error_invalidCredentials_dialog_content,
       );
     } else {
       return null;
@@ -107,9 +111,11 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.common.dialog.title"),
-        contentText: tr("app.async.pleroma.error.common.dialog.content",
-            args: [error.toString()]),
+        titleText: S.of(context).app_async_pleroma_error_common_dialog_title,
+        contentText:
+            S.of(context).app_async_pleroma_error_common_dialog_content(
+                  error.toString(),
+                ),
       );
     } else {
       return null;

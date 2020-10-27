@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/conversation/avatar/conversation_avatar_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
@@ -76,7 +76,7 @@ class ConversationListItemWidget extends StatelessWidget {
   Widget buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
     return FediIconButton(
-      tooltip: tr("app.conversation.action.more"),
+      tooltip: S.of(context).app_conversation_action_more,
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
@@ -138,7 +138,7 @@ class ConversationListItemWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
     if (myAccountBloc.checkIsStatusFromMe(status)) {
-      formattedText = tr("app.conversation.preview.you", args: [formattedText]);
+      formattedText = S.of(context).app_conversation_preview_you(formattedText);
     }
 
     return formattedText;

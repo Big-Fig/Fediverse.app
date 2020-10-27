@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:fedi/generated/l10n.dart';
 
 var _logger = Logger("fedi_pagination_list_widget.dart");
 
@@ -74,7 +74,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                 success = await additionalPreRefreshAction(context);
               } catch (e, stackTrace) {
                 success = false;
-                _logger.severe(() => "additionalPreRefreshAction()", e, stackTrace);
+                _logger.severe(
+                    () => "additionalPreRefreshAction()", e, stackTrace);
               }
 
               _logger.finest(() => "additionalPreRefreshAction() $success");
@@ -122,7 +123,11 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
               case PaginationListLoadingState.failed:
               case PaginationListLoadingState.loaded:
               default:
-                return Center(child: Text(tr("pagination.list.empty")));
+                return Center(
+                  child: Text(
+                    S.of(context).pagination_list_empty,
+                  ),
+                );
                 break;
             }
           }));

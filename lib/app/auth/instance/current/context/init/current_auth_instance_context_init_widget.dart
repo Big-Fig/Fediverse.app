@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_indeterminate_progress_dialog.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -63,12 +63,13 @@ class _CurrentAuthInstanceContextInitWidgetState
     if (!isAlreadyShown) {
       loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
           cancelableOperation: null,
-          titleMessage: "app.auth.instance.current.context.loading.loading"
-                  ".title"
-              .tr(),
-          contentMessage: tr(
-              "app.auth.instance.current.context.loading.loading.content",
-              args: [myAccountBloc.instance.userAtHost]));
+          titleMessage: S
+              .of(context)
+              .app_auth_instance_current_context_loading_loading_title,
+          contentMessage: S
+              .of(context)
+              .app_auth_instance_current_context_loading_loading_content(
+                  myAccountBloc.instance.userAtHost));
 
       loadingInstanceProgressDialog.show(context);
 
@@ -109,8 +110,6 @@ class _CurrentAuthInstanceContextInitWidgetState
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
-
-
 
     _logger.finest(() => "build");
 
@@ -154,12 +153,10 @@ class _CurrentAuthInstanceContextInitWidgetState
                 Padding(
                   padding: FediPadding.allBigPadding,
                   child: Text(
-                    tr(
-                        "app.auth.instance.current.context.loading.cant_load"
-                        ".content",
-                        args: [
-                          currentAuthInstanceBloc.currentInstance.userAtHost
-                        ]),
+                    S
+                        .of(context)
+                        .app_auth_instance_current_context_loading_cantLoad_content(
+                            currentAuthInstanceBloc.currentInstance.userAtHost),
                     textAlign: TextAlign.center,
                     style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
                   ),
@@ -167,8 +164,9 @@ class _CurrentAuthInstanceContextInitWidgetState
                 Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
-                    tr("app.auth.instance.current.context.loading.cant_load"
-                        ".action.refresh"),
+                    S
+                        .of(context)
+                        .app_auth_instance_current_context_loading_cantLoad_action_refresh,
                     onPressed: () {
                       currentInstanceContextLoadingBloc.refreshFromNetwork();
                     },
@@ -177,8 +175,9 @@ class _CurrentAuthInstanceContextInitWidgetState
                 Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
-                    tr("app.auth.instance.current.context.loading.cant_load"
-                        ".action.choose_different_account"),
+                    S
+                        .of(context)
+                        .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
                     onPressed: () {
                       showMyAccountActionListBottomSheetDialog(context);
                     },
@@ -187,8 +186,8 @@ class _CurrentAuthInstanceContextInitWidgetState
                 Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
-                    tr("app.auth.instance.current.context.loading.cant_load"
-                        ".action.logout"),
+                    S.of(context)
+                        .app_auth_instance_current_context_loading_cantLoad_action_logout,
                     onPressed: () {
                       ICurrentAuthInstanceBloc.of(context, listen: false)
                           .logoutCurrentInstance();

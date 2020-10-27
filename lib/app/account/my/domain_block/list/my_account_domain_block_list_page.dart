@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_dialog.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc_impl.dart';
@@ -26,7 +26,7 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.domain_block.title".tr(),
+        title: S.of(context).app_account_my_domainBlock_title,
         actions: [
           FediIconButton(
             icon: Icon(FediIcons.plus),

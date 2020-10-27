@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
@@ -55,7 +55,7 @@ class PostStatusComposeWidget extends StatelessWidget {
             FediTransparentEditTextField(
               textEditingController: postStatusBloc.subjectTextController,
               focusNode: postStatusBloc.subjectFocusNode,
-              hintText: tr("app.status.post.field.subject.hint"),
+              hintText: S.of(context).app_status_post_field_subject,
               expanded: false,
               autofocus: false,
               maxLines: 1,

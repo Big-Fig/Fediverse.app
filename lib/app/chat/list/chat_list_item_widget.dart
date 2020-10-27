@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/avatar/chat_avatar_widget.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -71,7 +71,7 @@ class ChatListItemWidget extends StatelessWidget {
 
   Widget buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
     return FediIconButton(
-      tooltip: tr("app.chat.action.more"),
+      tooltip: S.of(context).app_chat_action_more,
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
@@ -126,7 +126,7 @@ class ChatListItemWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
     if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-      formattedText = tr("app.chat.preview.you", args: [formattedText]);
+      formattedText = S.of(context).app_chat_preview_you(formattedText);
     }
 
     return formattedText;

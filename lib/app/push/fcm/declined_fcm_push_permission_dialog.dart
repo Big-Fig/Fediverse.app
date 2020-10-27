@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -9,8 +9,8 @@ FediBaseAlertDialog createDeclinedFcmPushPermissionDialog({
   DialogActionCallback action,
 }) =>
     FediSimpleAlertDialog(
-      title: "app.notification.push.permission.declined.dialog.title".tr(),
-      contentText: "app.notification.push.permission.declined.dialog.content".tr(),
+      title: S.of(context).app_notification_push_permission_declined_dialog_title,
+      contentText: S.of(context).app_notification_push_permission_declined_dialog_content,
       context: context,
       action: action,
     );

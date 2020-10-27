@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/conversation/status/context_api/conversation_status_list_context_api_bloc_impl.dart';
@@ -55,7 +55,7 @@ class ConversationWidget extends StatelessWidget {
           var isPostMessageExpanded = snapshot.data;
 
           var postMessageWidget = PostStatusWidget(
-            hintText: tr("app.conversation.post.field.content.hint"),
+            hintText: S.of(context).app_chat_post_field_content_hint,
           );
 
           if (isPostMessageExpanded) {

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
@@ -23,7 +23,7 @@ class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
       return child;
     } else {
       return FediBlurredOverlayWarningWidget(
-        buttonText: tr("app.status.spoiler.action.view"),
+        buttonText: S.of(context).app_status_spoiler_action_view,
         buttonAction: () {
           var statusBloc = IStatusBloc.of(context, listen: false);
 

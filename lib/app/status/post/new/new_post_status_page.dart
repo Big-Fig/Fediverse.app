@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -25,7 +25,7 @@ class NewPostStatusPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: tr("app.status.post.new.title"),
+          title: S.of(context).app_status_post_nsfw_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context, postStatusBloc);
@@ -67,19 +67,20 @@ class NewPostStatusPage extends StatelessWidget {
 
   void alertUnsaved(BuildContext context, IPostStatusBloc postStatusBloc) {
     FediBaseAlertDialog(
-        title: tr("app.status.post.new.unsaved.dialog.title"),
+        title: S.of(context).app_status_post_new_unsaved_dialog_title,
         actionsAxis: Axis.vertical,
         actions: [
           DialogAction(
-            label: tr("app.status.post.new.unsaved.dialog.action.discard"),
+            label: S.of(context).app_status_post_new_unsaved_dialog_action_discard,
             onAction: (context) {
               Navigator.pop(context);
               Navigator.pop(context);
             },
           ),
           DialogAction(
-            label: tr("app.status.post.new.unsaved.dialog.action"
-                ".save_as_draft"),
+
+            label: S.of(context).app_status_post_new_unsaved_dialog_action_saveAsDraft,
+
             onAction: (context) async {
               var postStatusData =
                   postStatusBloc.calculateCurrentPostStatusData();

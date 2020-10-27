@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_pleroma_visibility_field_form_row_widget.dart';
 import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_form_row_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,45 +19,63 @@ class MyAccountSettingsWidget extends StatelessWidget {
       children: [
         CurrentFediUiThemeChooserFormRowWidget(),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.websockets_enabled.label"),
-          desc: tr(
-              "app.account.my.settings.field.websockets_enabled.description"),
+          label: S
+              .of(context)
+              .app_account_my_settings_field_websocketsEnabled_label,
+          desc: S
+              .of(context)
+              .app_account_my_settings_field_websocketsEnabled_description,
           field: myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.new_chats_enabled.label"),
-          desc:
-              tr("app.account.my.settings.field.new_chats_enabled.description"),
+          label: S
+              .of(context)
+              .app_account_my_settings_field_new_chatsEnabled_label,
+          desc: S
+              .of(context)
+              .app_account_my_settings_field_new_chatsEnabled_description,
           field: myAccountSettingsBloc.isNewChatsEnabledFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.always_show_spoiler.label"),
+          label: S
+              .of(context)
+              .app_account_my_settings_field_alwaysShowSpoiler_label,
           desc: null,
           field: myAccountSettingsBloc.isAlwaysShowSpoilerFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.always_show_nsfw.label"),
+          label: S
+              .of(context)
+              .app_account_my_settings_field_alwaysShowNsfw_label,
           desc: null,
           field: myAccountSettingsBloc.isAlwaysShowNsfwFieldBloc,
         ),
         FormPleromaVisibilityFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.default_visibility.label"),
+          label:S
+              .of(context)
+              .app_account_my_settings_field_defaultVisibility_label,
           desc: null,
           field: myAccountSettingsBloc.defaultVisibilityFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
           label:
-              tr("app.account.my.settings.field.media_nsfw_by_default.label"),
+          S
+              .of(context)
+              .app_account_my_settings_field_mediaNsfwByDefault_label,
           desc: null,
           field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.media_auto_init.label"),
+          label:S
+              .of(context)
+              .app_account_my_settings_field_mediaAutoInit_label,
           desc: null,
           field: myAccountSettingsBloc.mediaAutoInitFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.media_auto_play.label"),
+          label:S
+              .of(context)
+              .app_account_my_settings_field_mediaAutoPlay_label,
           desc: null,
           field: myAccountSettingsBloc.mediaAutoPlayFieldBloc,
         ),

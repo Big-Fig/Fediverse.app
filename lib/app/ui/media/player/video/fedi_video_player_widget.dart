@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
@@ -80,7 +80,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FediTransparentTextButton(
-                        "app.media.player.error.action.reload".tr(),
+                        S.of(context).app_media_player_error_action_reload,
                         expanded: false,
                         color: IFediUiColorTheme.of(context).white,
                         onPressed: () {
@@ -90,12 +90,12 @@ class FediVideoPlayerWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "app.media.player.error.desc".tr(),
+                          S.of(context).app_media_player_error_desc,
                           style: IFediUiTextTheme.of(context).bigShortBoldWhite,
                         ),
                       ),
                       FediTransparentTextButton(
-                        "app.media.player.error.action.more_details".tr(),
+                        S.of(context).app_media_player_error_action_moreDetails,
                         expanded: false,
                         color: IFediUiColorTheme.of(context).white,
                         onPressed: () {

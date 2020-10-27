@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_yes_no_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -10,8 +10,8 @@ FediBaseAlertDialog createAskFcmPushPermissionDialog({
   @required DialogActionCallback noAction,
 }) {
   return FediYesNoAlertDialog(
-    title: "app.notification.push.permission.ask.dialog.title".tr(),
-    contentText: "app.notification.push.permission.ask.dialog.content".tr(),
+    title: S.of(context).app_notification_push_permission_ask_dialog_title,
+    contentText: S.of(context).app_notification_push_permission_ask_dialog_content,
     context: context,
     yesAction: yesAction,
     noAction: noAction,

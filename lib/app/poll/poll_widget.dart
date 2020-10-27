@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
@@ -9,10 +8,12 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PollWidget extends StatelessWidget {
   @override
@@ -79,7 +80,7 @@ class PollWidget extends StatelessWidget {
                                   child: AsyncOperationButtonBuilderWidget(
                                     builder: (context, onPressed) =>
                                         FediPrimaryFilledTextButton(
-                                      "app.poll.vote".tr(),
+                                      S.of(context).app_poll_vote,
                                       expanded: false,
                                       limitMinWidth: true,
                                       onPressed: isSelectedVotesNotEmpty
@@ -145,7 +146,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "app.poll.metadata.total_votes".tr(args: [votesCount.toString()]),
+      S.of(context).app_poll_metadata_totalVotes(votesCount),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -172,8 +173,8 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
             },
             child: Text(
               isNeedShowResultsWithoutVote
-                  ? "app.poll.metadata.hide_results".tr()
-                  : "app.poll.metadata.show_results".tr(),
+                  ? S.of(context).app_poll_metadata_hideResults
+                  : S.of(context).app_poll_metadata_showResults,
               style: IFediUiTextTheme.of(context).mediumShortPrimary,
             ),
           );
@@ -198,15 +199,13 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
     return DateTimeDynamicTimeAgoWidget(
       dateTime: expiresAt,
       textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
-      customTextBuilder: (String timeAgoString) {
-        return "app.poll.metadata.expires.not_expired"
-            .tr(args: [timeAgoString]);
-      },
+      customTextBuilder: (String timeAgoString) =>
+          S.of(context).app_poll_metadata_expires_notExpired(timeAgoString),
     );
   }
 
   Widget buildExpired(BuildContext context) => Text(
-        "app.poll.metadata.expires.expired".tr(),
+        S.of(context).app_poll_metadata_expires_expired,
         style: IFediUiTextTheme.of(context).mediumShortGrey,
       );
 }

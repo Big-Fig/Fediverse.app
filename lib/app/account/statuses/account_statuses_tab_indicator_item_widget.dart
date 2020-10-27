@@ -1,12 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,19 +50,16 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   static String mapTabToTitle(BuildContext context, AccountStatusesTab tab) {
     switch (tab) {
       case AccountStatusesTab.withReplies:
-        return "app.account.statuses.tab.with_replies".tr();
+        return S.of(context).app_account_statuses_tab_withReplies;
         break;
       case AccountStatusesTab.withoutReplies:
-        return "app.account.statuses.tab.without_replies".tr();
-
+        return S.of(context).app_account_statuses_tab_withoutReplies;
         break;
       case AccountStatusesTab.pinned:
-        return "app.account.statuses.tab.pinned".tr();
-
+        return S.of(context).app_account_statuses_tab_pinned;
         break;
       case AccountStatusesTab.media:
-        return "app.account.statuses.tab.media".tr();
-
+        return S.of(context).app_account_statuses_tab_media;
         break;
     }
 

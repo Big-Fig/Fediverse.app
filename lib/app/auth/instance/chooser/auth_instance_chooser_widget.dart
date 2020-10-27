@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
@@ -115,7 +115,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
   Widget buildAddAccountRow(BuildContext context) =>
       FediPrimaryFilledTextButton(
-        tr("app.auth.instance.chooser.action.add_instance"),
+        S.of(context).app_auth_instance_chooser_action_addInstance,
         expanded: false,
         onPressed: () {
           goToAddMoreJoinAuthInstancePage(context);

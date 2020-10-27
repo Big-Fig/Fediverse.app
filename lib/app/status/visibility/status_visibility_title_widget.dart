@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -43,20 +43,19 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
       BuildContext context, PleromaVisibility visibility) {
     switch (visibility) {
       case PleromaVisibility.public:
-        return tr("app.status.post.visibility.state"
-            ".public");
+        return S.of(context).app_status_post_visibility_state_public;
         break;
       case PleromaVisibility.unlisted:
-        return tr("app.status.post.visibility.state.unlisted");
+        return S.of(context).app_status_post_visibility_state_unlisted;
         break;
       case PleromaVisibility.direct:
-        return tr("app.status.post.visibility.state.direct");
+        return S.of(context).app_status_post_visibility_state_direct;
         break;
       case PleromaVisibility.list:
-        return tr("app.status.post.visibility.state.list");
+        return S.of(context).app_status_post_visibility_state_list;
         break;
       case PleromaVisibility.private:
-        return tr("app.status.post.visibility.state.private");
+        return S.of(context).app_status_post_visibility_state_private;
         break;
     }
     throw "Not supported visibility $visibility";

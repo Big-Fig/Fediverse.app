@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,9 @@ void showEditMyAccountHeaderDialog(
   showDialog(
       context: context,
       child: AlertDialog(
-        title: Text(tr("app.account.my.edit.field.header.dialog.title")),
+        title: Text(
+          S.of(context).app_account_my_edit_field_header_dialog_title,
+        ),
         content: FutureBuilder(
           future: mediaDeviceFile.loadFile(),
           builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
@@ -28,41 +30,49 @@ void showEditMyAccountHeaderDialog(
         ),
         actions: <Widget>[
           FlatButton(
-              onPressed: () {
-                dismissDialog(context);
-                onFileSelectedCallback(mediaDeviceFile);
-              },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                  ".select"))),
+            onPressed: () {
+              dismissDialog(context);
+              onFileSelectedCallback(mediaDeviceFile);
+            },
+            child: Text(S
+                .of(context)
+                .app_account_my_edit_field_header_dialog_action_select),
+          ),
           FlatButton(
-              onPressed: () async {
-                File croppedFile =
-                    await cropImage(await mediaDeviceFile.loadFile(), context);
+            onPressed: () async {
+              File croppedFile =
+                  await cropImage(await mediaDeviceFile.loadFile(), context);
 
-                dismissDialog(context);
-                if (croppedFile != null) {
-                  if (mediaDeviceFile.isNeedDeleteAfterUsage) {
-                    await mediaDeviceFile.delete();
-                  }
-
-                  onFileSelectedCallback(
-                    FileMediaDeviceFile(
-                        originalFile: croppedFile,
-                        type: mediaDeviceFile.type,
-                        isNeedDeleteAfterUsage: true),
-                  );
-                } else {
-                  onFileSelectedCallback(mediaDeviceFile);
+              dismissDialog(context);
+              if (croppedFile != null) {
+                if (mediaDeviceFile.isNeedDeleteAfterUsage) {
+                  await mediaDeviceFile.delete();
                 }
-              },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                  ".crop"))),
+
+                onFileSelectedCallback(
+                  FileMediaDeviceFile(
+                      originalFile: croppedFile,
+                      type: mediaDeviceFile.type,
+                      isNeedDeleteAfterUsage: true),
+                );
+              } else {
+                onFileSelectedCallback(mediaDeviceFile);
+              }
+            },
+            child: Text(
+              S.of(context).app_account_my_edit_field_header_dialog_action_crop,
+            ),
+          ),
           FlatButton(
-              onPressed: () {
-                dismissDialog(context);
-              },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                  ".cancel"))),
+            onPressed: () {
+              dismissDialog(context);
+            },
+            child: Text(
+              S
+                  .of(context)
+                  .app_account_my_edit_field_header_dialog_action_cancel,
+            ),
+          ),
         ],
       ));
 }
