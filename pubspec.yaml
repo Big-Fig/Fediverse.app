@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
   # firebase auth
   firebase_core: ^0.5.0
   # push notifications FCM
@@ -75,11 +78,6 @@ dependencies:
 
   # customizable datetime picker
   flutter_datetime_picker: ^1.4.0
-
-  # localization via .json files
-  # command to regenerate loader
-  # flutter pub run easy_localization:generate -S assets/langs -O lib/app/localization -o localization_loader.dart
-  easy_localization: ^2.3.3
 
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
@@ -226,7 +224,6 @@ flutter:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/default_timeline_header.png
-    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -253,3 +250,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

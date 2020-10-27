@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
@@ -87,7 +87,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                       Padding(
                         padding: FediPadding.allSmallPadding,
                         child: Text(
-                          tr("app.status.scheduled.state.canceled"),
+                          S.of(context).app_status_scheduled_state_canceled,
                           style: IFediUiTextTheme.of(context)
                               .mediumShortBoldDarkGrey,
                         ),
@@ -104,7 +104,8 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                       Padding(
                         padding: FediPadding.allSmallPadding,
                         child: Text(
-                          tr("app.status.scheduled.state.already_posted"),
+                          S.of(context)
+                              .app_status_scheduled_state_alreadyPosted,
                           style: IFediUiTextTheme.of(context)
                               .mediumShortBoldDarkGrey,
                         ),

@@ -1,5 +1,5 @@
 import 'package:async/async.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -37,7 +37,7 @@ abstract class FediProgressDialog extends BaseDialog {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Text(
-        titleMessage ?? tr("dialog.progress.content"),
+        titleMessage ?? S.of(context).dialog_progress_content,
         textAlign: TextAlign.center,
         style: IFediUiTextTheme.of(context).subHeaderShortBoldDarkGrey,
       ),
@@ -101,7 +101,7 @@ abstract class FediProgressDialog extends BaseDialog {
                   }
                   return InkWell(
                     child: Text(
-                      tr("dialog.progress.action.cancel"),
+                      S.of(context).dialog_progress_action_cancel,
                       style: IFediUiTextTheme.of(context).mediumShortPrimary,
                     ),
                     onTap: onPressed,

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/custom_list/create/create_custom_list_page.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/list/custom_list_network_only_list_bloc_impl.dart';
@@ -23,7 +23,9 @@ class CustomListListPage extends StatelessWidget {
     var paginationListBloc = IPaginationListBloc.of(context, listen: false);
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.custom_list.list.title".tr(),
+
+        title: S.of(context).app_customList_list_title,
+
         actions: <Widget>[
           FediIconButton(
             icon: Icon(FediIcons.plus),

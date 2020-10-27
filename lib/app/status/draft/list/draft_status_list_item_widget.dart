@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/draft/draft_edit_post_status_page.dart';
@@ -91,7 +91,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
                       Padding(
                         padding: FediPadding.allSmallPadding,
                         child: Text(
-                          tr("app.status.draft.state.canceled"),
+                           S.of(context).app_status_draft_state_canceled,
                           style: IFediUiTextTheme.of(context)
                               .mediumShortBoldDarkGrey,
                         ),
@@ -108,7 +108,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
                       Padding(
                         padding: FediPadding.allSmallPadding,
                         child: Text(
-                          tr("app.status.draft.state.already_posted"),
+                          S.of(context).app_status_draft_state_alreadyPosted,
                           style: IFediUiTextTheme.of(context)
                               .mediumShortBoldDarkGrey,
                         ),

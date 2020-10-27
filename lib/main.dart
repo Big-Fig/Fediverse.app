@@ -21,9 +21,6 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
 import 'package:fedi/app/init/init_bloc.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
-import 'package:fedi/app/localization/localization_loader.dart';
-import 'package:fedi/app/localization/localization_provider_widget.dart';
-import 'package:fedi/app/localization/localization_service.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
@@ -47,11 +44,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
+
+import 'generated/l10n.dart';
 
 var _logger = Logger("main.dart");
 
@@ -136,8 +136,8 @@ void runInitializedSplashApp({
   @required AppContextBloc appContextBloc,
   @required String appTitle,
 }) {
-  runApp(appContextBloc.provideContextToChild(
-    child: provideLocalization(
+  runApp(
+    appContextBloc.provideContextToChild(
       child: FediApp(
         appTitle: appTitle,
         child: Provider<IAppContextBloc>.value(
@@ -146,7 +146,7 @@ void runInitializedSplashApp({
         ),
       ),
     ),
-  ));
+  );
 }
 
 void runInitializedApp({
@@ -194,18 +194,16 @@ Future runInitializedCurrentInstanceApp({
       () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
   runApp(
     appContextBloc.provideContextToChild(
-      child: provideLocalization(
-        child: currentInstanceContextBloc.provideContextToChild(
-          child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
-            create: (context) => createCurrentInstanceContextBloc(
-              context: context,
+      child: currentInstanceContextBloc.provideContextToChild(
+        child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
+          create: (context) => createCurrentInstanceContextBloc(
+            context: context,
+            pushLoaderBloc: pushLoaderBloc,
+          ),
+          child: FediApp(
+            appTitle: appTitle,
+            child: buildAuthInstanceContextInitWidget(
               pushLoaderBloc: pushLoaderBloc,
-            ),
-            child: FediApp(
-              appTitle: appTitle,
-              child: buildAuthInstanceContextInitWidget(
-                pushLoaderBloc: pushLoaderBloc,
-              ),
             ),
           ),
         ),
@@ -293,13 +291,11 @@ Widget buildAuthInstanceContextInitWidget({
 void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
   runApp(
     appContextBloc.provideContextToChild(
-      child: provideLocalization(
-        child: DisposableProvider<IJoinAuthInstanceBloc>(
-          create: (context) => JoinAuthInstanceBloc(),
-          child: FediApp(
-            appTitle: appTitle,
-            child: FromScratchJoinAuthInstancePage(),
-          ),
+      child: DisposableProvider<IJoinAuthInstanceBloc>(
+        create: (context) => JoinAuthInstanceBloc(),
+        child: FediApp(
+          appTitle: appTitle,
+          child: FromScratchJoinAuthInstancePage(),
         ),
       ),
     ),
@@ -324,26 +320,6 @@ HomeTab calculateHomeTabForNotification(
   return homeTab;
 }
 
-Widget provideLocalization({
-  @required Widget child,
-}) =>
-    Builder(
-      builder: (context) => LocalizationProvider(
-        key: PageStorageKey("EasyLocalization"),
-        assetLoader: CodegenLoader(),
-        preloaderColor: lightFediUiTheme.colorTheme.primaryDark,
-        preloaderWidget: MaterialApp(
-          home: SplashPage(),
-          debugShowCheckedModeBanner: false,
-        ),
-        supportedLocales: [Locale('en', 'US')],
-        path: "assets/langs",
-        localizationBloc:
-            ILocalizationService.of(context, listen: false).localizationBloc,
-        child: child,
-      ),
-    );
-
 class FediApp extends StatelessWidget {
   final Widget child;
   final String appTitle;
@@ -357,7 +333,6 @@ class FediApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    var localizationProvider = LocalizationProvider.of(context);
     var currentFediUiThemeBloc =
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
@@ -382,9 +357,14 @@ class FediApp extends StatelessWidget {
                   child: MaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: appTitle,
-                    localizationsDelegates: localizationProvider.delegates,
-                    supportedLocales: localizationProvider.supportedLocales,
-                    locale: localizationProvider.locale,
+                    localizationsDelegates: [
+                      S.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                    ],
+                    supportedLocales: S.delegate.supportedLocales,
+                    // TODO: support localization preference inside app
+                    // locale: localizationProvider.locale,
                     theme: lightFediUiTheme.themeData,
                     darkTheme: darkFediUiTheme.themeData,
                     themeMode: themeMode,

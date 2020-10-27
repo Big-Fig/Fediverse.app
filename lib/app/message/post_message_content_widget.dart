@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -42,9 +42,9 @@ class PostMessageContentWidget extends StatelessWidget {
               });
         } else {
           await FediSimpleAlertDialog(
-                  context: context,
-                  title: tr("app.chat.post.error.empty.dialog.title"))
-              .show(context);
+            context: context,
+            title: S.of(context).app_chat_post_error_empty_dialog_title,
+          ).show(context);
         }
       },
       maxLines: null,

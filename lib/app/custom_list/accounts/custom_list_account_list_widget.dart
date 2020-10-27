@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
@@ -9,6 +8,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ class CustomListAccountListWidget extends StatelessWidget {
         Padding(
           padding: FediPadding.horizontalBigPadding,
           child: Text(
-            "app.custom_list.accounts.label".tr(),
+            S.of(context).app_customList_type_accounts_label,
           ),
         ),
         Expanded(
@@ -56,7 +56,7 @@ class CustomListAccountListWidget extends StatelessWidget {
             footer: Padding(
               padding: FediPadding.allSmallPadding,
               child: FediPrimaryFilledTextButton(
-                "app.custom_list.accounts.action.add".tr(),
+                S.of(context).app_customList_type_accounts_action_add,
                 expanded: false,
                 onPressed: () {
                   goToSingleSelectAccountPage(

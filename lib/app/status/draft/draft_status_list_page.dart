@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/draft/list/local_only/draft_status_local_only_list_bloc_impl.dart';
 import 'package:fedi/app/status/draft/pagination/list/draft_status_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/status/draft/pagination/list/draft_status_pagination_list_widget.dart';
@@ -12,7 +12,7 @@ class DraftStatusListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.status.draft.title"),
+        title: S.of(context).app_status_draft_title,
       ),
       body: SafeArea(
         child: buildBody(context),

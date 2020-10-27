@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
@@ -24,7 +24,7 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
 
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.timeline.create.title".tr(),
+        title: S.of(context).app_timeline_create_title,
         actions: [
           StreamBuilder<bool>(
               stream: createTimelineBloc.isReadyToSubmitStream,

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
@@ -23,7 +23,8 @@ class DraftEditPostStatusPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: "app.status.draft.edit.title".tr(),
+
+          title: S.of(context).app_status_draft_edit_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context);

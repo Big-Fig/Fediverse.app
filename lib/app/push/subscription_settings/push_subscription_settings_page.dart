@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,14 +11,14 @@ class PushSubscriptionSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.notification.push.settings.title"),
+        title: S.of(context).app_notification_push_settings_title,
       ),
       body: Padding(
         padding: FediPadding.allBigPadding,
         child: Column(
           children: [
             Text(
-              tr("app.notification.push.settings.desc").tr(),
+              S.of(context).app_notification_push_settings_desc,
               style: IFediUiTextTheme.of(context).smallShortBoldLightGrey,
             ),
             Expanded(

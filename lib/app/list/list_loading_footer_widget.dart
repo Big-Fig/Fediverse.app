@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,8 +16,7 @@ class ListLoadingFooterWidget extends StatelessWidget {
               break;
             case LoadStatus.canLoading:
               body = Text(
-                tr("app.list.loading.state"
-                    ".can_loading"),
+                S.of(context).app_list_loading_state_canLoadMore,
               );
               break;
             case LoadStatus.loading:
@@ -25,13 +24,12 @@ class ListLoadingFooterWidget extends StatelessWidget {
               break;
             case LoadStatus.noMore:
               body = Text(
-                tr("app.list.loading.state"
-                    ".no_more_data"),
+                S.of(context).app_list_loading_state_noMoreData,
               );
               break;
             case LoadStatus.failed:
               body = Text(
-                tr("app.list.loading.state.failed"),
+                S.of(context).app_list_loading_state_failed,
               );
               break;
           }

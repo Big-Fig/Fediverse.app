@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
@@ -9,6 +8,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:fedi/generated/l10n.dart';
 
 var _logger = Logger("timelines_home_tab_storage_widget.dart");
 
@@ -35,7 +35,11 @@ class _TimelinesHomeTabStorageWidgetState
           }
 
           if (items.isEmpty) {
-            return Center(child: Text("app.timeline.storage.empty".tr()));
+            return Center(
+              child: Text(
+                S.of(context).app_timeline_storage_empty,
+              ),
+            );
           }
           return ReorderableListView(
             children: items.map(

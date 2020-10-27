@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -43,10 +43,10 @@ class ShareWithMessageWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: FormStringFieldFormRowWidget(
                 formStringFieldBloc: shareMessageInputBloc.messageField,
-                hint: "app.share.with_message.field.message.hint".tr(),
+                hint: S.of(context).app_share_with_message_field_message_hint,
                 textInputAction: TextInputAction.done,
                 autocorrect: true,
-                label: "app.share.with_message.field.message.label".tr(),
+                label: S.of(context).app_share_with_message_field_message_label,
                 onSubmitted: null,
               ),
             ),

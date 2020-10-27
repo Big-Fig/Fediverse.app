@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
@@ -18,6 +17,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +60,11 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
       topSliverScrollOffsetToShowWhiteStatusBar: null,
       topSliverWidgets: [
         FediTabMainHeaderBarWidget(
-          leadingWidgets: [FediHeaderText(tr("app.home.tab.chats.title"))],
+          leadingWidgets: [
+            FediHeaderText(
+              S.of(context).app_home_tab_chats_title,
+            ),
+          ],
           content: null,
           endingWidgets: [
             buildSwitchToDMsActionButton(context),
@@ -119,7 +123,7 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
 
   FediBlurredTextButton buildSwitchToDMsActionButton(BuildContext context) {
     return FediBlurredTextButton(
-      tr("app.home.tab.chats.action.switch_to_dms"),
+      S.of(context).app_home_tab_chats_action_switch_to_dms,
       onPressed: () {
         IMyAccountSettingsBloc.of(context, listen: false)
             .isNewChatsEnabledFieldBloc
@@ -148,13 +152,15 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
         key: PageStorageKey("ChatWithLastMessageListWidget"),
       );
 
-  Center buildMastodonBody(BuildContext context) {
-    return Center(
-        child: Text(tr("app.home.tab.chats.not_supported_on_mastodon")));
-  }
+  Widget buildMastodonBody(BuildContext context) => Center(
+      child: Text(
+        S.of(context).app_home_tab_chats_notSupported_mastodon,
+      ),
+    );
 
-  Center buildPleromaNotSupportedBody(BuildContext context) {
-    return Center(
-        child: Text(tr("app.home.tab.chats.not_supported_on_pleroma")));
-  }
+  Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
+      child: Text(
+        S.of(context).app_home_tab_chats_notSupported_pleroma,
+      ),
+    );
 }

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
@@ -37,12 +37,12 @@ class AccountActionMoreDialogBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediChooserDialogBody(
-      title: tr("app.account.action.popup.title"),
+      title: S.of(context).app_account_action_popup_title,
       content: "${accountBloc.acct}",
       actions: [
         DialogAction(
             icon: FediIcons.browser,
-            label: tr("app.account.action.open_in_browser"),
+            label: S.of(context).app_account_action_openInBrowser,
             onAction: (context) async {
               var url = accountBloc.account.url;
               await UrlHelper.handleUrlClick(context, url);
@@ -51,8 +51,8 @@ class AccountActionMoreDialogBody extends StatelessWidget {
         DialogAction(
           icon: FediIcons.mute,
           label: relationship.muting
-              ? tr("app.account.action.unmute")
-              : tr("app.account.action.mute"),
+              ? S.of(context).app_account_action_unmute
+              : S.of(context).app_account_action_mute,
           onAction: (context) async {
             await accountBloc.toggleMute();
             Navigator.of(context).pop();
@@ -61,8 +61,8 @@ class AccountActionMoreDialogBody extends StatelessWidget {
         DialogAction(
           icon: FediIcons.block,
           label: relationship.blocking
-              ? tr("app.account.action.unblock")
-              : tr("app.account.action.block"),
+              ? S.of(context).app_account_action_unblock
+              : S.of(context).app_account_action_block,
           onAction: (context) async {
             await accountBloc.toggleBlock();
             Navigator.of(context).pop();
@@ -72,10 +72,10 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           DialogAction(
             icon: FediIcons.block,
             label: relationship.domainBlocking
-                ? tr("app.account.action.unblock_domain",
-                    args: [accountBloc.remoteDomainOrNull])
-                : tr("app.account.action.block_domain",
-                    args: [accountBloc.remoteDomainOrNull]),
+                ? S.of(context).app_account_action_unblockDomain(accountBloc
+    .remoteDomainOrNull)
+                : S.of(context).app_account_action_blockDomain(accountBloc
+                .remoteDomainOrNull),
             onAction: (context) async {
               await accountBloc.toggleBlockDomain();
               Navigator.of(context).pop();
@@ -83,7 +83,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           ),
         DialogAction(
             icon: FediIcons.report,
-            label: tr("app.account.action.report.label"),
+            label: S.of(context).app_account_action_report_label,
             onAction: (context) async {
               var success = await doAsyncActionReport(context, accountBloc);
 

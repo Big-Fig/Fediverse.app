@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/header/status_header_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -20,7 +20,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
             var account = snapshot.data;
             return StatusHeaderWidget(
                 descText:
-                    tr("app.status.reblog.header"),
+                    S.of(context).app_status_reblog_header,
                 account: account,
                 icon: FediIcons.reply);
           });

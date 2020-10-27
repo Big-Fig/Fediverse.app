@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -34,7 +34,7 @@ class FediGrantPermissionWidget extends StatelessWidget {
               child: Padding(
                 padding: FediPadding.allBigPadding,
                 child: FediPrimaryFilledTextButton(
-                  tr("permission.grant.action.grant"),
+                  S.of(context).permission_grant_action_grant,
                   expanded: false,
                   onPressed: () {
                     permissionBloc.requestPermission();

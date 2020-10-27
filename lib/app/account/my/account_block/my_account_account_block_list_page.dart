@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_account_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_network_only_account_list_bloc.dart';
@@ -25,7 +25,7 @@ class MyAccountAccountBlockListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.account_block.title".tr(),
+        title: S.of(context).app_account_my_accountBlock_title,
         actions: [
           buildAddAction(context),
         ],

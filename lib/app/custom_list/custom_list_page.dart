@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
@@ -55,11 +55,7 @@ class _CustomListPageState extends State<CustomListPage> {
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
           centerTitle: false,
-          title: "app.custom_list.title".tr(
-            args: [
-              widget.customList.title,
-            ],
-          ),
+          title: S.of(context).app_customList_title(widget.customList.title),
           actions: [],
         ),
         body: SafeArea(

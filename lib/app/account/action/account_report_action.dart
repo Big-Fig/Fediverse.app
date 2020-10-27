@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -16,13 +16,13 @@ Future<bool> doAsyncActionReport(
   if (success) {
     showInfoFediNotificationOverlay(
         context: context,
-        contentText: tr("app.account.action.report.success.toast"),
+        contentText: S.of(context).app_account_action_report_success_toast,
         titleText: null);
   } else {
     await FediSimpleAlertDialog(
       context: context,
-      title: tr("app.account.action.report.fail.dialog.title"),
-      contentText: tr("app.account.action.report.fail.dialog.content"),
+      title:S.of(context).app_account_action_report_fail_dialog_title,
+      contentText:S.of(context).app_account_action_report_fail_dialog_content,
     ).show(context);
   }
   return success;

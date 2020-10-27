@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -48,7 +48,8 @@ class StatusReplyWidget extends StatelessWidget {
               return Padding(
                 padding: FediPadding.allSmallPadding,
                 child: Text(
-                  tr("app.status.reply.loading.failed"),
+                  S.of(context).app_status_reply_loading_failed,
+
                 ),
               );
               break;
@@ -66,7 +67,7 @@ class StatusReplyWidget extends StatelessWidget {
           Padding(
             padding: FediPadding.allSmallPadding,
             child: Text(
-              tr("app.status.reply.loading.progress"),
+              S.of(context).app_status_reply_loading_progress,
             ),
           ),
           Padding(

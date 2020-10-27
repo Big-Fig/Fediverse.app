@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,11 +17,13 @@ class FediYesNoAlertDialog extends FediBaseAlertDialog {
             contentText: contentText,
             actions: [
               DialogAction(
-                label: yesActionLabel ?? tr("dialog.action.yes"),
+                label: yesActionLabel ?? S.of(context)
+                    .dialog_action_yes,
                 onAction: yesAction,
               ),
               DialogAction(
-                label: yesActionLabel ?? tr("dialog.action.no"),
+                label: yesActionLabel ?? S.of(context)
+                    .dialog_action_no,
                 onAction: noAction,
               ),
             ],

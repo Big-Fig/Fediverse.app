@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_picker_dialog.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -18,10 +18,8 @@ void showPostStatusScheduleDialog(
           .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
     await FediSimpleAlertDialog(
       context: context,
-      title: tr("app.status.post.schedule.error.not_in_future.dialog"
-          ".title"),
-      contentText: tr("app.status.post.schedule.error.not_in_future.dialog"
-          ".content"),
+      title: S.of(context).app_status_post_schedule_error_notInFuture_dialog_title,
+      contentText: S.of(context).app_status_post_schedule_error_notInFuture_dialog_title,
     ).show(context);
   } else {
     postStatusBloc.schedule(newTime);

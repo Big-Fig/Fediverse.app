@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -56,7 +56,8 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
                           onPressed: () {
                             showFediSelectionChooserDialog(
                                 context: context,
-                                title: "app.status.post.visibility.title".tr(),
+
+                                title: S.of(context).app_status_post_visibility_title,
                                 actions: [
                                   buildThemeDialogAction(
                                       context, field, null, currentValue),
@@ -101,11 +102,12 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
 
   String mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
     if (theme == null) {
-      return "app.theme.type.system".tr();
+      return S.of(context).app_theme_type_system;
+
     } else if (theme == lightFediUiTheme) {
-      return "app.theme.type.light".tr();
+      return S.of(context).app_theme_type_light;
     } else if (theme == darkFediUiTheme) {
-      return "app.theme.type.dark".tr();
+      return S.of(context).app_theme_type_dark;
     } else {
       throw "unsupported theme $theme";
     }

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
@@ -16,7 +16,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.status.reblogged_by.title"),
+        title: S.of(context).app_status_rebloggedBy_title,
       ),
       body: SafeArea(
         child: Column(
@@ -24,7 +24,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
             Padding(
               padding: FediPadding.allBigPadding,
               child: Text(
-                "app.account.list.privacy".tr(),
+                S.of(context).app_account_list_privacy,
                 textAlign: TextAlign.center,
                 style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
               ),

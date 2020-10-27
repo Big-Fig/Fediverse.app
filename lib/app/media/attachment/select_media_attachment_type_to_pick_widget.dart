@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
@@ -53,7 +53,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachGallery(BuildContext context) => _buildAction(
       context: context,
       iconData: FediIcons.image,
-      label: "app.media.attachment.type.gallery".tr(),
+      label: S.of(context).app_media_attachment_type_gallery,
       onTap: () async {
         goToSingleMediaPickerPage(context,
             onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
@@ -80,7 +80,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachPhoto(BuildContext context) => _buildAction(
       context: context,
       iconData: FediIcons.camera,
-      label: "app.media.attachment.type.photo".tr(),
+      label: S.of(context).app_media_attachment_type_photo,
       onTap: () async {
         var mediaPickerService = IMediaPickerService.of(context, listen: false);
 
@@ -105,7 +105,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachVideo(BuildContext context) => _buildAction(
       context: context,
       iconData: FediIcons.video,
-      label: "app.media.attachment.type.video".tr(),
+      label: S.of(context).app_media_attachment_type_video,
       onTap: () async {
         var mediaPickerService = IMediaPickerService.of(context, listen: false);
 
@@ -130,7 +130,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachFile(BuildContext context) => _buildAction(
       context: context,
       iconData: FediIcons.file,
-      label: "app.media.attachment.type.file".tr(),
+      label: S.of(context).app_media_attachment_type_file,
       onTap: () async {
         var pickedFilesResult = await FilePicker.platform.pickFiles();
         var pickedFile;
@@ -158,7 +158,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachAudio(BuildContext context) => _buildAction(
       context: context,
       iconData: FediIcons.audio,
-      label: "app.media.attachment.type.audio".tr(),
+      label: S.of(context).app_media_attachment_type_audio,
       onTap: () async {
         var pickedFilesResult =
             await FilePicker.platform.pickFiles(type: FileType.audio);

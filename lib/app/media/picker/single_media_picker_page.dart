@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
@@ -15,6 +14,7 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
@@ -53,7 +53,11 @@ class SingleMediaPickerPage extends StatelessWidget {
             return FediAsyncInitLoadingWidget(
               loadingFinishedBuilder: (BuildContext context) {
                 if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
-                  return Center(child: Text("file.picker.empty".tr()));
+                  return Center(
+                    child: Text(
+                      S.of(context).file_picker_empty,
+                    ),
+                  );
                 }
                 var storagePermissionBloc =
                     IStoragePermissionBloc.of(context, listen: false);
@@ -212,7 +216,9 @@ class SingleMediaPickerPage extends StatelessWidget {
                   );
                 });
           } else {
-            return Text(tr("file.picker.single.title"));
+            return Text(
+              S.of(context).file_picker_single_title,
+            );
           }
         });
   }

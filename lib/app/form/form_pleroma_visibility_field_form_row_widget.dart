@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -47,7 +47,8 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                       onPressed: () {
                         showFediSelectionChooserDialog(
                             context: context,
-                            title: "app.status.post.visibility.title".tr(),
+
+                            title: S.of(context).app_status_post_visibility_title,
                             actions: [
                               buildVisibilityDialogAction(context, field,
                                   PleromaVisibility.public, currentValue),

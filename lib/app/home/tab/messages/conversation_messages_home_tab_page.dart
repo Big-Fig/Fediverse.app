@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/app/conversation/conversations_list_bloc_impl.dart';
@@ -17,6 +16,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,7 +51,9 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
       topSliverWidgets: [
         FediTabMainHeaderBarWidget(
           leadingWidgets: [
-            FediHeaderText(tr("app.home.tab.conversations.title"))
+            FediHeaderText(
+              S.of(context).app_home_tab_conversations_title,
+            )
           ],
           content: null,
           endingWidgets: [
@@ -105,7 +107,8 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
 
   FediBlurredTextButton buildSwitchToChatsActionButton(BuildContext context) {
     return FediBlurredTextButton(
-        tr("app.home.tab.conversations.action.switch_to_chats"), onPressed: () {
+        S.of(context).app_home_tab_conversations_action_switchToChats,
+        onPressed: () {
       IMyAccountSettingsBloc.of(context, listen: false)
           .isNewChatsEnabledFieldBloc
           .changeCurrentValue(true);

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/share/share_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -36,7 +36,7 @@ class ShareIconButtonWidget extends StatelessWidget {
                 onPressed: isPossibleToShare ? onPressed : null,
               );
             },
-            successToastMessage: "app.share.toast.success".tr(),
+            successToastMessage: S.of(context).app_share_toast_success,
             asyncButtonAction: () async {
               await shareBloc.share();
               Navigator.of(context).pop();

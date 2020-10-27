@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
@@ -40,7 +40,7 @@ class SearchInputWidget extends StatelessWidget {
                 textEditingController:
                     searchInputBloc.searchTextEditingController,
                 expanded: false,
-                hintText: tr("app.search.field.input.hint"),
+                hintText: S.of(context).app_search_field_input_hint,
                 ending: buildClearButton(searchInputBloc),
                 textInputAction: TextInputAction.search,
                 onSubmitted: (_) {

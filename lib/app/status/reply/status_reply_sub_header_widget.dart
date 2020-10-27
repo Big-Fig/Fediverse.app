@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/sub_header/status_sub_header_widget.dart';
@@ -25,7 +25,7 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
             }
 
             return StatusSubHeaderWidget(
-                descText: tr("app.status.reply.header"),
+                descText: S.of(context).app_status_reblog_header,
                 account: account,
                 icon: FediIcons.message,
                 accountCallback: accountCallback);

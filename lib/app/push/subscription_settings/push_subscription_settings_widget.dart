@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
@@ -46,27 +46,27 @@ class _PushSubscriptionSettingsWidgetState
     return ListView(
       children: [
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.favourites.label"),
+          label: S.of(context).app_notification_push_settings_field_favourites_label,
           field: settingsBloc.favouriteFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.follows.label"),
+          label: S.of(context).app_notification_push_settings_field_follows_label,
           field: settingsBloc.followFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.mentions.label"),
+          label: S.of(context).app_notification_push_settings_field_mentions_label,
           field: settingsBloc.mentionFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.reblogs.label"),
+          label: S.of(context).app_notification_push_settings_field_reblogs_label,
           field: settingsBloc.reblogFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.polls.label"),
+          label: S.of(context).app_notification_push_settings_field_polls_label,
           field: settingsBloc.pollFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: tr("app.notification.push.settings.field.chat.label"),
+          label: S.of(context).app_notification_push_settings_field_chat_label,
           field: settingsBloc.chatFieldBloc,
         ),
       ],

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/share/external/external_share_as_link_field_widget.dart';
 import 'package:fedi/app/share/external/external_share_status_bloc_impl.dart';
 import 'package:fedi/app/share/share_icon_button_widget.dart';
@@ -22,7 +22,7 @@ class ExternalShareStatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: "app.share.external.title".tr(),
+          title: S.of(context).app_share_external_title,
           actions: [
             ShareIconButtonWidget(
               iconSize: FediSizes.appBarIconSize,
@@ -68,7 +68,7 @@ MaterialPageRoute createExternalShareStatusPageRoute({
           ),
         ),
       ),
-      popupTitle: "app.share.external.title".tr(),
+      popupTitle: S.of(context).app_share_external_title,
     ),
   );
 }

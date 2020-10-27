@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
@@ -120,9 +120,8 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
 
           await FediConfirmAlertDialog(
             context: context,
-            title: tr("app.auth.instance.logout.dialog.title"),
-            contentText: tr("app.auth.instance.logout.dialog.content",
-                args: [instance.userAtHost]),
+            title: S.of(context).app_auth_instance_logout_dialog_title,
+            contentText: S.of(context).app_auth_instance_logout_dialog_content(instance.userAtHost),
             onAction: (context) async {
               if (isSelected) {
                 await Navigator.of(context).pop();

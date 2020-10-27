@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
@@ -205,8 +205,8 @@ class StatusBodyWidget extends StatelessWidget {
                 var isCollapsed = snapshot.data;
                 return FediPrimaryFilledTextButton(
                   isCollapsed
-                      ? tr("app.status.collapsible.action.expand")
-                      : tr("app.status.collapsible.action.collapse"),
+                      ? S.of(context).app_status_collapsible_action_expand
+                      : S.of(context).app_status_collapsible_action_collapse,
                   onPressed: () {
                     statusBloc.toggleCollapseExpand();
                   },
@@ -226,14 +226,14 @@ class StatusBodyWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(right: FediSizes.smallPadding),
                 child: FediGreyChip(
-                  label: "app.status.nsfw.chip".tr(),
+                  label: S.of(context).app_status_nsfw_chip,
                 ),
               ),
             if (containsSpoiler)
               Padding(
                 padding: EdgeInsets.only(right: FediSizes.smallPadding),
                 child: FediGreyChip(
-                  label: "app.status.spoiler.chip".tr(),
+                  label: S.of(context).app_status_spoiler_chip,
                 ),
               ),
           ],

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/message/list/cached/chat_message_cached_list_bloc_impl.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
@@ -47,7 +47,8 @@ class ChatWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var isPostMessageExpanded = snapshot.data;
           var postMessageWidget = PostMessageWidget(
-            hintText: tr("app.chat.post.field.content.hint"),
+            hintText:
+            S.of(context).app_chat_post_field_content_hint,
           );
           if (isPostMessageExpanded) {
             return postMessageWidget;

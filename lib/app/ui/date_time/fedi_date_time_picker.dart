@@ -2,7 +2,7 @@ library flutter_datetime_picker;
 
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -486,8 +486,8 @@ class FediDatePickerTheme {
           backgroundColor: IFediUiColorTheme.of(context, listen: false).white,
           itemStyle: IFediUiTextTheme.of(context, listen: false).mediumShortBoldDarkGrey,
           doneStyle: IFediUiTextTheme.of(context, listen: false).mediumShortBoldPrimary,
-          customTitle: customTitle ?? "app.datetime.picker.title".tr(),
-          customDone: "app.datetime.picker.action.ok".tr(),
-          customCancel: "app.datetime.picker.action.cancel".tr(),
+          customTitle: customTitle ?? S.of(context).app_datetime_title,
+          customDone: S.of(context).app_datetime_picker_action_ok,
+          customCancel: S.of(context).app_datetime_picker_action_cancel,
         );
 }

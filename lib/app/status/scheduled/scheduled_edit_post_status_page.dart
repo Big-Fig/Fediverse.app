@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -23,7 +23,7 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: "app.status.scheduled.edit.title".tr(),
+          title: S.of(context).app_status_emoji_error_cantAdd_dialog_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context);

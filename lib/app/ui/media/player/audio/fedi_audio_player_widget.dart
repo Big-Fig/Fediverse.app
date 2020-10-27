@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -58,7 +58,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "app.media.player.error.desc".tr(),
+                            S.of(context).app_media_player_error_desc,
                             style: IFediUiTextTheme.of(context).bigShortBoldWhite,
                           ),
                         ),

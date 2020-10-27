@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -82,11 +82,14 @@ class EmojiPickerWidget extends StatelessWidget {
         emptyCategoryBuilder: (context, categoryBloc) {
           String text;
           if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
-            text = "app.emoji.custom.empty".tr();
+            text = S.of(context).app_emoji_custom_empty;
+
           } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
-            text = "app.emoji.recent.empty".tr();
+            text = S.of(context).app_emoji_recent_empty;
+
           } else {
-            text = "app.emoji.category.empty".tr();
+            text = S.of(context).app_emoji_category_empty;
+
           }
           return Text(
             text,

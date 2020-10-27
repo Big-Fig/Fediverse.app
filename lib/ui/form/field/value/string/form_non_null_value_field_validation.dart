@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -6,7 +6,7 @@ class FormNonNullValueFieldValidationError
     extends FormValueFieldValidationError {
   @override
   String createErrorDescription(BuildContext context) =>
-      tr("form.field.value.error.null.desc");
+      S.of(context).form_field_value_error_null_desc;
 
   static FormValueFieldValidation createValidator() => (currentValue) {
         if (currentValue != null) {
