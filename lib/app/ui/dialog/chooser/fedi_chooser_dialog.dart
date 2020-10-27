@@ -98,6 +98,7 @@ class FediChooserDialogBody extends StatelessWidget {
 
   Widget _buildAction(
       {@required BuildContext context, @required DialogAction action}) {
+    var enabled = action.onAction != null;
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: Row(
@@ -106,15 +107,19 @@ class FediChooserDialogBody extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              if (action.onAction != null) {
+              if (enabled) {
                 action.onAction(context);
               }
             },
             child: Row(
               children: [
                 if (action.icon != null)
-                  Icon(action.icon,
-                      color: IFediUiColorTheme.of(context).darkGrey),
+                  Icon(
+                    action.icon,
+                    color: enabled
+                        ? IFediUiColorTheme.of(context).darkGrey
+                        : IFediUiColorTheme.of(context).lightGrey,
+                  ),
                 Padding(
                   padding: FediPadding.allMediumPadding,
                   child: Text(

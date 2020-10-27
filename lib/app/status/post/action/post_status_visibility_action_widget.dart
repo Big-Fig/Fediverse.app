@@ -33,23 +33,35 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                     title: "app.status.post.visibility.title".tr(),
                     actions: [
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.public),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.public,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.direct),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.direct,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.unlisted),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.unlisted,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.private),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.private,
+                      ),
                     ]);
               });
         });
   }
 
-  SelectionDialogAction buildVisibilityDialogAction(
-    BuildContext context,
-    IPostStatusBloc postStatusBloc,
-    PleromaVisibility visibility,
-  ) {
+  SelectionDialogAction buildVisibilityDialogAction({
+    @required BuildContext context,
+    @required IPostStatusBloc postStatusBloc,
+    @required PleromaVisibility visibility,
+  }) {
     DialogActionCallback onPressed;
     var isPossibleToChangeVisibility =
         postStatusBloc.isPossibleToChangeVisibility;
