@@ -219,7 +219,7 @@ class _FediDatePickerComponent extends StatefulWidget {
     @required this.onChanged,
     @required this.onConfirm,
     @required this.onCancel,
-  });
+  }):super(key:key);
 
   final DateChangedCallback onChanged;
   final DateChangedCallback onConfirm;
