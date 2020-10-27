@@ -24,7 +24,8 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final BehaviorSubject<List<IStatus>> _statusesSubject;
 
   final BehaviorSubject<bool> _firstStatusInThreadSubject;
-  final StreamController<IStatus> _onNewStatusAddedStreamController = StreamController();
+  final StreamController<IStatus> _onNewStatusAddedStreamController =
+      StreamController.broadcast();
   @override
   Stream<IStatus> get onNewStatusAddedStream =>
       _onNewStatusAddedStreamController.stream;
