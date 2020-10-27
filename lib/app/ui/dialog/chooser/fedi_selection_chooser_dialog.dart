@@ -41,60 +41,61 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
     @required BuildContext context,
     @required DialogAction action,
     @required bool isSelected,
-  }) =>
-      Padding(
-        padding: FediPadding.horizontalBigPadding,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            StreamBuilder<bool>(
-                initialData: action.isActionEnabledFetcher != null
-                    ? action.isActionEnabledFetcher(context)
-                    : true,
-                stream: action.isActionEnabledStreamFetcher != null
-                    ? action.isActionEnabledStreamFetcher(context)
-                    : Stream.value(true),
-                builder: (context, snapshot) {
-                  var enabled = snapshot.data;
-                  var fediUiColorTheme = IFediUiColorTheme.of(context);
-                  var fediUiTextTheme = IFediUiTextTheme.of(context);
-                  return InkWell(
-                    onTap: enabled
-                        ? () {
-                            if (action.onAction != null) {
-                              action.onAction(context);
-                            }
+  }) {
+    var actionExist = action.onAction != null;
+    return Padding(
+      padding: FediPadding.horizontalBigPadding,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          StreamBuilder<bool>(
+              initialData: action.isActionEnabledFetcher != null
+                  ? action.isActionEnabledFetcher(context)
+                  : true,
+              stream: action.isActionEnabledStreamFetcher != null
+                  ? action.isActionEnabledStreamFetcher(context)
+                  : Stream.value(true),
+              builder: (context, snapshot) {
+                var enabled = snapshot.data;
+                var fediUiColorTheme = IFediUiColorTheme.of(context);
+                var fediUiTextTheme = IFediUiTextTheme.of(context);
+                return InkWell(
+                  onTap: enabled
+                      ? () {
+                          if (actionExist && enabled) {
+                            action.onAction(context);
                           }
-                        : null,
-                    child: Row(
-                      children: [
-                        if (action.icon != null)
-                          Icon(action.icon,
-                              color: isSelected
-                                  ? fediUiColorTheme.primary
-                                  : enabled
-                                      ? IFediUiColorTheme.of(context).darkGrey
-                                      : IFediUiColorTheme.of(context)
-                                          .lightGrey),
-                        Padding(
-                          padding: FediPadding.allMediumPadding,
-                          child: Text(
-                            action.label,
-                            style: isSelected
-                                ? fediUiTextTheme.bigTallPrimary
-                                : enabled
-                                    ? fediUiTextTheme.bigTallDarkGrey
-                                    : fediUiTextTheme.bigTallLightGrey,
-                          ),
+                        }
+                      : null,
+                  child: Row(
+                    children: [
+                      if (action.icon != null)
+                        Icon(action.icon,
+                            color: isSelected
+                                ? fediUiColorTheme.primary
+                                : actionExist && enabled
+                                    ? IFediUiColorTheme.of(context).darkGrey
+                                    : IFediUiColorTheme.of(context).lightGrey),
+                      Padding(
+                        padding: FediPadding.allMediumPadding,
+                        child: Text(
+                          action.label,
+                          style: isSelected
+                              ? fediUiTextTheme.bigTallPrimary
+                              : actionExist && enabled
+                                  ? fediUiTextTheme.bigTallDarkGrey
+                                  : fediUiTextTheme.bigTallLightGrey,
                         ),
-                      ],
-                    ),
-                  );
-                }),
-          ],
-        ),
-      );
+                      ),
+                    ],
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
