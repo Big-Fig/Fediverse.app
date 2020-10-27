@@ -158,7 +158,7 @@ dependencies:
   shared_preferences: ^0.5.10
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^4.0.0
+  extended_text_field: ^5.0.0
 
   # detect keyboard visibility
   flutter_keyboard_visibility: ^3.2.2
