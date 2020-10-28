@@ -13,7 +13,9 @@ class FediSubPageTitleAppBar extends StatelessWidget
 
   // AppBar size without bottom
   @override
-  final preferredSize = Size.fromHeight(kToolbarHeight);
+  final preferredSize = calculatePreferredSize();
+
+  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight);
 
   FediSubPageTitleAppBar({
     @required this.title,
@@ -26,12 +28,12 @@ class FediSubPageTitleAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return AppBar(
-        centerTitle: centerTitle,
-        actions: actions,
-        brightness: fediUiColorTheme.brightness,
-        backgroundColor: fediUiColorTheme.white,
-        title: title != null ? FediSubHeaderText(title) : null,
-        leading: leading,
-      );
+      centerTitle: centerTitle,
+      actions: actions,
+      brightness: fediUiColorTheme.brightness,
+      backgroundColor: fediUiColorTheme.white,
+      title: title != null ? FediSubHeaderText(title) : null,
+      leading: leading,
+    );
   }
 }

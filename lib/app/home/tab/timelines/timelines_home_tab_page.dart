@@ -46,8 +46,11 @@ import 'package:provider/provider.dart';
 final _logger = Logger("timelines_home_tab_page.dart");
 
 class TimelinesHomeTabPage extends StatefulWidget {
+  const TimelinesHomeTabPage();
+
   @override
   _TimelinesHomeTabPageState createState() => _TimelinesHomeTabPageState();
+
 }
 
 class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
