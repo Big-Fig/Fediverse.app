@@ -127,7 +127,7 @@ class NewPostStatusPageAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context);
     return FediSubPageTitleAppBar(
-      title: S.of(context).app_status_post_nsfw_title,
+      title: S.of(context).app_status_post_new_title,
       leading: FediDismissIconButton(
         customOnPressed: () {
           _newPostStatusPageHandleBackPressed(context, postStatusBloc);
