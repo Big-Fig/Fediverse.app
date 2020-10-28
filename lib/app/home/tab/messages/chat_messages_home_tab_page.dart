@@ -48,12 +48,19 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
     return Scaffold(
       key: _drawerKey,
       backgroundColor: fediUiColorTheme.transparent,
-      body: buildNestedScrollView(context, isPleromaInstance, isSupportChats),
+      body: buildNestedScrollView(
+        context: context,
+        isPleromaInstance: isPleromaInstance,
+        isSupportChats: isSupportChats,
+      ),
     );
   }
 
-  Widget buildNestedScrollView(
-      BuildContext context, bool isPleromaInstance, bool isSupportChats) {
+  Widget buildNestedScrollView({
+    @required BuildContext context,
+    @required bool isPleromaInstance,
+    @required bool isSupportChats,
+  }) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return FediNestedScrollViewWithoutNestedScrollableTabsWidget(
       onLongScrollUpTopOverlayWidget: null,
@@ -104,7 +111,11 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
             borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
             child: Container(
               color: fediUiColorTheme.white,
-              child: buildBody(context, isPleromaInstance, isSupportChats),
+              child: buildBody(
+                context: context,
+                isPleromaInstance: isPleromaInstance,
+                isSupportChats: isSupportChats,
+              ),
             ),
           ),
         );
@@ -113,8 +124,11 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(
-          BuildContext context, bool isPleromaInstance, bool isSupportChats) =>
+  Widget buildBody({
+    @required BuildContext context,
+    @required bool isPleromaInstance,
+    @required bool isSupportChats,
+  }) =>
       isPleromaInstance
           ? isSupportChats
               ? buildPleromaBody()
@@ -153,14 +167,14 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
       );
 
   Widget buildMastodonBody(BuildContext context) => Center(
-      child: Text(
-        S.of(context).app_home_tab_chats_notSupported_mastodon,
-      ),
-    );
+        child: Text(
+          S.of(context).app_home_tab_chats_notSupported_mastodon,
+        ),
+      );
 
   Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
-      child: Text(
-        S.of(context).app_home_tab_chats_notSupported_pleroma,
-      ),
-    );
+        child: Text(
+          S.of(context).app_home_tab_chats_notSupported_pleroma,
+        ),
+      );
 }

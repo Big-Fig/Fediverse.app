@@ -9,7 +9,7 @@ class AccountDisplayNameAndAcctWidget extends StatelessWidget {
   final TextStyle textStyle;
   final TextAlign textAlign;
 
-  AccountDisplayNameAndAcctWidget({
+  const AccountDisplayNameAndAcctWidget({
     this.textOverflow = TextOverflow.ellipsis,
     this.textAlign = TextAlign.start,
     this.textStyle,
