@@ -138,7 +138,7 @@ dependencies:
   video_player: '>=0.10.11+2 <2.0.0'
 
   # pull to refresh and pull to load more
-  pull_to_refresh: ^1.6.1
+  pull_to_refresh: ^1.6.2
 
   # custom scroll view which fix bugs related to inner scrollables sync
   extended_nested_scroll_view: ^1.0.1
