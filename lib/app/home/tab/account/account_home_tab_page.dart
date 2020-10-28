@@ -41,6 +41,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/provider/tab_controller_provider.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,39 +56,32 @@ const _tabs = [
   AccountStatusesTab.media,
 ];
 
-class AccountHomeTabPage extends StatefulWidget {
+class AccountHomeTabPage extends StatelessWidget {
   const AccountHomeTabPage({Key key}) : super(key: key);
 
   @override
-  _AccountHomeTabPageState createState() => _AccountHomeTabPageState();
-}
-
-class _AccountHomeTabPageState extends State<AccountHomeTabPage>
-    with TickerProviderStateMixin {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: IFediUiColorTheme.of(context).white,
-      body: Stack(
-        children: [
-          ProxyProvider<IMyAccountBloc, IAccountBloc>(
-            update: (context, value, previous) => value,
-            child: Container(
-              height: _headerBackgroundHeight,
-              child: const AccountHeaderBackgroundWidget(),
+    return TabControllerProvider(
+      tabControllerCreator:
+          (BuildContext context, TickerProvider tickerProvider) =>
+              TabController(
+        vsync: tickerProvider,
+        length: _tabs.length,
+      ),
+      child: Scaffold(
+        backgroundColor: IFediUiColorTheme.of(context).white,
+        body: Stack(
+          children: [
+            ProxyProvider<IMyAccountBloc, IAccountBloc>(
+              update: (context, value, previous) => value,
+              child: Container(
+                height: _headerBackgroundHeight,
+                child: const AccountHeaderBackgroundWidget(),
+              ),
             ),
-          ),
-          ListenableProvider<TabController>(
-            create: (context) => TabController(
-              vsync: this,
-              length: _tabs.length,
-            ),
-            dispose: (context, tabController) {
-              tabController.dispose();
-            },
-            child: const _AccountHomeTabPageBody(),
-          ),
-        ],
+            const _AccountHomeTabPageBody(),
+          ],
+        ),
       ),
     );
   }
@@ -180,7 +174,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
     }
   }
 
-  StatelessWidget _buildTabContent(AccountStatusesTab tab) {
+  Widget _buildTabContent(AccountStatusesTab tab) {
     switch (tab) {
       case AccountStatusesTab.withReplies:
       case AccountStatusesTab.withoutReplies:
