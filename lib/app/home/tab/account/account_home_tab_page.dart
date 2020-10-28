@@ -112,8 +112,10 @@ class _AccountHomeTabPageBody extends StatelessWidget {
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) =>
                 buildTabBodyProvider(index, child),
-        tabBodyContentBuilder: (BuildContext context, int index) =>
-            _buildTabContent(_tabs[index]),
+        tabBodyContentBuilder: (BuildContext context, int index) => Container(
+          color: IFediUiColorTheme.of(context).offWhite,
+          child: _buildTabContent(_tabs[index]),
+        ),
         tabBodyOverlayBuilder: (BuildContext context, int index) =>
             _buildTabOverlay(_tabs[index]),
         tabBarViewContainerBuilder: null,
