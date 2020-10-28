@@ -43,194 +43,78 @@ class HomePage extends StatelessWidget {
     var homeBloc = IHomeBloc.of(context, listen: false);
 
     return StreamBuilder<HomeTab>(
-        stream: homeBloc.selectedTabStream.distinct(),
-        initialData: homeBloc.selectedTab,
-        builder: (context, snapshot) {
-          var selectedTab = snapshot.data;
+      stream: homeBloc.selectedTabStream.distinct(),
+      initialData: homeBloc.selectedTab,
+      builder: (context, snapshot) {
+        var selectedTab = snapshot.data;
 
-          _logger.finest(() => "selectedTab $selectedTab");
+        _logger.finest(() => "selectedTab $selectedTab");
 
-          if (selectedTab == null) {
-            return SizedBox.shrink();
-          }
-          return Scaffold(
-            body: Stack(
-              children: [
-                _buildBackground(context),
-                buildBody(context, selectedTab),
-              ],
-            ),
-            bottomNavigationBar: _buildBottomNavBar(context),
-          );
-        });
-  }
+        if (selectedTab == null) {
+          return SizedBox.shrink();
+        }
 
-  Padding _buildBottomNavBar(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-      child: Container(
-        height: 58,
-        child: Column(
-          children: [
-            const FediUltraLightGreyDivider(),
-            const HomePageBottomNavigationBarWidget(),
-          ],
-        ),
-      ),
+        return Scaffold(
+          body: Stack(
+            children: [
+              const _HomePageBackgroundWidget(),
+              buildBody(context, selectedTab),
+            ],
+          ),
+          bottomNavigationBar: const _HomePageBottomNavBar(),
+        );
+      },
     );
   }
-
-  FediLightStatusBarStyleArea _buildBackground(BuildContext context) =>
-      FediLightStatusBarStyleArea(
-        child: Container(
-          color: IFediUiColorTheme.of(context).primary,
-          child: FediInstanceImageBackgroundWidget(
-            defaultImage:
-                Image.asset("assets/images/default_timeline_header.png"),
-            child: Container(),
-          ),
-        ),
-      );
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
     switch (selectedTab) {
       case HomeTab.timelines:
-        return buildTimelinesTab(context);
+        return const _HomePageTimelineTabWidget();
         break;
       case HomeTab.notifications:
-        return _buildNotificationsTab(context);
+        return const _HomePageNotificationTabWidget();
         break;
       case HomeTab.messages:
-        return _buildMessagesTab(context);
+        return const _HomePageMessagesTabWidget();
 
         break;
       case HomeTab.account:
-        return _buildAccountTab(context);
+        return const _HomePageAccountTabWidget();
         break;
     }
 
     throw "buildBody invalid selectedTab = $selectedTab";
   }
+}
 
-  StreamBuilder<bool> _buildMessagesTab(BuildContext context) {
-    var myAccountSettingsBloc =
-        IMyAccountSettingsBloc.of(context, listen: false);
-    return StreamBuilder<bool>(
-        stream:
-            myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
-        initialData:
-            myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
-        builder: (context, snapshot) {
-          var isNewChatsEnabled = snapshot.data;
+class _HomePageBackgroundWidget extends StatelessWidget {
+  const _HomePageBackgroundWidget({
+    Key key,
+  }) : super(key: key);
 
-          if (isNewChatsEnabled == true) {
-            return _buildChatMessagesTab(context);
-          } else {
-            return _buildConversationMessagesTab(context);
-          }
-        });
-  }
-
-  DisposableProvider<ITimelinesHomeTabBloc> buildTimelinesTab(
-      BuildContext context) {
-    _logger.finest(() => "buildTimelinesTab");
-    return DisposableProvider<ITimelinesHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
-        var timelinesHomeTabBloc = TimelinesHomeTabBloc();
-
-        _logger.finest(() => "create timelinesHomeTabBloc");
-
-        timelinesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.timelines) {
-            timelinesHomeTabBloc.scrollToTop();
-          }
-        }));
-        return timelinesHomeTabBloc;
-      },
-      child: TimelinesHomeTabBlocProxyProvider(
-        child: TimelinesHomeTabPage(),
-      ),
-    );
-  }
-
-  Widget _buildNotificationsTab(BuildContext context) {
-    return DisposableProvider<INotificationsHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
-
-        var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
-            );
-
-        notificationsHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.notifications) {
-            notificationsHomeTabBloc.scrollToTop();
-          }
-        }));
-
-        return notificationsHomeTabBloc;
-      },
-      child: NotificationsHomeTabBlocProxyProvider(
-        child: NotificationsHomeTabPage(),
-      ),
-    );
-  }
-
-  DisposableProvider<IChatMessagesHomeTabBloc> _buildChatMessagesTab(
-      BuildContext context) {
-    return DisposableProvider<IChatMessagesHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
-
-        var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc();
-
-        chatMessagesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.messages) {
-            chatMessagesHomeTabBloc.scrollToTop();
-          }
-        }));
-
-        return chatMessagesHomeTabBloc;
-      },
-      child: ChatMessagesHomeTabBlocProxyProvider(
-        child: const ChatMessagesHomeTabPage(
-          key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
+  @override
+  Widget build(BuildContext context) {
+    return FediLightStatusBarStyleArea(
+      child: Container(
+        color: IFediUiColorTheme.of(context).primary,
+        child: FediInstanceImageBackgroundWidget(
+          defaultImage:
+              Image.asset("assets/images/default_timeline_header.png"),
+          child: Container(),
         ),
       ),
     );
   }
+}
 
-  DisposableProvider<IConversationMessagesHomeTabBloc>
-      _buildConversationMessagesTab(BuildContext context) {
-    return DisposableProvider<IConversationMessagesHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
+class _HomePageAccountTabWidget extends StatelessWidget {
+  const _HomePageAccountTabWidget({
+    Key key,
+  }) : super(key: key);
 
-        var conversationMessagesHomeTabBloc = ConversationMessagesHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
-            );
-
-        conversationMessagesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.messages) {
-            conversationMessagesHomeTabBloc.scrollToTop();
-          }
-        }));
-
-        return conversationMessagesHomeTabBloc;
-      },
-      child: ConversationMessagesHomeTabBlocProxyProvider(
-        child: const ConversationMessagesHomeTabPage(),
-      ),
-    );
-  }
-
-  DisposableProvider<IAccountHomeTabBloc> _buildAccountTab(
-      BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return DisposableProvider<IAccountHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
@@ -255,4 +139,172 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class _HomePageMessagesTabConversationWidget extends StatelessWidget {
+  const _HomePageMessagesTabConversationWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProvider<IConversationMessagesHomeTabBloc>(
+      create: (context) {
+        var homeBloc = IHomeBloc.of(context, listen: false);
+
+        var conversationMessagesHomeTabBloc = ConversationMessagesHomeTabBloc(
+            //              deviceHeight: MediaQuery.of(context).size.height,
+            );
+
+        conversationMessagesHomeTabBloc.addDisposable(streamSubscription:
+            homeBloc.reselectedTabStream.listen((reselectedTab) {
+          if (reselectedTab == HomeTab.messages) {
+            conversationMessagesHomeTabBloc.scrollToTop();
+          }
+        }));
+
+        return conversationMessagesHomeTabBloc;
+      },
+      child: ConversationMessagesHomeTabBlocProxyProvider(
+        child: const ConversationMessagesHomeTabPage(),
+      ),
+    );
+  }
+}
+
+class _HomePageMessagesTabChatWidget extends StatelessWidget {
+  const _HomePageMessagesTabChatWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProvider<IChatMessagesHomeTabBloc>(
+      create: (context) {
+        var homeBloc = IHomeBloc.of(context, listen: false);
+
+        var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc();
+
+        chatMessagesHomeTabBloc.addDisposable(streamSubscription:
+            homeBloc.reselectedTabStream.listen((reselectedTab) {
+          if (reselectedTab == HomeTab.messages) {
+            chatMessagesHomeTabBloc.scrollToTop();
+          }
+        }));
+
+        return chatMessagesHomeTabBloc;
+      },
+      child: ChatMessagesHomeTabBlocProxyProvider(
+        child: const ChatMessagesHomeTabPage(
+          key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
+        ),
+      ),
+    );
+  }
+}
+
+class _HomePageNotificationTabWidget extends StatelessWidget {
+  const _HomePageNotificationTabWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProvider<INotificationsHomeTabBloc>(
+      create: (context) {
+        var homeBloc = IHomeBloc.of(context, listen: false);
+
+        var notificationsHomeTabBloc = NotificationsHomeTabBloc(
+            //              deviceHeight: MediaQuery.of(context).size.height,
+            );
+
+        notificationsHomeTabBloc.addDisposable(streamSubscription:
+            homeBloc.reselectedTabStream.listen((reselectedTab) {
+          if (reselectedTab == HomeTab.notifications) {
+            notificationsHomeTabBloc.scrollToTop();
+          }
+        }));
+
+        return notificationsHomeTabBloc;
+      },
+      child: NotificationsHomeTabBlocProxyProvider(
+        child: NotificationsHomeTabPage(),
+      ),
+    );
+  }
+}
+
+class _HomePageMessagesTabWidget extends StatelessWidget {
+  const _HomePageMessagesTabWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+    return StreamBuilder<bool>(
+      stream:
+          myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
+      initialData:
+          myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
+      builder: (context, snapshot) {
+        var isNewChatsEnabled = snapshot.data;
+
+        if (isNewChatsEnabled == true) {
+          return const _HomePageMessagesTabChatWidget();
+        } else {
+          return const _HomePageMessagesTabConversationWidget();
+        }
+      },
+    );
+  }
+}
+
+class _HomePageTimelineTabWidget extends StatelessWidget {
+  const _HomePageTimelineTabWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProvider<ITimelinesHomeTabBloc>(
+      create: (context) {
+        var homeBloc = IHomeBloc.of(context, listen: false);
+        var timelinesHomeTabBloc = TimelinesHomeTabBloc();
+
+        _logger.finest(() => "create timelinesHomeTabBloc");
+
+        timelinesHomeTabBloc.addDisposable(streamSubscription:
+            homeBloc.reselectedTabStream.listen((reselectedTab) {
+          if (reselectedTab == HomeTab.timelines) {
+            timelinesHomeTabBloc.scrollToTop();
+          }
+        }));
+        return timelinesHomeTabBloc;
+      },
+      child: TimelinesHomeTabBlocProxyProvider(
+        child: const TimelinesHomeTabPage(),
+      ),
+    );
+  }
+}
+
+class _HomePageBottomNavBar extends StatelessWidget {
+  const _HomePageBottomNavBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: Container(
+          height: 58,
+          child: Column(
+            children: [
+              const FediUltraLightGreyDivider(),
+              const HomePageBottomNavigationBarWidget(),
+            ],
+          ),
+        ),
+      );
 }
