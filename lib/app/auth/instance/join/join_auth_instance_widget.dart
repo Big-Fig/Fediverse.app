@@ -297,10 +297,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S
+        titleCreator:(context) => S
             .of(context)
             .app_auth_instance_join_registrationDisabled_dialog_title,
-        contentText: S
+        contentCreator:(context) => S
             .of(context)
             .app_auth_instance_join_registrationDisabled_dialog_content,
       );
@@ -310,9 +310,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText:
+        titleCreator:(context) =>
             S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
-        contentText:
+        contentCreator:(context) =>
             S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
       );
 

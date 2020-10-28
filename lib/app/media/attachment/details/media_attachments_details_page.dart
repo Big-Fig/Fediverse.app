@@ -156,10 +156,10 @@ class _MediaAttachmentDetailsPageState
           return ErrorData(
             error: error,
             stackTrace: stackTrace,
-            titleText: S
+            titleCreator:(context) => S
                 .of(context)
                 .app_media_attachment_addToGallery_error_dialog_title,
-            contentText: S
+            contentCreator:(context) => S
                 .of(context)
                 .app_media_attachment_addToGallery_error_dialog_content,
           );

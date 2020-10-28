@@ -6,14 +6,14 @@ class AuthInstancePleromaRestErrorData extends ErrorData {
   AuthInstancePleromaRestErrorData({
     @required dynamic error,
     @required StackTrace stackTrace,
-    @required String titleText,
-    @required String contentText,
+    @required ErrorDataTitleCreator titleCreator,
+    @required ErrorDataContentCreator contentCreator,
   }) : super(
-          error: error,
-          stackTrace: stackTrace,
-          titleText: titleText,
-          contentText: contentText,
-        );
+    error: error,
+    stackTrace: stackTrace,
+    titleCreator: titleCreator,
+    contentCreator: contentCreator,
+  );
 
   static AuthInstancePleromaRestErrorData createFromContext({
     @required BuildContext context,
@@ -23,10 +23,12 @@ class AuthInstancePleromaRestErrorData extends ErrorData {
     return AuthInstancePleromaRestErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S.of(context).app_auth_instance_register_fail_dialog_title,
-        contentText:
-            S.of(context).app_auth_instance_register_fail_dialog_content(
-                  error.toString(),
-                ));
+        titleCreator:(context) => S
+            .of(context)
+            .app_auth_instance_register_fail_dialog_title,
+        contentCreator:(context) =>
+        S.of(context).app_auth_instance_register_fail_dialog_content(
+          error.toString(),
+        ));
   }
 }
