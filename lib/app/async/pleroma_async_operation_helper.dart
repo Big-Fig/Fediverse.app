@@ -72,8 +72,8 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S.of(context).app_async_pleroma_error_throttled_dialog_title,
-        contentText:
+        titleCreator: (context) => S.of(context).app_async_pleroma_error_throttled_dialog_title,
+        contentCreator: (context) =>
             S.of(context).app_async_pleroma_error_throttled_dialog_content,
       );
     } else {
@@ -90,10 +90,10 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S
+        titleCreator: (context) => S
             .of(context)
             .app_async_pleroma_error_invalidCredentials_dialog_title,
-        contentText: S
+        contentCreator: (context) => S
             .of(context)
             .app_async_pleroma_error_invalidCredentials_dialog_content,
       );
@@ -111,8 +111,8 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S.of(context).app_async_pleroma_error_common_dialog_title,
-        contentText:
+        titleCreator: (context) => S.of(context).app_async_pleroma_error_common_dialog_title,
+        contentCreator: (context) =>
             S.of(context).app_async_pleroma_error_common_dialog_content(
                   error.toString(),
                 ),

@@ -59,8 +59,8 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
     if (errorData == null && showDefaultErrorAlertDialogOnUnhandledError) {
       errorData = ErrorData(
-        titleText: S.of(context).dialog_error_title,
-        contentText: S.of(context).dialog_error_content(
+        titleCreator: (context) => S.of(context).dialog_error_title,
+        contentCreator: (context) => S.of(context).dialog_error_content(
               error.toString(),
             ),
         stackTrace: null,

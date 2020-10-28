@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 
 class AsyncOperationHelper {
@@ -35,8 +35,8 @@ class AsyncOperationHelper {
           if (showNotificationOnError) {
             showErrorFediNotificationOverlay(
               context: context,
-              titleText: errorData.titleText,
-              contentText: errorData.contentText,
+              titleText: errorData.titleCreator(context),
+              contentText: errorData.contentCreator(context),
             );
           }
         },
@@ -57,13 +57,16 @@ class AsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S.of(context).app_async_socket_error_dialog_title,
-        contentText: S.of(context).app_async_socket_error_dialog_content,
+        titleCreator: (context) =>
+            S.of(context).app_async_socket_error_dialog_title,
+        contentCreator: (context) =>
+            S.of(context).app_async_socket_error_dialog_content,
       );
     } else {
       return null;
     }
   }
+
   static ErrorData timeoutErrorAlertDialogBuilder(
     BuildContext context,
     dynamic error,
@@ -73,8 +76,8 @@ class AsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: S.of(context).app_async_timeout_error_dialog_title,
-        contentText: S.of(context).app_async_timeout_error_dialog_content,
+        titleCreator: (context) => S.of(context).app_async_timeout_error_dialog_title,
+        contentCreator: (context) => S.of(context).app_async_timeout_error_dialog_content,
       );
     } else {
       return null;

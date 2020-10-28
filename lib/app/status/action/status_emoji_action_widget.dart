@@ -56,9 +56,9 @@ class StatusEmojiActionWidget extends StatelessWidget {
                 ErrorData(
                   error: error,
                   stackTrace: stackTrace,
-                  titleText:
+                  titleCreator:(context) =>
                       S.of(context).app_status_emoji_error_cantAdd_dialog_title,
-                  contentText: S
+                  contentCreator:(context) => S
                       .of(context)
                       .app_status_emoji_error_cantAdd_dialog_content(
                         error.toString(),

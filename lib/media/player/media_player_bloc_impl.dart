@@ -78,28 +78,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   Future _actualInit() async {
     playerStateSubject.add(MediaPlayerState.initializing);
 
-    VideoPlayerController videoPlayerController;
-    var type = mediaPlayerSource.type;
-    switch (type) {
-      case MediaPlayerSourceType.asset:
-        videoPlayerController = VideoPlayerController.asset(
-          mediaPlayerSource.assetPath,
-          package: mediaPlayerSource.assetPackage,
-        );
-        break;
-      case MediaPlayerSourceType.file:
-        videoPlayerController = VideoPlayerController.file(
-          mediaPlayerSource.file,
-        );
-        break;
-      case MediaPlayerSourceType.network:
-        videoPlayerController = VideoPlayerController.network(
-          mediaPlayerSource.networkUrl,
-        );
-        break;
-      default:
-        throw "Not supported type $type";
-    }
+    VideoPlayerController videoPlayerController = createVideoPlayerController();
 
     var positionChangedLastDateTime = DateTime.now();
 
@@ -186,6 +165,44 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
       playerStateSubject.add(MediaPlayerState.error);
     }
+  }
+
+  VideoPlayerController createVideoPlayerController() {
+    VideoPlayerController videoPlayerController;
+    var type = mediaPlayerSource.type;
+
+    switch (type) {
+      case MediaPlayerSourceType.asset:
+        var assetPath = mediaPlayerSource.assetPath;
+        var assetPackage = mediaPlayerSource.assetPackage;
+        _logger.finest(() => "createVideoPlayerController asset\n"
+            "assetPath $assetPath\n"
+            "assetPackage $assetPackage");
+        videoPlayerController = VideoPlayerController.asset(
+          assetPath,
+          package: assetPackage,
+        );
+        break;
+      case MediaPlayerSourceType.file:
+        var file = mediaPlayerSource.file;
+        _logger.finest(() => "createVideoPlayerController asset\n"
+            "file $file\n");
+        videoPlayerController = VideoPlayerController.file(
+          file,
+        );
+        break;
+      case MediaPlayerSourceType.network:
+        var networkUrl = mediaPlayerSource.networkUrl;
+        _logger.finest(() => "createVideoPlayerController network\n"
+            "networkUrl $networkUrl\n");
+        videoPlayerController = VideoPlayerController.network(
+          networkUrl,
+        );
+        break;
+      default:
+        throw "Not supported type $type";
+    }
+    return videoPlayerController;
   }
 
   @override
