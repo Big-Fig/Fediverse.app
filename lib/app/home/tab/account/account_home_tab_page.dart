@@ -211,15 +211,7 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
             child: FediListTile(
               isFirstInList: true,
               child: MyAccountWidget(
-                onStatusesTapCallback: () {
-                  var scrollControllerBloc =
-                      IScrollControllerBloc.of(context, listen: false);
-                  scrollControllerBloc.scrollController.animateTo(
-                    MediaQuery.of(context).size.height / 2,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.easeOut,
-                  );
-                },
+                onStatusesTapCallback: _onStatusesTapCallback,
               ),
               // special hack to avoid 1px horizontal line on some devices
               oneSidePadding: FediSizes.bigPadding - 1,
@@ -230,6 +222,15 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+void _onStatusesTapCallback(BuildContext context) {
+  var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
+  scrollControllerBloc.scrollController.animateTo(
+    MediaQuery.of(context).size.height / 2,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeOut,
+  );
 }
 
 class _AccountHomeTabProviderWithRepliesTabProviderWidget

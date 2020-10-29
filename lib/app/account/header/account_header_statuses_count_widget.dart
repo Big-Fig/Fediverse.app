@@ -1,14 +1,17 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountHeaderStatusesCountWidget extends StatelessWidget {
   final Color color;
-  final VoidCallback onStatusesTapCallback;
+  final OnClickUiCallback onStatusesTapCallback;
 
-  AccountHeaderStatusesCountWidget(
-      {@required this.color, @required this.onStatusesTapCallback});
+  AccountHeaderStatusesCountWidget({
+    @required this.color,
+    @required this.onStatusesTapCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
             label: S.of(context).app_account_info_statuses,
             onPressed: () {
               if (onStatusesTapCallback != null) {
-                onStatusesTapCallback();
+                onStatusesTapCallback(context);
               }
             },
             color: color,

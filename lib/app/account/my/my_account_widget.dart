@@ -6,12 +6,13 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountWidget extends StatelessWidget {
-  final VoidCallback onStatusesTapCallback;
+  final OnClickUiCallback onStatusesTapCallback;
 
-  MyAccountWidget({this.onStatusesTapCallback});
+  const MyAccountWidget({this.onStatusesTapCallback});
 
   @override
   Widget build(BuildContext context) {
