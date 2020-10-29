@@ -17,6 +17,6 @@ class FediAsyncInitLoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) => AsyncInitLoadingWidget(
         asyncInitLoadingBloc: asyncInitLoadingBloc,
         loadingFinishedBuilder: loadingFinishedBuilder,
-        loadingWidget: FediCircularProgressIndicator(),
+        loadingWidget: const FediCircularProgressIndicator(),
       );
 }
