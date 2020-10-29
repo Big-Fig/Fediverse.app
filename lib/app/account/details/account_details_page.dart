@@ -81,15 +81,15 @@ class AccountDetailsPageBody extends StatelessWidget {
             height: _headerBackgroundHeight,
             child: const AccountHeaderBackgroundWidget(),
           ),
-          const AccountDetailsPageBodyContent(),
+          const _AccountDetailsPageBodyContent(),
         ],
       ),
     );
   }
 }
 
-class AccountDetailsPageBodyContent extends StatelessWidget {
-  const AccountDetailsPageBodyContent();
+class _AccountDetailsPageBodyContent extends StatelessWidget {
+  const _AccountDetailsPageBodyContent();
 
   @override
   Widget build(BuildContext context) {
@@ -117,88 +117,11 @@ class AccountDetailsPageBodyContent extends StatelessWidget {
             ],
             tabKeyPrefix: "AccountDetailsPage",
             tabBodyProviderBuilder:
-                (BuildContext context, int index, Widget child) => Builder(
-              builder: (context) {
-                var tab = _tabs[index];
-
-                var accountBloc = IAccountBloc.of(context, listen: false);
-
-                switch (tab) {
-                  case AccountStatusesTab.withReplies:
-                    return AccountStatusesWithRepliesCachedListBloc
-                        .provideToContext(
-                      context,
-                      account: accountBloc.account,
-                      child: StatusCachedPaginationBloc.provideToContext(
-                        context,
-                        child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(
-                          context,
-                          mergeNewItemsImmediately: true,
-                          child: child,
-                          mergeOwnStatusesImmediately: false,
-                        ),
-                      ),
-                    );
-                  case AccountStatusesTab.withoutReplies:
-                    return AccountStatusesWithoutRepliesListBloc
-                        .provideToContext(
-                      context,
-                      account: accountBloc.account,
-                      child: StatusCachedPaginationBloc.provideToContext(
-                        context,
-                        child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(
-                          context,
-                          mergeNewItemsImmediately: true,
-                          child: child,
-                          mergeOwnStatusesImmediately: false,
-                        ),
-                      ),
-                    );
-                    break;
-                  case AccountStatusesTab.media:
-                    return AccountStatusesMediaOnlyCachedListBloc
-                        .provideToContext(
-                      context,
-                      account: accountBloc.account,
-                      child: StatusCachedPaginationBloc.provideToContext(
-                        context,
-                        child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(
-                          context,
-                          mergeNewItemsImmediately: true,
-                          child: child,
-                          mergeOwnStatusesImmediately: false,
-                        ),
-                      ),
-                    );
-                    break;
-                  case AccountStatusesTab.pinned:
-                    return AccountStatusesPinnedOnlyNetworkOnlyListBloc
-                        .provideToContext(
-                      context,
-                      account: accountBloc.account,
-                      child: StatusNetworkOnlyPaginationBloc.provideToContext(
-                        context,
-                        child: DisposableProvider<
-                            IPaginationListBloc<PaginationPage<IStatus>,
-                                IStatus>>(
-                          create: (context) => PaginationListBloc<
-                              PaginationPage<IStatus>, IStatus>(
-                            paginationBloc: Provider.of<
-                                IPaginationBloc<PaginationPage<IStatus>,
-                                    IStatus>>(context, listen: false),
-                          ),
-                          child: child,
-                        ),
-                      ),
-                    );
-                    break;
-                  default:
-                    throw "Invalid tab $tab";
-                }
-              },
+                (BuildContext context, int index, Widget child) =>
+                    buildBodyProvider(
+              context: context,
+              tab: _tabs[index],
+              child: child,
             ),
             tabBodyContentBuilder: (BuildContext context, int index) =>
                 buildTabBodyContent(
@@ -213,6 +136,43 @@ class AccountDetailsPageBodyContent extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildBodyProvider({
+    @required BuildContext context,
+    @required AccountStatusesTab tab,
+    @required Widget child,
+  }) {
+    return Builder(
+      builder: (context) {
+        switch (tab) {
+          case AccountStatusesTab.withReplies:
+            return _AccountDetailsPageBodyTabWithRepliesProvider(
+              child: child,
+            );
+
+          case AccountStatusesTab.withoutReplies:
+            return _AccountDetailsPageBodyTabWithoutRepliesProvider(
+              child: child,
+            );
+
+            break;
+          case AccountStatusesTab.media:
+            return _AccountDetailsPageBodyTabMediaProvider(
+              child: child,
+            );
+            break;
+          case AccountStatusesTab.pinned:
+            return _AccountDetailsPageBodyTabPinnedProvider(
+              child: child,
+            );
+
+            break;
+          default:
+            throw "Invalid tab $tab";
+        }
+      },
     );
   }
 
@@ -260,6 +220,116 @@ class AccountDetailsPageBodyContent extends StatelessWidget {
   }
 }
 
+class _AccountDetailsPageBodyTabWithRepliesProvider extends StatelessWidget {
+  final Widget child;
+
+  const _AccountDetailsPageBodyTabWithRepliesProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesWithRepliesCachedListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountDetailsPageBodyTabWithoutRepliesProvider extends StatelessWidget {
+  final Widget child;
+
+  const _AccountDetailsPageBodyTabWithoutRepliesProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesWithoutRepliesListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountDetailsPageBodyTabMediaProvider extends StatelessWidget {
+  final Widget child;
+
+  const _AccountDetailsPageBodyTabMediaProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+
+    return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountDetailsPageBodyTabPinnedProvider extends StatelessWidget {
+  final Widget child;
+
+  const _AccountDetailsPageBodyTabPinnedProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusNetworkOnlyPaginationBloc.provideToContext(
+        context,
+        child: DisposableProvider<
+            IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+          create: (context) =>
+              PaginationListBloc<PaginationPage<IStatus>, IStatus>(
+            paginationBloc:
+                Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                    context,
+                    listen: false),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
   const _AccountDetailsNestedScrollViewHeader({
     Key key,
@@ -267,31 +337,32 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
-      child: ClipRRect(
-        borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-        child: Container(
-          color: IFediUiColorTheme.of(context).offWhite,
-          child: FediListTile(
-            isFirstInList: true,
-            child: AccountWidget(
-              onStatusesTapCallback: () {
-                var scrollControllerBloc =
-                    IScrollControllerBloc.of(context, listen: false);
-                scrollControllerBloc.scrollController.animateTo(
-                  MediaQuery.of(context).size.height / 2,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              },
-              footer: const _AccountDetailsPageTabIndicatorWidget(),
-            ),
-            // special hack to avoid 1px horizontal line on some devices
-            oneSidePadding: FediSizes.bigPadding - 1,
+        child: ClipRRect(
+          borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+          child: Container(
+            color: IFediUiColorTheme.of(context).offWhite,
+            child: const FediListTile(
+              isFirstInList: true,
+              child: AccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+                footer: _AccountDetailsPageTabIndicatorWidget(),
+              ),
+              // special hack to avoid 1px horizontal line on some devices
+              oneSidePadding: FediSizes.bigPadding - 1,
 //                    oneSidePadding: FediSizes.smallPadding - 1,
+            ),
           ),
         ),
-      ),
-    );
+      );
+}
+
+void _onStatusesTapCallback(BuildContext context) {
+  var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
+  scrollControllerBloc.scrollController.animateTo(
+    MediaQuery.of(context).size.height / 2,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeOut,
+  );
 }
 
 class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {

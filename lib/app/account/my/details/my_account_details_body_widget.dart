@@ -21,15 +21,7 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
         header: FediListTile(
           isFirstInList: true,
           child: MyAccountWidget(
-            onStatusesTapCallback: () {
-              var scrollControllerBloc =
-                  IScrollControllerBloc.of(context, listen: false);
-              scrollControllerBloc.scrollController.animateTo(
-                MediaQuery.of(context).size.height / 2,
-                duration: Duration(milliseconds: 500),
-                curve: Curves.easeOut,
-              );
-            },
+            onStatusesTapCallback: _onStatusesTapCallback,
           ),
         ),
         alwaysShowHeader: true,
@@ -37,4 +29,13 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
       );
 
   const MyAccountDetailsBodyWidget({this.scrollController});
+}
+
+void _onStatusesTapCallback(BuildContext context) {
+  var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
+  scrollControllerBloc.scrollController.animateTo(
+    MediaQuery.of(context).size.height / 2,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeOut,
+  );
 }
