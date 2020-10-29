@@ -41,11 +41,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m10(error) => "Response: ${error}";
 
-  static m11(count) => "${Intl.plural(count, one: 'new chat', other: '${count} new chats')}";
+  static m11(count) => "${Intl.plural(count, one: '1 new chat. Tap to load.', other: '${count} new chats. Tap to load.')}";
 
   static m12(message) => "You: ${message}";
 
-  static m13(count) => "${Intl.plural(count, one: 'new conversation', other: '${count} new conversations')}";
+  static m13(count) => "${Intl.plural(count, one: '1 new conversation. Tap to load.', other: '${count} new conversations. Tap to load.')}";
 
   static m14(message) => "You: ${message}";
 
@@ -69,7 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m24(status) => "Unknown: ${status}";
 
-  static m25(count) => "${Intl.plural(count, one: 'new notification', other: '${count} new notifications')}";
+  static m25(count) => "${Intl.plural(count, one: '1 new notification. Tap to load.', other: '${count} new notifications. Tap to load.')}";
 
   static m26(dayCount) => " ${dayCount} left";
 
@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m29(errorMessage) => "Error: ${errorMessage}";
 
-  static m30(count) => "${Intl.plural(count, one: 'new post', other: '${count} new posts')}";
+  static m30(count) => "${Intl.plural(count, one: '1 new post. Tap to load.', other: '${count} new posts. Tap to load.')}";
 
   static m31(errorMessage) => "Error: ${errorMessage}";
 
