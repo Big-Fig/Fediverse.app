@@ -10,4 +10,5 @@ class NotificationListTapToLoadOverlayWidget extends StatelessWidget {
             .app_notification_list_newItems_action_tapToLoadNew(
                 updateItemsCount),
       );
+  const NotificationListTapToLoadOverlayWidget();
 }

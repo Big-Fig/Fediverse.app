@@ -12,7 +12,7 @@ class FediLightStatusBarStyleArea extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-    if(fediUiColorTheme.brightness == Brightness.light) {
+    if (fediUiColorTheme.brightness == Brightness.light) {
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: fediUiColorTheme.transparent,
@@ -32,6 +32,5 @@ class FediLightStatusBarStyleArea extends StatelessWidget {
       //     ),
       //     child: child);
     }
-
   }
 }
