@@ -21,27 +21,42 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
-
-        title: S.of(context).app_timeline_storage_title,
-        actions: [
-          Padding(
-            padding: FediPadding.horizontalBigPadding,
-            child: FediIconButton(
-              icon: Icon(FediIcons.plus),
-              color: IFediUiColorTheme.of(context).darkGrey,
-              onPressed: () {
-                goToCreateItemTimelinesHomeTabStoragePage(context);
-              },
-            ),
-          )
-        ],
-      ),
+      appBar: const _TimelinesHomeTabStoragePagePageAppBar(),
       body: SafeArea(
-        child: TimelinesHomeTabStorageWidget(),
+        child: const TimelinesHomeTabStorageWidget(),
       ),
     );
   }
+}
+
+class _TimelinesHomeTabStoragePagePageAppBar extends StatelessWidget implements 
+    PreferredSizeWidget {
+  const _TimelinesHomeTabStoragePagePageAppBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediSubPageTitleAppBar(
+
+      title: S.of(context).app_timeline_storage_title,
+      actions: [
+        Padding(
+          padding: FediPadding.horizontalBigPadding,
+          child: FediIconButton(
+            icon: Icon(FediIcons.plus),
+            color: IFediUiColorTheme.of(context).darkGrey,
+            onPressed: () {
+              goToCreateItemTimelinesHomeTabStoragePage(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => FediSubPageTitleAppBar.calculatePreferredSize();
 }
 
 void goToTimelinesHomeTabStoragePage(BuildContext context) {

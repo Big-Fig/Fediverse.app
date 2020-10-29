@@ -22,6 +22,7 @@ abstract class ITimelinesHomeTabStorageBloc
   List<Timeline> get timelines;
 
   Stream<List<Timeline>> get timelinesStream;
+  Stream<List<Timeline>> get timelinesDistinctStream;
 
   Future onItemsUpdated(List<Timeline> timelines);
 
