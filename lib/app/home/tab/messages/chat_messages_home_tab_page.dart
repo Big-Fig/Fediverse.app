@@ -6,7 +6,6 @@ import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list
 import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list_container_bloc_impl.dart';
 import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -35,8 +34,62 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+    return Scaffold(
+      key: _drawerKey,
+      backgroundColor: fediUiColorTheme.transparent,
+      body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
+        onLongScrollUpTopOverlayWidget: null,
+        topSliverScrollOffsetToShowWhiteStatusBar: null,
+        topSliverWidgets: [
+          const _ChatMessagesHomeTabPageHeaderWidget(),
+        ],
+        providerBuilder: (context, child) => provideContentContext(child),
+        contentBuilder: (context) =>
+            const _ChatMessagesHomeTabPageContentWidget(),
+        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
+      ),
+    );
+  }
+
+  DisposableProvider<IChatWithLastMessageListContainerBloc>
+      provideContentContext(Widget child) {
+    return DisposableProvider<IChatWithLastMessageListContainerBloc>(
+      create: (context) =>
+          ChatWithLastMessageListContainerBloc.createFromContext(context),
+      child: Builder(builder: (context) {
+        var chatsListBloc =
+            IChatWithLastMessageListContainerBloc.of(context, listen: false);
+
+        return MultiProvider(
+          providers: [
+            Provider.value(value: chatsListBloc.chatListBloc),
+            Provider.value(value: chatsListBloc.chatPaginationBloc),
+            Provider.value(value: chatsListBloc.chatPaginationListBloc),
+            Provider.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+            Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+            Provider<IPaginationListBloc>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+          ],
+          child: child,
+        );
+      }),
+    );
+  }
+}
+
+class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
+  const _ChatMessagesHomeTabPageContentWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance;
     var isPleromaInstance = currentInstance.isPleromaInstance;
@@ -44,83 +97,18 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
     var isSupportChats = currentInstance.isSupportChats;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-
-    return Scaffold(
-      key: _drawerKey,
-      backgroundColor: fediUiColorTheme.transparent,
-      body: buildNestedScrollView(
-        context: context,
-        isPleromaInstance: isPleromaInstance,
-        isSupportChats: isSupportChats,
-      ),
-    );
-  }
-
-  Widget buildNestedScrollView({
-    @required BuildContext context,
-    @required bool isPleromaInstance,
-    @required bool isSupportChats,
-  }) {
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return FediNestedScrollViewWithoutNestedScrollableTabsWidget(
-      onLongScrollUpTopOverlayWidget: null,
-      topSliverScrollOffsetToShowWhiteStatusBar: null,
-      topSliverWidgets: [
-        FediTabMainHeaderBarWidget(
-          leadingWidgets: [
-            FediHeaderText(
-              S.of(context).app_home_tab_chats_title,
-            ),
-          ],
-          content: null,
-          endingWidgets: [
-            buildSwitchToDMsActionButton(context),
-            const FediBigHorizontalSpacer(),
-            if (isPleromaInstance && isSupportChats)
-              buildStartChatActionButton(context),
-          ],
-        ),
-      ],
-      providerBuilder: (context, child) =>
-          DisposableProvider<IChatWithLastMessageListContainerBloc>(
-        create: (context) =>
-            ChatWithLastMessageListContainerBloc.createFromContext(context),
-        child: Builder(builder: (context) {
-          var chatsListBloc =
-              IChatWithLastMessageListContainerBloc.of(context, listen: false);
-
-          return MultiProvider(
-            providers: [
-              Provider.value(value: chatsListBloc.chatListBloc),
-              Provider.value(value: chatsListBloc.chatPaginationBloc),
-              Provider.value(value: chatsListBloc.chatPaginationListBloc),
-              Provider.value(
-                  value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-              Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                  value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-              Provider<IPaginationListBloc>.value(
-                  value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-            ],
-            child: child,
-          );
-        }),
-      ),
-      contentBuilder: (context) {
-        return FediDarkStatusBarStyleArea(
-          child: ClipRRect(
-            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-            child: Container(
-              color: fediUiColorTheme.white,
-              child: buildBody(
-                context: context,
-                isPleromaInstance: isPleromaInstance,
-                isSupportChats: isSupportChats,
-              ),
-            ),
+    return FediDarkStatusBarStyleArea(
+      child: ClipRRect(
+        borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+        child: Container(
+          color: fediUiColorTheme.white,
+          child: buildBody(
+            context: context,
+            isPleromaInstance: isPleromaInstance,
+            isSupportChats: isSupportChats,
           ),
-        );
-      },
-      overlayBuilder: (context) => ChatListTapToLoadOverlayWidget(),
+        ),
+      ),
     );
   }
 
@@ -131,50 +119,67 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
   }) =>
       isPleromaInstance
           ? isSupportChats
-              ? buildPleromaBody()
-              : buildPleromaNotSupportedBody(context)
+          ? buildPleromaBody()
+          : buildPleromaNotSupportedBody(context)
           : buildMastodonBody(context);
 
-  FediBlurredTextButton buildSwitchToDMsActionButton(BuildContext context) {
-    return FediBlurredTextButton(
-      S.of(context).app_home_tab_chats_action_switch_to_dms,
-      onPressed: () {
-        IMyAccountSettingsBloc.of(context, listen: false)
-            .isNewChatsEnabledFieldBloc
-            .changeCurrentValue(false);
-      },
-    );
-  }
-
-  Widget buildStartChatActionButton(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.pen,
-        onPressed: () {
-          goToStartChatPage(context);
-        },
-      );
-
-  Widget buildSearchActionButton(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.search,
-        onPressed: () {
-          goToSearchPage(context);
-        },
-      );
-
-  Widget buildPleromaBody() => ChatWithLastMessageListWidget(
-        key: PageStorageKey("ChatWithLastMessageListWidget"),
-      );
+  Widget buildPleromaBody() => const ChatWithLastMessageListWidget(
+    key: PageStorageKey("ChatWithLastMessageListWidget"),
+  );
 
   Widget buildMastodonBody(BuildContext context) => Center(
-        child: Text(
-          S.of(context).app_home_tab_chats_notSupported_mastodon,
-        ),
-      );
+    child: Text(
+      S.of(context).app_home_tab_chats_notSupported_mastodon,
+    ),
+  );
 
   Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
-        child: Text(
-          S.of(context).app_home_tab_chats_notSupported_pleroma,
+    child: Text(
+      S.of(context).app_home_tab_chats_notSupported_pleroma,
+    ),
+  );
+}
+
+
+class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
+  const _ChatMessagesHomeTabPageHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentAuthInstanceBloc =
+        ICurrentAuthInstanceBloc.of(context);
+
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var isPleromaInstance = currentInstance.isPleromaInstance;
+
+    var isSupportChats = currentInstance.isSupportChats;
+    return FediTabMainHeaderBarWidget(
+      leadingWidgets: [
+        FediHeaderText(
+          S.of(context).app_home_tab_chats_title,
         ),
-      );
+      ],
+      content: null,
+      endingWidgets: [
+        FediBlurredTextButton(
+          S.of(context).app_home_tab_chats_action_switch_to_dms,
+          onPressed: () {
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .isNewChatsEnabledFieldBloc
+                .changeCurrentValue(false);
+          },
+        ),
+        const FediBigHorizontalSpacer(),
+        if (isPleromaInstance && isSupportChats)
+          FediIconInCircleBlurredButton(
+            FediIcons.pen,
+            onPressed: () {
+              goToStartChatPage(context);
+            },
+          ),
+      ],
+    );
+  }
 }

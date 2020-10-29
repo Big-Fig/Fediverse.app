@@ -5,7 +5,6 @@ import 'package:fedi/app/conversation/list/conversation_list_tap_to_load_overlay
 import 'package:fedi/app/conversation/list/conversation_list_widget.dart';
 import 'package:fedi/app/conversation/start/start_conversation_page.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -39,69 +38,90 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
     return Scaffold(
       key: _drawerKey,
       backgroundColor: fediUiColorTheme.transparent,
-      body: buildNestedScrollView(context),
+      body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
+        onLongScrollUpTopOverlayWidget: null,
+        topSliverScrollOffsetToShowWhiteStatusBar: null,
+        topSliverWidgets: [
+          const _ConversationMessagesHomeTabPageHeaderWidget(),
+        ],
+        providerBuilder: (context, child) => provideContentContext(child),
+        contentBuilder: (context) =>
+            const _ConversationMessagesHomeTabPageContentWidget(),
+        overlayBuilder: (context) => ConversationListTapToLoadOverlayWidget(),
+      ),
     );
   }
 
-  Widget buildNestedScrollView(BuildContext context) {
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return FediNestedScrollViewWithoutNestedScrollableTabsWidget(
-      onLongScrollUpTopOverlayWidget: null,
-      topSliverScrollOffsetToShowWhiteStatusBar: null,
-      topSliverWidgets: [
-        FediTabMainHeaderBarWidget(
-          leadingWidgets: [
-            FediHeaderText(
-              S.of(context).app_home_tab_conversations_title,
-            )
-          ],
-          content: null,
-          endingWidgets: [
-            buildSwitchToChatsActionButton(context),
-            const FediBigHorizontalSpacer(),
-            buildStartConversationActionButton(context)
-          ],
-        ),
-      ],
-      providerBuilder: (context, child) =>
-          DisposableProvider<IConversationsListBloc>(
-        create: (context) => ConversationsListBloc.createFromContext(context),
-        child: Builder(builder: (context) {
-          var conversationsListBloc =
-              IConversationsListBloc.of(context, listen: false);
+  DisposableProvider<IConversationsListBloc> provideContentContext(
+      Widget child) {
+    return DisposableProvider<IConversationsListBloc>(
+      create: (context) => ConversationsListBloc.createFromContext(context),
+      child: Builder(builder: (context) {
+        var conversationsListBloc =
+            IConversationsListBloc.of(context, listen: false);
 
-          return MultiProvider(
-            providers: [
-              Provider.value(
-                  value: conversationsListBloc.conversationListService),
-              Provider.value(
-                  value: conversationsListBloc.conversationPaginationBloc),
-              Provider.value(
-                  value: conversationsListBloc.conversationPaginationListBloc),
-              Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                  value: conversationsListBloc
-                      .conversationPaginationListWithNewItemsBloc),
-              Provider<IPaginationListBloc>.value(
-                  value: conversationsListBloc.conversationPaginationListBloc),
-            ],
-            child: child,
-          );
-        }),
-      ),
-      contentBuilder: (context) {
-        return FediDarkStatusBarStyleArea(
-          child: ClipRRect(
-            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-            child: Container(
-              color: fediUiColorTheme.white,
-              child: ConversationListWidget(
-                key: PageStorageKey("ConversationsListWidget"),
-              ),
-            ),
-          ),
+        return MultiProvider(
+          providers: [
+            Provider.value(
+                value: conversationsListBloc.conversationListService),
+            Provider.value(
+                value: conversationsListBloc.conversationPaginationBloc),
+            Provider.value(
+                value: conversationsListBloc.conversationPaginationListBloc),
+            Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                value: conversationsListBloc
+                    .conversationPaginationListWithNewItemsBloc),
+            Provider<IPaginationListBloc>.value(
+                value: conversationsListBloc.conversationPaginationListBloc),
+          ],
+          child: child,
         );
-      },
-      overlayBuilder: (context) => ConversationListTapToLoadOverlayWidget(),
+      }),
+    );
+  }
+}
+
+class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
+  const _ConversationMessagesHomeTabPageContentWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return FediDarkStatusBarStyleArea(
+      child: ClipRRect(
+        borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+        child: Container(
+          color: fediUiColorTheme.white,
+          child: const ConversationListWidget(
+            key: PageStorageKey("ConversationsListWidget"),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
+  const _ConversationMessagesHomeTabPageHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediTabMainHeaderBarWidget(
+      leadingWidgets: [
+        FediHeaderText(
+          S.of(context).app_home_tab_conversations_title,
+        )
+      ],
+      content: null,
+      endingWidgets: [
+        buildSwitchToChatsActionButton(context),
+        const FediBigHorizontalSpacer(),
+        buildStartConversationActionButton(context)
+      ],
     );
   }
 
@@ -120,14 +140,6 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
         FediIcons.pen,
         onPressed: () {
           goToStartConversationPage(context);
-        },
-      );
-
-  Widget buildSearchActionButton(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.search,
-        onPressed: () {
-          goToSearchPage(context);
         },
       );
 }
