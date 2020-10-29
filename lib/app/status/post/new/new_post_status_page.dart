@@ -76,6 +76,8 @@ class NewPostStatusPage extends StatelessWidget {
       ),
     );
   }
+
+  const NewPostStatusPage();
 }
 
 class _NewPostStatusPageBodyWidget extends StatelessWidget {
@@ -84,13 +86,13 @@ class _NewPostStatusPageBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SafeArea(
+  Widget build(BuildContext context) => const SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,
               child: UnfocusOnScrollAreaWidget(
-                child: const _NewPostStatusPageComposeWidget(),
+                child: _NewPostStatusPageComposeWidget(),
               ),
             ),
           ],
@@ -104,17 +106,15 @@ class _NewPostStatusPageComposeWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return PostStatusComposeWidget(
-      autofocus: true,
-      goBackOnSuccess: true,
-      expanded: true,
-      maxLines: null,
-      displayAccountAvatar: false,
-      showPostAction: true,
-      displaySubjectField: true,
-    );
-  }
+  Widget build(BuildContext context) => const PostStatusComposeWidget(
+        autofocus: true,
+        goBackOnSuccess: true,
+        expanded: true,
+        maxLines: null,
+        displayAccountAvatar: false,
+        showPostAction: true,
+        displaySubjectField: true,
+      );
 }
 
 class NewPostStatusPageAppBar extends StatelessWidget
@@ -146,7 +146,7 @@ void goToNewPostStatusPage(BuildContext context) {
     MaterialPageRoute(
       builder: (context) => NewPostStatusBloc.provideToContext(
         context,
-        child: NewPostStatusPage(),
+        child: const NewPostStatusPage(),
       ),
     ),
   );

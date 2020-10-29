@@ -68,7 +68,7 @@ class PostStatusComposeWidget extends StatelessWidget {
               highlightMentions: true,
               maxLength: null,
             ),
-            FediUltraLightGreyDivider(),
+            const FediUltraLightGreyDivider(),
           ],
           displayAccountAvatar
               ? Row(
