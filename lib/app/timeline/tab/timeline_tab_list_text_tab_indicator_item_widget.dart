@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
-  TimelineTabListTextTabIndicatorItemWidget();
+  const TimelineTabListTextTabIndicatorItemWidget();
 
   @override
   Widget build(BuildContext context) {
