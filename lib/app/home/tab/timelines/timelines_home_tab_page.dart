@@ -115,7 +115,6 @@ class _TimelinesHomeTabPageBlocsListProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<TimelineTabBlocsList>(
         stream: ITimelineTabListBloc.of(context, listen: false)
             .timelineTabBlocsListStream,
@@ -227,9 +226,9 @@ class _TimelinesHomeTabPageBodyHeaderSecondRowWidget extends StatelessWidget {
           borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
           child: Container(
             color: IFediUiColorTheme.of(context).offWhite,
-            child: FediListTile(
+            child: const FediListTile(
               isFirstInList: true,
-              child: const TimelinesHomeTabPostStatusHeaderWidget(),
+              child: TimelinesHomeTabPostStatusHeaderWidget(),
               // special hack to avoid 1px horizontal line on some devices
               oneSidePadding: FediSizes.smallPadding - 1,
             ),
@@ -255,13 +254,27 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
             padding: FediPadding.horizontalSmallPadding,
             child: Row(
               children: [
-                Expanded(child: buildSearchActionButton(context)),
+                Expanded(
+                  child: FediTransparentIconTextButton(
+                    S.of(context).app_search_title,
+                    FediIcons.search,
+                    onPressed: () {
+                      goToSearchPage(context);
+                    },
+                    height: FediSizes.iconInCircleDefaultSize,
+                  ),
+                ),
                 FediBigHorizontalSpacer(),
-                buildFilterActionButton(context)
+                FediIconInCircleBlurredButton(
+                  FediIcons.filter,
+                  onPressed: () {
+                    goToTimelinesHomeTabStoragePage(context);
+                  },
+                ),
               ],
             ),
           ),
-          FediBigVerticalSpacer(),
+          const FediBigVerticalSpacer(),
           Row(
             children: [
               Expanded(
@@ -269,7 +282,12 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
               ),
               Padding(
                 padding: FediPadding.horizontalSmallPadding,
-                child: buildAddTimelineActionButton(context),
+                child: FediIconInCircleBlurredButton(
+                  FediIcons.plus,
+                  onPressed: () {
+                    goToCreateItemTimelinesHomeTabStoragePage(context);
+                  },
+                ),
               ),
             ],
           ),
@@ -278,34 +296,6 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
       endingWidgets: null,
     );
   }
-
-  Widget buildFilterActionButton(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.filter,
-      onPressed: () {
-        goToTimelinesHomeTabStoragePage(context);
-      },
-    );
-  }
-
-  Widget buildAddTimelineActionButton(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.plus,
-      onPressed: () {
-        goToCreateItemTimelinesHomeTabStoragePage(context);
-      },
-    );
-  }
-
-  Widget buildSearchActionButton(BuildContext context) =>
-      FediTransparentIconTextButton(
-        S.of(context).app_search_title,
-        FediIcons.search,
-        onPressed: () {
-          goToSearchPage(context);
-        },
-        height: FediSizes.iconInCircleDefaultSize,
-      );
 
   Widget _buildTabIndicatorWidget(
     BuildContext context,
@@ -316,7 +306,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
     }
     return Padding(
       padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-      child: TimelineTabListTextTabIndicatorItemWidget(),
+      child: const TimelineTabListTextTabIndicatorItemWidget(),
     );
   }
 }

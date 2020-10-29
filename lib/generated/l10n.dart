@@ -1788,12 +1788,12 @@ class S {
     );
   }
 
-  /// `{count,plural, =1{new chat} other{{count} new chats}}. Tap to load.`
+  /// `{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}`
   String app_chat_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
-      one: 'new chat',
-      other: '$count new chats',
+      one: '1 new chat. Tap to load.',
+      other: '$count new chats. Tap to load.',
       name: 'app_chat_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
@@ -1890,12 +1890,12 @@ class S {
     );
   }
 
-  /// `{count,plural, =1{new conversation} other{{count} new conversations}}. Tap to load.`
+  /// `{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}`
   String app_conversation_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
-      one: 'new conversation',
-      other: '$count new conversations',
+      one: '1 new conversation. Tap to load.',
+      other: '$count new conversations. Tap to load.',
       name: 'app_conversation_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
@@ -2072,12 +2072,12 @@ class S {
     );
   }
 
-  /// `{count,plural, =1{new notification} other{{count} new notifications}}. Tap to load.`
+  /// `{count,plural, =1{1 new notification. Tap to load.} other{{count} new notifications. Tap to load.}}`
   String app_notification_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
-      one: 'new notification',
-      other: '$count new notifications',
+      one: '1 new notification. Tap to load.',
+      other: '$count new notifications. Tap to load.',
       name: 'app_notification_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
@@ -3144,12 +3144,12 @@ class S {
     );
   }
 
-  /// `{count,plural, =1{new post} other{{count} new posts}}. Tap to load.`
+  /// `{count,plural, =1{1 new post. Tap to load.} other{{count} new posts. Tap to load.}}`
   String app_status_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
-      one: 'new post',
-      other: '$count new posts',
+      one: '1 new post. Tap to load.',
+      other: '$count new posts. Tap to load.',
       name: 'app_status_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
