@@ -31,9 +31,11 @@ import 'package:logging/logging.dart';
 var _logger = Logger("notification_list_item_widget.dart");
 
 class NotificationListItemWidget extends StatelessWidget {
+  const NotificationListItemWidget();
+
   @override
   Widget build(BuildContext context) {
-    var notificationBloc = INotificationBloc.of(context, listen: true);
+    var notificationBloc = INotificationBloc.of(context);
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
