@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 abstract class NotificationPaginationListBaseWidget
     extends FediPaginationListWidget<INotification> {
-  NotificationPaginationListBaseWidget({
+  const NotificationPaginationListBaseWidget({
     @required Key key,
     Widget header,
     Widget footer,
