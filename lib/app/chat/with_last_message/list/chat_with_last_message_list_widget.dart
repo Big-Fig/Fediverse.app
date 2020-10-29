@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class ChatWithLastMessageListWidget
     extends FediPaginationListWidget<IChatWithLastMessage> {
-  ChatWithLastMessageListWidget({
+  const ChatWithLastMessageListWidget({
     @required Key key,
     Widget header,
     Widget footer,

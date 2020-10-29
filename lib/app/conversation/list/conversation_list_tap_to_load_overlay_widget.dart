@@ -3,6 +3,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConversationListTapToLoadOverlayWidget extends StatelessWidget {
+  const ConversationListTapToLoadOverlayWidget();
+
   @override
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(
         textBuilder: (context, updateItemsCount) => S

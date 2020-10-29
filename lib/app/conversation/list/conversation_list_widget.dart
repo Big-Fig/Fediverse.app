@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 
 class ConversationListWidget extends FediPaginationListWidget<IConversation> {
-  ConversationListWidget({
+  const ConversationListWidget({
     @required Key key,
     Widget header,
     Widget footer,
