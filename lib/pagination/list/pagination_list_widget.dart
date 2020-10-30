@@ -1,11 +1,12 @@
 import 'package:fedi/app/pagination/fedi_pagination_list_loading_error_notification_overlay_builder_widget.dart';
-import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
+import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/src/smart_refresher.dart';
 
 var _logger = Logger("pagination_list_dart");
@@ -83,8 +84,10 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
     return Stack(
       children: [
-        FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(
-          paginationListBloc,
+        Provider<IPaginationListBloc>.value(
+          value: paginationListBloc,
+          child:
+              const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(),
         ),
         buildPaginationListBody(
           paginationListBloc,
@@ -95,7 +98,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   Widget buildPaginationListBody(
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
-    return FediAsyncInitLoadingWidget(
+    return AsyncInitLoadingWidget(
       asyncInitLoadingBloc: paginationListBloc,
       loadingFinishedBuilder: (BuildContext context) {
         _logger.finest(() => "build AsyncInitLoadingWidget stream");
@@ -112,8 +115,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // If child is StreamBuilder SmartRefresher builds all items widget
     // instead visible only
     return StreamBuilder<List<T>>(
-        stream: paginationListBloc.itemsStream,
-        initialData: paginationListBloc.items,
+        stream: paginationListBloc.itemsDistinctStream,
         builder: (context, snapshot) {
           var items = snapshot.data;
 

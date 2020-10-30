@@ -10,12 +10,9 @@ DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 
 final Duration _throttleDuration = Duration(seconds: 2);
 
-class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
+class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget<T>
     extends StatefulWidget {
-  final IPaginationListBloc paginationListBloc;
-
-  FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(
-      this.paginationListBloc);
+  const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget();
 
   @override
   _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
@@ -32,8 +29,10 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    disposable.addDisposable(streamSubscription: widget
-        .paginationListBloc.refreshErrorStream
+    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
+
+    disposable.addDisposable(streamSubscription: paginationListBloc
+        .refreshErrorStream
         .listen((paginationListLoadingError) {
       var now = DateTime.now();
       var difference = now.difference(_lastRefreshErrorShowedDateTime);
@@ -46,8 +45,8 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
         );
       }
     }));
-    disposable.addDisposable(streamSubscription: widget
-        .paginationListBloc.loadMoreErrorStream
+    disposable.addDisposable(streamSubscription: paginationListBloc
+        .loadMoreErrorStream
         .listen((paginationListLoadingError) {
       var now = DateTime.now();
       var difference = now.difference(_lastLoadMoreErrorShowedDateTime);

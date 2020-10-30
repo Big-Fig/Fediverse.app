@@ -132,15 +132,13 @@ class _NotificationsHomeTabPageBodyState
           ),
           tabBodyOverlayBuilder: (BuildContext context, int index) =>
               const NotificationListTapToLoadOverlayWidget(),
-          tabBarViewContainerBuilder: (BuildContext context, Widget child) {
-            return ClipRRect(
+          tabBarViewContainerBuilder: (BuildContext context, Widget child) => ClipRRect(
               borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
               child: Container(
                 color: IFediUiColorTheme.of(context).white,
                 child: child,
               ),
-            );
-          },
+            ),
         ),
       ),
     );
