@@ -5,11 +5,9 @@ import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShareStatusWithMessageWidget extends StatelessWidget {
-  final IStatus status;
   final Widget footer;
 
-  ShareStatusWithMessageWidget({
-    @required this.status,
+  const ShareStatusWithMessageWidget({
     @required this.footer,
   });
 

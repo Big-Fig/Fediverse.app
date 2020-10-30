@@ -21,7 +21,7 @@ var _logger = Logger("status_cached_pagination_list_media_widget.dart");
 
 class StatusCachedPaginationListMediaWidget
     extends StatusCachedPaginationListBaseWidget {
-  StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);
+  const StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
@@ -34,11 +34,12 @@ class StatusCachedPaginationListMediaWidget
     return timelinePaginationListBloc;
   }
 
-  static ScrollView buildStaggeredMediaGridView(
-      {@required BuildContext context,
-      @required List<IStatus> items,
-      @required Widget header,
-      @required Widget footer}) {
+  static ScrollView buildStaggeredMediaGridView({
+    @required BuildContext context,
+    @required List<IStatus> items,
+    @required Widget header,
+    @required Widget footer,
+  }) {
     _logger.finest(() => "buildStaggeredGridView ${items?.length}");
 
     // all statuses should be already with media attachments
@@ -109,8 +110,9 @@ class StatusCachedPaginationListMediaWidget
                       padding: FediPadding.allSmallPadding,
                       child: Center(
                         child: Provider<IPleromaMediaAttachment>.value(
-                            value: statusWithMediaAttachment.mediaAttachment,
-                            child: StatusListItemMediaWidget()),
+                          value: statusWithMediaAttachment.mediaAttachment,
+                          child: const StatusListItemMediaWidget(),
+                        ),
                       ),
                     ),
                   )),

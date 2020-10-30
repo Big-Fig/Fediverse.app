@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger("status_list_item_media_widget.dart");
 
 class StatusListItemMediaWidget extends StatelessWidget {
-  StatusListItemMediaWidget() : super();
+  const StatusListItemMediaWidget() : super();
 
   Container mediaAttachmentPreviewUrlWidget(
       String previewUrl, BuildContext context) {
@@ -45,37 +45,44 @@ class StatusListItemMediaWidget extends StatelessWidget {
 
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
+
+    var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
+    var body = buildBody(
+      child: child,
+      statusBloc: statusBloc,
+    );
     return StreamBuilder<bool>(
         stream: statusBloc.deletedStream.distinct(),
-        initialData: statusBloc.deleted,
         builder: (context, snapshot) {
-          var deleted = snapshot.data;
+          var deleted = snapshot.data ?? false;
 
           if (deleted == true) {
             return StatusDeletedOverlayWidget(
-              child: buildBody(
-                statusBloc,
-                previewUrl,
-              ),
+              child: body,
             );
           } else {
-            return buildBody(statusBloc, previewUrl);
+            return body;
           }
         });
   }
 
-  Widget buildBody(IStatusBloc statusBloc, String previewUrl) {
+  Widget buildBody({
+    @required Widget child,
+    @required IStatusBloc statusBloc,
+  }) {
     return StreamBuilder<StatusWarningState>(
         stream: statusBloc.statusWarningStateStream.distinct(),
-        initialData: statusBloc.statusWarningState,
         builder: (context, snapshot) {
           var statusWarningState = snapshot.data;
+
+          if (statusWarningState == null) {
+            return child;
+          }
 
           var nsfwSensitiveAndDisplayNsfwContentEnabled =
               statusWarningState.nsfwSensitive != true ||
                   statusWarningState.displayNsfwSensitive == true;
 
-          var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
           if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
             // todo: display all medias in list
             return child;

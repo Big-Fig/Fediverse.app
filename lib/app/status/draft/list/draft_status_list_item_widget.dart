@@ -27,7 +27,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         buildDraftHeader(context, draftStatusBloc),
-        FediUltraLightGreyDivider(),
+        const FediUltraLightGreyDivider(),
         StreamBuilder<IDraftStatus>(
             stream: draftStatusBloc.draftStatusStream,
             initialData: draftStatusBloc.draftStatus,
@@ -41,17 +41,15 @@ class DraftStatusListItemWidget extends StatelessWidget {
                             draftStatus: value,
                             account: IMyAccountBloc.of(context, listen: false)
                                 .account),
-                    child: StatusListItemTimelineWidget.list(
+                    child: const StatusListItemTimelineWidget.list(
                       displayActions: false,
-                      statusCallback: (_, __) {
-                        // nothing
-                      },
+                      statusCallback: null,
                       collapsible: false,
                       initialMediaAttachment: null,
                     )),
               );
             }),
-        FediSmallVerticalSpacer(),
+        const FediSmallVerticalSpacer(),
       ],
     );
   }

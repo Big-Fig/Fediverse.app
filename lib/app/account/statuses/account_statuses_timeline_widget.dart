@@ -39,14 +39,15 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
                 value: items[index],
                 child: FediListTile(
                   isFirstInList: index == 0 && alwaysShowHeader != true,
-                  child: StatusListItemTimelineWidget.list(
+                  child: const StatusListItemTimelineWidget.list(
                     collapsible: true,
-                    statusCallback: (BuildContext context, IStatus status) {
-                      goToStatusThreadPage(context,
-                          status: status, initialMediaAttachment: null);
-                    },
+                    statusCallback: _onStatusClick,
                     initialMediaAttachment: null,
                   ),
                 ),
               ));
+}
+
+void _onStatusClick(BuildContext context, IStatus status) {
+  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
 }
