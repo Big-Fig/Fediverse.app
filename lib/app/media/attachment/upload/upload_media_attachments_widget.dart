@@ -9,7 +9,7 @@ class UploadMediaAttachmentsWidget extends StatelessWidget {
 
   final double heightOnKeyboardOpen;
 
-  UploadMediaAttachmentsWidget({
+  const UploadMediaAttachmentsWidget({
     @required this.scrollable,
     @required this.heightOnKeyboardOpen,
   });
@@ -20,8 +20,8 @@ class UploadMediaAttachmentsWidget extends StatelessWidget {
       //    return  ListView(
 //        shrinkWrap: true,
       children: [
-        UploadMediaAttachmentsMediaListWidget(),
-        UploadMediaAttachmentsNonMediaListWidget(),
+        const UploadMediaAttachmentsMediaListWidget(),
+        const UploadMediaAttachmentsNonMediaListWidget(),
       ],
     );
     Widget child;

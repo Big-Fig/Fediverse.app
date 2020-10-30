@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostMessageEmojiActionWidget extends StatelessWidget {
+  const PostMessageEmojiActionWidget();
+
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
@@ -29,4 +31,6 @@ class PostMessageEmojiActionWidget extends StatelessWidget {
           );
         });
   }
+
+
 }

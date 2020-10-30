@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusMentionActionWidget extends StatelessWidget {
+  const PostStatusMentionActionWidget();
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -31,4 +32,6 @@ class PostStatusMentionActionWidget extends StatelessWidget {
       },
     );
   }
+
+
 }

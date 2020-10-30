@@ -8,18 +8,18 @@ import 'package:flutter/widgets.dart';
 
 class PostStatusWidget extends PostMessageWidget {
 
-  PostStatusWidget({
+  const PostStatusWidget({
     @required String hintText,
   }): super(hintText: hintText);
 
   @override
   List<Widget> buildActions() {
     return [
-      PostMessageAttachActionWidget(),
-      PostMessageEmojiActionWidget(),
-      PostStatusMentionActionWidget(),
-      PostStatusVisibilityActionWidget(),
-      PostStatusNsfwActionWidget(),
+      const PostMessageAttachActionWidget(),
+      const PostMessageEmojiActionWidget(),
+      const PostStatusMentionActionWidget(),
+      const PostStatusVisibilityActionWidget(),
+      const PostStatusNsfwActionWidget(),
     ];
   }
 }

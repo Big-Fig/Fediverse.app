@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/widgets.dart';
 
 class PostMessageSelectedActionWidget extends StatelessWidget {
-  PostMessageSelectedActionWidget();
+  const PostMessageSelectedActionWidget();
 
   @override
   Widget build(BuildContext context) {
