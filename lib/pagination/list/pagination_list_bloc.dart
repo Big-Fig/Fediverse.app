@@ -20,6 +20,7 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   List<TItem> get items;
 
   Stream<List<TItem>> get itemsStream;
+  Stream<List<TItem>> get itemsDistinctStream;
 
   Future<PaginationListLoadingState> refreshWithoutController();
 
