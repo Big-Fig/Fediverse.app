@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusScheduleActionWidget extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -32,4 +33,6 @@ class PostStatusScheduleActionWidget extends StatelessWidget {
           );
         });
   }
+
+  const PostStatusScheduleActionWidget();
 }

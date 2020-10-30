@@ -52,4 +52,6 @@ class PostStatusPollActionWidget extends StatelessWidget {
               });
         });
   }
+
+  const PostStatusPollActionWidget();
 }

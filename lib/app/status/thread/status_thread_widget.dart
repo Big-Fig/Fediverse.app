@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
@@ -15,6 +14,7 @@ import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,10 +62,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
-    var postMessageWidget = PostStatusWidget(
-      hintText: S.of(context).app_status_thread_post_hint(
-          statusThreadBloc.initialStatusToFetchThread.account.acct),
-    );
+    var postMessageWidget = const _StatusThreadPostStatusWidget();
 
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
@@ -249,5 +246,21 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         duration: Duration(milliseconds: 1000),
       );
     }
+  }
+}
+
+class _StatusThreadPostStatusWidget extends StatelessWidget {
+  const _StatusThreadPostStatusWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusThreadBloc = IStatusThreadBloc.of(context);
+    return PostStatusWidget(
+      hintText: S.of(context).app_status_thread_post_hint(
+            statusThreadBloc.initialStatusToFetchThread.account.acct,
+          ),
+    );
   }
 }

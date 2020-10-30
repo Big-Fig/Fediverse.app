@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
@@ -18,6 +17,7 @@ import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -44,45 +44,21 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     return Padding(
-      padding: FediPadding.allSmallPadding, //child: ListView(
-//  shrinkWrap: true,
+      padding: FediPadding.allSmallPadding,
       child: Column(
         mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
           if (displaySubjectField) ...[
-            FediTransparentEditTextField(
-              textEditingController: postStatusBloc.subjectTextController,
-              focusNode: postStatusBloc.subjectFocusNode,
-              hintText: S.of(context).app_status_post_field_subject,
-              expanded: false,
-              autofocus: false,
-              maxLines: 1,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (String value) async {
-                postStatusBloc.subjectFocusNode.requestFocus();
-                postStatusBloc.inputFocusNode.requestFocus();
-              },
-              errorText: null,
-              highlightMentions: true,
-              maxLength: null,
-            ),
+            const _PostStatusComposeSubjectFieldWidget(),
             const FediUltraLightGreyDivider(),
           ],
           displayAccountAvatar
-              ? Row(
-                  children: <Widget>[
-                    buildAvatar(),
-                    Flexible(
-                      child: PostStatusComposeInputWidget(
-                        autofocus: autofocus,
-                        expanded: expanded,
-                        hintText: hintText,
-                        maxLines: maxLines,
-                      ),
-                    )
-                  ],
+              ? _PostStatusComposeInputWithAvatarWidget(
+                  autofocus: autofocus,
+                  expanded: expanded,
+                  hintText: hintText,
+                  maxLines: maxLines,
                 )
               : Expanded(
                   child: PostStatusComposeInputWidget(
@@ -94,20 +70,42 @@ class PostStatusComposeWidget extends StatelessWidget {
                 ),
 //          const FediBigVerticalSpacer(),
 
-          UploadMediaAttachmentsWidget(
+          const UploadMediaAttachmentsWidget(
             scrollable: false,
             heightOnKeyboardOpen: null,
           ),
-          if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
-          buildActions(context),
-          PostMessageSelectedActionWidget()
+          if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
+          _buildActions(showPostAction),
+          const PostMessageSelectedActionWidget()
         ],
       ),
     );
   }
 
-  Widget buildActions(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+  Widget _buildActions(bool showPostAction) {
+    if (showPostAction) {
+      return const _PostStatusComposeActionsWidget(
+        showPostAction: true,
+      );
+    } else {
+      return const _PostStatusComposeActionsWidget(
+        showPostAction: false,
+      );
+    }
+  }
+}
+
+class _PostStatusComposeActionsWidget extends StatelessWidget {
+  const _PostStatusComposeActionsWidget({
+    Key key,
+    @required this.showPostAction,
+  }) : super(key: key);
+
+  final bool showPostAction;
+
+  @override
+  Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context);
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: Row(
@@ -124,27 +122,26 @@ class PostStatusComposeWidget extends StatelessWidget {
                   children: [
                     StreamBuilder<String>(
                         stream: postMessageBloc.inputTextStream,
-                        initialData: postMessageBloc.inputText,
                         builder: (context, snapshot) {
                           var inputText = snapshot.data;
                           if (inputText?.trim()?.isNotEmpty == true) {
-                            return PostMessageEmojiActionWidget();
+                            return const PostMessageEmojiActionWidget();
                           } else {
-                            return PostMessageAttachActionWidget();
+                            return const PostMessageAttachActionWidget();
                           }
                         }),
-                    PostStatusVisibilityActionWidget(),
-                    PostStatusScheduleActionWidget(),
-                    PostStatusMentionActionWidget(),
-                    PostStatusNsfwActionWidget(),
-                    PostStatusPollActionWidget()
+                    const PostStatusVisibilityActionWidget(),
+                    const PostStatusScheduleActionWidget(),
+                    const PostStatusMentionActionWidget(),
+                    const PostStatusNsfwActionWidget(),
+                    const PostStatusPollActionWidget()
                   ],
                 ),
               ),
             ),
           ),
           if (showPostAction)
-            Padding(
+            const Padding(
               padding: FediPadding.horizontalSmallPadding,
               child: PostStatusPostIconInCircleActionWidget(),
             ),
@@ -152,14 +149,70 @@ class PostStatusComposeWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget buildAvatar() {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: MyAccountAvatarWidget(
-        imageSize: FediSizes.accountAvatarBigSize,
-        progressSize: FediSizes.accountAvatarProgressBigSize,
-      ),
+class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
+  const _PostStatusComposeInputWithAvatarWidget({
+    Key key,
+    @required this.autofocus,
+    @required this.expanded,
+    @required this.hintText,
+    @required this.maxLines,
+  }) : super(key: key);
+
+  final bool autofocus;
+  final bool expanded;
+  final String hintText;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        const Padding(
+          padding: FediPadding.allSmallPadding,
+          child: MyAccountAvatarWidget(
+            imageSize: FediSizes.accountAvatarBigSize,
+            progressSize: FediSizes.accountAvatarProgressBigSize,
+          ),
+        ),
+        Flexible(
+          child: PostStatusComposeInputWidget(
+            autofocus: autofocus,
+            expanded: expanded,
+            hintText: hintText,
+            maxLines: maxLines,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _PostStatusComposeSubjectFieldWidget extends StatelessWidget {
+  const _PostStatusComposeSubjectFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var postStatusBloc = IPostStatusBloc.of(context);
+
+    return FediTransparentEditTextField(
+      textEditingController: postStatusBloc.subjectTextController,
+      focusNode: postStatusBloc.subjectFocusNode,
+      hintText: S.of(context).app_status_post_field_subject,
+      expanded: false,
+      autofocus: false,
+      maxLines: 1,
+      textInputAction: TextInputAction.next,
+      onSubmitted: (String value) async {
+        postStatusBloc.subjectFocusNode.requestFocus();
+        postStatusBloc.inputFocusNode.requestFocus();
+      },
+      errorText: null,
+      highlightMentions: true,
+      maxLength: null,
     );
   }
 }

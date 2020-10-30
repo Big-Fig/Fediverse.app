@@ -36,7 +36,8 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
                     return Provider.value(
                         value: mediaItemBloc,
                         child: Padding(
-                          padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+                          padding: const EdgeInsets.only(
+                              bottom: FediSizes.smallPadding),
                           child: UploadMediaAttachmentsNonMediaItemWidget(),
                         ));
                   }).toList(),
@@ -46,4 +47,6 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
           );
         });
   }
+
+  const UploadMediaAttachmentsNonMediaListWidget();
 }

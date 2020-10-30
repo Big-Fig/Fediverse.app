@@ -46,10 +46,7 @@ class ChatWidget extends StatelessWidget {
         initialData: postMessageBloc.isExpanded,
         builder: (context, snapshot) {
           var isPostMessageExpanded = snapshot.data;
-          var postMessageWidget = PostMessageWidget(
-            hintText:
-            S.of(context).app_chat_post_field_content_hint,
-          );
+          var postMessageWidget = const _ChatPostMessageWidget();
           if (isPostMessageExpanded) {
             return postMessageWidget;
           } else {
@@ -71,5 +68,19 @@ class ChatWidget extends StatelessWidget {
             );
           }
         });
+  }
+}
+
+class _ChatPostMessageWidget extends StatelessWidget {
+  const _ChatPostMessageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PostMessageWidget(
+      hintText:
+      S.of(context).app_chat_post_field_content_hint,
+    );
   }
 }

@@ -17,48 +17,20 @@ import 'package:rxdart/rxdart.dart';
 class PostMessageWidget extends StatelessWidget {
   final String hintText;
 
-  PostMessageWidget({
+  const PostMessageWidget({
     @required this.hintText,
   });
 
   @override
   Widget build(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          buildMediaAttachments(context, postMessageBloc),
-          StreamBuilder<bool>(
-            stream: postMessageBloc.isExpandedStream,
-            initialData: postMessageBloc.isExpanded,
-            builder: (context, snapshot) {
-              var isExpanded = snapshot.data;
-              if (isExpanded) {
-                return Expanded(
-                  child: PostMessageContentWidget(
-                    filled: false,
-                    hintText: hintText,
-                    expanded: isExpanded,
-                    ending: buildMaximizeAction(postMessageBloc),
-                  ),
-                );
-              } else {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: PostMessageContentWidget(
-                        hintText: hintText,
-                        expanded: isExpanded,
-                      ),
-                    ),
-                    buildMaximizeAction(postMessageBloc)
-                  ],
-                );
-              }
-            },
-          ),
+          const _PostMessageMediaAttachmentsWidget(),
+          _PostMessageTextContentWidget(hintText: hintText),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -68,18 +40,145 @@ class PostMessageWidget extends StatelessWidget {
               const PostMessagePostActionWidget(),
             ],
           ),
-          PostMessageSelectedActionWidget()
+          const PostMessageSelectedActionWidget()
         ],
       ),
     );
   }
 
-  StreamBuilder<bool> buildMaximizeAction(IPostMessageBloc postMessageBloc) {
+  List<Widget> buildActions() {
+    return [
+      const PostMessageAttachActionWidget(),
+      const PostMessageEmojiActionWidget(),
+    ];
+  }
+
+}
+
+class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
+  const _PostMessageMediaAttachmentsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+    return StreamBuilder<double>(
+        stream: Rx.combineLatest2(
+            postMessageBloc.isAnySelectedActionVisibleStream,
+            postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+            (bool isAnySelectedActionVisible,
+                List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
+          isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
+          var mediaBlocs = mediaAttachmentBlocs.where((bloc) => bloc.isMedia);
+
+          var nonMediaBlocs =
+              mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
+
+          var isSingleMediaVisible = mediaBlocs.length == 1;
+
+          var isListMediaVisible = mediaBlocs.length > 1;
+
+          var isListNonMediaVisible = nonMediaBlocs.isNotEmpty;
+
+          var mediaQueryData = MediaQuery.of(context);
+          var height = mediaQueryData.size.height;
+
+          // status bar
+          height -= mediaQueryData.padding.top;
+          // nav system bar
+          height -= mediaQueryData.padding.bottom;
+          height -= kToolbarHeight;
+          // input bar
+          height -= 70;
+          height -= 90;
+          if (isAnySelectedActionVisible) {
+            height -= 120;
+          }
+          if (isListMediaVisible) {
+            height -= 100;
+          }
+          if (isListNonMediaVisible) {
+            height -= 50;
+          }
+          if (isSingleMediaVisible) {
+            height -= 230;
+          }
+
+          // i am not sure, but overflow ~ 100 px so I added it here
+          height -= 100;
+
+          if (height < 100) {
+            height = 100;
+          }
+
+          return height;
+        }),
+        builder: (context, snapshot) {
+          var heightOnKeyboardOpen = snapshot.data;
+          return UploadMediaAttachmentsWidget(
+            scrollable: true,
+            heightOnKeyboardOpen: heightOnKeyboardOpen,
+          );
+        });
+  }
+}
+
+class _PostMessageTextContentWidget extends StatelessWidget {
+  const _PostMessageTextContentWidget({
+    Key key,
+    @required this.hintText,
+  }) : super(key: key);
+
+  final String hintText;
+
+  @override
+  Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context);
+    return StreamBuilder<bool>(
+      stream: postMessageBloc.isExpandedStream,
+      builder: (context, snapshot) {
+        var isExpanded = snapshot.data ?? false;
+        if (isExpanded) {
+          return Expanded(
+            child: PostMessageContentWidget(
+              filled: false,
+              hintText: hintText,
+              expanded: true,
+              ending: const _PostMessageMaximizeActionWidget(),
+            ),
+          );
+        } else {
+          return Row(
+            children: [
+              Expanded(
+                child: PostMessageContentWidget(
+                  hintText: hintText,
+                  expanded: false,
+                ),
+              ),
+              const _PostMessageMaximizeActionWidget(),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
+class _PostMessageMaximizeActionWidget extends StatelessWidget {
+  const _PostMessageMaximizeActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context);
+
     return StreamBuilder<bool>(
         stream: postMessageBloc.isExpandedStream,
-        initialData: postMessageBloc.isExpanded,
         builder: (context, snapshot) {
-          var isExpanded = snapshot.data;
+          var isExpanded = snapshot.data ?? false;
           return Align(
             alignment: Alignment.topRight,
             child: FediIconButton(
@@ -92,74 +191,4 @@ class PostMessageWidget extends StatelessWidget {
           );
         });
   }
-
-  List<Widget> buildActions() {
-    return [
-      PostMessageAttachActionWidget(),
-      PostMessageEmojiActionWidget(),
-    ];
-  }
-
-  StreamBuilder<double> buildMediaAttachments(
-    BuildContext context,
-    IPostMessageBloc postMessageBloc,
-  ) =>
-      StreamBuilder<double>(
-          stream: Rx.combineLatest2(
-              postMessageBloc.isAnySelectedActionVisibleStream,
-              postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-              (bool isAnySelectedActionVisible,
-                  List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
-            isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
-            var mediaBlocs = mediaAttachmentBlocs.where((bloc) => bloc.isMedia);
-
-            var nonMediaBlocs =
-                mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
-
-            var isSingleMediaVisible = mediaBlocs.length == 1;
-
-            var isListMediaVisible = mediaBlocs.length > 1;
-
-            var isListNonMediaVisible = nonMediaBlocs.isNotEmpty;
-
-            var mediaQueryData = MediaQuery.of(context);
-            var height = mediaQueryData.size.height;
-
-            // status bar
-            height -= mediaQueryData.padding.top;
-            // nav system bar
-            height -= mediaQueryData.padding.bottom;
-            height -= kToolbarHeight;
-            // input bar
-            height -= 70;
-            height -= 90;
-            if (isAnySelectedActionVisible) {
-              height -= 120;
-            }
-            if (isListMediaVisible) {
-              height -= 100;
-            }
-            if (isListNonMediaVisible) {
-              height -= 50;
-            }
-            if (isSingleMediaVisible) {
-              height -= 230;
-            }
-
-            // i am not sure, but overflow ~ 100 px so I added it here
-            height -= 100;
-
-            if (height < 100) {
-              height = 100;
-            }
-
-            return height;
-          }),
-          builder: (context, snapshot) {
-            var heightOnKeyboardOpen = snapshot.data;
-            return UploadMediaAttachmentsWidget(
-              scrollable: true,
-              heightOnKeyboardOpen: heightOnKeyboardOpen,
-            );
-          });
 }
