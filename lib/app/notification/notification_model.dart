@@ -5,6 +5,32 @@ import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 
+class NotificationState {
+  final bool dismissed;
+  final bool unread;
+
+  NotificationState({
+    this.dismissed,
+    this.unread,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NotificationState &&
+          runtimeType == other.runtimeType &&
+          dismissed == other.dismissed &&
+          unread == other.unread;
+
+  @override
+  int get hashCode => dismissed.hashCode ^ unread.hashCode;
+
+  @override
+  String toString() {
+    return 'NotificationState{dismissed: $dismissed, unread: $unread}';
+  }
+}
+
 abstract class INotification {
   int get localId;
 

@@ -1,4 +1,3 @@
-
 import 'package:fedi/app/pagination/fedi_pagination_list_loading_error_notification_overlay_builder_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -48,26 +47,27 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       @required IndexedWidgetBuilder itemBuilder}) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
-    var itemCount = items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);
+    var itemCount =
+        items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);
     return ListView.builder(
-        itemBuilder: (context, index) {
-          var isFirst = index == 0;
-          var isLast = index == (itemCount - 1);
-          if (header != null && isFirst) {
-            return header;
-          } else if (footer != null && isLast) {
-            return footer;
-          }
-          var itemIndex = index;
-          if (header != null) {
-            itemIndex -= 1;
-          }
+      itemBuilder: (context, index) {
+        var isFirst = index == 0;
+        var isLast = index == (itemCount - 1);
+        if (header != null && isFirst) {
+          return header;
+        } else if (footer != null && isLast) {
+          return footer;
+        }
+        var itemIndex = index;
+        if (header != null) {
+          itemIndex -= 1;
+        }
 
-          _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
-          return itemBuilder(context, itemIndex);
-        },
-        itemCount:
-            itemCount);
+        _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
+        return itemBuilder(context, itemIndex);
+      },
+      itemCount: itemCount,
+    );
   }
 
   @override
@@ -84,8 +84,11 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     return Stack(
       children: [
         FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(
-            paginationListBloc),
-        buildPaginationListBody(paginationListBloc),
+          paginationListBloc,
+        ),
+        buildPaginationListBody(
+          paginationListBloc,
+        ),
       ],
     );
   }
@@ -166,7 +169,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildSmartRefresherBody(BuildContext context, List<T> items,
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) ;
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc);
 
   Widget buildSmartRefresher(
       IPaginationListBloc paginationListBloc,
