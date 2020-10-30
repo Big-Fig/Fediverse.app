@@ -25,7 +25,7 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
             }
 
             return StatusSubHeaderWidget(
-                descText: S.of(context).app_status_reblog_header,
+                descText: S.of(context).app_status_reply_header,
                 account: account,
                 icon: FediIcons.message,
                 accountCallback: accountCallback);
