@@ -33,21 +33,19 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         buildScheduledHeader(context, scheduledStatusBloc),
-        FediUltraLightGreyDivider(),
+        const FediUltraLightGreyDivider(),
         ProxyProvider<IScheduledStatusBloc, IStatus>(
             update: (context, value, previous) =>
                 ScheduledStatusAdapterToStatus(
                     scheduledStatus: value.scheduledStatus,
                     account: IMyAccountBloc.of(context, listen: false).account),
-            child: StatusListItemTimelineWidget.list(
+            child: const StatusListItemTimelineWidget.list(
               displayActions: false,
-              statusCallback: (_, __) {
-                // nothing
-              },
+              statusCallback: null,
               collapsible: false,
               initialMediaAttachment: null,
             )),
-        FediSmallVerticalSpacer(),
+        const FediSmallVerticalSpacer(),
       ],
     );
   }

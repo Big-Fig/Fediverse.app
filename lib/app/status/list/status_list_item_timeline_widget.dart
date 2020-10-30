@@ -43,7 +43,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   bool get isFirstReplyAndDisplayReplyToStatus =>
       (displayReplyToStatus && isFirstReplyInThread);
 
-  StatusListItemTimelineWidget._private({
+  const StatusListItemTimelineWidget._private({
     @required this.collapsible,
     @required this.displayActions,
     @required this.displayAccountHeader,
@@ -55,44 +55,42 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     @required this.initialMediaAttachment,
   }) : super();
 
-  static StatusListItemTimelineWidget list({
+  const StatusListItemTimelineWidget.list({
     @required bool collapsible,
     bool isFirstReplyInThread = true,
     bool displayActions = true,
     @required IStatusCallback statusCallback,
     @required IPleromaMediaAttachment initialMediaAttachment,
-  }) =>
-      StatusListItemTimelineWidget._private(
-        collapsible: collapsible,
-        statusCallback: statusCallback,
-        isFirstReplyInThread: isFirstReplyInThread,
-        displayActions: displayActions,
-        displayReplyToStatus: true,
-        displayThisThreadAction: true,
-        displayAccountHeader: true,
-        accountMentionCallback: null,
-        initialMediaAttachment: initialMediaAttachment,
-      );
+  }) : this._private(
+          collapsible: collapsible,
+          statusCallback: statusCallback,
+          isFirstReplyInThread: isFirstReplyInThread,
+          displayActions: displayActions,
+          displayReplyToStatus: true,
+          displayThisThreadAction: true,
+          displayAccountHeader: true,
+          accountMentionCallback: null,
+          initialMediaAttachment: initialMediaAttachment,
+        );
 
-  static StatusListItemTimelineWidget thread({
+  const StatusListItemTimelineWidget.thread({
     @required bool collapsible,
     @required bool displayAccountHeader,
     @required bool displayActions,
     @required IStatusCallback statusCallback,
     @required AccountCallback accountMentionCallback,
     @required IPleromaMediaAttachment initialMediaAttachment,
-  }) =>
-      StatusListItemTimelineWidget._private(
-        collapsible: collapsible,
-        statusCallback: statusCallback,
-        isFirstReplyInThread: false,
-        displayActions: displayActions,
-        displayReplyToStatus: false,
-        displayThisThreadAction: false,
-        accountMentionCallback: accountMentionCallback,
-        displayAccountHeader: displayAccountHeader,
-        initialMediaAttachment: initialMediaAttachment,
-      );
+  }) : this._private(
+          collapsible: collapsible,
+          statusCallback: statusCallback,
+          isFirstReplyInThread: false,
+          displayActions: displayActions,
+          displayReplyToStatus: false,
+          displayThisThreadAction: false,
+          accountMentionCallback: accountMentionCallback,
+          displayAccountHeader: displayAccountHeader,
+          initialMediaAttachment: initialMediaAttachment,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +98,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
     if (status == null) {
       _logger.warning(() => "status is null");
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     _logger.finest(() => "build status?.remoteId ${status.remoteId}");

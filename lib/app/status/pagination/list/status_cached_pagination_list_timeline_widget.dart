@@ -62,15 +62,16 @@ class StatusCachedPaginationListTimelineWidget
                 isFirstInList:
                     index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
-                child: StatusListItemTimelineWidget.list(
+                child: const StatusListItemTimelineWidget.list(
                   collapsible: true,
-                  statusCallback: (BuildContext context, IStatus status) {
-                    goToStatusThreadPage(context,
-                        status: status, initialMediaAttachment: null);
-                  },
+                  statusCallback: _onStatusClick,
                   initialMediaAttachment: null,
                 ),
               ),
             );
           });
+}
+
+void _onStatusClick(BuildContext context, IStatus status) {
+  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
 }

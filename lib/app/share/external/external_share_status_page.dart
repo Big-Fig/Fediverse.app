@@ -29,8 +29,7 @@ class ExternalShareStatusPage extends StatelessWidget {
             ),
           ],
         ),
-        body: ShareStatusWithMessageWidget(
-          status: status,
+        body: const ShareStatusWithMessageWidget(
           footer: Padding(
             padding: FediPadding.horizontalSmallPadding,
             child: ExternalShareAsLinkFieldWidget(),

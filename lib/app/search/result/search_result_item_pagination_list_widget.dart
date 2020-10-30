@@ -134,17 +134,16 @@ class SearchResultItemPaginationListWidget
       value: item.status,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: StatusListItemTimelineWidget.list(
+        child: const StatusListItemTimelineWidget.list(
           collapsible: true,
-          statusCallback: (BuildContext context, IStatus status) {
-            goToStatusThreadPage(context,
-                status: status, initialMediaAttachment: null);
-          },
+          statusCallback: _onStatusClick,
           initialMediaAttachment: null,
         ),
       ),
     );
   }
+
+
 
   Provider<IAccount> buildAccountListItem(IAccount account) {
     return Provider<IAccount>.value(
@@ -185,4 +184,9 @@ class _ItemOrSeparator<T> {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));
   }
+}
+
+void _onStatusClick(BuildContext context, IStatus status) {
+  goToStatusThreadPage(context,
+      status: status, initialMediaAttachment: null);
 }

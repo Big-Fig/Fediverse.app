@@ -228,7 +228,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       initialMediaAttachment:
                           statusThreadBloc.initialMediaAttachment,
                     ),
-                    FediLightGreyDivider(),
+                    const FediLightGreyDivider(),
                   ],
                 ),
               ),

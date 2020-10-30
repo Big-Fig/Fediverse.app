@@ -15,7 +15,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
   final bool alwaysShowFooter;
   final Widget footer;
 
-  ShareSelectAccountWidget({
+  const ShareSelectAccountWidget({
     this.header,
     this.footer,
     this.alwaysShowHeader,

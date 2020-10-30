@@ -264,7 +264,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
                     height: FediSizes.iconInCircleDefaultSize,
                   ),
                 ),
-                FediBigHorizontalSpacer(),
+                const FediBigHorizontalSpacer(),
                 FediIconInCircleBlurredButton(
                   FediIcons.filter,
                   onPressed: () {

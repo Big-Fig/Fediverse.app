@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/chat/share/chat_share_status_bloc_impl.dart';
 import 'package:fedi/app/share/select/share_select_account_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
@@ -8,14 +7,13 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChatShareStatusPage extends StatelessWidget {
-  final IStatus status;
-
-  ChatShareStatusPage({@required this.status});
+  const ChatShareStatusPage();
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +24,8 @@ class ChatShareStatusPage extends StatelessWidget {
           ShareToAccountIconButtonWidget(),
         ],
       ),
-      body: ShareSelectAccountWidget(
+      body: const ShareSelectAccountWidget(
         header: ShareStatusWithMessageWidget(
-          status: status,
           footer: null,
         ),
         alwaysShowHeader: true,
@@ -60,9 +57,7 @@ MaterialPageRoute createChatShareStatusPageRoute({
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
             update: (context, value, previous) =>
                 StatusBloc.createFromContext(context, value),
-            child: ChatShareStatusPage(
-              status: status,
-            ),
+            child: const ChatShareStatusPage(),
           ),
         )),
   );
