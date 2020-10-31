@@ -568,10 +568,10 @@ class S {
     );
   }
 
-  /// `mute`
+  /// `Mute`
   String get app_account_action_mute {
     return Intl.message(
-      'mute',
+      'Mute',
       name: 'app_account_action_mute',
       desc: '',
       args: [],

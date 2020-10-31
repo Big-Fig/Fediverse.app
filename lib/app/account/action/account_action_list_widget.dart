@@ -21,97 +21,94 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("account_actions_widget.dart");
 
+var _topPadding = FediSizes.smallPadding;
+var _bottomPadding = FediSizes.bigPadding;
+var _height = FediSizes.textButtonHeight + _topPadding + _bottomPadding;
+
 class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return StreamBuilder<IPleromaAccountRelationship>(
       stream: accountBloc.accountRelationshipStream,
-      initialData: accountBloc.accountRelationship,
       builder: (context, snapshot) {
         var relationship = snapshot.data;
 
         _logger.finest(() => "relationship $relationship");
 
-        var topPadding = FediSizes.smallPadding;
-        var bottomPadding = FediSizes.bigPadding;
         if (relationship?.following == null) {
           return Container(
-            height: FediSizes.textButtonHeight + topPadding + bottomPadding,
-            child: Center(
-              child: FediCircularProgressIndicator(
-                color: IFediUiColorTheme.of(context).white,
-              ),
-            ),
+            height: _height,
+            child: const _AccountActionListLoadingWidget(),
           );
         } else {
-          return LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
-
-              return FediFadeShaderMask(
-                fadingColor: IFediUiColorTheme.of(context).darkGrey,
-                fadingPercent: fadingPercent,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: topPadding, bottom: bottomPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      buildFollowButton(
-                        context: context,
-                        accountBloc: accountBloc,
-                        relationship: relationship,
-                      ),
-                      const FediBigHorizontalSpacer(),
-                      buildMessageButton(
-                        context: context,
-                        accountBloc: accountBloc,
-                      ),
-                      const FediBigHorizontalSpacer(),
-                      buildMoreButton(
-                        context: context,
-                        accountBloc: accountBloc,
-                        relationship: relationship,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          return const _AccountActionListBodyLayoutBuilderWidget();
         }
       },
     );
   }
 
-  Widget buildMoreButton({
-    @required BuildContext context,
-    @required IAccountBloc accountBloc,
-    @required IPleromaAccountRelationship relationship,
-  }) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.menu,
-      onPressed: () async {
-        showAccountActionMoreDialog(
-          context: context,
-          accountBloc: accountBloc,
-          relationship: relationship,
+  const AccountActionListWidget();
+}
+
+class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
+  const _AccountActionListBodyLayoutBuilderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
+
+        return FediFadeShaderMask(
+          fadingColor: IFediUiColorTheme.of(context).darkGrey,
+          fadingPercent: fadingPercent,
+          child: Padding(
+            padding: EdgeInsets.only(top: _topPadding, bottom: _bottomPadding),
+            child: const _AccountActionListBodyWidget(),
+          ),
         );
       },
     );
   }
+}
 
-  Widget buildMessageButton({
-    @required BuildContext context,
-    @required IAccountBloc accountBloc,
-  }) {
+class _AccountActionListBodyWidget extends StatelessWidget {
+  const _AccountActionListBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        const _AccountActionListFollowWidget(),
+        const FediBigHorizontalSpacer(),
+        const _AccountActionListMessageWidget(),
+        const FediBigHorizontalSpacer(),
+        const _AccountActionListMoreWidget(),
+      ],
+    );
+  }
+}
+
+class _AccountActionListMessageWidget extends StatelessWidget {
+  const _AccountActionListMessageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediBlurredTextButton(
       S.of(context).app_account_action_message,
       onPressed: () async {
         var authInstanceBloc =
             ICurrentAuthInstanceBloc.of(context, listen: false);
+        var accountBloc = IAccountBloc.of(context, listen: false);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
@@ -123,12 +120,37 @@ class AccountActionListWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildFollowButton({
-    @required BuildContext context,
-    @required IAccountBloc accountBloc,
-    @required IPleromaAccountRelationship relationship,
-  }) {
+class _AccountActionListMoreWidget extends StatelessWidget {
+  const _AccountActionListMoreWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.menu,
+      onPressed: () async {
+        var accountBloc = IAccountBloc.of(context, listen: false);
+        showAccountActionMoreDialog(
+          context: context,
+          accountBloc: accountBloc,
+        );
+      },
+    );
+  }
+}
+
+class _AccountActionListFollowWidget extends StatelessWidget {
+  const _AccountActionListFollowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    var relationship = accountBloc.accountRelationship;
     if (relationship.requested && !relationship.following) {
       return FediBlurredTextButton(
         S.of(context).app_account_action_followRequested,
@@ -149,6 +171,19 @@ class AccountActionListWidget extends StatelessWidget {
       );
     }
   }
+}
 
-  const AccountActionListWidget();
+class _AccountActionListLoadingWidget extends StatelessWidget {
+  const _AccountActionListLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+      ),
+    );
+  }
 }

@@ -109,7 +109,7 @@
       }
     }
   },
-  "app_account_action_mute": "mute",
+  "app_account_action_mute": "Mute",
   "app_account_action_unmute": "Unmute",
   "app_account_action_openInBrowser": "Open in browser",
   "app_account_action_report_label": "Report",

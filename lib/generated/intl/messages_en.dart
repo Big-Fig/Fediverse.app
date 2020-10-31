@@ -126,7 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_action_follow" : MessageLookupByLibrary.simpleMessage("Follow"),
     "app_account_action_followRequested" : MessageLookupByLibrary.simpleMessage("Requested"),
     "app_account_action_message" : MessageLookupByLibrary.simpleMessage("Message"),
-    "app_account_action_mute" : MessageLookupByLibrary.simpleMessage("mute"),
+    "app_account_action_mute" : MessageLookupByLibrary.simpleMessage("Mute"),
     "app_account_action_openInBrowser" : MessageLookupByLibrary.simpleMessage("Open in browser"),
     "app_account_action_popup_title" : MessageLookupByLibrary.simpleMessage("More actions for:"),
     "app_account_action_report_fail_dialog_content" : MessageLookupByLibrary.simpleMessage("Something wrong"),
