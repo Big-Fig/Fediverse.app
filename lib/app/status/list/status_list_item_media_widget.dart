@@ -57,8 +57,13 @@ class StatusListItemMediaWidget extends StatelessWidget {
           var deleted = snapshot.data ?? false;
 
           if (deleted == true) {
-            return StatusDeletedOverlayWidget(
-              child: body,
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: const StatusDeletedOverlayWidget(),
+                ),
+                body,
+              ],
             );
           } else {
             return body;
