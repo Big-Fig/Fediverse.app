@@ -6,6 +6,8 @@ import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
@@ -15,12 +17,12 @@ import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/generated/l10n.dart';
 
 class SearchResultItemPaginationListWidget
     extends FediPaginationListWidget<ISearchResultItem> {
@@ -134,16 +136,19 @@ class SearchResultItemPaginationListWidget
       value: item.status,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: const StatusListItemTimelineWidget.list(
-          collapsible: true,
-          statusCallback: _onStatusClick,
-          initialMediaAttachment: null,
+        child: DisposableProxyProvider<IStatus,
+            IStatusListItemTimelineBloc>(
+          update: (context, status, _) => StatusListItemTimelineBloc.list(
+            status: status,
+            collapsible: true,
+            statusCallback: _onStatusClick,
+            initialMediaAttachment: null,
+          ),
+          child: const StatusListItemTimelineWidget(),
         ),
       ),
     );
   }
-
-
 
   Provider<IAccount> buildAccountListItem(IAccount account) {
     return Provider<IAccount>.value(
@@ -187,6 +192,5 @@ class _ItemOrSeparator<T> {
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {
-  goToStatusThreadPage(context,
-      status: status, initialMediaAttachment: null);
+  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
 }

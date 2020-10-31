@@ -1,9 +1,10 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/draft/draft_edit_post_status_page.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -12,6 +13,8 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -41,11 +44,17 @@ class DraftStatusListItemWidget extends StatelessWidget {
                             draftStatus: value,
                             account: IMyAccountBloc.of(context, listen: false)
                                 .account),
-                    child: const StatusListItemTimelineWidget.list(
-                      displayActions: false,
-                      statusCallback: null,
-                      collapsible: false,
-                      initialMediaAttachment: null,
+                    child: DisposableProxyProvider<IStatus,
+                        IStatusListItemTimelineBloc>(
+                      update: (context, status, _) =>
+                          StatusListItemTimelineBloc.list(
+                        status: status,
+                        displayActions: false,
+                        statusCallback: null,
+                        collapsible: false,
+                        initialMediaAttachment: null,
+                      ),
+                      child: const StatusListItemTimelineWidget(),
                     )),
               );
             }),
@@ -89,7 +98,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
                       Padding(
                         padding: FediPadding.allSmallPadding,
                         child: Text(
-                           S.of(context).app_status_draft_state_canceled,
+                          S.of(context).app_status_draft_state_canceled,
                           style: IFediUiTextTheme.of(context)
                               .mediumShortBoldDarkGrey,
                         ),

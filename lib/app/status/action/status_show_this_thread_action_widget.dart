@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 const _showThisThreadContainerHeight = 48.0;
 
 class StatusShowThisThreadActionWidget extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
@@ -30,4 +32,6 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
       ),
     );
   }
+
+  const StatusShowThisThreadActionWidget();
 }

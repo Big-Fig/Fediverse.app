@@ -1,3 +1,5 @@
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -5,6 +7,7 @@ import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +35,7 @@ class StatusReplyWidget extends StatelessWidget {
               return const _StatusReplyLoadingWidget();
               break;
             case AsyncInitLoadingState.finished:
-              return Provider.value(
+              return Provider<IStatus>.value(
                 value: statusReplyLoaderBloc.inReplyToStatus,
                 child: _buildStatusListItemTimelineWidget(),
               );
@@ -51,22 +54,17 @@ class StatusReplyWidget extends StatelessWidget {
         });
   }
 
-  StatusListItemTimelineWidget _buildStatusListItemTimelineWidget() {
-    if (collapsible) {
-      return const StatusListItemTimelineWidget.list(
-        collapsible: true,
+  Widget _buildStatusListItemTimelineWidget() {
+    return DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+      update: (context, status, _) => StatusListItemTimelineBloc.list(
+        status: status,
+        collapsible: collapsible,
         isFirstReplyInThread: false,
         statusCallback: _onStatusClick,
         initialMediaAttachment: null,
-      );
-    } else {
-      return const StatusListItemTimelineWidget.list(
-        collapsible: false,
-        isFirstReplyInThread: false,
-        statusCallback: _onStatusClick,
-        initialMediaAttachment: null,
-      );
-    }
+      ),
+      child: const StatusListItemTimelineWidget(),
+    );
   }
 }
 
