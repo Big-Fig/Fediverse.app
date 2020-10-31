@@ -8,6 +8,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StatusFavouriteActionWidget extends StatelessWidget {
   final bool displayCounter;
@@ -16,47 +17,73 @@ class StatusFavouriteActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: true);
     return Row(
       children: <Widget>[
-        StreamBuilder<bool>(
-            stream: statusBloc.favouritedStream,
-            initialData: statusBloc.favourited,
-            builder: (context, snapshot) {
-              var favourited = snapshot.data;
-              return PleromaAsyncOperationButtonBuilderWidget(
-                  showProgressDialog: false,
-                  builder: (context, onPressed) => FediIconButton(
-                        iconSize: FediSizes.bigIconSize,
-                        color: favourited
-                            ? IFediUiColorTheme.of(context).secondary
-                            : IFediUiColorTheme.of(context).darkGrey,
-                        icon: favourited
-                            ? Icon(FediIcons.heart_active)
-                            : Icon(FediIcons.heart),
-                        onPressed: onPressed,
-                      ),
-                  asyncButtonAction: statusBloc.toggleFavourite);
-            }),
-        if (displayCounter)
-          StreamBuilder<int>(
-              stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
-              initialData: statusBloc.reblogPlusOriginalFavouritesCount,
-              builder: (context, snapshot) {
-                var favouritesCount = snapshot.data;
-                if (favouritesCount == null) {
-                  return SizedBox.shrink();
-                }
-
-                return StatusActionCounterWidget(
-                  onPressed: () {
-                    goToStatusFavouriteAccountListPage(
-                        context, statusBloc.status);
-                  },
-                  value: favouritesCount,
-                );
-              }),
+        const _StatusFavouriteActionButtonWidget(),
+        if (displayCounter) const _StatusFavouriteActionCounterWidget(),
       ],
     );
   }
+}
+
+class _StatusFavouriteActionButtonWidget extends StatelessWidget {
+  const _StatusFavouriteActionButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+    return StreamBuilder<bool>(
+        stream: statusBloc.favouritedStream,
+        initialData: statusBloc.favourited,
+        builder: (context, snapshot) {
+          var favourited = snapshot.data ?? false;
+          return PleromaAsyncOperationButtonBuilderWidget(
+              showProgressDialog: false,
+              builder: (context, onPressed) => FediIconButton(
+                    iconSize: FediSizes.bigIconSize,
+                    color: favourited
+                        ? IFediUiColorTheme.of(context).secondary
+                        : IFediUiColorTheme.of(context).darkGrey,
+                    icon: favourited
+                        ? Icon(FediIcons.heart_active)
+                        : Icon(FediIcons.heart),
+                    onPressed: onPressed,
+                  ),
+              asyncButtonAction: statusBloc.toggleFavourite);
+        });
+  }
+}
+
+class _StatusFavouriteActionCounterWidget extends StatelessWidget {
+  const _StatusFavouriteActionCounterWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+    return StreamBuilder<int>(
+      stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
+      builder: (context, snapshot) {
+        var favouritesCount = snapshot.data;
+        if (favouritesCount == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Provider.value(
+          value: favouritesCount,
+          child: const StatusActionCounterWidget(
+            onClick: _onCounterClick,
+          ),
+        );
+      },
+    );
+  }
+}
+
+void _onCounterClick(BuildContext context) {
+  var statusBloc = IStatusBloc.of(context, listen: false);
+  goToStatusFavouriteAccountListPage(context, statusBloc.status);
 }
