@@ -6,7 +6,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
-import 'package:fedi/app/status/draft/draft_status_list_page.dart';
+import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
