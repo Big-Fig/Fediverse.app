@@ -8,49 +8,47 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class MyAccountAccountBlockAccountPaginationListWidget
-    extends StatelessWidget {
+class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var myAccountAccountBlockNetworkOnlyAccountListBloc =
-        IMyAccountAccountBlockNetworkOnlyAccountListBloc.of(context,
-            listen: false);
-
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
-
-    return AccountPaginationListWidget(
+    return const AccountPaginationListWidget(
       accountActions: <Widget>[
-        buildRemoveAccountBlockButton(
-          paginationListBloc,
-          myAccountAccountBlockNetworkOnlyAccountListBloc,
-        ),
+        _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget(),
       ],
-      accountSelectedCallback: (BuildContext context, IAccount account) {
-        // nothing
-      },
+      accountSelectedCallback: null,
       key: PageStorageKey("MyAccountAccountBlockAccountPaginationListWidget"),
     );
   }
 
-  Widget buildRemoveAccountBlockButton(
-  IPaginationListBloc paginationListBloc,
-      IMyAccountAccountBlockNetworkOnlyAccountListBloc
-          myAccountAccountBlockNetworkOnlyAccountListBloc) {
-    return Builder(
-      builder: (context) => PleromaAsyncOperationButtonBuilderWidget(
-        asyncButtonAction: () async {
-          var account = Provider.of<IAccount>(context, listen: false);
-          await myAccountAccountBlockNetworkOnlyAccountListBloc
-              .removeAccountBlock(account: account);
-          paginationListBloc.refreshWithController();
-        },
-        builder: (BuildContext context, void Function() onPressed) {
-          return FediIconButton(
-            icon: Icon(FediIcons.remove_circle),
-            onPressed: onPressed,
-          );
-        },
-      ),
+  const MyAccountAccountBlockAccountPaginationListWidget();
+}
+
+class _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget
+    extends StatelessWidget {
+  const _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountAccountBlockNetworkOnlyAccountListBloc =
+        IMyAccountAccountBlockNetworkOnlyAccountListBloc.of(context);
+
+    var paginationListBloc = IPaginationListBloc.of(context);
+
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        var account = Provider.of<IAccount>(context, listen: false);
+        await myAccountAccountBlockNetworkOnlyAccountListBloc
+            .removeAccountBlock(account: account);
+        paginationListBloc.refreshWithController();
+      },
+      builder: (BuildContext context, void Function() onPressed) {
+        return FediIconButton(
+          icon: Icon(FediIcons.remove_circle),
+          onPressed: onPressed,
+        );
+      },
     );
   }
 }

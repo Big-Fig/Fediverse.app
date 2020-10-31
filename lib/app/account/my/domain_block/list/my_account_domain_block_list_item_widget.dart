@@ -15,11 +15,14 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var domain = Provider.of<DomainBlock>(context);
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         if (domainBlockSelectedCallback != null) {
+          var domain = Provider.of<DomainBlock>(
+            context,
+            listen: false,
+          );
           domainBlockSelectedCallback(context, domain);
         }
       },
@@ -28,22 +31,34 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    domain.domain,
-                    style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-                  )
-                ],
-              ),
+            const Expanded(
+              child: _MyAccountDomainBlockListItemBodyWidget(),
             ),
             if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions
           ],
         ),
       ),
+    );
+  }
+}
+
+class _MyAccountDomainBlockListItemBodyWidget extends StatelessWidget {
+  const _MyAccountDomainBlockListItemBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var domain = Provider.of<DomainBlock>(context);
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          domain.domain,
+          style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+        )
+      ],
     );
   }
 }

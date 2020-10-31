@@ -21,11 +21,13 @@ class MyAccountFollowRequestListPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_followRequest_title,
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: MyAccountFollowRequestAccountPaginationListWidget(),
       ),
     );
   }
+
+  const MyAccountFollowRequestListPage();
 }
 
 void goToMyAccountFollowRequestListPage(BuildContext context) {
@@ -50,7 +52,7 @@ MaterialPageRoute createMyAccountFollowRequestListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
-              child: MyAccountFollowRequestListPage(),
+              child: const MyAccountFollowRequestListPage(),
             ),
           ),
         ),

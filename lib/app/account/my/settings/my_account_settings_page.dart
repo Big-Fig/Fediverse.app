@@ -30,39 +30,59 @@ class MyAccountSettingsPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_settings_title,
       ),
-      body: Padding(
+      body: const Padding(
         padding: FediPadding.allBigPadding,
-        child: ListView(
-          children: [
-            MyAccountSettingsWidget(),
-            Padding(
-              padding: FediPadding.verticalBigPadding,
-              child: FediUltraLightGreyDivider(),
-            ),
-            buildScheduledButton(context),
-            FediSmallVerticalSpacer(),
-            buildDraftsButton(context),
-            FediSmallVerticalSpacer(),
-            buildListsButton(context),
-            FediSmallVerticalSpacer(),
-            buildBookmarkedButton(context),
-            FediSmallVerticalSpacer(),
-            buildFavouritedButton(context),
-            FediSmallVerticalSpacer(),
-            buildFollowRequestsButton(context),
-            FediSmallVerticalSpacer(),
-            buildAccountBlocksButton(context),
-            FediSmallVerticalSpacer(),
-            buildAccountMutesButton(context),
-            FediSmallVerticalSpacer(),
-            buildDomainBlocksButton(context),
-          ],
-        ),
+        child: _MyAccountSettingsBody(),
       ),
     );
   }
 
-  Widget buildScheduledButton(BuildContext context) {
+  const MyAccountSettingsPage();
+}
+
+class _MyAccountSettingsBody extends StatelessWidget {
+  const _MyAccountSettingsBody({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        const MyAccountSettingsWidget(),
+        const Padding(
+          padding: FediPadding.verticalBigPadding,
+          child: FediUltraLightGreyDivider(),
+        ),
+        const _MyAccountSettingsScheduledButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsDraftsButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsListsButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsBookmarkedButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsFavouritedButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsFollowRequestsButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsAccountBlocksButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsAccountMutesButton(),
+        const FediSmallVerticalSpacer(),
+        const _MyAccountSettingsDomainBlocksButton(),
+      ],
+    );
+  }
+}
+
+class _MyAccountSettingsScheduledButton extends StatelessWidget {
+  const _MyAccountSettingsScheduledButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_scheduledPosts,
       onPressed: () {
@@ -70,8 +90,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildDraftsButton(BuildContext context) {
+class _MyAccountSettingsDraftsButton extends StatelessWidget {
+  const _MyAccountSettingsDraftsButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_draftPosts,
       onPressed: () {
@@ -79,8 +106,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildListsButton(BuildContext context) {
+class _MyAccountSettingsListsButton extends StatelessWidget {
+  const _MyAccountSettingsListsButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_lists,
       onPressed: () {
@@ -88,8 +122,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildBookmarkedButton(BuildContext context) {
+class _MyAccountSettingsBookmarkedButton extends StatelessWidget {
+  const _MyAccountSettingsBookmarkedButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_bookmarked,
       onPressed: () {
@@ -97,8 +138,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildFavouritedButton(BuildContext context) {
+class _MyAccountSettingsFavouritedButton extends StatelessWidget {
+  const _MyAccountSettingsFavouritedButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_favourited,
       onPressed: () {
@@ -106,8 +154,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildFollowRequestsButton(BuildContext context) {
+class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
+  const _MyAccountSettingsFollowRequestsButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_followRequests,
       onPressed: () {
@@ -115,8 +170,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildAccountBlocksButton(BuildContext context) {
+class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
+  const _MyAccountSettingsAccountBlocksButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_accountBlocks,
       onPressed: () {
@@ -124,8 +186,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildAccountMutesButton(BuildContext context) {
+class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
+  const _MyAccountSettingsAccountMutesButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_accountMutes,
       onPressed: () {
@@ -133,8 +202,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildDomainBlocksButton(BuildContext context) {
+class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
+  const _MyAccountSettingsDomainBlocksButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
       S.of(context).app_account_my_settings_action_domainBlocks,
       onPressed: () {
@@ -142,8 +218,6 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
-
-  const MyAccountSettingsPage();
 }
 
 void goMyAccountSettingsPage(BuildContext context) {
@@ -156,12 +230,13 @@ void goMyAccountSettingsPage(BuildContext context) {
 MaterialPageRoute createMyAccountSettingsPageRoute() {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<ICurrentFediUiThemeChooserBloc>(
-        create: (context) => CurrentFediUiThemeChooserBloc(
-              currentFediUiThemeBloc:
-                  ICurrentFediUiThemeBloc.of(context, listen: false),
-              lightTheme: lightFediUiTheme,
-              darkTheme: darkFediUiTheme,
-            ),
-        child: MyAccountSettingsPage()),
+      create: (context) => CurrentFediUiThemeChooserBloc(
+        currentFediUiThemeBloc:
+            ICurrentFediUiThemeBloc.of(context, listen: false),
+        lightTheme: lightFediUiTheme,
+        darkTheme: darkFediUiTheme,
+      ),
+      child: const MyAccountSettingsPage(),
+    ),
   );
 }

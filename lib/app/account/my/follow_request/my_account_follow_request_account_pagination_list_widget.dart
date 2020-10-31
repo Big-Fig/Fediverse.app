@@ -12,71 +12,75 @@ class MyAccountFollowRequestAccountPaginationListWidget
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var myAccountFollowRequestNetworkOnlyAccountListBloc =
-        IMyAccountFollowRequestNetworkOnlyAccountListBloc.of(context,
-            listen: false);
-
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
-
-    return AccountPaginationListWidget(
+    return const AccountPaginationListWidget(
       accountActions: <Widget>[
-        buildAcceptButton(
-          paginationListBloc,
-          myAccountFollowRequestNetworkOnlyAccountListBloc,
-        ),
-        buildRejectButton(
-          paginationListBloc,
-          myAccountFollowRequestNetworkOnlyAccountListBloc,
-        ),
+        _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget(),
+        _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
       ],
-      accountSelectedCallback: (BuildContext context, IAccount account) {
-        // nothing
-      },
+      accountSelectedCallback: null,
       key: PageStorageKey("MyAccountFollowRequestAccountPaginationListWidget"),
     );
   }
 
-  Widget buildAcceptButton(
-      IPaginationListBloc paginationListBloc,
-      IMyAccountFollowRequestNetworkOnlyAccountListBloc
-          myAccountFollowRequestNetworkOnlyAccountListBloc) {
-    return Builder(
-      builder: (context) => PleromaAsyncOperationButtonBuilderWidget(
-        asyncButtonAction: () async {
-          var account = Provider.of<IAccount>(context, listen: false);
-          await myAccountFollowRequestNetworkOnlyAccountListBloc
-              .acceptFollowRequest(account: account);
-          paginationListBloc.refreshWithController();
-        },
-        builder: (BuildContext context, void Function() onPressed) {
-          return FediIconButton(
-            icon: Icon(FediIcons.check_circle),
-            onPressed: onPressed,
-          );
-        },
-      ),
+  const MyAccountFollowRequestAccountPaginationListWidget();
+}
+
+class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
+    extends StatelessWidget {
+  const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountFollowRequestNetworkOnlyAccountListBloc =
+        IMyAccountFollowRequestNetworkOnlyAccountListBloc.of(context);
+
+    var paginationListBloc = IPaginationListBloc.of(context);
+
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        var account = Provider.of<IAccount>(context, listen: false);
+        await myAccountFollowRequestNetworkOnlyAccountListBloc
+            .rejectFollowRequest(account: account);
+        paginationListBloc.refreshWithController();
+      },
+      builder: (BuildContext context, void Function() onPressed) {
+        return FediIconButton(
+          icon: Icon(FediIcons.remove_circle),
+          onPressed: onPressed,
+        );
+      },
     );
   }
+}
 
-  Widget buildRejectButton(
-  IPaginationListBloc paginationListBloc,
-      IMyAccountFollowRequestNetworkOnlyAccountListBloc
-          myAccountFollowRequestNetworkOnlyAccountListBloc) {
-    return Builder(
-      builder: (context) => PleromaAsyncOperationButtonBuilderWidget(
-        asyncButtonAction: () async {
-          var account = Provider.of<IAccount>(context, listen: false);
-          await myAccountFollowRequestNetworkOnlyAccountListBloc
-              .rejectFollowRequest(account: account);
-          paginationListBloc.refreshWithController();
-        },
-        builder: (BuildContext context, void Function() onPressed) {
-          return FediIconButton(
-            icon: Icon(FediIcons.remove_circle),
-            onPressed: onPressed,
-          );
-        },
-      ),
+class _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget
+    extends StatelessWidget {
+  const _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountFollowRequestNetworkOnlyAccountListBloc =
+        IMyAccountFollowRequestNetworkOnlyAccountListBloc.of(context);
+
+    var paginationListBloc = IPaginationListBloc.of(context);
+
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        var account = Provider.of<IAccount>(context, listen: false);
+        await myAccountFollowRequestNetworkOnlyAccountListBloc
+            .acceptFollowRequest(account: account);
+        paginationListBloc.refreshWithController();
+      },
+      builder: (BuildContext context, void Function() onPressed) {
+        return FediIconButton(
+          icon: Icon(FediIcons.check_circle),
+          onPressed: onPressed,
+        );
+      },
     );
   }
 }

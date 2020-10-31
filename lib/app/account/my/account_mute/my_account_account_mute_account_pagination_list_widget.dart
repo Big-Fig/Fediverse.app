@@ -8,49 +8,47 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class MyAccountAccountMuteAccountPaginationListWidget
-    extends StatelessWidget {
+class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var myAccountAccountMuteNetworkOnlyAccountListBloc =
-        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context,
-            listen: false);
-
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
-
-    return AccountPaginationListWidget(
+    return const AccountPaginationListWidget(
       accountActions: <Widget>[
-        buildRemoveAccountMuteButton(
-          paginationListBloc,
-          myAccountAccountMuteNetworkOnlyAccountListBloc,
-        ),
+        _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
       ],
-      accountSelectedCallback: (BuildContext context, IAccount account) {
-        // nothing
-      },
+      accountSelectedCallback: null,
       key: PageStorageKey("MyAccountAccountMuteAccountPaginationListWidget"),
     );
   }
 
-  Widget buildRemoveAccountMuteButton(
-  IPaginationListBloc paginationListBloc,
-      IMyAccountAccountMuteNetworkOnlyAccountListBloc
-          myAccountAccountMuteNetworkOnlyAccountListBloc) {
-    return Builder(
-      builder: (context) => PleromaAsyncOperationButtonBuilderWidget(
-        asyncButtonAction: () async {
-          var account = Provider.of<IAccount>(context, listen: false);
-          await myAccountAccountMuteNetworkOnlyAccountListBloc
-              .removeAccountMute(account: account);
-          paginationListBloc.refreshWithController();
-        },
-        builder: (BuildContext context, void Function() onPressed) {
-          return FediIconButton(
-            icon: Icon(FediIcons.remove_circle),
-            onPressed: onPressed,
-          );
-        },
-      ),
+  const MyAccountAccountMuteAccountPaginationListWidget();
+}
+
+class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
+    extends StatelessWidget {
+  const _MyAccountAccountMuteAccountPaginationListRemoveActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountAccountMuteNetworkOnlyAccountListBloc =
+        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
+
+    var paginationListBloc = IPaginationListBloc.of(context);
+
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        var account = Provider.of<IAccount>(context, listen: false);
+        await myAccountAccountMuteNetworkOnlyAccountListBloc.removeAccountMute(
+            account: account);
+        paginationListBloc.refreshWithController();
+      },
+      builder: (BuildContext context, void Function() onPressed) {
+        return FediIconButton(
+          icon: Icon(FediIcons.remove_circle),
+          onPressed: onPressed,
+        );
+      },
     );
   }
 }

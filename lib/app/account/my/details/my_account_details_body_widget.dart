@@ -18,7 +18,7 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
           BuildContext context) =>
       AccountStatusesTimelineWidget(
         scrollController: scrollController,
-        header: FediListTile(
+        header: const FediListTile(
           isFirstInList: true,
           child: MyAccountWidget(
             onStatusesTapCallback: _onStatusesTapCallback,
