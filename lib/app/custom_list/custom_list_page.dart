@@ -66,7 +66,7 @@ class _CustomListPageState extends State<CustomListPage> {
                   needWatchLocalRepositoryForUpdates: false,
                   scrollController: scrollController,
                 ),
-                StatusListTapToLoadOverlayWidget(),
+                const StatusListTapToLoadOverlayWidget(),
               ],
             ),
           ),

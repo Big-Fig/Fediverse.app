@@ -1,8 +1,8 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/sub_header/status_sub_header_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
 
             // todo: show progress
             if (account == null) {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
 
             return StatusSubHeaderWidget(

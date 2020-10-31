@@ -70,7 +70,7 @@ class _HashtagPageState extends State<HashtagPage> {
                   needWatchLocalRepositoryForUpdates: false,
                   scrollController: scrollController,
                 ),
-                StatusListTapToLoadOverlayWidget(),
+                const StatusListTapToLoadOverlayWidget(),
               ],
             ),
           ),

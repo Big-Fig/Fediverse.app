@@ -209,10 +209,10 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
       case AccountStatusesTab.withReplies:
       case AccountStatusesTab.withoutReplies:
       case AccountStatusesTab.media:
-        return StatusListTapToLoadOverlayWidget();
+        return const StatusListTapToLoadOverlayWidget();
         break;
       case AccountStatusesTab.pinned:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
         break;
       default:
         throw "Invalid tab $tab";

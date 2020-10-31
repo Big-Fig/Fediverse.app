@@ -12,6 +12,14 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final IAccount account;
   final AccountCallback accountCallback;
 
+
+  StatusSubHeaderWidget({
+    @required this.account,
+    @required this.descText,
+    @required this.icon,
+    this.accountCallback,
+  });
+
   @override
   Widget build(BuildContext context) => Container(
         height: FediSizes.statusSubHeaderHeight,
@@ -56,10 +64,4 @@ class StatusSubHeaderWidget extends StatelessWidget {
     );
   }
 
-  StatusSubHeaderWidget({
-    @required this.account,
-    @required this.descText,
-    @required this.icon,
-    this.accountCallback,
-  });
 }

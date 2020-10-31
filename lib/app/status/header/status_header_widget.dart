@@ -34,7 +34,7 @@ class StatusHeaderWidget extends StatelessWidget {
                   horizontal: FediSizes.bigPadding),
               child: buildHeader(account, context),
             ),
-            FediUltraLightGreyDivider()
+            const FediUltraLightGreyDivider()
           ],
         ),
       ),
@@ -49,9 +49,10 @@ class StatusHeaderWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: account.avatar,
             placeholder: (context, url) => Container(
-                width: FediSizes.accountAvatarSmallSize,
-                height: FediSizes.accountAvatarSmallSize,
-                child: FediCircularProgressIndicator()),
+              width: FediSizes.accountAvatarSmallSize,
+              height: FediSizes.accountAvatarSmallSize,
+              child: const FediCircularProgressIndicator(),
+            ),
             errorWidget: (context, url, error) => Icon(Icons.error),
             height: FediSizes.accountAvatarProgressSmallSize,
             width: FediSizes.accountAvatarProgressSmallSize,
@@ -62,13 +63,13 @@ class StatusHeaderWidget extends StatelessWidget {
           account.acct,
           style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
         ),
-        FediMediumHorizontalSpacer(),
+        const FediMediumHorizontalSpacer(),
         Icon(
           icon,
           size: 16,
           color: IFediUiColorTheme.of(context).grey,
         ),
-        FediMediumHorizontalSpacer(),
+        const FediMediumHorizontalSpacer(),
         Flexible(
           child: Text(descText,
               overflow: TextOverflow.ellipsis,
@@ -78,6 +79,9 @@ class StatusHeaderWidget extends StatelessWidget {
     );
   }
 
-  const StatusHeaderWidget(
-      {@required this.account, @required this.descText, @required this.icon});
+  const StatusHeaderWidget({
+    @required this.account,
+    @required this.descText,
+    @required this.icon,
+  });
 }

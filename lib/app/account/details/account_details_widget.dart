@@ -64,11 +64,11 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
         children: [
           DisposableProvider<IScrollControllerBloc>(
-              create: (context) =>
-                  ScrollControllerBloc(scrollController: scrollController),
-              child:
-                  AccountDetailsBodyWidget(scrollController: scrollController)),
-          StatusListTapToLoadOverlayWidget(),
+            create: (context) =>
+                ScrollControllerBloc(scrollController: scrollController),
+            child: AccountDetailsBodyWidget(scrollController: scrollController),
+          ),
+          const StatusListTapToLoadOverlayWidget(),
         ],
       );
 }
