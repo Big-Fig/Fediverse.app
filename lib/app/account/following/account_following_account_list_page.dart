@@ -22,26 +22,36 @@ class AccountFollowingAccountListPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_following_title(account.acct),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: FediPadding.allBigPadding,
-              child: Text(
-                S.of(context).app_account_list_privacy,
-                textAlign: TextAlign.center,
-                style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-              ),
+      body: const _AccountFollowingAccountListBodyPage(),
+    );
+  }
+}
+
+class _AccountFollowingAccountListBodyPage extends StatelessWidget {
+  const _AccountFollowingAccountListBodyPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: Text(
+              S.of(context).app_account_list_privacy,
+              textAlign: TextAlign.center,
+              style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
             ),
-            Expanded(
-              child: AccountPaginationListWidget(
-                accountSelectedCallback: (context, account) =>
-                    goToAccountDetailsPage(context, account),
-                key: PageStorageKey("AccountFollowingAccountListPage"),
-              ),
+          ),
+          const Expanded(
+            child: AccountPaginationListWidget(
+              accountSelectedCallback: goToAccountDetailsPage,
+              key: PageStorageKey("AccountFollowingAccountListPage"),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

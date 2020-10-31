@@ -372,11 +372,9 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tabController = Provider.of<TabController>(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+    return const Padding(
+      padding:  EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
       child: AccountTabTextTabIndicatorItemWidget(
-        tabController: tabController,
         accountTabs: _tabs,
       ),
     );

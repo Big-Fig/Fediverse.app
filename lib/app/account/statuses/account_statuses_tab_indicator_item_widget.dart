@@ -12,11 +12,9 @@ import 'package:flutter/material.dart';
 
 class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<AccountStatusesTab> accountTabs;
-  final TabController tabController;
 
-  AccountTabTextTabIndicatorItemWidget({
+  const AccountTabTextTabIndicatorItemWidget({
     @required this.accountTabs,
-    @required this.tabController,
   });
 
   @override
@@ -26,9 +24,10 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: IFediUiColorTheme.of(context).darkGrey,
-            child:
-                DisposableProvider<IFediTabIndicatorBloc<AccountStatusesTab>>(
-              create: (context) => FediTabIndicatorBloc<AccountStatusesTab>(
+            child: DisposableProxyProvider<TabController,
+                IFediTabIndicatorBloc<AccountStatusesTab>>(
+              update: (context, tabController, _) =>
+                  FediTabIndicatorBloc<AccountStatusesTab>(
                 items: accountTabs,
                 tabController: tabController,
               ),

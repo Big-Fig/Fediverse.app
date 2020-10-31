@@ -14,40 +14,43 @@ class AccountFieldListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: true);
+    var accountBloc = IAccountBloc.of(context);
 
     return StreamBuilder<List<IPleromaField>>(
-        stream: accountBloc.fieldsStream,
-        initialData: accountBloc.fields,
-        builder: (context, snapshot) {
-          var fields = snapshot.data;
+      stream: accountBloc.fieldsStream,
+      builder: (context, snapshot) {
+        var fields = snapshot.data;
 
-          var nonEmptyFields = fields?.where((field) =>
-              field?.name?.isNotEmpty == true ||
-              field?.value?.isNotEmpty == true);
+        var nonEmptyFields = fields?.where((field) =>
+            field?.name?.isNotEmpty == true ||
+            field?.value?.isNotEmpty == true);
 
-          if (nonEmptyFields?.isNotEmpty == true) {
-            return Padding(
-              padding: const EdgeInsets.only(
-                bottom: FediSizes.smallPadding,
-              ),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: nonEmptyFields
-                      // hack to avoid fill parent inside GridView
-                      .map((field) => Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: FediSizes.smallPadding),
-                            child: AccountFieldListItemWidget(
-                              field: field,
-                              brightness: brightness,
-                            ),
-                          ))
-                      .toList()),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (nonEmptyFields?.isNotEmpty == true) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              bottom: FediSizes.smallPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: nonEmptyFields
+                  // hack to avoid fill parent inside GridView
+                  .map(
+                    (field) => Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: FediSizes.smallPadding),
+                      child: AccountFieldListItemWidget(
+                        field: field,
+                        brightness: brightness,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }

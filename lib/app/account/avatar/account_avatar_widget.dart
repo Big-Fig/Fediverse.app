@@ -17,7 +17,6 @@ class AccountAvatarWidget extends StatelessWidget {
 
     return StreamBuilder<String>(
         stream: accountBloc.avatarStream,
-        initialData: accountBloc.avatar,
         builder: (context, snapshot) {
           var avatar = snapshot.data;
 
@@ -28,10 +27,11 @@ class AccountAvatarWidget extends StatelessWidget {
         });
   }
 
-  static Widget buildAccountAvatarWidget(
-      {@required String avatarUrl,
-      @required double progressSize,
-      @required double imageSize}) {
+  static Widget buildAccountAvatarWidget({
+    @required String avatarUrl,
+    @required double progressSize,
+    @required double imageSize,
+  }) {
     if (avatarUrl == null) {
       return Container(
         width: imageSize,
@@ -49,7 +49,10 @@ class AccountAvatarWidget extends StatelessWidget {
             return ClipRRect(
               borderRadius: BorderRadius.circular(imageSize / 2),
               child: Image(
-                  width: imageSize, height: imageSize, image: imageProvider),
+                width: imageSize,
+                height: imageSize,
+                image: imageProvider,
+              ),
             );
           },
           imageUrl: avatarUrl,

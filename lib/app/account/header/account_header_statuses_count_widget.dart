@@ -5,17 +5,17 @@ import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountHeaderStatusesCountWidget extends StatelessWidget {
-  final Color color;
+  final bool dark;
   final OnClickUiCallback onStatusesTapCallback;
 
-  AccountHeaderStatusesCountWidget({
-    @required this.color,
+  const AccountHeaderStatusesCountWidget({
+    @required this.dark,
     @required this.onStatusesTapCallback,
   });
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
+    var accountBloc = IAccountBloc.of(context);
 
     return StreamBuilder<int>(
         stream: accountBloc.statusesCountStream,
@@ -24,12 +24,12 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
           var statusesCount = snapshot.data;
           return AccountHeaderStatisticWidget(
             label: S.of(context).app_account_info_statuses,
-            onPressed: () {
+            onClick: (context) {
               if (onStatusesTapCallback != null) {
                 onStatusesTapCallback(context);
               }
             },
-            color: color,
+            dark: dark,
             value: statusesCount,
           );
         });

@@ -9,19 +9,24 @@ class AccountAcctWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: true);
-    var textStyle = this.textStyle ?? IFediUiTextTheme.of(context).mediumShortDarkGrey;
+    var accountBloc = IAccountBloc.of(context);
+    var textStyle =
+        this.textStyle ?? IFediUiTextTheme.of(context).mediumShortDarkGrey;
     return StreamBuilder<String>(
-        stream: accountBloc.acctStream,
-        initialData: accountBloc.acct,
-        builder: (context, snapshot) {
-          var acct = snapshot.data;
+      stream: accountBloc.acctStream,
+      builder: (context, snapshot) {
+        var acct = snapshot.data;
 
-          return Text(
-            acct,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-          );
-        });
+        if (acct == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Text(
+          acct,
+          overflow: TextOverflow.ellipsis,
+          style: textStyle,
+        );
+      },
+    );
   }
 }

@@ -22,12 +22,11 @@ class AccountDisplayNameWidget extends StatelessWidget {
         this.textStyle ?? IFediUiTextTheme.of(context).bigShortBoldDarkGrey;
     return StreamBuilder<EmojiText>(
         stream: accountBloc.displayNameEmojiTextStream,
-        initialData: accountBloc.displayNameEmojiText,
         builder: (context, snapshot) {
           var accountDisplayNameEmojiText = snapshot.data;
 
           if (accountDisplayNameEmojiText == null) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
 
           return EmojiTextWidget(

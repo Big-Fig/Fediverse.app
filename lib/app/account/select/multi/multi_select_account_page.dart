@@ -24,14 +24,13 @@ class MultiSelectAccountPage extends StatelessWidget {
         IMultiSelectAccountBloc.of(context, listen: false);
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
-        leading: FediBackIconButton(),
-        child: SearchInputWidget(),
+        leading: const FediBackIconButton(),
+        child: const SearchInputWidget(),
         actions: [
           StreamBuilder<bool>(
               stream: multiSelectAccountBloc.isSomethingSelectedStream,
-              initialData: multiSelectAccountBloc.isSomethingSelected,
               builder: (context, snapshot) {
-                var isSomethingSelected = snapshot.data;
+                var isSomethingSelected = snapshot.data ?? false;
                 return FediIconButton(
                   icon: Icon(FediIcons.check),
                   onPressed: isSomethingSelected
@@ -46,7 +45,7 @@ class MultiSelectAccountPage extends StatelessWidget {
               })
         ],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: MultiSelectAccountWidget(),
       ),
     );
