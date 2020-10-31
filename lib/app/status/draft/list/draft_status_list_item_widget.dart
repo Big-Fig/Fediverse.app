@@ -25,11 +25,11 @@ final dateFormat = DateFormat("dd MMM, HH:mm a");
 class DraftStatusListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var draftStatusBloc = IDraftStatusBloc.of(context, listen: true);
+    var draftStatusBloc = IDraftStatusBloc.of(context);
 
     return Column(
       children: <Widget>[
-        buildDraftHeader(context, draftStatusBloc),
+        const _DraftStatusListItemHeaderWidget(),
         const FediUltraLightGreyDivider(),
         StreamBuilder<IDraftStatus>(
             stream: draftStatusBloc.draftStatusStream,
@@ -63,13 +63,21 @@ class DraftStatusListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildDraftHeader(
-      BuildContext context, IDraftStatusBloc draftStatusBloc) {
+  const DraftStatusListItemWidget();
+}
+
+class _DraftStatusListItemHeaderWidget extends StatelessWidget {
+  const _DraftStatusListItemHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var draftStatusBloc = IDraftStatusBloc.of(context);
     return StreamBuilder<DraftStatusState>(
         stream: draftStatusBloc.stateStream,
-        initialData: draftStatusBloc.state,
         builder: (context, snapshot) {
-          var state = snapshot.data;
+          var state = snapshot.data ?? DraftStatusState.draft;
 
           switch (state) {
             case DraftStatusState.draft:
@@ -78,11 +86,11 @@ class DraftStatusListItemWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    buildDraftAt(context, draftStatusBloc),
+                    const _DraftStatusListItemDraftAtWidget(),
                     Row(
                       children: [
-                        buildEditButton(context, draftStatusBloc),
-                        buildCancelButton(context, draftStatusBloc),
+                        const _DraftStatusListItemEditButtonWidget(),
+                        const _DraftStatusListItemCancelButtonWidget(),
                       ],
                     )
                   ],
@@ -90,83 +98,128 @@ class DraftStatusListItemWidget extends StatelessWidget {
               );
               break;
             case DraftStatusState.canceled:
-              return Padding(
-                  padding: FediPadding.horizontalSmallPadding,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: FediPadding.allSmallPadding,
-                        child: Text(
-                          S.of(context).app_status_draft_state_canceled,
-                          style: IFediUiTextTheme.of(context)
-                              .mediumShortBoldDarkGrey,
-                        ),
-                      )
-                    ],
-                  ));
+              return _DraftStatusListItemCanceledWidget();
               break;
             case DraftStatusState.alreadyPosted:
-              return Padding(
-                  padding: FediPadding.horizontalSmallPadding,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: FediPadding.allSmallPadding,
-                        child: Text(
-                          S.of(context).app_status_draft_state_alreadyPosted,
-                          style: IFediUiTextTheme.of(context)
-                              .mediumShortBoldDarkGrey,
-                        ),
-                      )
-                    ],
-                  ));
+              return _DraftStatusListItemAlreadyPostedWidget();
           }
 
           throw "Invalid state $state";
         });
   }
+}
 
-  Widget buildDraftAt(BuildContext context, IDraftStatusBloc draftStatusBloc) =>
-      StreamBuilder<DateTime>(
-          stream: draftStatusBloc.updatedAtStream,
-          initialData: draftStatusBloc.updatedAt,
-          builder: (context, snapshot) {
-            var draftAt = snapshot.data;
-            return Text(
-              dateFormat.format(draftAt),
-              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
-            );
-          });
+class _DraftStatusListItemAlreadyPostedWidget extends StatelessWidget {
+  const _DraftStatusListItemAlreadyPostedWidget({
+    Key key,
+  }) : super(key: key);
 
-  Widget buildCancelButton(
-          BuildContext context, IDraftStatusBloc draftStatusBloc) =>
-      PleromaAsyncOperationButtonBuilderWidget(
-        builder: (context, onPressed) => IconButton(
-            icon: Icon(
-              FediIcons.delete,
-              color: IFediUiColorTheme.of(context).darkGrey,
-            ),
-            iconSize: FediSizes.bigIconSize,
-            onPressed: onPressed),
-        asyncButtonAction: () => draftStatusBloc.cancelDraft(),
-      );
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_draft_state_alreadyPosted,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
+            )
+          ],
+        ));
+  }
+}
 
-  Widget buildEditButton(
-          BuildContext context, IDraftStatusBloc draftStatusBloc) =>
-      IconButton(
-        icon: Icon(
-          FediIcons.pen,
-          color: IFediUiColorTheme.of(context).darkGrey,
-        ),
-        iconSize: FediSizes.bigIconSize,
-        onPressed: () async {
-          var postStatusData = draftStatusBloc.calculatePostStatusData();
-          goToDraftEditPostStatusPage(
-            context,
-            initialData: postStatusData,
+class _DraftStatusListItemCanceledWidget extends StatelessWidget {
+  const _DraftStatusListItemCanceledWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_draft_state_canceled,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
+            )
+          ],
+        ));
+  }
+}
+
+class _DraftStatusListItemCancelButtonWidget extends StatelessWidget {
+  const _DraftStatusListItemCancelButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var draftStatusBloc = IDraftStatusBloc.of(context);
+    return PleromaAsyncOperationButtonBuilderWidget(
+      builder: (context, onPressed) => IconButton(
+          icon: Icon(
+            FediIcons.delete,
+            color: IFediUiColorTheme.of(context).darkGrey,
+          ),
+          iconSize: FediSizes.bigIconSize,
+          onPressed: onPressed),
+      asyncButtonAction: () => draftStatusBloc.cancelDraft(),
+    );
+  }
+}
+
+class _DraftStatusListItemEditButtonWidget extends StatelessWidget {
+  const _DraftStatusListItemEditButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var draftStatusBloc = IDraftStatusBloc.of(context);
+    return IconButton(
+      icon: Icon(
+        FediIcons.pen,
+        color: IFediUiColorTheme.of(context).darkGrey,
+      ),
+      iconSize: FediSizes.bigIconSize,
+      onPressed: () async {
+        var postStatusData = draftStatusBloc.calculatePostStatusData();
+        goToDraftEditPostStatusPage(
+          context,
+          initialData: postStatusData,
+        );
+      },
+    );
+  }
+}
+
+class _DraftStatusListItemDraftAtWidget extends StatelessWidget {
+  const _DraftStatusListItemDraftAtWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var draftStatusBloc = IDraftStatusBloc.of(context);
+    return StreamBuilder<DateTime>(
+        stream: draftStatusBloc.updatedAtStream,
+        initialData: draftStatusBloc.updatedAt,
+        builder: (context, snapshot) {
+          var draftAt = snapshot.data;
+          return Text(
+            dateFormat.format(draftAt),
+            style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
           );
-        },
-      );
+        });
+  }
 }

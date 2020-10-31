@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +23,14 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: S.of(context).app_status_emoji_error_cantAdd_dialog_title,
+          title: S.of(context).app_status_scheduled_edit_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context);
             },
           ),
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: EditPostStatusWidget(),
         ),
       ),
@@ -57,8 +57,9 @@ void goToScheduledEditPostStatusPage(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
         postStatusDataCallback: (PostStatusData postStatusData) async {
-          var success = await scheduledStatusBloc.postScheduledPost(postStatusData);
-          if(success) {
+          var success =
+              await scheduledStatusBloc.postScheduledPost(postStatusData);
+          if (success) {
             successCallback();
           }
           return success;
