@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class SearchInputWidget extends StatelessWidget {
   final bool autofocus;
 
-  SearchInputWidget({this.autofocus = false});
+  const SearchInputWidget({this.autofocus = false});
 
   @override
   Widget build(BuildContext context) {

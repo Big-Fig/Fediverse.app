@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class AccountFollowerAccountListPage extends StatelessWidget {
   final IAccount account;
 
-  AccountFollowerAccountListPage({@required this.account});
+  const AccountFollowerAccountListPage({@required this.account});
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +22,36 @@ class AccountFollowerAccountListPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_follower_title(account.acct)
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: FediPadding.allBigPadding,
-              child: Text(
-                S.of(context).app_account_list_privacy,
-                textAlign: TextAlign.center,
-                style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-              ),
+      body: const _AccountFollowerAccountListBodyPage(),
+    );
+  }
+}
+
+class _AccountFollowerAccountListBodyPage extends StatelessWidget {
+  const _AccountFollowerAccountListBodyPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: Text(
+              S.of(context).app_account_list_privacy,
+              textAlign: TextAlign.center,
+              style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
             ),
-            Expanded(
-              child: AccountPaginationListWidget(
-                accountSelectedCallback: (context, account) =>
-                    goToAccountDetailsPage(context, account),
-                key: PageStorageKey("AccountFollowerAccountListPage"),
-              ),
+          ),
+          const Expanded(
+            child: AccountPaginationListWidget(
+              accountSelectedCallback: goToAccountDetailsPage,
+              key: PageStorageKey("AccountFollowerAccountListPage"),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

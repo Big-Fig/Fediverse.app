@@ -38,36 +38,51 @@ class AccountListItemWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  AccountAvatarWidget(
-                    imageSize: FediSizes.accountAvatarDefaultSize,
-                    progressSize: FediSizes.accountAvatarProgressDefaultSize,
-                  ),
-                  const FediSmallHorizontalSpacer(),
-                  Flexible(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AccountDisplayNameWidget(
-                        textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey
-                            .copyWith(height: 1),
-                      ),
-                      AccountAcctWidget(
-                        textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-                      ),
-                    ],
-                  ))
-                ],
-              ),
+            const Expanded(
+              child: _AccountListItemBodyWidget(),
             ),
             if (accountActions?.isNotEmpty == true) ...accountActions
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AccountListItemBodyWidget extends StatelessWidget {
+  const _AccountListItemBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        const AccountAvatarWidget(
+          imageSize: FediSizes.accountAvatarDefaultSize,
+          progressSize: FediSizes.accountAvatarProgressDefaultSize,
+        ),
+        const FediSmallHorizontalSpacer(),
+        Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AccountDisplayNameWidget(
+                  textStyle: IFediUiTextTheme
+                      .of(context)
+                      .bigShortBoldDarkGrey
+                      .copyWith(height: 1),
+                ),
+                AccountAcctWidget(
+                  textStyle: IFediUiTextTheme
+                      .of(context)
+                      .mediumShortDarkGrey,
+                ),
+              ],
+            ))
+      ],
     );
   }
 }

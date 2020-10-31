@@ -6,79 +6,111 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:provider/provider.dart';
 
 class AccountHeaderBackgroundWidget extends StatelessWidget {
+  const AccountHeaderBackgroundWidget();
+
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: true);
+    var accountBloc = IAccountBloc.of(context);
+    return StreamBuilder<String>(
+      stream: accountBloc.headerStream.distinct(),
+      builder: (context, snapshot) {
+        var header = snapshot.data;
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return StreamBuilder<String>(
-          stream: accountBloc.headerStream.distinct(),
-          builder: (context, snapshot) {
-            var header = snapshot.data;
+        if (header == null) {
+          return const _AccountHeaderBackgroundProgressWidget();
+        }
 
-            if (header == null) {
-              return buildProgressWidget(context);
-            }
-
-            return CachedNetworkImage(
-              imageUrl: header,
-              width: constraints.maxWidth,
-              memCacheWidth: constraints.maxWidth.toInt(),
-              imageBuilder: (context, imageProvider) {
-                return Stack(
-                  children: [
-                    Image(
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                      image: imageProvider,
-                    ),
-                    buildDarkOverlayContainer(
-                      context: context,
-                      child: null,
-                    ),
-                  ],
-                );
-              },
-              progressIndicatorBuilder: (context, url, progress) =>
-                  buildProgressWidget(context),
-              errorWidget: (context, url, error) => buildDarkOverlayContainer(
-                context: context,
-                child: Center(
-                  child: Icon(
-                    FediIcons.warning,
-                    color: IFediUiColorTheme.of(context).error,
-                  ),
-                ),
-              ),
-            );
-          },
+        return Provider<String>.value(
+          value: header,
+          child: const _AccountHeaderBackgroundImageWidget(),
         );
       },
     );
   }
+}
 
-  Widget buildProgressWidget(BuildContext context) {
-    return buildDarkOverlayContainer(
-      context: context,
-      child: Center(
-        child: FediCircularProgressIndicator(),
-      ),
+class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
+  const _AccountHeaderBackgroundImageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String header = Provider.of<String>(context);
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return CachedNetworkImage(
+          imageUrl: header,
+          width: constraints.maxWidth,
+          memCacheWidth: constraints.maxWidth.toInt(),
+          imageBuilder: (context, imageProvider) {
+            return Stack(
+              children: [
+                Image(
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  image: imageProvider,
+                ),
+                const _AccountHeaderBackgroundDarkOverlayWidget(child: null),
+              ],
+            );
+          },
+          progressIndicatorBuilder: (context, url, progress) =>
+              const _AccountHeaderBackgroundProgressWidget(),
+          errorWidget: (context, url, error) =>
+              _AccountHeaderBackgroundErrorWidget(),
+        );
+      },
     );
   }
+}
 
-  Widget buildDarkOverlayContainer({
-    @required BuildContext context,
-    @required Widget child,
-  }) =>
-      Container(
+class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
+  const _AccountHeaderBackgroundErrorWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _AccountHeaderBackgroundDarkOverlayWidget(
+        child: Center(
+      child: Icon(
+        FediIcons.warning,
+        color: IFediUiColorTheme.of(context).error,
+      ),
+    ));
+  }
+}
+
+class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {
+  const _AccountHeaderBackgroundProgressWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      const _AccountHeaderBackgroundDarkOverlayWidget(
+          child: Center(
+        child: FediCircularProgressIndicator(),
+      ));
+}
+
+class _AccountHeaderBackgroundDarkOverlayWidget extends StatelessWidget {
+  const _AccountHeaderBackgroundDarkOverlayWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
         child: child,
         decoration: BoxDecoration(
             color: IFediUiColorTheme.of(context).imageDarkOverlay),
       );
-
-  const AccountHeaderBackgroundWidget();
 }

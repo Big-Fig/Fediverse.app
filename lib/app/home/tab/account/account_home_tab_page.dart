@@ -375,16 +375,12 @@ class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var tabController = Provider.of<TabController>(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-      child: AccountTabTextTabIndicatorItemWidget(
-        tabController: tabController,
-        accountTabs: _tabs,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => const Padding(
+        padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+        child: AccountTabTextTabIndicatorItemWidget(
+          accountTabs: _tabs,
+        ),
+      );
 }
 
 class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
