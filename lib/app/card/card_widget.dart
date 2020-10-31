@@ -134,5 +134,5 @@ class CardWidget extends StatelessWidget {
         errorWidget: (context, url, error) => Icon(FediIcons.warning),
       );
 
-  CardWidget();
+  const CardWidget();
 }

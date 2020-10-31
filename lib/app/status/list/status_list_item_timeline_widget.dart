@@ -1,6 +1,8 @@
 import 'package:fedi/app/status/account/status_account_widget.dart';
 import 'package:fedi/app/status/action/status_actions_list_widget.dart';
 import 'package:fedi/app/status/action/status_show_this_thread_action_widget.dart';
+import 'package:fedi/app/status/body/status_body_bloc.dart';
+import 'package:fedi/app/status/body/status_body_bloc_impl.dart';
 import 'package:fedi/app/status/body/status_body_widget.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
@@ -278,14 +280,14 @@ class _StatusListItemTimelineOriginalBodyContentWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
-
-    return StatusBodyWidget(
-      collapsible: statusListItemTimelineBloc.collapsible,
-      initialMediaAttachment: statusListItemTimelineBloc.initialMediaAttachment,
-    );
-  }
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IStatusListItemTimelineBloc, IStatusBodyBloc>(
+        update: (context, value, previous) => StatusBodyBloc(
+          collapsible: value.collapsible,
+          initialMediaAttachment: value.initialMediaAttachment,
+        ),
+        child: const StatusBodyWidget(),
+      );
 }
 
 void _onStatusListItemClick(BuildContext context) {
