@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -13,7 +14,9 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+Function eq = const ListEquality().equals;
 var _logger = Logger("status_thread_bloc_impl.dart");
 
 class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
@@ -26,12 +29,22 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final BehaviorSubject<bool> _firstStatusInThreadSubject;
   final StreamController<IStatus> _onNewStatusAddedStreamController =
       StreamController.broadcast();
+
   @override
   Stream<IStatus> get onNewStatusAddedStream =>
       _onNewStatusAddedStreamController.stream;
 
   @override
   final IPleromaMediaAttachment initialMediaAttachment;
+
+  @override
+  final ItemScrollController itemScrollController = ItemScrollController();
+  @override
+  final ItemPositionsListener itemPositionListener =
+      ItemPositionsListener.create();
+
+  @override
+  bool isJumpedToStartState = false;
 
   StatusThreadBloc({
     @required this.pleromaStatusService,
@@ -52,6 +65,11 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
 
   @override
   Stream<List<IStatus>> get statusesStream => _statusesSubject.stream;
+
+  @override
+  Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
+        (a, b) => eq(a, b),
+      );
 
   @override
   List<IPleromaMention> get mentions => findAllMentions(statuses);
@@ -170,8 +188,26 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
 
   @override
   void addStatusInThread(IStatus status) {
-    statuses.add(status);
-    _statusesSubject.add(statuses);
+    _logger.finest(() => "addStatusInThread $status");
+    _statusesSubject.add([...statuses, status]);
     _onNewStatusAddedStreamController.add(status);
+  }
+
+  @override
+  void scrollToIndex(int index) {
+    if (itemScrollController.isAttached) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: Duration(milliseconds: 1000),
+      );
+    }
+  }
+
+  @override
+  void scrollToStartIndex() {
+    if (!isJumpedToStartState) {
+      isJumpedToStartState = true;
+      scrollToIndex(initialStatusToFetchThreadIndex);
+    }
   }
 }
