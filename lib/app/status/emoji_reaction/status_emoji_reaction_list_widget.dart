@@ -19,7 +19,6 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
 
     return StreamBuilder<List<IPleromaStatusEmojiReaction>>(
       stream: statusBloc.reblogPlusOriginalEmojiReactionsStream,
-      initialData: statusBloc.reblogPlusOriginalPleromaEmojiReactions,
       builder: (context, snapshot) {
         var emojiReactions = snapshot.data;
         if (emojiReactions?.isNotEmpty == true) {
@@ -36,25 +35,27 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                           Provider<IPleromaStatusEmojiReaction>.value(
                             value: emojiReaction,
                             child: DisposableProxyProvider<
-                                    IPleromaStatusEmojiReaction,
-                                    IStatusEmojiReactionBloc>(
-                                update: (context, value, previous) =>
-                                    StatusEmojiReactionBloc(
-                                        status: statusBloc.status,
-                                        statusRepository: IStatusRepository.of(
-                                            context,
-                                            listen: false),
-                                        emojiReaction: value,
-                                        pleromaStatusEmojiReactionService:
-                                            IPleromaStatusEmojiReactionService
-                                                .of(context, listen: false)),
-                                child: StatusEmojiReactionListItemWidget()),
+                                IPleromaStatusEmojiReaction,
+                                IStatusEmojiReactionBloc>(
+                              update: (context, value, previous) =>
+                                  StatusEmojiReactionBloc(
+                                      status: statusBloc.status,
+                                      statusRepository: IStatusRepository.of(
+                                          context,
+                                          listen: false),
+                                      emojiReaction: value,
+                                      pleromaStatusEmojiReactionService:
+                                          IPleromaStatusEmojiReactionService.of(
+                                              context,
+                                              listen: false)),
+                              child: const StatusEmojiReactionListItemWidget(),
+                            ),
                           ))
                       .toList(),
                 )),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );
