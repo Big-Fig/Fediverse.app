@@ -40,14 +40,22 @@ class NotificationListItemWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
+    var bodyWidget = const _NotificationListItemBodyWidget();
     return StreamBuilder<bool>(
         stream: notificationBloc.dismissedStream,
         builder: (context, snapshot) {
           var dismissed = snapshot.data;
           if (dismissed == true) {
-            return const _NotificationListItemBodyDismissedWidget();
+            return Stack(
+              children: [
+                bodyWidget,
+                Positioned.fill(
+                  child: const _NotificationListItemBodyDismissedWidget(),
+                ),
+              ],
+            );
           } else {
-            return const _NotificationListItemBodyWidget();
+            return bodyWidget;
           }
         });
   }
@@ -62,7 +70,6 @@ class _NotificationListItemBodyDismissedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediBlurredOverlayWarningWidget(
       descriptionText: S.of(context).app_notification_dismissed,
-      child: const _NotificationListItemBodyWidget(),
     );
   }
 }

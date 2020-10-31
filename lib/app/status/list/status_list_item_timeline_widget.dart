@@ -95,7 +95,14 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
         var deleted = snapshot.data ?? false;
 
         if (deleted == true) {
-          return StatusDeletedOverlayWidget(child: child);
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: const StatusDeletedOverlayWidget(),
+              ),
+              child,
+            ],
+          );
         } else {
           return child;
         }
