@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -18,10 +17,11 @@ import 'package:fedi/app/status/thread/status_thread_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/material.dart';
@@ -32,21 +32,29 @@ class StatusThreadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
-        leading: FediBackIconButton(),
-        child: buildStatusStarterAccountWidget(context),
+        leading: const FediBackIconButton(),
+        child: const _StatusThreadStarterAccountWidget(),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: StatusThreadWidget(),
       ),
     );
   }
 
-  Widget buildStatusStarterAccountWidget(BuildContext context) {
-    var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
+  const StatusThreadPage();
+}
+
+class _StatusThreadStarterAccountWidget extends StatelessWidget {
+  const _StatusThreadStarterAccountWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusThreadBloc = IStatusThreadBloc.of(context);
 
     return StreamBuilder<IStatus>(
         stream: statusThreadBloc.firstStatusInThreadStream,
-        initialData: statusThreadBloc.firstStatusInThread,
         builder: (context, snapshot) {
           var status = snapshot.data;
           var account = status?.account;
@@ -80,44 +88,54 @@ class StatusThreadPage extends StatelessWidget {
                     onTap: () {
                       goToAccountDetailsPage(context, account);
                     },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Row(
-                            children: [
-                              AccountAvatarWidget(
-                                imageSize: FediSizes.appBarAvatarSize,
-                                progressSize: FediSizes.appBarAvatarSize * 0.8,
-                              ),
-                              const FediBigHorizontalSpacer(),
-                              Flexible(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AccountDisplayNameWidget(),
-                                    AccountAcctWidget(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: FediPadding.horizontalBigPadding,
-                          child: StatusCreatedAtWidget(),
-                        )
-                      ],
-                    ),
+                    child: const _StatusThreadStarterAccountBodyWidget(),
                   ),
                 ),
               ),
             ),
           );
         });
+  }
+}
+
+class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
+  const _StatusThreadStarterAccountBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Flexible(
+          child: Row(
+            children: [
+              const AccountAvatarWidget(
+                imageSize: FediSizes.appBarAvatarSize,
+                progressSize: FediSizes.appBarAvatarSize * 0.8,
+              ),
+              const FediBigHorizontalSpacer(),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AccountDisplayNameWidget(),
+                    const AccountAcctWidget(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Padding(
+          padding: FediPadding.horizontalBigPadding,
+          child: StatusCreatedAtWidget(),
+        )
+      ],
+    );
   }
 }
 
@@ -147,8 +165,11 @@ MaterialPageRoute createStatusThreadPageRoute({
               IPleromaStatusService.of(context, listen: false),
           initialStatusToFetchThread: status,
           initialMediaAttachment: initialMediaAttachment),
-      child: ThreadPostStatusBloc.provideToContext(context,
-          inReplyToStatus: status, child: StatusThreadPage()),
+      child: ThreadPostStatusBloc.provideToContext(
+        context,
+        inReplyToStatus: status,
+        child: const StatusThreadPage(),
+      ),
     ),
   );
 }
