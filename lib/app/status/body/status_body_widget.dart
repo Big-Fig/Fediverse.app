@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,44 +75,6 @@ class StatusBodyWidget extends StatelessWidget {
                 );
               }
             }),
-        // StreamBuilder<bool>(
-        //     stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream
-        //         .distinct(),
-        //     initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
-        //     builder: (context, snapshot) {
-        //       var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
-        //
-        //       _logger.finest(() =>
-        //           "StreamBuilder nsfwSensitiveAndDisplayNsfwContentEnabled $nsfwSensitiveAndDisplayNsfwContentEnabled");
-        //
-        //       var child = StreamBuilder<bool>(
-        //           stream: statusBloc
-        //               .containsSpoilerAndDisplaySpoilerContentEnabledStream
-        //               .distinct(),
-        //           initialData:
-        //               statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
-        //           builder: (context, snapshot) {
-        //             var containsSpoilerAndDisplayEnabled = snapshot.data;
-        //
-        //             _logger.finest(() =>
-        //                 "StreamBuilder containsSpoilerAndDisplayEnabled $containsSpoilerAndDisplayEnabled");
-        //             // todo: remove temp hack
-        //             var alreadyClickedShowContent = statusBloc.nsfwSensitive;
-        //             if (containsSpoilerAndDisplayEnabled ||
-        //                 alreadyClickedShowContent) {
-        //               return buildStatusBodyWidget(context, statusBloc);
-        //             } else {
-        //               return buildSpoilerWithoutBodyWidget(context, statusBloc);
-        //             }
-        //           });
-        //       if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-        //         return child;
-        //       } else {
-        //         return StatusNsfwWarningOverlayWidget(
-        //           child: child,
-        //         );
-        //       }
-        //     }),
       ],
     );
   }

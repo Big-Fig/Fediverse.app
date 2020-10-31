@@ -1,13 +1,13 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/header/status_header_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusReblogHeaderWidget extends StatelessWidget {
-  StatusReblogHeaderWidget();
+  const StatusReblogHeaderWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var account = snapshot.data;
             return StatusHeaderWidget(
-                descText:
-                    S.of(context).app_status_reblog_header,
+                descText: S.of(context).app_status_reblog_header,
                 account: account,
                 icon: FediIcons.reply);
           });

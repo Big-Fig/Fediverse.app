@@ -8,6 +8,8 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusActionsListWidget extends StatelessWidget {
+  const StatusActionsListWidget();
+
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc =
@@ -27,13 +29,13 @@ class StatusActionsListWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              StatusCommentActionWidget(),
-              StatusFavouriteActionWidget(),
-              if (isPleromaInstance) StatusEmojiActionWidget(),
-              StatusReblogActionWidget()
+              const StatusCommentActionWidget(),
+              const StatusFavouriteActionWidget(),
+              if (isPleromaInstance) const StatusEmojiActionWidget(),
+              const StatusReblogActionWidget()
             ],
           ),
-          StatusMoreActionWidget(),
+          const StatusMoreActionWidget(),
         ],
       ),
     );

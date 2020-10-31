@@ -47,7 +47,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                             descriptionText,
                             style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                           ),
-                          FediBigVerticalSpacer(),
+                          const FediBigVerticalSpacer(),
                         ],
                         if (buttonText != null && buttonAction != null)
                           FediPrimaryFilledTextButton(
