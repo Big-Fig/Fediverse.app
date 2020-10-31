@@ -41,12 +41,7 @@ class StatusReplyWidget extends StatelessWidget {
               );
               break;
             case AsyncInitLoadingState.failed:
-              return Padding(
-                padding: FediPadding.allSmallPadding,
-                child: Text(
-                  S.of(context).app_status_reply_loading_failed,
-                ),
-              );
+              return _StatusReplyFailedWidget();
               break;
           }
 
@@ -64,6 +59,22 @@ class StatusReplyWidget extends StatelessWidget {
         initialMediaAttachment: null,
       ),
       child: const StatusListItemTimelineWidget(),
+    );
+  }
+}
+
+class _StatusReplyFailedWidget extends StatelessWidget {
+  const _StatusReplyFailedWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allSmallPadding,
+      child: Text(
+        S.of(context).app_status_reply_loading_failed,
+      ),
     );
   }
 }

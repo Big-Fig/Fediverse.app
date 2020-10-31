@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusReblogAccountListPage extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,23 +22,35 @@ class StatusReblogAccountListPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: FediPadding.allBigPadding,
-              child: Text(
-                S.of(context).app_account_list_privacy,
-                textAlign: TextAlign.center,
-                style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-              ),
-            ),
-            Expanded(
+            const _StatusReblogAccountListPrivacyWarningWidget(),
+            const Expanded(
               child: AccountPaginationListWidget(
-                accountSelectedCallback: (context, account) =>
-                    goToAccountDetailsPage(context, account),
+                accountSelectedCallback: goToAccountDetailsPage,
                 key: PageStorageKey("StatusReblogAccountListPage"),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  const StatusReblogAccountListPage();
+}
+
+class _StatusReblogAccountListPrivacyWarningWidget extends StatelessWidget {
+  const _StatusReblogAccountListPrivacyWarningWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Text(
+        S.of(context).app_account_list_privacy,
+        textAlign: TextAlign.center,
+        style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
       ),
     );
   }
@@ -54,7 +67,7 @@ void goToStatusReblogAccountListPage(BuildContext context, IStatus status) {
               child: AccountCachedPaginationBloc.provideToContext(
                 context,
                 child: AccountPaginationListBloc.provideToContext(context,
-                    child: StatusReblogAccountListPage()),
+                    child: const StatusReblogAccountListPage()),
               ),
             )),
   );

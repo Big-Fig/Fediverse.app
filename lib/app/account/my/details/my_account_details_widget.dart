@@ -44,7 +44,7 @@ class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
         children: [
           MyAccountDetailsBodyWidget(scrollController: scrollController),
-          StatusListTapToLoadOverlayWidget()
+          const StatusListTapToLoadOverlayWidget()
         ],
       );
 }

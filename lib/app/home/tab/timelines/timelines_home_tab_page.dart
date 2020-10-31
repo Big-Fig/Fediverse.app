@@ -172,7 +172,7 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
           tabBodyContentBuilder: (BuildContext context, int index) =>
               buildTabBodyContent(),
           tabBodyOverlayBuilder: (BuildContext context, int index) =>
-              StatusListTapToLoadOverlayWidget(),
+              const StatusListTapToLoadOverlayWidget(),
           tabBarViewContainerBuilder: null,
         ),
       ),
