@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_dialog.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc_impl.dart';
@@ -13,6 +12,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';
@@ -28,52 +28,78 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_domainBlock_title,
         actions: [
-          FediIconButton(
-            icon: Icon(FediIcons.plus),
-            onPressed: () {
-              AddMyAccountDomainBlockDialog.createFromContext(
-                  context: context,
-                  successCallback: () {
-                    IPaginationListBloc.of(context, listen: false)
-                        .refreshWithController();
-                  }).show(context);
-            },
-          ),
+          const _MyAccountDomainBlockListPageAddAction(),
         ],
       ),
-      body: SafeArea(
-        child: MyAccountDomainBlockPaginationListWidget(
-          key: PageStorageKey("MyAccountDomainBlockListPage"),
-          domainBlockSelectedCallback:
-              (BuildContext context, DomainBlock domain) {
-            // nothing
-          },
-          domainBlockActions: <Widget>[buildRemoveDomainBlockButton(context)],
-        ),
+      body: const _MyAccountDomainBlockListPageBody(),
+    );
+  }
+}
+
+class _MyAccountDomainBlockListPageBody extends StatelessWidget {
+  const _MyAccountDomainBlockListPageBody({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SafeArea(
+      child: MyAccountDomainBlockPaginationListWidget(
+        key: PageStorageKey("MyAccountDomainBlockListPage"),
+        domainBlockSelectedCallback: null,
+        domainBlockActions: <Widget>[
+          _MyAccountDomainBlockListPageRemoveItemAction(),
+        ],
       ),
     );
   }
+}
 
-  Widget buildRemoveDomainBlockButton(BuildContext context) {
+class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
+  const _MyAccountDomainBlockListPageRemoveItemAction({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var myAccountDomainBlockNetworkOnlyListBloc =
-        IMyAccountDomainBlockNetworkOnlyListBloc.of(context, listen: false);
+        IMyAccountDomainBlockNetworkOnlyListBloc.of(context);
 
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
-    return Builder(
-      builder: (context) => PleromaAsyncOperationButtonBuilderWidget(
-        asyncButtonAction: () async {
-          var domain = Provider.of<DomainBlock>(context, listen: false);
-          await myAccountDomainBlockNetworkOnlyListBloc.removeDomainBlock(
-              domain: domain.domain);
-          paginationListBloc.refreshWithController();
-        },
-        builder: (BuildContext context, void Function() onPressed) {
-          return FediIconButton(
-            icon: Icon(FediIcons.remove_circle),
-            onPressed: onPressed,
-          );
-        },
-      ),
+    var paginationListBloc = IPaginationListBloc.of(context);
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        var domain = Provider.of<DomainBlock>(context, listen: false);
+        await myAccountDomainBlockNetworkOnlyListBloc.removeDomainBlock(
+            domain: domain.domain);
+        paginationListBloc.refreshWithController();
+      },
+      builder: (BuildContext context, void Function() onPressed) {
+        return FediIconButton(
+          icon: Icon(FediIcons.remove_circle),
+          onPressed: onPressed,
+        );
+      },
+    );
+  }
+}
+
+class _MyAccountDomainBlockListPageAddAction extends StatelessWidget {
+  const _MyAccountDomainBlockListPageAddAction({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+      icon: Icon(FediIcons.plus),
+      onPressed: () {
+        AddMyAccountDomainBlockDialog.createFromContext(
+            context: context,
+            successCallback: () {
+              IPaginationListBloc.of(context, listen: false)
+                  .refreshWithController();
+            }).show(context);
+      },
     );
   }
 }

@@ -18,12 +18,13 @@ class MyAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var isNotMyAccount = !myAccountBloc.checkAccountIsMe(accountBloc.account);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           MyAccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
-          if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
+          if (isNotMyAccount)
             Container(
               color: IFediUiColorTheme.of(context).primary,
               child: const AccountActionListWidget(),
@@ -31,12 +32,12 @@ class MyAccountWidget extends StatelessWidget {
           AccountNoteWidget(
             textStyle: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
+          const Padding(
+            padding: EdgeInsets.only(
               left: FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,
               right: FediSizes.bigPadding,
             ),
-            child: const AccountFieldListWidget(
+            child: AccountFieldListWidget(
               brightness: Brightness.dark,
             ),
           ),

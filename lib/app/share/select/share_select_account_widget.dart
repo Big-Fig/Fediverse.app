@@ -44,7 +44,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
                   children: [
                     header,
                     const Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: EdgeInsets.only(left: 8.0),
                       child: SearchInputWidget(),
                     ),
                   ],

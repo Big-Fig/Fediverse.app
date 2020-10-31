@@ -3,13 +3,12 @@ import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AccountHeaderStatusesCountWidget extends StatelessWidget {
-  final bool dark;
   final OnClickUiCallback onStatusesTapCallback;
 
   const AccountHeaderStatusesCountWidget({
-    @required this.dark,
     @required this.onStatusesTapCallback,
   });
 
@@ -18,20 +17,21 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
 
     return StreamBuilder<int>(
-        stream: accountBloc.statusesCountStream,
-        initialData: accountBloc.statusesCount,
-        builder: (context, snapshot) {
-          var statusesCount = snapshot.data;
-          return AccountHeaderStatisticWidget(
+      stream: accountBloc.statusesCountStream,
+      builder: (context, snapshot) {
+        var count = snapshot.data;
+        return Provider<int>.value(
+          value: count,
+          child: AccountHeaderStatisticWidget(
             label: S.of(context).app_account_info_statuses,
             onClick: (context) {
               if (onStatusesTapCallback != null) {
                 onStatusesTapCallback(context);
               }
             },
-            dark: dark,
-            value: statusesCount,
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

@@ -23,7 +23,7 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_statuses_favourited_title,
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: CollapsibleOwnerWidget(
           child: StatusCachedPaginationListTimelineWidget(
             needWatchLocalRepositoryForUpdates: true,
@@ -32,6 +32,8 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
       ),
     );
   }
+
+  const MyAccountFavouritedStatusesPage();
 }
 
 void goToMyAccountFavouritedStatusesPage(BuildContext context) {
@@ -65,7 +67,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
             context,
             child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
               context,
-              child: MyAccountFavouritedStatusesPage(),
+              child: const MyAccountFavouritedStatusesPage(),
               mergeNewItemsImmediately: false,
               mergeOwnStatusesImmediately: false,
             ),
