@@ -645,6 +645,12 @@ class StatusWarningState {
   bool displayNsfwSensitive;
   bool displayContainsSpoiler;
 
+  bool get containsSpoilerAndDisplayEnabled =>
+      containsSpoiler != true || displayContainsSpoiler;
+
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled =>
+      nsfwSensitive != true || displayNsfwSensitive;
+
   StatusWarningState({
     @required this.nsfwSensitive,
     @required this.containsSpoiler,

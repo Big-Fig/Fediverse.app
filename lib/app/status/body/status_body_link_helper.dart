@@ -4,10 +4,11 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:flutter/widgets.dart';
 
-Future handleStatusContentLinkClick(
-    {@required IStatusBloc statusBloc,
-    @required String link,
-    @required BuildContext context}) async {
+Future handleStatusBodyLinkClick({
+  @required IStatusBloc statusBloc,
+  @required String link,
+  @required BuildContext context,
+}) async {
   var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: link);
 
   if (mentionedAccount != null) {

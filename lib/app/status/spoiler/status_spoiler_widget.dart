@@ -1,5 +1,5 @@
 import 'package:fedi/app/html/html_text_widget.dart';
-import 'package:fedi/app/status/content/status_content_link_helper.dart';
+import 'package:fedi/app/status/body/status_body_link_helper.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class StatusSpoilerWidget extends StatelessWidget {
 }
 
 void _handleLinkTap(context, url) async {
-  await handleStatusContentLinkClick(
+  await handleStatusBodyLinkClick(
     statusBloc: IStatusBloc.of(
       context,
       listen: false,

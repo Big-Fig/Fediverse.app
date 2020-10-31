@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
-  StatusSpoilerWarningOverlayWidget({
+  const StatusSpoilerWarningOverlayWidget({
     @required this.child,
   });
 
