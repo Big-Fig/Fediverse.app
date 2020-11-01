@@ -41,6 +41,7 @@ void showEditMyAccountAvatarDialog(
                 }
 
                 selectedCallback(
+                  context,
                   FileMediaDeviceFile(
                     originalFile: croppedFile,
                     type: mediaDeviceFile.type,
@@ -48,7 +49,10 @@ void showEditMyAccountAvatarDialog(
                   ),
                 );
               } else {
-                selectedCallback(mediaDeviceFile);
+                selectedCallback(
+                  context,
+                  mediaDeviceFile,
+                );
               }
             },
             child: Text(S

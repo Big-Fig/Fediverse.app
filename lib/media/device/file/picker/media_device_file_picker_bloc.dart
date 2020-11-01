@@ -19,7 +19,7 @@ abstract class IMediaDeviceFilePickerBloc implements IDisposable {
 
   Stream<List<MediaDeviceFilePickerFilter>> get availableFiltersStream;
 
-  void onFilterSelected(MediaDeviceFilePickerFilter filter);
+  void onFilterSelected(BuildContext context, MediaDeviceFilePickerFilter filter);
 
-  void onFileSelected(IMediaDeviceFile filePickerFile);
+  void onFileSelected(BuildContext context, IMediaDeviceFile filePickerFile);
 }

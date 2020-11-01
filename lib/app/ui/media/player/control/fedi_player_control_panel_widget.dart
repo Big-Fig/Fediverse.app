@@ -8,12 +8,14 @@ class FediPlayerControlPanelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          FediPlayerControlPositionDurationWidget(),
-          Expanded(
+          const FediPlayerControlPositionDurationWidget(),
+          const Expanded(
             child: FediPlayerControlProgressWidget(),
           ),
-          FediPlayerControlLengthDurationWidget(),
-          FediPlayerControlToggleMuteButtonWidget()
+          const FediPlayerControlLengthDurationWidget(),
+          const FediPlayerControlToggleMuteButtonWidget()
         ],
       );
+
+  const FediPlayerControlPanelWidget();
 }

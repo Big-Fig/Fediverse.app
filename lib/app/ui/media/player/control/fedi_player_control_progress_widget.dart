@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class FediPlayerControlProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
@@ -20,29 +19,43 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
         thumbColor: fediUiColorTheme.white,
         disabledThumbColor: IFediUiColorTheme.of(context).mediumGrey,
       ),
-      child: StreamBuilder<bool>(
-          stream: mediaPlayerBloc.isInitializedStream,
-          initialData: mediaPlayerBloc.isInitialized,
-          builder: (context, snapshot) {
-            var isInitialized = snapshot.data;
+      child: _FediPlayerControlProgressPlaybackWidget(),
+    );
+  }
 
-            return StreamBuilder<double>(
-                stream: mediaPlayerBloc.currentPlaybackPercentStream,
-                initialData: mediaPlayerBloc.currentPlaybackPercent,
-                builder: (context, snapshot) {
-                  var currentPlaybackPercent = snapshot.data ?? 0.0;
-                  return Slider(
-                    value: currentPlaybackPercent,
-                    min: 0.0,
-                    max: 1.0,
-                    onChanged: isInitialized
-                        ? (value) {
-                            mediaPlayerBloc.seekToPercent(value);
-                          }
-                        : null,
-                  );
-                });
-          }),
+  const FediPlayerControlProgressWidget();
+}
+
+class _FediPlayerControlProgressPlaybackWidget extends StatelessWidget {
+  const _FediPlayerControlProgressPlaybackWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
+    return StreamBuilder<bool>(
+      stream: mediaPlayerBloc.isInitializedStream,
+      builder: (context, snapshot) {
+        var isInitialized = snapshot.data ?? false;
+
+        return StreamBuilder<double>(
+          stream: mediaPlayerBloc.currentPlaybackPercentStream,
+          builder: (context, snapshot) {
+            var currentPlaybackPercent = snapshot.data ?? 0.0;
+            return Slider(
+              value: currentPlaybackPercent,
+              min: 0.0,
+              max: 1.0,
+              onChanged: isInitialized
+                  ? (value) {
+                      mediaPlayerBloc.seekToPercent(value);
+                    }
+                  : null,
+            );
+          },
+        );
+      },
     );
   }
 }
