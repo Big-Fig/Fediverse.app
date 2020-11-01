@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("device_upload_media_attachment_bloc_impl.dart");
 
-class DeviceUploadMediaAttachmentBloc extends DisposableOwner
+class UploadMediaAttachmentBlocDevice extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
@@ -37,7 +37,7 @@ class DeviceUploadMediaAttachmentBloc extends DisposableOwner
   @override
   UploadMediaAttachmentState get uploadState => uploadStateSubject.value;
 
-  DeviceUploadMediaAttachmentBloc({
+  UploadMediaAttachmentBlocDevice({
     @required this.pleromaMediaAttachmentService,
     @required this.mediaDeviceFile,
     @required this.maximumFileSizeInBytes,

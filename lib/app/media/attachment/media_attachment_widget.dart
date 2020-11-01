@@ -6,34 +6,33 @@ import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.d
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-var _maxHeight = 350.0;
+const _maxHeight = 350.0;
 
 class MediaAttachmentWidget extends StatelessWidget {
-  final IPleromaMediaAttachment mediaAttachment;
-
-  const MediaAttachmentWidget({@required this.mediaAttachment});
+  const MediaAttachmentWidget();
 
   @override
   Widget build(BuildContext context) {
+    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
-        return MediaAttachmentImageWidget(
-          mediaAttachment,
+        return const MediaAttachmentImageWidget(
           maxHeight: _maxHeight,
         );
         break;
 
       case MastodonMediaAttachmentType.video:
       case MastodonMediaAttachmentType.gifv:
-        return MediaAttachmentVideoWidget(mediaAttachment);
+        return const MediaAttachmentVideoWidget();
       case MastodonMediaAttachmentType.audio:
-        return MediaAttachmentAudioWidget(mediaAttachment);
+        return const MediaAttachmentAudioWidget();
         break;
 
       case MastodonMediaAttachmentType.unknown:
       default:
-        return MediaAttachmentUnknownWidget(mediaAttachment);
+        return const MediaAttachmentUnknownWidget();
         break;
     }
   }

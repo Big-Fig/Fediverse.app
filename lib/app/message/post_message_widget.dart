@@ -1,5 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_all_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
@@ -116,7 +116,7 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
         }),
         builder: (context, snapshot) {
           var heightOnKeyboardOpen = snapshot.data;
-          return UploadMediaAttachmentsWidget(
+          return UploadMediaAttachmentListAllWidget(
             scrollable: true,
             heightOnKeyboardOpen: heightOnKeyboardOpen,
           );

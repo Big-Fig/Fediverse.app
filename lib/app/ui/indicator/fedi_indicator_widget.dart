@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class FediIndicatorWidget extends StatelessWidget {
   final bool active;
 
-  FediIndicatorWidget({@required this.active});
+  const FediIndicatorWidget({@required this.active});
 
   @override
   Widget build(BuildContext context) {

@@ -12,22 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareMediaPage extends StatelessWidget {
-  final IPleromaMediaAttachment mediaAttachment;
 
-  ExternalShareMediaPage({@required this.mediaAttachment});
+  const ExternalShareMediaPage();
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediSubPageTitleAppBar(
           title: S.of(context).app_share_external_title,
           actions: [
-            ShareIconButtonWidget(
+            const ShareIconButtonWidget(
               iconSize: FediSizes.appBarIconSize,
             ),
           ],
         ),
-        body: ShareMediaWithMessageWidget(
-          mediaAttachment: mediaAttachment,
+        body: const ShareMediaWithMessageWidget(
           footer: Padding(
             padding: FediPadding.horizontalSmallPadding,
             child: ExternalShareAsLinkFieldWidget(),
@@ -56,10 +54,9 @@ MaterialPageRoute createExternalShareMediaPageRoute({
     builder: (context) => ExternalShareMediaBloc.provideToContext(
       context,
       mediaAttachment: mediaAttachment,
-      child: Provider.value(
+      child: Provider<IPleromaMediaAttachment>.value(
         value: mediaAttachment,
-        child: ExternalShareMediaPage(
-          mediaAttachment: mediaAttachment,
+        child: const ExternalShareMediaPage(
         ),
       ),
       popupTitle: S.of(context).app_share_external_title,

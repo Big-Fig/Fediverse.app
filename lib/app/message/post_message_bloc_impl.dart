@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';

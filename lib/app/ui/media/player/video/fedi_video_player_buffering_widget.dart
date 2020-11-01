@@ -10,16 +10,19 @@ class FediVideoPlayerBufferingWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: videoMediaPlayerBloc.isBufferingStream,
-        builder: (context, snapshot) {
-          var isBuffering = snapshot.data ?? true;
-          if (isBuffering) {
-            return const _FediVideoPlayerBufferingLoadingWidget();
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+      stream: videoMediaPlayerBloc.isBufferingStream,
+      builder: (context, snapshot) {
+        var isBuffering = snapshot.data ?? true;
+        if (isBuffering) {
+          return const _FediVideoPlayerBufferingLoadingWidget();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
+
+  const FediVideoPlayerBufferingWidget();
 }
 
 class _FediVideoPlayerBufferingLoadingWidget extends StatelessWidget {

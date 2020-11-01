@@ -1,6 +1,8 @@
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
-import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
 import 'package:fedi/app/status/body/status_body_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -160,9 +163,12 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return MediaAttachmentsWidget(
-            mediaAttachments: snapshot.data,
-            initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+          return DisposableProvider<IMediaAttachmentListBloc>(
+            create: (context) => MediaAttachmentListBloc(
+              mediaAttachments: snapshot.data,
+              initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+            ),
+            child: const MediaAttachmentListCarouselWidget(),
           );
         } else {
           return SizedBox.shrink();
