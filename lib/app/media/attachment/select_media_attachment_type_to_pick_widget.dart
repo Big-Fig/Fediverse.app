@@ -189,19 +189,23 @@ class _SelectMediaAttachmentTypeToPickGalleryActionWidget
 
   @override
   Widget build(BuildContext context) {
+    var attachmentsCollectionBloc =
+        IUploadMediaAttachmentsCollectionBloc.of(context);
+            var navigatorState = Navigator.of(context);
     return _SelectMediaAttachmentTypeToPickActionWidget(
-        iconData: FediIcons.image,
-        label: S.of(context).app_media_attachment_type_gallery,
-        onTap: () async {
-          goToSingleMediaPickerPage(context, onFileSelectedCallback:
+      iconData: FediIcons.image,
+      label: S.of(context).app_media_attachment_type_gallery,
+      onTap: () async {
+        goToSingleMediaPickerPage(
+          context,
+          onFileSelectedCallback:
               (context, IMediaDeviceFile mediaDeviceFile) async {
-            var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
             await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
-            Navigator.of(context).pop();
-          });
-        });
+            navigatorState.pop();
+          },
+        );
+      },
+    );
   }
 }
 
