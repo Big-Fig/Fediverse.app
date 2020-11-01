@@ -44,8 +44,8 @@ class SingleMediaPickerPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
         centerTitle: true,
-        child: _buildAppBarTitle(context),
-        leading: FediBackIconButton(),
+        child: const _SingleMediaPickerPageAppBarTitle(),
+        leading: const FediBackIconButton(),
       ), //      body: SingleFilePickerWidget(),
       body: SafeArea(
         child: FediGrantPermissionWidget(
@@ -70,7 +70,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                     var folder = folderData?.folder;
                     if (folder == null) {
                       return Center(child: FediCircularProgressIndicator());
-                    }
+                    }aS
 
                     return Provider<IMediaDeviceFolder>.value(
                       value: folder,
@@ -143,6 +143,7 @@ class SingleMediaPickerPage extends StatelessWidget {
 
               if (pickedFile != null) {
                 fileSelectedCallback(
+                  context,
                   FileMediaDeviceFile(
                     type: MediaDeviceFileType.image,
                     isNeedDeleteAfterUsage: true,
@@ -162,10 +163,8 @@ class SingleMediaPickerPage extends StatelessWidget {
                 )),
           );
         },
-        onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) {
-          fileSelectedCallback(mediaDeviceFile);
-        },
-        loadingWidget: FediCircularProgressIndicator(),
+        onFileSelectedCallback: fileSelectedCallback,
+        loadingWidget: const FediCircularProgressIndicator(),
         permissionButtonBuilder: (context, grantedBuilder) {
           return FediGrantPermissionWidget(
             grantedBuilder: grantedBuilder,
@@ -174,88 +173,6 @@ class SingleMediaPickerPage extends StatelessWidget {
         },
 //                        galleryFileTapped: galleryFileTapped,
       );
-
-  Widget _buildAppBarTitle(BuildContext context) {
-    var mediaDeviceGalleryBloc =
-        IMediaDeviceGalleryBloc.of(context, listen: false);
-    return StreamBuilder<List<IMediaDeviceFolder>>(
-        stream: mediaDeviceGalleryBloc.foldersStream,
-        initialData: mediaDeviceGalleryBloc.folders,
-        builder: (context, snapshot) {
-          var folders = snapshot.data;
-
-          if (folders?.isNotEmpty == true) {
-            return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
-                stream: mediaDeviceGalleryBloc.selectedFolderDataStream,
-                builder: (context, snapshot) {
-                  var selectedFolderData = snapshot.data;
-                  var selectedFolder = selectedFolderData?.folder;
-
-                  if (selectedFolder == null) {
-                    return SizedBox.shrink();
-                  }
-
-                  return InkWell(
-                    onTap: () {
-                      _showFolderChooserModalBottomSheet(
-                          context, mediaDeviceGalleryBloc);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FediSubHeaderText(
-                            _calculateFolderTitle(selectedFolder)),
-                        FediSmallHorizontalSpacer(),
-                        Icon(
-                          FediIcons.chevron_down,
-                          color: IFediUiColorTheme.of(context).darkGrey,
-                          size: 14.0,
-                        )
-                      ],
-                    ),
-                  );
-                });
-          } else {
-            return Text(
-              S.of(context).file_picker_single_title,
-            );
-          }
-        });
-  }
-
-  String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
-      "${selectedFolder.name} (${selectedFolder.assetCount})";
-
-  void _showFolderChooserModalBottomSheet(
-      BuildContext context, IMediaDeviceGalleryBloc mediaDeviceGalleryBloc) {
-    var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
-    return showFediModalBottomSheetDialog(
-        context: context,
-        child: Provider.value(
-          value: mediaDeviceGalleryBloc,
-          child: Padding(
-            padding: FediPadding.allBigPadding,
-            child: ListView(
-              shrinkWrap: true,
-              children: mediaDeviceGalleryBloc.folders.map((folder) {
-                return ListTile(
-                  onTap: () {
-                    mediaDeviceGalleryBloc.selectFolder(folder);
-                    Navigator.of(context).pop();
-                  },
-                  title: Text(
-                    _calculateFolderTitle(folder),
-                    style: folder ==
-                            mediaDeviceGalleryBloc.selectedFolderData?.folder
-                        ? fediUiTextTheme.mediumShortBoldDarkGrey
-                        : fediUiTextTheme.mediumShortDarkGrey,
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ));
-  }
 }
 
 void goToSingleMediaPickerPage(BuildContext context,
@@ -276,6 +193,95 @@ void goToSingleMediaPickerPage(BuildContext context,
         }, // provide parent abstract implementation by type
         child:
             SingleMediaPickerPage(fileSelectedCallback: onFileSelectedCallback),
+      ),
+    ),
+  );
+}
+
+String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
+    "${selectedFolder.name} (${selectedFolder.assetCount})";
+
+class _SingleMediaPickerPageAppBarTitle extends StatelessWidget {
+  const _SingleMediaPickerPageAppBarTitle({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
+    return StreamBuilder<List<IMediaDeviceFolder>>(
+      stream: mediaDeviceGalleryBloc.foldersStream,
+      initialData: mediaDeviceGalleryBloc.folders,
+      builder: (context, snapshot) {
+        var folders = snapshot.data;
+
+        if (folders?.isNotEmpty == true) {
+          return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+              stream: mediaDeviceGalleryBloc.selectedFolderDataStream,
+              builder: (context, snapshot) {
+                var selectedFolderData = snapshot.data;
+                var selectedFolder = selectedFolderData?.folder;
+
+                if (selectedFolder == null) {
+                  return SizedBox.shrink();
+                }
+
+                return InkWell(
+                  onTap: () {
+                    _showFolderChooserModalBottomSheet(
+                        context, mediaDeviceGalleryBloc);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FediSubHeaderText(_calculateFolderTitle(selectedFolder)),
+                      const FediSmallHorizontalSpacer(),
+                      Icon(
+                        FediIcons.chevron_down,
+                        color: IFediUiColorTheme.of(context).darkGrey,
+                        size: 14.0,
+                      )
+                    ],
+                  ),
+                );
+              });
+        } else {
+          return Text(
+            S.of(context).file_picker_single_title,
+          );
+        }
+      },
+    );
+  }
+}
+
+void _showFolderChooserModalBottomSheet(
+    BuildContext context, IMediaDeviceGalleryBloc mediaDeviceGalleryBloc) {
+  var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
+  return showFediModalBottomSheetDialog(
+    context: context,
+    child: Provider.value(
+      value: mediaDeviceGalleryBloc,
+      child: Padding(
+        padding: FediPadding.allBigPadding,
+        child: ListView(
+          shrinkWrap: true,
+          children: mediaDeviceGalleryBloc.folders.map((folder) {
+            return ListTile(
+              onTap: () {
+                mediaDeviceGalleryBloc.selectFolder(folder);
+                Navigator.of(context).pop();
+              },
+              title: Text(
+                _calculateFolderTitle(folder),
+                style:
+                    folder == mediaDeviceGalleryBloc.selectedFolderData?.folder
+                        ? fediUiTextTheme.mediumShortBoldDarkGrey
+                        : fediUiTextTheme.mediumShortDarkGrey,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     ),
   );

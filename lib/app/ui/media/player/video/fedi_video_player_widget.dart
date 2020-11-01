@@ -33,7 +33,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
                     onTap: () {
                       videoMediaPlayerBloc.onTapOnVideo();
                     },
-                    child: FediVideoPlayerContentWidget(),
+                    child: const FediVideoPlayerContentWidget(),
                   );
                 } else {
                   return Container(

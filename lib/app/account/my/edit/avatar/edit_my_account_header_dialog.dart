@@ -32,7 +32,10 @@ void showEditMyAccountHeaderDialog(
           FlatButton(
             onPressed: () {
               dismissDialog(context);
-              onFileSelectedCallback(mediaDeviceFile);
+              onFileSelectedCallback(
+                context,
+                mediaDeviceFile,
+              );
             },
             child: Text(S
                 .of(context)
@@ -50,13 +53,17 @@ void showEditMyAccountHeaderDialog(
                 }
 
                 onFileSelectedCallback(
+                  context,
                   FileMediaDeviceFile(
                       originalFile: croppedFile,
                       type: mediaDeviceFile.type,
                       isNeedDeleteAfterUsage: true),
                 );
               } else {
-                onFileSelectedCallback(mediaDeviceFile);
+                onFileSelectedCallback(
+                  context,
+                  mediaDeviceFile,
+                );
               }
             },
             child: Text(

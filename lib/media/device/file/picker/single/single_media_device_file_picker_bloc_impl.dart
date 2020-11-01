@@ -19,9 +19,9 @@ class SingleMediaDeviceFilePicker extends MediaDeviceFilePicker
             startFilter: startActiveTab);
 
   @override
-  void onFileSelected(IMediaDeviceFile filePickerFile) {
+  void onFileSelected(BuildContext context, IMediaDeviceFile filePickerFile) {
     if (onFileSelectedCallback != null) {
-      onFileSelectedCallback(filePickerFile);
+      onFileSelectedCallback(context, filePickerFile);
     }
   }
 }

@@ -142,9 +142,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -161,9 +162,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -197,9 +199,9 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback: (context,IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountAvatarDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context,filePickerFile) async {
         try {
           await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -560,25 +562,22 @@ class EditMyAccountWidget extends StatelessWidget {
     String contentText;
     if (e is UploadMediaExceedFileSizeLimitException) {
       // todo: refactor
-      contentText = S
-          .of(context)
-          .app_media_upload_failed_notification_exceedSize_content(
-            _numberFormat.format(
-              e.currentFileSizeInBytes / pow(1024, 2),
-            ),
-            _numberFormat.format(
-              e.maximumFileSizeInBytes / pow(1024, 2),
-            ),
-          );
+      contentText =
+          S.of(context).app_media_upload_failed_notification_exceedSize_content(
+                _numberFormat.format(
+                  e.currentFileSizeInBytes / pow(1024, 2),
+                ),
+                _numberFormat.format(
+                  e.maximumFileSizeInBytes / pow(1024, 2),
+                ),
+              );
     } else {
       contentText = e.toString();
     }
     return showErrorFediNotificationOverlay(
       context: context,
       contentText: contentText,
-      titleText: S
-          .of(context)
-          .app_media_upload_failed_notification_title,
+      titleText: S.of(context).app_media_upload_failed_notification_title,
     );
   }
 }

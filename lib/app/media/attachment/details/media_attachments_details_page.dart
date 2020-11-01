@@ -93,78 +93,14 @@ class _MediaAttachmentDetailsPageState
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_media_attachment_details_title,
         actions: <Widget>[
-          buildAddToGalleryAction(context),
-          buildShareAction(context)
+          _MediaAttachmentDetailsPageAddToGalleryAction(
+            mediaAttachment: mediaAttachment,
+          ),
+          _MediaAttachmentDetailsPageShareAction(
+              mediaAttachment: mediaAttachment),
         ],
       ),
       body: buildBody(context),
-    );
-  }
-
-  Widget buildShareAction(BuildContext context) {
-    return FediIconButton(
-        icon: Icon(
-          FediIcons.share,
-          color: IFediUiColorTheme.of(context).darkGrey,
-          size: FediSizes.appBarIconSize,
-        ),
-        onPressed: () {
-          showShareChooserDialog(
-            context,
-            externalShareAction: () {
-              Navigator.of(context).pop();
-              goToExternalShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-            conversationsShareAction: () {
-              Navigator.of(context).pop();
-              goToConversationShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-            chatsShareAction: () {
-              Navigator.of(context).pop();
-              goToChatShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-          );
-        });
-  }
-
-  Widget buildAddToGalleryAction(BuildContext context) {
-    return PleromaAsyncOperationButtonBuilderWidget(
-      progressContentMessage:
-          S.of(context).app_media_attachment_addToGallery_progress_content,
-      builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
-          icon: Icon(
-            Icons.file_download,
-            color: IFediUiColorTheme.of(context).darkGrey,
-            size: FediSizes.appBarIconSize,
-          ),
-          onPressed: onPressed),
-      successToastMessage:
-          S.of(context).app_media_attachment_addToGallery_progress_content,
-      asyncButtonAction: () async {
-        var saved = await addMediaAttachmentToGallery(
-            context: context, mediaAttachment: mediaAttachment);
-
-        if (!saved) {
-          throw MediaAttachmentCantAddToGalleryException(mediaAttachment);
-        }
-      },
-      errorAlertDialogBuilders: [
-        (BuildContext context, dynamic error, StackTrace stackTrace) {
-          return ErrorData(
-            error: error,
-            stackTrace: stackTrace,
-            titleCreator:(context) => S
-                .of(context)
-                .app_media_attachment_addToGallery_error_dialog_title,
-            contentCreator:(context) => S
-                .of(context)
-                .app_media_attachment_addToGallery_error_dialog_content,
-          );
-        }
-      ],
     );
   }
 
@@ -204,12 +140,14 @@ class _MediaAttachmentDetailsPageState
       case MastodonMediaAttachmentType.audio:
         var settingsLocalPreferenceBloc =
             IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
-        return AudioMediaPlayerBloc.provideToContext(context,
-            autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
-            autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
-            mediaPlayerSource:
-                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-            child: FediAudioPlayerWidget());
+        return AudioMediaPlayerBloc.provideToContext(
+          context,
+          autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
+          autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
+          mediaPlayerSource:
+              MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+          child: const FediAudioPlayerWidget(),
+        );
         break;
       case MastodonMediaAttachmentType.unknown:
       default:
@@ -281,6 +219,93 @@ class _MediaAttachmentDetailsPageState
           ),
         ),
       );
+}
+
+class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
+  const _MediaAttachmentDetailsPageShareAction({
+    Key key,
+    @required this.mediaAttachment,
+  }) : super(key: key);
+
+  final IPleromaMediaAttachment mediaAttachment;
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+        icon: Icon(
+          FediIcons.share,
+          color: IFediUiColorTheme.of(context).darkGrey,
+          size: FediSizes.appBarIconSize,
+        ),
+        onPressed: () {
+          showShareChooserDialog(
+            context,
+            externalShareAction: () {
+              Navigator.of(context).pop();
+              goToExternalShareMediaPage(
+                  context: context, mediaAttachment: mediaAttachment);
+            },
+            conversationsShareAction: () {
+              Navigator.of(context).pop();
+              goToConversationShareMediaPage(
+                  context: context, mediaAttachment: mediaAttachment);
+            },
+            chatsShareAction: () {
+              Navigator.of(context).pop();
+              goToChatShareMediaPage(
+                  context: context, mediaAttachment: mediaAttachment);
+            },
+          );
+        });
+  }
+}
+
+class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
+  const _MediaAttachmentDetailsPageAddToGalleryAction({
+    Key key,
+    @required this.mediaAttachment,
+  }) : super(key: key);
+
+  final IPleromaMediaAttachment mediaAttachment;
+
+  @override
+  Widget build(BuildContext context) {
+    return PleromaAsyncOperationButtonBuilderWidget(
+      progressContentMessage:
+          S.of(context).app_media_attachment_addToGallery_progress_content,
+      builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
+          icon: Icon(
+            Icons.file_download,
+            color: IFediUiColorTheme.of(context).darkGrey,
+            size: FediSizes.appBarIconSize,
+          ),
+          onPressed: onPressed),
+      successToastMessage:
+          S.of(context).app_media_attachment_addToGallery_progress_content,
+      asyncButtonAction: () async {
+        var saved = await addMediaAttachmentToGallery(
+            context: context, mediaAttachment: mediaAttachment);
+
+        if (!saved) {
+          throw MediaAttachmentCantAddToGalleryException(mediaAttachment);
+        }
+      },
+      errorAlertDialogBuilders: [
+        (BuildContext context, dynamic error, StackTrace stackTrace) {
+          return ErrorData(
+            error: error,
+            stackTrace: stackTrace,
+            titleCreator: (context) => S
+                .of(context)
+                .app_media_attachment_addToGallery_error_dialog_title,
+            contentCreator: (context) => S
+                .of(context)
+                .app_media_attachment_addToGallery_error_dialog_content,
+          );
+        }
+      ],
+    );
+  }
 }
 
 void goToSingleMediaAttachmentDetailsPage(BuildContext context,

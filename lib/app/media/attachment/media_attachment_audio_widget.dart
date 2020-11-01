@@ -13,12 +13,14 @@ class MediaAttachmentAudioWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var settingsLocalPreferenceBloc =
-    IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
-    return AudioMediaPlayerBloc.provideToContext(context,
-        autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
-        autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
-        mediaPlayerSource:
-            MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-        child: FediAudioPlayerWidget());
+        IMyAccountSettingsLocalPreferenceBloc.of(context);
+    return AudioMediaPlayerBloc.provideToContext(
+      context,
+      autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
+      autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
+      mediaPlayerSource:
+          MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+      child: const FediAudioPlayerWidget(),
+    );
   }
 }

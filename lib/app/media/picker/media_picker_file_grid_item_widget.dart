@@ -20,50 +20,83 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
     var fileBloc = IMediaDeviceFileBloc.of(context);
 
     return AsyncInitLoadingWidget(
-      loadingFinishedBuilder: (context) => buildLoadedWidget(context, fileBloc),
+      loadingFinishedBuilder: (context) => _MediaPickerFileGridItemBodyWidget(
+          onFileSelectedCallback: onFileSelectedCallback,
+          loadingWidget: loadingWidget),
       asyncInitLoadingBloc: fileBloc,
       loadingWidget: loadingWidget,
     );
   }
+}
 
-  Widget buildLoadedWidget(
-      BuildContext context, IMediaDeviceFileBloc galleryFileBloc) {
+class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
+  const _MediaPickerFileGridItemBodyWidget({
+    Key key,
+    @required this.onFileSelectedCallback,
+    @required this.loadingWidget,
+  }) : super(key: key);
+
+  final MediaDeviceFileCallback onFileSelectedCallback;
+  final Widget loadingWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
     return InkWell(
       onTap: () async {
-        onFileSelectedCallback(await galleryFileBloc.retrieveFile());
+        onFileSelectedCallback(
+            context, await mediaDeviceFileBloc.retrieveFile());
       },
       child: Stack(
         children: <Widget>[
-          buildPreviewImage(galleryFileBloc),
-          Center(
-            child: buildIcon(
-              context: context,
-              fileBloc: galleryFileBloc,
-            ),
-          )
+          _MediaPickerFileGridItemPreviewWidget(
+            loadingWidget: loadingWidget,
+          ),
+          const _MediaPickerFileGridItemIconWidget(),
         ],
       ),
     );
   }
+}
 
-  Widget buildIcon(
-      {@required BuildContext context,
-      @required IMediaDeviceFileBloc fileBloc}) {
+class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
+  const _MediaPickerFileGridItemIconWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return fileBloc.type == MediaDeviceFileType.video
-        ? Icon(
-            FediIcons.play,
-            color: fediUiColorTheme.white,
-          )
-        : SizedBox.shrink();
+    return Center(
+      child: mediaDeviceFileBloc.type == MediaDeviceFileType.video
+          ? Icon(
+              FediIcons.play,
+              color: fediUiColorTheme.white,
+            )
+          : SizedBox.shrink(),
+    );
   }
+}
 
-  Widget buildPreviewImage(IMediaDeviceFileBloc fileBloc) {
-    var thumbImageData = fileBloc.thumbImageData;
+class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
+  const _MediaPickerFileGridItemPreviewWidget({
+    Key key,
+    @required this.loadingWidget,
+  }) : super(key: key);
+
+  final Widget loadingWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
+
+    var thumbImageData = mediaDeviceFileBloc.thumbImageData;
 
     if (thumbImageData == null) {
       return Center(child: loadingWidget);
     }
+
     return Image.memory(
       thumbImageData,
       fit: BoxFit.cover,

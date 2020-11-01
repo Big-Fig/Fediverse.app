@@ -82,7 +82,7 @@ abstract class MediaDeviceFilePicker extends DisposableOwner
   }
 
   @override
-  void onFilterSelected(MediaDeviceFilePickerFilter filter) {
+  void onFilterSelected(BuildContext context, MediaDeviceFilePickerFilter filter) {
     selectedFilterSubject.add(filter);
   }
 }

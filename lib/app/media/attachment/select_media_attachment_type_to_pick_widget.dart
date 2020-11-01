@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
@@ -8,6 +7,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,8 +55,8 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       iconData: FediIcons.image,
       label: S.of(context).app_media_attachment_type_gallery,
       onTap: () async {
-        goToSingleMediaPickerPage(context,
-            onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+        goToSingleMediaPickerPage(context, onFileSelectedCallback:
+            (context, IMediaDeviceFile mediaDeviceFile) async {
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           await _attachMedia(
