@@ -20,7 +20,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var mediaItemBlocs = snapshot.data;
 
-          if (mediaItemBlocs?.isEmpty == true) {
+          if (mediaItemBlocs?.isNotEmpty == true) {
             if (mediaItemBlocs.length == 1) {
               return Padding(
                 padding: const EdgeInsets.only(
@@ -38,38 +38,40 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                       )),
                 ),
               );
-            }
+            } else {
+              return Container(
+                height: _mediaAttachmentRowItemSize,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  //              shrinkWrap: true,
+                  children: [
+                    ...mediaItemBlocs.map((mediaItemBloc) {
+                      // don't dispose media bloc here
+                      // it is disposed in parent Status bloc
 
-            return Container(
-              height: _mediaAttachmentRowItemSize,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                //              shrinkWrap: true,
-                children: [
-                  ...mediaItemBlocs.map((mediaItemBloc) {
-                    // don't dispose media bloc here
-                    // it is disposed in parent Status bloc
-
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        left: FediSizes.smallPadding,
-                        top: FediSizes.smallPadding,
-                      ),
-                      child: Container(
-                        width: _mediaAttachmentRowItemSize,
-                        height: _mediaAttachmentRowItemSize,
-                        child: Provider<IUploadMediaAttachmentBloc>.value(
-                          value: mediaItemBloc,
-                          child: const UploadMediaAttachmentListMediaItemWidget(
-                            contentPadding: FediPadding.allSmallPadding,
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          left: FediSizes.smallPadding,
+                          top: FediSizes.smallPadding,
+                        ),
+                        child: Container(
+                          width: _mediaAttachmentRowItemSize,
+                          height: _mediaAttachmentRowItemSize,
+                          child: Provider<IUploadMediaAttachmentBloc>.value(
+                            value: mediaItemBloc,
+                            child: const UploadMediaAttachmentListMediaItemWidget(
+                              contentPadding: FediPadding.allSmallPadding,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(), //                _buildGridItem(
-                ],
-              ),
-            );
+                      );
+                    }).toList(), //                _buildGridItem(
+                  ],
+                ),
+              );
+            }
+
+
           } else {
             return const SizedBox.shrink();
           }

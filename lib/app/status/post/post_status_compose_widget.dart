@@ -44,6 +44,7 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
