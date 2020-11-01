@@ -40,33 +40,19 @@ class _StatusEmojiReactionListItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
-    var emojiReaction = Provider.of<IPleromaStatusEmojiReaction>(context);
     return PleromaAsyncOperationButtonBuilderWidget(
       showProgressDialog: false,
       asyncButtonAction: () => statusEmojiReactionBloc.toggleEmojiReaction(),
       builder: (BuildContext context, void Function() onPressed) {
-        var color = emojiReaction.me
-            ? IFediUiColorTheme.of(context).primary
-            : IFediUiColorTheme.of(context).lightGrey;
         return Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
           child: InkWell(
             onTap: onPressed,
-            child: Container(
-              height: 36.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40.0),
-                border: Border.all(
-                  color: color,
-                  width: 1.5,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: FediSizes.mediumPadding),
-                child: const _StatusEmojiReactionListItemContentWidget(),
-              ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: FediSizes.mediumPadding),
+              child: const _StatusEmojiReactionListItemContentWidget(),
             ),
           ),
         );
