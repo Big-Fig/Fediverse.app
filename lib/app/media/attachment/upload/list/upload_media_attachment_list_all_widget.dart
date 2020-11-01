@@ -1,15 +1,15 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_media_list_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_non_media_list_widget.dart';
+import 'package:fedi/app/media/attachment/upload/list/media/upload_media_attachment_list_media_widget.dart';
+import 'package:fedi/app/media/attachment/upload/list/non_media/upload_media_attachment_list_non_media_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
-class UploadMediaAttachmentsWidget extends StatelessWidget {
+class UploadMediaAttachmentListAllWidget extends StatelessWidget {
   final bool scrollable;
 
   final double heightOnKeyboardOpen;
 
-  const UploadMediaAttachmentsWidget({
+  const UploadMediaAttachmentListAllWidget({
     @required this.scrollable,
     @required this.heightOnKeyboardOpen,
   });
@@ -17,11 +17,9 @@ class UploadMediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var column = Column(
-      //    return  ListView(
-//        shrinkWrap: true,
       children: [
-        const UploadMediaAttachmentsMediaListWidget(),
-        const UploadMediaAttachmentsNonMediaListWidget(),
+        const UploadMediaAttachmentListMediaWidget(),
+        const UploadMediaAttachmentListNonMediaWidget(),
       ],
     );
     Widget child;

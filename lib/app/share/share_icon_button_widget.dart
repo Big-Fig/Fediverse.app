@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class ShareIconButtonWidget extends StatelessWidget {
   final double iconSize;
 
-  ShareIconButtonWidget({
+  const ShareIconButtonWidget({
     @required this.iconSize,
   });
 

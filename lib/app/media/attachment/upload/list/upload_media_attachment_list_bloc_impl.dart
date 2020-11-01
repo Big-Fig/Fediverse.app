@@ -1,7 +1,7 @@
-import 'package:fedi/app/media/attachment/upload/device_upload_media_attachment_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_device_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -116,7 +116,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     var existedBloc = findMediaAttachmentBlocByFilePickerFile(mediaDeviceFile);
 
     if (existedBloc == null) {
-      var uploadMediaAttachmentBloc = DeviceUploadMediaAttachmentBloc(
+      var uploadMediaAttachmentBloc = UploadMediaAttachmentBlocDevice(
         mediaDeviceFile: mediaDeviceFile,
         pleromaMediaAttachmentService: pleromaMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
@@ -140,7 +140,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   IUploadMediaAttachmentBloc findMediaAttachmentBlocByFilePickerFile(
           IMediaDeviceFile mediaDeviceFile) =>
       mediaAttachmentBlocs.firstWhere((bloc) {
-        if (bloc is DeviceUploadMediaAttachmentBloc) {
+        if (bloc is UploadMediaAttachmentBlocDevice) {
           return bloc.mediaDeviceFile == mediaDeviceFile;
         } else {
           return false;

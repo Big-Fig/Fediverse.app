@@ -21,7 +21,7 @@ class ChatShareStatusPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_chat_share_title,
         actions: [
-          ShareToAccountIconButtonWidget(),
+          const ShareToAccountIconButtonWidget(),
         ],
       ),
       body: const ShareSelectAccountWidget(

@@ -1,9 +1,12 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
-import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,13 +123,19 @@ class ConversationStatusListItemWidget extends StatelessWidget {
   Widget buildMediaContent(IStatusBloc statusBloc) =>
       StreamBuilder<List<IPleromaMediaAttachment>>(
           stream: statusBloc.mediaAttachmentsStream,
-          initialData: statusBloc.mediaAttachments,
           builder: (context, snapshot) {
             var mediaAttachments = snapshot.data;
 
-            return MediaAttachmentsWidget(
-              mediaAttachments: mediaAttachments,
-              initialMediaAttachment: null,
+            if (mediaAttachments == null) {
+              return SizedBox.shrink();
+            }
+
+            return DisposableProvider<IMediaAttachmentListBloc>(
+              create: (context) => MediaAttachmentListBloc(
+                mediaAttachments: mediaAttachments,
+                initialMediaAttachment: null,
+              ),
+              child: const MediaAttachmentListCarouselWidget(),
             );
           });
 

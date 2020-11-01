@@ -2,7 +2,8 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
-import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/app/media/attachment/details/media_attachments_details_page.dart';
+import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -131,19 +132,24 @@ class ChatMessageListItemWidget extends StatelessWidget {
   Widget buildMediaContent(IChatMessageBloc messageBloc) =>
       StreamBuilder<IPleromaMediaAttachment>(
           stream: messageBloc.mediaAttachmentStream,
-          initialData: messageBloc.mediaAttachment,
           builder: (context, snapshot) {
             var mediaAttachment = snapshot.data;
-
-            var mediaAttachments = <IPleromaMediaAttachment>[];
-
-            if (mediaAttachment != null) {
-              mediaAttachments.add(mediaAttachment);
+            if (mediaAttachment == null) {
+              return const SizedBox.shrink();
             }
 
-            return MediaAttachmentsWidget(
-              mediaAttachments: mediaAttachments,
-              initialMediaAttachment: null,
+            return Provider<IPleromaMediaAttachment>.value(
+              value: mediaAttachment,
+              child: InkWell(
+                onTap: () {
+                  goToMultiMediaAttachmentDetailsPage(
+                    context,
+                    mediaAttachments: [mediaAttachment],
+                    initialMediaAttachment: mediaAttachment,
+                  );
+                },
+                child: const MediaAttachmentWidget(),
+              ),
             );
           });
 

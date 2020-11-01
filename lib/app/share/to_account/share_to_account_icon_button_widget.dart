@@ -16,4 +16,6 @@ class ShareToAccountIconButtonWidget extends StatelessWidget {
       ),
     );
   }
+
+  const ShareToAccountIconButtonWidget();
 }

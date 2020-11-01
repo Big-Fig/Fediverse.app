@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_all_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
@@ -70,7 +70,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                 ),
 //          const FediBigVerticalSpacer(),
 
-          const UploadMediaAttachmentsWidget(
+          const UploadMediaAttachmentListAllWidget(
             scrollable: false,
             heightOnKeyboardOpen: null,
           ),

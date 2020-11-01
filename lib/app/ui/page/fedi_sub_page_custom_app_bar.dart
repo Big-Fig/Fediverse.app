@@ -11,7 +11,9 @@ class FediSubPageCustomAppBar extends StatelessWidget
 
   // AppBar size without bottom
   @override
-  final preferredSize = Size.fromHeight(kToolbarHeight);
+  final preferredSize = calculatePreferredSize();
+
+  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight);
 
   FediSubPageCustomAppBar({
     @required this.child,

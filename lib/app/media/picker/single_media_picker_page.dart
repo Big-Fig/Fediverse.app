@@ -1,6 +1,8 @@
 import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
+import 'package:fedi/app/media/picker/single_media_picker_bloc.dart';
+import 'package:fedi/app/media/picker/single_media_picker_bloc_impl.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
@@ -32,93 +34,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SingleMediaPickerPage extends StatelessWidget {
-  final MediaDeviceFileCallback fileSelectedCallback;
-
-  SingleMediaPickerPage({@required this.fileSelectedCallback});
+  const SingleMediaPickerPage();
 
   @override
   Widget build(BuildContext context) {
-    var mediaDeviceGalleryBloc =
-        IMediaDeviceGalleryBloc.of(context, listen: false);
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
+
     return Scaffold(
-      appBar: FediSubPageCustomAppBar(
-        centerTitle: true,
-        child: const _SingleMediaPickerPageAppBarTitle(),
-        leading: const FediBackIconButton(),
-      ), //      body: SingleFilePickerWidget(),
+      appBar: const _SingleMediaPickerPageAppBar(), //      body:
+      // SingleFilePickerWidget(),
       body: SafeArea(
         child: FediGrantPermissionWidget(
           grantedBuilder: (BuildContext context) {
             return FediAsyncInitLoadingWidget(
               loadingFinishedBuilder: (BuildContext context) {
                 if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
-                  return Center(
-                    child: Text(
-                      S.of(context).file_picker_empty,
-                    ),
-                  );
+                  return const _SingleMediaPickerPageNoFoldersWidget();
+                } else {
+                  return const _SingleMediaPickerPageFoldersWidget();
                 }
-                var storagePermissionBloc =
-                    IStoragePermissionBloc.of(context, listen: false);
-                return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
-                  stream: mediaDeviceGalleryBloc.selectedFolderDataStream
-                      .distinct((old, current) =>
-                          old?.folder?.id == current?.folder?.id),
-                  builder: (context, snapshot) {
-                    var folderData = snapshot.data;
-                    var folder = folderData?.folder;
-                    if (folder == null) {
-                      return Center(child: FediCircularProgressIndicator());
-                    }aS
-
-                    return Provider<IMediaDeviceFolder>.value(
-                      value: folder,
-                      child: Provider<IMediaDeviceFolderBloc>.value(
-                        value: folderData.folderBloc,
-                        child:
-                            Provider<IMediaDeviceFileLocalOnlyListBloc>.value(
-                          value: folderData.filesListBloc,
-                          child: Provider<IMediaDeviceFilePaginationBloc>.value(
-                            value: folderData.filesPaginationBloc,
-                            child: Provider<
-                                IMediaDeviceFilePaginationListBloc>.value(
-                              value: folderData.filesPaginationListBloc,
-                              child: ProxyProvider<
-                                  IMediaDeviceFileLocalOnlyListBloc,
-                                  ILocalOnlyListBloc<IMediaDeviceFile>>(
-                                update: (context, value, previous) => value,
-                                child: ProxyProvider<
-                                    IMediaDeviceFilePaginationBloc,
-                                    ILocalOnlyPaginationBloc<
-                                        PaginationPage<IMediaDeviceFile>,
-                                        IMediaDeviceFile>>(
-                                  update: (context, value, previous) => value,
-                                  child: ProxyProvider<
-                                      IMediaDeviceFilePaginationListBloc,
-                                      IPaginationListBloc<
-                                          PaginationPage<IMediaDeviceFile>,
-                                          IMediaDeviceFile>>(
-                                    update: (context, value, previous) => value,
-                                    child: ProxyProvider<
-                                        IMediaDeviceFilePaginationListBloc,
-                                        IPaginationListBloc>(
-                                      update: (context, value, previous) =>
-                                          value,
-                                      child: buildGalleryFolderWidget(
-                                          fediUiColorTheme,
-                                          storagePermissionBloc),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
               },
               asyncInitLoadingBloc: mediaDeviceGalleryBloc,
             );
@@ -129,50 +63,176 @@ class SingleMediaPickerPage extends StatelessWidget {
 //      bottomNavigationBar: FilePickerBottomNavBarWidget(),
     );
   }
+}
 
-  Widget buildGalleryFolderWidget(IFediUiColorTheme fediUiColorTheme,
-          IStoragePermissionBloc storagePermissionBloc) =>
-      FileGalleryFolderWidget(
-        headerItemBuilder: (BuildContext context) {
-          return InkWell(
-            onTap: () async {
-              var mediaPickerService =
-                  IMediaPickerService.of(context, listen: false);
+class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
+  const _SingleMediaPickerPageFoldersWidget({Key key}) : super(key: key);
 
-              var pickedFile = await mediaPickerService.pickImageFromCamera();
+  @override
+  Widget build(BuildContext context) {
+    var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
+    return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+      stream: mediaDeviceGalleryBloc.selectedFolderDataStream
+          .distinct((old, current) => old?.folder?.id == current?.folder?.id),
+      builder: (context, snapshot) {
+        var folderData = snapshot.data;
+        var folder = folderData?.folder;
+        if (folder == null) {
+          return const _SingleMediaPickerPageFolderLoadingWidget();
+        }
 
-              if (pickedFile != null) {
-                fileSelectedCallback(
-                  context,
-                  FileMediaDeviceFile(
-                    type: MediaDeviceFileType.image,
-                    isNeedDeleteAfterUsage: true,
-                    originalFile: pickedFile,
+        return Provider<IMediaDeviceFolder>.value(
+          value: folder,
+          child: Provider<IMediaDeviceFolderBloc>.value(
+            value: folderData.folderBloc,
+            child: Provider<IMediaDeviceFileLocalOnlyListBloc>.value(
+              value: folderData.filesListBloc,
+              child: Provider<IMediaDeviceFilePaginationBloc>.value(
+                value: folderData.filesPaginationBloc,
+                child: Provider<IMediaDeviceFilePaginationListBloc>.value(
+                  value: folderData.filesPaginationListBloc,
+                  child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
+                      ILocalOnlyListBloc<IMediaDeviceFile>>(
+                    update: (context, value, previous) => value,
+                    child: ProxyProvider<
+                        IMediaDeviceFilePaginationBloc,
+                        ILocalOnlyPaginationBloc<
+                            PaginationPage<IMediaDeviceFile>,
+                            IMediaDeviceFile>>(
+                      update: (context, value, previous) => value,
+                      child: ProxyProvider<
+                          IMediaDeviceFilePaginationListBloc,
+                          IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
+                              IMediaDeviceFile>>(
+                        update: (context, value, previous) => value,
+                        child: ProxyProvider<IMediaDeviceFilePaginationListBloc,
+                            IPaginationListBloc>(
+                          update: (context, value, previous) => value,
+                          child:
+                              const _SingleMediaPickerPageGalleryFolderWidget(),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              }
-            },
-            child: Container(
-                color: fediUiColorTheme.white,
-                width: double.infinity,
-                height: double.infinity,
-                child: Icon(
-                  FediIcons.camera,
-                  color: IFediUiColorTheme.of(context).darkGrey,
-                  size: 40.0,
-                )),
-          );
-        },
-        onFileSelectedCallback: fileSelectedCallback,
-        loadingWidget: const FediCircularProgressIndicator(),
-        permissionButtonBuilder: (context, grantedBuilder) {
-          return FediGrantPermissionWidget(
-            grantedBuilder: grantedBuilder,
-            permissionBloc: storagePermissionBloc,
-          );
-        },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SingleMediaPickerPageNoFoldersWidget extends StatelessWidget {
+  const _SingleMediaPickerPageNoFoldersWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        S.of(context).file_picker_empty,
+      ),
+    );
+  }
+}
+
+class _SingleMediaPickerPageFolderLoadingWidget extends StatelessWidget {
+  const _SingleMediaPickerPageFolderLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: FediCircularProgressIndicator());
+  }
+}
+
+class _SingleMediaPickerPageAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const _SingleMediaPickerPageAppBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediSubPageCustomAppBar(
+      centerTitle: true,
+      child: const _SingleMediaPickerPageAppBarTitle(),
+      leading: const FediBackIconButton(),
+    );
+  }
+
+  @override
+  Size get preferredSize => FediSubPageCustomAppBar.calculatePreferredSize();
+}
+
+class _SingleMediaPickerPageGalleryFolderWidget extends StatelessWidget {
+  const _SingleMediaPickerPageGalleryFolderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var storagePermissionBloc = IStoragePermissionBloc.of(context);
+    var singleMediaPickerBloc = ISingleMediaPickerBloc.of(context);
+    return FileGalleryFolderWidget(
+      headerItemBuilder: (BuildContext context) {
+        return const _FileGalleryFolderPickFromCameraHeaderItemWidget();
+      },
+      onFileSelectedCallback: singleMediaPickerBloc.fileSelectedCallback,
+      loadingWidget: const FediCircularProgressIndicator(),
+      permissionButtonBuilder: (context, grantedBuilder) {
+        return FediGrantPermissionWidget(
+          grantedBuilder: grantedBuilder,
+          permissionBloc: storagePermissionBloc,
+        );
+      },
 //                        galleryFileTapped: galleryFileTapped,
-      );
+    );
+  }
+}
+
+class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
+  const _FileGalleryFolderPickFromCameraHeaderItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return InkWell(
+      onTap: () async {
+        var mediaPickerService = IMediaPickerService.of(context, listen: false);
+
+        var pickedFile = await mediaPickerService.pickImageFromCamera();
+
+        if (pickedFile != null) {
+          var singleMediaPickerBloc =
+              ISingleMediaPickerBloc.of(context, listen: false);
+          singleMediaPickerBloc.fileSelectedCallback(
+            context,
+            FileMediaDeviceFile(
+              type: MediaDeviceFileType.image,
+              isNeedDeleteAfterUsage: true,
+              originalFile: pickedFile,
+            ),
+          );
+        }
+      },
+      child: Container(
+          color: fediUiColorTheme.white,
+          width: double.infinity,
+          height: double.infinity,
+          child: Icon(
+            FediIcons.camera,
+            color: IFediUiColorTheme.of(context).darkGrey,
+            size: 40.0,
+          )),
+    );
+  }
 }
 
 void goToSingleMediaPickerPage(BuildContext context,
@@ -189,10 +249,12 @@ void goToSingleMediaPickerPage(BuildContext context,
           return PhotoManagerMediaDeviceGalleryBloc(
               typesToPick: typesToPick,
               storagePermissionBloc:
-                  IStoragePermissionBloc.of(context, listen: false));
+                  IStoragePermissionBloc.of(context, listen: false),);
         }, // provide parent abstract implementation by type
-        child:
-            SingleMediaPickerPage(fileSelectedCallback: onFileSelectedCallback),
+        child: DisposableProvider<ISingleMediaPickerBloc>(
+          create: (context) => SingleMediaPickerBloc(fileSelectedCallback: onFileSelectedCallback),
+          child: const SingleMediaPickerPage(),
+        ),
       ),
     ),
   );
@@ -209,6 +271,7 @@ class _SingleMediaPickerPageAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
+
     return StreamBuilder<List<IMediaDeviceFolder>>(
       stream: mediaDeviceGalleryBloc.foldersStream,
       initialData: mediaDeviceGalleryBloc.folders,

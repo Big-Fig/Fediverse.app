@@ -1,9 +1,9 @@
+import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
 import 'package:fedi/app/media/attachment/select_media_attachment_type_to_pick_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/widgets.dart';
 
@@ -28,12 +28,7 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                     padding: FediPadding.verticalBigPadding,
                     child: const FediUltraLightGreyDivider(),
                   ),
-                  SelectMediaAttachmentTypeToPickWidget(
-                    onFileSelected: () {
-                      postMessageBloc.onFileSelected();
-
-                    },
-                  ),
+                  const SelectMediaAttachmentTypeToPickWidget(),
                 ],
               );
               break;
@@ -48,7 +43,8 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                     onEmojiSelected: (emoji) {
                       postMessageBloc.appendText(emoji.code);
                       postMessageBloc.clearSelectedAction();
-                    }, useImageEmoji: true,
+                    },
+                    useImageEmoji: true,
                   ),
                 ],
               );
@@ -60,10 +56,10 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                     padding: FediPadding.verticalBigPadding,
                     child: const FediUltraLightGreyDivider(),
                   ),
-                 Padding(
-                   padding: FediPadding.horizontalSmallPadding,
-                   child: PostStatusPollWidget(),
-                 ),
+                  Padding(
+                    padding: FediPadding.horizontalSmallPadding,
+                    child: PostStatusPollWidget(),
+                  ),
                 ],
               );
               break;

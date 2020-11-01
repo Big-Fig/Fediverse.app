@@ -1,11 +1,11 @@
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void showConfirmRemoveAssetDialog(
-    BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {
+void showConfirmRemoveAssetDialog(BuildContext context) {
+  var mediaItemBloc = IUploadMediaAttachmentBloc.of(context, listen: false);
   var attachmentsBloc =
       IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
 
