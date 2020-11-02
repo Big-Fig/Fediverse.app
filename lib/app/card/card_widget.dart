@@ -10,16 +10,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-final _cardImageSize = 114.0;
-var _cardBorderRadius = 8.0;
+const _cardImageSize = 114.0;
+const _cardBorderRadius = 8.0;
 
 class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context, listen: false);
+    var card = Provider.of<IPleromaCard>(context);
 
     if (card == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Padding(
@@ -37,8 +37,8 @@ class CardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                if (card.image != null) buildImage(card),
-                buildContent(context: context, card: card)
+                if (card.image != null) const _CardImageWidget(),
+                const _CardContentWidget(),
               ],
             ),
           ),
@@ -47,72 +47,78 @@ class CardWidget extends StatelessWidget {
     );
   }
 
-  Widget buildContent({
-    @required BuildContext context,
-    @required IPleromaCard card,
-  }) =>
-      Expanded(
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(_cardBorderRadius),
-                  bottomRight: Radius.circular(_cardBorderRadius)),
-              border: Border.all(
-                  color: IFediUiColorTheme.of(context).ultraLightGrey)),
-          child: Padding(
-            padding: FediPadding.allMediumPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                if (card.providerName?.isNotEmpty == true)
-                  buildProviderText(
-                    context: context,
-                    card: card,
-                  ),
-                if (card.title?.isNotEmpty == true)
-                  buildTitleText(
-                    context: context,
-                    card: card,
-                  ),
-                if (card.description?.isNotEmpty == true)
-                  buildDescriptionText(
-                    context: context,
-                    card: card,
-                  ),
-              ],
-            ),
+  const CardWidget();
+}
+
+class _CardContentWidget extends StatelessWidget {
+  const _CardContentWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var card = Provider.of<IPleromaCard>(context);
+
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(_cardBorderRadius),
+              bottomRight: Radius.circular(_cardBorderRadius)),
+          border:
+              Border.all(color: IFediUiColorTheme.of(context).ultraLightGrey),
+        ),
+        child: Padding(
+          padding: FediPadding.allMediumPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              if (card.providerName?.isNotEmpty == true)
+                const _CardProviderWidget(),
+              if (card.title?.isNotEmpty == true) const _CardTitleWidget(),
+              if (card.description?.isNotEmpty == true)
+                const _CardDescriptionWidget(),
+            ],
           ),
         ),
-      );
-
-  Widget buildDescriptionText({
-    @required BuildContext context,
-    @required IPleromaCard card,
-  }) =>
-      Expanded(
-        child: Text(
-          card.description,
-          style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-        ),
-      );
-
-  Text buildTitleText({
-    @required BuildContext context,
-    @required IPleromaCard card,
-  }) {
-    return Text(
-      card.title,
-      maxLines: 2,
-      style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
-      overflow: TextOverflow.ellipsis,
+      ),
     );
   }
+}
 
-  Widget buildProviderText({
-    @required BuildContext context,
-    @required IPleromaCard card,
-  }) {
+class _CardImageWidget extends StatelessWidget {
+  const _CardImageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var card = Provider.of<IPleromaCard>(context);
+
+    return CachedNetworkImage(
+      width: _cardImageSize,
+      height: _cardImageSize,
+      imageUrl: card.image,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: FediCircularProgressIndicator(),
+      ),
+      errorWidget: (context, url, error) => Icon(FediIcons.warning),
+    );
+  }
+}
+
+class _CardProviderWidget extends StatelessWidget {
+  const _CardProviderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var card = Provider.of<IPleromaCard>(context);
+
     return Container(
       child: Text(
         card.providerName,
@@ -121,18 +127,40 @@ class CardWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget buildImage(IPleromaCard card) => CachedNetworkImage(
-        width: _cardImageSize,
-        height: _cardImageSize,
-        imageUrl: card.image,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => Padding(
-          padding: FediPadding.allBigPadding,
-          child: FediCircularProgressIndicator(),
-        ),
-        errorWidget: (context, url, error) => Icon(FediIcons.warning),
-      );
+class _CardTitleWidget extends StatelessWidget {
+  const _CardTitleWidget({
+    Key key,
+  }) : super(key: key);
 
-  const CardWidget();
+  @override
+  Widget build(BuildContext context) {
+    var card = Provider.of<IPleromaCard>(context);
+
+    return Text(
+      card.title,
+      maxLines: 2,
+      style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+class _CardDescriptionWidget extends StatelessWidget {
+  const _CardDescriptionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var card = Provider.of<IPleromaCard>(context);
+
+    return Expanded(
+      child: Text(
+        card.description,
+        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
+      ),
+    );
+  }
 }
