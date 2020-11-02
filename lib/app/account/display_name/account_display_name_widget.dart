@@ -1,8 +1,13 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:fedi/app/emoji/text/emoji_text_widget.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
+import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
   final TextOverflow textOverflow;
@@ -17,25 +22,37 @@ class AccountDisplayNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
+    var accountBloc = IAccountBloc.of(context);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
     var textStyle =
-        this.textStyle ?? IFediUiTextTheme.of(context).bigShortBoldDarkGrey;
-    return StreamBuilder<EmojiText>(
-        stream: accountBloc.displayNameEmojiTextStream,
-        builder: (context, snapshot) {
-          var accountDisplayNameEmojiText = snapshot.data;
+        this.textStyle ?? fediUiTextTheme.bigShortBoldDarkGrey;
 
-          if (accountDisplayNameEmojiText == null) {
-            return const SizedBox.shrink();
-          }
-
-          return EmojiTextWidget(
-            textAlign: textAlign,
-            emojiText: accountDisplayNameEmojiText,
-            textStyle: textStyle,
-            textOverflow: textOverflow,
-            drawNewLines: false,
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    return StreamProvider.value(
+      value: accountBloc.displayNameEmojiTextStream,
+      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+        update: (context, emojiText, _) {
+          return HtmlTextBloc(
+            inputData: HtmlTextInputData(
+              input: emojiText?.text,
+              emojis: emojiText?.emojis,
+            ),
+            settings: HtmlTextSettings(
+              textOverflow: textOverflow,
+              linkColor: fediUiColorTheme.primary,
+              color: textStyle.color,
+              textMaxLines: null,
+              textScaleFactor: textScaleFactor,
+              fontSize: textStyle.fontSize,
+              lineHeight: null,
+              fontWeight: textStyle.fontWeight,
+              drawNewLines: false,
+            ),
           );
-        });
+        },
+        child: const HtmlTextWidget(),
+      ),
+    );
   }
 }

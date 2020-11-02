@@ -6,8 +6,11 @@ import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
@@ -28,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("notification_list_item_widget.dart");
 
@@ -364,21 +368,35 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
     }
 
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var emojis = notificationBloc.status?.emojis;
-
-    var htmlText;
-
-    htmlText = addEmojiToHtmlContent(rawText, emojis);
-
-    return HtmlTextWidget(
-      htmlData: htmlText,
-      textMaxLines: 1,
-      textOverflow: TextOverflow.ellipsis,
-      color: IFediUiColorTheme.of(context).mediumGrey,
-      fontSize: 16,
-      lineHeight: 1.5,
-      fontWeight: FontWeight.w300,
-      onLinkTap: null,
+    return Provider<EmojiText>.value(
+      value: EmojiText(text: rawText, emojis: emojis),
+      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+        update: (context, emojiText, _) {
+          var htmlTextBloc = HtmlTextBloc(
+            inputData: HtmlTextInputData(
+              input: emojiText.text,
+              emojis: emojiText.emojis,
+            ),
+            settings: HtmlTextSettings(
+              textMaxLines: 1,
+              textOverflow: TextOverflow.ellipsis,
+              color: fediUiColorTheme.mediumGrey,
+              fontSize: 16,
+              lineHeight: 1.5,
+              fontWeight: FontWeight.w300,
+              shrinkWrap: true,
+              linkColor: fediUiColorTheme.primary,
+              drawNewLines: false,
+              textScaleFactor: textScaleFactor,
+            ),
+          );
+          return htmlTextBloc;
+        },
+        child: const HtmlTextWidget(),
+      ),
     );
   }
 

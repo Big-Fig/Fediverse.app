@@ -1,31 +1,68 @@
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/body/status_body_link_helper.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StatusSpoilerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: true);
+    var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<String>(
-        stream: statusBloc.spoilerTextWithEmojisStream,
-        initialData: statusBloc.spoilerTextWithEmojis,
-        builder: (context, snapshot) {
-          var spoiler = snapshot.data;
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-          if (spoiler?.isNotEmpty == true) {
-            return HtmlTextWidget(
-              htmlData: spoiler,
-              lineHeight: 1.5,
-              fontSize: 16.0,
-              onLinkTap: _handleLinkTap,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+    return StreamBuilder<EmojiText>(
+      stream: statusBloc.spoilerTextWithEmojisStream,
+      builder: (context, snapshot) {
+        var spoilerEmojiText = snapshot.data;
+        if (spoilerEmojiText?.text?.isNotEmpty != true) {
+          return const SizedBox.shrink();
+        }
+        return Provider<EmojiText>.value(
+          value: spoilerEmojiText,
+          child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+            update: (context, spoilerWithEmojis, _) {
+              var htmlTextBloc = HtmlTextBloc(
+                inputData: HtmlTextInputData(
+                  input: spoilerWithEmojis?.text,
+                  emojis: spoilerWithEmojis?.emojis,
+                ),
+                settings: HtmlTextSettings(
+                  lineHeight: 1.5,
+                  fontSize: 16.0,
+                  // todo: 1000 is hack, actually it should be null, but don't
+                  //  work as expected
+                  textMaxLines: 1000,
+                  textOverflow: TextOverflow.ellipsis,
+                  linkColor: fediUiColorTheme.primary,
+                  color: fediUiColorTheme.darkGrey,
+                  textScaleFactor: textScaleFactor,
+                  fontWeight: FontWeight.normal,
+                  drawNewLines: false,
+                ),
+              );
+              htmlTextBloc.addDisposable(
+                streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                  (url) {
+                    _handleLinkTap(context, url);
+                  },
+                ),
+              );
+              return htmlTextBloc;
+            },
+            child: const HtmlTextWidget(),
+          ),
+        );
+      },
+    );
   }
 
   const StatusSpoilerWidget();

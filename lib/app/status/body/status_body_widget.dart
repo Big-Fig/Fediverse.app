@@ -1,4 +1,8 @@
 import 'package:fedi/app/card/card_widget.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
@@ -17,6 +21,7 @@ import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -318,17 +323,18 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<EmojiText>(
         stream: statusBloc.contentWithEmojisStream.distinct(),
+        initialData: statusBloc.contentWithEmojis,
         builder: (context, snapshot) {
           var contentWithEmojis = snapshot.data;
 
           _logger.finest(() => "contentWithEmojis $contentWithEmojis");
 
-          if (contentWithEmojis?.isNotEmpty == true) {
-            return Provider<String>.value(
+          if (contentWithEmojis?.text?.isNotEmpty == true) {
+            return Provider<EmojiText>.value(
               value: contentWithEmojis,
-              child: _StatusBodyContentWithEmojisCollapsibleWidget(),
+              child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
             );
           } else {
             return const SizedBox.shrink();
@@ -377,16 +383,40 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var contentWithEmojisEmojis = Provider.of<String>(context);
-    return HtmlTextWidget(
-      htmlData: contentWithEmojisEmojis,
-      lineHeight: 1.5,
-      fontSize: 16.0,
-      // todo: 1000 is hack, actually it should be null, but don't
-      //  work as expected
-      textMaxLines: 1000,
-      textOverflow: TextOverflow.ellipsis,
-      onLinkTap: _onLinkTap,
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
+    return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+      update : (context, contentWithEmojis, _) {
+        var htmlTextBloc = HtmlTextBloc(
+          inputData: HtmlTextInputData(
+            input: contentWithEmojis?.text,
+            emojis: contentWithEmojis?.emojis,
+          ),
+          settings: HtmlTextSettings(
+            lineHeight: 1.5,
+            fontSize: 16.0,
+            // todo: 1000 is hack, actually it should be null, but don't
+            //  work as expected
+            textMaxLines: 1000,
+            textOverflow: TextOverflow.ellipsis,
+            linkColor: fediUiColorTheme.primary,
+            color: fediUiColorTheme.darkGrey,
+            textScaleFactor: textScaleFactor,
+            fontWeight: FontWeight.normal,
+            drawNewLines: false,
+          ),
+        );
+        htmlTextBloc.addDisposable(
+          streamSubscription: htmlTextBloc.linkClickedStream.listen(
+            (url) {
+              _onLinkTap(context, url);
+            },
+          ),
+        );
+        return htmlTextBloc;
+      },
+      child: const HtmlTextWidget(),
     );
   }
 }

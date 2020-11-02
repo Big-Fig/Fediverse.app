@@ -3,7 +3,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -158,13 +158,15 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
 //  }
 
   @override
-  String get contentWithEmojis =>
-      addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis);
+  EmojiText get contentWithEmojis =>
+      EmojiText(text: chatMessage.content, emojis: chatMessage.emojis);
 
   @override
-  Stream<String> get contentWithEmojisStream => chatMessageStream
-      .map((chatMessage) =>
-          addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis))
+  Stream<EmojiText> get contentWithEmojisStream => chatMessageStream
+      .map(
+        (chatMessage) =>
+            EmojiText(text: chatMessage.content, emojis: chatMessage.emojis),
+      )
       .distinct();
 
   @override
