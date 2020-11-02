@@ -103,26 +103,34 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
     @required ImageProvider imageProvider,
     @required Widget child,
   }) {
-    return Stack(
-      children: [
-        Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-                image: imageProvider,
-              ),
-            ),
-            child: child),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child:
-              Container(color: IFediUiColorTheme.of(context).imageDarkOverlay),
-        )
-      ],
+    return RepaintBoundary(
+      child: Stack(
+        children: [
+          Image(
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            image: imageProvider,
+          ),
+          const _FediInstanceImageBackgroundDarkOverlayWidget(child: null),
+        ],
+      ),
     );
   }
+}
+
+class _FediInstanceImageBackgroundDarkOverlayWidget extends StatelessWidget {
+  const _FediInstanceImageBackgroundDarkOverlayWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        child: child,
+        decoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).imageDarkOverlay),
+      );
 }
