@@ -43,6 +43,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
@@ -60,6 +61,7 @@ CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set `enableInDevMode` to true to see reports while in debug mode
@@ -355,6 +357,8 @@ class FediApp extends StatelessWidget {
                 child: provideCurrentTheme(
                   currentTheme: currentTheme ?? lightFediUiTheme,
                   child: MaterialApp(
+                    // checkerboardRasterCacheImages: true,
+                    // checkerboardOffscreenLayers: true,
                     debugShowCheckedModeBanner: false,
                     title: appTitle,
                     localizationsDelegates: [

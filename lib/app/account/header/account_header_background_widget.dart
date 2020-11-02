@@ -25,7 +25,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
         return Provider<String>.value(
           value: header,
-          child: const _AccountHeaderBackgroundImageWidget(),
+          child: RepaintBoundary(child: const _AccountHeaderBackgroundImageWidget()),
         );
       },
     );
