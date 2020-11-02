@@ -4,7 +4,6 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -129,11 +128,6 @@ class AccountBloc extends IAccountBloc {
   @override
   Stream<IAccount> get accountStream => _accountSubject.stream.distinct();
 
-  @override
-  Stream<EmojiText> get displayNameEmojiTextStream => accountStream
-      .map((account) =>
-          EmojiText(text: account.displayName, emojis: account.emojis))
-      .distinct();
 
   @override
   Future report() => pleromaAccountService.reportAccount(

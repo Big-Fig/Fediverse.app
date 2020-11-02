@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -36,13 +37,9 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
 
   Stream<String> get contentRawTextStream;
 
-  String get contentWithEmojisWithoutAccount;
+  EmojiText get contentWithEmojis;
 
-  Stream<String> get contentWithEmojisWithoutAccountStream;
-
-  String get contentWithEmojis;
-
-  Stream<String> get contentWithEmojisStream;
+  Stream<EmojiText> get contentWithEmojisStream;
 
   IPleromaCard get card;
 
@@ -149,9 +146,9 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
 
   Stream<String> get spoilerTextStream;
 
-  String get spoilerTextWithEmojis;
+  EmojiText get spoilerTextWithEmojis;
 
-  Stream<String> get spoilerTextWithEmojisStream;
+  Stream<EmojiText> get spoilerTextWithEmojisStream;
 
   bool get nsfwSensitive;
 
@@ -180,6 +177,7 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
   Future refreshFromNetwork();
 
   Future<IAccount> loadAccountByMentionUrl({@required String url});
+
   Future<IHashtag> loadHashtagByUrl({@required String url});
 
   Future<IAccount> getInReplyToAccount();
@@ -199,6 +197,7 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
   Future<IStatus> toggleBookmark();
 
   Future<IStatus> togglePin();
+
   Future delete();
 
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
@@ -208,5 +207,4 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
   bool get deleted;
 
   Stream<bool> get deletedStream;
-
 }

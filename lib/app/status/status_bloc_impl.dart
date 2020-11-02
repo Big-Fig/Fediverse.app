@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
@@ -303,18 +303,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       (originalCard, reblogCard) => reblogCard ?? originalCard);
 
   @override
-  String get contentWithEmojisWithoutAccount =>
-      _excludeAccountFromHtmlContent(contentWithEmojis, account.url);
-
-  @override
-  Stream<String> get contentWithEmojisWithoutAccountStream =>
-      contentWithEmojisStream
-          // actually we should listen account too, but url don't changes too often
-          .map((contentWithEmojis) =>
-              _excludeAccountFromHtmlContent(contentWithEmojis, account.url))
-          .distinct();
-
-  @override
   List<IPleromaMediaAttachment> get mediaAttachments =>
       status?.mediaAttachments;
 
@@ -357,12 +345,14 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  String get contentWithEmojis =>
-      addEmojiToHtmlContent(status.content, status.emojis);
+  EmojiText get contentWithEmojis =>
+      EmojiText(text: status.content, emojis: status.emojis);
 
   @override
-  Stream<String> get contentWithEmojisStream => statusStream
-      .map((status) => addEmojiToHtmlContent(status.content, status.emojis))
+  Stream<EmojiText> get contentWithEmojisStream => statusStream
+      .map(
+        (status) => EmojiText(text: status.content, emojis: status.emojis),
+      )
       .distinct();
 
   @override
@@ -693,12 +683,14 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       reblogOrOriginalStream.map((status) => status.spoilerText);
 
   @override
-  String get spoilerTextWithEmojis =>
-      addEmojiToHtmlContent(spoilerText, status.emojis);
+  EmojiText get spoilerTextWithEmojis =>
+      EmojiText(text: status.spoilerText, emojis: status.emojis);
 
   @override
-  Stream<String> get spoilerTextWithEmojisStream => statusStream
-      .map((status) => addEmojiToHtmlContent(status.spoilerText, status.emojis))
+  Stream<EmojiText> get spoilerTextWithEmojisStream => statusStream
+      .map(
+        (status) => EmojiText(text: status.spoilerText, emojis: status.emojis),
+      )
       .distinct();
 
   @override
@@ -777,16 +769,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           displayContainsSpoiler: displayContainsSpoiler,
         ),
       );
-
-  // todo: recheck, regex looks very strange
-  String _excludeAccountFromHtmlContent(String htmlContent, String accountURL) {
-    String newHtmlContent =
-        htmlContent?.replaceFirst(RegExp('@<span>.*<\/span>'), "</a>");
-    // String newHtmlContent =
-    //     html.replaceAll(RegExp('<\s*a[^>]*>(?=@).*<\s*\/\s*a>'), "");
-    // print(newHtmlContent);
-    return newHtmlContent;
-  }
 
   // todo: rework with mixin
   @override

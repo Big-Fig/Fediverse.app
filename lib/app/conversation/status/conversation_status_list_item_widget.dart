@@ -1,4 +1,8 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
@@ -10,6 +14,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _borderRadius = Radius.circular(16.0);
 
@@ -140,28 +145,52 @@ class ConversationStatusListItemWidget extends StatelessWidget {
           });
 
   Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
-      StreamBuilder<String>(
+      StreamBuilder<EmojiText>(
           stream: statusBloc.contentWithEmojisStream,
           initialData: statusBloc.contentWithEmojis,
           builder: (context, snapshot) {
             var contentWithEmojis = snapshot.data;
 
-            if (contentWithEmojis?.isNotEmpty == true) {
-              return HtmlTextWidget(
-                  htmlData: contentWithEmojis,
-                  shrinkWrap: true,
-                  color: isStatusFromMe
-                      ? IFediUiColorTheme.of(context).white
-                      : IFediUiColorTheme.of(context).darkGrey,
-                  linkColor: isStatusFromMe
-                      ? IFediUiColorTheme.of(context).white
-                      : IFediUiColorTheme.of(context).primary,
-                  fontSize: 16.0,
-                  lineHeight: 1.5,
-                  // data: contentWithEmojis,
-                  onLinkTap: (context, url) async {
-                    await UrlHelper.handleUrlClick(context, url);
-                  });
+            if (contentWithEmojis?.text?.isNotEmpty == true) {
+              var fediUiColorTheme = IFediUiColorTheme.of(context);
+              var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+              return Provider<EmojiText>.value(
+                value: contentWithEmojis,
+                child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+                  update: (context, emojiText, _) {
+                    var htmlTextBloc = HtmlTextBloc(
+                      inputData: HtmlTextInputData(
+                        input: emojiText.text,
+                        emojis: emojiText.emojis,
+                      ),
+                      settings: HtmlTextSettings(
+                        shrinkWrap: true,
+                        color: isStatusFromMe
+                            ? fediUiColorTheme.white
+                            : fediUiColorTheme.darkGrey,
+                        linkColor: isStatusFromMe
+                            ? fediUiColorTheme.white
+                            : fediUiColorTheme.primary,
+                        fontSize: 16.0,
+                        lineHeight: 1.5,
+                        drawNewLines: false,
+                        textMaxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w300,
+                        textScaleFactor: textScaleFactor,
+                      ),
+                    );
+                    htmlTextBloc.addDisposable(
+                      streamSubscription:
+                          htmlTextBloc.linkClickedStream.listen((url) {
+                        UrlHelper.handleUrlClick(context, url);
+                      }),
+                    );
+                    return htmlTextBloc;
+                  },
+                  child: const HtmlTextWidget(),
+                ),
+              );
             } else {
               return SizedBox.shrink();
             }

@@ -16,10 +16,8 @@ class EmojiText {
           runtimeType == other.runtimeType &&
           text == other.text &&
           eq(emojis, other.emojis);
-
   @override
   int get hashCode => text.hashCode ^ emojis.hashCode;
-
   @override
   String toString() {
     return 'EmojiText{text: $text, emojis: $emojis}';

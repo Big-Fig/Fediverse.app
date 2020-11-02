@@ -1,12 +1,17 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/details/media_attachments_details_page.dart';
 import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -168,30 +173,57 @@ class ChatMessageListItemWidget extends StatelessWidget {
           });
 
   Widget buildTextContent(
-          IChatMessageBloc messageBloc, bool isChatMessageFromMe) =>
-      StreamBuilder<String>(
-          stream: messageBloc.contentWithEmojisStream,
-          initialData: messageBloc.contentWithEmojis,
-          builder: (context, snapshot) {
-            var contentWithEmojis = snapshot.data;
+      IChatMessageBloc messageBloc, bool isChatMessageFromMe) {
+    return StreamBuilder<EmojiText>(
+      stream: messageBloc.contentWithEmojisStream,
+      initialData: messageBloc.contentWithEmojis,
+      builder: (context, snapshot) {
+        var contentWithEmojis = snapshot.data;
 
-            if (contentWithEmojis?.isNotEmpty == true) {
-              return HtmlTextWidget(
-                  htmlData: contentWithEmojis,
-                  shrinkWrap: true,
-                  color: isChatMessageFromMe
-                      ? IFediUiColorTheme.of(context).white
-                      : IFediUiColorTheme.of(context).darkGrey,
-                  linkColor: isChatMessageFromMe
-                      ? IFediUiColorTheme.of(context).white
-                      : IFediUiColorTheme.of(context).primary,
-                  fontSize: 16.0,
-                  lineHeight: 1.5,
-                  onLinkTap: (context, url) async {
-                    await UrlHelper.handleUrlClick(context, url);
-                  });
-            } else {
-              return SizedBox.shrink();
-            }
-          });
+        if (contentWithEmojis?.text?.isNotEmpty == true) {
+          var fediUiColorTheme = IFediUiColorTheme.of(context);
+          var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+          return Provider<EmojiText>.value(
+            value: contentWithEmojis,
+            child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+              update: (context, emojiText, _) {
+                var htmlTextBloc = HtmlTextBloc(
+                  inputData: HtmlTextInputData(
+                    input: emojiText.text,
+                    emojis: emojiText.emojis,
+                  ),
+                  settings: HtmlTextSettings(
+                    shrinkWrap: true,
+                    color: isChatMessageFromMe
+                        ? fediUiColorTheme.white
+                        : fediUiColorTheme.darkGrey,
+                    linkColor: isChatMessageFromMe
+                        ? fediUiColorTheme.white
+                        : fediUiColorTheme.primary,
+                    fontSize: 16.0,
+                    lineHeight: 1.5,
+                    drawNewLines: false,
+                    textMaxLines: 1,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w300,
+                    textScaleFactor: textScaleFactor,
+                  ),
+                );
+                htmlTextBloc.addDisposable(
+                  streamSubscription:
+                      htmlTextBloc.linkClickedStream.listen((url) {
+                    UrlHelper.handleUrlClick(context, url);
+                  }),
+                );
+                return htmlTextBloc;
+              },
+              child: const HtmlTextWidget(),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
 }
