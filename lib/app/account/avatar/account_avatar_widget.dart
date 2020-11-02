@@ -4,6 +4,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AccountAvatarWidget extends StatelessWidget {
   final double imageSize;
@@ -20,23 +21,37 @@ class AccountAvatarWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var avatar = snapshot.data;
 
-          return buildAccountAvatarWidget(
-              avatarUrl: avatar,
+          return Provider<String>.value(
+            value: avatar,
+            child: AccountAvatarUrlWidget(
               progressSize: progressSize,
-              imageSize: imageSize);
+              imageSize: imageSize,
+            ),
+          );
         });
   }
+}
 
-  static Widget buildAccountAvatarWidget({
-    @required String avatarUrl,
-    @required double progressSize,
-    @required double imageSize,
-  }) {
+class AccountAvatarUrlWidget extends StatelessWidget {
+  const AccountAvatarUrlWidget({
+    Key key,
+    @required this.progressSize,
+    @required this.imageSize,
+  }) : super(key: key);
+
+  final double imageSize;
+  final double progressSize;
+
+  @override
+  Widget build(BuildContext context) {
+    var avatarUrl = Provider.of<String>(context);
     if (avatarUrl == null) {
       return Container(
         width: imageSize,
         height: imageSize,
-        child: buildLoading(progressSize),
+        child: _AccountAvatarLoadingWidget(
+          progressSize: progressSize,
+        ),
       );
     }
 
@@ -56,16 +71,38 @@ class AccountAvatarWidget extends StatelessWidget {
             );
           },
           imageUrl: avatarUrl,
-          placeholder: (context, url) => buildLoading(progressSize),
-          errorWidget: (context, url, error) => Icon(FediIcons.warning),
+          placeholder: (context, url) => _AccountAvatarLoadingWidget(
+            progressSize: progressSize,
+          ),
+          errorWidget: (context, url, error) => _AccountAvatarFailedWidget(),
           height: imageSize,
           width: imageSize,
         ),
       ),
     );
   }
+}
 
-  static Center buildLoading(double progressSize) {
+class _AccountAvatarFailedWidget extends StatelessWidget {
+  const _AccountAvatarFailedWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(FediIcons.warning);
+  }
+}
+
+class _AccountAvatarLoadingWidget extends StatelessWidget {
+  const _AccountAvatarLoadingWidget({
+    Key key,
+    @required this.progressSize,
+  }) : super(key: key);
+  final double progressSize;
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: FediCircularProgressIndicator(size: progressSize),
     );
