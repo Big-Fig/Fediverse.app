@@ -31,8 +31,32 @@ class HtmlTextWidget extends StatelessWidget {
       );
     } else {
       var settings = htmlTextBloc.settings;
+      Alignment alignment;
+      switch(settings.textAlign) {
+
+        case TextAlign.left:
+          alignment = Alignment.centerLeft;
+          break;
+        case TextAlign.right:
+          alignment = Alignment.centerRight;
+          break;
+        case TextAlign.center:
+          alignment = Alignment.center;
+          break;
+        case TextAlign.justify:
+          alignment = Alignment.center;
+          break;
+        case TextAlign.start:
+          alignment = Alignment.centerLeft;
+          break;
+        case TextAlign.end:
+          alignment = Alignment.centerRight;
+          break;
+        default:
+          alignment = Alignment.centerLeft;
+      }
       return Align(
-        alignment: Alignment.centerLeft,
+        alignment: alignment,
         child: Text(
           htmlData.text,
           style: TextStyle(
