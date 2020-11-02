@@ -147,20 +147,34 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
           return Column(
             children: <Widget>[
               messageWidget,
-              Padding(
-                padding: FediPadding.allSmallPadding,
-                child: Center(
-                    child: Text(
-                  _dateSeparatorDateFormat.format(currentCreatedAt),
-                  style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-                )),
-              ),
+              _ChatMessageListSeparatorWidget(currentCreatedAt: currentCreatedAt),
             ],
           );
         } else {
           return messageWidget;
         }
       },
+    );
+  }
+}
+
+class _ChatMessageListSeparatorWidget extends StatelessWidget {
+  const _ChatMessageListSeparatorWidget({
+    Key key,
+    @required this.currentCreatedAt,
+  }) : super(key: key);
+
+  final DateTime currentCreatedAt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allSmallPadding,
+      child: Center(
+          child: Text(
+        _dateSeparatorDateFormat.format(currentCreatedAt),
+        style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
+      )),
     );
   }
 }

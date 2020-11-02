@@ -18,15 +18,16 @@ class ChatAvatarWidget extends StatelessWidget {
     IChatBloc chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
-        stream: chatBloc.accountsStream,
-        builder: (context, snapshot) {
-          var accounts = snapshot.data;
-          return Provider<List<IAccount>>.value(
-            value: accounts,
-            child: AccountListAvatarWidget(
-              baseAvatarSize: baseAvatarSize,
-            ),
-          );
-        });
+      stream: chatBloc.accountsStream,
+      builder: (context, snapshot) {
+        var accounts = snapshot.data;
+        return Provider<List<IAccount>>.value(
+          value: accounts,
+          child: AccountListAvatarWidget(
+            baseAvatarSize: baseAvatarSize,
+          ),
+        );
+      },
+    );
   }
 }

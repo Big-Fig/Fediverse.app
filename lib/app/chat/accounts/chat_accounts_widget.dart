@@ -17,12 +17,11 @@ class ChatAccountsWidget extends StatelessWidget {
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,
-        initialData: chatBloc.accounts,
         builder: (context, snapshot) {
           var items = snapshot.data;
 
           if (items == null) {
-            return Center(child: FediCircularProgressIndicator());
+            return const Center(child: FediCircularProgressIndicator());
           }
 
           return ListView.builder(
@@ -36,15 +35,18 @@ class ChatAccountsWidget extends StatelessWidget {
                       isNeedPreFetchRelationship: false),
                   child: Column(
                     children: [
-                      AccountListItemWidget(
-                        accountSelectedCallback:
-                            (BuildContext context, IAccount account) {
-                          goToAccountDetailsPage(context, account);
-                        },
+                      const AccountListItemWidget(
+                        accountSelectedCallback: _accountSelectedCallback,
                       ),
                       const FediUltraLightGreyDivider()
                     ],
                   )));
         });
   }
+
+  const ChatAccountsWidget();
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  goToAccountDetailsPage(context, account);
 }
