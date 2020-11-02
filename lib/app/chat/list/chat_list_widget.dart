@@ -3,13 +3,13 @@ import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
+import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 
 class ChatListWidget extends FediPaginationListWidget<IChat> {
   ChatListWidget({
@@ -39,11 +39,14 @@ class ChatListWidget extends FediPaginationListWidget<IChat> {
           itemBuilder: (context, index) => Provider<IChat>.value(
                 value: items[index],
                 child: DisposableProxyProvider<IChat, IChatBloc>(
-                    update: (context, chat, oldValue) =>
-                        ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null),
-                    child: FediListTile(
-                        isFirstInList: index == 0 && header == null,
-                        child: ChatListItemWidget())),
+                  update: (context, chat, oldValue) =>
+                      ChatBloc.createFromContext(context,
+                          chat: chat, lastChatMessage: null),
+                  child: FediListTile(
+                    isFirstInList: index == 0 && header == null,
+                    child: const ChatListItemWidget(),
+                  ),
+                ),
               ));
 
   @override

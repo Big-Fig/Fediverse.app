@@ -16,7 +16,7 @@ class AccountListItemWidget extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
   final List<Widget> accountActions;
 
-  AccountListItemWidget({
+  const AccountListItemWidget({
     @required this.accountSelectedCallback,
     this.accountActions,
   });

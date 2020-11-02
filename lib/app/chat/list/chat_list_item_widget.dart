@@ -20,11 +20,11 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 
 class ChatListItemWidget extends StatelessWidget {
-  ChatListItemWidget();
+  const ChatListItemWidget();
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: true);
+    var chatBloc = IChatBloc.of(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -42,34 +42,32 @@ class ChatListItemWidget extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ChatAvatarWidget(),
+                    const ChatAvatarWidget(),
                     const FediBigHorizontalSpacer(),
                     Flexible(
-                      child: buildChatPreview(context, chatBloc),
+                      child: const _ChatListItemPreviewWidget(),
                     ),
                   ],
                 ),
               ),
-              buildGoToChatButton(context, chatBloc),
+              const _ChatListItemGoToChatButtonWidget(),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Column buildChatPreview(BuildContext context, IChatBloc chatBloc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        ChatTitleWidget(),
-        buildLastMessageText(context, chatBloc),
-      ],
-    );
-  }
+class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
+  const _ChatListItemGoToChatButtonWidget({
+    Key key,
+  }) : super(key: key);
 
-  Widget buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
+  @override
+  Widget build(BuildContext context) {
+    var chatBloc = IChatBloc.of(context);
+
     return FediIconButton(
       tooltip: S.of(context).app_chat_action_more,
       color: IFediUiColorTheme.of(context).darkGrey,
@@ -80,15 +78,42 @@ class ChatListItemWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildLastMessageText(BuildContext context, IChatBloc chatBloc) {
+class _ChatListItemPreviewWidget extends StatelessWidget {
+  const _ChatListItemPreviewWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        const ChatTitleWidget(),
+        const _ChatListItemLastMessageWidget(),
+      ],
+    );
+  }
+}
+
+class _ChatListItemLastMessageWidget extends StatelessWidget {
+  const _ChatListItemLastMessageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var chatBloc = IChatBloc.of(context);
+
     return StreamBuilder<IChatMessage>(
         stream: chatBloc.lastChatMessageStream,
         builder: (context, snapshot) {
           var lastMessage = snapshot.data;
 
           if (lastMessage == null) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
           var content = lastMessage.content;
           if (content?.isNotEmpty != true) {
@@ -117,18 +142,18 @@ class ChatListItemWidget extends StatelessWidget {
           );
         });
   }
+}
 
-  String extractContent(
-      BuildContext context, IChatMessage chatMessage, String content) {
-    String formattedText =
-        HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
+String extractContent(
+    BuildContext context, IChatMessage chatMessage, String content) {
+  String formattedText =
+      HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+  var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-    if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-      formattedText = S.of(context).app_chat_preview_you(formattedText);
-    }
-
-    return formattedText;
+  if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
+    formattedText = S.of(context).app_chat_preview_you(formattedText);
   }
+
+  return formattedText;
 }
