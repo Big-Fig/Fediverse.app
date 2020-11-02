@@ -244,7 +244,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timelineTabBlocsList = Provider.of<TimelineTabBlocsList>(context);
+
     return FediTabMainHeaderBarWidget(
       leadingWidgets: null,
       content: Column(
@@ -278,7 +278,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _buildTabIndicatorWidget(context, timelineTabBlocsList),
+                child: _TimelinesHomeTabIndicatorWidget(),
               ),
               Padding(
                 padding: FediPadding.horizontalSmallPadding,
@@ -297,17 +297,27 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTabIndicatorWidget(
-    BuildContext context,
-    TimelineTabBlocsList timelineTabBlocsList,
-  ) {
+
+}
+
+class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
+  const _TimelinesHomeTabIndicatorWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var timelineTabBlocsList = Provider.of<TimelineTabBlocsList>(context);
     if (timelineTabBlocsList == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
+    } else {
+      return Padding(
+        padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+        child: TimelineTabListTextTabIndicatorItemWidget(),
+      );
     }
-    return Padding(
-      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-      child: const TimelineTabListTextTabIndicatorItemWidget(),
-    );
+
+
   }
 }
 
