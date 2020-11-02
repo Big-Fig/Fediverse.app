@@ -30,7 +30,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
     var borderHeight = 2.0;
 
     var fediTabIndicatorBloc =
-        IFediTabIndicatorBloc.of<T>(context, listen: false);
+        IFediTabIndicatorBloc.of<T>(context);
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
