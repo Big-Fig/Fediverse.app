@@ -9,23 +9,43 @@ class SplashWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Center(
-        child: buildLogoWidget(),
+      const Center(
+        child: _SplashLogoWidget(),
       ),
       Positioned(
         right: 20.0,
         bottom: 20.0,
-        child: VersionPackageInfoWidget(
-          textStyle: lightFediUiTheme.textTheme.mediumShortBoldWhite,
-        ),
+        child: const _SplashVersionInfoWidget(),
       ),
     ]);
   }
+}
 
-  Widget buildLogoWidget() => Container(
-        child: Image(
-          image: AssetImage("assets/images/theme/logo.png"),
-          width: 200,
-        ),
-      );
+class _SplashVersionInfoWidget extends StatelessWidget {
+  const _SplashVersionInfoWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VersionPackageInfoWidget(
+      textStyle: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+    );
+  }
+}
+
+class _SplashLogoWidget extends StatelessWidget {
+  const _SplashLogoWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Image(
+        image: AssetImage("assets/images/theme/logo.png"),
+        width: 200,
+      ),
+    );
+  }
 }
