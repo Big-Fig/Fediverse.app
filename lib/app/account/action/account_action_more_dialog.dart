@@ -125,7 +125,9 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockDomainAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.block,
+      icon: accountBloc.accountRelationship.domainBlocking == true
+          ? FediIcons.domain_block
+          : FediIcons.domain_unblock,
       label: accountBloc.accountRelationship.domainBlocking == true
           ? S
               .of(context)
@@ -159,7 +161,9 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountFollowAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.follow,
+      icon: accountBloc.accountRelationship?.following == true
+          ? FediIcons.unfollow
+          : FediIcons.follow,
       label: accountBloc.accountRelationship?.following == true
           ? S.of(context).app_account_action_unfollow
           : S.of(context).app_account_action_follow,

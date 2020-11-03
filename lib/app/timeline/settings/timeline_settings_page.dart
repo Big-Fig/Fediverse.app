@@ -103,7 +103,7 @@ MaterialPageRoute createTimelineSettingsPageRoute(
                     _createTimelineSettingsFormBloc(
                         timelineLocalPreferencesBloc, timeline);
 
-                _setupTimelinePrefencesChangesListener(
+                _setupTimelinePreferencesChangesListener(
                     timelineSettingsBloc, timelineLocalPreferencesBloc);
                 return timelineSettingsBloc;
               },
@@ -141,7 +141,7 @@ TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
   );
 }
 
-void _setupTimelinePrefencesChangesListener(
+void _setupTimelinePreferencesChangesListener(
     TimelineSettingsFormBloc timelineSettingsBloc,
     ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc) {
   timelineSettingsBloc.addDisposable(

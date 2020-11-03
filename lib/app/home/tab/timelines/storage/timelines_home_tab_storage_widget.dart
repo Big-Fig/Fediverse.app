@@ -92,7 +92,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
     return ListTile(
       trailing: const _TimelinesHomeTabStorageListItemTrailingWidget(),
       leading: Icon(
-        FediIcons.reorder,
+        FediIcons.drag,
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       key: Key(
@@ -114,7 +114,7 @@ class _TimelinesHomeTabStorageListItemTrailingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc =
-        ITimelinesHomeTabStorageBloc.of(context, listen: false);
+        ITimelinesHomeTabStorageBloc.of(context);
     var timeline = Provider.of<Timeline>(context);
 
     var isPossibleToDelete = timeline.isPossibleToDelete == true;
@@ -134,7 +134,7 @@ class _TimelinesHomeTabStorageListItemTrailingWidget extends StatelessWidget {
         if (isPossibleToDelete)
           FediIconButton(
             color: IFediUiColorTheme.of(context).darkGrey,
-            icon: Icon(FediIcons.remove),
+            icon: Icon(FediIcons.delete),
             onPressed: () {
               timelinesHomeTabStorageBloc.remove(timeline);
             },

@@ -1,5 +1,6 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
             return FediIconButton(
               icon: Icon(
-                Icons.visibility,
+                nsfwSensitive == true ? FediIcons.hide : FediIcons.show,
                 color: calculateColor(
                   context,
                   nsfwSensitive,
