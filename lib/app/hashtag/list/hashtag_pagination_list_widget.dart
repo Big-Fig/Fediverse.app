@@ -26,13 +26,7 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
           var item = items[index];
           return Provider<IHashtag>.value(
             value: item,
-            child: Builder(
-                builder: (context) {
-                  var hashtag = Provider.of<IHashtag>(context, listen: false);
-                  return HashtagListItemWidget(
-                      hashtag: hashtag,
-                    );
-                }),
+            child: const HashtagListItemWidget(),
           );
         });
   }

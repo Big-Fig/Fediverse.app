@@ -124,9 +124,7 @@ class SearchResultItemPaginationListWidget
       value: item.hashtag,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: HashtagListItemWidget(
-          hashtag: item.hashtag,
-        ),
+        child: const HashtagListItemWidget(),
       ),
     );
   }

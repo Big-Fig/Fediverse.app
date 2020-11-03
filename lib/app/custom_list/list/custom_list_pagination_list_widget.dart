@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class CustomListPaginationListWidget
     extends FediPaginationListWidget<ICustomList> {
-  CustomListPaginationListWidget();
+  const CustomListPaginationListWidget();
 
   @override
   ScrollView buildItemsCollectionView({
@@ -36,7 +36,7 @@ class CustomListPaginationListWidget
                 context,
                 customList: value,
               ),
-              child: CustomListListItemWidget(),
+              child: const CustomListListItemWidget(),
             ),
           );
         });

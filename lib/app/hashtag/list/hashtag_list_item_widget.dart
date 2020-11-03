@@ -5,16 +5,14 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HashtagListItemWidget extends StatelessWidget {
-  final IHashtag hashtag;
-
-  HashtagListItemWidget({
-    @required this.hashtag,
-  });
+  const HashtagListItemWidget();
 
   @override
   Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
     return InkWell(
       onTap: () {
         goToHashtagPage(context: context, hashtag: hashtag);
@@ -30,7 +28,7 @@ class HashtagListItemWidget extends StatelessWidget {
               style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
             ),
           ),
-          FediLightGreyDivider()
+          const FediLightGreyDivider()
         ],
       ),
     );
