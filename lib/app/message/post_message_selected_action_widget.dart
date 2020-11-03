@@ -12,61 +12,94 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+    var postMessageBloc = IPostMessageBloc.of(context);
 
     return StreamBuilder<PostMessageSelectedAction>(
         stream: postMessageBloc.selectedActionStream,
-        initialData: postMessageBloc.selectedAction,
         builder: (context, snapshot) {
           var selectedAction = snapshot.data;
 
           switch (selectedAction) {
             case PostMessageSelectedAction.attach:
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: FediPadding.verticalBigPadding,
-                    child: const FediUltraLightGreyDivider(),
-                  ),
-                  const SelectMediaAttachmentTypeToPickWidget(),
-                ],
-              );
+              return const _PostMessageSelectedActionAttachWidget();
               break;
             case PostMessageSelectedAction.emoji:
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: FediPadding.verticalBigPadding,
-                    child: const FediUltraLightGreyDivider(),
-                  ),
-                  EmojiPickerWidget(
-                    onEmojiSelected: (emoji) {
-                      postMessageBloc.appendText(emoji.code);
-                      postMessageBloc.clearSelectedAction();
-                    },
-                    useImageEmoji: true,
-                  ),
-                ],
-              );
+              return const _PostMessageSelectedActionEmojiWidget();
               break;
             case PostMessageSelectedAction.poll:
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: FediPadding.verticalBigPadding,
-                    child: const FediUltraLightGreyDivider(),
-                  ),
-                  Padding(
-                    padding: FediPadding.horizontalSmallPadding,
-                    child: PostStatusPollWidget(),
-                  ),
-                ],
-              );
+              return const _PostMessageSelectedActionPollWidget();
               break;
             default:
               return const SizedBox.shrink();
               break;
           }
         });
+  }
+}
+
+class _PostMessageSelectedActionPollWidget extends StatelessWidget {
+  const _PostMessageSelectedActionPollWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        const Padding(
+          padding: FediPadding.verticalBigPadding,
+          child: FediUltraLightGreyDivider(),
+        ),
+        const Padding(
+          padding: FediPadding.horizontalSmallPadding,
+          child: PostStatusPollWidget(),
+        ),
+      ],
+    );
+  }
+}
+
+class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
+  const _PostMessageSelectedActionEmojiWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context);
+    return Column(
+      children: <Widget>[
+        const Padding(
+          padding: FediPadding.verticalBigPadding,
+          child: FediUltraLightGreyDivider(),
+        ),
+        EmojiPickerWidget(
+          onEmojiSelected: (emoji) {
+            postMessageBloc.appendText(emoji.code);
+            postMessageBloc.clearSelectedAction();
+          },
+          useImageEmoji: true,
+        ),
+      ],
+    );
+  }
+}
+
+class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
+  const _PostMessageSelectedActionAttachWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        const Padding(
+          padding: FediPadding.verticalBigPadding,
+          child: FediUltraLightGreyDivider(),
+        ),
+        const SelectMediaAttachmentTypeToPickWidget(),
+      ],
+    );
   }
 }
