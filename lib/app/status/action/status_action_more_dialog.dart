@@ -109,7 +109,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildDeleteAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
-        icon: FediIcons.remove,
+        icon: FediIcons.delete,
         label: S.of(context).app_status_action_delete,
         onAction: (context) async {
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
@@ -125,7 +125,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
 
     return DialogAction(
-      icon: FediIcons.heart,
+      icon: statusBloc.pinned == true ? FediIcons.pin : FediIcons.unpin,
       label: statusBloc.pinned == true
           ? S.of(context).app_status_action_unpin
           : S.of(context).app_status_action_pin,
@@ -157,7 +157,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildBookmarkAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.bookmark,
+      icon: statusBloc.bookmarked == true
+          ? FediIcons.bookmark
+          : FediIcons.unbookmark,
       label: statusBloc.bookmarked == true
           ? S.of(context).app_status_action_unbookmark
           : S.of(context).app_status_action_bookmark,
