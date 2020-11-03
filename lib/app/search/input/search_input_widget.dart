@@ -16,7 +16,7 @@ class SearchInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var searchInputBloc = ISearchInputBloc.of(context, listen: true);
+    var searchInputBloc = ISearchInputBloc.of(context);
 
     return Padding(
       padding: const EdgeInsets.only(right: FediSizes.bigPadding),
@@ -41,7 +41,7 @@ class SearchInputWidget extends StatelessWidget {
                     searchInputBloc.searchTextEditingController,
                 expanded: false,
                 hintText: S.of(context).app_search_field_input_hint,
-                ending: buildClearButton(searchInputBloc),
+                ending: const _SearchInputClearButtonWidget(),
                 textInputAction: TextInputAction.search,
                 onSubmitted: (_) {
                   searchInputBloc.confirmSearch();
@@ -58,25 +58,36 @@ class SearchInputWidget extends StatelessWidget {
     );
   }
 
-  Widget buildClearButton(ISearchInputBloc searchInputBloc) =>
-      StreamBuilder<bool>(
-          stream: searchInputBloc.currentInputIsNotEmptyStream,
-          initialData: searchInputBloc.currentInputIsNotEmpty,
-          builder: (context, snapshot) {
-            var currentInputIsNotEmpty = snapshot.data;
+}
 
-            if (currentInputIsNotEmpty) {
-              return Padding(
-                padding: const EdgeInsets.only(right: FediSizes.bigPadding),
-                child: FediRemoveIconInCircleButton(
-                  onPressed: () {
-                    searchInputBloc.clearSearch();
-                  },
-                  size: 20.0,
-                ),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          });
+class _SearchInputClearButtonWidget extends StatelessWidget {
+  const _SearchInputClearButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var searchInputBloc = ISearchInputBloc.of(context,);
+
+    return StreamBuilder<bool>(
+        stream: searchInputBloc.currentInputIsNotEmptyStream,
+        initialData: searchInputBloc.currentInputIsNotEmpty,
+        builder: (context, snapshot) {
+          var currentInputIsNotEmpty = snapshot.data;
+
+          if (currentInputIsNotEmpty) {
+            return Padding(
+              padding: const EdgeInsets.only(right: FediSizes.bigPadding),
+              child: FediRemoveIconInCircleButton(
+                onPressed: () {
+                  searchInputBloc.clearSearch();
+                },
+                size: 20.0,
+              ),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        });
+  }
 }

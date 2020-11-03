@@ -4,9 +4,11 @@ import 'package:flutter/widgets.dart';
 
 class SearchStatusesListWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => CollapsibleOwnerWidget(
-          child: SearchStatusPaginationListTimelineWidget(
-        key: PageStorageKey("SearchStatusesListWidget"),
-        needWatchLocalRepositoryForUpdates: false,
-      ));
+  Widget build(BuildContext context) => const CollapsibleOwnerWidget(
+        child: SearchStatusPaginationListTimelineWidget(
+          key: PageStorageKey("SearchStatusesListWidget"),
+          needWatchLocalRepositoryForUpdates: false,
+        ),
+      );
+  const SearchStatusesListWidget();
 }

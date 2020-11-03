@@ -8,11 +8,12 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RecentSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var recentSearchBloc = IRecentSearchBloc.of(context, listen: false);
+    var recentSearchBloc = IRecentSearchBloc.of(context);
     return StreamBuilder<RecentSearchList>(
         stream: recentSearchBloc.recentSearchListStream,
         initialData: recentSearchBloc.recentSearchList,
@@ -23,68 +24,95 @@ class RecentSearchWidget extends StatelessWidget {
               ?.where((item) => item?.isNotEmpty == true);
 
           var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
-          return Padding(
-            padding: FediPadding.allBigPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      S.of(context).app_search_recent_title,
-                      style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
-                    ),
-                    if (recentItemsIsNotEmpty)
-                      buildClearButton(context, recentSearchBloc)
-                  ],
-                ),
-                FediSmallVerticalSpacer(),
-                FediUltraLightGreyDivider(),
-                Expanded(
-                  child: recentItemsIsNotEmpty
-                      ? buildListView(
-                          context,
-                          recentSearchBloc,
-                          recentItems,
-                        )
-                      : Center(
-                          child: Text(
-                            S.of(context).app_search_recent_empty,
-                            style: IFediUiTextTheme.of(context)
-                                .mediumShortDarkGrey,
-                          ),
-                        ),
-                ),
-              ],
+          return Provider<List<String>>.value(
+            value: recentItems,
+            child: Padding(
+              padding: FediPadding.allBigPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const _RecentSearchHeaderWidget(),
+                  const FediSmallVerticalSpacer(),
+                  const FediUltraLightGreyDivider(),
+                  Expanded(
+                    child: recentItemsIsNotEmpty
+                        ? _RecentSearchListWidget()
+                        : const _RecentSearchEmptyWidget(),
+                  ),
+                ],
+              ),
             ),
           );
         });
   }
 
-  IconButton buildClearButton(
-      BuildContext context, IRecentSearchBloc recentSearchBloc) {
+  const RecentSearchWidget();
+}
+
+class _RecentSearchHeaderWidget extends StatelessWidget {
+  const _RecentSearchHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var recentItems = Provider.of<List<String>>(context);
+
+    var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          S.of(context).app_search_recent_title,
+          style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
+        ),
+        if (recentItemsIsNotEmpty) const _RecentSearchClearButtonWidget(),
+      ],
+    );
+  }
+}
+
+class _RecentSearchClearButtonWidget extends StatelessWidget {
+  const _RecentSearchClearButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
         FediIcons.remove,
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
+        var recentSearchBloc = IRecentSearchBloc.of(
+          context,
+          listen: false,
+        );
         recentSearchBloc.clearRecentSearch();
       },
     );
   }
+}
 
-  ListView buildListView(
-    BuildContext context,
-    IRecentSearchBloc recentSearchBloc,
-    Iterable<String> recentItems,
-  ) {
+class _RecentSearchListWidget extends StatelessWidget {
+  const _RecentSearchListWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var recentItems = Provider.of<List<String>>(context);
+
     return ListView(
       children: recentItems
           .map(
             (recentItem) => InkWell(
               onTap: () {
+                var recentSearchBloc = IRecentSearchBloc.of(
+                  context,
+                  listen: false,
+                );
                 recentSearchBloc.searchAgain(recentItem);
               },
               child: Padding(
@@ -97,6 +125,22 @@ class RecentSearchWidget extends StatelessWidget {
             ),
           )
           .toList(),
+    );
+  }
+}
+
+class _RecentSearchEmptyWidget extends StatelessWidget {
+  const _RecentSearchEmptyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        S.of(context).app_search_recent_empty,
+        style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+      ),
     );
   }
 }

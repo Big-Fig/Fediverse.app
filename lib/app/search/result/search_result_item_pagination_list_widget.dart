@@ -134,8 +134,7 @@ class SearchResultItemPaginationListWidget
       value: item.status,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: DisposableProxyProvider<IStatus,
-            IStatusListItemTimelineBloc>(
+        child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
           update: (context, status, _) => StatusListItemTimelineBloc.list(
             status: status,
             collapsible: true,
@@ -161,10 +160,9 @@ class SearchResultItemPaginationListWidget
               isNeedPreFetchRelationship: false),
           child: Column(
             children: [
-              AccountListItemWidget(
-                  accountSelectedCallback: (context, account) {
-                goToAccountDetailsPage(context, account);
-              }),
+              const AccountListItemWidget(
+                accountSelectedCallback: _accountSelectedCallback,
+              ),
               const FediUltraLightGreyDivider()
             ],
           )),
@@ -177,6 +175,10 @@ class SearchResultItemPaginationListWidget
           Provider.of<
               IPaginationListBloc<PaginationPage<ISearchResultItem>,
                   ISearchResultItem>>(context, listen: listen);
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  goToAccountDetailsPage(context, account);
 }
 
 class _ItemOrSeparator<T> {
