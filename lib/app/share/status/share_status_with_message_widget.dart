@@ -30,7 +30,7 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
             },
             initialMediaAttachment: null,
           ),
-          child: StatusListItemTimelineWidget(),
+          child: const StatusListItemTimelineWidget(),
         ),
         footer: footer,
       );
