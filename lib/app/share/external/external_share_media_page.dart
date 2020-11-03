@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareMediaPage extends StatelessWidget {
-
   const ExternalShareMediaPage();
 
   @override
@@ -56,8 +55,7 @@ MaterialPageRoute createExternalShareMediaPageRoute({
       mediaAttachment: mediaAttachment,
       child: Provider<IPleromaMediaAttachment>.value(
         value: mediaAttachment,
-        child: const ExternalShareMediaPage(
-        ),
+        child: const ExternalShareMediaPage(),
       ),
       popupTitle: S.of(context).app_share_external_title,
     ),

@@ -12,7 +12,7 @@ class ShareMediaWithMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShareWithMessageWidget(
-      child: MediaAttachmentWidget(),
+      child: const MediaAttachmentWidget(),
       footer: footer,
     );
   }

@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/share/external/external_share_as_link_field_widget.dart';
 import 'package:fedi/app/share/external/external_share_status_bloc_impl.dart';
 import 'package:fedi/app/share/share_icon_button_widget.dart';
@@ -10,14 +9,13 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareStatusPage extends StatelessWidget {
-  final IStatus status;
-
-  ExternalShareStatusPage({@required this.status});
+  const ExternalShareStatusPage();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -62,9 +60,7 @@ MaterialPageRoute createExternalShareStatusPageRoute({
         child: DisposableProxyProvider<IStatus, IStatusBloc>(
           update: (context, value, previous) =>
               StatusBloc.createFromContext(context, status),
-          child: ExternalShareStatusPage(
-            status: status,
-          ),
+          child: const ExternalShareStatusPage(),
         ),
       ),
       popupTitle: S.of(context).app_share_external_title,
