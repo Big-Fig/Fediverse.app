@@ -29,7 +29,7 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<CustomEmojiPickerItem>> get itemsStream =>
-      preferenceBloc.stream.map((list) => list?.recentItems);
+      preferenceBloc.stream.map((list) => list?.recentItems ?? []);
 
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
     var currentItems = items;
