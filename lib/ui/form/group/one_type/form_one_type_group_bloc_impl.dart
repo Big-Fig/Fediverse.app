@@ -149,4 +149,27 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     items.clear();
     _itemsSubject.add(items);
   }
+
+  @override
+  bool isLast(T item) {
+    if (items.isNotEmpty == true) {
+      return items.last == item;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  T findNextItemFor(T item) {
+    var index = items.indexOf(item);
+
+    if (index >= 0 && index + 1 < items.length) {
+      return items[index + 1];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  int indexOf(T item) => items.indexOf(item);
 }
