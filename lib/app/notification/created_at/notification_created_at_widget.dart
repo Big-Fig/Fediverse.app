@@ -15,7 +15,7 @@ class NotificationCreatedAtWidget extends StatelessWidget {
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).smallShortGrey;
 
-    var notificationBloc = INotificationBloc.of(context, listen: false);
+    var notificationBloc = INotificationBloc.of(context);
 
     return StreamBuilder<DateTime>(
         stream: notificationBloc.createdAtStream,
