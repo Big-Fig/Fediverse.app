@@ -14,6 +14,21 @@ abstract class IPleromaPoll implements IMastodonPoll {
   List<IPleromaPollOption> get options;
 }
 
+extension IPleromaPollExtension on IPleromaPoll {
+  bool isOwnVote(IPleromaPollOption option) => options.contains(option);
+  double votesPercent(IPleromaPollOption option) {
+    // votes count can be hidden until poll ends
+    var votesCount = option.votesCount ?? 0;
+    double votesPercent;
+    if (votesCount == 0) {
+      votesPercent = 0.0;
+    } else {
+      votesPercent = votesCount / (this.votesCount);
+    }
+    return votesPercent;
+  }
+}
+
 abstract class IPleromaPollOption implements IMastodonPollOption {}
 
 @JsonSerializable()
