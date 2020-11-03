@@ -69,17 +69,24 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     }));
 
     _fcm.configure(
-        onMessage: (data) async =>
-            _onNewMessage(parseCloudMessage(PushMessageType.foreground, data)),
-        onLaunch: (data) async =>
-            _onNewMessage(parseCloudMessage(PushMessageType.launch, data)),
-        onResume: (data) async =>
-            _onNewMessage(parseCloudMessage(PushMessageType.resume, data)));
+      onMessage: (data) async =>
+          _onNewMessage(parseCloudMessage(PushMessageType.foreground, data)),
+      onLaunch: (data) async =>
+          _onNewMessage(parseCloudMessage(PushMessageType.launch, data)),
+      onResume: (data) async => _onNewMessage(
+        parseCloudMessage(PushMessageType.resume, data),
+      ),
+      onBackgroundMessage: myBackgroundMessageHandler,
+    );
 
     await _fcm.setAutoInitEnabled(true);
 
     await _updateToken();
   }
+}
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print("myBackgroundMessageHandler $message");
 }
 
 PushMessage parseCloudMessage(
