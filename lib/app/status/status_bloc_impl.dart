@@ -199,7 +199,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   IStatus get status => _statusSubject.value;
 
   @override
-  Stream<IStatus> get statusStream => _statusSubject.stream.distinct();
+  Stream<IStatus> get statusStream => _statusSubject.stream;
 
   @override
   IStatus get reblogOrOriginal => reblog ?? status;
@@ -213,21 +213,21 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<IAccount> get accountStream =>
-      statusStream.map((status) => status.account).distinct();
+      statusStream.map((status) => status.account);
 
   @override
   IAccount get reblogOrOriginalAccount => reblogOrOriginal?.account;
 
   @override
   Stream<IAccount> get reblogOrOriginalAccountStream =>
-      reblogOrOriginalStream.map((status) => status.account).distinct();
+      reblogOrOriginalStream.map((status) => status.account);
 
   @override
   DateTime get createdAt => status?.createdAt;
 
   @override
   Stream<DateTime> get createdAtStream =>
-      statusStream.map((status) => status?.createdAt).distinct();
+      statusStream.map((status) => status?.createdAt);
 
   @override
   String get remoteId => status.remoteId;
@@ -237,7 +237,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<List<IPleromaMention>> get mentionsStream =>
-      statusStream.map((status) => status.mentions).distinct();
+      statusStream.map((status) => status.mentions);
 
   @override
   Future<IAccount> getInReplyToAccount() {
@@ -271,7 +271,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<String> get contentStream =>
-      statusStream.map((status) => status?.content).distinct();
+      statusStream.map((status) => status?.content);
 
   @override
   String get contentRawText =>
@@ -286,12 +286,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<IPleromaCard> get cardStream =>
-      statusStream.map((status) => status?.card).distinct();
+      statusStream.map((status) => status?.card);
 
   IPleromaCard get reblogCard => reblog?.card;
 
   Stream<IPleromaCard> get reblogCardStream =>
-      reblogStream.map((status) => status?.card).distinct();
+      reblogStream.map((status) => status?.card);
 
   @override
   IPleromaCard get reblogOrOriginalCard => reblogCard ?? card;
@@ -308,28 +308,28 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
-      statusStream.map((status) => status.mediaAttachments).distinct();
+      statusStream.map((status) => status.mediaAttachments);
 
   @override
   IPleromaPoll get poll => status?.poll;
 
   @override
   Stream<IPleromaPoll> get pollStream =>
-      statusStream.map((status) => status.poll).distinct();
+      statusStream.map((status) => status.poll);
 
   @override
   String get accountAvatar => account?.avatar;
 
   @override
   Stream<String> get accountAvatarStream =>
-      accountStream.map((account) => account.avatar).distinct();
+      accountStream.map((account) => account.avatar);
 
   @override
   bool get favourited => status?.favourited;
 
   @override
   Stream<bool> get favouritedStream =>
-      statusStream.map((status) => status?.favourited).distinct();
+      statusStream.map((status) => status?.favourited);
 
   @override
   Future refreshFromNetwork() async {
@@ -353,35 +353,35 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       .map(
         (status) => EmojiText(text: status.content, emojis: status.emojis),
       )
-      .distinct();
+      ;
 
   @override
   bool get reblogged => status.reblogged;
 
   @override
   Stream<bool> get rebloggedStream =>
-      statusStream.map((status) => status.reblogged).distinct();
+      statusStream.map((status) => status.reblogged);
 
   @override
   bool get muted => status.muted;
 
   @override
   Stream<bool> get mutedStream =>
-      statusStream.map((status) => status.muted).distinct();
+      statusStream.map((status) => status.muted);
 
   @override
   bool get bookmarked => status.bookmarked;
 
   @override
   Stream<bool> get bookmarkedStream =>
-      statusStream.map((status) => status.bookmarked).distinct();
+      statusStream.map((status) => status.bookmarked);
 
   @override
   bool get pinned => status.pinned;
 
   @override
   Stream<bool> get pinnedStream =>
-      statusStream.map((status) => status.pinned).distinct();
+      statusStream.map((status) => status.pinned);
 
   @override
   Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
@@ -424,12 +424,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<int> get favouritesCountStream =>
-      statusStream.map((status) => status.favouritesCount).distinct();
+      statusStream.map((status) => status.favouritesCount);
 
   int get reblogFavouritesCount => reblog?.favouritesCount;
 
   Stream<int> get reblogFavouritesCountStream =>
-      reblogStream.map((status) => status?.favouritesCount).distinct();
+      reblogStream.map((status) => status?.favouritesCount);
 
   @override
   int get reblogPlusOriginalFavouritesCount =>
@@ -446,12 +446,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<int> get reblogsCountStream =>
-      statusStream.map((status) => status.reblogsCount).distinct();
+      statusStream.map((status) => status.reblogsCount);
 
   int get reblogReblogsCount => reblog?.reblogsCount;
 
   Stream<int> get reblogReblogsCountStream =>
-      reblogStream.map((status) => status?.reblogsCount).distinct();
+      reblogStream.map((status) => status?.reblogsCount);
 
   @override
   int get reblogPlusOriginalReblogsCount =>
@@ -468,7 +468,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<int> get repliesCountStream =>
-      statusStream.map((status) => status.repliesCount).distinct();
+      statusStream.map((status) => status.repliesCount);
 
   @override
   Future<IStatus> toggleFavourite() async {
@@ -569,7 +569,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream =>
-      statusStream.map((status) => status.pleromaEmojiReactions).distinct();
+      statusStream.map((status) => status.pleromaEmojiReactions);
 
   @override
   int get pleromaEmojiReactionsCount =>
@@ -592,7 +592,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<List<IPleromaStatusEmojiReaction>>
       get reblogPleromaEmojiReactionsStream => reblogStream
           .map((status) => status?.pleromaEmojiReactions)
-          .distinct();
+          ;
 
   @override
   int get reblogPlusOriginalEmojiReactionsCount =>
@@ -611,11 +611,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<List<IPleromaStatusEmojiReaction>>
       get reblogPlusOriginalEmojiReactionsStream => Rx.combineLatest2(
-          pleromaEmojiReactionsStream,
-          reblogPleromaEmojiReactionsStream,
-          (emojiReactionsOriginal, emojiReactionsReblog) =>
-              mergeEmojiReactionsLists(
-                  emojiReactionsOriginal, emojiReactionsReblog));
+            pleromaEmojiReactionsStream,
+            reblogPleromaEmojiReactionsStream,
+            (emojiReactionsOriginal, emojiReactionsReblog) =>
+                mergeEmojiReactionsLists(
+                    emojiReactionsOriginal, emojiReactionsReblog),
+          );
 
   @override
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji}) async {
@@ -656,7 +657,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<IStatus> get reblogStream =>
-      statusStream.map((status) => status.reblog).distinct();
+      statusStream.map((status) => status.reblog);
 
   @override
   void changeDisplayNsfwSensitive(bool display) {
@@ -690,8 +691,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<EmojiText> get spoilerTextWithEmojisStream => statusStream
       .map(
         (status) => EmojiText(text: status.spoilerText, emojis: status.emojis),
-      )
-      .distinct();
+      );
 
   @override
   bool get containsSpoiler => spoilerText?.isNotEmpty == true;

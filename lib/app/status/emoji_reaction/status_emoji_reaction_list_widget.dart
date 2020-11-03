@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class StatusEmojiReactionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: false);
+    var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<List<IPleromaStatusEmojiReaction>>(
       stream: statusBloc.reblogPlusOriginalEmojiReactionsStream,
