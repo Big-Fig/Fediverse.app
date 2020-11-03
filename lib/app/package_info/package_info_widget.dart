@@ -6,7 +6,7 @@ import 'package:package_info/package_info.dart';
 class VersionPackageInfoWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  VersionPackageInfoWidget({this.textStyle});
+  const VersionPackageInfoWidget({this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class VersionPackageInfoWidget extends StatelessWidget {
             ],
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );

@@ -9,6 +9,6 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
-        body: SplashWidget(),
+        body: const SplashWidget(),
       );
 }
