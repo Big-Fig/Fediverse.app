@@ -57,7 +57,12 @@ class HomePage extends StatelessWidget {
         return Scaffold(
           body: Stack(
             children: [
-              RepaintBoundary(child: const _HomePageBackgroundWidget()),
+               RepaintBoundary(
+                child: Container(
+                  height: 180,
+                  child: const _HomePageBackgroundWidget(),
+                ),
+              ),
               buildBody(context, selectedTab),
             ],
           ),
