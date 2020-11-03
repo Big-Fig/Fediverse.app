@@ -21,13 +21,14 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediSubPageCustomAppBar(
-          leading: FediBackIconButton(),
-          child: SearchInputWidget(
+          leading: const FediBackIconButton(),
+          child: const SearchInputWidget(
             autofocus: true,
           ),
         ),
-        body: SearchWidget(),
+        body: const SearchWidget(),
       );
+  const SearchPage();
 }
 
 void goToSearchPage(
@@ -56,7 +57,7 @@ void goToSearchPage(
                 context,
                 child: SearchResultItemPaginationListBloc.provideToContext(
                   context,
-                  child: SearchPage(),
+                  child: const SearchPage(),
                 ),
               ),
             ),
