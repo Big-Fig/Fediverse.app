@@ -30,11 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HashtagPage extends StatefulWidget {
-  final IHashtag hashtag;
-
-  HashtagPage({
-    @required this.hashtag,
-  });
+  const HashtagPage();
 
   @override
   _HashtagPageState createState() => _HashtagPageState();
@@ -51,15 +47,16 @@ class _HashtagPageState extends State<HashtagPage> {
 
   @override
   Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
     return DisposableProvider<IScrollControllerBloc>(
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
           centerTitle: false,
-          title: "#${widget.hashtag.name}",
+          title: "#${hashtag.name}",
           actions: <Widget>[
-            buildOpenInBrowserAction(context),
+            const _HashtagPageOpenInBrowserAction(),
           ],
         ),
         body: SafeArea(
@@ -78,12 +75,20 @@ class _HashtagPageState extends State<HashtagPage> {
       ),
     );
   }
+}
 
-  FediIconButton buildOpenInBrowserAction(BuildContext context) {
+class _HashtagPageOpenInBrowserAction extends StatelessWidget {
+  const _HashtagPageOpenInBrowserAction({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var hashtag = Provider.of<IHashtag>(context);
     return FediIconButton(
       icon: Icon(FediIcons.browser),
       onPressed: () {
-        UrlHelper.handleUrlClick(context, widget.hashtag.url);
+        UrlHelper.handleUrlClick(context, hashtag.url);
       },
     );
   }
@@ -173,8 +178,9 @@ MaterialPageRoute createHashtagPageRoute({
                         .provideToContext(
                       context,
                       mergeNewItemsImmediately: false,
-                      child: HashtagPage(
-                        hashtag: hashtag,
+                      child: Provider<IHashtag>.value(
+                        value: hashtag,
+                        child: const HashtagPage(),
                       ),
                       mergeOwnStatusesImmediately: false,
                     ),

@@ -12,12 +12,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListListItemWidget extends StatelessWidget {
-  CustomListListItemWidget();
+  const CustomListListItemWidget();
 
   @override
   Widget build(BuildContext context) {
-    var customListBloc = ICustomListBloc.of(context, listen: false);
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
+    var customListBloc = ICustomListBloc.of(context);
     return InkWell(
       onTap: () {
         goToCustomListPage(
@@ -31,52 +30,99 @@ class CustomListListItemWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                StreamBuilder<String>(
-                    stream: customListBloc.titleStream,
-                    initialData: customListBloc.title,
-                    builder: (context, snapshot) {
-                      var title = snapshot.data;
-                      return Text(
-                        title,
-                        textAlign: TextAlign.left,
-                        style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-                      );
-                    }),
-                Row(
-                  children: <Widget>[
-                    FediIconButton(
-                      icon: Icon(FediIcons.pen),
-                      onPressed: () {
-                        goToEditCustomListPage(
-                            context: context,
-                            customList: customListBloc.customList,
-                            successCallback: () {
-                              paginationListBloc.refreshWithController();
-                            });
-                      },
-                    ),
-                    FediIconButton(
-                      icon: Icon(FediIcons.delete),
-                      onPressed: () {
-                        PleromaAsyncOperationHelper
-                            .performPleromaAsyncOperation(
-                          context: context,
-                          asyncCode: () async {
-                            await customListBloc.delete();
-
-                            paginationListBloc.refreshWithController();
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                )
+                const _CustomListListItemTitleWidget(),
+                const _CustomListListItemActionsWidget()
               ],
             ),
           ),
-          FediLightGreyDivider()
+          const FediLightGreyDivider()
         ],
       ),
+    );
+  }
+}
+
+class _CustomListListItemActionsWidget extends StatelessWidget {
+  const _CustomListListItemActionsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          const _CustomListListItemActionsEditWidget(),
+          const _CustomListListItemActionsDeleteWidget(),
+        ],
+      );
+}
+
+class _CustomListListItemActionsDeleteWidget extends StatelessWidget {
+  const _CustomListListItemActionsDeleteWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var customListBloc = ICustomListBloc.of(context);
+    var paginationListBloc = IPaginationListBloc.of(context);
+    return FediIconButton(
+      icon: Icon(FediIcons.delete),
+      onPressed: () {
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          asyncCode: () async {
+            await customListBloc.delete();
+
+            paginationListBloc.refreshWithController();
+          },
+        );
+      },
+    );
+  }
+}
+
+class _CustomListListItemActionsEditWidget extends StatelessWidget {
+  const _CustomListListItemActionsEditWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var customListBloc = ICustomListBloc.of(context);
+    var paginationListBloc = IPaginationListBloc.of(context);
+    return FediIconButton(
+      icon: Icon(FediIcons.pen),
+      onPressed: () {
+        goToEditCustomListPage(
+            context: context,
+            customList: customListBloc.customList,
+            successCallback: () {
+              paginationListBloc.refreshWithController();
+            });
+      },
+    );
+  }
+}
+
+class _CustomListListItemTitleWidget extends StatelessWidget {
+  const _CustomListListItemTitleWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var customListBloc = ICustomListBloc.of(context);
+    return StreamBuilder<String>(
+      stream: customListBloc.titleStream,
+      initialData: customListBloc.title,
+      builder: (context, snapshot) {
+        var title = snapshot.data;
+        return Text(
+          title,
+          textAlign: TextAlign.left,
+          style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+        );
+      },
     );
   }
 }

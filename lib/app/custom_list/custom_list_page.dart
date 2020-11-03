@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
@@ -18,6 +17,7 @@ import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
@@ -28,11 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CustomListPage extends StatefulWidget {
-  final ICustomList customList;
-
-  CustomListPage({
-    @required this.customList,
-  });
+  const CustomListPage();
 
   @override
   _CustomListPageState createState() => _CustomListPageState();
@@ -49,13 +45,14 @@ class _CustomListPageState extends State<CustomListPage> {
 
   @override
   Widget build(BuildContext context) {
+    var customList = Provider.of<ICustomList>(context);
     return DisposableProvider<IScrollControllerBloc>(
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
           centerTitle: false,
-          title: S.of(context).app_customList_title(widget.customList.title),
+          title: S.of(context).app_customList_title(customList.title),
           actions: [],
         ),
         body: SafeArea(
@@ -159,8 +156,9 @@ MaterialPageRoute createCustomListPageRoute({
                         .provideToContext(
                       context,
                       mergeNewItemsImmediately: false,
-                      child: CustomListPage(
-                        customList: customList,
+                      child: Provider.value(
+                        value: customList,
+                        child: const CustomListPage(),
                       ),
                       mergeOwnStatusesImmediately: false,
                     ),

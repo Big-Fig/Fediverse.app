@@ -10,9 +10,8 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
     var editCustomListBloc = IEditCustomListBloc.of(context, listen: false);
     return StreamBuilder<bool>(
         stream: editCustomListBloc.isReadyToSubmitStream,
-        initialData: editCustomListBloc.isReadyToSubmit,
         builder: (context, snapshot) {
-          var isReadyToSave = snapshot.data;
+          var isReadyToSave = snapshot.data ?? false;
           return FediIconButton(
             icon: Icon(FediIcons.check),
             onPressed: isReadyToSave
@@ -30,4 +29,7 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
           );
         });
   }
+
+  const EditCustomListAppBarSaveActionWidget();
+
 }

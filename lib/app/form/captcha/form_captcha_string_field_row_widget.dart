@@ -26,9 +26,8 @@ class FormCaptchaStringFieldFormRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<List<FormItemValidationError>>(
         stream: formCaptchaStringFieldBloc.errorsStream,
-        initialData: formCaptchaStringFieldBloc.errors,
         builder: (context, snapshot) {
-          var errors = snapshot.data;
+          var errors = snapshot.data ?? [];
 
           var error = errors?.isNotEmpty == true ? errors.first : null;
 

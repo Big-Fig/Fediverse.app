@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/custom_list/accounts/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_app_bar_save_action_widget.dart';
@@ -6,6 +5,7 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +15,8 @@ class EditCustomListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_customList_edit_title,
-
         actions: <Widget>[
-          EditCustomListAppBarSaveActionWidget(),
+          const EditCustomListAppBarSaveActionWidget(),
         ],
       ),
       body: SafeArea(
@@ -25,16 +24,18 @@ class EditCustomListPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: FediPadding.allBigPadding,
-              child: CustomListFormWidget(),
+              child: const CustomListFormWidget(),
             ),
             Expanded(
-              child: CustomListAccountListWidget(),
+              child: const CustomListAccountListWidget(),
             ),
           ],
         ),
       ),
     );
   }
+
+  const EditCustomListPage();
 }
 
 void goToEditCustomListPage({
@@ -60,7 +61,7 @@ MaterialPageRoute createEditCustomListPageRoute({
   return MaterialPageRoute(
     builder: (context) => EditCustomListBloc.provideToContext(
       context,
-      child: EditCustomListPage(),
+      child: const EditCustomListPage(),
       initialValue: customList,
       successCallback: successCallback,
     ),

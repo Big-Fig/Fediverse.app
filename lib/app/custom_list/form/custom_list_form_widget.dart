@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 
 class CustomListFormWidget extends StatelessWidget {
 
-  CustomListFormWidget();
+  const CustomListFormWidget();
 
   @override
   Widget build(BuildContext context) {
-    var customListFormBloc = ICustomListFormBloc.of(context, listen: false);
+    var customListFormBloc = ICustomListFormBloc.of(context);
 
     return FormStringFieldFormRowWidget(
       autocorrect: true,
