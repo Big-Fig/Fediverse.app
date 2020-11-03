@@ -17,10 +17,8 @@ class AddMoreJoinAuthInstancePage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
           title: S.of(context).app_auth_instance_join_new_title,
           leading: const FediDismissIconButton()),
-      body: SafeArea(
-        child: JoinAuthInstanceWidget(
-          isFromScratch: false,
-        ),
+      body: const SafeArea(
+        child: JoinAuthInstanceWidget(),
       ),
     );
   }
@@ -32,8 +30,12 @@ void goToAddMoreJoinAuthInstancePage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => DisposableProvider<IJoinAuthInstanceBloc>(
-            create: (context) => JoinAuthInstanceBloc(),
-            child: AddMoreJoinAuthInstancePage())),
+      builder: (context) => DisposableProvider<IJoinAuthInstanceBloc>(
+        create: (context) => JoinAuthInstanceBloc(
+          isFromScratch: false,
+        ),
+        child: const AddMoreJoinAuthInstancePage(),
+      ),
+    ),
   );
 }

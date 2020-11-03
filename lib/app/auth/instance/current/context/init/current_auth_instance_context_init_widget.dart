@@ -125,8 +125,7 @@ class _CurrentAuthInstanceContextInitWidgetState
               return widget.child;
             case CurrentAuthInstanceContextInitState
                 .cantFetchAndLocalCacheNotExist:
-              return _buildSessionExpiredPage(
-                  currentInstanceContextLoadingBloc, context);
+              return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
               break;
             case CurrentAuthInstanceContextInitState.loading:
             default:
@@ -136,11 +135,21 @@ class _CurrentAuthInstanceContextInitWidgetState
         });
   }
 
-  Widget _buildSessionExpiredPage(
-      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
-      BuildContext context) {
+
+}
+
+class _CurrentAuthInstanceContextInitSessionExpiredWidget extends StatelessWidget {
+  const _CurrentAuthInstanceContextInitSessionExpiredWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    ICurrentAuthInstanceBloc.of(context);
+    var currentInstanceContextLoadingBloc =
+    ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
+
     return FediLightStatusBarStyleArea(
       child: Scaffold(
         backgroundColor: IFediUiColorTheme.of(context).primaryDark,
