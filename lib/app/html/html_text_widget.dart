@@ -16,7 +16,7 @@ class HtmlTextWidget extends StatelessWidget {
     var htmlData = htmlTextBloc.htmlData;
     _logger.finest(() => "htmlData $htmlData");
 
-    if(htmlData?.text?.isNotEmpty != true) {
+    if (htmlData?.text?.isNotEmpty != true) {
       return const SizedBox.shrink();
     }
 
@@ -32,8 +32,7 @@ class HtmlTextWidget extends StatelessWidget {
     } else {
       var settings = htmlTextBloc.settings;
       Alignment alignment;
-      switch(settings.textAlign) {
-
+      switch (settings.textAlign) {
         case TextAlign.left:
           alignment = Alignment.centerLeft;
           break;
@@ -55,20 +54,25 @@ class HtmlTextWidget extends StatelessWidget {
         default:
           alignment = Alignment.centerLeft;
       }
-      return Align(
-        alignment: alignment,
-        child: Text(
-          htmlData.text,
-          style: TextStyle(
-              color: settings.color,
-              fontSize: settings.fontSize,
-              fontWeight: settings.fontWeight,
-              height: settings.lineHeight),
-          textAlign: settings.textAlign,
-          overflow: settings.textOverflow,
-          maxLines: settings.textMaxLines,
-        ),
+      var text = Text(
+        htmlData.text,
+        style: TextStyle(
+            color: settings.color,
+            fontSize: settings.fontSize,
+            fontWeight: settings.fontWeight,
+            height: settings.lineHeight),
+        textAlign: settings.textAlign,
+        overflow: settings.textOverflow,
+        maxLines: settings.textMaxLines,
       );
+      if (settings.shrinkWrap == true) {
+        return text;
+      } else {
+        return Align(
+          alignment: alignment,
+          child: text,
+        );
+      }
     }
   }
 }

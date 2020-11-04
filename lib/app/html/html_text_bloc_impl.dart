@@ -104,6 +104,7 @@ HtmlTextResultData _calculateHtmlData({
       if (!text.startsWith("<html>")) {
         text = "<html><body><p>$text</p></body></html>";
       }
+    } else {
       text = _unescape.convert(text);
     }
 

@@ -1,7 +1,8 @@
+import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_item_widget.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -44,18 +45,26 @@ class PleromaChatListWidget extends FediPaginationListWidget<IPleromaChat> {
                           chat: chat, lastChatMessage: null),
                   child: FediListTile(
                     isFirstInList: index == 0 && header == null,
-                    child: const PleromaChatListItemWidget(),
+                    child: const ChatListItemWidget(
+                      onClick: _goToChat,
+                    ),
                   ),
                 ),
               ));
 
   @override
-  IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat> retrievePaginationListBloc(
-      BuildContext context,
-      {@required bool listen}) {
-    var paginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat>>(context,
-            listen: listen);
+  IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat>
+      retrievePaginationListBloc(BuildContext context,
+          {@required bool listen}) {
+    var paginationListBloc = Provider.of<
+            IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat>>(
+        context,
+        listen: listen);
     return paginationListBloc;
   }
+}
+
+void _goToChat(BuildContext context) {
+  var pleromaChatBloc = IPleromaChatBloc.of(context, listen: false);
+  goToPleromaChatPage(context, chat: pleromaChatBloc.chat);
 }

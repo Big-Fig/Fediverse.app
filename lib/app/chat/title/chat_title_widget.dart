@@ -1,13 +1,13 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
+import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PleromaChatTitleWidget extends StatelessWidget {
+class ChatTitleWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  const PleromaChatTitleWidget({
+  const ChatTitleWidget({
     this.textStyle,
   });
 
@@ -16,7 +16,7 @@ class PleromaChatTitleWidget extends StatelessWidget {
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).bigShortBoldDarkGrey;
 
-    var chatBloc = IPleromaChatBloc.of(context, listen: false);
+    var chatBloc = IChatBloc.of(context, listen: false);
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,

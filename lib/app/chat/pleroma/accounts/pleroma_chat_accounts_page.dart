@@ -1,4 +1,4 @@
-import 'package:fedi/app/chat/pleroma/accounts/pleroma_chat_accounts_widget.dart';
+import 'package:fedi/app/chat/accounts/chat_accounts_widget.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
@@ -16,7 +16,7 @@ class PleromaChatAccountsPage extends StatelessWidget {
         title: S.of(context).app_chat_accounts_title,
       ),
       body: const SafeArea(
-        child: PleromaChatAccountsWidget(),
+        child: ChatAccountsWidget(),
       ),
     );
   }

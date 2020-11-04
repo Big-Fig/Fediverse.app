@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
@@ -19,52 +20,53 @@ class PleromaChatStartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
-        leading: FediBackIconButton(),
-        child: SearchInputWidget(
+        leading: const FediBackIconButton(),
+        child: const SearchInputWidget(
           autofocus: true,
         ),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: SingleSelectAccountWidget(
-          accountSelectedCallback: (context, account) async {
-            var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<IPleromaChat>(
-                    context: context,
-                    asyncCode: () async {
-                      var chatRepository =
-                          IPleromaChatRepository.of(context, listen: false);
-
-                      var chat =
-                          await chatRepository.findByAccount(account: account);
-
-                      if (chat == null) {
-                        var pleromaChatService =
-                            IPleromaChatService.of(context, listen: false);
-
-                        var remoteChat =
-                            await pleromaChatService.getOrCreateChatByAccountId(
-                                accountId: account.remoteId);
-
-                        if (remoteChat != null) {
-                          await chatRepository.upsertRemoteChat(remoteChat);
-                          chat = await chatRepository
-                              .findByRemoteId(remoteChat.id);
-                        }
-                      }
-
-                      return chat;
-                    });
-
-            var chat = dialogResult.result;
-            if (chat != null) {
-              goToPleromaChatPage(context, chat: chat);
-            } else {
-              await FediSimpleAlertDialog(context: null).show(context);
-            }
-          },
+          accountSelectedCallback: _accountSelectedCallback,
         ),
       ),
     );
+  }
+
+  const PleromaChatStartPage();
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) async {
+  var dialogResult = await PleromaAsyncOperationHelper
+      .performPleromaAsyncOperation<IPleromaChat>(
+          context: context,
+          asyncCode: () async {
+            var chatRepository =
+                IPleromaChatRepository.of(context, listen: false);
+
+            var chat = await chatRepository.findByAccount(account: account);
+
+            if (chat == null) {
+              var pleromaChatService =
+                  IPleromaChatService.of(context, listen: false);
+
+              var remoteChat = await pleromaChatService
+                  .getOrCreateChatByAccountId(accountId: account.remoteId);
+
+              if (remoteChat != null) {
+                await chatRepository.upsertRemoteChat(remoteChat);
+                chat = await chatRepository.findByRemoteId(remoteChat.id);
+              }
+            }
+
+            return chat;
+          });
+
+  var chat = dialogResult.result;
+  if (chat != null) {
+    goToPleromaChatPage(context, chat: chat);
+  } else {
+    await FediSimpleAlertDialog(context: null).show(context);
   }
 }
 
@@ -78,8 +80,10 @@ void goToPleromaChatStartPage(BuildContext context) {
           excludeMyAccount: true,
           child: AccountCachedPaginationBloc.provideToContext(
             context,
-            child: SelectAccountPaginationListBloc.provideToContext(context,
-                child: PleromaChatStartPage()),
+            child: SelectAccountPaginationListBloc.provideToContext(
+              context,
+              child: const PleromaChatStartPage(),
+            ),
           ),
           customLocalAccountListLoader: null,
           customRemoteAccountListLoader: null,
