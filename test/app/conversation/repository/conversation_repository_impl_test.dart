@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
-import 'package:fedi/app/chat/conversation/conversation_model_adapter.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository_impl.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model_adapter.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -19,7 +19,7 @@ import 'conversation_repository_model_helper.dart';
 
 void main() {
   AppDatabase database;
-  ConversationRepository conversationRepository;
+  ConversationChatRepository conversationRepository;
   AccountRepository accountRepository;
   StatusRepository statusRepository;
 
@@ -35,7 +35,7 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
-    conversationRepository = ConversationRepository(
+    conversationRepository = ConversationChatRepository(
         appDatabase: database,
         statusRepository: statusRepository,
         accountRepository: accountRepository);
@@ -122,13 +122,13 @@ void main() {
     assert(id != null, true);
 
     var oldLocalConversation =
-        DbConversationWrapper(dbConversation.copyWith(id: id));
+        DbConversationChatWrapper(dbConversation.copyWith(id: id));
 
     var newRemoteId = "newRemoteId";
     var newAcct = "newAcct";
     var newContent = "newContent";
-    var newRemoteConversation = mapLocalConversationToRemoteConversation(
-        DbConversationWrapper(
+    var newRemoteConversation = mapLocalConversationChatToRemoteConversation(
+        DbConversationChatWrapper(
             dbConversation.copyWith(id: id, remoteId: newRemoteId)),
         lastStatus: DbStatusPopulatedWrapper(DbStatusPopulated(
           dbStatus: dbStatus.copyWith(content: newContent),
@@ -164,8 +164,8 @@ void main() {
     expect(await conversationRepository.countAll(), 0);
 
     await conversationRepository.upsertRemoteConversation(
-      mapLocalConversationToRemoteConversation(
-          DbConversationWrapper(dbConversation),
+      mapLocalConversationChatToRemoteConversation(
+          DbConversationChatWrapper(dbConversation),
           accounts: [DbAccountWrapper(dbAccount)],
           lastStatus: DbStatusPopulatedWrapper(dbStatusPopulated)),
     );
@@ -185,8 +185,8 @@ void main() {
     // item with same id updated
 
     await conversationRepository.upsertRemoteConversation(
-      mapLocalConversationToRemoteConversation(
-          DbConversationWrapper(dbConversation),
+      mapLocalConversationChatToRemoteConversation(
+          DbConversationChatWrapper(dbConversation),
           accounts: [DbAccountWrapper(dbAccount)],
           lastStatus: DbStatusPopulatedWrapper(dbStatusPopulated)),
     );
@@ -206,8 +206,8 @@ void main() {
   test('upsertRemoteConversationes', () async {
     expect(await conversationRepository.countAll(), 0);
     await conversationRepository.upsertRemoteConversations([
-      mapLocalConversationToRemoteConversation(
-          DbConversationWrapper(dbConversation),
+      mapLocalConversationChatToRemoteConversation(
+          DbConversationChatWrapper(dbConversation),
           accounts: [DbAccountWrapper(dbAccount)],
           lastStatus: DbStatusPopulatedWrapper(dbStatusPopulated)),
     ]);
@@ -225,8 +225,8 @@ void main() {
         await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
 
     await conversationRepository.upsertRemoteConversations([
-      mapLocalConversationToRemoteConversation(
-          DbConversationWrapper(dbConversation),
+      mapLocalConversationChatToRemoteConversation(
+          DbConversationChatWrapper(dbConversation),
           accounts: [DbAccountWrapper(dbAccount)],
           lastStatus: DbStatusPopulatedWrapper(dbStatusPopulated)),
     ]);
@@ -431,7 +431,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationOrderByType.remoteId,
+            orderByType: ConversationChatOrderByType.remoteId,
             orderingMode: OrderingMode.asc),
         olderThan: null);
 
@@ -466,7 +466,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationOrderByType.remoteId,
+            orderByType: ConversationChatOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null);
 
@@ -501,7 +501,7 @@ void main() {
         limit: 1,
         offset: 1,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationOrderByType.remoteId,
+            orderByType: ConversationChatOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null);
 

@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -42,7 +42,7 @@ abstract class IStatusRepository
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -65,7 +65,7 @@ abstract class IStatusRepository
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -88,7 +88,7 @@ abstract class IStatusRepository
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -109,7 +109,7 @@ abstract class IStatusRepository
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -126,12 +126,12 @@ abstract class IStatusRepository
   });
 
   Stream<IStatus> watchConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   });
 
   Future<IStatus> getConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   });
 

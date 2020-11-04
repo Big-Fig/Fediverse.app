@@ -1,4 +1,4 @@
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +11,7 @@ Future<DbConversation> createTestDbConversation(
       unread: false,
     );
 
-void expectDbConversation(IConversation actual, DbConversation expected) {
+void expectDbConversation(IConversationChat actual, DbConversation expected) {
   if (actual == null && expected == null) {
     return;
   }

@@ -1,15 +1,15 @@
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'database/conversation_database_model_helper.dart';
 
-Future<DbConversationWrapper> createTestConversation(
+Future<DbConversationChatWrapper> createTestConversation(
         {@required String seed, String remoteId}) async =>
-    DbConversationWrapper(
+    DbConversationChatWrapper(
         await createTestDbConversation(seed: seed, remoteId: remoteId));
 
-void expectConversation(IConversation actual, IConversation expected) {
+void expectConversation(IConversationChat actual, IConversationChat expected) {
   if (actual == null && expected == null) {
     return;
   }
