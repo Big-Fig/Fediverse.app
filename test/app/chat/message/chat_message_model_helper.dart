@@ -25,7 +25,7 @@ Future<DbChatMessagePopulatedWrapper> createTestChatMessage(
   ));
 }
 
-void expectChatMessage(IChatMessage actual, IChatMessage expected) {
+void expectChatMessage(IPleromaChatMessage actual, IPleromaChatMessage expected) {
   if (actual == null && expected == null) {
     return;
   }

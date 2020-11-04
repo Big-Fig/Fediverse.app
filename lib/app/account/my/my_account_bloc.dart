@@ -21,5 +21,5 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
 
-  bool checkIsChatMessageFromMe(IChatMessage chatMessage);
+  bool checkIsChatMessageFromMe(IPleromaChatMessage chatMessage);
 }

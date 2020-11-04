@@ -3,27 +3,27 @@ import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CurrentChatBloc extends DisposableOwner implements ICurrentChatBloc {
-  BehaviorSubject<IChat> currentChatSubject = BehaviorSubject();
+class PleromaChatCurrentBloc extends DisposableOwner implements IPleromaChatCurrentBloc {
+  BehaviorSubject<IPleromaChat> currentChatSubject = BehaviorSubject();
 
-  CurrentChatBloc() {
+  PleromaChatCurrentBloc() {
     addDisposable(subject: currentChatSubject);
   }
 
   @override
-  IChat get currentChat => currentChatSubject.value;
+  IPleromaChat get currentChat => currentChatSubject.value;
 
   @override
-  Stream<IChat> get currentChatStream => currentChatSubject.stream;
+  Stream<IPleromaChat> get currentChatStream => currentChatSubject.stream;
 
   @override
-  void onChatOpened(IChat chat) {
+  void onChatOpened(IPleromaChat chat) {
     assert(currentChat == null);
     currentChatSubject.add(chat);
   }
 
   @override
-  void onChatClosed(IChat chat) {
+  void onChatClosed(IPleromaChat chat) {
     assert(currentChat != null);
     assert(currentChat.remoteId == chat.remoteId);
     currentChatSubject.add(null);

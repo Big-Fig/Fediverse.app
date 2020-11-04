@@ -5,32 +5,32 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatWithLastMessageRepository implements IDisposable {
-  static IChatWithLastMessageRepository of(BuildContext context,
+abstract class IPleromaChatWithLastMessageRepository implements IDisposable {
+  static IPleromaChatWithLastMessageRepository of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatWithLastMessageRepository>(context, listen: listen);
+      Provider.of<IPleromaChatWithLastMessageRepository>(context, listen: listen);
 
-  Future<List<IChatWithLastMessage>> getChatsWithLastMessage(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<List<IChatWithLastMessage>> watchChatsWithLastMessage(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Future<IChatWithLastMessage> getChatWithLastMessage(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Future<IPleromaChatWithLastMessage> getChatWithLastMessage(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<IChatWithLastMessage> watchChatWithLastMessage(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Stream<IPleromaChatWithLastMessage> watchChatWithLastMessage(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required ChatOrderingTermData orderingTermData});
 }

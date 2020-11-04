@@ -28,7 +28,7 @@ class AccountStatusesMediaOnlyCachedListBloc
     @required IConversationChatRepository conversationRepository,
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
             account: account,
             pleromaAccountService: pleromaAccountService,
@@ -59,7 +59,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       pleromaWebSocketsService:
           IPleromaWebSocketsService.of(context, listen: false),
       chatNewMessagesHandlerBloc:
-          IChatNewMessagesHandlerBloc.of(context, listen: false),
+          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
     );
   }
 

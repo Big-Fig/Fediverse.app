@@ -19,25 +19,25 @@ import 'chat_repository_model_helper.dart';
 
 void main() {
   AppDatabase database;
-  ChatRepository chatRepository;
+  PleromaChatRepository chatRepository;
   AccountRepository accountRepository;
-  ChatMessageRepository chatMessageRepository;
+  PleromaChatMessageRepository chatMessageRepository;
 
   DbChatMessagePopulated dbChatMessagePopulated;
   DbChatMessage dbChatMessage;
 
   DbChat dbChat;
-  DbChatPopulated dbChatPopulated;
-  IChat chat;
+  DbPleromaChatPopulated dbChatPopulated;
+  IPleromaChat chat;
 
   DbAccount dbAccount;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
-    chatRepository = ChatRepository(
+    chatRepository = PleromaChatRepository(
         appDatabase: database,
         chatMessageRepository: chatMessageRepository,
         accountRepository: accountRepository);
@@ -48,9 +48,9 @@ void main() {
     dbAccount = dbAccount.copyWith(id: accountId);
 
     dbChat = await createTestDbChat(seed: "seed4", dbAccount: dbAccount);
-    dbChatPopulated = DbChatPopulated(dbChat: dbChat, dbAccount: dbAccount);
+    dbChatPopulated = DbPleromaChatPopulated(dbChat: dbChat, dbAccount: dbAccount);
 
-    chat = DbChatPopulatedWrapper(dbChatPopulated);
+    chat = DbPleromaChatPopulatedWrapper(dbChatPopulated);
     dbChatMessage = await createTestDbChatMessage(
         seed: "seed3", dbAccount: dbAccount, chatRemoteId: dbChat.remoteId);
 
@@ -121,7 +121,7 @@ void main() {
     var newRemoteId = "newRemoteId";
     var newAcct = "newAcct";
     var newContent = "newContent";
-    var newRemoteChat = mapLocalChatToRemoteChat(
+    var newRemoteChat = mapLocalPleromaChatToRemoteChat(
         chat.copyWith(id: id, remoteId: newRemoteId),
         lastChatMessage: DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
             dbChatMessage: dbChatMessage.copyWith(content: newContent),
@@ -150,7 +150,7 @@ void main() {
     expect(await chatRepository.countAll(), 0);
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -170,7 +170,7 @@ void main() {
     // item with same id updated
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -189,7 +189,7 @@ void main() {
   test('upsertRemoteChates', () async {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -207,7 +207,7 @@ void main() {
         dbChatMessage);
 
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -271,7 +271,7 @@ void main() {
       offset: null,
       orderingTermData: ChatOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: ChatOrderByType.updatedAt),
+          orderByType: PleromaChatOrderByType.updatedAt),
       olderThan: null,
     );
 
@@ -322,7 +322,7 @@ void main() {
         offset: null,
         orderingTermData: ChatOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ChatOrderByType.updatedAt),
+            orderByType: PleromaChatOrderByType.updatedAt),
         olderThan: await createTestChat(
             seed: "remoteId5",
             remoteId: "remoteId5",
@@ -378,7 +378,7 @@ void main() {
         offset: null,
         orderingTermData: ChatOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ChatOrderByType.updatedAt),
+            orderByType: PleromaChatOrderByType.updatedAt),
         olderThan: await createTestChat(
             seed: "remoteId5",
             remoteId: "remoteId5",
@@ -450,7 +450,7 @@ void main() {
       limit: null,
       offset: null,
       orderingTermData: ChatOrderingTermData(
-          orderByType: ChatOrderByType.remoteId,
+          orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.asc),
       olderThan: null,
     );
@@ -468,7 +468,7 @@ void main() {
         (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    List<DbChatPopulated> actualList =
+    List<DbPleromaChatPopulated> actualList =
         (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
@@ -483,7 +483,7 @@ void main() {
       limit: null,
       offset: null,
       orderingTermData: ChatOrderingTermData(
-          orderByType: ChatOrderByType.remoteId,
+          orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThan: null,
     );
@@ -501,7 +501,7 @@ void main() {
         (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    List<DbChatPopulated> actualList =
+    List<DbPleromaChatPopulated> actualList =
         (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
@@ -516,7 +516,7 @@ void main() {
       limit: 1,
       offset: 1,
       orderingTermData: ChatOrderingTermData(
-          orderByType: ChatOrderByType.remoteId,
+          orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThan: null,
     );
@@ -534,7 +534,7 @@ void main() {
         (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    List<DbChatPopulated> actualList =
+    List<DbPleromaChatPopulated> actualList =
         (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 1);
 
@@ -581,7 +581,7 @@ void main() {
             .copyWith(remoteId: "remoteId3", unread: 1));
 
     await chatRepository.markAsRead(
-      chat: DbChatPopulatedWrapper(DbChatPopulated(
+      chat: DbPleromaChatPopulatedWrapper(DbPleromaChatPopulated(
         dbChat: chat2,
         dbAccount: dbAccount,
       )),
@@ -619,7 +619,7 @@ void main() {
     expect(listened, 2);
 
     await chatRepository.markAsRead(
-      chat: DbChatPopulatedWrapper(DbChatPopulated(
+      chat: DbPleromaChatPopulatedWrapper(DbPleromaChatPopulated(
         dbChat: chat2,
         dbAccount: dbAccount,
       )),

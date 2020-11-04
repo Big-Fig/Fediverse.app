@@ -6,13 +6,13 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
-  static IChatBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatBloc>(context, listen: listen);
+abstract class IPleromaChatBloc implements IDisposable, IAsyncInitLoadingBloc {
+  static IPleromaChatBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPleromaChatBloc>(context, listen: listen);
 
-  IChat get chat;
+  IPleromaChat get chat;
 
-  Stream<IChat> get chatStream;
+  Stream<IPleromaChat> get chatStream;
 
   int get unreadCount;
 
@@ -22,9 +22,9 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   Stream<bool> get isHaveUnreadStream;
 
-  IChatMessage get lastChatMessage;
+  IPleromaChatMessage get lastChatMessage;
 
-  Stream<IChatMessage> get lastChatMessageStream;
+  Stream<IPleromaChatMessage> get lastChatMessageStream;
 
   List<IAccount> get accounts;
 

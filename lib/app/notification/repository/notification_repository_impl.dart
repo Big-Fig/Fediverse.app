@@ -23,7 +23,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   final NotificationDao dao;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
-  final IChatMessageRepository chatMessageRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
 
   NotificationRepository({
     @required AppDatabase appDatabase,

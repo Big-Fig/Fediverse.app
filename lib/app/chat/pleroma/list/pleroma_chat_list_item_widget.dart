@@ -24,17 +24,17 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
-class ChatListItemWidget extends StatelessWidget {
-  const ChatListItemWidget();
+class PleromaChatListItemWidget extends StatelessWidget {
+  const PleromaChatListItemWidget();
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context);
+    var chatBloc = IPleromaChatBloc.of(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        goToChatPage(context, chat: chatBloc.chat);
+        goToPleromaChatPage(context, chat: chatBloc.chat);
       },
       child: Container(
         height: FediSizes.chatListItemPreviewHeight,
@@ -47,7 +47,7 @@ class ChatListItemWidget extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const ChatAvatarWidget(),
+                    const PleromaChatAvatarWidget(),
                     const FediBigHorizontalSpacer(),
                     Flexible(
                       child: const _ChatListItemPreviewWidget(),
@@ -71,7 +71,7 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context);
+    var chatBloc = IPleromaChatBloc.of(context);
 
     return FediIconButton(
       tooltip: S.of(context).app_chat_action_more,
@@ -79,7 +79,7 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
-        goToChatPage(context, chat: chatBloc.chat);
+        goToPleromaChatPage(context, chat: chatBloc.chat);
       },
     );
   }
@@ -96,7 +96,7 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        const ChatTitleWidget(),
+        const PleromaChatTitleWidget(),
         const _ChatListItemLastMessageWidget(),
       ],
     );
@@ -110,9 +110,9 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context);
+    var chatBloc = IPleromaChatBloc.of(context);
 
-    return StreamBuilder<IChatMessage>(
+    return StreamBuilder<IPleromaChatMessage>(
       stream: chatBloc.lastChatMessageStream,
       builder: (context, snapshot) {
         var lastMessage = snapshot.data;
@@ -166,7 +166,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 }
 
 String _extractContent(
-    BuildContext context, IChatMessage chatMessage, String content) {
+    BuildContext context, IPleromaChatMessage chatMessage, String content) {
   String formattedText =
       HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
 

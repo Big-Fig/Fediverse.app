@@ -7,13 +7,13 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatMessageBloc implements IDisposable {
-  static IChatMessageBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatMessageBloc>(context, listen: listen);
+abstract class IPleromaChatMessageBloc implements IDisposable {
+  static IPleromaChatMessageBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPleromaChatMessageBloc>(context, listen: listen);
 
-  IChatMessage get chatMessage;
+  IPleromaChatMessage get chatMessage;
 
-  Stream<IChatMessage> get chatMessageStream;
+  Stream<IPleromaChatMessage> get chatMessageStream;
 
   String get content;
 

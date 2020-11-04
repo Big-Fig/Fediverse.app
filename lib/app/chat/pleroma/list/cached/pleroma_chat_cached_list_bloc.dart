@@ -4,11 +4,11 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatCachedListBloc extends DisposableOwner
-    implements IPleromaCachedListBloc<IChat> {
-  static IChatCachedListBloc of(BuildContext context,
+abstract class IPleromaChatCachedListBloc extends DisposableOwner
+    implements IPleromaCachedListBloc<IPleromaChat> {
+  static IPleromaChatCachedListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatCachedListBloc>(context, listen: listen);
+      Provider.of<IPleromaChatCachedListBloc>(context, listen: listen);
 
-  Stream<List<IChat>> watchLocalItemsNewerThanItem(IChat item);
+  Stream<List<IPleromaChat>> watchLocalItemsNewerThanItem(IPleromaChat item);
 }

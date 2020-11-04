@@ -5,10 +5,10 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatWithLastMessageNetworkOnlyListBloc extends DisposableOwner
-    implements INetworkOnlyListBloc<IChatWithLastMessage> {
-  static IChatWithLastMessageNetworkOnlyListBloc of(BuildContext context,
+abstract class IPleromaChatWithLastMessageNetworkOnlyListBloc extends DisposableOwner
+    implements INetworkOnlyListBloc<IPleromaChatWithLastMessage> {
+  static IPleromaChatWithLastMessageNetworkOnlyListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatWithLastMessageNetworkOnlyListBloc>(context,
+      Provider.of<IPleromaChatWithLastMessageNetworkOnlyListBloc>(context,
           listen: listen);
 }

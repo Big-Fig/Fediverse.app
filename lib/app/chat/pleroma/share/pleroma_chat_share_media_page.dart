@@ -9,8 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatShareMediaPage extends StatelessWidget {
-  const ChatShareMediaPage();
+class PleromaChatShareMediaPage extends StatelessWidget {
+  const PleromaChatShareMediaPage();
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +31,28 @@ class ChatShareMediaPage extends StatelessWidget {
   }
 }
 
-void goToChatShareMediaPage(
+void goToPleromaChatShareMediaPage(
     {@required BuildContext context,
     @required IPleromaMediaAttachment mediaAttachment}) {
   Navigator.push(
     context,
-    createChatShareMediaPageRoute(
+    createPleromaChatShareMediaPageRoute(
       context: context,
       mediaAttachment: mediaAttachment,
     ),
   );
 }
 
-MaterialPageRoute createChatShareMediaPageRoute({
+MaterialPageRoute createPleromaChatShareMediaPageRoute({
   @required BuildContext context,
   @required IPleromaMediaAttachment mediaAttachment,
 }) {
   return MaterialPageRoute(
-    builder: (context) => ChatShareMediaBloc.provideToContext(context,
+    builder: (context) => PleromaChatShareMediaBloc.provideToContext(context,
         mediaAttachment: mediaAttachment,
         child: Provider<IPleromaMediaAttachment>.value(
           value: mediaAttachment,
-          child: const ChatShareMediaPage(),
+          child: const PleromaChatShareMediaPage(),
         )),
   );
 }

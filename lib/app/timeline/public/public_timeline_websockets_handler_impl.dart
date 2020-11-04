@@ -12,7 +12,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationChatRepository conversationRepository,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required bool local,
     @required bool onlyMedia,
   }) : super(
@@ -45,7 +45,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

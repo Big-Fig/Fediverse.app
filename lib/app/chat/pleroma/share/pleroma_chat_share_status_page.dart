@@ -12,8 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatShareStatusPage extends StatelessWidget {
-  const ChatShareStatusPage();
+class PleromaChatShareStatusPage extends StatelessWidget {
+  const PleromaChatShareStatusPage();
 
   @override
   Widget build(BuildContext context) {
@@ -34,30 +34,30 @@ class ChatShareStatusPage extends StatelessWidget {
   }
 }
 
-void goToChatShareStatusPage(
+void goToPleromaChatShareStatusPage(
     {@required BuildContext context, @required IStatus status}) {
   Navigator.push(
     context,
-    createChatShareStatusPageRoute(
+    createPleromaChatShareStatusPageRoute(
       context: context,
       status: status,
     ),
   );
 }
 
-MaterialPageRoute createChatShareStatusPageRoute({
+MaterialPageRoute createPleromaChatShareStatusPageRoute({
   @required BuildContext context,
   @required IStatus status,
 }) {
   return MaterialPageRoute(
-    builder: (context) => ChatShareStatusBloc.provideToContext(context,
+    builder: (context) => PleromaChatShareStatusBloc.provideToContext(context,
         status: status,
         child: Provider.value(
           value: status,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
             update: (context, value, previous) =>
                 StatusBloc.createFromContext(context, value),
-            child: const ChatShareStatusPage(),
+            child: const PleromaChatShareStatusPage(),
           ),
         )),
   );

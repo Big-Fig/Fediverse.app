@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class IChatMessage {
+abstract class IPleromaChatMessage {
   int get localId;
 
   String get remoteId;
@@ -24,7 +24,7 @@ abstract class IChatMessage {
 
   IPleromaCard get card;
 
-  IChatMessage copyWith({
+  IPleromaChatMessage copyWith({
     int localId,
     String remoteId,
     String chatRemoteId,
@@ -37,7 +37,7 @@ abstract class IChatMessage {
   });
 }
 
-class DbChatMessagePopulatedWrapper extends IChatMessage {
+class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   final DbChatMessagePopulated dbChatMessagePopulated;
 
   DbChatMessagePopulatedWrapper(this.dbChatMessagePopulated);

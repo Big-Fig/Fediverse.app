@@ -11,8 +11,8 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatListWidget extends FediPaginationListWidget<IChat> {
-  ChatListWidget({
+class PleromaChatListWidget extends FediPaginationListWidget<IPleromaChat> {
+  PleromaChatListWidget({
     @required Key key,
     Widget header,
     Widget footer,
@@ -28,7 +28,7 @@ class ChatListWidget extends FediPaginationListWidget<IChat> {
   @override
   ScrollView buildItemsCollectionView(
           {@required BuildContext context,
-          @required List<IChat> items,
+          @required List<IPleromaChat> items,
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
@@ -36,25 +36,25 @@ class ChatListWidget extends FediPaginationListWidget<IChat> {
           items: items,
           header: header,
           footer: footer,
-          itemBuilder: (context, index) => Provider<IChat>.value(
+          itemBuilder: (context, index) => Provider<IPleromaChat>.value(
                 value: items[index],
-                child: DisposableProxyProvider<IChat, IChatBloc>(
+                child: DisposableProxyProvider<IPleromaChat, IPleromaChatBloc>(
                   update: (context, chat, oldValue) =>
-                      ChatBloc.createFromContext(context,
+                      PleromaChatBloc.createFromContext(context,
                           chat: chat, lastChatMessage: null),
                   child: FediListTile(
                     isFirstInList: index == 0 && header == null,
-                    child: const ChatListItemWidget(),
+                    child: const PleromaChatListItemWidget(),
                   ),
                 ),
               ));
 
   @override
-  IPaginationListBloc<PaginationPage<IChat>, IChat> retrievePaginationListBloc(
+  IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat> retrievePaginationListBloc(
       BuildContext context,
       {@required bool listen}) {
     var paginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IChat>, IChat>>(context,
+        Provider.of<IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat>>(context,
             listen: listen);
     return paginationListBloc;
   }

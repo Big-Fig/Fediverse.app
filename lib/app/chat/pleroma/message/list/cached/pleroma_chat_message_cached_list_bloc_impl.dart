@@ -11,15 +11,15 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("chat_message_cached_list_bloc_impl.dart");
+var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
 
-class ChatMessageListBloc extends DisposableOwner
-    implements IChatMessageCachedListBloc {
+class PleromaChatMessageListBloc extends DisposableOwner
+    implements IPleromaChatMessageCachedListBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatMessageRepository chatMessageRepository;
-  final IChat chat;
+  final IPleromaChatMessageRepository chatMessageRepository;
+  final IPleromaChat chat;
 
-  ChatMessageListBloc(
+  PleromaChatMessageListBloc(
       {@required this.chat,
       @required this.pleromaChatService,
       @required this.chatMessageRepository});
@@ -30,8 +30,8 @@ class ChatMessageListBloc extends DisposableOwner
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IChatMessage newerThan,
-      @required IChatMessage olderThan}) async {
+      @required IPleromaChatMessage newerThan,
+      @required IPleromaChatMessage olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t chat = $chat"
         "\t newerThan = $newerThan"
@@ -55,10 +55,10 @@ class ChatMessageListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IChatMessage>> loadLocalItems(
+  Future<List<IPleromaChatMessage>> loadLocalItems(
       {@required int limit,
-      @required IChatMessage newerThan,
-      @required IChatMessage olderThan}) async {
+      @required IPleromaChatMessage newerThan,
+      @required IPleromaChatMessage olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -67,7 +67,7 @@ class ChatMessageListBloc extends DisposableOwner
         onlyInChats: [chat],
         limit: limit,
         offset: null,
-        orderingTermData: ChatMessageOrderingTermData(
+        orderingTermData: PleromaChatMessageOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: ChatMessageOrderByType.createdAt),
         olderThanChatMessage: olderThan,
@@ -79,34 +79,34 @@ class ChatMessageListBloc extends DisposableOwner
   }
 
   @override
-  Stream<List<IChatMessage>> watchLocalItemsNewerThanItem(IChatMessage item) {
+  Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(IPleromaChatMessage item) {
     return chatMessageRepository.watchChatMessages(
         onlyInChats: [chat],
         limit: null,
         offset: null,
-        orderingTermData: ChatMessageOrderingTermData(
+        orderingTermData: PleromaChatMessageOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: ChatMessageOrderByType.createdAt),
         olderThanChatMessage: null,
         newerThanChatMessage: item);
   }
 
-  static ChatMessageListBloc createFromContext(BuildContext context,
-          {@required IChat chat}) =>
-      ChatMessageListBloc(
+  static PleromaChatMessageListBloc createFromContext(BuildContext context,
+          {@required IPleromaChat chat}) =>
+      PleromaChatMessageListBloc(
           chat: chat,
           pleromaChatService: IPleromaChatService.of(context, listen: false),
           chatMessageRepository:
-              IChatMessageRepository.of(context, listen: false));
+              IPleromaChatMessageRepository.of(context, listen: false));
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IChat chat,
+    @required IPleromaChat chat,
     @required Widget child,
   }) {
-    return DisposableProvider<IChatMessageCachedListBloc>(
+    return DisposableProvider<IPleromaChatMessageCachedListBloc>(
       create: (context) =>
-          ChatMessageListBloc.createFromContext(context, chat: chat),
+          PleromaChatMessageListBloc.createFromContext(context, chat: chat),
       child: child,
     );
   }

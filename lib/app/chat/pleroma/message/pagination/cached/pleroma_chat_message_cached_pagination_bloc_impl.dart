@@ -10,12 +10,12 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatMessageCachedPaginationBloc
-    extends CachedPleromaPaginationBloc<IChatMessage>
-    implements IChatMessageCachedPaginationBloc {
-  final IChatMessageCachedListBloc chatMessageListService;
+class PleromaChatMessageCachedPaginationBloc
+    extends CachedPleromaPaginationBloc<IPleromaChatMessage>
+    implements IPleromaChatMessageCachedPaginationBloc {
+  final IPleromaChatMessageCachedListBloc chatMessageListService;
 
-  ChatMessageCachedPaginationBloc(
+  PleromaChatMessageCachedPaginationBloc(
       {@required this.chatMessageListService,
       @required int itemsCountPerPage,
       @required int maximumCachedPagesCount})
@@ -27,11 +27,11 @@ class ChatMessageCachedPaginationBloc
   IPleromaApi get pleromaApi => chatMessageListService.pleromaApi;
 
   @override
-  Future<List<IChatMessage>> loadLocalItems(
+  Future<List<IPleromaChatMessage>> loadLocalItems(
           {@required int pageIndex,
           @required int itemsCountPerPage,
-          @required CachedPaginationPage<IChatMessage> olderPage,
-          @required CachedPaginationPage<IChatMessage> newerPage}) =>
+          @required CachedPaginationPage<IPleromaChatMessage> olderPage,
+          @required CachedPaginationPage<IPleromaChatMessage> newerPage}) =>
       chatMessageListService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -42,8 +42,8 @@ class ChatMessageCachedPaginationBloc
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedPaginationPage<IChatMessage> olderPage,
-      @required CachedPaginationPage<IChatMessage> newerPage}) async {
+      @required CachedPaginationPage<IPleromaChatMessage> olderPage,
+      @required CachedPaginationPage<IPleromaChatMessage> newerPage}) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -54,29 +54,29 @@ class ChatMessageCachedPaginationBloc
     );
   }
 
-  static ChatMessageCachedPaginationBloc createFromContext(
+  static PleromaChatMessageCachedPaginationBloc createFromContext(
           BuildContext context,
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
-      ChatMessageCachedPaginationBloc(
+      PleromaChatMessageCachedPaginationBloc(
           chatMessageListService:
-              Provider.of<IChatMessageCachedListBloc>(context, listen: false),
+              Provider.of<IPleromaChatMessageCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 
   static Widget provideToContext(BuildContext context,
       {int itemsCountPerPage = 20, int maximumCachedPagesCount, @required
       Widget child}) {
-    return DisposableProvider<  ICachedPaginationBloc<CachedPaginationPage<IChatMessage>,
-        IChatMessage>>(
-      create: (context) => ChatMessageCachedPaginationBloc.createFromContext(
+    return DisposableProvider<  ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
+        IPleromaChatMessage>>(
+      create: (context) => PleromaChatMessageCachedPaginationBloc.createFromContext(
         context,
         itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IChatMessage>,
-          IChatMessage>(child: child),
+          CachedPaginationPage<IPleromaChatMessage>,
+          IPleromaChatMessage>(child: child),
     );
   }
 }

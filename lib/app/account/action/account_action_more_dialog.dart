@@ -187,7 +187,7 @@ class AccountActionMoreDialog extends StatelessWidget {
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToChatWithAccount(
+          goToPleromaChatWithAccount(
             context: context,
             account: account,
           );

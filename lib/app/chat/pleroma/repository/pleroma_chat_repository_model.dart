@@ -1,11 +1,11 @@
 import 'package:moor/moor.dart';
 
-enum ChatOrderByType {
+enum PleromaChatOrderByType {
   remoteId, updatedAt
 }
 
 class ChatOrderingTermData {
-  final ChatOrderByType orderByType;
+  final PleromaChatOrderByType orderByType;
   final OrderingMode orderingMode;
   ChatOrderingTermData(
       {@required this.orderByType, @required this.orderingMode});

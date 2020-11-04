@@ -9,20 +9,20 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatWithLastMessageListContainerBloc extends IDisposable {
-  static IChatWithLastMessageListContainerBloc of(BuildContext context,
+abstract class IPleromaChatWithLastMessageListBloc extends IDisposable {
+  static IPleromaChatWithLastMessageListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatWithLastMessageListContainerBloc>(context,
+      Provider.of<IPleromaChatWithLastMessageListBloc>(context,
           listen: listen);
 
-  IChatWithLastMessageCachedBloc get chatListBloc;
+  IPleromaChatWithLastMessageCachedBloc get chatListBloc;
 
-  IChatWithLastMessagePaginationBloc get chatPaginationBloc;
+  IPleromaChatWithLastMessagePaginationBloc get chatPaginationBloc;
 
-  IPaginationListBloc<PaginationPage<IChatWithLastMessage>,
-      IChatWithLastMessage> get chatPaginationListBloc;
+  IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+      IPleromaChatWithLastMessage> get chatPaginationListBloc;
 
   ICachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<IChatWithLastMessage>,
-      IChatWithLastMessage> get chatPaginationListWithNewItemsBloc;
+      CachedPaginationPage<IPleromaChatWithLastMessage>,
+      IPleromaChatWithLastMessage> get chatPaginationListWithNewItemsBloc;
 }

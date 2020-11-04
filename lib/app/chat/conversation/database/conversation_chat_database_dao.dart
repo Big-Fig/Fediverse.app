@@ -102,7 +102,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
             .map((orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderByType) {
-                    case ConversationChatOrderByType.remoteId:
+                    case ConversationPleromaChatOrderByType.remoteId:
                       expression = item.remoteId;
                       break;
                   }

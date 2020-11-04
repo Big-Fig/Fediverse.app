@@ -29,7 +29,7 @@ void main() {
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
-  IChatMessageRepository chatMessageRepository;
+  IPleromaChatMessageRepository chatMessageRepository;
   INotificationRepository notificationRepository;
 
   setUp(() async {
@@ -37,7 +37,7 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
     notificationRepository = NotificationRepository(
         chatMessageRepository: chatMessageRepository,

@@ -112,7 +112,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToChatWithAccount(context: context, account: account);
+          goToPleromaChatWithAccount(context: context, account: account);
         } else {
           goToPostStatusStartConversationPage(context,
               conversationAccountsWithoutMe: <IAccount>[account]);

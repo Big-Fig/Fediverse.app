@@ -3,10 +3,10 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatNewMessagesHandlerBloc extends IDisposable {
+abstract class IPleromaChatNewMessagesHandlerBloc extends IDisposable {
   Future handleNewMessage(IPleromaChatMessage chatMessage);
   Future handleChatUpdate(PleromaChat chat);
-  static IChatNewMessagesHandlerBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatNewMessagesHandlerBloc>(context, listen: listen);
+  static IPleromaChatNewMessagesHandlerBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPleromaChatNewMessagesHandlerBloc>(context, listen: listen);
 
 }

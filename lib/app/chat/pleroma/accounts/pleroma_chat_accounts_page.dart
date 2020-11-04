@@ -8,7 +8,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatAccountsPage extends StatelessWidget {
+class PleromaChatAccountsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,25 +16,25 @@ class ChatAccountsPage extends StatelessWidget {
         title: S.of(context).app_chat_accounts_title,
       ),
       body: const SafeArea(
-        child: ChatAccountsWidget(),
+        child: PleromaChatAccountsWidget(),
       ),
     );
   }
 
-  const ChatAccountsPage();
+  const PleromaChatAccountsPage();
 }
 
-void goToChatAccountsPage(BuildContext context, IChat chat) {
+void goToPleromaChatAccountsPage(BuildContext context, IPleromaChat chat) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => DisposableProvider<IChatBloc>(
-        create: (context) => ChatBloc.createFromContext(
+      builder: (context) => DisposableProvider<IPleromaChatBloc>(
+        create: (context) => PleromaChatBloc.createFromContext(
           context,
           chat: chat,
           lastChatMessage: null,
         ),
-        child: const ChatAccountsPage(),
+        child: const PleromaChatAccountsPage(),
       ),
     ),
   );

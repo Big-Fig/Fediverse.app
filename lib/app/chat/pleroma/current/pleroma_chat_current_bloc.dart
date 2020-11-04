@@ -3,15 +3,15 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICurrentChatBloc implements IDisposable {
-  static ICurrentChatBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<ICurrentChatBloc>(context, listen: listen);
+abstract class IPleromaChatCurrentBloc implements IDisposable {
+  static IPleromaChatCurrentBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPleromaChatCurrentBloc>(context, listen: listen);
 
-  IChat get currentChat;
+  IPleromaChat get currentChat;
 
-  Stream<IChat> get currentChatStream;
+  Stream<IPleromaChat> get currentChatStream;
 
-  void onChatOpened(IChat chat);
+  void onChatOpened(IPleromaChat chat);
 
-  void onChatClosed(IChat chat);
+  void onChatClosed(IPleromaChat chat);
 }

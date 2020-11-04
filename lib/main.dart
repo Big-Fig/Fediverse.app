@@ -244,9 +244,9 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
             var notification =
                 launchOrResumePushLoaderNotification.notification;
             if (notification.isContainsChat) {
-              await navigatorKey.currentState.push(createChatPageRoute(
+              await navigatorKey.currentState.push(createPleromaChatPageRoute(
                   await currentInstanceContextBloc
-                      .get<IChatRepository>()
+                      .get<IPleromaChatRepository>()
                       .findByRemoteId(notification.chatRemoteId)));
             } else if (notification.isContainsStatus) {
               await navigatorKey.currentState.push(createStatusThreadPageRoute(

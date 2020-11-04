@@ -96,7 +96,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       offset: null,
       orderingTermData: ConversationOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: ConversationChatOrderByType.remoteId),
+          orderByType: ConversationPleromaChatOrderByType.remoteId),
     );
 
     var accounts = <IAccount>[];

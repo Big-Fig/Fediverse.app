@@ -39,7 +39,7 @@ Future<DbChatMessage> createTestDbChatMessage({
 }
 
 void expectDbChatMessagePopulated(
-    IChatMessage actual, DbChatMessagePopulated expected) {
+    IPleromaChatMessage actual, DbChatMessagePopulated expected) {
   if (actual == null && expected == null) {
     return;
   }
@@ -49,7 +49,7 @@ void expectDbChatMessagePopulated(
   expectDbChatMessage(actual, dbChatMessage);
 }
 
-void expectDbChatMessage(IChatMessage actual, DbChatMessage expected) {
+void expectDbChatMessage(IPleromaChatMessage actual, DbChatMessage expected) {
   if (actual == null && expected == null) {
     return;
   }

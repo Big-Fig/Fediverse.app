@@ -18,18 +18,18 @@ import '../../../pleroma/chat/pleroma_chat_service_mock.dart';
 import 'chat_message_model_helper.dart';
 
 void main() {
-  IChatMessage chatMessage;
-  IChatMessageBloc chatMessageBloc;
+  IPleromaChatMessage chatMessage;
+  IPleromaChatMessageBloc chatMessageBloc;
   PleromaChatServiceMock pleromaChatServiceMock;
   PleromaAccountServiceMock pleromaAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
-  IChatMessageRepository chatMessageRepository;
+  IPleromaChatMessageRepository chatMessageRepository;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
 
     pleromaChatServiceMock = PleromaChatServiceMock();
@@ -44,7 +44,7 @@ void main() {
         conversationRemoteId: null,
         chatRemoteId: chatMessage.chatRemoteId);
 
-    chatMessageBloc = ChatMessageBloc(
+    chatMessageBloc = PleromaChatMessageBloc(
       chatMessage: chatMessage,
       pleromaChatService: pleromaChatServiceMock,
       chatMessageRepository: chatMessageRepository,
@@ -62,9 +62,9 @@ void main() {
     await database.close();
   });
 
-  Future _update(IChatMessage chatMessage) async {
+  Future _update(IPleromaChatMessage chatMessage) async {
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage));
+        mapLocalPleromaChatMessageToRemoteChatMessage(chatMessage));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }

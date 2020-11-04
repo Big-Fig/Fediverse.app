@@ -13,13 +13,13 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("chat_post_message_bloc_impl.dart");
 
-class ChatPostMessageBloc extends PostMessageBloc
-    implements IChatPostMessageBloc {
+class PleromaChatPostMessageBloc extends PostMessageBloc
+    implements IPleromaChatPostMessageBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatMessageRepository chatMessageRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
   final String chatRemoteId;
 
-  ChatPostMessageBloc({
+  PleromaChatPostMessageBloc({
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
@@ -71,14 +71,14 @@ class ChatPostMessageBloc extends PostMessageBloc
     return success;
   }
 
-  static ChatPostMessageBloc createFromContext(BuildContext context,
+  static PleromaChatPostMessageBloc createFromContext(BuildContext context,
       {@required String chatRemoteId}) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
-    return ChatPostMessageBloc(
+    return PleromaChatPostMessageBloc(
       chatRemoteId: chatRemoteId,
-      chatMessageRepository: IChatMessageRepository.of(context, listen: false),
+      chatMessageRepository: IPleromaChatMessageRepository.of(context, listen: false),
       pleromaChatService: IPleromaChatService.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -89,10 +89,10 @@ class ChatPostMessageBloc extends PostMessageBloc
 
   static Widget provideToContext(BuildContext context,
       {@required String chatRemoteId, @required Widget child}) {
-    return DisposableProvider<IChatPostMessageBloc>(
-      create: (context) => ChatPostMessageBloc.createFromContext(context,
+    return DisposableProvider<IPleromaChatPostMessageBloc>(
+      create: (context) => PleromaChatPostMessageBloc.createFromContext(context,
           chatRemoteId: chatRemoteId),
-      child: ChatPostMessageBlocProxyProvider(child: child),
+      child: PleromaChatPostMessageBlocProxyProvider(child: child),
     );
   }
 }

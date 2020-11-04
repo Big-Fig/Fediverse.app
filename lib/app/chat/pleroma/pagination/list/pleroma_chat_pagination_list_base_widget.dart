@@ -5,9 +5,9 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ChatPaginationListBaseWidget
-    extends FediPaginationListWidget<IChat> {
-  ChatPaginationListBaseWidget(
+abstract class PleromaChatPaginationListBaseWidget
+    extends FediPaginationListWidget<IPleromaChat> {
+  PleromaChatPaginationListBaseWidget(
       {@required Key key,
       Widget header,
       Widget footer,
@@ -21,11 +21,11 @@ abstract class ChatPaginationListBaseWidget
             alwaysShowFooter: alwaysShowFooter);
 
   @override
-  IPaginationListBloc<PaginationPage<IChat>, IChat> retrievePaginationListBloc(
+  IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat> retrievePaginationListBloc(
       BuildContext context,
       {@required bool listen}) {
     var chatPaginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IChat>, IChat>>(context,
+        Provider.of<IPaginationListBloc<PaginationPage<IPleromaChat>, IPleromaChat>>(context,
             listen: listen);
     return chatPaginationListBloc;
   }

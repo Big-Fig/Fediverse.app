@@ -20,7 +20,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   final String statusListRemoteId;
   final String statusConversationRemoteId;

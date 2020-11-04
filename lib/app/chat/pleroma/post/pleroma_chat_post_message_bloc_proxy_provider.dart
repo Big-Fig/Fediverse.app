@@ -4,14 +4,14 @@ import 'package:fedi/app/message/post_message_bloc_proxy_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatPostMessageBlocProxyProvider extends StatelessWidget {
+class PleromaChatPostMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ChatPostMessageBlocProxyProvider({@required this.child});
+  PleromaChatPostMessageBlocProxyProvider({@required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IChatPostMessageBloc, IPostMessageBloc>(
+    return ProxyProvider<IPleromaChatPostMessageBloc, IPostMessageBloc>(
       update: (context, value, previous) => value,
       child: PostMessageBlocProxyProvider(child: child),
     );

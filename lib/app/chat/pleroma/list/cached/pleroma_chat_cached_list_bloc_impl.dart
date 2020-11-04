@@ -3,19 +3,19 @@ import 'package:fedi/app/chat/pleroma/list/cached/pleroma_chat_cached_list_bloc.
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_chat;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-var _logger = Logger("chat_cached_list_bloc_impl.dart");
+var _logger = Logger("pleroma_chat_cached_list_bloc_impl.dart");
 
-class ChatCachedListBloc extends IChatCachedListBloc {
+class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatRepository chatRepository;
+  final IPleromaChatRepository chatRepository;
 
-  ChatCachedListBloc(
+  PleromaChatCachedListBloc(
       {@required this.pleromaChatService, @required this.chatRepository});
 
   @override
@@ -24,13 +24,13 @@ class ChatCachedListBloc extends IChatCachedListBloc {
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IChat newerThan,
-      @required IChat olderThan}) async {
+      @required IPleromaChat newerThan,
+      @required IPleromaChat olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    List<IPleromaChat> remoteChats;
+    List<pleroma_chat.IPleromaChat> remoteChats;
 
     remoteChats = await pleromaChatService.getChats(
         maxId: olderThan?.remoteId, sinceId: newerThan?.remoteId, limit: limit);
@@ -47,10 +47,10 @@ class ChatCachedListBloc extends IChatCachedListBloc {
   }
 
   @override
-  Future<List<IChat>> loadLocalItems(
+  Future<List<IPleromaChat>> loadLocalItems(
       {@required int limit,
-      @required IChat newerThan,
-      @required IChat olderThan}) async {
+      @required IPleromaChat newerThan,
+      @required IPleromaChat olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -62,7 +62,7 @@ class ChatCachedListBloc extends IChatCachedListBloc {
       offset: null,
       orderingTermData: ChatOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: ChatOrderByType.updatedAt),
+          orderByType: PleromaChatOrderByType.updatedAt),
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -70,7 +70,7 @@ class ChatCachedListBloc extends IChatCachedListBloc {
   }
 
   @override
-  Stream<List<IChat>> watchLocalItemsNewerThanItem(IChat item) =>
+  Stream<List<IPleromaChat>> watchLocalItemsNewerThanItem(IPleromaChat item) =>
       chatRepository.watchChats(
           olderThan: null,
           newerThan: item,
@@ -78,5 +78,5 @@ class ChatCachedListBloc extends IChatCachedListBloc {
           offset: null,
           orderingTermData: ChatOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatOrderByType.updatedAt));
+              orderByType: PleromaChatOrderByType.updatedAt));
 }

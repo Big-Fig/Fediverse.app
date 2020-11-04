@@ -3,61 +3,64 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatRepository
+abstract class IPleromaChatRepository
     implements
-        IReadIdListRepository<DbChatPopulatedWrapper, int>,
+        IReadIdListRepository<DbPleromaChatPopulatedWrapper, int>,
         IWriteIdListRepository<DbChat, int>,
         IDisposable {
-  static IChatRepository of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatRepository>(context, listen: listen);
+  static IPleromaChatRepository of(BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<IPleromaChatRepository>(context, listen: listen);
 
-  Future<DbChatPopulatedWrapper> findByRemoteId(String remoteId);
+  Future<DbPleromaChatPopulatedWrapper> findByRemoteId(String remoteId);
 
-  Future upsertRemoteChats(List<IPleromaChat> remoteChats);
+  Future upsertRemoteChats(List<pleroma_lib.IPleromaChat> remoteChats);
 
-  Stream<DbChatPopulatedWrapper> watchByRemoteId(String remoteId);
+  Stream<DbPleromaChatPopulatedWrapper> watchByRemoteId(String remoteId);
 
-  Future upsertRemoteChat(IPleromaChat remoteChat);
+  Future upsertRemoteChat(pleroma_lib.IPleromaChat remoteChat);
 
-  Future<List<DbChatPopulatedWrapper>> getChats(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Future<List<DbPleromaChatPopulatedWrapper>> getChats(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<List<DbChatPopulatedWrapper>> watchChats(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Stream<List<DbPleromaChatPopulatedWrapper>> watchChats(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Future<DbChatPopulatedWrapper> getChat(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Future<DbPleromaChatPopulatedWrapper> getChat(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<DbChatPopulatedWrapper> watchChat(
-      {@required IChat olderThan,
-      @required IChat newerThan,
+  Stream<DbPleromaChatPopulatedWrapper> watchChat(
+      {@required IPleromaChat olderThan,
+      @required IPleromaChat newerThan,
       @required ChatOrderingTermData orderingTermData});
 
-  Future updateLocalChatByRemoteChat(
-      {@required IChat oldLocalChat, @required IPleromaChat newRemoteChat});
+  Future updateLocalChatByRemoteChat({
+    @required IPleromaChat oldLocalChat,
+    @required pleroma_lib.IPleromaChat newRemoteChat,
+  });
 
   Future<int> getTotalUnreadCount();
 
   Stream<int> watchTotalUnreadCount();
 
-  Future<IChat> findByAccount({@required IAccount account});
+  Future<IPleromaChat> findByAccount({@required IAccount account});
 
-  Future markAsRead({@required IChat chat});
+  Future markAsRead({@required IPleromaChat chat});
 
   Future incrementUnreadCount(
       {@required String chatRemoteId, @required DateTime updatedAt});

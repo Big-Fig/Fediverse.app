@@ -3,7 +3,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<DbChat> insertDbChat(
-  ChatRepository chatRepository,
+  PleromaChatRepository chatRepository,
   DbChat chatData,
 ) async {
   var id = await chatRepository.insert(chatData);

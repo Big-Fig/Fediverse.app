@@ -6,16 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatAvatarWidget extends StatelessWidget {
+class PleromaChatAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
 
-  const ChatAvatarWidget({
+  const PleromaChatAvatarWidget({
     this.baseAvatarSize = FediSizes.appBarAvatarSize,
   });
 
   @override
   Widget build(BuildContext context) {
-    IChatBloc chatBloc = IChatBloc.of(context);
+    IPleromaChatBloc chatBloc = IPleromaChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
       stream: chatBloc.accountsStream,

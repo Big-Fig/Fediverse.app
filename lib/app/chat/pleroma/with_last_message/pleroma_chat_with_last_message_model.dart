@@ -2,19 +2,19 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class IChatWithLastMessage {
-  IChat get chat;
+abstract class IPleromaChatWithLastMessage {
+  IPleromaChat get chat;
 
-  IChatMessage get lastChatMessage;
+  IPleromaChatMessage get lastChatMessage;
 }
 
-class ChatWithLastMessageWrapper extends IChatWithLastMessage {
+class PleromaChatWithLastMessageWrapper extends IPleromaChatWithLastMessage {
   @override
-  IChat chat;
+  IPleromaChat chat;
 
   @override
-  IChatMessage lastChatMessage;
-  ChatWithLastMessageWrapper({
+  IPleromaChatMessage lastChatMessage;
+  PleromaChatWithLastMessageWrapper({
     @required this.chat,
     @required this.lastChatMessage,
   });
@@ -28,7 +28,7 @@ class ChatWithLastMessageWrapper extends IChatWithLastMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChatWithLastMessageWrapper &&
+      other is PleromaChatWithLastMessageWrapper &&
           runtimeType == other.runtimeType &&
           chat == other.chat &&
           lastChatMessage == other.lastChatMessage;

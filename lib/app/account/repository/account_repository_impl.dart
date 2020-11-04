@@ -235,7 +235,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversationChat onlyInConversation,
-      @required IChat onlyInChat,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -271,7 +271,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversationChat onlyInConversation,
-      @required IChat onlyInChat,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -306,7 +306,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversationChat onlyInConversation,
-      @required IChat onlyInChat,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -397,7 +397,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversationChat onlyInConversation,
-      @required IChat onlyInChat,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -425,7 +425,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversationChat onlyInConversation,
-      @required IChat onlyInChat,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -549,7 +549,7 @@ class AccountRepository extends AsyncInitLoadingBloc
           onlyInChat: null);
 
   @override
-  Future<List<IAccount>> getChatAccounts({@required IChat chat}) => getAccounts(
+  Future<List<IAccount>> getChatAccounts({@required IPleromaChat chat}) => getAccounts(
       searchQuery: null,
       olderThanAccount: null,
       newerThanAccount: null,
@@ -564,7 +564,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       onlyInChat: chat);
 
   @override
-  Stream<List<IAccount>> watchChatAccounts({@required IChat chat}) =>
+  Stream<List<IAccount>> watchChatAccounts({@required IPleromaChat chat}) =>
       watchAccounts(
           searchQuery: null,
           olderThanAccount: null,

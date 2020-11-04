@@ -24,7 +24,7 @@ void main() {
   AppDatabase database;
   AccountRepository accountRepository;
   StatusRepository statusRepository;
-  ChatMessageRepository chatMessageRepository;
+  PleromaChatMessageRepository chatMessageRepository;
   NotificationRepository notificationRepository;
 
   DbStatusPopulated dbStatusPopulated;
@@ -40,7 +40,7 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
     notificationRepository = NotificationRepository(
         appDatabase: database,
