@@ -1,4 +1,4 @@
-import 'package:fedi/app/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

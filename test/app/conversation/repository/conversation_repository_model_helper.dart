@@ -1,4 +1,4 @@
-import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
