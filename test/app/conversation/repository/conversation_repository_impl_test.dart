@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/conversation_model_adapter.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_model_adapter.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';

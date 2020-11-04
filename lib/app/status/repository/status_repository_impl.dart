@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/database/conversation_statuses_database_dao.dart';
+import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_statuses_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';

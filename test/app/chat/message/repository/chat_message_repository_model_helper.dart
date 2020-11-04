@@ -1,4 +1,4 @@
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 

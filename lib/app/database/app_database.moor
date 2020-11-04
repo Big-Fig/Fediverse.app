@@ -1,19 +1,19 @@
 import 'package:fedi/app/account/database/account_database_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
-import 'package:fedi/app/conversation/database/conversation_database_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_database_model.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
 import 'package:fedi/app/account/database/account_followers_database_model.dart';
 import 'package:fedi/app/account/database/account_followings_database_model.dart';
-import 'package:fedi/app/conversation/database/conversation_accounts_database_model.dart';
-import 'package:fedi/app/conversation/database/conversation_statuses_database_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_accounts_database_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_statuses_database_model.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_model.dart';
 import 'package:fedi/app/status/database/status_hashtags_database_model.dart';
 import 'package:fedi/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
-import 'package:fedi/app/chat/database/chat_database_model.dart';
-import 'package:fedi/app/chat/database/chat_accounts_database_model.dart';
-import 'package:fedi/app/chat/message/database/chat_message_database_model.dart';
+import 'package:fedi/app/chat/pleroma/database/chat_database_model.dart';
+import 'package:fedi/app/chat/pleroma/database/chat_accounts_database_model.dart';
+import 'package:fedi/app/chat/pleroma/message/database/chat_message_database_model.dart';
 
 CREATE UNIQUE INDEX db_status_remote_id_index ON db_statuses (remote_id);
 CREATE UNIQUE INDEX db_account_remote_id_index ON db_accounts (remote_id);
