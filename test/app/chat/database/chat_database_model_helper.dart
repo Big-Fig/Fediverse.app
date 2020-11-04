@@ -19,9 +19,9 @@ Future<DbChat> createTestDbChat({
       accountRemoteId: dbAccount.remoteId,
     );
 
-Future<DbChatPopulated> createTestDbChatPopulated(
+Future<DbPleromaChatPopulated> createTestDbChatPopulated(
     DbChat dbChat, AccountRepository accountRepository) async {
-  DbChatPopulated dbChatPopulated = DbChatPopulated(
+  DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
     dbChat: dbChat,
     dbAccount:
     (await accountRepository.findByRemoteId(dbChat.accountRemoteId))
@@ -30,7 +30,7 @@ Future<DbChatPopulated> createTestDbChatPopulated(
   return dbChatPopulated;
 }
 
-void expectDbChat(IChat actual, DbChat expected) {
+void expectDbChat(IPleromaChat actual, DbChat expected) {
   if (actual == null && expected == null) {
     return;
   }

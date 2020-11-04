@@ -4,9 +4,9 @@ import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatWithLastMessagePaginationBloc
-    implements ICachedPleromaPaginationBloc<IChatWithLastMessage> {
-  static IChatWithLastMessagePaginationBloc of(BuildContext context,
+abstract class IPleromaChatWithLastMessagePaginationBloc
+    implements ICachedPleromaPaginationBloc<IPleromaChatWithLastMessage> {
+  static IPleromaChatWithLastMessagePaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatWithLastMessagePaginationBloc>(context, listen: listen);
+      Provider.of<IPleromaChatWithLastMessagePaginationBloc>(context, listen: listen);
 }

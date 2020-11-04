@@ -23,7 +23,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final IPleromaNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   BehaviorSubject<NotificationPushLoaderNotification>
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();

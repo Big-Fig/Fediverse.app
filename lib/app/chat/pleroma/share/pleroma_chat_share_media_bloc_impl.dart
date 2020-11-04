@@ -15,15 +15,15 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class ChatShareMediaBloc extends ChatShareBloc
-    implements IChatShareBloc, IShareMediaBloc {
+class PleromaChatShareMediaBloc extends PleromaChatShareBloc
+    implements IPleromaChatShareBloc, IShareMediaBloc {
   @override
   final IPleromaMediaAttachment mediaAttachment;
 
-  ChatShareMediaBloc({
+  PleromaChatShareMediaBloc({
     @required this.mediaAttachment,
-    @required IChatRepository chatRepository,
-    @required IChatMessageRepository chatMessageRepository,
+    @required IPleromaChatRepository chatRepository,
+    @required IPleromaChatMessageRepository chatMessageRepository,
     @required IPleromaChatService pleromaChatService,
     @required IMyAccountBloc myAccountBloc,
     @required IAccountRepository accountRepository,
@@ -48,30 +48,30 @@ class ChatShareMediaBloc extends ChatShareBloc
   static Widget provideToContext(BuildContext context,
       {@required IPleromaMediaAttachment mediaAttachment,
       @required Widget child}) {
-    return DisposableProvider<ChatShareMediaBloc>(
+    return DisposableProvider<PleromaChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
-      child: ProxyProvider<ChatShareMediaBloc, IChatShareBloc>(
+      child: ProxyProvider<PleromaChatShareMediaBloc, IPleromaChatShareBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<ChatShareMediaBloc, IShareMediaBloc>(
+        child: ProxyProvider<PleromaChatShareMediaBloc, IShareMediaBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<ChatShareMediaBloc, IShareToAccountBloc>(
+          child: ProxyProvider<PleromaChatShareMediaBloc, IShareToAccountBloc>(
             update: (context, value, previous) => value,
-            child: ChatShareBlocProxyProvider(child: child),
+            child: PleromaChatShareBlocProxyProvider(child: child),
           ),
         ),
       ),
     );
   }
 
-  static ChatShareMediaBloc createFromContext(
+  static PleromaChatShareMediaBloc createFromContext(
           BuildContext context, IPleromaMediaAttachment mediaAttachment) =>
-      ChatShareMediaBloc(
+      PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
-        chatRepository: IChatRepository.of(
+        chatRepository: IPleromaChatRepository.of(
           context,
           listen: false,
         ),
-        chatMessageRepository: IChatMessageRepository.of(
+        chatMessageRepository: IPleromaChatMessageRepository.of(
           context,
           listen: false,
         ),

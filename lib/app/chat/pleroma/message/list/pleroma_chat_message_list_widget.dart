@@ -17,19 +17,19 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("chat_message_list_widget.dart");
+var _logger = Logger("pleroma_chat_message_list_widget.dart");
 
 var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
-class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
-  ChatMessageListWidget({@required Key key}) : super(key: key);
+class PleromaChatMessageListWidget extends PleromaChatMessagePaginationListBaseWidget {
+  PleromaChatMessageListWidget({@required Key key}) : super(key: key);
 
   // override to move refresh/update features from top/bottom to bottom/top
   @override
   Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
           BuildContext context,
-          List<IChatMessage> items,
+          List<IPleromaChatMessage> items,
           RefreshController refreshController,
           ScrollController scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
@@ -70,7 +70,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
   @override
   ScrollView buildItemsCollectionView(
       {@required BuildContext context,
-      @required List<IChatMessage> items,
+      @required List<IPleromaChatMessage> items,
       @required Widget header,
       @required Widget footer}) {
     assert(header == null, "header not supported");
@@ -79,8 +79,8 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        IChatMessage nextMessage;
-        IChatMessage previousMessage;
+        IPleromaChatMessage nextMessage;
+        IPleromaChatMessage previousMessage;
         if (index > 0) {
           previousMessage = items[index - 1];
         }
@@ -132,12 +132,12 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
 
         var messageWidget = Provider.value(
           value: currentMessage,
-          child: DisposableProxyProvider<IChatMessage, IChatMessageBloc>(
+          child: DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
               update: (context, value, previous) =>
-                  ChatMessageBloc.createFromContext(context, value),
+                  PleromaChatMessageBloc.createFromContext(context, value),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
-                child: ChatMessageListItemWidget(
+                child: PleromaChatMessageListItemWidget(
                   isLastInMinuteGroup: isLastInMinuteGroup,
                   isFirstInMinuteGroup: isFirstInMinuteGroup,
                 ),

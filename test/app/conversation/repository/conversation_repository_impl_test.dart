@@ -431,7 +431,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationChatOrderByType.remoteId,
+            orderByType: ConversationPleromaChatOrderByType.remoteId,
             orderingMode: OrderingMode.asc),
         olderThan: null);
 
@@ -466,7 +466,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationChatOrderByType.remoteId,
+            orderByType: ConversationPleromaChatOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null);
 
@@ -501,7 +501,7 @@ void main() {
         limit: 1,
         offset: 1,
         orderingTermData: ConversationOrderingTermData(
-            orderByType: ConversationChatOrderByType.remoteId,
+            orderByType: ConversationPleromaChatOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null);
 

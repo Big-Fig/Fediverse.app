@@ -14,7 +14,7 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StartChatPage extends StatelessWidget {
+class PleromaChatStartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +28,11 @@ class StartChatPage extends StatelessWidget {
         child: SingleSelectAccountWidget(
           accountSelectedCallback: (context, account) async {
             var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<IChat>(
+                .performPleromaAsyncOperation<IPleromaChat>(
                     context: context,
                     asyncCode: () async {
                       var chatRepository =
-                          IChatRepository.of(context, listen: false);
+                          IPleromaChatRepository.of(context, listen: false);
 
                       var chat =
                           await chatRepository.findByAccount(account: account);
@@ -57,7 +57,7 @@ class StartChatPage extends StatelessWidget {
 
             var chat = dialogResult.result;
             if (chat != null) {
-              goToChatPage(context, chat: chat);
+              goToPleromaChatPage(context, chat: chat);
             } else {
               await FediSimpleAlertDialog(context: null).show(context);
             }
@@ -68,7 +68,7 @@ class StartChatPage extends StatelessWidget {
   }
 }
 
-void goToStartChatPage(BuildContext context) {
+void goToPleromaChatStartPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -79,7 +79,7 @@ void goToStartChatPage(BuildContext context) {
           child: AccountCachedPaginationBloc.provideToContext(
             context,
             child: SelectAccountPaginationListBloc.provideToContext(context,
-                child: StartChatPage()),
+                child: PleromaChatStartPage()),
           ),
           customLocalAccountListLoader: null,
           customRemoteAccountListLoader: null,

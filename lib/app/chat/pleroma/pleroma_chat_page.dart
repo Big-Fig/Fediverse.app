@@ -17,10 +17,10 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatPage extends StatelessWidget {
+class PleromaChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: false);
+    var chatBloc = IPleromaChatBloc.of(context, listen: false);
 
     return FediDarkStatusBarStyleArea(
       child: Scaffold(
@@ -31,7 +31,7 @@ class ChatPage extends StatelessWidget {
                 leading: FediBackIconButton(),
                 child: buildChatAccountsWidget(context, chatBloc),
               ),
-              Expanded(child: ChatWidget())
+              Expanded(child: PleromaChatWidget())
             ],
           ),
         ),
@@ -39,17 +39,17 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  Widget buildChatAccountsWidget(BuildContext context, IChatBloc chatBloc) {
+  Widget buildChatAccountsWidget(BuildContext context, IPleromaChatBloc chatBloc) {
     return InkWell(
       onTap: () {
-        goToChatAccountsPage(context, chatBloc.chat);
+        goToPleromaChatAccountsPage(context, chatBloc.chat);
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const ChatAvatarWidget(baseAvatarSize: 36),
+          const PleromaChatAvatarWidget(baseAvatarSize: 36),
           const FediBigHorizontalSpacer(),
-          ChatTitleWidget(
+          PleromaChatTitleWidget(
             textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
           ),
         ],
@@ -58,24 +58,24 @@ class ChatPage extends StatelessWidget {
   }
 }
 
-void goToChatPage(BuildContext context, {@required IChat chat}) {
+void goToPleromaChatPage(BuildContext context, {@required IPleromaChat chat}) {
   Navigator.push(
     context,
-    createChatPageRoute(chat),
+    createPleromaChatPageRoute(chat),
   );
 }
 
-MaterialPageRoute createChatPageRoute(IChat chat) {
+MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
   return MaterialPageRoute(
-      builder: (context) => DisposableProvider<IChatBloc>(
+      builder: (context) => DisposableProvider<IPleromaChatBloc>(
           create: (context) {
-            var chatBloc = ChatBloc.createFromContext(context,
+            var chatBloc = PleromaChatBloc.createFromContext(context,
                 chat: chat, lastChatMessage: null);
 
             // we don't need to await
             chatBloc.markAsRead();
 
-            var currentChatBloc = ICurrentChatBloc.of(context, listen: false);
+            var currentChatBloc = IPleromaChatCurrentBloc.of(context, listen: false);
 
             currentChatBloc.onChatOpened(chat);
 
@@ -85,9 +85,9 @@ MaterialPageRoute createChatPageRoute(IChat chat) {
 
             return chatBloc;
           },
-          child: ChatPostMessageBloc.provideToContext(
+          child: PleromaChatPostMessageBloc.provideToContext(
             context,
             chatRemoteId: chat.remoteId,
-            child: ChatPage(),
+            child: PleromaChatPage(),
           )));
 }

@@ -6,13 +6,13 @@ import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatWebSocketsHandler extends WebSocketsChannelHandler {
-  ChatWebSocketsHandler({
+class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
+  PleromaChatWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationChatRepository conversationRepository,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(
               chat: true, notification: false),
@@ -25,8 +25,8 @@ class ChatWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
         );
 
-  static ChatWebSocketsHandler createFromContext(BuildContext context) =>
-      ChatWebSocketsHandler(
+  static PleromaChatWebSocketsHandler createFromContext(BuildContext context) =>
+      PleromaChatWebSocketsHandler(
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:
@@ -35,7 +35,7 @@ class ChatWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

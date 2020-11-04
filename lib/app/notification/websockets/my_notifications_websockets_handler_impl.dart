@@ -12,7 +12,7 @@ class MyNotificationsWebSocketsHandler extends WebSocketsChannelHandler {
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationChatRepository conversationRepository,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(
               notification: true, chat: false),
@@ -36,7 +36,7 @@ class MyNotificationsWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

@@ -31,28 +31,28 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  Future<List<DbChatPopulated>> findAll() async {
+  Future<List<DbPleromaChatPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
 
     return typedResultListToPopulated(await chatMessageQuery.get());
   }
 
-  Stream<List<DbChatPopulated>> watchAll() {
+  Stream<List<DbPleromaChatPopulated>> watchAll() {
     JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
 
     return chatMessageQuery.watch().map(typedResultListToPopulated);
   }
 
-  Future<DbChatPopulated> findById(int id) async =>
+  Future<DbPleromaChatPopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbChatPopulated> findByRemoteId(String remoteId) async =>
+  Future<DbPleromaChatPopulated> findByRemoteId(String remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
-  Stream<DbChatPopulated> watchById(int id) =>
+  Stream<DbPleromaChatPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
-  Stream<DbChatPopulated> watchByRemoteId(String remoteId) =>
+  Stream<DbPleromaChatPopulated> watchByRemoteId(String remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
@@ -159,10 +159,10 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
             .map((orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderByType) {
-                    case ChatOrderByType.remoteId:
+                    case PleromaChatOrderByType.remoteId:
                       expression = item.remoteId;
                       break;
-                    case ChatOrderByType.updatedAt:
+                    case PleromaChatOrderByType.updatedAt:
                       expression = item.updatedAt;
                       break;
                   }
@@ -171,7 +171,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
                 })
             .toList());
 
-  List<DbChatPopulated> typedResultListToPopulated(
+  List<DbPleromaChatPopulated> typedResultListToPopulated(
       List<TypedResult> typedResult) {
     if (typedResult == null) {
       return null;
@@ -179,11 +179,11 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     return typedResult.map(typedResultToPopulated).toList();
   }
 
-  DbChatPopulated typedResultToPopulated(TypedResult typedResult) {
+  DbPleromaChatPopulated typedResultToPopulated(TypedResult typedResult) {
     if (typedResult == null) {
       return null;
     }
-    return DbChatPopulated(
+    return DbPleromaChatPopulated(
         dbChat: typedResult.readTable(db.dbChats),
         dbAccount: typedResult.readTable(accountAlias));
   }

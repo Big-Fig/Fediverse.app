@@ -2,10 +2,10 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 
-typedef ChatCallback = Function(
-    BuildContext context, IChat chat);
+typedef PleromaChatCallback = Function(
+    BuildContext context, IPleromaChat chat);
 
-abstract class IChat {
+abstract class IPleromaChat {
   int get localId;
 
   String get remoteId;
@@ -16,7 +16,7 @@ abstract class IChat {
 
   List<IAccount> get accounts;
 
-  IChat copyWith(
+  IPleromaChat copyWith(
       {int id,
       String remoteId,
       bool unread,
@@ -24,15 +24,15 @@ abstract class IChat {
       List<IAccount> accounts});
 }
 
-class DbChatPopulated {
+class DbPleromaChatPopulated {
   final DbChat dbChat;
   final DbAccount dbAccount;
-  DbChatPopulated({@required this.dbChat, @required this.dbAccount});
+  DbPleromaChatPopulated({@required this.dbChat, @required this.dbAccount});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DbChatPopulated &&
+      other is DbPleromaChatPopulated &&
           runtimeType == other.runtimeType &&
           dbChat == other.dbChat &&
           dbAccount == other.dbAccount;
@@ -44,16 +44,16 @@ class DbChatPopulated {
     return 'DbChatPopulated{dbChat: $dbChat, dbAccount: $dbAccount}';
   }
 
-  DbChatPopulated copyWith({DbChat dbChat, DbAccount dbAccount}) =>
-      DbChatPopulated(
+  DbPleromaChatPopulated copyWith({DbChat dbChat, DbAccount dbAccount}) =>
+      DbPleromaChatPopulated(
           dbChat: dbChat ?? this.dbChat,
           dbAccount: dbAccount ?? this.dbAccount);
 }
 
-class DbChatPopulatedWrapper implements IChat {
-  final DbChatPopulated dbChatPopulated;
+class DbPleromaChatPopulatedWrapper implements IPleromaChat {
+  final DbPleromaChatPopulated dbChatPopulated;
 
-  DbChatPopulatedWrapper(this.dbChatPopulated);
+  DbPleromaChatPopulatedWrapper(this.dbChatPopulated);
 
   @override
   int get localId => dbChatPopulated.dbChat.id;
@@ -67,7 +67,7 @@ class DbChatPopulatedWrapper implements IChat {
   DateTime get updatedAt => dbChatPopulated.dbChat.updatedAt;
 
   @override
-  DbChatPopulatedWrapper copyWith(
+  DbPleromaChatPopulatedWrapper copyWith(
       {int id,
       String remoteId,
       bool unread,
@@ -78,7 +78,7 @@ class DbChatPopulatedWrapper implements IChat {
     if (accounts?.isNotEmpty == true) {
       account = accounts.first;
     }
-    return DbChatPopulatedWrapper(DbChatPopulated(
+    return DbPleromaChatPopulatedWrapper(DbPleromaChatPopulated(
         dbChat: dbChatPopulated.dbChat.copyWith(
             id: id ?? localId,
             remoteId: remoteId ?? this.remoteId,

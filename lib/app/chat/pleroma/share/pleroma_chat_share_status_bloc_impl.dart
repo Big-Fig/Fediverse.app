@@ -16,15 +16,15 @@ import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ChatShareStatusBloc extends ChatShareBloc
-    implements IChatShareBloc, IShareStatusBloc {
+class PleromaChatShareStatusBloc extends PleromaChatShareBloc
+    implements IPleromaChatShareBloc, IShareStatusBloc {
   @override
   final IStatus status;
 
-  ChatShareStatusBloc({
+  PleromaChatShareStatusBloc({
     @required this.status,
-    @required IChatRepository chatRepository,
-    @required IChatMessageRepository chatMessageRepository,
+    @required IPleromaChatRepository chatRepository,
+    @required IPleromaChatMessageRepository chatMessageRepository,
     @required IPleromaChatService pleromaChatService,
     @required IMyAccountBloc myAccountBloc,
     @required IAccountRepository accountRepository,
@@ -50,30 +50,30 @@ class ChatShareStatusBloc extends ChatShareBloc
 
   static Widget provideToContext(BuildContext context,
       {@required IStatus status, @required Widget child}) {
-    return DisposableProvider<ChatShareStatusBloc>(
+    return DisposableProvider<PleromaChatShareStatusBloc>(
       create: (context) => createFromContext(context, status),
-      child: ProxyProvider<ChatShareStatusBloc, IChatShareBloc>(
+      child: ProxyProvider<PleromaChatShareStatusBloc, IPleromaChatShareBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<ChatShareStatusBloc, IShareStatusBloc>(
+        child: ProxyProvider<PleromaChatShareStatusBloc, IShareStatusBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<ChatShareStatusBloc, IShareToAccountBloc>(
+          child: ProxyProvider<PleromaChatShareStatusBloc, IShareToAccountBloc>(
             update: (context, value, previous) => value,
-            child: ChatShareBlocProxyProvider(child: child),
+            child: PleromaChatShareBlocProxyProvider(child: child),
           ),
         ),
       ),
     );
   }
 
-  static ChatShareStatusBloc createFromContext(
+  static PleromaChatShareStatusBloc createFromContext(
           BuildContext context, IStatus status) =>
-      ChatShareStatusBloc(
+      PleromaChatShareStatusBloc(
         status: status,
-        chatRepository: IChatRepository.of(
+        chatRepository: IPleromaChatRepository.of(
           context,
           listen: false,
         ),
-        chatMessageRepository: IChatMessageRepository.of(
+        chatMessageRepository: IPleromaChatMessageRepository.of(
           context,
           listen: false,
         ),

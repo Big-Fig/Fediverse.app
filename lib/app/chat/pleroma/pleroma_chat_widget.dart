@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/list/cached/pleroma_chat_message_cached_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/list/pleroma_chat_message_list_widget.dart';
 import 'package:fedi/app/chat/pleroma/message/pagination/cached/pleroma_chat_message_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pagination/list/pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/pagination/cached/pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -12,19 +12,19 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatWidget extends StatelessWidget {
+class PleromaChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: true);
+    var chatBloc = IPleromaChatBloc.of(context, listen: true);
     return FediAsyncInitLoadingWidget(
         asyncInitLoadingBloc: chatBloc,
         loadingFinishedBuilder: (context) {
-          return ChatMessageListBloc.provideToContext(
+          return PleromaChatMessageListBloc.provideToContext(
             context,
             chat: chatBloc.chat,
-            child: ChatMessageCachedPaginationBloc.provideToContext(
+            child: PleromaChatMessageCachedPaginationBloc.provideToContext(
               context,
-              child: ChatMessageCachedPaginationListWithNewItemsBloc
+              child: PleromaChatMessageCachedPaginationListWithNewItemsBloc
                   .provideToContext(context,
                       mergeNewItemsImmediately: true,
                       child: buildBody(
@@ -38,7 +38,7 @@ class ChatWidget extends StatelessWidget {
 
   Widget buildBody(
     BuildContext context,
-    IChatBloc chatBloc,
+    IPleromaChatBloc chatBloc,
   ) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     return StreamBuilder<bool>(
@@ -46,7 +46,7 @@ class ChatWidget extends StatelessWidget {
         initialData: postMessageBloc.isExpanded,
         builder: (context, snapshot) {
           var isPostMessageExpanded = snapshot.data;
-          var postMessageWidget = const _ChatPostMessageWidget();
+          var postMessageWidget = const _PleromaChatPostMessageWidget();
           if (isPostMessageExpanded) {
             return postMessageWidget;
           } else {
@@ -56,7 +56,7 @@ class ChatWidget extends StatelessWidget {
                   child: UnfocusOnScrollAreaWidget(
                     child: Padding(
                       padding: FediPadding.horizontalBigPadding,
-                      child: ChatMessageListWidget(
+                      child: PleromaChatMessageListWidget(
                         key: PageStorageKey(chatBloc.chat.remoteId),
                       ),
                     ),
@@ -71,8 +71,8 @@ class ChatWidget extends StatelessWidget {
   }
 }
 
-class _ChatPostMessageWidget extends StatelessWidget {
-  const _ChatPostMessageWidget({
+class _PleromaChatPostMessageWidget extends StatelessWidget {
+  const _PleromaChatPostMessageWidget({
     Key key,
   }) : super(key: key);
 

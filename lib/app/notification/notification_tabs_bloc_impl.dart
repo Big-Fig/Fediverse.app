@@ -66,7 +66,7 @@ class NotificationsTabsBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   NotificationsTabsBloc({
     @required NotificationTab startTab,
@@ -136,5 +136,5 @@ class NotificationsTabsBloc extends DisposableOwner
               .isRealtimeWebSocketsEnabledFieldBloc
               .currentValue,
           chatNewMessagesHandlerBloc:
-          IChatNewMessagesHandlerBloc.of(context, listen: false));
+          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false));
 }

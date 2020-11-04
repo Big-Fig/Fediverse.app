@@ -5,18 +5,18 @@ import 'package:fedi/app/share/share_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatShareBlocProxyProvider extends StatelessWidget {
+class PleromaChatShareBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ChatShareBlocProxyProvider({@required this.child});
+  PleromaChatShareBlocProxyProvider({@required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IChatShareBloc, IShareBloc>(
+    return ProxyProvider<IPleromaChatShareBloc, IShareBloc>(
       update: (context, value, previous) => value,
-      child: ProxyProvider<IChatShareBloc, IShareMessageInputBloc>(
+      child: ProxyProvider<IPleromaChatShareBloc, IShareMessageInputBloc>(
         update: (context, value, previous) => value.shareMessageInputBloc,
-        child: ProxyProvider<IChatShareBloc, IShareSelectAccountBloc>(
+        child: ProxyProvider<IPleromaChatShareBloc, IShareSelectAccountBloc>(
             update: (context, value, previous) => value.shareSelectAccountBloc,
             child: child),
       ),

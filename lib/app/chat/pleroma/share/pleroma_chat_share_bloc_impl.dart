@@ -15,10 +15,10 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
-abstract class ChatShareBloc extends ShareToAccountBloc
-    implements IChatShareBloc {
-  final IChatRepository chatRepository;
-  final IChatMessageRepository chatMessageRepository;
+abstract class PleromaChatShareBloc extends ShareToAccountBloc
+    implements IPleromaChatShareBloc {
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatService pleromaChatService;
 
   String get message {
@@ -34,7 +34,7 @@ abstract class ChatShareBloc extends ShareToAccountBloc
   @override
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
-  ChatShareBloc({
+  PleromaChatShareBloc({
     @required this.chatRepository,
     @required this.chatMessageRepository,
     @required this.pleromaChatService,
@@ -97,7 +97,7 @@ abstract class ChatShareBloc extends ShareToAccountBloc
       offset: null,
       orderingTermData: ChatOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: ChatOrderByType.updatedAt),
+          orderByType: PleromaChatOrderByType.updatedAt),
     );
 
     return chats.map((chat) => chat.accounts.first).toList();

@@ -1,78 +1,78 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatMessageRepository
+abstract class IPleromaChatMessageRepository
     implements
-        IReadIdListRepository<IChatMessage, int>,
+        IReadIdListRepository<IPleromaChatMessage, int>,
         IWriteIdListRepository<DbChatMessage, int>,
         IDisposable {
-  static IChatMessageRepository of(BuildContext context,
+  static IPleromaChatMessageRepository of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatMessageRepository>(context, listen: listen);
+      Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-  Future<IChatMessage> findByRemoteId(String remoteId);
+  Future<IPleromaChatMessage> findByRemoteId(String remoteId);
 
-  Future upsertRemoteChatMessages(List<IPleromaChatMessage> remoteChatMessages);
+  Future upsertRemoteChatMessages(List<pleroma_lib.IPleromaChatMessage> remoteChatMessages);
 
-  Stream<IChatMessage> watchByRemoteId(String remoteId);
+  Stream<IPleromaChatMessage> watchByRemoteId(String remoteId);
 
   Future updateLocalChatMessageByRemoteChatMessage({
-    @required IChatMessage oldLocalChatMessage,
-    @required IPleromaChatMessage newRemoteChatMessage,
+    @required IPleromaChatMessage oldLocalChatMessage,
+    @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
   });
 
   Future upsertRemoteChatMessage(
-    IPleromaChatMessage remoteChatMessage,
+    pleroma_lib.IPleromaChatMessage remoteChatMessage,
   );
 
-  Future<List<IChatMessage>> getChatMessages({
-    @required List<IChat> onlyInChats,
-    @required IChatMessage olderThanChatMessage,
-    @required IChatMessage newerThanChatMessage,
+  Future<List<IPleromaChatMessage>> getChatMessages({
+    @required List<IPleromaChat> onlyInChats,
+    @required IPleromaChatMessage olderThanChatMessage,
+    @required IPleromaChatMessage newerThanChatMessage,
     @required int limit,
     @required int offset,
-    @required ChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageOrderingTermData orderingTermData,
   });
 
-  Stream<List<IChatMessage>> watchChatMessages({
-    @required List<IChat> onlyInChats,
-    @required IChatMessage olderThanChatMessage,
-    @required IChatMessage newerThanChatMessage,
+  Stream<List<IPleromaChatMessage>> watchChatMessages({
+    @required List<IPleromaChat> onlyInChats,
+    @required IPleromaChatMessage olderThanChatMessage,
+    @required IPleromaChatMessage newerThanChatMessage,
     @required int limit,
     @required int offset,
-    @required ChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageOrderingTermData orderingTermData,
   });
 
-  Future<IChatMessage> getChatMessage({
-    @required List<IChat> onlyInChats,
-    @required IChatMessage olderThanChatMessage,
-    @required IChatMessage newerThanChatMessage,
-    @required ChatMessageOrderingTermData orderingTermData,
+  Future<IPleromaChatMessage> getChatMessage({
+    @required List<IPleromaChat> onlyInChats,
+    @required IPleromaChatMessage olderThanChatMessage,
+    @required IPleromaChatMessage newerThanChatMessage,
+    @required PleromaChatMessageOrderingTermData orderingTermData,
   });
 
-  Stream<IChatMessage> watchChatMessage({
-    @required List<IChat> onlyInChats,
-    @required IChatMessage olderThanChatMessage,
-    @required IChatMessage newerThanChatMessage,
-    @required ChatMessageOrderingTermData orderingTermData,
+  Stream<IPleromaChatMessage> watchChatMessage({
+    @required List<IPleromaChat> onlyInChats,
+    @required IPleromaChatMessage olderThanChatMessage,
+    @required IPleromaChatMessage newerThanChatMessage,
+    @required PleromaChatMessageOrderingTermData orderingTermData,
   });
 
-  Stream<IChatMessage> watchChatLastChatMessage({
-    @required IChat chat,
+  Stream<IPleromaChatMessage> watchChatLastChatMessage({
+    @required IPleromaChat chat,
   });
 
-  Future<IChatMessage> getChatLastChatMessage({
-    @required IChat chat,
+  Future<IPleromaChatMessage> getChatLastChatMessage({
+    @required IPleromaChat chat,
   });
 
-  Future<Map<IChat, IChatMessage>> getChatsLastChatMessage({
-    @required List<IChat> chats,
+  Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
+    @required List<IPleromaChat> chats,
   });
 }

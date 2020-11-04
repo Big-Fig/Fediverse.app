@@ -1,17 +1,17 @@
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 
-DbChatMessagePopulatedWrapper mapRemoteChatMessageToLocalChatMessage(
-    IPleromaChatMessage remoteChatMessage, DbAccount dbAccount) {
+DbChatMessagePopulatedWrapper mapRemoteChatMessageToLocalPleromaChatMessage(
+    pleroma_lib.IPleromaChatMessage remoteChatMessage, DbAccount dbAccount) {
   return DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
-    dbChatMessage: mapRemoteChatMessageToDbChatMessage(remoteChatMessage),
+    dbChatMessage: mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage),
     dbAccount: dbAccount,
   ));
 }
 
-DbChatMessage mapRemoteChatMessageToDbChatMessage(
-    IPleromaChatMessage remoteChatMessage) {
+DbChatMessage mapRemoteChatMessageToDbPleromaChatMessage(
+    pleroma_lib.IPleromaChatMessage remoteChatMessage) {
   return DbChatMessage(
     id: null,
     remoteId: remoteChatMessage.id,
@@ -25,12 +25,12 @@ DbChatMessage mapRemoteChatMessageToDbChatMessage(
   );
 }
 
-PleromaChatMessage mapLocalChatMessageToRemoteChatMessage(
-    IChatMessage localChatMessage) {
+pleroma_lib.PleromaChatMessage mapLocalPleromaChatMessageToRemoteChatMessage(
+    IPleromaChatMessage localChatMessage) {
   if (localChatMessage == null) {
     return null;
   }
-  return PleromaChatMessage(
+  return pleroma_lib.PleromaChatMessage(
     id: localChatMessage.remoteId,
     createdAt: localChatMessage.createdAt,
     content: localChatMessage.content,

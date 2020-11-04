@@ -10,14 +10,14 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-var _logger = Logger("chat_cached_list_bloc_impl.dart");
+var _logger = Logger("pleroma_chat_with_last_message_cached_list_bloc_impl.dart");
 
-class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
+class PleromaChatWithLastMessageCachedListBloc extends IPleromaChatWithLastMessageCachedBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatRepository chatRepository;
-  final IChatWithLastMessageRepository chatWithLastMessageRepository;
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
 
-  ChatWithLastMessageCachedListBloc({
+  PleromaChatWithLastMessageCachedListBloc({
     @required this.pleromaChatService,
     @required this.chatRepository,
     @required this.chatWithLastMessageRepository,
@@ -29,8 +29,8 @@ class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IChatWithLastMessage newerThan,
-      @required IChatWithLastMessage olderThan}) async {
+      @required IPleromaChatWithLastMessage newerThan,
+      @required IPleromaChatWithLastMessage olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
@@ -54,10 +54,10 @@ class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
   }
 
   @override
-  Future<List<IChatWithLastMessage>> loadLocalItems(
+  Future<List<IPleromaChatWithLastMessage>> loadLocalItems(
       {@required int limit,
-      @required IChatWithLastMessage newerThan,
-      @required IChatWithLastMessage olderThan}) async {
+      @required IPleromaChatWithLastMessage newerThan,
+      @required IPleromaChatWithLastMessage olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -69,15 +69,15 @@ class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
         offset: null,
         orderingTermData: ChatOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ChatOrderByType.updatedAt));
+            orderByType: PleromaChatOrderByType.updatedAt));
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
     return chats;
   }
 
   @override
-  Stream<List<IChatWithLastMessage>> watchLocalItemsNewerThanItem(
-          IChatWithLastMessage item) =>
+  Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
+          IPleromaChatWithLastMessage item) =>
       chatWithLastMessageRepository.watchChatsWithLastMessage(
           olderThan: null,
           newerThan: item?.chat,
@@ -85,5 +85,5 @@ class ChatWithLastMessageCachedListBloc extends IChatWithLastMessageCachedBloc {
           offset: null,
           orderingTermData: ChatOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatOrderByType.updatedAt));
+              orderByType: PleromaChatOrderByType.updatedAt));
 }

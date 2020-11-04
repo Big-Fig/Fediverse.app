@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_m
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_container_bloc.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
@@ -26,34 +26,34 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("chats_home_tab_bloc_impl.dart");
 
-class ChatWithLastMessageListContainerBloc extends DisposableOwner
-    implements IChatWithLastMessageListContainerBloc {
+class PleromaChatWithLastMessageListBloc extends DisposableOwner
+    implements IPleromaChatWithLastMessageListBloc {
   @override
-  IChatWithLastMessageCachedBloc chatListBloc;
+  IPleromaChatWithLastMessageCachedBloc chatListBloc;
 
   @override
-  IChatWithLastMessagePaginationBloc chatPaginationBloc;
+  IPleromaChatWithLastMessagePaginationBloc chatPaginationBloc;
 
   @override
-  IPaginationListBloc<PaginationPage<IChatWithLastMessage>,
-          IChatWithLastMessage>
+  IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+          IPleromaChatWithLastMessage>
       get chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
 
   @override
   ICachedPaginationListWithNewItemsBloc<
-      CachedPaginationPage<IChatWithLastMessage>,
-      IChatWithLastMessage> chatPaginationListWithNewItemsBloc;
+      CachedPaginationPage<IPleromaChatWithLastMessage>,
+      IPleromaChatWithLastMessage> chatPaginationListWithNewItemsBloc;
 
   final INotificationRepository notificationRepository;
-  final IChatMessageRepository chatMessageRepository;
-  final IChatRepository chatRepository;
-  final IChatWithLastMessageRepository chatWithLastMessageRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
   final IStatusRepository statusRepository;
   final IConversationChatRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
-  ChatWithLastMessageListContainerBloc({
+  PleromaChatWithLastMessageListBloc({
     @required IPleromaChatService pleromaChatService,
     @required this.notificationRepository,
     @required this.chatMessageRepository,
@@ -66,18 +66,18 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
     @required this.chatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
-    chatListBloc = ChatWithLastMessageCachedListBloc(
+    chatListBloc = PleromaChatWithLastMessageCachedListBloc(
         pleromaChatService: pleromaChatService,
         chatWithLastMessageRepository: chatWithLastMessageRepository,
         chatRepository: chatRepository);
     addDisposable(disposable: chatListBloc);
-    chatPaginationBloc = ChatWithLastMessagePaginationBloc(
+    chatPaginationBloc = PleromaChatWithLastMessagePaginationBloc(
         itemsCountPerPage: 20,
         listService: chatListBloc,
         maximumCachedPagesCount: null);
     addDisposable(disposable: chatListBloc);
     chatPaginationListWithNewItemsBloc =
-        ChatWithLastMessagePaginationListWithNewItemsBloc(
+        PleromaChatWithLastMessagePaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
       cachedListBloc: chatListBloc,
       mergeNewItemsImmediately: true,
@@ -86,7 +86,7 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
 
     if (listenWebSocketsChanges) {
       addDisposable(
-          disposable: ChatWebSocketsHandler(
+          disposable: PleromaChatWebSocketsHandler(
         notificationRepository: notificationRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
@@ -96,15 +96,15 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
     }
   }
 
-  static ChatWithLastMessageListContainerBloc createFromContext(BuildContext context) =>
-      ChatWithLastMessageListContainerBloc(
+  static PleromaChatWithLastMessageListBloc createFromContext(BuildContext context) =>
+      PleromaChatWithLastMessageListBloc(
         pleromaChatService: IPleromaChatService.of(context, listen: false),
         chatWithLastMessageRepository:
-            IChatWithLastMessageRepository.of(context, listen: false),
+            IPleromaChatWithLastMessageRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         chatMessageRepository:
-            IChatMessageRepository.of(context, listen: false),
+            IPleromaChatMessageRepository.of(context, listen: false),
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         listenWebSocketsChanges:
@@ -115,7 +115,7 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
             IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
-        chatRepository: IChatRepository.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+        chatRepository: IPleromaChatRepository.of(context, listen: false),
       );
 }

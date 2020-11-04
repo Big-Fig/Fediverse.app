@@ -5,9 +5,9 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ChatMessagePaginationListBaseWidget
-    extends FediPaginationListWidget<IChatMessage> {
-  ChatMessagePaginationListBaseWidget({
+abstract class PleromaChatMessagePaginationListBaseWidget
+    extends FediPaginationListWidget<IPleromaChatMessage> {
+  PleromaChatMessagePaginationListBaseWidget({
     @required Key key,
     Widget header,
     Widget footer,
@@ -21,11 +21,11 @@ abstract class ChatMessagePaginationListBaseWidget
             alwaysShowFooter: alwaysShowFooter);
 
   @override
-  IPaginationListBloc<PaginationPage<IChatMessage>, IChatMessage>
+  IPaginationListBloc<PaginationPage<IPleromaChatMessage>, IPleromaChatMessage>
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var timelinePaginationListBloc = Provider.of<
-            IPaginationListBloc<PaginationPage<IChatMessage>, IChatMessage>>(
+            IPaginationListBloc<PaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
         context,
         listen: listen);
     return timelinePaginationListBloc;

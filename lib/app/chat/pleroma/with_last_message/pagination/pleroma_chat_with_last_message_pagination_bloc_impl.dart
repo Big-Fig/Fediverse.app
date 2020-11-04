@@ -6,12 +6,12 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ChatWithLastMessagePaginationBloc
-    extends CachedPleromaPaginationBloc<IChatWithLastMessage>
-    implements IChatWithLastMessagePaginationBloc {
-  final IChatWithLastMessageCachedBloc listService;
+class PleromaChatWithLastMessagePaginationBloc
+    extends CachedPleromaPaginationBloc<IPleromaChatWithLastMessage>
+    implements IPleromaChatWithLastMessagePaginationBloc {
+  final IPleromaChatWithLastMessageCachedBloc listService;
 
-  ChatWithLastMessagePaginationBloc(
+  PleromaChatWithLastMessagePaginationBloc(
       {@required this.listService,
       @required int itemsCountPerPage,
       @required int maximumCachedPagesCount})
@@ -23,11 +23,11 @@ class ChatWithLastMessagePaginationBloc
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
   @override
-  Future<List<IChatWithLastMessage>> loadLocalItems(
+  Future<List<IPleromaChatWithLastMessage>> loadLocalItems(
           {@required int pageIndex,
           @required int itemsCountPerPage,
-          @required CachedPaginationPage<IChatWithLastMessage> olderPage,
-          @required CachedPaginationPage<IChatWithLastMessage> newerPage}) =>
+          @required CachedPaginationPage<IPleromaChatWithLastMessage> olderPage,
+          @required CachedPaginationPage<IPleromaChatWithLastMessage> newerPage}) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -38,8 +38,8 @@ class ChatWithLastMessagePaginationBloc
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedPaginationPage<IChatWithLastMessage> olderPage,
-      @required CachedPaginationPage<IChatWithLastMessage> newerPage}) async {
+      @required CachedPaginationPage<IPleromaChatWithLastMessage> olderPage,
+      @required CachedPaginationPage<IPleromaChatWithLastMessage> newerPage}) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 

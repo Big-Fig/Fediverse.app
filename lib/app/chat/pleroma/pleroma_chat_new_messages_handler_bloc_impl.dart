@@ -6,13 +6,13 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatNewMessagesHandlerBloc extends DisposableOwner
-    implements IChatNewMessagesHandlerBloc {
+class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
+    implements IPleromaChatNewMessagesHandlerBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatRepository chatRepository;
-  final ICurrentChatBloc currentChatBloc;
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatCurrentBloc currentChatBloc;
 
-  ChatNewMessagesHandlerBloc({
+  PleromaChatNewMessagesHandlerBloc({
     @required this.pleromaChatService,
     @required this.chatRepository,
     @required this.currentChatBloc,

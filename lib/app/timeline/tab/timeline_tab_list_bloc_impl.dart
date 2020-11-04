@@ -67,7 +67,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final IMyAccountSettingsBloc myAccountSettingsBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final bool listenWebSockets;
   final ILocalPreferencesService preferencesService;
@@ -242,7 +242,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         myAccountSettingsBloc:
             IMyAccountSettingsBloc.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         currentAuthInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
         preferencesService: ILocalPreferencesService.of(context, listen: false),

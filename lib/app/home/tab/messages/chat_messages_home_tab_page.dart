@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
-import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_container_bloc.dart';
-import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_container_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -49,19 +49,19 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ChatMessagesHomeTabPageContentWidget(),
-        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
+        overlayBuilder: (context) => const PleromaChatListTapToLoadOverlayWidget(),
       ),
     );
   }
 
-  DisposableProvider<IChatWithLastMessageListContainerBloc>
+  DisposableProvider<IPleromaChatWithLastMessageListBloc>
       provideContentContext(Widget child) {
-    return DisposableProvider<IChatWithLastMessageListContainerBloc>(
+    return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
       create: (context) =>
-          ChatWithLastMessageListContainerBloc.createFromContext(context),
+          PleromaChatWithLastMessageListBloc.createFromContext(context),
       child: Builder(builder: (context) {
         var chatsListBloc =
-            IChatWithLastMessageListContainerBloc.of(context, listen: false);
+            IPleromaChatWithLastMessageListBloc.of(context, listen: false);
 
         return MultiProvider(
           providers: [
@@ -123,7 +123,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
           : buildPleromaNotSupportedBody(context)
           : buildMastodonBody(context);
 
-  Widget buildPleromaBody() => const ChatWithLastMessageListWidget(
+  Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
     key: PageStorageKey("ChatWithLastMessageListWidget"),
   );
 
@@ -176,7 +176,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
           FediIconInCircleBlurredButton(
             FediIcons.pen,
             onPressed: () {
-              goToStartChatPage(context);
+              goToPleromaChatStartPage(context);
             },
           ),
       ],

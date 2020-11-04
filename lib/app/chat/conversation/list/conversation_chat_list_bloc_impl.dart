@@ -43,7 +43,7 @@ class ConversationChatListBloc extends DisposableOwner
   final IStatusRepository statusRepository;
   final IConversationChatRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   ConversationChatListBloc({
     @required IPleromaConversationService pleromaConversationService,
@@ -99,5 +99,5 @@ class ConversationChatListBloc extends DisposableOwner
               IMyAccountSettingsBloc.of(context, listen: false)
                   .isRealtimeWebSocketsEnabledFieldBloc.currentValue,
           chatNewMessagesHandlerBloc:
-              IChatNewMessagesHandlerBloc.of(context, listen: false));
+              IPleromaChatNewMessagesHandlerBloc.of(context, listen: false));
 }

@@ -12,7 +12,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationChatRepository conversationRepository,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required String accountId,
   }) : super(
           webSocketsChannel:
@@ -40,7 +40,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

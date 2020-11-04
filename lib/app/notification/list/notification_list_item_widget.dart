@@ -253,11 +253,11 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
         initialMediaAttachment: null,
       );
     } else if (chatRemoteId != null) {
-      var chatRepository = IChatRepository.of(context, listen: false);
+      var chatRepository = IPleromaChatRepository.of(context, listen: false);
 
       var chat = await chatRepository.findByRemoteId(chatRemoteId);
 
-      goToChatPage(context, chat: chat);
+      goToPleromaChatPage(context, chat: chat);
     } else if (account != null) {
       goToAccountDetailsPage(context, account);
     }

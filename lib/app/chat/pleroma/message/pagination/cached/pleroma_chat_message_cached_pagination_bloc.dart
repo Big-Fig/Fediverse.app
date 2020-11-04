@@ -3,9 +3,9 @@ import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatMessageCachedPaginationBloc
-    implements ICachedPleromaPaginationBloc<IChatMessage> {
-  static IChatMessageCachedPaginationBloc of(BuildContext context,
+abstract class IPleromaChatMessageCachedPaginationBloc
+    implements ICachedPleromaPaginationBloc<IPleromaChatMessage> {
+  static IPleromaChatMessageCachedPaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatMessageCachedPaginationBloc>(context, listen: listen);
+      Provider.of<IPleromaChatMessageCachedPaginationBloc>(context, listen: listen);
 }

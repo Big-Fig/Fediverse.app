@@ -142,7 +142,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> orderBy(
           SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
-          List<ChatMessageOrderingTermData> orderTerms) =>
+          List<PleromaChatMessageOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {

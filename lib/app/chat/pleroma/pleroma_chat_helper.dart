@@ -5,12 +5,12 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
-void goToChatWithAccount(
+void goToPleromaChatWithAccount(
     {@required BuildContext context, @required IAccount account}) async {
-  var chatRepository = IChatRepository.of(context, listen: false);
+  var chatRepository = IPleromaChatRepository.of(context, listen: false);
   var chat = await chatRepository.findByAccount(account: account);
   if (chat != null) {
-    goToChatPage(context, chat: chat);
+    goToPleromaChatPage(context, chat: chat);
   } else {
     var dialogResult =
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
@@ -28,7 +28,7 @@ void goToChatWithAccount(
             });
     chat = dialogResult.result;
     if (chat != null) {
-      goToChatPage(context, chat: chat);
+      goToPleromaChatPage(context, chat: chat);
     }
   }
 }

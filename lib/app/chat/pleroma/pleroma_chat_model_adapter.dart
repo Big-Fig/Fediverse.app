@@ -4,10 +4,10 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:flutter/widgets.dart';
 
-DbChat mapRemoteChatToDbChat(IPleromaChat remoteChat) {
+DbChat mapRemoteChatToDbPleromaChat(pleroma_lib.IPleromaChat remoteChat) {
   var updatedAt = remoteChat.updatedAt;
   // todo: hack
   // sometimes updatedAt not exposed on server side
@@ -20,14 +20,14 @@ DbChat mapRemoteChatToDbChat(IPleromaChat remoteChat) {
       accountRemoteId: remoteChat.account?.id);
 }
 
-PleromaChat mapLocalChatToRemoteChat(IChat chat,
-    {@required IChatMessage lastChatMessage,
+pleroma_lib.PleromaChat mapLocalPleromaChatToRemoteChat(IPleromaChat chat,
+    {@required IPleromaChatMessage lastChatMessage,
     @required List<IAccount> accounts}) {
   assert(accounts?.isNotEmpty == true);
   assert(accounts.length < 2, "only direct chats supported");
-  return PleromaChat(
+  return pleroma_lib.PleromaChat(
       unread: chat.unread,
-      lastMessage: mapLocalChatMessageToRemoteChatMessage(lastChatMessage),
+      lastMessage: mapLocalPleromaChatMessageToRemoteChatMessage(lastChatMessage),
       id: chat.remoteId,
       account: mapLocalAccountToRemoteAccount(accounts.first),
       updatedAt: chat.updatedAt

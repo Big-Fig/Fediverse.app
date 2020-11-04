@@ -114,7 +114,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
               final iconData = FediIcons.chat;
               if (isNewChatsEnabled == true) {
-                return ChatUnreadBadgeCountWidget(
+                return PleromaChatUnreadBadgeCountWidget(
                     offset: badgeOffset,
                     child: Padding(
                   padding: insets,

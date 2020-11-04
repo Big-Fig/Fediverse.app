@@ -33,14 +33,14 @@ import 'chat_model_helper.dart';
 import 'message/chat_message_model_helper.dart';
 
 void main() {
-  IChat chat;
-  IChatBloc chatBloc;
+  IPleromaChat chat;
+  IPleromaChatBloc chatBloc;
   PleromaChatServiceMock pleromaChatServiceMock;
   PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
-  IChatMessageRepository chatMessageRepository;
-  IChatRepository chatRepository;
+  IPleromaChatMessageRepository chatMessageRepository;
+  IPleromaChatRepository chatRepository;
   IMyAccountBloc myAccountBloc;
   IMyAccount myAccount;
 
@@ -51,9 +51,9 @@ void main() {
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
-    chatRepository = ChatRepository(
+    chatRepository = PleromaChatRepository(
         appDatabase: database,
         accountRepository: accountRepository,
         chatMessageRepository: chatMessageRepository);
@@ -83,7 +83,7 @@ void main() {
 
     chat = await createTestChat(seed: "seed1");
 
-    chatBloc = ChatBloc(
+    chatBloc = PleromaChatBloc(
       chat: chat,
       pleromaChatService: pleromaChatServiceMock,
       accountRepository: accountRepository,
@@ -105,9 +105,9 @@ void main() {
     await preferencesService.dispose();
   });
 
-  Future _update(IChat chat,
-      {IChatMessage lastChatMessage, @required List<IAccount> accounts}) async {
-    await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(chat,
+  Future _update(IPleromaChat chat,
+      {IPleromaChatMessage lastChatMessage, @required List<IAccount> accounts}) async {
+    await chatRepository.upsertRemoteChat(mapLocalPleromaChatToRemoteChat(chat,
         lastChatMessage: lastChatMessage, accounts: accounts));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -187,7 +187,7 @@ void main() {
     expectChatMessage(listenedValue, chatMessage1);
 
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage2));
+        mapLocalPleromaChatMessageToRemoteChatMessage(chatMessage2));
 
     await _update(newValue,
         accounts: [chatMessage2.account], lastChatMessage: chatMessage1);

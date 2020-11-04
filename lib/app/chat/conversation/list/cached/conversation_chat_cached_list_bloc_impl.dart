@@ -64,7 +64,7 @@ class ConversationChatCachedListBloc extends IConversationChatCachedListBloc {
         offset: null,
         orderingTermData: ConversationOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ConversationChatOrderByType.remoteId));
+            orderByType: ConversationPleromaChatOrderByType.remoteId));
 
     _logger.finer(
         () => "finish loadLocalItems conversations ${conversations.length}");
@@ -81,5 +81,5 @@ class ConversationChatCachedListBloc extends IConversationChatCachedListBloc {
           offset: null,
           orderingTermData: ConversationOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ConversationChatOrderByType.remoteId));
+              orderByType: ConversationPleromaChatOrderByType.remoteId));
 }

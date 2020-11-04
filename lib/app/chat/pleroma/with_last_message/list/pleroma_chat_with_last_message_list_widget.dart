@@ -11,9 +11,9 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatWithLastMessageListWidget
-    extends FediPaginationListWidget<IChatWithLastMessage> {
-  const ChatWithLastMessageListWidget({
+class PleromaChatWithLastMessageListWidget
+    extends FediPaginationListWidget<IPleromaChatWithLastMessage> {
+  const PleromaChatWithLastMessageListWidget({
     @required Key key,
     Widget header,
     Widget footer,
@@ -29,7 +29,7 @@ class ChatWithLastMessageListWidget
   @override
   ScrollView buildItemsCollectionView(
           {@required BuildContext context,
-          @required List<IChatWithLastMessage> items,
+          @required List<IPleromaChatWithLastMessage> items,
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
@@ -37,28 +37,28 @@ class ChatWithLastMessageListWidget
           items: items,
           header: header,
           footer: footer,
-          itemBuilder: (context, index) => Provider<IChatWithLastMessage>.value(
+          itemBuilder: (context, index) => Provider<IPleromaChatWithLastMessage>.value(
                 value: items[index],
-                child: DisposableProxyProvider<IChatWithLastMessage, IChatBloc>(
+                child: DisposableProxyProvider<IPleromaChatWithLastMessage, IPleromaChatBloc>(
                     update: (context, chatWithLastMessage, oldValue) =>
-                        ChatBloc.createFromContext(
+                        PleromaChatBloc.createFromContext(
                           context,
                           chat: chatWithLastMessage.chat,
                           lastChatMessage: chatWithLastMessage.lastChatMessage,
                         ),
                     child: FediListTile(
                         isFirstInList: index == 0 && header == null,
-                        child: ChatListItemWidget())),
+                        child: PleromaChatListItemWidget())),
               ));
 
   @override
-  IPaginationListBloc<PaginationPage<IChatWithLastMessage>,
-          IChatWithLastMessage>
+  IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+          IPleromaChatWithLastMessage>
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var paginationListBloc = Provider.of<
-        IPaginationListBloc<PaginationPage<IChatWithLastMessage>,
-            IChatWithLastMessage>>(context, listen: listen);
+        IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
+            IPleromaChatWithLastMessage>>(context, listen: listen);
     return paginationListBloc;
   }
 }

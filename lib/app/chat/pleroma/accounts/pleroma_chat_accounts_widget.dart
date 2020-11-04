@@ -10,10 +10,10 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatAccountsWidget extends StatelessWidget {
+class PleromaChatAccountsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: false);
+    var chatBloc = IPleromaChatBloc.of(context, listen: false);
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,
@@ -44,7 +44,7 @@ class ChatAccountsWidget extends StatelessWidget {
         });
   }
 
-  const ChatAccountsWidget();
+  const PleromaChatAccountsWidget();
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {

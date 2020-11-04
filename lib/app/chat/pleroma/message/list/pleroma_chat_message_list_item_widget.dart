@@ -20,18 +20,18 @@ import 'package:provider/provider.dart';
 
 const _borderRadius = Radius.circular(FediSizes.borderRadiusBigSize);
 
-class ChatMessageListItemWidget extends StatelessWidget {
+class PleromaChatMessageListItemWidget extends StatelessWidget {
   final bool isFirstInMinuteGroup;
   final bool isLastInMinuteGroup;
 
-  ChatMessageListItemWidget({
+  PleromaChatMessageListItemWidget({
     @required this.isFirstInMinuteGroup,
     @required this.isLastInMinuteGroup,
   });
 
   @override
   Widget build(BuildContext context) {
-    IChatMessageBloc messageBloc = IChatMessageBloc.of(context, listen: true);
+    IPleromaChatMessageBloc messageBloc = IPleromaChatMessageBloc.of(context, listen: true);
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
@@ -121,7 +121,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildContent(BuildContext context, IChatMessageBloc messageBloc,
+  Widget buildContent(BuildContext context, IPleromaChatMessageBloc messageBloc,
       bool isChatMessageFromMe) {
     return Column(
       crossAxisAlignment: isChatMessageFromMe
@@ -134,7 +134,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMediaContent(IChatMessageBloc messageBloc) =>
+  Widget buildMediaContent(IPleromaChatMessageBloc messageBloc) =>
       StreamBuilder<IPleromaMediaAttachment>(
           stream: messageBloc.mediaAttachmentStream,
           builder: (context, snapshot) {
@@ -158,7 +158,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
             );
           });
 
-  Widget buildCardContent(IChatMessageBloc messageBloc) =>
+  Widget buildCardContent(IPleromaChatMessageBloc messageBloc) =>
       StreamBuilder<IPleromaCard>(
           stream: messageBloc.cardStream,
           initialData: messageBloc.card,
@@ -173,7 +173,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
           });
 
   Widget buildTextContent(
-      IChatMessageBloc messageBloc, bool isChatMessageFromMe) {
+      IPleromaChatMessageBloc messageBloc, bool isChatMessageFromMe) {
     return StreamBuilder<EmojiText>(
       stream: messageBloc.contentWithEmojisStream,
       initialData: messageBloc.contentWithEmojis,

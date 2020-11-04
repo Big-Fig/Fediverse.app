@@ -13,23 +13,23 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("chat_message_bloc_impl.dart");
+var _logger = Logger("pleroma_chat_message_bloc_impl.dart");
 
 final int minimumCharactersLimitToCollapse = 400;
 
-class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
-  static ChatMessageBloc createFromContext(
+class PleromaChatMessageBloc extends DisposableOwner implements IPleromaChatMessageBloc {
+  static PleromaChatMessageBloc createFromContext(
     BuildContext context,
-    IChatMessage chatMessage, {
+    IPleromaChatMessage chatMessage, {
     bool isNeedWatchLocalRepositoryForUpdates = true,
     bool delayInit = true,
   }) =>
-      ChatMessageBloc(
+      PleromaChatMessageBloc(
           pleromaChatService: IPleromaChatService.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false),
           chatMessageRepository:
-              IChatMessageRepository.of(context, listen: false),
+              IPleromaChatMessageRepository.of(context, listen: false),
           accountRepository: IAccountRepository.of(context, listen: false),
           chatMessage: chatMessage,
           needRefreshFromNetworkOnInit: false,
@@ -37,21 +37,21 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
           isNeedWatchLocalRepositoryForUpdates:
               isNeedWatchLocalRepositoryForUpdates);
 
-  final BehaviorSubject<IChatMessage> _chatMessageSubject;
+  final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
 
   final IPleromaChatService pleromaChatService;
   final IPleromaAccountService pleromaAccountService;
-  final IChatMessageRepository chatMessageRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
-  ChatMessageBloc({
+  PleromaChatMessageBloc({
     @required this.pleromaChatService,
     @required this.pleromaAccountService,
     @required this.chatMessageRepository,
     @required this.accountRepository,
     @required
-        IChatMessage chatMessage, // for better performance we don't update
+        IPleromaChatMessage chatMessage, // for better performance we don't update
     // account too often
     bool needRefreshFromNetworkOnInit =
         false, // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -72,7 +72,7 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
     }
   }
 
-  void _init(IChatMessage chatMessage, bool needRefreshFromNetworkOnInit) {
+  void _init(IPleromaChatMessage chatMessage, bool needRefreshFromNetworkOnInit) {
     if (!disposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
@@ -105,10 +105,10 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
       chatMessageStream.map((chatMessage) => chatMessage.card);
 
   @override
-  IChatMessage get chatMessage => _chatMessageSubject.value;
+  IPleromaChatMessage get chatMessage => _chatMessageSubject.value;
 
   @override
-  Stream<IChatMessage> get chatMessageStream =>
+  Stream<IPleromaChatMessage> get chatMessageStream =>
       _chatMessageSubject.stream.distinct();
 
   @override

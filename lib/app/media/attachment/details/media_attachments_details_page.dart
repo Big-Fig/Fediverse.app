@@ -252,7 +252,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
             },
             chatsShareAction: () {
               Navigator.of(context).pop();
-              goToChatShareMediaPage(
+              goToPleromaChatShareMediaPage(
                   context: context, mediaAttachment: mediaAttachment);
             },
           );

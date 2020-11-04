@@ -7,12 +7,12 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_m
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatWithLastMessageRepository extends AsyncInitLoadingBloc
-    implements IChatWithLastMessageRepository {
-  final IChatRepository chatRepository;
-  final IChatMessageRepository chatMessageRepository;
+class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
+    implements IPleromaChatWithLastMessageRepository {
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
 
-  ChatWithLastMessageRepository({
+  PleromaChatWithLastMessageRepository({
     @required this.chatRepository,
     @required this.chatMessageRepository,
   });
@@ -23,9 +23,9 @@ class ChatWithLastMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IChatWithLastMessage> getChatWithLastMessage({
-    @required IChat olderThan,
-    @required IChat newerThan,
+  Future<IPleromaChatWithLastMessage> getChatWithLastMessage({
+    @required IPleromaChat olderThan,
+    @required IPleromaChat newerThan,
     @required ChatOrderingTermData orderingTermData,
   }) async {
     var chat = await chatRepository.getChat(
@@ -36,18 +36,18 @@ class ChatWithLastMessageRepository extends AsyncInitLoadingBloc
     return await _createChatWithLastMessage(chat);
   }
 
-  Future<ChatWithLastMessageWrapper> _createChatWithLastMessage(
-          DbChatPopulatedWrapper chat) async =>
-      ChatWithLastMessageWrapper(
+  Future<PleromaChatWithLastMessageWrapper> _createChatWithLastMessage(
+          DbPleromaChatPopulatedWrapper chat) async =>
+      PleromaChatWithLastMessageWrapper(
         chat: chat,
         lastChatMessage:
             await chatMessageRepository.getChatLastChatMessage(chat: chat),
       );
 
   @override
-  Stream<IChatWithLastMessage> watchChatWithLastMessage({
-    @required IChat olderThan,
-    @required IChat newerThan,
+  Stream<IPleromaChatWithLastMessage> watchChatWithLastMessage({
+    @required IPleromaChat olderThan,
+    @required IPleromaChat newerThan,
     @required ChatOrderingTermData orderingTermData,
   }) =>
       chatRepository
@@ -58,9 +58,9 @@ class ChatWithLastMessageRepository extends AsyncInitLoadingBloc
           .asyncMap((chat) => _createChatWithLastMessage(chat));
 
   @override
-  Future<List<IChatWithLastMessage>> getChatsWithLastMessage({
-    @required IChat olderThan,
-    @required IChat newerThan,
+  Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
+    @required IPleromaChat olderThan,
+    @required IPleromaChat newerThan,
     @required int limit,
     @required int offset,
     @required ChatOrderingTermData orderingTermData,
@@ -75,22 +75,22 @@ class ChatWithLastMessageRepository extends AsyncInitLoadingBloc
     return await _createChatWithLastMessageList(chats);
   }
 
-  Future<List<ChatWithLastMessageWrapper>> _createChatWithLastMessageList(
-      List<DbChatPopulatedWrapper> chats) async {
+  Future<List<PleromaChatWithLastMessageWrapper>> _createChatWithLastMessageList(
+      List<DbPleromaChatPopulatedWrapper> chats) async {
     var chatLastMessagesMap =
         await chatMessageRepository.getChatsLastChatMessage(chats: chats);
     return chatLastMessagesMap.entries.map((entry) {
       var chat = entry.key;
       var lastChatMessage = entry.value;
-      return ChatWithLastMessageWrapper(
+      return PleromaChatWithLastMessageWrapper(
           chat: chat, lastChatMessage: lastChatMessage);
     }).toList();
   }
 
   @override
-  Stream<List<IChatWithLastMessage>> watchChatsWithLastMessage({
-    @required IChat olderThan,
-    @required IChat newerThan,
+  Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage({
+    @required IPleromaChat olderThan,
+    @required IPleromaChat newerThan,
     @required int limit,
     @required int offset,
     @required ChatOrderingTermData orderingTermData,

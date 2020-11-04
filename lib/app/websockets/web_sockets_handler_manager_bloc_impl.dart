@@ -22,7 +22,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   WebSocketsHandlerManagerBloc({
     @required this.pleromaWebSocketsService,

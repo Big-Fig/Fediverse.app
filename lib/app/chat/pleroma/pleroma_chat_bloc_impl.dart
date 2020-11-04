@@ -7,33 +7,33 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
-  final BehaviorSubject<IChat> _chatSubject;
+class PleromaChatBloc extends AsyncInitLoadingBloc implements IPleromaChatBloc {
+  final BehaviorSubject<IPleromaChat> _chatSubject;
 
   // ignore: close_sinks
-  final BehaviorSubject<IChatMessage> _lastMessageSubject;
+  final BehaviorSubject<IPleromaChatMessage> _lastMessageSubject;
 
   final IMyAccountBloc myAccountBloc;
   final IPleromaChatService pleromaChatService;
-  final IChatRepository chatRepository;
-  final IChatMessageRepository chatMessageRepository;
+  final IPleromaChatRepository chatRepository;
+  final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
-  ChatBloc({
+  PleromaChatBloc({
     @required this.pleromaChatService,
     @required this.myAccountBloc,
     @required this.chatRepository,
     @required this.chatMessageRepository,
     @required this.accountRepository,
-    @required IChat chat,
-    @required IChatMessage lastChatMessage,
+    @required IPleromaChat chat,
+    @required IPleromaChatMessage lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -53,7 +53,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
     }
   }
 
-  void _init(IChat chat, bool needRefreshFromNetworkOnInit) {
+  void _init(IPleromaChat chat, bool needRefreshFromNetworkOnInit) {
     if (!disposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
@@ -118,10 +118,10 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       chatStream.map((chat) => chat.updatedAt);
 
   @override
-  IChat get chat => _chatSubject.value;
+  IPleromaChat get chat => _chatSubject.value;
 
   @override
-  Stream<IChat> get chatStream => _chatSubject.stream;
+  Stream<IPleromaChat> get chatStream => _chatSubject.stream;
 
   @override
   Future refreshFromNetwork() async {
@@ -138,30 +138,30 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
     await _updateByRemoteChat(remoteChat);
   }
 
-  Future _updateByRemoteChat(IPleromaChat remoteChat) =>
+  Future _updateByRemoteChat(pleroma_lib.IPleromaChat remoteChat) =>
       chatRepository.updateLocalChatByRemoteChat(
           oldLocalChat: chat, newRemoteChat: remoteChat);
 
   @override
-  IChatMessage get lastChatMessage => _lastMessageSubject.value;
+  IPleromaChatMessage get lastChatMessage => _lastMessageSubject.value;
 
   @override
-  Stream<IChatMessage> get lastChatMessageStream => _lastMessageSubject.stream;
+  Stream<IPleromaChatMessage> get lastChatMessageStream => _lastMessageSubject.stream;
 
-  static ChatBloc createFromContext(
+  static PleromaChatBloc createFromContext(
     BuildContext context, {
-    @required IChat chat,
-    @required IChatMessage lastChatMessage,
+    @required IPleromaChat chat,
+    @required IPleromaChatMessage lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
   }) {
-    return ChatBloc(
+    return PleromaChatBloc(
       pleromaChatService: IPleromaChatService.of(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
       lastChatMessage: lastChatMessage,
       needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      chatRepository: IChatRepository.of(context, listen: false),
-      chatMessageRepository: IChatMessageRepository.of(context, listen: false),
+      chatRepository: IPleromaChatRepository.of(context, listen: false),
+      chatMessageRepository: IPleromaChatMessageRepository.of(context, listen: false),
       accountRepository: IAccountRepository.of(context, listen: false),
     );
   }

@@ -27,7 +27,7 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
     @required this.conversationRepository,
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super() {
     if (listenWebSocketsChanges) {
       addDisposable(

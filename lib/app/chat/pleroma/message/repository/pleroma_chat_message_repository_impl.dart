@@ -7,19 +7,19 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("chat_message_repository_impl.dart");
+var _logger = Logger("pleroma_chat_message_repository_impl.dart");
 
-class ChatMessageRepository extends AsyncInitLoadingBloc
-    implements IChatMessageRepository {
+class PleromaChatMessageRepository extends AsyncInitLoadingBloc
+    implements IPleromaChatMessageRepository {
   ChatMessageDao dao;
   IAccountRepository accountRepository;
 
-  ChatMessageRepository(
+  PleromaChatMessageRepository(
       {@required AppDatabase appDatabase, @required this.accountRepository}) {
     dao = appDatabase.chatMessageDao;
   }
@@ -31,19 +31,19 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertRemoteChatMessage(IPleromaChatMessage remoteChatMessage) async {
+  Future upsertRemoteChatMessage(pleroma_lib.IPleromaChatMessage remoteChatMessage) async {
     _logger.finer(() => "upsertRemoteChatMessage $remoteChatMessage");
 //    var remoteAccount = remoteChatMessage.account;
 //
 //    await accountRepository.upsertRemoteAccount(remoteAccount,
 //        chatRemoteId: chatRemoteId);
 //
-    await upsert(mapRemoteChatMessageToDbChatMessage(remoteChatMessage));
+    await upsert(mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage));
   }
 
   @override
   Future upsertRemoteChatMessages(
-      List<IPleromaChatMessage> remoteChatMessages) async {
+      List<pleroma_lib.IPleromaChatMessage> remoteChatMessages) async {
     _logger
         .finer(() => "upsertRemoteChatMessages ${remoteChatMessages.length}");
     if (remoteChatMessages.isEmpty) {
@@ -59,7 +59,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 //        chatRemoteId: chatRemoteId);
 
     await upsertAll(
-        remoteChatMessages.map(mapRemoteChatMessageToDbChatMessage).toList());
+        remoteChatMessages.map(mapRemoteChatMessageToDbPleromaChatMessage).toList());
   }
 
   @override
@@ -68,12 +68,12 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
-    @required List<IChat> onlyInChats,
-    @required IChatMessage olderThanChatMessage,
-    @required IChatMessage newerThanChatMessage,
+    @required List<IPleromaChat> onlyInChats,
+    @required IPleromaChatMessage olderThanChatMessage,
+    @required IPleromaChatMessage newerThanChatMessage,
     @required int limit,
     @required int offset,
-    @required ChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageOrderingTermData orderingTermData,
   }) async {
     var query = createQuery(
         olderThanChatMessage: olderThanChatMessage,
@@ -91,12 +91,12 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbChatMessagePopulatedWrapper>> watchChatMessages(
-      {@required List<IChat> onlyInChats,
-      @required IChatMessage olderThanChatMessage,
-      @required IChatMessage newerThanChatMessage,
+      {@required List<IPleromaChat> onlyInChats,
+      @required IPleromaChatMessage olderThanChatMessage,
+      @required IPleromaChatMessage newerThanChatMessage,
       @required int limit,
       @required int offset,
-      @required ChatMessageOrderingTermData orderingTermData}) {
+      @required PleromaChatMessageOrderingTermData orderingTermData}) {
     var query = createQuery(
         onlyInChats: onlyInChats,
         olderThanChatMessage: olderThanChatMessage,
@@ -111,12 +111,12 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery(
-      {@required List<IChat> onlyInChats,
-      @required IChatMessage olderThanChatMessage,
-      @required IChatMessage newerThanChatMessage,
+      {@required List<IPleromaChat> onlyInChats,
+      @required IPleromaChatMessage olderThanChatMessage,
+      @required IPleromaChatMessage newerThanChatMessage,
       @required int limit,
       @required int offset,
-      @required ChatMessageOrderingTermData orderingTermData}) {
+      @required PleromaChatMessageOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInChats=$onlyInChats\n"
         "\t olderThanChatMessage=$olderThanChatMessage\n"
@@ -186,7 +186,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IChatMessage> findById(int id) async =>
+  Future<IPleromaChatMessage> findById(int id) async =>
       mapDataClassToItem(await dao.findById(id));
 
   @override
@@ -194,7 +194,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
       (dao.watchById(id)).map(mapDataClassToItem);
 
   @override
-  Stream<IChatMessage> watchByRemoteId(String remoteId) {
+  Stream<IPleromaChatMessage> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
     return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
   }
@@ -246,8 +246,8 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future updateLocalChatMessageByRemoteChatMessage(
-      {@required IChatMessage oldLocalChatMessage,
-      @required IPleromaChatMessage newRemoteChatMessage}) async {
+      {@required IPleromaChatMessage oldLocalChatMessage,
+      @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage}) async {
     _logger.finer(() => "updateLocalChatMessageByRemoteChatMessage \n"
         "\t old: $oldLocalChatMessage \n"
         "\t newRemoteChatMessage: $newRemoteChatMessage");
@@ -258,15 +258,15 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 //        chatRemoteId: oldLocalChatMessage.remoteId, conversationRemoteId: null);
 
     await updateById(oldLocalChatMessage.localId,
-        mapRemoteChatMessageToDbChatMessage(newRemoteChatMessage));
+        mapRemoteChatMessageToDbPleromaChatMessage(newRemoteChatMessage));
   }
 
   @override
   Future<DbChatMessagePopulatedWrapper> getChatMessage(
-      {@required List<IChat> onlyInChats,
-      @required IChatMessage olderThanChatMessage,
-      @required IChatMessage newerThanChatMessage,
-      @required ChatMessageOrderingTermData orderingTermData}) async {
+      {@required List<IPleromaChat> onlyInChats,
+      @required IPleromaChatMessage olderThanChatMessage,
+      @required IPleromaChatMessage newerThanChatMessage,
+      @required PleromaChatMessageOrderingTermData orderingTermData}) async {
     var query = createQuery(
         olderThanChatMessage: olderThanChatMessage,
         newerThanChatMessage: newerThanChatMessage,
@@ -281,10 +281,10 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbChatMessagePopulatedWrapper> watchChatMessage(
-      {@required List<IChat> onlyInChats,
-      @required IChatMessage olderThanChatMessage,
-      @required IChatMessage newerThanChatMessage,
-      @required ChatMessageOrderingTermData orderingTermData}) {
+      {@required List<IPleromaChat> onlyInChats,
+      @required IPleromaChatMessage olderThanChatMessage,
+      @required IPleromaChatMessage newerThanChatMessage,
+      @required PleromaChatMessageOrderingTermData orderingTermData}) {
     var query = createQuery(
         onlyInChats: onlyInChats,
         olderThanChatMessage: olderThanChatMessage,
@@ -300,24 +300,24 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IChatMessage> getChatLastChatMessage({@required IChat chat}) =>
+  Future<IPleromaChatMessage> getChatLastChatMessage({@required IPleromaChat chat}) =>
       getChatMessage(
         onlyInChats: [chat],
         olderThanChatMessage: null,
         newerThanChatMessage: null,
-        orderingTermData: ChatMessageOrderingTermData(
+        orderingTermData: PleromaChatMessageOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt,
         ),
       );
 
   @override
-  Future<Map<IChat, IChatMessage>> getChatsLastChatMessage(
-      {@required List<IChat> chats}) async {
+  Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage(
+      {@required List<IPleromaChat> chats}) async {
     var query = createQuery(
       olderThanChatMessage: null,
       newerThanChatMessage: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
         orderingMode: OrderingMode.desc,
         orderByType: ChatMessageOrderByType.createdAt,
       ),
@@ -332,7 +332,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
         .map(mapDataClassToItem)
         .toList();
 
-    Map<IChat, IChatMessage> result = {};
+    Map<IPleromaChat, IPleromaChatMessage> result = {};
 
     chats.forEach((chat) {
       result[chat] = chatMessages.firstWhere(
@@ -345,12 +345,12 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<IChatMessage> watchChatLastChatMessage({@required IChat chat}) =>
+  Stream<IPleromaChatMessage> watchChatLastChatMessage({@required IPleromaChat chat}) =>
       watchChatMessage(
         onlyInChats: [chat],
         olderThanChatMessage: null,
         newerThanChatMessage: null,
-        orderingTermData: ChatMessageOrderingTermData(
+        orderingTermData: PleromaChatMessageOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt,
         ),

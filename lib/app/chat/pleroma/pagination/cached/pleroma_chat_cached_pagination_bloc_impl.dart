@@ -6,11 +6,11 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ChatCachedPaginationBloc extends CachedPleromaPaginationBloc<IChat>
-    implements IChatCachedPaginationBloc {
-  final IChatCachedListBloc listService;
+class PleromaChatCachedPaginationBloc extends CachedPleromaPaginationBloc<IPleromaChat>
+    implements IPleromaChatCachedPaginationBloc {
+  final IPleromaChatCachedListBloc listService;
 
-  ChatCachedPaginationBloc(
+  PleromaChatCachedPaginationBloc(
       {@required this.listService,
       @required int itemsCountPerPage,
       @required int maximumCachedPagesCount})
@@ -22,11 +22,11 @@ class ChatCachedPaginationBloc extends CachedPleromaPaginationBloc<IChat>
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
   @override
-  Future<List<IChat>> loadLocalItems(
+  Future<List<IPleromaChat>> loadLocalItems(
           {@required int pageIndex,
           @required int itemsCountPerPage,
-          @required CachedPaginationPage<IChat> olderPage,
-          @required CachedPaginationPage<IChat> newerPage}) =>
+          @required CachedPaginationPage<IPleromaChat> olderPage,
+          @required CachedPaginationPage<IPleromaChat> newerPage}) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -37,8 +37,8 @@ class ChatCachedPaginationBloc extends CachedPleromaPaginationBloc<IChat>
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedPaginationPage<IChat> olderPage,
-      @required CachedPaginationPage<IChat> newerPage}) async {
+      @required CachedPaginationPage<IPleromaChat> olderPage,
+      @required CachedPaginationPage<IPleromaChat> newerPage}) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 

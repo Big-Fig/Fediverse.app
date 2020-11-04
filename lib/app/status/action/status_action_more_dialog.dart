@@ -191,7 +191,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           },
           chatsShareAction: () {
             Navigator.of(context).pop();
-            goToChatShareStatusPage(context: context, status: status);
+            goToPleromaChatShareStatusPage(context: context, status: status);
           },
         );
       },
