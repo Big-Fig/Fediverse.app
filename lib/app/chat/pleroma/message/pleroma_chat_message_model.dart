@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/widgets.dart';
 
 abstract class IPleromaChatMessage extends IChatMessage {
-
   @override
   IPleromaChatMessage copyWith({
     int localId,
@@ -16,7 +15,7 @@ abstract class IPleromaChatMessage extends IChatMessage {
     IAccount account,
     String content,
     DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
+    List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
   });
@@ -52,8 +51,12 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
 
   @override
-  IPleromaMediaAttachment get mediaAttachment =>
-      dbChatMessagePopulated.dbChatMessage.mediaAttachment;
+  List<IPleromaMediaAttachment> get mediaAttachments =>
+      dbChatMessagePopulated.dbChatMessage.mediaAttachment != null
+          ? [
+              dbChatMessagePopulated.dbChatMessage.mediaAttachment,
+            ]
+          : null;
 
   @override
   DbChatMessagePopulatedWrapper copyWith({
@@ -63,7 +66,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
     IAccount account,
     String content,
     DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
+    List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
   }) =>
@@ -74,7 +77,9 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
         account: account,
         content: content,
         createdAt: createdAt,
-        mediaAttachment: mediaAttachment,
+        mediaAttachment: mediaAttachments?.isNotEmpty == true
+            ? mediaAttachments.first
+            : null,
         emojis: emojis,
         card: card,
       ));

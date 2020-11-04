@@ -14,7 +14,7 @@ abstract class IChatMessage {
 
   String get content;
 
-  IPleromaMediaAttachment get mediaAttachment;
+  List<IPleromaMediaAttachment> get mediaAttachments;
 
   DateTime get createdAt;
 
@@ -29,7 +29,7 @@ abstract class IChatMessage {
     IAccount account,
     String content,
     DateTime createdAt,
-    IPleromaMediaAttachment mediaAttachment,
+    List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
   });

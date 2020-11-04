@@ -46,11 +46,12 @@ abstract class ChatMessageBloc extends DisposableOwner
   }
 
   @override
-  IPleromaMediaAttachment get mediaAttachment => chatMessage.mediaAttachment;
+  List<IPleromaMediaAttachment> get mediaAttachments => chatMessage
+      .mediaAttachments;
 
   @override
-  Stream<IPleromaMediaAttachment> get mediaAttachmentStream =>
-      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachment);
+  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
+      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachments);
 
   @override
   IPleromaCard get card => chatMessage.card;

@@ -7,7 +7,7 @@ import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
-  static final selfActionError = SelfActionNotPossibleException();
+  static final selfActionError = const SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
@@ -73,7 +73,8 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship}) async {
+  Future<bool> refreshFromNetwork(
+      {@required bool isNeedPreFetchRelationship}) async {
     if (pleromaMyAccountService.isApiReadyToUse) {
       var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 
@@ -118,7 +119,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  bool checkIsChatMessageFromMe(IPleromaChatMessage chatMessage) {
+  bool checkIsChatMessageFromMe(IChatMessage chatMessage) {
     return myAccount.remoteId == chatMessage.account.remoteId;
   }
 

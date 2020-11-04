@@ -5,7 +5,8 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 DbChatMessagePopulatedWrapper mapRemoteChatMessageToLocalPleromaChatMessage(
     pleroma_lib.IPleromaChatMessage remoteChatMessage, DbAccount dbAccount) {
   return DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
-    dbChatMessage: mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage),
+    dbChatMessage:
+        mapRemoteChatMessageToDbPleromaChatMessage(remoteChatMessage),
     dbAccount: dbAccount,
   ));
 }
@@ -35,7 +36,9 @@ pleroma_lib.PleromaChatMessage mapLocalPleromaChatMessageToRemoteChatMessage(
     createdAt: localChatMessage.createdAt,
     content: localChatMessage.content,
     emojis: localChatMessage.emojis,
-    mediaAttachment: localChatMessage.mediaAttachment,
+    mediaAttachment: localChatMessage.mediaAttachments?.isNotEmpty == true
+        ? localChatMessage.mediaAttachments?.first
+        : null,
     accountId: localChatMessage.account.remoteId,
     chatId: localChatMessage.chatRemoteId,
     card: localChatMessage.card,

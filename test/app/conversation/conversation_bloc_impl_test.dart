@@ -82,13 +82,15 @@ void main() {
     conversation = await createTestConversation(seed: "seed1");
 
     conversationBloc = ConversationChatBloc(
-        conversation: conversation,
-        pleromaConversationService: pleromaConversationServiceMock,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository,
-        conversationRepository: conversationRepository,
-        delayInit: false,
-        myAccountBloc: myAccountBloc);
+      conversation: conversation,
+      pleromaConversationService: pleromaConversationServiceMock,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+      conversationRepository: conversationRepository,
+      delayInit: false,
+      myAccountBloc: myAccountBloc,
+      lastChatMessage: null,
+    );
   });
 
   tearDown(() async {

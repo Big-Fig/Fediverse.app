@@ -24,7 +24,7 @@ class PleromaChatWidget extends StatelessWidget {
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: chatBloc,
       loadingFinishedBuilder: (context) {
-        return PleromaChatMessageListBloc.provideToContext(
+        return PleromaChatMessageCachedListBloc.provideToContext(
           context,
           chat: chatBloc.chat,
           child: PleromaChatMessageCachedPaginationBloc.provideToContext(

@@ -4,6 +4,10 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:collection/collection.dart';
+
+Function eq = const ListEquality().equals;
+
 
 Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
     DbChatMessage dbChatMessage, AccountRepository accountRepository) async {
@@ -60,7 +64,7 @@ void expectDbChatMessage(IPleromaChatMessage actual, DbChatMessage expected) {
   expect(actual.createdAt, expected.createdAt);
   expect(actual.content, expected.content);
   expect(actual.emojis, expected.emojis);
-  expect(actual.mediaAttachment, expected.mediaAttachment);
+  expect(eq(actual.mediaAttachments, [expected.mediaAttachment]), true);
   expect(actual.chatRemoteId, expected.chatRemoteId);
   expect(actual.card, expected.card);
 }

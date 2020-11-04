@@ -9,7 +9,9 @@ import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/details/media_attachments_details_page.dart';
-import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -70,8 +72,7 @@ class ChatMessageListItemWidget<T extends IChatMessage>
   }
 }
 
-class _ChatMessageListItemContentContainerWidget extends
-StatelessWidget {
+class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
   const _ChatMessageListItemContentContainerWidget({
     Key key,
   }) : super(key: key);
@@ -210,25 +211,32 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<IPleromaMediaAttachment>(
-        stream: messageBloc.mediaAttachmentStream,
+    return StreamBuilder<List<IPleromaMediaAttachment>>(
+        stream: messageBloc.mediaAttachmentsStream,
         builder: (context, snapshot) {
-          var mediaAttachment = snapshot.data;
-          if (mediaAttachment == null) {
+          var mediaAttachments = snapshot.data;
+          if (mediaAttachments?.isNotEmpty == true) {
             return const SizedBox.shrink();
           }
 
-          return Provider<IPleromaMediaAttachment>.value(
-            value: mediaAttachment,
+          return Provider<List<IPleromaMediaAttachment>>.value(
+            value: mediaAttachments,
             child: InkWell(
               onTap: () {
                 goToMultiMediaAttachmentDetailsPage(
                   context,
-                  mediaAttachments: [mediaAttachment],
-                  initialMediaAttachment: mediaAttachment,
+                  mediaAttachments: mediaAttachments,
+                  initialMediaAttachment: null,
                 );
               },
-              child: const MediaAttachmentWidget(),
+              child: ProxyProvider<List<IPleromaMediaAttachment>,
+                  IMediaAttachmentListBloc>(
+                update: (context, mediaAttachments, _) =>
+                    MediaAttachmentListBloc(
+                        initialMediaAttachment: null,
+                        mediaAttachments: mediaAttachments),
+                child: const MediaAttachmentListCarouselWidget(),
+              ),
             ),
           );
         });

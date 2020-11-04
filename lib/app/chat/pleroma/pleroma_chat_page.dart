@@ -53,7 +53,7 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
 
           goToPleromaChatAccountsPage(context, chatBloc.chat);
         },
-        child: ChatPageAppBarBodyWidget(),
+        child: const ChatPageAppBarBodyWidget(),
       ),
     );
   }

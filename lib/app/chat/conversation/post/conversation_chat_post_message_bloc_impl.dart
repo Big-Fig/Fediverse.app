@@ -13,11 +13,11 @@ import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-class ConversationChatPostStatusBloc extends PostStatusBloc {
+class ConversationChatPostMessageBloc extends PostStatusBloc {
   final IConversationChat conversation;
   final List<IAccount> conversationAccountsWithoutMe;
 
-  ConversationChatPostStatusBloc({
+  ConversationChatPostMessageBloc({
     @required this.conversation,
     @required this.conversationAccountsWithoutMe,
     @required IPleromaStatusService pleromaStatusService,
@@ -41,7 +41,7 @@ class ConversationChatPostStatusBloc extends PostStatusBloc {
           markMediaNsfwByDefault: markMediaNsfwByDefault,
         );
 
-  static ConversationChatPostStatusBloc createFromContext(BuildContext context,
+  static ConversationChatPostMessageBloc createFromContext(BuildContext context,
       {@required IConversationChat conversation,
       @required List<IAccount> conversationAccountsWithoutMe}) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
@@ -49,7 +49,7 @@ class ConversationChatPostStatusBloc extends PostStatusBloc {
         .info;
     var myAccountSettingsBloc =
         IMyAccountSettingsBloc.of(context, listen: false);
-    return ConversationChatPostStatusBloc(
+    return ConversationChatPostMessageBloc(
       conversation: conversation,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
       pleromaStatusService: IPleromaStatusService.of(context, listen: false),
@@ -71,7 +71,7 @@ class ConversationChatPostStatusBloc extends PostStatusBloc {
     @required Widget child,
   }) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => ConversationChatPostStatusBloc.createFromContext(
+      create: (context) => ConversationChatPostMessageBloc.createFromContext(
         context,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe,
         conversation: conversation,

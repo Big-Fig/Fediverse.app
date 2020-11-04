@@ -3,14 +3,12 @@ import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 
-typedef PleromaChatCallback = Function(BuildContext context, IPleromaChat chat);
-
 abstract class IPleromaChat implements IChat {
   @override
   IPleromaChat copyWith({
     int id,
     String remoteId,
-    bool unread,
+    int unread,
     DateTime updatedAt,
     List<IAccount> accounts,
   });
@@ -62,7 +60,7 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
   DbPleromaChatPopulatedWrapper copyWith(
       {int id,
       String remoteId,
-      bool unread,
+      int unread,
       DateTime updatedAt,
       List<IAccount> accounts}) {
     assert(accounts?.length == null || accounts.length < 2);

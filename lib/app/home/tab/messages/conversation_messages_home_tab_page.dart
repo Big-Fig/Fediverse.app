@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc_impl.dart';
-import 'package:fedi/app/chat/conversation/list/conversation_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/conversation/list/conversation_chat_list_widget.dart';
 import 'package:fedi/app/chat/conversation/start/start_conversation_chat_page.dart';
+import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -47,7 +47,7 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ConversationMessagesHomeTabPageContentWidget(),
-        overlayBuilder: (context) => ConversationChatListTapToLoadOverlayWidget(),
+        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
       ),
     );
   }

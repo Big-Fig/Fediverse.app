@@ -26,7 +26,7 @@ abstract class IAccountRepository
       {@required String conversationRemoteId, @required String chatRemoteId});
 
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
-      {@required conversationRemoteId, @required String chatRemoteId});
+      {@required String conversationRemoteId, @required String chatRemoteId});
 
   Future addAccountFollowings(
       String accountRemoteId, List<PleromaAccount> followings);
