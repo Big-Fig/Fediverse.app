@@ -3,7 +3,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -59,7 +59,7 @@ class NotificationsTabsBloc extends DisposableOwner
 
   final IPleromaNotificationService pleromaNotificationService;
   final IPleromaAccountService pleromaAccountService;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
@@ -127,7 +127,7 @@ class NotificationsTabsBloc extends DisposableOwner
           pleromaWebSocketsService:
           IPleromaWebSocketsService.of(context, listen: false),
           conversationRepository:
-          IConversationRepository.of(context, listen: false),
+          IConversationChatRepository.of(context, listen: false),
           notificationRepository:
           INotificationRepository.of(context, listen: false),
           listenWebSocketsChanges:

@@ -10,7 +10,7 @@ import 'package:fedi/app/chat/pleroma/pagination/cached/chat_cached_pagination_b
 import 'package:fedi/app/chat/pleroma/pagination/list/chat_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/repository/chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/websockets/chat_websockets_handler_impl.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -45,7 +45,7 @@ class ChatsListContainerBloc extends DisposableOwner
   final IChatMessageRepository chatMessageRepository;
   final IChatRepository chatRepository;
   final IStatusRepository statusRepository;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
@@ -103,7 +103,7 @@ class ChatsListContainerBloc extends DisposableOwner
                   .isRealtimeWebSocketsEnabledFieldBloc
                   .currentValue,
           conversationRepository:
-              IConversationRepository.of(context, listen: false),
+              IConversationChatRepository.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),
           chatNewMessagesHandlerBloc:
               IChatNewMessagesHandlerBloc.of(context, listen: false));

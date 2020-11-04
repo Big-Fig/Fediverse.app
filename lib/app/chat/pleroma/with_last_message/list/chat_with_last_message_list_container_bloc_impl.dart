@@ -11,7 +11,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/list/chat_with_last_mess
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/chat_with_last_message_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -49,7 +49,7 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
   final IChatRepository chatRepository;
   final IChatWithLastMessageRepository chatWithLastMessageRepository;
   final IStatusRepository statusRepository;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
@@ -112,7 +112,7 @@ class ChatWithLastMessageListContainerBloc extends DisposableOwner
                 .isRealtimeWebSocketsEnabledFieldBloc
                 .currentValue,
         conversationRepository:
-            IConversationRepository.of(context, listen: false),
+            IConversationChatRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
             IChatNewMessagesHandlerBloc.of(context, listen: false),

@@ -4,7 +4,7 @@ import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/chat_helper.dart';
-import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_page.dart';
+import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';

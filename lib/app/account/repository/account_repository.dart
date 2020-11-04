@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/chat_model.dart';
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -49,7 +49,7 @@ abstract class IAccountRepository
   Future<List<IAccount>> getAccounts(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
+      @required IConversationChat onlyInConversation,
       @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
@@ -63,7 +63,7 @@ abstract class IAccountRepository
   Stream<List<IAccount>> watchAccounts(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
+      @required IConversationChat onlyInConversation,
       @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
@@ -77,7 +77,7 @@ abstract class IAccountRepository
   Future<IAccount> getAccount(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
+      @required IConversationChat onlyInConversation,
       @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
@@ -89,7 +89,7 @@ abstract class IAccountRepository
   Stream<IAccount> watchAccount(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
+      @required IConversationChat onlyInConversation,
       @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
@@ -99,10 +99,10 @@ abstract class IAccountRepository
       @required AccountOrderingTermData orderingTermData});
 
   Future<List<IAccount>> getConversationAccounts(
-      {@required IConversation conversation});
+      {@required IConversationChat conversation});
 
   Stream<List<IAccount>> watchConversationAccounts(
-      {@required IConversation conversation});
+      {@required IConversationChat conversation});
 
   Future<List<IAccount>> getChatAccounts({@required IChat chat});
 

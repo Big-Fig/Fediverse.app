@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/chat/conversation/conversation_model.dart';
-import 'package:fedi/app/chat/conversation/database/conversation_statuses_database_dao.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
@@ -249,7 +249,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -301,7 +301,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -354,7 +354,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -617,7 +617,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -665,7 +665,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -711,7 +711,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<IStatus> getConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   }) =>
       getStatus(
@@ -739,7 +739,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<IStatus> watchConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   }) =>
       watchStatus(

@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/app/chat/pleroma/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/chat/conversation/websockets/my_account_conversations_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart';
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
@@ -63,7 +63,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  IDisposable listenDirectChannel() => MyAccountConversationsWebSocketsHandler(
+  IDisposable listenDirectChannel() => ConversationChatWebSocketsHandler(
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,

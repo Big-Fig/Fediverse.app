@@ -20,8 +20,8 @@ import 'package:fedi/app/chat/pleroma/repository/chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/chat_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/chat_with_last_message_repository_impl.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
@@ -194,13 +194,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
 
-    var conversationRepository = ConversationRepository(
+    var conversationRepository = ConversationChatRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
         statusRepository: statusRepository);
     addDisposable(disposable: conversationRepository);
     await globalProviderService
-        .asyncInitAndRegister<IConversationRepository>(conversationRepository);
+        .asyncInitAndRegister<IConversationChatRepository>(conversationRepository);
 
     var chatMessageRepository = ChatMessageRepository(
         appDatabase: moorDatabaseService.appDatabase,
