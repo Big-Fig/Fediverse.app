@@ -215,7 +215,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
         stream: messageBloc.mediaAttachmentsStream,
         builder: (context, snapshot) {
           var mediaAttachments = snapshot.data;
-          if (mediaAttachments?.isNotEmpty == true) {
+          if (mediaAttachments?.isNotEmpty != true) {
             return const SizedBox.shrink();
           }
 
