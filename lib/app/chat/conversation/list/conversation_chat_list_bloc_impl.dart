@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/chat/pleroma/chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/cached/conversation_chat_cached_list_bloc.dart';

@@ -3,7 +3,7 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/chat/pleroma/share/chat_share_status_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';

@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/widgets.dart';

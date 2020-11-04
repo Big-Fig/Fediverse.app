@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
-import 'package:fedi/app/chat/pleroma/chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';

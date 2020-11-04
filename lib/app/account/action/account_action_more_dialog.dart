@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/chat_helper.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';

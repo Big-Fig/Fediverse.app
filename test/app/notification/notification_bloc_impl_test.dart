@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_bloc_impl.dart';
