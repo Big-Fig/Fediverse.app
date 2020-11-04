@@ -275,7 +275,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
           S.of(context).app_media_attachment_addToGallery_progress_content,
       builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
           icon: Icon(
-            Icons.file_download,
+            FediIcons.download,
             color: IFediUiColorTheme.of(context).darkGrey,
             size: FediSizes.appBarIconSize,
           ),
