@@ -57,5 +57,6 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   }
 
   @protected
+  @mustCallSuper
   Future internalAsyncInit();
 }

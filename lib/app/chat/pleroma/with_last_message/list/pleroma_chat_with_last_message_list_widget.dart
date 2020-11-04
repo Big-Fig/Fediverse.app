@@ -1,6 +1,8 @@
+import 'package:fedi/app/chat/chat_bloc.dart';
+import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_item_widget.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
@@ -37,18 +39,27 @@ class PleromaChatWithLastMessageListWidget
           items: items,
           header: header,
           footer: footer,
-          itemBuilder: (context, index) => Provider<IPleromaChatWithLastMessage>.value(
+          itemBuilder: (context, index) =>
+              Provider<IPleromaChatWithLastMessage>.value(
                 value: items[index],
-                child: DisposableProxyProvider<IPleromaChatWithLastMessage, IPleromaChatBloc>(
-                    update: (context, chatWithLastMessage, oldValue) =>
-                        PleromaChatBloc.createFromContext(
-                          context,
-                          chat: chatWithLastMessage.chat,
-                          lastChatMessage: chatWithLastMessage.lastChatMessage,
-                        ),
+                child: DisposableProxyProvider<IPleromaChatWithLastMessage,
+                    IPleromaChatBloc>(
+                  update: (context, chatWithLastMessage, oldValue) =>
+                      PleromaChatBloc.createFromContext(
+                    context,
+                    chat: chatWithLastMessage.chat,
+                    lastChatMessage: chatWithLastMessage.lastChatMessage,
+                  ),
+                  child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+                    update: (context, value, _) => value,
                     child: FediListTile(
-                        isFirstInList: index == 0 && header == null,
-                        child: PleromaChatListItemWidget())),
+                      isFirstInList: index == 0 && header == null,
+                      child: const ChatListItemWidget(
+                        onClick: _goToChatPage,
+                      ),
+                    ),
+                  ),
+                ),
               ));
 
   @override
@@ -61,4 +72,9 @@ class PleromaChatWithLastMessageListWidget
             IPleromaChatWithLastMessage>>(context, listen: listen);
     return paginationListBloc;
   }
+}
+
+void _goToChatPage(BuildContext context) {
+  var chatBloc = IPleromaChatBloc.of(context, listen: false);
+  goToPleromaChatPage(context, chat: chatBloc.chat);
 }

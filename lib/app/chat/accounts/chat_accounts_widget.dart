@@ -3,17 +3,17 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
+import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PleromaChatAccountsWidget extends StatelessWidget {
+class ChatAccountsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IPleromaChatBloc.of(context, listen: false);
+    var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,
@@ -21,7 +21,7 @@ class PleromaChatAccountsWidget extends StatelessWidget {
           var items = snapshot.data;
 
           if (items == null) {
-            return const Center(child: FediCircularProgressIndicator());
+            return const _ChatAccountsLoadingWidget();
           }
 
           return ListView.builder(
@@ -44,7 +44,18 @@ class PleromaChatAccountsWidget extends StatelessWidget {
         });
   }
 
-  const PleromaChatAccountsWidget();
+  const ChatAccountsWidget();
+}
+
+class _ChatAccountsLoadingWidget extends StatelessWidget {
+  const _ChatAccountsLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: FediCircularProgressIndicator());
+  }
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {

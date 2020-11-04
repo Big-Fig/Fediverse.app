@@ -1,27 +1,19 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 
-typedef PleromaChatCallback = Function(
-    BuildContext context, IPleromaChat chat);
+typedef PleromaChatCallback = Function(BuildContext context, IPleromaChat chat);
 
-abstract class IPleromaChat {
-  int get localId;
-
-  String get remoteId;
-
-  int get unread;
-
-  DateTime get updatedAt;
-
-  List<IAccount> get accounts;
-
-  IPleromaChat copyWith(
-      {int id,
-      String remoteId,
-      bool unread,
-      DateTime updatedAt,
-      List<IAccount> accounts});
+abstract class IPleromaChat implements IChat {
+  @override
+  IPleromaChat copyWith({
+    int id,
+    String remoteId,
+    bool unread,
+    DateTime updatedAt,
+    List<IAccount> accounts,
+  });
 }
 
 class DbPleromaChatPopulated {

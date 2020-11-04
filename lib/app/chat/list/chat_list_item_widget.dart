@@ -1,9 +1,8 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/chat/pleroma/avatar/pleroma_chat_avatar_widget.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/title/pleroma_chat_title_widget.dart';
+import 'package:fedi/app/chat/avatar/chat_avatar_widget.dart';
+import 'package:fedi/app/chat/chat_bloc.dart';
+import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -18,23 +17,25 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
-class PleromaChatListItemWidget extends StatelessWidget {
-  const PleromaChatListItemWidget();
+class ChatListItemWidget extends StatelessWidget {
+  final OnClickUiCallback onClick;
+  const ChatListItemWidget({
+    @required this.onClick,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IPleromaChatBloc.of(context);
-
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        goToPleromaChatPage(context, chat: chatBloc.chat);
+        onClick(context);
       },
       child: Container(
         height: FediSizes.chatListItemPreviewHeight,
@@ -47,7 +48,7 @@ class PleromaChatListItemWidget extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const PleromaChatAvatarWidget(),
+                    const ChatAvatarWidget(),
                     const FediBigHorizontalSpacer(),
                     Flexible(
                       child: const _ChatListItemPreviewWidget(),
@@ -55,7 +56,9 @@ class PleromaChatListItemWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const _ChatListItemGoToChatButtonWidget(),
+              _ChatListItemGoToChatButtonWidget(
+                onClick: onClick,
+              ),
             ],
           ),
         ),
@@ -65,21 +68,20 @@ class PleromaChatListItemWidget extends StatelessWidget {
 }
 
 class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
+  final OnClickUiCallback onClick;
   const _ChatListItemGoToChatButtonWidget({
-    Key key,
-  }) : super(key: key);
+    @required this.onClick,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IPleromaChatBloc.of(context);
-
     return FediIconButton(
       tooltip: S.of(context).app_chat_action_more,
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
-        goToPleromaChatPage(context, chat: chatBloc.chat);
+        onClick(context);
       },
     );
   }
@@ -96,7 +98,7 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        const PleromaChatTitleWidget(),
+        const ChatTitleWidget(),
         const _ChatListItemLastMessageWidget(),
       ],
     );
@@ -110,9 +112,9 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IPleromaChatBloc.of(context);
+    var chatBloc = IChatBloc.of(context);
 
-    return StreamBuilder<IPleromaChatMessage>(
+    return StreamBuilder<IChatMessage>(
       stream: chatBloc.lastChatMessageStream,
       builder: (context, snapshot) {
         var lastMessage = snapshot.data;
@@ -166,7 +168,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 }
 
 String _extractContent(
-    BuildContext context, IPleromaChatMessage chatMessage, String content) {
+    BuildContext context, IChatMessage chatMessage, String content) {
   String formattedText =
       HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
 

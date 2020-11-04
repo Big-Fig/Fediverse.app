@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
@@ -49,7 +49,7 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ChatMessagesHomeTabPageContentWidget(),
-        overlayBuilder: (context) => const PleromaChatListTapToLoadOverlayWidget(),
+        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
       ),
     );
   }
