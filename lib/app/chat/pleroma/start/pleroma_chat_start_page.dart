@@ -39,35 +39,39 @@ class PleromaChatStartPage extends StatelessWidget {
 void _accountSelectedCallback(BuildContext context, IAccount account) async {
   var dialogResult = await PleromaAsyncOperationHelper
       .performPleromaAsyncOperation<IPleromaChat>(
-          context: context,
-          asyncCode: () async {
-            var chatRepository =
-                IPleromaChatRepository.of(context, listen: false);
+    context: context,
+    asyncCode: () async {
+      var chatRepository = IPleromaChatRepository.of(context, listen: false);
 
-            var chat = await chatRepository.findByAccount(account: account);
+      var chat = await chatRepository.findByAccount(account: account);
 
-            if (chat == null) {
-              var pleromaChatService =
-                  IPleromaChatService.of(context, listen: false);
+      if (chat == null) {
+        var pleromaChatService = IPleromaChatService.of(context, listen: false);
 
-              var remoteChat = await pleromaChatService
-                  .getOrCreateChatByAccountId(accountId: account.remoteId);
+        var remoteChat = await pleromaChatService.getOrCreateChatByAccountId(
+            accountId: account.remoteId);
 
-              if (remoteChat != null) {
-                await chatRepository.upsertRemoteChat(remoteChat);
-                chat = await chatRepository.findByRemoteId(remoteChat.id);
-              }
-            }
+        if (remoteChat != null) {
+          await chatRepository.upsertRemoteChat(remoteChat);
+          chat = await chatRepository.findByRemoteId(remoteChat.id);
+        }
+      }
 
-            return chat;
-          });
+      return chat;
+    },
+  );
 
   var chat = dialogResult.result;
-  if (chat != null) {
-    goToPleromaChatPage(context, chat: chat);
-  } else {
-    await FediSimpleAlertDialog(context: null).show(context);
-  }
+  Future.delayed(
+    Duration(milliseconds: 100),
+    () {
+      if (chat != null) {
+        goToPleromaChatPage(context, chat: chat);
+      } else {
+        FediSimpleAlertDialog(context: context).show(context);
+      }
+    },
+  );
 }
 
 void goToPleromaChatStartPage(BuildContext context) {

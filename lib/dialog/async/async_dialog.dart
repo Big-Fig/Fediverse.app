@@ -31,7 +31,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   CancelableOperation<T> cancelableOperation =
       CancelableOperation.fromFuture(asyncCode());
 
-  var progressDialog;
+  FediIndeterminateProgressDialog progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
         cancelable: cancelable,
