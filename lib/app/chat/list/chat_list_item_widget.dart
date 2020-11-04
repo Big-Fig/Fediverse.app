@@ -124,13 +124,16 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
         }
         var content = lastMessage.content;
         if (content?.isNotEmpty != true) {
-          var mediaAttachment = lastMessage.mediaAttachment;
-          var description = mediaAttachment.description;
-          if (description?.isNotEmpty == true) {
-            content = description;
-          } else {
-            content = path.basename(mediaAttachment.url);
-          }
+          content = lastMessage.mediaAttachments.map(
+            (mediaAttachment) {
+              var description = mediaAttachment.description;
+              if (description?.isNotEmpty == true) {
+                return description;
+              } else {
+                return path.basename(mediaAttachment.url);
+              }
+            },
+          ).join(", ");
         } else {
           content = _extractContent(context, lastMessage, content);
         }

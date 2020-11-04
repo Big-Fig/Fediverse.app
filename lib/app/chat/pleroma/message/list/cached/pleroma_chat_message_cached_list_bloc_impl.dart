@@ -13,13 +13,13 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
 
-class PleromaChatMessageListBloc extends DisposableOwner
+class PleromaChatMessageCachedListBloc extends DisposableOwner
     implements IPleromaChatMessageCachedListBloc {
   final IPleromaChatService pleromaChatService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChat chat;
 
-  PleromaChatMessageListBloc(
+  PleromaChatMessageCachedListBloc(
       {@required this.chat,
       @required this.pleromaChatService,
       @required this.chatMessageRepository});
@@ -91,9 +91,9 @@ class PleromaChatMessageListBloc extends DisposableOwner
         newerThanChatMessage: item);
   }
 
-  static PleromaChatMessageListBloc createFromContext(BuildContext context,
+  static PleromaChatMessageCachedListBloc createFromContext(BuildContext context,
           {@required IPleromaChat chat}) =>
-      PleromaChatMessageListBloc(
+      PleromaChatMessageCachedListBloc(
           chat: chat,
           pleromaChatService: IPleromaChatService.of(context, listen: false),
           chatMessageRepository:
@@ -106,7 +106,7 @@ class PleromaChatMessageListBloc extends DisposableOwner
   }) {
     return DisposableProvider<IPleromaChatMessageCachedListBloc>(
       create: (context) =>
-          PleromaChatMessageListBloc.createFromContext(context, chat: chat),
+          PleromaChatMessageCachedListBloc.createFromContext(context, chat: chat),
       child: child,
     );
   }

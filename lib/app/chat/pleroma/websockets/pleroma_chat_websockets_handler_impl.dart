@@ -1,5 +1,5 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
@@ -7,6 +7,9 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 
 class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
+  @override
+  String get logTag => "pleroma_chat_websockets_handler_impl.dart";
+
   PleromaChatWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
@@ -37,7 +40,4 @@ class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
-
-  @override
-  String get logTag => "my_notifications_websockets_handler_impl.dart";
 }

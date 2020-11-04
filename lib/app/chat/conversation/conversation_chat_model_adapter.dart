@@ -10,17 +10,21 @@ import 'package:flutter/widgets.dart';
 DbConversation mapRemoteConversationToDbConversationChat(
     IPleromaConversation remoteConversation) {
   return DbConversation(
-      id: null,
-      remoteId: remoteConversation.id,
-      unread: remoteConversation.unread);
+    id: null,
+    remoteId: remoteConversation.id,
+    unread: remoteConversation.unread,
+  );
 }
 
 PleromaConversation mapLocalConversationChatToRemoteConversation(
-        IConversationChat conversation,
-        {@required IStatus lastStatus,
-        @required List<IAccount> accounts}) =>
-    PleromaConversation(
-        unread: conversation.unread,
-        lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
-        id: conversation.remoteId,
-        accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList());
+    IConversationChat conversation,
+    {@required IStatus lastStatus,
+    @required List<IAccount> accounts}) {
+  var unread = conversation.unread;
+  return PleromaConversation(
+    unread: (unread != null && unread > 0) ? true : false,
+    lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
+    id: conversation.remoteId,
+    accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList(),
+  );
+}

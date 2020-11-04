@@ -7,6 +7,10 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 
 class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
+
+  @override
+  String get logTag => "conversation_chat_websockets_handler_impl.dart";
+
   ConversationChatWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
@@ -43,6 +47,4 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
-  @override
-  String get logTag => "my_account_conversations_websockets_handler_impl.dart";
 }

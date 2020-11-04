@@ -10,6 +10,8 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
+import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
@@ -433,16 +435,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPushSubscriptionSettingsBloc>(pushSubscriptionSettingsBloc);
 
-    var currentChatBloc = PleromaChatCurrentBloc();
+    var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentChatBloc);
+        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
 
-    addDisposable(disposable: currentChatBloc);
+    addDisposable(disposable: currentPleromaChatBloc);
+    var currentConversationChatBloc = ConversationChatCurrentBloc();
+
+    await globalProviderService
+        .asyncInitAndRegister<IConversationChatCurrentBloc>
+      (currentConversationChatBloc);
+
+    addDisposable(disposable: currentConversationChatBloc);
 
     var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
         chatRepository: chatRepository,
-        currentChatBloc: currentChatBloc,
+        currentChatBloc: currentPleromaChatBloc,
         pleromaChatService: pleromaChatService);
 
     addDisposable(disposable: chatNewMessagesHandlerBloc);

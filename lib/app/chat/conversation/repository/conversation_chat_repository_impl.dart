@@ -153,7 +153,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     return DbConversationChatWrapper(dataClass);
   }
 
-  Insertable<DbConversation> mapItemToDataClass(DbConversationChatWrapper item) =>
+  Insertable<DbConversation> mapItemToDataClass(
+          DbConversationChatWrapper item) =>
       item.dbConversation;
 
   @override
@@ -167,7 +168,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     var remoteAccounts = newRemoteConversation.accounts;
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: oldLocalConversation.remoteId, chatRemoteId: null);
+        conversationRemoteId: oldLocalConversation.remoteId,
+        chatRemoteId: null);
 
     var lastStatus = newRemoteConversation.lastStatus;
     if (lastStatus != null) {
@@ -280,5 +282,17 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
         limit: 1,
         offset: null);
     return conversationsStream.map((conversations) => conversations?.first);
+  }
+
+  @override
+  Future<bool> markAsRead({@required IConversationChat conversation}) {
+    return updateById(
+      conversation.localId,
+      DbConversation(
+        id: conversation.localId,
+        remoteId: conversation.remoteId,
+        unread: false,
+      ),
+    );
   }
 }

@@ -130,7 +130,8 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
-      {@required conversationRemoteId, @required String chatRemoteId}) async {
+      {@required String conversationRemoteId, @required String chatRemoteId})
+  async {
     await upsert(mapRemoteAccountToDbAccount(remoteAccount));
 
     if (conversationRemoteId != null) {

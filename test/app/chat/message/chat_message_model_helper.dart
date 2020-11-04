@@ -5,6 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../account/account_model_helper.dart';
 import 'database/chat_message_database_model_helper.dart';
+import 'package:collection/collection.dart';
+
+Function eq = const ListEquality().equals;
 
 Future<DbChatMessagePopulatedWrapper> createTestChatMessage(
     {@required String seed,
@@ -39,7 +42,7 @@ void expectChatMessage(IPleromaChatMessage actual, IPleromaChatMessage expected)
   expect(actual.content, expected.content);
 
   expect(actual.emojis, expected.emojis);
-  expect(actual.mediaAttachment, expected.mediaAttachment);
+  expect(eq(actual.mediaAttachments, expected.mediaAttachments), true);
   expect(actual.chatRemoteId, expected.chatRemoteId);
 
   expectAccount(actual.account, expected.account);

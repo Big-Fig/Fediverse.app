@@ -1,4 +1,5 @@
 import 'package:fedi/app/chat/accounts/chat_accounts_widget.dart';
+import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PleromaChatAccountsPage extends StatelessWidget {
   @override
@@ -34,7 +36,10 @@ void goToPleromaChatAccountsPage(BuildContext context, IPleromaChat chat) {
           chat: chat,
           lastChatMessage: null,
         ),
-        child: const PleromaChatAccountsPage(),
+        child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+          update: (context, value, _) => value,
+          child: const PleromaChatAccountsPage(),
+        ),
       ),
     ),
   );

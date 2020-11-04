@@ -52,4 +52,6 @@ abstract class IConversationChatRepository
   Future updateLocalConversationByRemoteConversation(
       {@required IConversationChat oldLocalConversation,
       @required IPleromaConversation newRemoteConversation});
+
+  Future<bool> markAsRead({@required IConversationChat conversation});
 }

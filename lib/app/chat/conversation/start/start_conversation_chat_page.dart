@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
@@ -19,16 +20,18 @@ class StartConversationChatPage extends StatelessWidget {
           autofocus: true,
         ),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: SingleSelectAccountWidget(
-          accountSelectedCallback: (context, account) {
-            goToPostStatusStartConversationPage(context,
-                conversationAccountsWithoutMe: [account]);
-          },
+          accountSelectedCallback: _accountSelectedCallback,
         ),
       ),
     );
   }
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  goToPostStatusStartConversationPage(context,
+      conversationAccountsWithoutMe: [account]);
 }
 
 void goToStartConversationPage(BuildContext context) {

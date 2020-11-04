@@ -19,9 +19,9 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<String> get contentStream;
 
-  IPleromaMediaAttachment get mediaAttachment;
+  List<IPleromaMediaAttachment> get mediaAttachments;
 
-  Stream<IPleromaMediaAttachment> get mediaAttachmentStream;
+  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
   IPleromaCard get card;
 

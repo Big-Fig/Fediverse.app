@@ -1,11 +1,16 @@
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 
-abstract class IConversationChat {
-  int get localId;
-
-  String get remoteId;
-
-  bool get unread;
+abstract class IConversationChat implements IChat {
+  @override
+  IConversationChat copyWith({
+    int id,
+    String remoteId,
+    int unread,
+    DateTime updatedAt,
+    List<IAccount> accounts,
+  });
 }
 
 class DbConversationChatWrapper implements IConversationChat {
@@ -20,19 +25,31 @@ class DbConversationChatWrapper implements IConversationChat {
   String get remoteId => dbConversation.remoteId;
 
   @override
-  bool get unread => dbConversation.unread;
+  int get unread => dbConversation.unread == true ? 1 : 0;
 
   @override
   String toString() {
     return 'DbConversationChatWrapper{dbConversation: $dbConversation}';
   }
 
-  DbConversationChatWrapper copyWith({int id, String remoteId, bool unread}) =>
-      DbConversationChatWrapper(dbConversation.copyWith(
+  @override
+  DbConversationChatWrapper copyWith({
+    int id,
+    String remoteId,
+    int unread,
+    DateTime updatedAt,
+    List<IAccount> accounts,
+  }) {
+    throw UnimplementedError();
+    return DbConversationChatWrapper(
+      dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
-        unread: unread ?? this.unread,
-      ));
+        unread: (unread != null && unread > 0) ? true : false ?? this.unread,
+      ),
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -41,4 +58,12 @@ class DbConversationChatWrapper implements IConversationChat {
           dbConversation == other.dbConversation;
   @override
   int get hashCode => dbConversation.hashCode;
+
+  @override
+  // TODO: implement accounts
+  List<IAccount> get accounts => throw UnimplementedError();
+
+  @override
+  // TODO: implement updatedAt
+  DateTime get updatedAt => throw UnimplementedError();
 }

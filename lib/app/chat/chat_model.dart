@@ -17,7 +17,7 @@ abstract class IChat {
   IChat copyWith(
       {int id,
       String remoteId,
-      bool unread,
+      int unread,
       DateTime updatedAt,
       List<IAccount> accounts});
 }
