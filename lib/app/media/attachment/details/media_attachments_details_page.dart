@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/chat/pleroma/share/chat_share_media_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_media_page.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_page.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';

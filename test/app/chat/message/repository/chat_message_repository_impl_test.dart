@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/chat_model.dart';
-import 'package:fedi/app/chat/pleroma/message/chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/chat_message_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';

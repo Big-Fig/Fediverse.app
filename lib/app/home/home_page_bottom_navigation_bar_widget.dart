@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/chat/pleroma/unread/chat_unread_badge_count_widget.dart';
+import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_widget.dart';
