@@ -7,8 +7,10 @@ import 'auth_instance_chooser_instance_list_item_bloc.dart';
 
  class AuthInstanceChooserInstanceListItemBloc extends DisposableOwner implements
     IAuthInstanceChooserInstanceListItemBloc {
-   final bool isSelected;
-   final AuthInstance instance;
+   @override
+  final bool isSelected;
+   @override
+  final AuthInstance instance;
 
    AuthInstanceChooserInstanceListItemBloc({
      @required this.isSelected,
