@@ -16,7 +16,7 @@ class ChatTitleWidget extends StatelessWidget {
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).bigShortBoldDarkGrey;
 
-    var chatBloc = IChatBloc.of(context, listen: false);
+    var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,

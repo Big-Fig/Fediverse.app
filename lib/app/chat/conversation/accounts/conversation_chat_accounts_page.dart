@@ -38,7 +38,7 @@ void goToConversationChatAccountsPage(
           chat: conversation,
           lastChatMessage: null,
         ),
-        child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+        child: ProxyProvider<IConversationChatBloc, IChatBloc>(
           update: (context, value, _) => value,
           child: const ConversationChatAccountsPage(),
         ),

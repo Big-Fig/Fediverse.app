@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -13,12 +14,22 @@ import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
+Function eq = const ListEquality().equals;
+
 class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
   final BehaviorSubject<IConversationChat> _chatSubject;
 
   // ignore: close_sinks
   final BehaviorSubject<IConversationChatMessage> _lastMessageSubject;
+
+  final BehaviorSubject<List<IAccount>> _accountsSubject = BehaviorSubject();
+  @override
+  List<IAccount> get accounts => _accountsSubject.value;
+
+  @override
+  Stream<List<IAccount>> get accountsStream =>
+      _accountsSubject.stream.distinct((a, b) => eq(a, b));
 
   @override
   IConversationChat get chat => _chatSubject.value;
@@ -38,7 +49,6 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
-
 
   @override
   List<IAccount> get accountsWithoutMe => IAccount.excludeAccountFromList(
@@ -72,12 +82,40 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         ) {
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
+    addDisposable(subject: _accountsSubject);
+
+    // todo: remove temp hack
+    addDisposable(
+      streamSubscription: accountRepository
+          .watchAccounts(
+              olderThanAccount: null,
+              newerThanAccount: null,
+              onlyInConversation: conversation,
+              onlyInChat: null,
+              onlyInStatusRebloggedBy: null,
+              onlyInStatusFavouritedBy: null,
+              onlyInAccountFollowers: null,
+              onlyInAccountFollowing: null,
+              searchQuery: null,
+              limit: null,
+              offset: null,
+              orderingTermData: null)
+          .listen(
+        (accounts) {
+          accounts.sort(
+            (a, b) => a.remoteId.compareTo(b.remoteId),
+          );
+          _accountsSubject.add(accounts);
+        },
+      ),
+    );
   }
 
   @override
   void watchLocalRepositoryForUpdates() {
     addDisposable(
-      streamSubscription: conversationRepository.watchByRemoteId(chat.remoteId).listen(
+      streamSubscription:
+          conversationRepository.watchByRemoteId(chat.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -152,9 +190,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       conversation: chat,
       lastChatMessage: lastChatMessage,
       needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      conversationRepository: IConversationChatRepository.of(context, listen: false),
-      statusRepository:
-          IStatusRepository.of(context, listen: false),
+      conversationRepository:
+          IConversationChatRepository.of(context, listen: false),
+      statusRepository: IStatusRepository.of(context, listen: false),
       accountRepository: IAccountRepository.of(context, listen: false),
     );
   }
@@ -164,11 +202,12 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     if (pleromaConversationService.isApiReadyToUse) {
       var lastReadChatMessageId = lastChatMessage?.remoteId;
       if (lastReadChatMessageId == null) {
-        var lastStatus =
-            await statusRepository.getConversationLastStatus(conversation: chat);
+        var lastStatus = await statusRepository.getConversationLastStatus(
+            conversation: chat);
         lastReadChatMessageId = lastStatus?.remoteId;
       }
-      var updatedRemoteChat = await pleromaConversationService.markConversationAsRead(
+      var updatedRemoteChat =
+          await pleromaConversationService.markConversationAsRead(
         conversationRemoteId: chat.remoteId,
       );
 
