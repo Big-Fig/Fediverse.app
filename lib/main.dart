@@ -294,10 +294,10 @@ void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
   runApp(
     appContextBloc.provideContextToChild(
       child: DisposableProvider<IJoinAuthInstanceBloc>(
-        create: (context) => JoinAuthInstanceBloc(),
+        create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
         child: FediApp(
           appTitle: appTitle,
-          child: FromScratchJoinAuthInstancePage(),
+          child: const FromScratchJoinAuthInstancePage(),
         ),
       ),
     ),
