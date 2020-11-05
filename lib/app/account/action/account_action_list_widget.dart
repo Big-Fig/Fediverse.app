@@ -66,7 +66,11 @@ class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
           fadingColor: IFediUiColorTheme.of(context).darkGrey,
           fadingPercent: fadingPercent,
           child: Padding(
-            padding: EdgeInsets.only(top: _topPadding, bottom: _bottomPadding),
+            padding: EdgeInsets.only(
+              top: _topPadding,
+              bottom: _bottomPadding,
+              right: FediSizes.smallPadding,
+            ),
             child: const _AccountActionListBodyWidget(),
           ),
         );
