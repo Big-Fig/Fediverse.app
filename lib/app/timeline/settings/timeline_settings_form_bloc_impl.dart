@@ -205,12 +205,31 @@ class TimelineSettingsFormBloc extends FormBloc
 
   void _onSomethingChanged() {
     var oldPreferences = timelineSettings;
+
+
+    var oldOnlyRemote = oldPreferences.onlyRemote;
+    var oldOnlyLocal = oldPreferences.onlyLocal;
+    
+    var newOnlyRemote = onlyRemoteFieldBloc.currentValue;
+    var newOnlyLocal = onlyLocalFieldBloc.currentValue;
+    
+    if(newOnlyRemote == true && oldOnlyRemote == false) {
+      newOnlyLocal = false;
+      onlyLocalFieldBloc.changeCurrentValue(newOnlyLocal);
+    }
+
+    if(newOnlyLocal == true && oldOnlyLocal == false) {
+      newOnlyRemote = false;
+      onlyRemoteFieldBloc.changeCurrentValue(newOnlyRemote);
+    }
+
+    
     var newPreferences = TimelineSettings(
         onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
         excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
         excludeReplies: excludeRepliesFieldBloc.currentValue,
-        onlyRemote: onlyRemoteFieldBloc.currentValue,
-        onlyLocal: onlyLocalFieldBloc.currentValue,
+        onlyRemote: newOnlyRemote,
+        onlyLocal: newOnlyLocal,
         withMuted: withMutedFieldBloc.currentValue,
         excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
             ?.map((visibility) => visibility.toJsonValue())
