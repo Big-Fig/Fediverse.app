@@ -9,4 +9,6 @@ class DbConversations extends Table {
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
   BoolColumn get unread => boolean()();
+
+  DateTimeColumn get updatedAt => dateTime().nullable()();
 }

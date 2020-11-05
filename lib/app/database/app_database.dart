@@ -4,18 +4,18 @@ import 'package:fedi/app/account/database/account_followers_database_dao.dart';
 import 'package:fedi/app/account/database/account_followers_database_model.dart';
 import 'package:fedi/app/account/database/account_followings_database_dao.dart';
 import 'package:fedi/app/account/database/account_followings_database_model.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_model.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
-import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
-import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_model.dart';
-import 'package:fedi/app/chat/conversation/database/conversation_chat_database_model.dart';
-import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_model.dart';
-import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_dao.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_database_dao.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_dao.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_model.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_model.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
+import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
+import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
@@ -74,9 +74,7 @@ part 'app_database.g.dart';
 //  DbChats,
 //  DbChatAccounts,
 //  DbChatMessages,
-  DbHomeTimelineStatuses,
-  DbDraftStatuses,
-//  DbAccountRelationships
+  DbHomeTimelineStatuses, DbDraftStatuses, //  DbAccountRelationships
 ], daos: [
   StatusDao,
   StatusHashtagsDao,
@@ -105,17 +103,16 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
       onCreate: (Migrator m) => m.createAll(),
       onUpgrade: (Migrator m, int from, int to) async {
-
         var currentVersion = from;
 
-        while(currentVersion < to) {
-          switch(currentVersion) {
+        while (currentVersion < to) {
+          switch (currentVersion) {
             case 1:
               await _migrate1to2(m);
               break;
@@ -131,13 +128,18 @@ class AppDatabase extends _$AppDatabase {
             case 5:
               await _migrate5to6(m);
               break;
+            case 6:
+              await _migrate6to7(m);
+              break;
             default:
               throw "invalid currentVersion $currentVersion";
           }
           currentVersion++;
         }
-
       });
+
+  Future<void> _migrate6to7(Migrator m) async =>
+      await m.addColumn(dbConversations, dbConversations.updatedAt);
 
   Future<void> _migrate5to6(Migrator m) async =>
       await m.addColumn(dbNotifications, dbNotifications.dismissed);

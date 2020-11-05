@@ -58,13 +58,15 @@ class ConversationChatCachedListBloc extends IConversationChatCachedListBloc {
         "\t olderThan=$olderThan");
 
     var conversations = await conversationRepository.getConversations(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        limit: limit,
-        offset: null,
-        orderingTermData: ConversationOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: ConversationPleromaChatOrderByType.remoteId));
+      olderThan: olderThan,
+      newerThan: newerThan,
+      limit: limit,
+      offset: null,
+      orderingTermData: ConversationChatOrderingTermData(
+        orderingMode: OrderingMode.desc,
+        orderByType: ConversationPleromaChatOrderByType.updatedAt,
+      ),
+    );
 
     _logger.finer(
         () => "finish loadLocalItems conversations ${conversations.length}");
@@ -79,7 +81,7 @@ class ConversationChatCachedListBloc extends IConversationChatCachedListBloc {
           newerThan: item,
           limit: null,
           offset: null,
-          orderingTermData: ConversationOrderingTermData(
+          orderingTermData: ConversationChatOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: ConversationPleromaChatOrderByType.remoteId));
 }

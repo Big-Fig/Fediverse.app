@@ -96,7 +96,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
           SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-          List<ConversationOrderingTermData> orderTerms) =>
+          List<ConversationChatOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
@@ -104,6 +104,9 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
                   switch (orderTerm.orderByType) {
                     case ConversationPleromaChatOrderByType.remoteId:
                       expression = item.remoteId;
+                      break;
+                    case ConversationPleromaChatOrderByType.updatedAt:
+                      expression = item.updatedAt;
                       break;
                   }
                   return OrderingTerm(

@@ -30,24 +30,24 @@ abstract class IConversationChatRepository
       @required IConversationChat newerThan,
       @required int limit,
       @required int offset,
-      @required ConversationOrderingTermData orderingTermData});
+      @required ConversationChatOrderingTermData orderingTermData});
 
   Stream<List<DbConversationChatWrapper>> watchConversations(
       {@required IConversationChat olderThan,
       @required IConversationChat newerThan,
       @required int limit,
       @required int offset,
-      @required ConversationOrderingTermData orderingTermData});
+      @required ConversationChatOrderingTermData orderingTermData});
 
   Future<DbConversationChatWrapper> getConversation(
       {@required IConversationChat olderThan,
       @required IConversationChat newerThan,
-      @required ConversationOrderingTermData orderingTermData});
+      @required ConversationChatOrderingTermData orderingTermData});
 
   Stream<DbConversationChatWrapper> watchConversation(
       {@required IConversationChat olderThan,
       @required IConversationChat newerThan,
-      @required ConversationOrderingTermData orderingTermData});
+      @required ConversationChatOrderingTermData orderingTermData});
 
   Future updateLocalConversationByRemoteConversation(
       {@required IConversationChat oldLocalConversation,
