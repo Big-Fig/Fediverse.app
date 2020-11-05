@@ -30,24 +30,24 @@ abstract class IPleromaChatRepository
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Stream<List<DbPleromaChatPopulatedWrapper>> watchChats(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Future<DbPleromaChatPopulatedWrapper> getChat(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Stream<DbPleromaChatPopulatedWrapper> watchChat(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Future updateLocalChatByRemoteChat({
     @required IPleromaChat oldLocalChat,

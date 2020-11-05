@@ -60,7 +60,7 @@ class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
       newerThan: newerThan,
       limit: limit,
       offset: null,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: PleromaChatOrderByType.updatedAt),
     );
@@ -76,7 +76,7 @@ class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
           newerThan: item,
           limit: null,
           offset: null,
-          orderingTermData: ChatOrderingTermData(
+          orderingTermData: PleromaChatOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: PleromaChatOrderByType.updatedAt));
 }

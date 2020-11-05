@@ -153,7 +153,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
           SimpleSelectStatement<$DbChatsTable, DbChat> query,
-          List<ChatOrderingTermData> orderTerms) =>
+          List<PleromaChatOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
