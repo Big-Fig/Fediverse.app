@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
@@ -64,6 +65,9 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
     @required this.chatNewMessagesHandlerBloc,
+    @required
+    IConversationChatNewMessagesHandlerBloc
+    conversationChatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
@@ -92,6 +96,8 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
         statusRepository: statusRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+            conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
       ));
     }
   }
@@ -117,5 +123,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         chatRepository: IPleromaChatRepository.of(context, listen: false),
+        conversationChatNewMessagesHandlerBloc:
+        IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 }

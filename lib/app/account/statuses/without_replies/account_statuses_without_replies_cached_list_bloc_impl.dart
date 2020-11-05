@@ -1,8 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -30,15 +31,21 @@ class AccountStatusesWithoutRepliesListBloc
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
     @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required
+    IConversationChatNewMessagesHandlerBloc
+    conversationChatNewMessagesHandlerBloc,
   }) : super(
-            account: account,
-            pleromaAccountService: pleromaAccountService,
-            statusRepository: statusRepository,
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-            pleromaWebSocketsService: pleromaWebSocketsService,
-            listenWebSocketsChanges: listenWebSocketsChanges,
-            chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
+          account: account,
+          pleromaAccountService: pleromaAccountService,
+          statusRepository: statusRepository,
+          notificationRepository: notificationRepository,
+          conversationRepository: conversationRepository,
+          pleromaWebSocketsService: pleromaWebSocketsService,
+          listenWebSocketsChanges: listenWebSocketsChanges,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          conversationChatNewMessagesHandlerBloc:
+              conversationChatNewMessagesHandlerBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
@@ -61,6 +68,8 @@ class AccountStatusesWithoutRepliesListBloc
           IPleromaWebSocketsService.of(context, listen: false),
       chatNewMessagesHandlerBloc:
           IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+      conversationChatNewMessagesHandlerBloc:
+      IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
     );
   }
 

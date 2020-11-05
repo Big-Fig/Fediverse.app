@@ -1,5 +1,6 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/websockets/web_sockets_handler.dart';
@@ -21,6 +22,8 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IConversationChatNewMessagesHandlerBloc
+      conversationChatNewMessagesHandlerBloc;
 
   final String statusListRemoteId;
   final String statusConversationRemoteId;
@@ -32,6 +35,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.conversationRepository,
     @required this.notificationRepository,
     @required this.chatNewMessagesHandlerBloc,
+    @required this.conversationChatNewMessagesHandlerBloc,
     @required this.statusListRemoteId,
     @required this.statusConversationRemoteId,
     @required this.isFromHomeTimeline,
@@ -82,8 +86,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         // nothing
         break;
       case PleromaWebSocketsEventType.conversation:
-        await conversationRepository
-            .upsertRemoteConversation(event.parsePayloadAsConversation());
+        await conversationChatNewMessagesHandlerBloc.handleChatUpdate(
+          event.parsePayloadAsConversation(),
+        );
         break;
       case PleromaWebSocketsEventType.pleromaChatUpdate:
         var chat = event.parsePayloadAsChat();

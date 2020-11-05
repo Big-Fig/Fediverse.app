@@ -1,5 +1,6 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
@@ -15,6 +16,9 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     @required IConversationChatRepository conversationRepository,
     @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required bool local,
+    @required
+        IConversationChatNewMessagesHandlerBloc
+            conversationChatNewMessagesHandlerBloc,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
             hashtag: hashtag,
@@ -24,6 +28,8 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
           chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          conversationChatNewMessagesHandlerBloc:
+              conversationChatNewMessagesHandlerBloc,
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
@@ -46,6 +52,8 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         statusRepository: IStatusRepository.of(context, listen: false),
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+        conversationChatNewMessagesHandlerBloc:
+        IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

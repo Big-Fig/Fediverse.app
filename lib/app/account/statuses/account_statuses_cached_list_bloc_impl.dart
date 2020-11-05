@@ -1,7 +1,8 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -28,6 +29,9 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
     @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required
+        IConversationChatNewMessagesHandlerBloc
+            conversationChatNewMessagesHandlerBloc,
   }) : super() {
     if (listenWebSocketsChanges) {
       addDisposable(
@@ -38,6 +42,8 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
         conversationRepository: conversationRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
         notification: false,
       ));
     }

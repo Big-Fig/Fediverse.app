@@ -1,20 +1,21 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
-import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/cached/conversation_chat_cached_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/cached/conversation_chat_cached_list_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/pagination/conversation_chat_pagination_bloc.dart';
 import 'package:fedi/app/chat/conversation/pagination/conversation_chat_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/pagination/list/conversation_chat_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -32,12 +33,12 @@ class ConversationChatListBloc extends DisposableOwner
   IConversationChatPaginationBloc conversationPaginationBloc;
 
   @override
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IConversationChat>, IConversationChat>
-      conversationPaginationListWithNewItemsBloc;
+  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IConversationChat>,
+      IConversationChat> conversationPaginationListWithNewItemsBloc;
   @override
-  IPaginationListBloc<PaginationPage<IConversationChat>, IConversationChat> get
-      conversationPaginationListBloc =>
-      conversationPaginationListWithNewItemsBloc;
+  IPaginationListBloc<PaginationPage<IConversationChat>, IConversationChat>
+      get conversationPaginationListBloc =>
+          conversationPaginationListWithNewItemsBloc;
 
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
@@ -53,6 +54,9 @@ class ConversationChatListBloc extends DisposableOwner
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
     @required this.chatNewMessagesHandlerBloc,
+    @required
+        IConversationChatNewMessagesHandlerBloc
+            conversationChatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
     conversationListService = ConversationChatCachedListBloc(
@@ -64,7 +68,8 @@ class ConversationChatListBloc extends DisposableOwner
         listService: conversationListService,
         maximumCachedPagesCount: null);
     addDisposable(disposable: conversationListService);
-    conversationPaginationListWithNewItemsBloc = ConversationChatPaginationListWithNewItemsBloc(
+    conversationPaginationListWithNewItemsBloc =
+        ConversationChatPaginationListWithNewItemsBloc(
       paginationBloc: conversationPaginationBloc,
       cachedListService: conversationListService,
       mergeNewItemsImmediately: true,
@@ -78,26 +83,32 @@ class ConversationChatListBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
-        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc, accountId: null,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
+        accountId: null,
       ));
     }
   }
 
-  static ConversationChatListBloc createFromContext(
-          BuildContext context) =>
+  static ConversationChatListBloc createFromContext(BuildContext context) =>
       ConversationChatListBloc(
-          pleromaConversationService:
-              IPleromaConversationService.of(context, listen: false),
-          conversationRepository:
-              IConversationChatRepository.of(context, listen: false),
-          notificationRepository:
-              INotificationRepository.of(context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false),
-          pleromaWebSocketsService:
-              IPleromaWebSocketsService.of(context, listen: false),
-          listenWebSocketsChanges:
-              IMyAccountSettingsBloc.of(context, listen: false)
-                  .isRealtimeWebSocketsEnabledFieldBloc.currentValue,
-          chatNewMessagesHandlerBloc:
-              IPleromaChatNewMessagesHandlerBloc.of(context, listen: false));
+        pleromaConversationService:
+            IPleromaConversationService.of(context, listen: false),
+        conversationRepository:
+            IConversationChatRepository.of(context, listen: false),
+        notificationRepository:
+            INotificationRepository.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        pleromaWebSocketsService:
+            IPleromaWebSocketsService.of(context, listen: false),
+        listenWebSocketsChanges:
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabledFieldBloc
+                .currentValue,
+        chatNewMessagesHandlerBloc:
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+        conversationChatNewMessagesHandlerBloc:
+            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
+      );
 }

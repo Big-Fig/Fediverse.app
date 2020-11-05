@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
@@ -23,6 +24,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IConversationChatNewMessagesHandlerBloc conversationChatNewMessagesHandlerBloc;
+
 
   WebSocketsHandlerManagerBloc({
     @required this.pleromaWebSocketsService,
@@ -30,6 +33,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     @required this.notificationRepository,
     @required this.statusRepository,
     @required this.chatNewMessagesHandlerBloc,
+    @required
+    this.conversationChatNewMessagesHandlerBloc,
   });
 
   @override
@@ -45,6 +50,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
@@ -58,6 +65,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
         accountId: accountId,
         notification: notification,
       );
@@ -69,6 +78,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+    conversationChatNewMessagesHandlerBloc:
+    conversationChatNewMessagesHandlerBloc,
         accountId: null,
       );
 
@@ -85,6 +96,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
@@ -100,6 +113,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
@@ -113,5 +128,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 }

@@ -57,7 +57,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future handleChatUpdate(PleromaChat chat) async {
+  Future handleChatUpdate(IPleromaChat chat) async {
     // increase only if chat closed now
     var chatId = chat.id;
     var isMessageForOpenedChat =
