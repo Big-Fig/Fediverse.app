@@ -154,4 +154,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       await chatRepository.markAsRead(chat: chat);
     }
   }
+
+
+  @override
+  bool get isCountInUnreadSupported => true;
 }

@@ -24,7 +24,7 @@ class ChatTitleWidget extends StatelessWidget {
           var accounts = snapshot.data;
 
           if (accounts?.isNotEmpty != true) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
           var accountsText = accounts.map((account) => account.acct).join(", ");
           return StreamBuilder<int>(
@@ -36,7 +36,11 @@ class ChatTitleWidget extends StatelessWidget {
                 var finalText;
 
                 if (unreadCount > 0) {
-                  finalText = "$accountsText ($unreadCount)";
+                  if (chatBloc.isCountInUnreadSupported) {
+                    finalText = "($unreadCount) $accountsText";
+                  } else {
+                    finalText = "(*) $accountsText";
+                  }
                 } else {
                   finalText = accountsText;
                 }

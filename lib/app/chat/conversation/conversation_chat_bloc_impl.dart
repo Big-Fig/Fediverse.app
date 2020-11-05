@@ -221,6 +221,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       await conversationRepository.markAsRead(conversation: chat);
     }
   }
+
+  @override
+  bool get isCountInUnreadSupported => false;
 }
 
 // import 'package:fedi/app/account/account_model.dart';
