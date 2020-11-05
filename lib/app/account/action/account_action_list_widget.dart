@@ -3,8 +3,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -150,26 +150,32 @@ class _AccountActionListFollowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    var relationship = accountBloc.accountRelationship;
-    if (relationship.requested && !relationship.following) {
-      return FediBlurredTextButton(
-        S.of(context).app_account_action_followRequested,
-        onPressed: null,
-      );
-    } else {
-      return PleromaAsyncOperationButtonBuilderWidget(
-        showProgressDialog: false,
-        asyncButtonAction: accountBloc.toggleFollow,
-        builder: (BuildContext context, VoidCallback onPressed) {
+    return StreamBuilder<IPleromaAccountRelationship>(
+      stream: accountBloc.accountRelationshipStream,
+      initialData: accountBloc.accountRelationship,
+      builder: (context, snapshot) {
+        var relationship = accountBloc.accountRelationship;
+        if (relationship.requested && !relationship.following) {
           return FediBlurredTextButton(
-            relationship?.following == true
-                ? S.of(context).app_account_action_unfollow
-                : S.of(context).app_account_action_follow,
-            onPressed: onPressed,
+            S.of(context).app_account_action_followRequested,
+            onPressed: null,
           );
-        },
-      );
-    }
+        } else {
+          return PleromaAsyncOperationButtonBuilderWidget(
+            showProgressDialog: false,
+            asyncButtonAction: accountBloc.toggleFollow,
+            builder: (BuildContext context, VoidCallback onPressed) {
+              return FediBlurredTextButton(
+                relationship?.following == true
+                    ? S.of(context).app_account_action_unfollow
+                    : S.of(context).app_account_action_follow,
+                onPressed: onPressed,
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }
 
