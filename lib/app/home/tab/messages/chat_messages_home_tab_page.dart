@@ -174,7 +174,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
         const FediBigHorizontalSpacer(),
         if (isPleromaInstance && isSupportChats)
           FediIconInCircleBlurredButton(
-            FediIcons.pen,
+            FediIcons.plus,
             onPressed: () {
               goToPleromaChatStartPage(context);
             },
