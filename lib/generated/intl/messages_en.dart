@@ -197,7 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_select_title" : MessageLookupByLibrary.simpleMessage("Select account"),
     "app_account_statuses_tab_media" : MessageLookupByLibrary.simpleMessage("Media"),
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Pinned"),
-    "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("With replies"),
+    "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("Including replies"),
     "app_account_statuses_tab_withoutReplies" : MessageLookupByLibrary.simpleMessage("Posts"),
     "app_async_pleroma_error_common_dialog_content" : m5,
     "app_async_pleroma_error_common_dialog_title" : MessageLookupByLibrary.simpleMessage("Pleroma API error"),

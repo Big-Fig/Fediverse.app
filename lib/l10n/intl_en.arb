@@ -65,7 +65,7 @@
   "app_datetime_title": "Select date",
   "app_datetime_picker_action_ok": "Set time",
   "app_datetime_picker_action_cancel": "Cancel",
-  "app_account_statuses_tab_withReplies": "With replies",
+  "app_account_statuses_tab_withReplies": "Including replies",
   "app_account_statuses_tab_withoutReplies": "Posts",
   "app_account_statuses_tab_pinned": "Pinned",
   "app_account_statuses_tab_media": "Media",

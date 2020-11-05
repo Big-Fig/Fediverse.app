@@ -47,8 +47,8 @@ var _headerBackgroundHeight = 200.0;
 const _tabs = [
   AccountStatusesTab.withoutReplies,
   AccountStatusesTab.pinned,
-  AccountStatusesTab.withReplies,
   AccountStatusesTab.media,
+  AccountStatusesTab.withReplies,
 ];
 
 class AccountDetailsPage extends StatelessWidget {

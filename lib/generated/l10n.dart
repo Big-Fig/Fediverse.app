@@ -408,10 +408,10 @@ class S {
     );
   }
 
-  /// `With replies`
+  /// `Including replies`
   String get app_account_statuses_tab_withReplies {
     return Intl.message(
-      'With replies',
+      'Including replies',
       name: 'app_account_statuses_tab_withReplies',
       desc: '',
       args: [],
