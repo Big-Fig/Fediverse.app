@@ -141,7 +141,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.mute,
+      icon:  statusBloc.muted == true ? FediIcons.unmute
+          : FediIcons.mute,
       label: statusBloc.muted == true
           ? S.of(context).app_status_action_unmute
           : S.of(context).app_status_action_mute,

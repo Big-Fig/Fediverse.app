@@ -107,7 +107,9 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.block,
+      icon: accountBloc.accountRelationship?.blocking == true ? FediIcons
+          .unblock :
+      FediIcons.block,
       label: accountBloc.accountRelationship?.blocking == true
           ? S.of(context).app_account_action_unblock
           : S.of(context).app_account_action_block,
@@ -145,7 +147,8 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountMuteAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: FediIcons.mute,
+      icon:  accountBloc.accountRelationship?.muting == true ? FediIcons.unmute
+          : FediIcons.mute,
       label: accountBloc.accountRelationship?.muting == true
           ? S.of(context).app_account_action_unmute
           : S.of(context).app_account_action_mute,
