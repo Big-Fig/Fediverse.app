@@ -191,7 +191,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       @required IConversationChat newerThan,
       @required int limit,
       @required int offset,
-      @required ConversationOrderingTermData orderingTermData}) async {
+      @required ConversationChatOrderingTermData orderingTermData}) async {
     var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
@@ -211,7 +211,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       @required IConversationChat newerThan,
       @required int limit,
       @required int offset,
-      @required ConversationOrderingTermData orderingTermData}) {
+      @required ConversationChatOrderingTermData orderingTermData}) {
     var query = createQuery(
       olderThan: olderThan,
       newerThan: newerThan,
@@ -229,7 +229,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       @required IConversationChat newerThan,
       @required int limit,
       @required int offset,
-      @required ConversationOrderingTermData orderingTermData}) {
+      @required ConversationChatOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
         "\t olderThan=$olderThan\n"
         "\t newerThan=$newerThan\n"
@@ -240,6 +240,8 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     var query = dao.startSelectQuery();
 
     if (olderThan != null || newerThan != null) {
+      assert(orderingTermData.orderByType ==
+          ConversationPleromaChatOrderByType.updatedAt);
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThan?.remoteId,
           minimumRemoteIdExcluding: newerThan?.remoteId);
@@ -260,7 +262,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   Future<DbConversationChatWrapper> getConversation(
       {@required IConversationChat olderThan,
       @required IConversationChat newerThan,
-      @required ConversationOrderingTermData orderingTermData}) async {
+      @required ConversationChatOrderingTermData orderingTermData}) async {
     var conversations = await getConversations(
         olderThan: olderThan,
         newerThan: newerThan,
@@ -274,7 +276,7 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   Stream<DbConversationChatWrapper> watchConversation(
       {@required IConversationChat olderThan,
       @required IConversationChat newerThan,
-      @required ConversationOrderingTermData orderingTermData}) {
+      @required ConversationChatOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(
         olderThan: olderThan,
         newerThan: newerThan,

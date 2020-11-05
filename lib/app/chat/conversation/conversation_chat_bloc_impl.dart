@@ -51,13 +51,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   final IAccountRepository accountRepository;
 
   @override
-  List<IAccount> get accountsWithoutMe => IAccount.excludeAccountFromList(
-      accounts, (account) => !myAccountBloc.checkAccountIsMe(account));
+  List<IAccount> get accountsWithoutMe => accounts;
 
   @override
-  Stream<List<IAccount>> get accountsWithoutMeStream =>
-      accountsStream.map((accounts) => IAccount.excludeAccountFromList(
-          accounts, (account) => !myAccountBloc.checkAccountIsMe(account)));
+  Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream;
 
   ConversationChatBloc({
     @required this.pleromaConversationService,
@@ -84,7 +81,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     addDisposable(subject: _lastMessageSubject);
     addDisposable(subject: _accountsSubject);
 
-    // todo: remove temp hack
+    listenForAccounts(conversation);
+  }
+
+  void listenForAccounts(IConversationChat conversation) {
     addDisposable(
       streamSubscription: accountRepository
           .watchAccounts(
@@ -102,10 +102,14 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
               orderingTermData: null)
           .listen(
         (accounts) {
-          accounts.sort(
+          var accountsWithoutMe = IAccount.excludeAccountFromList(
+            accounts,
+            (account) => !myAccountBloc.checkAccountIsMe(account),
+          );
+          accountsWithoutMe.sort(
             (a, b) => a.remoteId.compareTo(b.remoteId),
           );
-          _accountsSubject.add(accounts);
+          _accountsSubject.add(accountsWithoutMe);
         },
       ),
     );

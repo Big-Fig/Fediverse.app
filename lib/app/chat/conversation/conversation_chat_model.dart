@@ -40,12 +40,12 @@ class DbConversationChatWrapper implements IConversationChat {
     DateTime updatedAt,
     List<IAccount> accounts,
   }) {
-    throw UnimplementedError();
     return DbConversationChatWrapper(
       dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
         unread: (unread != null && unread > 0) ? true : false ?? this.unread,
+        updatedAt: updatedAt ?? this.updatedAt,
       ),
     );
   }
@@ -64,6 +64,5 @@ class DbConversationChatWrapper implements IConversationChat {
   List<IAccount> get accounts => throw UnimplementedError();
 
   @override
-  // TODO: implement updatedAt
-  DateTime get updatedAt => throw UnimplementedError();
+  DateTime get updatedAt => dbConversation.updatedAt;
 }

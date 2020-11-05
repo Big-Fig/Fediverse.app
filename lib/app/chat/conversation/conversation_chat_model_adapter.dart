@@ -13,6 +13,7 @@ DbConversation mapRemoteConversationToDbConversationChat(
     id: null,
     remoteId: remoteConversation.id,
     unread: remoteConversation.unread,
+    updatedAt: remoteConversation?.lastStatus?.createdAt
   );
 }
 
