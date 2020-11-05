@@ -355,11 +355,11 @@ class S {
     );
   }
 
-  /// `{count,plural, =0{no votes} =1{1 vote} other{{count} votes}}`
+  /// `{count,plural, =0{No votes} =1{1 vote} other{{count} votes}}`
   String app_poll_metadata_totalVotes(num count) {
     return Intl.plural(
       count,
-      zero: 'no votes',
+      zero: 'No votes',
       one: '1 vote',
       other: '$count votes',
       name: 'app_poll_metadata_totalVotes',
