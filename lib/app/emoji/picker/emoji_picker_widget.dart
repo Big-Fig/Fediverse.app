@@ -1,4 +1,3 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -13,6 +12,7 @@ import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dar
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -62,6 +62,10 @@ class EmojiPickerWidget extends StatelessWidget {
           if (useImageEmoji) customCategoryBloc,
           ...CustomEmojiPickerCodeCategoryBloc.allCategories,
         ];
+
+        allCategoriesBlocs.forEach((bloc) {
+          bloc.performAsyncInit();
+        });
         var customEmojiPickerBloc = CustomEmojiPickerBloc(
             selectedCategory: allCategoriesBlocs.first,
             availableCategories: allCategoriesBlocs);
@@ -83,13 +87,10 @@ class EmojiPickerWidget extends StatelessWidget {
           String text;
           if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
             text = S.of(context).app_emoji_custom_empty;
-
           } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
             text = S.of(context).app_emoji_recent_empty;
-
           } else {
             text = S.of(context).app_emoji_category_empty;
-
           }
           return Text(
             text,
