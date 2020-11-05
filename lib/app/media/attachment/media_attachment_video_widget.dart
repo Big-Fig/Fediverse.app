@@ -4,6 +4,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,9 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
         mediaPlayerSource:
             MediaPlayerSource.network(networkUrl: mediaAttachment.url),
       ),
-      child: const FediVideoPlayerWidget(),
+      child: VideoMediaPlayerBlocProxyProvider(
+        child: const FediVideoPlayerWidget(),
+      ),
     );
   }
 }
