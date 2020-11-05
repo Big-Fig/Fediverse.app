@@ -71,7 +71,9 @@ class FormValueFieldBloc<T> extends FormFieldBloc
 
   @override
   void clear() {
-    _currentValueSubject.add(originValue);
+    if(!_currentValueSubject.isClosed) {
+      _currentValueSubject.add(originValue);
+    }
   }
 
   @override
