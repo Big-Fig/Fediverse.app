@@ -31,7 +31,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   CancelableOperation<T> cancelableOperation =
       CancelableOperation.fromFuture(asyncCode());
 
-  FediIndeterminateProgressDialog progressDialog;
+  var progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
         cancelable: cancelable,
@@ -84,6 +84,11 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   } finally {
     progressDialog?.hide(context);
   }
+
+  // wait until progress dialog actually hides
+  await Future.delayed(Duration(milliseconds: 100), () {
+
+  });
 
   AsyncDialogResult dialogResult;
   if (progressDialog?.isCanceled == true) {
