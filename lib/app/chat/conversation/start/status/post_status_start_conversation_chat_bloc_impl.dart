@@ -5,19 +5,33 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PostStatusStartConversationChatBloc extends PostStatusBloc {
+  final StatusCallback successCallback;
+
   final List<IAccount> conversationAccountsWithoutMe;
+
+  @override
+  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+    await super.onStatusPosted(remoteStatus);
+    successCallback(
+      mapRemoteStatusToLocalStatus(remoteStatus),
+    );
+  }
 
   PostStatusStartConversationChatBloc({
     @required this.conversationAccountsWithoutMe,
+    @required this.successCallback,
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
@@ -38,14 +52,18 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           markMediaNsfwByDefault: markMediaNsfwByDefault,
         );
 
-  static PostStatusStartConversationChatBloc createFromContext(BuildContext context,
-      {@required List<IAccount> conversationAccountsWithoutMe}) {
+  static PostStatusStartConversationChatBloc createFromContext(
+    BuildContext context, {
+    @required List<IAccount> conversationAccountsWithoutMe,
+    @required StatusCallback successCallback,
+  }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
     var myAccountSettingsBloc =
         IMyAccountSettingsBloc.of(context, listen: false);
     return PostStatusStartConversationChatBloc(
+      successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
       pleromaStatusService: IPleromaStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
@@ -59,12 +77,17 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required List<IAccount> conversationAccountsWithoutMe,
-      @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required List<IAccount> conversationAccountsWithoutMe,
+    @required Widget child,
+    @required StatusCallback successCallback,
+  }) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => PostStatusStartConversationChatBloc.createFromContext(
+      create: (context) =>
+          PostStatusStartConversationChatBloc.createFromContext(
         context,
+        successCallback: successCallback,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),

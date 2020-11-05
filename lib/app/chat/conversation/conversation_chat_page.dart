@@ -6,6 +6,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_widget.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
+import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/post/conversation_chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
@@ -59,20 +60,29 @@ class _ConversationChatPageAppBarWidget extends StatelessWidget {
   }
 }
 
-void goToConversationChatPage(BuildContext context,
-    {@required IConversationChat chat}) {
+void goToConversationChatPage(
+  BuildContext context, {
+  @required IConversationChat chat,
+  @required IConversationChatMessage lastChatMessage,
+}) {
   Navigator.push(
     context,
-    createConversationChatPageRoute(chat),
+    createConversationChatPageRoute(
+      chat,
+      lastChatMessage,
+    ),
   );
 }
 
-MaterialPageRoute createConversationChatPageRoute(IConversationChat chat) {
+MaterialPageRoute createConversationChatPageRoute(
+  IConversationChat chat,
+  IConversationChatMessage lastChatMessage,
+) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IConversationChatBloc>(
       create: (context) {
         var chatBloc = ConversationChatBloc.createFromContext(context,
-            chat: chat, lastChatMessage: null);
+            chat: chat, lastChatMessage: lastChatMessage);
 
         // we don't need to await
         chatBloc.markAsRead();
@@ -94,85 +104,9 @@ MaterialPageRoute createConversationChatPageRoute(IConversationChat chat) {
         child: ProxyProvider<IConversationChatBloc, IChatBloc>(
           update: (context, value, _) => value,
           child: const ConversationChatPage(),
-        ), conversationAccountsWithoutMe: null,
+        ),
+        conversationAccountsWithoutMe: null,
       ),
     ),
   );
 }
-
-//
-// class ConversationChatPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     var conversationBloc = IConversationChatBloc.of(context, listen: false);
-//
-//     var fediUiColorTheme = IFediUiColorTheme.of(context);
-//     return FediDarkStatusBarStyleArea(
-//       child: Scaffold(
-//         body: SafeArea(
-//           child: Column(
-//             children: [
-//               Container(
-//                 height: 56,
-//                 decoration: BoxDecoration(
-//                   color: fediUiColorTheme.white,
-//                   boxShadow: [FediShadows.forTopBar],
-//                 ),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   mainAxisSize: MainAxisSize.max,
-//                   children: [
-//                     FediBackIconButton(),
-//                     buildConversationAccountsWidget(context, conversationBloc)
-//                   ],
-//                 ),
-//               ),
-//               Expanded(child: ConversationChatWidget())
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget buildConversationAccountsWidget(
-//       BuildContext context, IConversationChatBloc conversationBloc) {
-//     return InkWell(
-//       onTap: () {
-//         goToConversationChatAccountsPage(context, conversationBloc.conversation);
-//       },
-//       child: Row(
-//         mainAxisSize: MainAxisSize.min,
-//         children: <Widget>[
-//           const ChatAvatarWidget(baseAvatarSize: 36),
-//           const FediSmallHorizontalSpacer(),
-//           ConversationChatTitleWidget(
-//             textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
-// // todo: conversationAccountsWithoutMe should be removed and dynamically load
-// void goToConversationChatPage(BuildContext context,
-//     {@required IConversationChat conversation,
-//       @required List<IAccount> conversationAccountsWithoutMe}) {
-//   Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//         builder: (context) => DisposableProvider<IConversationChatBloc>(
-//             create: (context) {
-//               var conversationBloc = ConversationChatBloc.createFromContext(context,
-//                   conversation: conversation);
-//               return conversationBloc;
-//             },
-//             child: ConversationChatPostStatusBloc.provideToContext(
-//               context,
-//               conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-//               child: ConversationChatPage(),
-//               conversation: conversation,
-//             ))),
-//   );
-// }

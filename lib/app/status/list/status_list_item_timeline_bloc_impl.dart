@@ -19,7 +19,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
       isReply && (!displayReplyToStatus || isFirstReplyInThread);
 
   @override
-  final IStatusCallback statusCallback;
+  final StatusAndContextCallback statusCallback;
   @override
   final AccountCallback accountMentionCallback;
   @override
@@ -67,7 +67,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     @required bool collapsible,
     bool isFirstReplyInThread = true,
     bool displayActions = true,
-    @required IStatusCallback statusCallback,
+    @required StatusAndContextCallback statusCallback,
     @required IPleromaMediaAttachment initialMediaAttachment,
   }) : this._private(
           status: status,
@@ -87,7 +87,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     @required bool collapsible,
     @required bool displayAccountHeader,
     @required bool displayActions,
-    @required IStatusCallback statusCallback,
+    @required StatusAndContextCallback statusCallback,
     @required AccountCallback accountMentionCallback,
     @required IPleromaMediaAttachment initialMediaAttachment,
   }) : this._private(

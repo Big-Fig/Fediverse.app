@@ -27,11 +27,15 @@ class StartConversationChatPage extends StatelessWidget {
       ),
     );
   }
+
+  const StartConversationChatPage();
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {
-  goToPostStatusStartConversationPage(context,
-      conversationAccountsWithoutMe: [account]);
+  goToPostStatusStartConversationPage(
+    context,
+    conversationAccountsWithoutMe: [account],
+  );
 }
 
 void goToStartConversationPage(BuildContext context) {
@@ -47,7 +51,7 @@ void goToStartConversationPage(BuildContext context) {
                     context,
                     child: SelectAccountPaginationListBloc.provideToContext(
                       context,
-                      child: StartConversationChatPage(),
+                      child: const StartConversationChatPage(),
                     ),
                   ),
                 ),

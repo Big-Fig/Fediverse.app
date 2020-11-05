@@ -62,16 +62,11 @@ void _accountSelectedCallback(BuildContext context, IAccount account) async {
   );
 
   var chat = dialogResult.result;
-  Future.delayed(
-    Duration(milliseconds: 100),
-    () {
-      if (chat != null) {
-        goToPleromaChatPage(context, chat: chat);
-      } else {
-        FediSimpleAlertDialog(context: context).show(context);
-      }
-    },
-  );
+  if (chat != null) {
+    goToPleromaChatPage(context, chat: chat);
+  } else {
+    await FediSimpleAlertDialog(context: context).show(context);
+  }
 }
 
 void goToPleromaChatStartPage(BuildContext context) {

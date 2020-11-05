@@ -12,7 +12,8 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-typedef IStatusCallback = Function(BuildContext context, IStatus status);
+typedef StatusAndContextCallback = Function(BuildContext context, IStatus status);
+typedef StatusCallback = Function(IStatus status);
 
 abstract class IStatus {
   IStatus get reblog;
