@@ -2,6 +2,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
@@ -81,6 +82,9 @@ class NotificationsTabsBloc extends DisposableOwner
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
     @required this.chatNewMessagesHandlerBloc,
+    @required
+    IConversationChatNewMessagesHandlerBloc
+    conversationChatNewMessagesHandlerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
@@ -94,6 +98,8 @@ class NotificationsTabsBloc extends DisposableOwner
             notificationRepository: notificationRepository,
             pleromaWebSocketsService: pleromaWebSocketsService,
             chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+            conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
           ));
     }
 
@@ -136,5 +142,8 @@ class NotificationsTabsBloc extends DisposableOwner
               .isRealtimeWebSocketsEnabledFieldBloc
               .currentValue,
           chatNewMessagesHandlerBloc:
-          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false));
+          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+        conversationChatNewMessagesHandlerBloc:
+        IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
+      );
 }

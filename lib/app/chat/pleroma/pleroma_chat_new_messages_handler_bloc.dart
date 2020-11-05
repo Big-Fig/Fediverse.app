@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaChatNewMessagesHandlerBloc extends IDisposable {
   Future handleNewMessage(IPleromaChatMessage chatMessage);
-  Future handleChatUpdate(PleromaChat chat);
+  Future handleChatUpdate(IPleromaChat chat);
   static IPleromaChatNewMessagesHandlerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaChatNewMessagesHandlerBloc>(context, listen: listen);
 
