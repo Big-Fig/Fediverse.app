@@ -57,44 +57,86 @@ class FediBaseEditTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedTextField(
-      enabled: enabled,
-      specialTextSpanBuilder: _SpecialTextSpanBuilder(
-        color: IFediUiColorTheme.of(context).primary,
-      ),
-//    return TextField(
-      maxLength: maxLength,
-      autocorrect: autocorrect,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      textInputAction:
-          maxLines == 1 ? textInputAction : TextInputAction.newline,
-      onSubmitted: onSubmitted,
-      decoration: InputDecoration(
-        border: displayBorder ? border : InputBorder.none,
-        enabledBorder: displayBorder ? border : InputBorder.none,
-        focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
-        errorBorder: displayBorder ? errorBorder : InputBorder.none,
-        focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
-        errorStyle: textStyle.copyWith(
-          color: IFediUiColorTheme.of(context).error,
+    // return TextField(
+    var actualTextInputAction = maxLines == 1 ? textInputAction : TextInputAction.newline;
+    if (highlightMentions) {
+      return ExtendedTextField(
+        enabled: enabled,
+        specialTextSpanBuilder: _SpecialTextSpanBuilder(
+          color: IFediUiColorTheme.of(context).primary,
         ),
-        hintText: hintText,
-        errorText: errorText,
-        contentPadding: contentPadding,
-        hintStyle: hintStyle,
-      ),
-      style: textStyle,
-      autofocus: autofocus,
-      controller: textEditingController,
-      minLines: minLines,
-      maxLines: maxLines,
-      expands: expanded,
-      keyboardType: keyboardType,
-      buildCounter: (BuildContext context,
-              {int currentLength, int maxLength, bool isFocused}) =>
-          null,
-    );
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction:
+            actualTextInputAction,
+        onSubmitted: (str) {
+          onSubmitted(str);
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+        ),
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: (BuildContext context,
+                {int currentLength, int maxLength, bool isFocused}) =>
+            null,
+      );
+    } else {
+      return TextField(
+        enabled: enabled,
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction:
+            actualTextInputAction,
+        onSubmitted: (str) {
+          onSubmitted(str);
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+        ),
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: (BuildContext context,
+                {int currentLength, int maxLength, bool isFocused}) =>
+            null,
+      );
+    }
   }
 }
 
