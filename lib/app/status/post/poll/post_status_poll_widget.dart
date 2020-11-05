@@ -13,7 +13,10 @@ import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger("post_status_poll_widget.dartpost_status_poll_widget.dart");
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -145,10 +148,12 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
     return PostStatusPollOptionFormStringFieldFormRowWidget(
       formStringFieldBloc: pollItemBloc,
       onSubmitted: (String value) {
+        _logger.finest(() => "onSubmitted $value");
         var nextItem = pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
         nextItem?.focusNode?.requestFocus();
       },
-      textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+      textInputAction: isLast ? TextInputAction.done : TextInputAction.go,
+      // textInputAction: TextInputAction.done,
       hint: S.of(context).app_status_post_poll_field_option_hint(
             number.toString(),
           ),

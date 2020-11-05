@@ -71,8 +71,8 @@ class FediBaseEditTextField extends StatelessWidget {
         focusNode: focusNode,
         textInputAction:
             actualTextInputAction,
-        onSubmitted: (str) {
-          onSubmitted(str);
+        onSubmitted: (value) {
+          onSubmitted(value);
         },
         decoration: InputDecoration(
           border: displayBorder ? border : InputBorder.none,
@@ -108,8 +108,8 @@ class FediBaseEditTextField extends StatelessWidget {
         focusNode: focusNode,
         textInputAction:
             actualTextInputAction,
-        onSubmitted: (str) {
-          onSubmitted(str);
+        onSubmitted: (value) {
+          onSubmitted(value);
         },
         decoration: InputDecoration(
           border: displayBorder ? border : InputBorder.none,
