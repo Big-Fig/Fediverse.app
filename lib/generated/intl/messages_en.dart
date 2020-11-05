@@ -73,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m26(dayCount) => " ${dayCount} left";
 
-  static m27(count) => "${Intl.plural(count, zero: 'no votes', one: '1 vote', other: '${count} votes')}";
+  static m27(count) => "${Intl.plural(count, zero: 'No votes', one: '1 vote', other: '${count} votes')}";
 
   static m28(searchTerm) => "Results for: \'${searchTerm}\'";
 

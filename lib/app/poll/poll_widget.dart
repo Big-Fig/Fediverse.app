@@ -129,7 +129,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
                 }
               }
             : null,
-        child: const PollOptionWidget(),
+        child: PollOptionWidget(),
       ),
     );
   }
@@ -257,7 +257,7 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
 final borderRadius = BorderRadius.circular(8.0);
 
 class PollOptionWidget extends StatelessWidget {
-  const PollOptionWidget();
+  PollOptionWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +269,7 @@ class PollOptionWidget extends StatelessWidget {
           child: const _PollOptionBodyWidget(),
         ),
         if (pollBloc.multiple) const _PollOptionSelectionWidget(),
-        const _PollOptionResultsWidget(),
+        _PollOptionResultsWidget(),
       ],
     );
   }
@@ -345,7 +345,7 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
 }
 
 class _PollOptionResultsWidget extends StatelessWidget {
-  const _PollOptionResultsWidget({
+  _PollOptionResultsWidget({
     Key key,
   }) : super(key: key);
 
@@ -354,11 +354,12 @@ class _PollOptionResultsWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
     return StreamBuilder<bool>(
       stream: pollBloc.isNeedShowResultsWithoutVoteStream,
+      initialData: pollBloc.isNeedShowResultsWithoutVote,
       builder: (context, snapshot) {
-        var isNeedShowResultsWithoutVote = snapshot.data ?? false;
+        var isNeedShowResultsWithoutVote = snapshot.data;
 
         if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote) {
-          return const PollOptionVotesPercentWidget();
+          return PollOptionVotesPercentWidget();
         } else {
           return const SizedBox.shrink();
         }
@@ -379,16 +380,18 @@ class _PollOptionSelectionWidget extends StatelessWidget {
     var pollOption = Provider.of<IPleromaPollOption>(context);
     return StreamBuilder<bool>(
         stream: pollBloc.isPossibleToVoteStream,
+        initialData: pollBloc.isPossibleToVote,
         builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data ?? pollBloc.isPossibleToVote;
+          var isPossibleToVote = snapshot.data;
           if (isPossibleToVote) {
             return StreamBuilder<List<IPleromaPollOption>>(
                 stream: pollBloc.selectedVotesStream,
+                initialData: pollBloc.selectedVotes,
                 builder: (context, snapshot) {
-                  var selectedVotes = snapshot.data ?? pollBloc.selectedVotes;
+                  var selectedVotes = snapshot.data;
                   var multiple = poll.multiple;
 
-                  var isSelected = selectedVotes?.contains(pollOption) ?? false;
+                  var isSelected = selectedVotes.contains(pollOption);
                   var borderColor = isSelected
                       ? IFediUiColorTheme.of(context).primary
                       : IFediUiColorTheme.of(context).grey;
@@ -503,11 +506,12 @@ class PollOptionTitleWidget extends StatelessWidget {
 
     var isOwnVote = poll.isOwnVote(pollOption);
 
+    var votesPercent = poll.votesPercent(pollOption);
     return Text(
       pollOption.title,
       style: poll.isPossibleToVote
           ? IFediUiTextTheme.of(context).bigTallPrimaryDark
-          : isOwnVote
+          : isOwnVote && votesPercent > 0
               ? IFediUiTextTheme.of(context).bigTallWhite
               : IFediUiTextTheme.of(context).bigTallGrey,
       overflow: TextOverflow.ellipsis,
