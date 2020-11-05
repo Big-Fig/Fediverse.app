@@ -848,20 +848,20 @@ class S {
     );
   }
 
-  /// `Media auto-init`
+  /// `Audio/Video auto-init`
   String get app_account_my_settings_field_mediaAutoInit_label {
     return Intl.message(
-      'Media auto-init',
+      'Audio/Video auto-init',
       name: 'app_account_my_settings_field_mediaAutoInit_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Media auto-play`
+  /// `Audio/Video auto-play`
   String get app_account_my_settings_field_mediaAutoPlay_label {
     return Intl.message(
-      'Media auto-play',
+      'Audio/Video auto-play',
       name: 'app_account_my_settings_field_mediaAutoPlay_label',
       desc: '',
       args: [],
