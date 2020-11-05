@@ -57,23 +57,38 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Column(
-          children: [
-            ...items
-                .map((pollItemBloc) => Provider<IFormStringFieldBloc>.value(
-                      value: pollItemBloc,
-                      child: const _PostStatusPollOptionsFieldItemWidget(),
-                    ))
-                .toList(),
-          ],
+        return Provider<List<IFormStringFieldBloc>>.value(
+          value: items,
+          child: _PostStatusPollOptionsFieldItemsWidget(),
         );
       },
     );
   }
 }
 
+class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
+  _PostStatusPollOptionsFieldItemsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var items = Provider.of<List<IFormStringFieldBloc>>(context);
+    return Column(
+      children: [
+        ...items
+            .map((pollItemBloc) => Provider<IFormStringFieldBloc>.value(
+                  value: pollItemBloc,
+                  child: _PostStatusPollOptionsFieldItemWidget(),
+                ))
+            .toList(),
+      ],
+    );
+  }
+}
+
 class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
-  const _PostStatusPollOptionsFieldItemWidget({
+  _PostStatusPollOptionsFieldItemWidget({
     Key key,
   }) : super(key: key);
 
@@ -84,7 +99,6 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
 
     var pollItemBloc = IFormStringFieldBloc.of(context);
 
-    var number = pollOptionsGroupBloc.indexOf(pollItemBloc) + 1;
     var isLast = pollOptionsGroupBloc.isLast(pollItemBloc);
 
     return Padding(
@@ -92,27 +106,15 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: PostStatusPollOptionFormStringFieldFormRowWidget(
-              formStringFieldBloc: pollItemBloc,
-              onSubmitted: (String value) {
-                var nextItem =
-                    pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
-                nextItem?.focusNode?.requestFocus();
-              },
-              textInputAction:
-                  isLast ? TextInputAction.done : TextInputAction.next,
-              hint: S.of(context).app_status_post_poll_field_option_hint(
-                    number.toString(),
-                  ),
-            ),
+            child: _PostStatusPollOptionsFieldItemFieldWidget(),
           ),
           if (!isLast) const _PostStatusPollOptionRemoteItemButtonWidget(),
           if (isLast)
             StreamBuilder<bool>(
               stream: pollOptionsGroupBloc.isMaximumFieldsCountReachedStream,
               builder: (context, snapshot) {
-                var isMaximumFieldsCountReached = snapshot.data;
-                if (isMaximumFieldsCountReached != false) {
+                var isMaximumFieldsCountReached = snapshot.data ?? true;
+                if (isMaximumFieldsCountReached) {
                   return const _PostStatusPollOptionRemoteItemButtonWidget();
                 } else {
                   return const _PostStatusPollOptionsAddItemButtonWidget();
@@ -121,6 +123,35 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
             )
         ],
       ),
+    );
+  }
+}
+
+class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
+  _PostStatusPollOptionsFieldItemFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var pollOptionsGroupBloc =
+        IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(context);
+    var pollItemBloc = IFormStringFieldBloc.of(context);
+
+    var number = pollOptionsGroupBloc.indexOf(pollItemBloc) + 1;
+
+    var isLast = pollOptionsGroupBloc.isLast(pollItemBloc);
+
+    return PostStatusPollOptionFormStringFieldFormRowWidget(
+      formStringFieldBloc: pollItemBloc,
+      onSubmitted: (String value) {
+        var nextItem = pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
+        nextItem?.focusNode?.requestFocus();
+      },
+      textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+      hint: S.of(context).app_status_post_poll_field_option_hint(
+            number.toString(),
+          ),
     );
   }
 }

@@ -38,7 +38,9 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                 autocorrect: true,
                 focusNode: formStringFieldBloc.focusNode,
                 textInputAction: textInputAction,
-                onSubmitted: onSubmitted,
+                onSubmitted: (_) {
+                  onSubmitted(_);
+                },
                 textStyle: IFediUiTextTheme.of(context).bigTallMediumGrey,
                 obscureText: false,
                 autofocus: false,
@@ -63,24 +65,53 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
               top: 0.0,
               bottom: 0.0,
               right: 8.0,
-              child: StreamBuilder<bool>(
-                  stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
-                  initialData: formStringFieldBloc.isHaveAtLeastOneError,
-                  builder: (context, snapshot) {
-                    var isHaveAtLeastOneError = snapshot.data;
-                    if (isHaveAtLeastOneError) {
-                      return Icon(
-                        FediIcons.warning,
-                        color: IFediUiColorTheme.of(context).error,
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  }),
+              child:
+                  _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget(
+                      formStringFieldBloc: formStringFieldBloc),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
+    extends StatelessWidget {
+  const _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget({
+    Key key,
+    @required this.formStringFieldBloc,
+  }) : super(key: key);
+
+  final IFormStringFieldBloc formStringFieldBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<bool>(
+        stream: formStringFieldBloc.isHaveAtLeastOneErrorStream,
+        initialData: formStringFieldBloc.isHaveAtLeastOneError,
+        builder: (context, snapshot) {
+          var isHaveAtLeastOneError = snapshot.data;
+          if (isHaveAtLeastOneError) {
+            return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
+          } else {
+            return const SizedBox.shrink();
+          }
+        });
+  }
+}
+
+class _PostStatusPollOptionFormStringFieldFormRowErrorWidget
+    extends StatelessWidget {
+  const _PostStatusPollOptionFormStringFieldFormRowErrorWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      FediIcons.warning,
+      color: IFediUiColorTheme.of(context).error,
     );
   }
 }
