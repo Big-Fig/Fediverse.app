@@ -18,6 +18,8 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   Stream<int> get unreadCountStream;
 
+  bool get isCountInUnreadSupported;
+
   bool get isHaveUnread;
 
   Stream<bool> get isHaveUnreadStream;
