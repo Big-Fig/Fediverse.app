@@ -78,7 +78,9 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
   Future pickNewFile(IMediaDeviceFile mediaDeviceFile) async {
     var file = await mediaDeviceFile.loadFile();
     var length = await file.length();
-    if (length > maximumFileSizeInBytes) {
+    if (maximumFileSizeInBytes != null &&
+        maximumFileSizeInBytes != 0 &&
+        length > maximumFileSizeInBytes) {
       throw UploadMediaExceedFileSizeLimitException(
         file: file,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
