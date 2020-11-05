@@ -188,7 +188,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc implements IPleromaChat
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData}) async {
+      @required PleromaChatOrderingTermData orderingTermData}) async {
     var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
@@ -208,7 +208,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc implements IPleromaChat
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData}) {
+      @required PleromaChatOrderingTermData orderingTermData}) {
     var query = createQuery(
       olderThan: olderThan,
       newerThan: newerThan,
@@ -227,7 +227,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc implements IPleromaChat
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData}) {
+      @required PleromaChatOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
         "\t olderThan=$olderThan\n"
         "\t newerThan=$newerThan\n"
@@ -264,7 +264,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc implements IPleromaChat
       {@required IPleromaChat onlyInChat,
       @required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData}) async {
+      @required PleromaChatOrderingTermData orderingTermData}) async {
     var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
@@ -280,7 +280,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc implements IPleromaChat
   Stream<DbPleromaChatPopulatedWrapper> watchChat(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData}) {
+      @required PleromaChatOrderingTermData orderingTermData}) {
     var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,

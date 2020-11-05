@@ -26,7 +26,7 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   Future<IPleromaChatWithLastMessage> getChatWithLastMessage({
     @required IPleromaChat olderThan,
     @required IPleromaChat newerThan,
-    @required ChatOrderingTermData orderingTermData,
+    @required PleromaChatOrderingTermData orderingTermData,
   }) async {
     var chat = await chatRepository.getChat(
         olderThan: olderThan,
@@ -48,7 +48,7 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   Stream<IPleromaChatWithLastMessage> watchChatWithLastMessage({
     @required IPleromaChat olderThan,
     @required IPleromaChat newerThan,
-    @required ChatOrderingTermData orderingTermData,
+    @required PleromaChatOrderingTermData orderingTermData,
   }) =>
       chatRepository
           .watchChat(
@@ -63,7 +63,7 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     @required IPleromaChat newerThan,
     @required int limit,
     @required int offset,
-    @required ChatOrderingTermData orderingTermData,
+    @required PleromaChatOrderingTermData orderingTermData,
   }) async {
     var chats = await chatRepository.getChats(
         olderThan: olderThan,
@@ -93,7 +93,7 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     @required IPleromaChat newerThan,
     @required int limit,
     @required int offset,
-    @required ChatOrderingTermData orderingTermData,
+    @required PleromaChatOrderingTermData orderingTermData,
   }) {
     return chatRepository
         .watchChats(

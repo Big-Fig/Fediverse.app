@@ -95,7 +95,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       newerThan: null,
       limit: limit,
       offset: null,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: PleromaChatOrderByType.updatedAt),
     );

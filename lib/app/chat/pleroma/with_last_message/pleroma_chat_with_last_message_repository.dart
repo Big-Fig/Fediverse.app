@@ -15,22 +15,22 @@ abstract class IPleromaChatWithLastMessageRepository implements IDisposable {
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
       @required int limit,
       @required int offset,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Future<IPleromaChatWithLastMessage> getChatWithLastMessage(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 
   Stream<IPleromaChatWithLastMessage> watchChatWithLastMessage(
       {@required IPleromaChat olderThan,
       @required IPleromaChat newerThan,
-      @required ChatOrderingTermData orderingTermData});
+      @required PleromaChatOrderingTermData orderingTermData});
 }

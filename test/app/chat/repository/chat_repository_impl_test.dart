@@ -269,7 +269,7 @@ void main() {
           updatedAt: DateTime(2005)),
       limit: null,
       offset: null,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: PleromaChatOrderByType.updatedAt),
       olderThan: null,
@@ -320,7 +320,7 @@ void main() {
         newerThan: null,
         limit: null,
         offset: null,
-        orderingTermData: ChatOrderingTermData(
+        orderingTermData: PleromaChatOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: PleromaChatOrderByType.updatedAt),
         olderThan: await createTestChat(
@@ -376,7 +376,7 @@ void main() {
             updatedAt: DateTime(2002)),
         limit: null,
         offset: null,
-        orderingTermData: ChatOrderingTermData(
+        orderingTermData: PleromaChatOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: PleromaChatOrderByType.updatedAt),
         olderThan: await createTestChat(
@@ -449,7 +449,7 @@ void main() {
       newerThan: null,
       limit: null,
       offset: null,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.asc),
       olderThan: null,
@@ -482,7 +482,7 @@ void main() {
       newerThan: null,
       limit: null,
       offset: null,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThan: null,
@@ -515,7 +515,7 @@ void main() {
       newerThan: null,
       limit: 1,
       offset: 1,
-      orderingTermData: ChatOrderingTermData(
+      orderingTermData: PleromaChatOrderingTermData(
           orderByType: PleromaChatOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThan: null,

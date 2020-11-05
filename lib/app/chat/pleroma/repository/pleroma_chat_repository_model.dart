@@ -4,10 +4,10 @@ enum PleromaChatOrderByType {
   remoteId, updatedAt
 }
 
-class ChatOrderingTermData {
+class PleromaChatOrderingTermData {
   final PleromaChatOrderByType orderByType;
   final OrderingMode orderingMode;
-  ChatOrderingTermData(
+  PleromaChatOrderingTermData(
       {@required this.orderByType, @required this.orderingMode});
 
   @override
