@@ -3,9 +3,9 @@ import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _durationToHideControlsDuringPlaying = Duration(seconds: 3);
@@ -91,8 +91,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         autoInit: autoInit,
         autoPlay: autoPlay,
       ),
-      child: ProxyProvider<IVideoMediaPlayerBloc, IMediaPlayerBloc>(
-        update: (context, value, previous) => value,
+      child: VideoMediaPlayerBlocProxyProvider(
         child: child,
       ),
     );
@@ -177,9 +176,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
 
   @override
   Stream<bool> get isControlsVisibleStream => Rx.combineLatest3(
-        lastIterationDateTimeStream,
-        isPlayingStream,
-        videoPlayerValueStream,
+        lastIterationDateTimeStream, isPlayingStream, videoPlayerValueStream,
         // use videoPlayerValueStream just for regular updates
         // hack to avoid using Timer to update isControlsVisibleStream
         (lastIterationDateTime, isPlaying, videoPlayerValue) =>
