@@ -137,7 +137,7 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   Widget buildStartConversationActionButton(BuildContext context) =>
       FediIconInCircleBlurredButton(
-        FediIcons.pen,
+        FediIcons.plus,
         onPressed: () {
           goToStartConversationPage(context);
         },
