@@ -125,16 +125,6 @@ abstract class IStatusRepository
     bool onlyNotDeleted = true,
   });
 
-  Stream<IStatus> watchConversationLastStatus({
-    @required IConversationChat conversation,
-    bool onlyNotDeleted = true,
-  });
-
-  Future<IStatus> getConversationLastStatus({
-    @required IConversationChat conversation,
-    bool onlyNotDeleted = true,
-  });
-
   Future incrementRepliesCount({@required String remoteId});
 
   Future removeAccountStatusesFromHome({
@@ -144,4 +134,19 @@ abstract class IStatusRepository
   Future markStatusAsDeleted({@required String statusRemoteId});
 
   Future clearListStatusesConnection({@required String listRemoteId});
+
+  Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
+    @required List<IConversationChat> conversations,
+    bool onlyNotDeleted = true,
+  });
+
+  Stream<IStatus> watchConversationLastStatus({
+    @required IConversationChat conversation,
+    bool onlyNotDeleted = true,
+  });
+
+  Future<IStatus> getConversationLastStatus({
+    @required IConversationChat conversation,
+    bool onlyNotDeleted = true,
+  });
 }

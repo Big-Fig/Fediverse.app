@@ -25,7 +25,7 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("chats_home_tab_bloc_impl.dart");
+var _logger = Logger("pleroma_chat_with_last_message_list_bloc_impl.dart");
 
 class PleromaChatWithLastMessageListBloc extends DisposableOwner
     implements IPleromaChatWithLastMessageListBloc {
