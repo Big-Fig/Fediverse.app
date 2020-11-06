@@ -16,7 +16,7 @@ class PleromaChatShareMediaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: S.of(context).app_chat_share_title,
+        title: S.of(context).app_chat_pleroma_share_title,
         actions: [
           const ShareToAccountIconButtonWidget(),
         ],

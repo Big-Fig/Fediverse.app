@@ -296,14 +296,15 @@
     }
   },
   "app_auth_instance_register_action_createAccount": "Sign up",
-  "app_chat_share_title": "Share to chats",
-  "app_chat_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}",
-  "@app_chat_list_newItems_action_tapToLoadNew": {
+  "app_chat_pleroma_share_title": "Share to chats",
+  "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}",
+  "@app_chat_pleroma_list_newItems_action_tapToLoadNew": {
     "placeholders": {
       "count": {}
     }
   },
-  "app_chat_accounts_title": "Chat accounts",
+  "app_chat_pleroma_accounts_title": "Chat accounts",
+  "app_chat_pleroma_start_title": "Start chat",
   "app_chat_action_more": "More",
   "app_chat_preview_you": "You: {message}",
   "@app_chat_preview_you": {
@@ -313,39 +314,29 @@
       }
     }
   },
-  "app_chat_start_title": "Start chat",
   "app_chat_post_field_content_hint": "Start a message",
   "app_chat_post_error_empty_dialog_title": "Can't send empty message",
   "app_chat_post_action_post": "Post",
-  "app_conversation_share_title": "Share to DMs",
-  "app_conversation_post_field_content_hint": "Start a message",
-  "app_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}",
-  "@app_conversation_list_newItems_action_tapToLoadNew": {
+  "app_chat_conversation_share_title": "Share to conversations",
+  "app_chat_conversation_post_field_content_hint": "Start a message",
+  "app_chat_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}",
+  "@app_chat_conversation_list_newItems_action_tapToLoadNew": {
     "placeholders": {
       "count": {}
     }
   },
-  "app_conversation_accounts_title": "Conversation accounts",
-  "app_conversation_action_more": "More",
-  "app_conversation_preview_you": "You: {message}",
-  "@app_conversation_preview_you": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_conversation_start_title": "Start conversation",
+  "app_chat_conversation_accounts_title": "Conversation accounts",
+  "app_chat_conversation_start_title": "Start conversation",
   "app_file_image_crop_title": "Crop as",
   "app_home_tab_timelines_tab_public": "All",
   "app_home_tab_timelines_tab_home": "Home",
   "app_home_tab_timelines_tab_local": "Local",
-  "app_home_tab_conversations_title": "DM",
-  "app_home_tab_conversations_action_switchToChats": "To Chats",
-  "app_home_tab_chats_title": "Chats",
-  "app_home_tab_chats_notSupported_mastodon": "Chats not supported on Mastodon instances",
-  "app_home_tab_chats_notSupported_pleroma": "This instance don't support chats yet",
-  "app_home_tab_chats_action_switch_to_dms": "To DM",
+  "app_home_tab_chat_conversation_title": "Conversations",
+  "app_home_tab_chat_conversation_action_switchToChats": "To Chats",
+  "app_home_tab_chat_pleroma_title": "Chats",
+  "app_home_tab_chat_pleroma_notSupported_mastodon": "Chats not supported on Mastodon instances",
+  "app_home_tab_chat_pleroma_notSupported_pleroma": "This instance don't support chats yet",
+  "app_home_tab_chat_pleroma_action_switch_to_dms": "To Conversations",
   "app_notification_action_popup_title": "Notification actions",
   "app_notification_action_markAsRead": "Mark as read",
   "app_notification_action_dismiss": "Dismiss",

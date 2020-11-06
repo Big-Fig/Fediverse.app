@@ -14,7 +14,7 @@ class PostStatusStartConversationChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: S.of(context).app_conversation_start_title,
+        title: S.of(context).app_chat_conversation_start_title,
       ),
       body: _PostStatusStartConversationChatPageBodyWidget(),
     );

@@ -15,7 +15,7 @@ class PleromaChatAccountsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: S.of(context).app_chat_accounts_title,
+        title: S.of(context).app_chat_pleroma_accounts_title,
       ),
       body: const SafeArea(
         child: ChatAccountsWidget(),

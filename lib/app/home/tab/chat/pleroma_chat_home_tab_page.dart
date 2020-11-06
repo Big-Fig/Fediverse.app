@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
@@ -49,13 +49,14 @@ class PleromaChatHomeTabPage extends StatelessWidget {
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ChatMessagesHomeTabPageContentWidget(),
-        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
+        overlayBuilder: (context) =>
+            const PleromaChatListTapToLoadOverlayWidget(),
       ),
     );
   }
 
-  DisposableProvider<IPleromaChatWithLastMessageListBloc>
-      provideContentContext(Widget child) {
+  DisposableProvider<IPleromaChatWithLastMessageListBloc> provideContentContext(
+      Widget child) {
     return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
       create: (context) =>
           PleromaChatWithLastMessageListBloc.createFromContext(context),
@@ -119,27 +120,26 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
   }) =>
       isPleromaInstance
           ? isSupportChats
-          ? buildPleromaBody()
-          : buildPleromaNotSupportedBody(context)
+              ? buildPleromaBody()
+              : buildPleromaNotSupportedBody(context)
           : buildMastodonBody(context);
 
   Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
-    key: PageStorageKey("PleromaChatWithLastMessageListWidget"),
-  );
+        key: PageStorageKey("PleromaChatWithLastMessageListWidget"),
+      );
 
   Widget buildMastodonBody(BuildContext context) => Center(
-    child: Text(
-      S.of(context).app_home_tab_chats_notSupported_mastodon,
-    ),
-  );
+        child: Text(
+          S.of(context).app_home_tab_chat_pleroma_notSupported_mastodon,
+        ),
+      );
 
   Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
-    child: Text(
-      S.of(context).app_home_tab_chats_notSupported_pleroma,
-    ),
-  );
+        child: Text(
+          S.of(context).app_home_tab_chat_pleroma_notSupported_pleroma,
+        ),
+      );
 }
-
 
 class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   const _ChatMessagesHomeTabPageHeaderWidget({
@@ -148,8 +148,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context);
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance;
     var isPleromaInstance = currentInstance.isPleromaInstance;
@@ -158,13 +157,13 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
         FediHeaderText(
-          S.of(context).app_home_tab_chats_title,
+          S.of(context).app_home_tab_chat_pleroma_title,
         ),
       ],
       content: null,
       endingWidgets: [
         FediBlurredTextButton(
-          S.of(context).app_home_tab_chats_action_switch_to_dms,
+          S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
           onPressed: () {
             IMyAccountSettingsBloc.of(context, listen: false)
                 .isNewChatsEnabledFieldBloc
