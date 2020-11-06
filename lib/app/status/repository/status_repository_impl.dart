@@ -370,6 +370,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
     @required bool onlyNotDeleted,
+    bool forceJoinConversation = false,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
@@ -455,7 +456,8 @@ class StatusRepository extends AsyncInitLoadingBloc
           includeAccountFollowing: needFilterByFollowing,
           includeStatusLists: needFilterByList,
           includeStatusHashtags: needFilterByTag,
-          includeConversations: needFilterByConversation,
+          includeConversations:
+              needFilterByConversation || forceJoinConversation,
           includeHomeTimeline: needFilterByHomeTimeline),
     );
 
@@ -710,6 +712,25 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
+  Future incrementRepliesCount({@required String remoteId}) =>
+      dao.incrementRepliesCount(remoteId: remoteId);
+
+  @override
+  Future removeAccountStatusesFromHome({
+    @required String accountRemoteId,
+  }) =>
+      homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+
+  @override
+  Future markStatusAsDeleted({@required String statusRemoteId}) =>
+      dao.markAsDeleted(remoteId: statusRemoteId);
+
+  @override
+  Future clearListStatusesConnection({@required String listRemoteId}) async {
+    await listsDao.deleteByRemoteId(listRemoteId);
+  }
+
+  @override
   Future<IStatus> getConversationLastStatus({
     @required IConversationChat conversation,
     bool onlyNotDeleted = true,
@@ -766,21 +787,70 @@ class StatusRepository extends AsyncInitLoadingBloc
       );
 
   @override
-  Future incrementRepliesCount({@required String remoteId}) =>
-      dao.incrementRepliesCount(remoteId: remoteId);
+  Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
+    @required List<IConversationChat> conversations,
+    bool onlyNotDeleted = true,
+  }) async {
+    var query = createQuery(
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      forceJoinConversation: true,
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccount: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyInConversation: null,
+      onlyLocal: null,
+      onlyWithMedia: null,
+      withMuted: null,
+      excludeVisibilities: null,
+      olderThanStatus: null,
+      newerThanStatus: null,
+      onlyNoNsfwSensitive: null,
+      onlyNoReplies: null,
+      limit: null,
+      offset: null,
+      isFromHomeTimeline: null,
+      onlyFavourited: null,
+      onlyBookmarked: null,
+      onlyNotDeleted: null,
+    );
 
-  @override
-  Future removeAccountStatusesFromHome({
-    @required String accountRemoteId,
-  }) =>
-      homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+    var typedResultList = await query.get();
 
-  @override
-  Future markStatusAsDeleted({@required String statusRemoteId}) =>
-      dao.markAsDeleted(remoteId: statusRemoteId);
+    Map<IConversationChat, IStatus> result = {};
 
-  @override
-  Future clearListStatusesConnection({@required String listRemoteId}) async {
-    await listsDao.deleteByRemoteId(listRemoteId);
+    conversations.forEach((conversation) {
+      TypedResult typedResult = typedResultList.firstWhere(
+        (typedResult) {
+          var conversationStatuses =
+              typedResult.readTable(dao.conversationStatusesAlias);
+
+          return conversationStatuses.conversationRemoteId ==
+              conversation.remoteId;
+        },
+        orElse: () => null,
+      );
+
+      IStatus status;
+
+      if (typedResult != null) {
+        status = mapDataClassToItem(
+          dao.typedResultToPopulated(
+            typedResult,
+          ),
+        );
+      }
+
+      result[conversation] = status;
+    });
+
+    return result;
+  }
+
+  void addGroupByConversationId(JoinedSelectStatement query) {
+    query.groupBy(
+        [conversationStatusesDao.dbConversationStatuses.conversationRemoteId]);
   }
 }
