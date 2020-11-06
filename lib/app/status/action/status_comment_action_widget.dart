@@ -37,12 +37,12 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var repliesCount = snapshot.data;
           if (repliesCount == null) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
 
           return Provider<int>.value(
             value: repliesCount,
-            child: const StatusActionCounterWidget(
+            child: StatusActionCounterWidget(
               onClick: _onActionClick,
             ),
           );
@@ -66,12 +66,12 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-      color: IFediUiColorTheme.of(context).darkGrey,
-      iconSize: FediSizes.bigIconSize,
-      icon: Icon(FediIcons.message),
-      tooltip: S.of(context).app_status_action_comment,
-      onPressed: () {
-        _onActionClick(context);
-      },
-    );
+        color: IFediUiColorTheme.of(context).darkGrey,
+        iconSize: FediSizes.bigIconSize,
+        icon: Icon(FediIcons.message),
+        tooltip: S.of(context).app_status_action_comment,
+        onPressed: () {
+          _onActionClick(context);
+        },
+      );
 }

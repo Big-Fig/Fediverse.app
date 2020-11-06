@@ -38,7 +38,7 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
         stream: statusBloc.favouritedStream,
         initialData: statusBloc.favourited,
         builder: (context, snapshot) {
-          var favourited = snapshot.data ?? false;
+          var favourited = snapshot.data;
           return PleromaAsyncOperationButtonBuilderWidget(
               showProgressDialog: false,
               builder: (context, onPressed) => FediIconButton(
@@ -74,7 +74,7 @@ class _StatusFavouriteActionCounterWidget extends StatelessWidget {
 
         return Provider.value(
           value: favouritesCount,
-          child: const StatusActionCounterWidget(
+          child: StatusActionCounterWidget(
             onClick: _onCounterClick,
           ),
         );
