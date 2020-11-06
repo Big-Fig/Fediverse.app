@@ -1248,23 +1248,23 @@ class S {
     );
   }
 
-  /// `Invalid credentials`
+  /// `Forbidden. Invalid action or session expired`
   String get app_async_pleroma_error_invalidCredentials_dialog_title {
     return Intl.message(
-      'Invalid credentials',
+      'Forbidden. Invalid action or session expired',
       name: 'app_async_pleroma_error_invalidCredentials_dialog_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Session expired`
-  String get app_async_pleroma_error_invalidCredentials_dialog_content {
+  /// `{content}`
+  String app_async_pleroma_error_invalidCredentials_dialog_content(Object content) {
     return Intl.message(
-      'Session expired',
+      '$content',
       name: 'app_async_pleroma_error_invalidCredentials_dialog_content',
       desc: '',
-      args: [],
+      args: [content],
     );
   }
 
