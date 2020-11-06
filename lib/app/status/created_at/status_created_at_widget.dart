@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 class StatusCreatedAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: false);
+    var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<DateTime>(
         stream: statusBloc.createdAtStream,
