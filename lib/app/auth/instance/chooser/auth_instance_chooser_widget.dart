@@ -149,6 +149,20 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
 
+    // todo: remove hack
+    // sometimes IMyAccountBloc is not accessible during account switching
+    try {
+      Provider.of<IMyAccountBloc>(context);
+    } catch (e, stackTrace) {
+      _logger.finest(
+        () => "_AuthInstanceChooserSelectedInstanceRowWidget "
+            "error fetching myAccountBloc",
+        e,
+        stackTrace,
+      );
+      return const SizedBox.shrink();
+    }
+
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (BuildContext context, value, previous) => value,
       child: StreamBuilder<AuthInstance>(
