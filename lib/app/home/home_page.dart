@@ -6,14 +6,14 @@ import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page.dart';
-import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc_proxy_providier.dart';
-import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_page.dart';
-import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc_proxy_providier.dart';
-import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_page.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page.dart';
+import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_providier.dart';
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
       case HomeTab.notifications:
         return const _HomePageNotificationTabWidget();
         break;
-      case HomeTab.messages:
+      case HomeTab.chat:
         return const _HomePageMessagesTabWidget();
 
         break;
@@ -153,25 +153,25 @@ class _HomePageMessagesTabConversationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProvider<IConversationMessagesHomeTabBloc>(
+    return DisposableProvider<IConversationChatHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var conversationMessagesHomeTabBloc = ConversationMessagesHomeTabBloc(
+        var conversationMessagesHomeTabBloc = ConversationChatHomeTabBloc(
             //              deviceHeight: MediaQuery.of(context).size.height,
             );
 
         conversationMessagesHomeTabBloc.addDisposable(streamSubscription:
             homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.messages) {
+          if (reselectedTab == HomeTab.chat) {
             conversationMessagesHomeTabBloc.scrollToTop();
           }
         }));
 
         return conversationMessagesHomeTabBloc;
       },
-      child: ConversationMessagesHomeTabBlocProxyProvider(
-        child: const ConversationMessagesHomeTabPage(),
+      child: ConversationChatHomeTabBlocProxyProvider(
+        child: const ConversationChatHomeTabPage(),
       ),
     );
   }
@@ -184,23 +184,23 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProvider<IChatMessagesHomeTabBloc>(
+    return DisposableProvider<IPleromaChatHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc();
+        var chatMessagesHomeTabBloc = PleromaChatHomeTabBloc();
 
         chatMessagesHomeTabBloc.addDisposable(streamSubscription:
             homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.messages) {
+          if (reselectedTab == HomeTab.chat) {
             chatMessagesHomeTabBloc.scrollToTop();
           }
         }));
 
         return chatMessagesHomeTabBloc;
       },
-      child: ChatMessagesHomeTabBlocProxyProvider(
-        child: const ChatMessagesHomeTabPage(
+      child: PleromaChatHomeTabBlocProxyProvider(
+        child: const PleromaChatHomeTabPage(
           key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
         ),
       ),
