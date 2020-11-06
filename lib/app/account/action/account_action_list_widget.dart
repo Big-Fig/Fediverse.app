@@ -28,7 +28,7 @@ var _height = FediSizes.textButtonHeight + _topPadding + _bottomPadding;
 class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
+    var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
       stream: accountBloc.accountRelationshipStream,
       builder: (context, snapshot) {
@@ -111,8 +111,8 @@ class _AccountActionListMessageWidget extends StatelessWidget {
       S.of(context).app_account_action_message,
       onPressed: () async {
         var authInstanceBloc =
-            ICurrentAuthInstanceBloc.of(context, listen: false);
-        var accountBloc = IAccountBloc.of(context, listen: false);
+            ICurrentAuthInstanceBloc.of(context);
+        var accountBloc = IAccountBloc.of(context);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
