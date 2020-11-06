@@ -77,11 +77,13 @@ class ConversationChatCachedListBloc extends IConversationChatCachedListBloc {
   Stream<List<IConversationChat>> watchLocalItemsNewerThanItem(
           IConversationChat item) =>
       conversationRepository.watchConversations(
-          olderThan: null,
-          newerThan: item,
-          limit: null,
-          offset: null,
-          orderingTermData: ConversationChatOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: ConversationPleromaChatOrderByType.remoteId));
+        olderThan: null,
+        newerThan: item,
+        limit: null,
+        offset: null,
+        orderingTermData: ConversationChatOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: ConversationPleromaChatOrderByType.updatedAt,
+        ),
+      );
 }
