@@ -191,7 +191,7 @@ class _SelectMediaAttachmentTypeToPickGalleryActionWidget
   Widget build(BuildContext context) {
     var attachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context);
-            var navigatorState = Navigator.of(context);
+    var navigatorState = Navigator.of(context);
     return _SelectMediaAttachmentTypeToPickActionWidget(
       iconData: FediIcons.image,
       label: S.of(context).app_media_attachment_type_gallery,
@@ -200,8 +200,8 @@ class _SelectMediaAttachmentTypeToPickGalleryActionWidget
           context,
           onFileSelectedCallback:
               (context, IMediaDeviceFile mediaDeviceFile) async {
-            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
             navigatorState.pop();
+            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
           },
         );
       },
