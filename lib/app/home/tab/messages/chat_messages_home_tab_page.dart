@@ -124,7 +124,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
           : buildMastodonBody(context);
 
   Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
-    key: PageStorageKey("ChatWithLastMessageListWidget"),
+    key: PageStorageKey("PleromaChatWithLastMessageListWidget"),
   );
 
   Widget buildMastodonBody(BuildContext context) => Center(
