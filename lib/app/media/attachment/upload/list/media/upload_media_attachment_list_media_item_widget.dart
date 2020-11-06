@@ -200,11 +200,12 @@ class _UploadMediaAttachmentListMediaItemTopRightActionWidget
     var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
     return StreamBuilder<UploadMediaAttachmentState>(
         stream: uploadMediaAttachmentBloc.uploadStateStream,
+        initialData: uploadMediaAttachmentBloc.uploadState,
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
 
           switch (
-              uploadState.type ?? UploadMediaAttachmentStateType.uploading) {
+              uploadState.type) {
             case UploadMediaAttachmentStateType.notUploaded:
             case UploadMediaAttachmentStateType.uploading:
               return const _UploadMediaAttachmentListMediaItemLoadingWidget();

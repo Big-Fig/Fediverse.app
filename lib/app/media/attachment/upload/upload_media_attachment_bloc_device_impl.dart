@@ -59,7 +59,9 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     var file = await mediaDeviceFile.loadFile();
     var fileLength = await file.length();
 
-    if (fileLength > maximumFileSizeInBytes) {
+    if (maximumFileSizeInBytes != null &&
+        maximumFileSizeInBytes != 0 &&
+        fileLength > maximumFileSizeInBytes) {
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.failed,
