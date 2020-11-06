@@ -310,7 +310,7 @@ HomeTab calculateHomeTabForNotification(
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
     if (notification.isContainsChat) {
-      homeTab = HomeTab.messages;
+      homeTab = HomeTab.chat;
     } else if (notification.isContainsStatus) {
       homeTab = HomeTab.notifications;
     } else if (notification.isContainsAccount) {
