@@ -1779,32 +1779,42 @@ class S {
   }
 
   /// `Share to chats`
-  String get app_chat_share_title {
+  String get app_chat_pleroma_share_title {
     return Intl.message(
       'Share to chats',
-      name: 'app_chat_share_title',
+      name: 'app_chat_pleroma_share_title',
       desc: '',
       args: [],
     );
   }
 
   /// `{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}`
-  String app_chat_list_newItems_action_tapToLoadNew(num count) {
+  String app_chat_pleroma_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
       one: '1 new chat. Tap to load.',
       other: '$count new chats. Tap to load.',
-      name: 'app_chat_list_newItems_action_tapToLoadNew',
+      name: 'app_chat_pleroma_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
     );
   }
 
   /// `Chat accounts`
-  String get app_chat_accounts_title {
+  String get app_chat_pleroma_accounts_title {
     return Intl.message(
       'Chat accounts',
-      name: 'app_chat_accounts_title',
+      name: 'app_chat_pleroma_accounts_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start chat`
+  String get app_chat_pleroma_start_title {
+    return Intl.message(
+      'Start chat',
+      name: 'app_chat_pleroma_start_title',
       desc: '',
       args: [],
     );
@@ -1827,16 +1837,6 @@ class S {
       name: 'app_chat_preview_you',
       desc: '',
       args: [message],
-    );
-  }
-
-  /// `Start chat`
-  String get app_chat_start_title {
-    return Intl.message(
-      'Start chat',
-      name: 'app_chat_start_title',
-      desc: '',
-      args: [],
     );
   }
 
@@ -1870,73 +1870,53 @@ class S {
     );
   }
 
-  /// `Share to DMs`
-  String get app_conversation_share_title {
+  /// `Share to conversations`
+  String get app_chat_conversation_share_title {
     return Intl.message(
-      'Share to DMs',
-      name: 'app_conversation_share_title',
+      'Share to conversations',
+      name: 'app_chat_conversation_share_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Start a message`
-  String get app_conversation_post_field_content_hint {
+  String get app_chat_conversation_post_field_content_hint {
     return Intl.message(
       'Start a message',
-      name: 'app_conversation_post_field_content_hint',
+      name: 'app_chat_conversation_post_field_content_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}`
-  String app_conversation_list_newItems_action_tapToLoadNew(num count) {
+  String app_chat_conversation_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
       one: '1 new conversation. Tap to load.',
       other: '$count new conversations. Tap to load.',
-      name: 'app_conversation_list_newItems_action_tapToLoadNew',
+      name: 'app_chat_conversation_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
     );
   }
 
   /// `Conversation accounts`
-  String get app_conversation_accounts_title {
+  String get app_chat_conversation_accounts_title {
     return Intl.message(
       'Conversation accounts',
-      name: 'app_conversation_accounts_title',
+      name: 'app_chat_conversation_accounts_title',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `More`
-  String get app_conversation_action_more {
-    return Intl.message(
-      'More',
-      name: 'app_conversation_action_more',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You: {message}`
-  String app_conversation_preview_you(Object message) {
-    return Intl.message(
-      'You: $message',
-      name: 'app_conversation_preview_you',
-      desc: '',
-      args: [message],
     );
   }
 
   /// `Start conversation`
-  String get app_conversation_start_title {
+  String get app_chat_conversation_start_title {
     return Intl.message(
       'Start conversation',
-      name: 'app_conversation_start_title',
+      name: 'app_chat_conversation_start_title',
       desc: '',
       args: [],
     );
@@ -1982,61 +1962,61 @@ class S {
     );
   }
 
-  /// `DM`
-  String get app_home_tab_conversations_title {
+  /// `Conversations`
+  String get app_home_tab_chat_conversation_title {
     return Intl.message(
-      'DM',
-      name: 'app_home_tab_conversations_title',
+      'Conversations',
+      name: 'app_home_tab_chat_conversation_title',
       desc: '',
       args: [],
     );
   }
 
   /// `To Chats`
-  String get app_home_tab_conversations_action_switchToChats {
+  String get app_home_tab_chat_conversation_action_switchToChats {
     return Intl.message(
       'To Chats',
-      name: 'app_home_tab_conversations_action_switchToChats',
+      name: 'app_home_tab_chat_conversation_action_switchToChats',
       desc: '',
       args: [],
     );
   }
 
   /// `Chats`
-  String get app_home_tab_chats_title {
+  String get app_home_tab_chat_pleroma_title {
     return Intl.message(
       'Chats',
-      name: 'app_home_tab_chats_title',
+      name: 'app_home_tab_chat_pleroma_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Chats not supported on Mastodon instances`
-  String get app_home_tab_chats_notSupported_mastodon {
+  String get app_home_tab_chat_pleroma_notSupported_mastodon {
     return Intl.message(
       'Chats not supported on Mastodon instances',
-      name: 'app_home_tab_chats_notSupported_mastodon',
+      name: 'app_home_tab_chat_pleroma_notSupported_mastodon',
       desc: '',
       args: [],
     );
   }
 
   /// `This instance don't support chats yet`
-  String get app_home_tab_chats_notSupported_pleroma {
+  String get app_home_tab_chat_pleroma_notSupported_pleroma {
     return Intl.message(
       'This instance don\'t support chats yet',
-      name: 'app_home_tab_chats_notSupported_pleroma',
+      name: 'app_home_tab_chat_pleroma_notSupported_pleroma',
       desc: '',
       args: [],
     );
   }
 
-  /// `To DM`
-  String get app_home_tab_chats_action_switch_to_dms {
+  /// `To Conversations`
+  String get app_home_tab_chat_pleroma_action_switch_to_dms {
     return Intl.message(
-      'To DM',
-      name: 'app_home_tab_chats_action_switch_to_dms',
+      'To Conversations',
+      name: 'app_home_tab_chat_pleroma_action_switch_to_dms',
       desc: '',
       args: [],
     );

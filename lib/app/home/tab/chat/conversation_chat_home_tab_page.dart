@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/conversation/start/conversation_chat_start_page.da
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
-import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -47,7 +47,8 @@ class ConversationChatHomeTabPage extends StatelessWidget {
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ConversationMessagesHomeTabPageContentWidget(),
-        overlayBuilder: (context) => const ChatListTapToLoadOverlayWidget(),
+        overlayBuilder: (context) =>
+            const PleromaChatListTapToLoadOverlayWidget(),
       ),
     );
   }
@@ -112,7 +113,7 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
         FediHeaderText(
-          S.of(context).app_home_tab_conversations_title,
+          S.of(context).app_home_tab_chat_conversation_title,
         )
       ],
       content: null,
@@ -126,7 +127,7 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   FediBlurredTextButton buildSwitchToChatsActionButton(BuildContext context) {
     return FediBlurredTextButton(
-        S.of(context).app_home_tab_conversations_action_switchToChats,
+        S.of(context).app_home_tab_chat_conversation_action_switchToChats,
         onPressed: () {
       IMyAccountSettingsBloc.of(context, listen: false)
           .isNewChatsEnabledFieldBloc
