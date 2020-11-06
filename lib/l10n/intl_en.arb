@@ -201,8 +201,15 @@
   },
   "app_async_pleroma_error_throttled_dialog_title": "Throttled. Server blocked action.",
   "app_async_pleroma_error_throttled_dialog_content": "Too much operations per minute. Please wait before do something again.",
-  "app_async_pleroma_error_invalidCredentials_dialog_title": "Invalid credentials",
-  "app_async_pleroma_error_invalidCredentials_dialog_content": "Session expired",
+  "app_async_pleroma_error_invalidCredentials_dialog_title": "Forbidden. Invalid action or session expired",
+  "app_async_pleroma_error_invalidCredentials_dialog_content": "{content}",
+  "@app_async_pleroma_error_invalidCredentials_dialog_content": {
+    "placeholders": {
+      "content": {
+        "type": "String"
+      }
+    }
+  },
   "app_async_socket_error_dialog_title": "Check your connection",
   "app_async_socket_error_dialog_content": "No network or remote server unavailable",
   "app_async_timeout_error_dialog_title": "Timeout reached",

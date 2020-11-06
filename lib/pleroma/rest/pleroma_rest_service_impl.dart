@@ -69,7 +69,7 @@ class PleromaRestService extends DisposableOwner
     }
 
     if (response.statusCode == 403) {
-      throw PleromaInvalidCredentialsRestException(
+      throw PleromaForbiddenRestException(
           statusCode: response.statusCode, body: response.body);
     }
     return response;
