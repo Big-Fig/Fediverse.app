@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
@@ -196,30 +196,26 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
           color: IFediUiColorTheme.of(context).mediumGrey,
         ),
         StreamBuilder<bool>(
-          stream: mediaPlayerBloc.isInitializingStream,
-          initialData: mediaPlayerBloc.isInitializing,
-          builder: (context, snapshot) {
-            var isInitializing = snapshot.data;
+            stream: mediaPlayerBloc.isInitializingStream,
+            initialData: mediaPlayerBloc.isInitializing,
+            builder: (context, snapshot) {
+              var isInitializing = snapshot.data;
 
-            if(isInitializing) {
-              return const SizedBox.shrink();
-            }
-            return Center(
-              child: FediIconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
+              if (isInitializing) {
+                return const SizedBox.shrink();
+              }
+              return Center(
+                child: FediIconInCircleTransparentButton(
                   FediIcons.play,
-                  size: FediSizes.bigIconInCircleDefaultIconSize,
+                  size: FediSizes.bigIconInCircleDefaultSize,
+                  iconSize: FediSizes.bigIconInCircleDefaultIconSize,
                   color: IFediUiColorTheme.of(context).white,
+                  onPressed: () {
+                    mediaPlayerBloc.performAsyncInit();
+                  },
                 ),
-                onPressed: () {
-
-                  mediaPlayerBloc.performAsyncInit();
-                },
-              ),
-            );
-          }
-        ),
+              );
+            }),
       ],
     );
   }
