@@ -235,24 +235,28 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
   }
 }
 
-void goToSingleMediaPickerPage(BuildContext context,
-    {@required MediaDeviceFileCallback onFileSelectedCallback,
-    List<MediaDeviceFileType> typesToPick = const [
-      MediaDeviceFileType.image,
-      MediaDeviceFileType.video
-    ]}) {
+void goToSingleMediaPickerPage(
+  BuildContext context, {
+  @required MediaDeviceFileCallback onFileSelectedCallback,
+  List<MediaDeviceFileType> typesToPick = const [
+    MediaDeviceFileType.image,
+    MediaDeviceFileType.video
+  ],
+}) {
   Navigator.push(
     context,
     NavigationSlideBottomRouteBuilder(
       page: DisposableProvider<IMediaDeviceGalleryBloc>(
         create: (context) {
           return PhotoManagerMediaDeviceGalleryBloc(
-              typesToPick: typesToPick,
-              storagePermissionBloc:
-                  IStoragePermissionBloc.of(context, listen: false),);
+            typesToPick: typesToPick,
+            storagePermissionBloc:
+                IStoragePermissionBloc.of(context, listen: false),
+          );
         }, // provide parent abstract implementation by type
         child: DisposableProvider<ISingleMediaPickerBloc>(
-          create: (context) => SingleMediaPickerBloc(fileSelectedCallback: onFileSelectedCallback),
+          create: (context) => SingleMediaPickerBloc(
+              fileSelectedCallback: onFileSelectedCallback),
           child: const SingleMediaPickerPage(),
         ),
       ),
