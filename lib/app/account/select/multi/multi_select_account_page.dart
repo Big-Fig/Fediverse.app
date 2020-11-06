@@ -21,7 +21,7 @@ class MultiSelectAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var multiSelectAccountBloc =
-        IMultiSelectAccountBloc.of(context, listen: false);
+        IMultiSelectAccountBloc.of(context);
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
         leading: const FediBackIconButton(),

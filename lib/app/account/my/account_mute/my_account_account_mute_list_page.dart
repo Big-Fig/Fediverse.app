@@ -27,7 +27,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_accountMute_title,
         actions: [
-          buildAddAction(context),
+          const _MyAccountAccountMuteListPageAddButton(),
         ],
       ),
       body: const SafeArea(
@@ -36,15 +36,23 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
     );
   }
 
-  Widget buildAddAction(BuildContext context) {
-    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(
-      context,
-      listen: false,
-    );
-    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
+  const MyAccountAccountMuteListPage();
+}
+
+class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
+  const _MyAccountAccountMuteListPageAddButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var paginationListBloc = IPaginationListBloc.of(context);
+    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
 
     return FediIconButton(
-      icon: Icon(FediIcons.plus),
+      icon: Icon(
+        FediIcons.plus,
+      ),
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () {
         goToSingleSelectAccountPage(
@@ -64,8 +72,6 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
       },
     );
   }
-
-  const MyAccountAccountMuteListPage();
 }
 
 void goToMyAccountAccountMuteListPage(BuildContext context) {

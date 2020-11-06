@@ -11,6 +11,7 @@ import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -92,6 +93,7 @@ class _MyAccountDomainBlockListPageAddAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediIconButton(
       icon: Icon(FediIcons.plus),
+      color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () {
         AddMyAccountDomainBlockDialog.createFromContext(
             context: context,

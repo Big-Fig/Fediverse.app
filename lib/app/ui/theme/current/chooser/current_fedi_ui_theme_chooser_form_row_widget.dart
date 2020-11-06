@@ -7,7 +7,7 @@ class CurrentFediUiThemeChooserFormRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentFediUiThemeChooserBloc =
-        ICurrentFediUiThemeChooserBloc.of(context, listen: false);
+        ICurrentFediUiThemeChooserBloc.of(context);
 
     return FormFediThemeFieldFormRowWidget(
       field: currentFediUiThemeChooserBloc,
