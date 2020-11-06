@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
@@ -12,6 +13,8 @@ import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../fedi_icons.dart';
 
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
@@ -148,8 +151,9 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
     return StreamBuilder<bool>(
       stream: videoMediaPlayerBloc.isInitializedStream,
+      initialData: videoMediaPlayerBloc.isInitialized,
       builder: (context, snapshot) {
-        var isInitialized = snapshot.data ?? false;
+        var isInitialized = snapshot.data;
         if (isInitialized) {
           return const _FediVideoPlayerInitializedWidget();
         } else {
@@ -185,8 +189,38 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: IFediUiColorTheme.of(context).mediumGrey,
+    var mediaPlayerBloc = IMediaPlayerBloc.of(context);
+    return Stack(
+      children: [
+        Container(
+          color: IFediUiColorTheme.of(context).mediumGrey,
+        ),
+        StreamBuilder<bool>(
+          stream: mediaPlayerBloc.isInitializingStream,
+          initialData: mediaPlayerBloc.isInitializing,
+          builder: (context, snapshot) {
+            var isInitializing = snapshot.data;
+
+            if(isInitializing) {
+              return const SizedBox.shrink();
+            }
+            return Center(
+              child: FediIconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  FediIcons.play,
+                  size: FediSizes.bigIconInCircleDefaultIconSize,
+                  color: IFediUiColorTheme.of(context).white,
+                ),
+                onPressed: () {
+
+                  mediaPlayerBloc.performAsyncInit();
+                },
+              ),
+            );
+          }
+        ),
+      ],
     );
   }
 }
@@ -202,8 +236,9 @@ class _FediVideoPlayerControlsWidget extends StatelessWidget {
 
     return StreamBuilder<bool>(
         stream: videoMediaPlayerBloc.isControlsVisibleStream,
+        initialData: videoMediaPlayerBloc.isControlsVisible,
         builder: (context, snapshot) {
-          var isControlsVisible = snapshot.data ?? false;
+          var isControlsVisible = snapshot.data;
           if (isControlsVisible) {
             return const Positioned(
               bottom: 0.0,
@@ -242,11 +277,11 @@ class _FediVideoPlayerControlsBodyWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: FediSizes.mediumPadding),
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               child: FediPlayerControlPanelWidget(),
             ),
             if (videoMediaPlayerBloc.isFullScreenSupportEnabled)
-              FediVideoPlayerToggleControlFullscreenButtonWidget(),
+              const FediVideoPlayerToggleControlFullscreenButtonWidget(),
           ],
         ),
       ),

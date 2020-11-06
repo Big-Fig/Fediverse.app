@@ -58,7 +58,7 @@ extension MediaPlayerStateExtensions on MediaPlayerState {
   bool mapToInitialized() {
     var currentState = this;
     if (currentState == null) {
-      return null;
+      return false;
     }
 
     switch (currentState) {

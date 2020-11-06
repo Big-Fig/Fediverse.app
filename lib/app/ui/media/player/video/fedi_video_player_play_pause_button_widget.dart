@@ -23,19 +23,20 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: videoMediaPlayerBloc.isInitializingStream,
-        builder: (context, snapshot) {
-          var isInitializing = snapshot.data ?? true;
+      stream: videoMediaPlayerBloc.isInitializingStream,
+      builder: (context, snapshot) {
+        var isInitializing = snapshot.data ?? true;
 
-          if (isInitializing) {
-            return const _FediVideoPlayerPlayPauseButtonLoadingWidget();
-          } else {
-            return _FediVideoPlayerPlayPauseButtonInitializedWidget(
-              size: size,
-              iconSize: iconSize,
-            );
-          }
-        });
+        if (isInitializing) {
+          return const _FediVideoPlayerPlayPauseButtonLoadingWidget();
+        } else {
+          return _FediVideoPlayerPlayPauseButtonInitializedWidget(
+            size: size,
+            iconSize: iconSize,
+          );
+        }
+      },
+    );
   }
 }
 
