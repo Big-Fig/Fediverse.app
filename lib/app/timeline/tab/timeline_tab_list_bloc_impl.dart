@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -101,16 +101,21 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       updateTabBlocs();
     }));
 
-    addDisposable(custom: () {
-      disposeTabControllerListener();
+    addDisposable(custom: () async {
+      await disposeTabControllerListener();
     });
   }
 
-  void disposeTabControllerListener() {
+  Future disposeTabControllerListener() async {
     if (tabControllerListener != null &&
         timelineTabBlocsList?.tabController != null) {
       timelineTabBlocsList.tabController.removeListener(tabControllerListener);
       tabControllerListener = null;
+    }
+
+    for (ITimelineTabBloc bloc
+        in timelineTabBlocsList?.timelineTabBlocs ?? []) {
+      await bloc.dispose();
     }
   }
 
@@ -122,11 +127,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   bool updateTabBlocsInProgress = false;
 
   Future updateTabBlocs() async {
-
     _logger.finest(() => "updateTabBlocs "
         "updateTabBlocsInProgress $updateTabBlocsInProgress");
 
-    if(updateTabBlocsInProgress) {
+    if (updateTabBlocsInProgress) {
       return;
     }
 
@@ -144,7 +148,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       return;
     }
 
-    disposeTabControllerListener();
+    await disposeTabControllerListener();
 
     var oldBlocs = timelineTabBlocsList?.timelineTabBlocs;
     var oldTabController = timelineTabBlocsList?.tabController;
