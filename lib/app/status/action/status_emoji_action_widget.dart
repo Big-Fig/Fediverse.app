@@ -39,12 +39,12 @@ class _StatusEmojiActionCounterWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var emojiCount = snapshot.data;
           if (emojiCount == null) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
 
           return Provider<int>.value(
             value: emojiCount,
-            child: const StatusActionCounterWidget(
+            child: StatusActionCounterWidget(
               onClick: _showEmojiPicker,
             ),
           );

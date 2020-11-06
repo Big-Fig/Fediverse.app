@@ -35,13 +35,16 @@ class _StatusReblogActionCounterWidget extends StatelessWidget {
 
     return StreamBuilder<int>(
         stream: statusBloc.reblogPlusOriginalReblogsCountStream,
-        initialData: statusBloc.reblogPlusOriginalReblogsCount,
         builder: (context, snapshot) {
           var reblogsCount = snapshot.data;
 
+          if (reblogsCount == null) {
+            return const SizedBox.shrink();
+          }
+
           return Provider.value(
             value: reblogsCount,
-            child: const StatusActionCounterWidget(
+            child: StatusActionCounterWidget(
               onClick: _onCounterClick,
             ),
           );
