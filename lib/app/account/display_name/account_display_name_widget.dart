@@ -33,9 +33,14 @@ class AccountDisplayNameWidget extends StatelessWidget {
       value: accountBloc.displayNameEmojiTextStream,
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
         update: (context, emojiText, _) {
+          var input = emojiText?.text;
+
+          if(input?.isNotEmpty != true) {
+            input = accountBloc.acct;
+          }
           return HtmlTextBloc(
             inputData: HtmlTextInputData(
-              input: emojiText?.text,
+              input: input,
               emojis: emojiText?.emojis,
             ),
             settings: HtmlTextSettings(
