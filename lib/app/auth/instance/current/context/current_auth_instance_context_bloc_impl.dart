@@ -16,6 +16,8 @@ import 'package:fedi/app/chat/conversation/current/conversation_chat_current_blo
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
@@ -230,13 +232,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
 
-    var chatWithLastMessageRepository = PleromaChatWithLastMessageRepository(
+    var pleromaChatWithLastMessageRepository =
+        PleromaChatWithLastMessageRepository(
       chatRepository: chatRepository,
       chatMessageRepository: chatMessageRepository,
     );
-    addDisposable(disposable: chatWithLastMessageRepository);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaChatWithLastMessageRepository>(chatWithLastMessageRepository);
+    addDisposable(disposable: pleromaChatWithLastMessageRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaChatWithLastMessageRepository>(
+            pleromaChatWithLastMessageRepository);
+
+    var conversationChatWithLastMessageRepository =
+        ConversationChatWithLastMessageRepository(
+      conversationChatRepository: conversationRepository,
+      statusRepository: statusRepository,
+    );
+    addDisposable(disposable: conversationChatWithLastMessageRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IConversationChatWithLastMessageRepository>(
+            conversationChatWithLastMessageRepository);
 
     var restService = RestService(baseUrl: currentInstance.url);
     addDisposable(disposable: restService);

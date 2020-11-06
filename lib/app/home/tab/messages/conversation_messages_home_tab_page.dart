@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc.dart';
-import 'package:fedi/app/chat/conversation/list/conversation_chat_list_bloc_impl.dart';
-import 'package:fedi/app/chat/conversation/list/conversation_chat_list_widget.dart';
 import 'package:fedi/app/chat/conversation/start/conversation_chat_start_page.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -52,27 +52,26 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
     );
   }
 
-  DisposableProvider<IConversationChatListBloc> provideContentContext(
-      Widget child) {
-    return DisposableProvider<IConversationChatListBloc>(
-      create: (context) => ConversationChatListBloc.createFromContext(context),
+  DisposableProvider<IConversationChatWithLastMessageListBloc>
+      provideContentContext(Widget child) {
+    return DisposableProvider<IConversationChatWithLastMessageListBloc>(
+      create: (context) =>
+          ConversationChatWithLastMessageListBloc.createFromContext(context),
       child: Builder(builder: (context) {
-        var conversationsListBloc =
-            IConversationChatListBloc.of(context, listen: false);
+        var chatsListBloc =
+            IConversationChatWithLastMessageListBloc.of(context, listen: false);
 
         return MultiProvider(
           providers: [
+            Provider.value(value: chatsListBloc.chatListBloc),
+            Provider.value(value: chatsListBloc.chatPaginationBloc),
+            Provider.value(value: chatsListBloc.chatPaginationListBloc),
             Provider.value(
-                value: conversationsListBloc.conversationListService),
-            Provider.value(
-                value: conversationsListBloc.conversationPaginationBloc),
-            Provider.value(
-                value: conversationsListBloc.conversationPaginationListBloc),
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
             Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                value: conversationsListBloc
-                    .conversationPaginationListWithNewItemsBloc),
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
             Provider<IPaginationListBloc>.value(
-                value: conversationsListBloc.conversationPaginationListBloc),
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
           ],
           child: child,
         );
@@ -94,8 +93,8 @@ class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
         child: Container(
           color: fediUiColorTheme.white,
-          child: const ConversationChatListWidget(
-            key: PageStorageKey("ConversationChatListWidget"),
+          child: const ConversationChatWithLastMessageListWidget(
+            key: PageStorageKey("ConversationChatWithLastMessageListWidget"),
           ),
         ),
       ),
