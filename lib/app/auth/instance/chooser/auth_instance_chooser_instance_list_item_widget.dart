@@ -100,7 +100,7 @@ class _AuthInstanceChooserInstanceListItemUserAtHostWidget
     var instanceListItemBloc =
         IAuthInstanceChooserInstanceListItemBloc.of(context);
     return Text(
-      instanceListItemBloc.instance.userAtHost,
+      instanceListItemBloc?.instance?.userAtHost ?? "",
       overflow: TextOverflow.ellipsis,
       style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
     );
