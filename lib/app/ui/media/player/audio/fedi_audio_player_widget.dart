@@ -76,9 +76,9 @@ class _FediAudioPlayerErrorBodyWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _FediAudioPlayerErrorReloadButtonWidget(),
-        _FediAudioPlayerErrorBodyContentWidget(),
-        _FediAudioPlayerShowErrorButtonWidget(),
+        const _FediAudioPlayerErrorReloadButtonWidget(),
+        const _FediAudioPlayerErrorBodyContentWidget(),
+        const _FediAudioPlayerShowErrorButtonWidget(),
       ],
     );
   }

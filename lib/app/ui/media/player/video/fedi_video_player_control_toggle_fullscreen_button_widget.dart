@@ -14,6 +14,7 @@ import 'package:wakelock/wakelock.dart';
 
 class FediVideoPlayerToggleControlFullscreenButtonWidget
     extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
@@ -31,6 +32,8 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
           }
         });
   }
+
+  const FediVideoPlayerToggleControlFullscreenButtonWidget();
 }
 
 class _FediVideoPlayerToggleControlFullscreenButtonInitializedWidget

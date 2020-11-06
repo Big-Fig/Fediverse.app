@@ -6,7 +6,7 @@ class FediVideoPlayerContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
+    var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     return VideoPlayer(
       videoMediaPlayerBloc.videoPlayerController,
