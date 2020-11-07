@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_c
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -125,14 +126,16 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     );
   }
 
-  FediBlurredTextButton buildSwitchToChatsActionButton(BuildContext context) {
-    return FediBlurredTextButton(
-        S.of(context).app_home_tab_chat_conversation_action_switchToChats,
-        onPressed: () {
-      IMyAccountSettingsBloc.of(context, listen: false)
-          .isNewChatsEnabledFieldBloc
-          .changeCurrentValue(true);
-    });
+  Widget buildSwitchToChatsActionButton(BuildContext context) {
+    return PleromaChatUnreadBadgeCountWidget(
+      child: FediBlurredTextButton(
+          S.of(context).app_home_tab_chat_conversation_action_switchToChats,
+          onPressed: () {
+        IMyAccountSettingsBloc.of(context, listen: false)
+            .isNewChatsEnabledFieldBloc
+            .changeCurrentValue(true);
+      }),
+    );
   }
 
   Widget buildStartConversationActionButton(BuildContext context) =>
