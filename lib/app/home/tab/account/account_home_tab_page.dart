@@ -395,13 +395,7 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: [
-                FediIconInCircleBlurredButton(
-                  FediIcons.filter,
-                  onPressed: () {
-                    goMyAccountSettingsPage(context);
-                  },
-                ),
-                const FediBigHorizontalSpacer(),
+
                 Expanded(
                   child: InkWell(
                     onTap: () {
@@ -409,7 +403,7 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Flexible(
                           child:
@@ -428,6 +422,13 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                 const FediBigHorizontalSpacer(),
                 FediIconInCircleBlurredButton(
                   FediIcons.settings,
+                  onPressed: () {
+                    goMyAccountSettingsPage(context);
+                  },
+                ),
+                const FediBigHorizontalSpacer(),
+                FediIconInCircleBlurredButton(
+                  FediIcons.pen,
                   onPressed: () {
                     goToEditMyAccountPage(context);
                   },

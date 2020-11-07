@@ -193,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_my_settings_field_new_chatsEnabled_label" : MessageLookupByLibrary.simpleMessage("Replace DM with chats"),
     "app_account_my_settings_field_websocketsEnabled_description" : MessageLookupByLibrary.simpleMessage("Disable to reduce battery usage"),
     "app_account_my_settings_field_websocketsEnabled_label" : MessageLookupByLibrary.simpleMessage("WebSockets real-time updates"),
-    "app_account_my_settings_title" : MessageLookupByLibrary.simpleMessage("Account settings"),
+    "app_account_my_settings_title" : MessageLookupByLibrary.simpleMessage("Settings"),
     "app_account_my_statuses_bookmarked_title" : MessageLookupByLibrary.simpleMessage("Bookmarks"),
     "app_account_my_statuses_favourited_title" : MessageLookupByLibrary.simpleMessage("Favourites"),
     "app_account_select_title" : MessageLookupByLibrary.simpleMessage("Select account"),

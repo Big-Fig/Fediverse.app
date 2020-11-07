@@ -758,10 +758,10 @@ class S {
     );
   }
 
-  /// `Account settings`
+  /// `Settings`
   String get app_account_my_settings_title {
     return Intl.message(
-      'Account settings',
+      'Settings',
       name: 'app_account_my_settings_title',
       desc: '',
       args: [],
