@@ -3791,6 +3791,176 @@ class S {
       args: [count],
     );
   }
+
+  /// ``
+  String get timeago_prefixAgo {
+    return Intl.message(
+      '',
+      name: 'timeago_prefixAgo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get timeago_prefixFromNow {
+    return Intl.message(
+      '',
+      name: 'timeago_prefixFromNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get timeago_suffixAgo {
+    return Intl.message(
+      '',
+      name: 'timeago_suffixAgo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get timeago_suffixFromNow {
+    return Intl.message(
+      '',
+      name: 'timeago_suffixFromNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `now`
+  String timeago_lessThanOneMinute(Object seconds) {
+    return Intl.message(
+      'now',
+      name: 'timeago_lessThanOneMinute',
+      desc: '',
+      args: [seconds],
+    );
+  }
+
+  /// `1 min`
+  String timeago_aboutAMinute(Object seconds) {
+    return Intl.message(
+      '1 min',
+      name: 'timeago_aboutAMinute',
+      desc: '',
+      args: [seconds],
+    );
+  }
+
+  /// `{minutes,plural, =1{1 min} other{{minutes} min}}`
+  String timeago_minutes(num minutes) {
+    return Intl.plural(
+      minutes,
+      one: '1 min',
+      other: '$minutes min',
+      name: 'timeago_minutes',
+      desc: '',
+      args: [minutes],
+    );
+  }
+
+  /// `~1 h`
+  String timeago_aboutAnHour(Object minutes) {
+    return Intl.message(
+      '~1 h',
+      name: 'timeago_aboutAnHour',
+      desc: '',
+      args: [minutes],
+    );
+  }
+
+  /// `{hours,plural, =1{1 h} other{{hours} h}}`
+  String timeago_hours(num hours) {
+    return Intl.plural(
+      hours,
+      one: '1 h',
+      other: '$hours h',
+      name: 'timeago_hours',
+      desc: '',
+      args: [hours],
+    );
+  }
+
+  /// `~1 d`
+  String timeago_aDay(Object hours) {
+    return Intl.message(
+      '~1 d',
+      name: 'timeago_aDay',
+      desc: '',
+      args: [hours],
+    );
+  }
+
+  /// `{days,plural, =1{1 d} other{{days} d}}`
+  String timeago_days(num days) {
+    return Intl.plural(
+      days,
+      one: '1 d',
+      other: '$days d',
+      name: 'timeago_days',
+      desc: '',
+      args: [days],
+    );
+  }
+
+  /// `~1 mo`
+  String timeago_aboutAMonth(Object days) {
+    return Intl.message(
+      '~1 mo',
+      name: 'timeago_aboutAMonth',
+      desc: '',
+      args: [days],
+    );
+  }
+
+  /// `{months,plural, =1{1 mo} other{{months} mo}}`
+  String timeago_months(num months) {
+    return Intl.plural(
+      months,
+      one: '1 mo',
+      other: '$months mo',
+      name: 'timeago_months',
+      desc: '',
+      args: [months],
+    );
+  }
+
+  /// `~1 y`
+  String timeago_aboutAYear(Object year) {
+    return Intl.message(
+      '~1 y',
+      name: 'timeago_aboutAYear',
+      desc: '',
+      args: [year],
+    );
+  }
+
+  /// `{years,plural, =1{1 y} other{{years} y}}`
+  String timeago_years(num years) {
+    return Intl.plural(
+      years,
+      one: '1 y',
+      other: '$years y',
+      name: 'timeago_years',
+      desc: '',
+      args: [years],
+    );
+  }
+
+  /// ` `
+  String get timeago_wordSeparator {
+    return Intl.message(
+      ' ',
+      name: 'timeago_wordSeparator',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

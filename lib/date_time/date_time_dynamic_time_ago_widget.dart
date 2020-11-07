@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 
 typedef DateTimeAgoTextBuilder = String Function(String timeAgoString);
+
+const _customLocale = 'custom';
 
 class DateTimeDynamicTimeAgoWidget extends StatefulWidget {
   final DateTime dateTime;
@@ -51,10 +55,15 @@ class _DateTimeDynamicTimeAgoWidgetState
 
   @override
   Widget build(BuildContext context) {
-    // todo: localize
+    timeago.setLocaleMessages(
+      _customLocale,
+      _TimeagoLocalizationAdapter(
+        S.of(context),
+      ),
+    );
     var timeAgoString = timeago.format(
       widget.dateTime,
-      locale: 'en_short',
+      locale: _customLocale,
       allowFromNow: true,
     );
     return Text(
@@ -64,4 +73,58 @@ class _DateTimeDynamicTimeAgoWidgetState
       style: widget.textStyle,
     );
   }
+}
+
+class _TimeagoLocalizationAdapter implements LookupMessages {
+  final S s;
+
+  _TimeagoLocalizationAdapter(this.s);
+
+  @override
+  String aDay(int hours) => s.timeago_aDay(hours);
+
+  @override
+  String aboutAMinute(int minutes) => s.timeago_aboutAMinute(hours);
+
+  @override
+  String aboutAMonth(int days) => s.timeago_aboutAMonth(days);
+
+  @override
+  String aboutAYear(int year) => s.timeago_aboutAYear(year);
+
+  @override
+  String aboutAnHour(int minutes) => s.timeago_aboutAnHour(minutes);
+
+  @override
+  String days(int days) => s.timeago_days(days);
+
+  @override
+  String hours(int hours) => s.timeago_hours(hours);
+
+  @override
+  String lessThanOneMinute(int seconds) => s.timeago_lessThanOneMinute(seconds);
+
+  @override
+  String minutes(int minutes) => s.timeago_minutes(minutes);
+
+  @override
+  String months(int months) => s.timeago_months(months);
+
+  @override
+  String years(int years) => s.timeago_years(years);
+
+  @override
+  String prefixAgo() => s.timeago_prefixAgo;
+
+  @override
+  String prefixFromNow() => s.timeago_prefixFromNow;
+
+  @override
+  String suffixAgo() => s.timeago_suffixAgo;
+
+  @override
+  String suffixFromNow() => s.timeago_suffixFromNow;
+
+  @override
+  String wordSeparator() => s.timeago_wordSeparator;
 }
