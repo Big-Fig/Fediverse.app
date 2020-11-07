@@ -35,6 +35,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Failed to start app.\nTry restart or re-install app.`
+  String get app_init_fail {
+    return Intl.message(
+      'Failed to start app.\nTry restart or re-install app.',
+      name: 'app_init_fail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Color scheme`
   String get app_theme_chooser_label {
     return Intl.message(
