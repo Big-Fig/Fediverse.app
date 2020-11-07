@@ -116,15 +116,20 @@ void runNotInitializedSplashApp() {
 void runInitFailedApp() {
   runApp(
     MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+      ],
       home: Scaffold(
         backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             // todo: localization
-            child: Text(
-              "Failed to start app.\nTry restart or re-install app.",
-              style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+            child: Builder(
+              builder: (context) => Text(
+                S.of(context).app_init_fail,
+                style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+              ),
             ),
           ),
         ),

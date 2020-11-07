@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "app_init_fail": "Failed to start app.\nTry restart or re-install app.",
   "app_theme_chooser_label": "Color scheme",
   "app_theme_type_dark": "Dark",
   "app_theme_type_light": "Light",
@@ -543,7 +544,6 @@
   "app_status_post_poll_field_length_picker_title": "Poll length",
   "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid time",
   "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",
-
   "app_status_post_dialog_async_content": "Posting...",
   "app_status_post_dialog_error_title_post": "Failed to post status",
   "app_status_post_dialog_error_title_schedule": "Failed to schedule status",

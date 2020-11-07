@@ -264,6 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_home_tab_timelines_tab_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "app_home_tab_timelines_tab_local" : MessageLookupByLibrary.simpleMessage("Local"),
     "app_home_tab_timelines_tab_public" : MessageLookupByLibrary.simpleMessage("All"),
+    "app_init_fail" : MessageLookupByLibrary.simpleMessage("Failed to start app.\nTry restart or re-install app."),
     "app_list_cantUpdateFromNetwork" : MessageLookupByLibrary.simpleMessage("Can\'t update from network"),
     "app_list_empty" : MessageLookupByLibrary.simpleMessage("Items not found"),
     "app_list_loading_state_canLoadMore" : MessageLookupByLibrary.simpleMessage("Can load more"),
