@@ -1,5 +1,5 @@
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:moor/moor.dart';
@@ -21,7 +21,7 @@ var _accountAliasId = "account";
 })
 class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     with _$ChatMessageDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
   $DbAccountsTable accountAlias;
 
   // Called by the AppDatabase class
@@ -112,8 +112,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   JoinedSelectStatement addChatsWhere(
           JoinedSelectStatement query, List<String> chatRemoteIds) =>
       query
-        ..where(CustomExpression<bool>(
-            "db_chat_messages.chat_remote_id IN ("
+        ..where(CustomExpression<bool>("db_chat_messages.chat_remote_id IN ("
             "${chatRemoteIds.join(", ")})"));
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
@@ -187,6 +186,9 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   }
 
   void addGroupByChatId(JoinedSelectStatement<Table, DataClass> query) {
-    query.groupBy([dbChatMessages.chatRemoteId]);
+    query.groupBy(
+      [dbChatMessages.chatRemoteId],
+      having: CustomExpression("MAX(db_chat_messages.created_at)"),
+    );
   }
 }
