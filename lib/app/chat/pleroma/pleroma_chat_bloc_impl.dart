@@ -9,8 +9,11 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger("pleroma_chat_bloc_impl.dart");
 
 class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // ignore: close_sinks
@@ -59,6 +62,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
+    _logger.finest(() => "PleromaChatBloc \n"
+        " chat ${chat.remoteId} \n"
+        " lastMessage $lastChatMessage");
+
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
   }
@@ -79,6 +86,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       streamSubscription:
           chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
         (lastMessage) {
+          _logger.finest(() => "watchChatLastChatMessage \n"
+              " chat ${chat.remoteId} \n"
+              " lastMessage $lastMessage");
           if (lastMessage != null) {
             _lastMessageSubject.add(lastMessage);
           }
@@ -154,7 +164,6 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       await chatRepository.markAsRead(chat: chat);
     }
   }
-
 
   @override
   bool get isCountInUnreadSupported => true;

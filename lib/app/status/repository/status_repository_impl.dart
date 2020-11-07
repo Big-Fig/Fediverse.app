@@ -851,6 +851,10 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   void addGroupByConversationId(JoinedSelectStatement query) {
     query.groupBy(
-        [conversationStatusesDao.dbConversationStatuses.conversationRemoteId]);
+      [
+        conversationStatusesDao.dbConversationStatuses.conversationRemoteId,
+      ],
+      having: CustomExpression("MAX(db_statuses.created_at)"),
+    );
   }
 }

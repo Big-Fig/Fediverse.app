@@ -1,10 +1,10 @@
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
@@ -31,7 +31,8 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertRemoteChatMessage(pleroma_lib.IPleromaChatMessage remoteChatMessage) async {
+  Future upsertRemoteChatMessage(
+      pleroma_lib.IPleromaChatMessage remoteChatMessage) async {
     _logger.finer(() => "upsertRemoteChatMessage $remoteChatMessage");
 //    var remoteAccount = remoteChatMessage.account;
 //
@@ -58,8 +59,9 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 //    await accountRepository.upsertRemoteAccounts(remoteAccounts,
 //        chatRemoteId: chatRemoteId);
 
-    await upsertAll(
-        remoteChatMessages.map(mapRemoteChatMessageToDbPleromaChatMessage).toList());
+    await upsertAll(remoteChatMessages
+        .map(mapRemoteChatMessageToDbPleromaChatMessage)
+        .toList());
   }
 
   @override
@@ -148,7 +150,11 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
         finalQuery = dao.addChatWhere(finalQuery, onlyInChats.first.remoteId);
       } else {
         finalQuery = dao.addChatsWhere(
-            finalQuery, onlyInChats.map((chat) => chat.remoteId));
+          finalQuery,
+          onlyInChats.map(
+            (chat) => chat.remoteId,
+          ),
+        );
       }
     }
 
@@ -300,7 +306,8 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IPleromaChatMessage> getChatLastChatMessage({@required IPleromaChat chat}) =>
+  Future<IPleromaChatMessage> getChatLastChatMessage(
+          {@required IPleromaChat chat}) =>
       getChatMessage(
         onlyInChats: [chat],
         olderThanChatMessage: null,
@@ -334,18 +341,37 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
     Map<IPleromaChat, IPleromaChatMessage> result = {};
 
-    chats.forEach((chat) {
-      result[chat] = chatMessages.firstWhere(
-        (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
-        orElse: () => null,
-      );
-    });
+    chats.forEach(
+      (chat) {
+        var currentChatMessages = chatMessages.where(
+          (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
+        );
+
+        IPleromaChatMessage chatMessage = currentChatMessages?.fold(
+          null,
+          (IPleromaChatMessage previousValue, IPleromaChatMessage element) {
+            if (previousValue == null) {
+              return element;
+            } else {
+              if (previousValue.createdAt.isBefore(element.createdAt)) {
+                return element;
+              } else {
+                return previousValue;
+              }
+            }
+          },
+        );
+
+        result[chat] = chatMessage;
+      },
+    );
 
     return result;
   }
 
   @override
-  Stream<IPleromaChatMessage> watchChatLastChatMessage({@required IPleromaChat chat}) =>
+  Stream<IPleromaChatMessage> watchChatLastChatMessage(
+          {@required IPleromaChat chat}) =>
       watchChatMessage(
         onlyInChats: [chat],
         olderThanChatMessage: null,

@@ -24,6 +24,11 @@ abstract class IPleromaChatMessage extends IChatMessage {
 class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   final DbChatMessagePopulated dbChatMessagePopulated;
 
+  @override
+  String toString() {
+    return 'DbChatMessagePopulatedWrapper{dbChatMessagePopulated: $dbChatMessagePopulated}';
+  }
+
   DbChatMessagePopulatedWrapper(this.dbChatMessagePopulated);
 
   @override

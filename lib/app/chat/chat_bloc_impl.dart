@@ -1,18 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
-import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rxdart/rxdart.dart';
 
 abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
-  // ignore: close_sinks
-  BehaviorSubject<IChat> get _chatSubject;
-
-  // ignore: close_sinks
-  BehaviorSubject<IChatMessage> get _lastMessageSubject;
-
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ChatBloc({
@@ -59,19 +50,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       chatStream.map((chat) => chat.updatedAt);
 
   @override
-  IChat get chat => _chatSubject.value;
-
-  @override
-  Stream<IChat> get chatStream => _chatSubject.stream;
-
-  @override
   Future refreshFromNetwork();
-
-  @override
-  IChatMessage get lastChatMessage => _lastMessageSubject.value;
-
-  @override
-  Stream<IChatMessage> get lastChatMessageStream => _lastMessageSubject.stream;
 
   @override
   bool get isHaveUnread => unreadCount > 0;
