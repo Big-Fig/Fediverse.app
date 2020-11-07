@@ -125,7 +125,7 @@
   "app_account_my_settings_field_alwaysShowSpoiler_label": "Show spoilers by default",
   "app_account_my_settings_field_alwaysShowNsfw_label": "Show NSFW by default",
   "app_account_my_settings_field_defaultVisibility_label": "Default visibility",
-  "app_account_my_settings_field_mediaNsfwByDefault_label": "Mark media NSFW by default",
+  "app_account_my_settings_field_mediaNsfwByDefault_label": "Mark media as NSFW on uploading",
   "app_account_my_settings_field_mediaAutoInit_label": "Audio/Video auto-init",
   "app_account_my_settings_field_mediaAutoPlay_label": "Audio/Video auto-play",
   "app_account_my_settings_action_scheduledPosts": "Scheduled posts",

@@ -798,10 +798,10 @@ class S {
     );
   }
 
-  /// `Mark media NSFW by default`
+  /// `Mark media as NSFW on uploading`
   String get app_account_my_settings_field_mediaNsfwByDefault_label {
     return Intl.message(
-      'Mark media NSFW by default',
+      'Mark media as NSFW on uploading',
       name: 'app_account_my_settings_field_mediaNsfwByDefault_label',
       desc: '',
       args: [],

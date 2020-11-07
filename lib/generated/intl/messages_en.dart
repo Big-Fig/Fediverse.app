@@ -169,7 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_my_settings_field_defaultVisibility_label" : MessageLookupByLibrary.simpleMessage("Default visibility"),
     "app_account_my_settings_field_mediaAutoInit_label" : MessageLookupByLibrary.simpleMessage("Audio/Video auto-init"),
     "app_account_my_settings_field_mediaAutoPlay_label" : MessageLookupByLibrary.simpleMessage("Audio/Video auto-play"),
-    "app_account_my_settings_field_mediaNsfwByDefault_label" : MessageLookupByLibrary.simpleMessage("Mark media NSFW by default"),
+    "app_account_my_settings_field_mediaNsfwByDefault_label" : MessageLookupByLibrary.simpleMessage("Mark media as NSFW on uploading"),
     "app_account_my_settings_field_new_chatsEnabled_description" : MessageLookupByLibrary.simpleMessage("Not supported on non-Pleroma instances"),
     "app_account_my_settings_field_new_chatsEnabled_label" : MessageLookupByLibrary.simpleMessage("Replace DM with chats"),
     "app_account_my_settings_field_websocketsEnabled_description" : MessageLookupByLibrary.simpleMessage("Disable to reduce battery usage"),
