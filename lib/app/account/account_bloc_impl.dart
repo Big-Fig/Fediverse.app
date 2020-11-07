@@ -176,7 +176,7 @@ class AccountBloc extends IAccountBloc {
   Future<IPleromaAccountRelationship> toggleFollow() async {
     assert(accountRelationship != null);
     var newRelationship;
-    if (accountRelationship.following == true) {
+    if (accountRelationship.requested == true || accountRelationship.following == true) {
       newRelationship = await pleromaAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
       await accountRepository.updateLocalAccountByRemoteAccount(

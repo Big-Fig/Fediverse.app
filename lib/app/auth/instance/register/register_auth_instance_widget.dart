@@ -28,7 +28,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var joinInstanceRegisterBloc =
-        IRegisterAuthInstanceBloc.of(context, listen: false);
+        IRegisterAuthInstanceBloc.of(context);
 
     return UnfocusOnScrollAreaWidget(
       child: ListView(
@@ -139,9 +139,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         formCaptchaStringFieldBloc: bloc.captchaFieldBloc,
         label: S
             .of(context)
-            .app_auth_instance_register_field_confirmPassword_label,
+            .app_auth_instance_register_field_captcha_label,
         hint:
-            S.of(context).app_auth_instance_register_field_confirmPassword_hint,
+            S.of(context).app_auth_instance_register_field_captcha_hint,
         obscureText: false,
         autocorrect: false,
         onSubmitted: null,
