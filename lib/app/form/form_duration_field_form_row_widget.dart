@@ -1,6 +1,7 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -71,7 +72,7 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              if (desc != null) Text(desc),
+              if (desc != null) FediFormColumnDesc(desc),
             ],
           );
         });

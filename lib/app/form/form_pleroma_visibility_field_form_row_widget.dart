@@ -1,11 +1,13 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +29,7 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
     return StreamBuilder<PleromaVisibility>(
         stream: field.currentValueStream.distinct(),
         initialData: field.currentValue,
@@ -37,41 +40,61 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FediFormRow(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FediFormRowLabel(label),
-                    FediIconButton(
-                      onPressed: () {
-                        showFediSelectionChooserDialog(
-                            context: context,
-
-                            title: S.of(context).app_status_post_visibility_title,
-                            actions: [
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.public, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.direct, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.unlisted, currentValue),
-                              buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.private, currentValue),
-                            ]);
-                      },
-                      icon: Icon(
-                        StatusVisibilityIconWidget.mapVisibilityToIconData(
-                            currentValue),
+              InkWell(
+                onTap: () {
+                  _showDialog(context, currentValue);
+                },
+                child: FediFormRow(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FediFormRowLabel(label),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FediIconButton(
+                            onPressed: () {
+                              _showDialog(context, currentValue);
+                            },
+                            icon: Icon(
+                              StatusVisibilityIconWidget.mapVisibilityToIconData(
+                                  currentValue),
+                            ),
+                          ),
+                          Text(
+                            StatusVisibilityTitleWidget.mapVisibilityToTitle(
+                                context, currentValue),
+                            style: fediUiTextTheme.mediumShortDarkGrey,
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              if (desc != null) Text(desc),
+              if (desc != null) FediFormColumnDesc(desc),
             ],
           );
         });
+  }
+
+  void _showDialog(BuildContext context, PleromaVisibility currentValue) {
+       showFediSelectionChooserDialog(
+        context: context,
+        title: S
+            .of(context)
+            .app_status_post_visibility_title,
+        actions: [
+          buildVisibilityDialogAction(context, field,
+              PleromaVisibility.public, currentValue),
+          buildVisibilityDialogAction(context, field,
+              PleromaVisibility.direct, currentValue),
+          buildVisibilityDialogAction(context, field,
+              PleromaVisibility.unlisted, currentValue),
+          buildVisibilityDialogAction(context, field,
+              PleromaVisibility.private, currentValue),
+        ]);
   }
 
   SelectionDialogAction buildVisibilityDialogAction(

@@ -9,6 +9,6 @@ class FediFormColumnDesc extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         text,
-        style: IFediUiTextTheme.of(context).mediumTallLightGrey,
+        style: IFediUiTextTheme.of(context).smallShortGrey,
       );
 }
