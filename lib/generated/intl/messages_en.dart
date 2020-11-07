@@ -105,6 +105,28 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m42(url) => "URL ${url} have invalid format";
 
+  static m43(hours) => "~1 d";
+
+  static m44(seconds) => "1 min";
+
+  static m45(days) => "~1 mo";
+
+  static m46(year) => "~1 y";
+
+  static m47(minutes) => "~1 h";
+
+  static m48(days) => "${Intl.plural(days, one: '1 d', other: '${days} d')}";
+
+  static m49(hours) => "${Intl.plural(hours, one: '1 h', other: '${hours} h')}";
+
+  static m50(seconds) => "now";
+
+  static m51(minutes) => "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
+
+  static m52(months) => "${Intl.plural(months, one: '1 mo', other: '${months} mo')}";
+
+  static m53(years) => "${Intl.plural(years, one: '1 y', other: '${years} y')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "app_account_action_block" : MessageLookupByLibrary.simpleMessage("Block"),
@@ -480,6 +502,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "link_error_dialog_content" : m42,
     "link_error_dialog_title" : MessageLookupByLibrary.simpleMessage("Can\'t launch URL"),
     "pagination_list_empty" : MessageLookupByLibrary.simpleMessage("Nothing found"),
-    "permission_grant_action_grant" : MessageLookupByLibrary.simpleMessage("Grant permission")
+    "permission_grant_action_grant" : MessageLookupByLibrary.simpleMessage("Grant permission"),
+    "timeago_aDay" : m43,
+    "timeago_aboutAMinute" : m44,
+    "timeago_aboutAMonth" : m45,
+    "timeago_aboutAYear" : m46,
+    "timeago_aboutAnHour" : m47,
+    "timeago_days" : m48,
+    "timeago_hours" : m49,
+    "timeago_lessThanOneMinute" : m50,
+    "timeago_minutes" : m51,
+    "timeago_months" : m52,
+    "timeago_prefixAgo" : MessageLookupByLibrary.simpleMessage(""),
+    "timeago_prefixFromNow" : MessageLookupByLibrary.simpleMessage(""),
+    "timeago_suffixAgo" : MessageLookupByLibrary.simpleMessage(""),
+    "timeago_suffixFromNow" : MessageLookupByLibrary.simpleMessage(""),
+    "timeago_wordSeparator" : MessageLookupByLibrary.simpleMessage(" "),
+    "timeago_years" : m53
   };
 }

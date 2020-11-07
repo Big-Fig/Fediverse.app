@@ -673,5 +673,76 @@
     "placeholders": {
       "count": {}
     }
-  }
+  },
+  "timeago_prefixAgo": "",
+  "timeago_prefixFromNow": "",
+  "timeago_suffixAgo": "",
+  "timeago_suffixFromNow": "",
+  "timeago_lessThanOneMinute": "now",
+  "@timeago_lessThanOneMinute": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "timeago_aboutAMinute": "1 min",
+  "@timeago_aboutAMinute": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "timeago_minutes": "{minutes,plural, =1{1 min} other{{minutes} min}}",
+  "@timeago_minutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "timeago_aboutAnHour": "~1 h",
+  "@timeago_aboutAnHour": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "timeago_hours": "{hours,plural, =1{1 h} other{{hours} h}}",
+  "@timeago_hours": {
+    "placeholders": {
+      "hours": {}
+    }
+  },
+  "timeago_aDay": "~1 d",
+  "@timeago_aDay": {
+    "placeholders": {
+      "hours": {}
+    }
+  },
+  "timeago_days": "{days,plural, =1{1 d} other{{days} d}}",
+  "@timeago_days": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "timeago_aboutAMonth": "~1 mo",
+  "@timeago_aboutAMonth": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "timeago_months": "{months,plural, =1{1 mo} other{{months} mo}}",
+  "@timeago_months": {
+    "placeholders": {
+      "months": {}
+    }
+  },
+  "timeago_aboutAYear": "~1 y",
+  "@timeago_aboutAYear": {
+    "placeholders": {
+      "year": {}
+    }
+  },
+  "timeago_years": "{years,plural, =1{1 y} other{{years} y}}",
+  "@timeago_years": {
+    "placeholders": {
+      "years": {}
+    }
+  },
+  "timeago_wordSeparator": " "
 }
