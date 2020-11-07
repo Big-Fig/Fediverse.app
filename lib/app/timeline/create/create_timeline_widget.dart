@@ -49,6 +49,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
                   return TimelineSettingsWidget(
                     type: currentValue,
                     isNullablePossible: true,
+                    shrinkWrap: false,
                   );
                 }),
           ),

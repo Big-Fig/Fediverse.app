@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
@@ -38,8 +39,8 @@ class _TimelinesHomeTabStoragePagePageAppBar extends StatelessWidget implements
   @override
   Widget build(BuildContext context) {
     return FediSubPageTitleAppBar(
-
       title: S.of(context).app_timeline_storage_title,
+      leading: const FediDismissIconButton(),
       actions: [
         Padding(
           padding: FediPadding.horizontalBigPadding,

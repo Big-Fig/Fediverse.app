@@ -431,8 +431,19 @@
   "app_timeline_type_field_chooser_dialog_title": "Choose timeline type",
   "app_timeline_storage_title": "Timelines",
   "app_timeline_storage_empty": "Nothing found",
-  "app_timeline_settings_title": "'{timeline}' timeline settings",
-  "@app_timeline_settings_title": {
+  "app_timeline_storage_delete_dialog_title": "Delete",
+  "app_timeline_storage_delete_dialog_content": "Are you sure you want to delete {timeline} Timeline?",
+  "app_timeline_storage_delete_dialog_action_delete": "Delete",
+  "@app_timeline_storage_delete_dialog_action_delete": {
+    "timeline": {
+      "timeline": {
+        "type": "String"
+      }
+    }
+  },
+  "app_timeline_settings_title": "Settings:",
+  "app_timeline_settings_content": "{timeline} Timeline",
+  "@app_timeline_settings_content": {
     "placeholders": {
       "timeline": {
         "type": "String"

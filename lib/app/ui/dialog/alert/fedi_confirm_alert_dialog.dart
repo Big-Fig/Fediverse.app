@@ -1,6 +1,6 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediConfirmAlertDialog extends FediBaseAlertDialog {
@@ -12,11 +12,10 @@ class FediConfirmAlertDialog extends FediBaseAlertDialog {
       String okActionLabel})
       : super(
             title: title,
-      contentText: contentText,
+            contentText: contentText,
             actions: [
               DialogAction(
-                  label: okActionLabel ??
-                      S.of(context).dialog_action_ok,
+                  label: okActionLabel ?? S.of(context).dialog_action_ok,
                   onAction: onAction)
             ],
             cancelable: true);
