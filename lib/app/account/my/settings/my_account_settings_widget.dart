@@ -15,7 +15,6 @@ class MyAccountSettingsWidget extends StatelessWidget {
         children: [
           const CurrentFediUiThemeChooserFormRowWidget(),
           const _MyAccountSettingsWebSocketsFieldWidget(),
-          const _MyAccountSettingsChatsFieldWidget(),
           const _MyAccountSettingsShowSpoilerFieldWidget(),
           const _MyAccountSettingsShowNsfwSpoilerWidget(),
           const _MyAccountSettingsDefaultVisibilityFieldWidget(),
@@ -127,25 +126,6 @@ class _MyAccountSettingsShowSpoilerFieldWidget extends StatelessWidget {
           S.of(context).app_account_my_settings_field_alwaysShowSpoiler_label,
       desc: null,
       field: myAccountSettingsBloc.isAlwaysShowSpoilerFieldBloc,
-    );
-  }
-}
-
-class _MyAccountSettingsChatsFieldWidget extends StatelessWidget {
-  const _MyAccountSettingsChatsFieldWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
-
-    return FormBoolFieldFormRowWidget(
-      label: S.of(context).app_account_my_settings_field_new_chatsEnabled_label,
-      desc: S
-          .of(context)
-          .app_account_my_settings_field_new_chatsEnabled_description,
-      field: myAccountSettingsBloc.isNewChatsEnabledFieldBloc,
     );
   }
 }

@@ -285,10 +285,10 @@ class S {
     );
   }
 
-  /// `Share to DMs`
+  /// `Share to Conversations`
   String get app_share_action_shareToConversations {
     return Intl.message(
-      'Share to DMs',
+      'Share to Conversations',
       name: 'app_share_action_shareToConversations',
       desc: '',
       args: [],
@@ -753,26 +753,6 @@ class S {
     return Intl.message(
       'Disable to reduce battery usage',
       name: 'app_account_my_settings_field_websocketsEnabled_description',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Replace DM with chats`
-  String get app_account_my_settings_field_new_chatsEnabled_label {
-    return Intl.message(
-      'Replace DM with chats',
-      name: 'app_account_my_settings_field_new_chatsEnabled_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not supported on non-Pleroma instances`
-  String get app_account_my_settings_field_new_chatsEnabled_description {
-    return Intl.message(
-      'Not supported on non-Pleroma instances',
-      name: 'app_account_my_settings_field_new_chatsEnabled_description',
       desc: '',
       args: [],
     );
