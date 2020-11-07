@@ -100,11 +100,7 @@ HtmlTextResultData _calculateHtmlData({
       text = text?.replaceAll("<(/)*br>", "");
     }
 
-    if (isActuallyHaveHtmlInData) {
-      if (!text.startsWith("<html>")) {
-        text = "<html><body><p>$text</p></body></html>";
-      }
-    } else {
+    if (!isActuallyHaveHtmlInData) {
       text = _unescape.convert(text);
     }
 
