@@ -62,9 +62,9 @@ class FediChooserDialogBody extends StatelessWidget {
               style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
-        FediUltraLightGreyDivider(),
+        const FediUltraLightGreyDivider(),
         if (loadingActions)
-          Padding(
+          const Padding(
             padding: FediPadding.allBigPadding,
             child: FediCircularProgressIndicator(),
           ),

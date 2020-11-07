@@ -93,31 +93,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m36(accountAcct) => "Reply to @${accountAcct}";
 
-  static m37(timeline) => "\'${timeline}\' timeline settings";
+  static m37(timeline) => "${timeline} Timeline";
 
-  static m38(errorMessage) => "Failed to init ${errorMessage}";
+  static m38(timeline) => "Are you sure you want to delete ${timeline} Timeline?";
 
-  static m39(errorMessage) => "Error: ${errorMessage}";
+  static m39(errorMessage) => "Failed to init ${errorMessage}";
 
-  static m40(errorMessage) => "An error has occurred. Please retry your action again. \n${errorMessage}";
+  static m40(errorMessage) => "Error: ${errorMessage}";
 
-  static m41(count) => "${Intl.plural(count, one: '1 day', other: '${count} days')}";
+  static m41(errorMessage) => "An error has occurred. Please retry your action again. \n${errorMessage}";
 
-  static m42(count) => "${Intl.plural(count, one: '1 hour', other: '${count} hours')}";
+  static m42(count) => "${Intl.plural(count, one: '1 day', other: '${count} days')}";
 
-  static m43(count) => "${Intl.plural(count, one: '1 minute', other: '${count} minutes')}";
+  static m43(count) => "${Intl.plural(count, one: '1 hour', other: '${count} hours')}";
 
-  static m44(maxCharactersCount) => "Must be less than ${maxCharactersCount} characters";
+  static m44(count) => "${Intl.plural(count, one: '1 minute', other: '${count} minutes')}";
 
-  static m45(minCharactersCount, maxCharactersCount) => "Must be between ${minCharactersCount} and ${maxCharactersCount} characters";
+  static m45(maxCharactersCount) => "Must be less than ${maxCharactersCount} characters";
 
-  static m46(minCharactersCount) => "Must be at least ${minCharactersCount} characters";
+  static m46(minCharactersCount, maxCharactersCount) => "Must be between ${minCharactersCount} and ${maxCharactersCount} characters";
 
-  static m47(url) => "URL ${url} have invalid format";
+  static m47(minCharactersCount) => "Must be at least ${minCharactersCount} characters";
 
-  static m48(errorMessage) => "Failed to load: ${errorMessage}";
+  static m48(url) => "URL ${url} have invalid format";
 
-  static m49(initMessage) => "Initializing: ${initMessage}";
+  static m49(errorMessage) => "Failed to load: ${errorMessage}";
+
+  static m50(initMessage) => "Initializing: ${initMessage}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -475,6 +477,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_create_field_title_label" : MessageLookupByLibrary.simpleMessage("Title"),
     "app_timeline_create_title" : MessageLookupByLibrary.simpleMessage("Create new timeline"),
     "app_timeline_loading" : MessageLookupByLibrary.simpleMessage("Loading timelines"),
+    "app_timeline_settings_content" : m37,
     "app_timeline_settings_field_excludeNsfw_label" : MessageLookupByLibrary.simpleMessage("Exclude NSFW"),
     "app_timeline_settings_field_excludeReblogs_label" : MessageLookupByLibrary.simpleMessage("Exclude reblogs"),
     "app_timeline_settings_field_excludeReplies_label" : MessageLookupByLibrary.simpleMessage("Exclude replies"),
@@ -496,9 +499,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_settings_replyVisibilityFilter_field_null" : MessageLookupByLibrary.simpleMessage("Not selected"),
     "app_timeline_settings_replyVisibilityFilter_following" : MessageLookupByLibrary.simpleMessage("Following"),
     "app_timeline_settings_replyVisibilityFilter_self" : MessageLookupByLibrary.simpleMessage("Self"),
-    "app_timeline_settings_title" : m37,
+    "app_timeline_settings_title" : MessageLookupByLibrary.simpleMessage("Settings:"),
     "app_timeline_settings_withRemoteHashtag_field_hint" : MessageLookupByLibrary.simpleMessage("pleroma"),
     "app_timeline_settings_withRemoteHashtag_field_label" : MessageLookupByLibrary.simpleMessage("With hashtag"),
+    "app_timeline_storage_delete_dialog_action_delete" : MessageLookupByLibrary.simpleMessage("Delete"),
+    "app_timeline_storage_delete_dialog_content" : m38,
+    "app_timeline_storage_delete_dialog_title" : MessageLookupByLibrary.simpleMessage("Delete"),
     "app_timeline_storage_empty" : MessageLookupByLibrary.simpleMessage("Nothing found"),
     "app_timeline_storage_title" : MessageLookupByLibrary.simpleMessage("Timelines"),
     "app_timeline_type_account" : MessageLookupByLibrary.simpleMessage("Account"),
@@ -510,22 +516,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_type_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "app_timeline_type_public" : MessageLookupByLibrary.simpleMessage("Public"),
     "app_tos_title" : MessageLookupByLibrary.simpleMessage("Terms of service"),
-    "async_init_state_failed" : m38,
+    "async_init_state_failed" : m39,
     "async_init_state_notStarted" : MessageLookupByLibrary.simpleMessage("Async init not started"),
-    "camera_state_error" : m39,
+    "camera_state_error" : m40,
     "camera_state_initializing" : MessageLookupByLibrary.simpleMessage("Initializing"),
     "camera_state_notInitialized" : MessageLookupByLibrary.simpleMessage("Non initialized"),
     "dialog_action_cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "dialog_action_no" : MessageLookupByLibrary.simpleMessage("No"),
     "dialog_action_ok" : MessageLookupByLibrary.simpleMessage("OK"),
     "dialog_action_yes" : MessageLookupByLibrary.simpleMessage("Yes"),
-    "dialog_error_content" : m40,
+    "dialog_error_content" : m41,
     "dialog_error_title" : MessageLookupByLibrary.simpleMessage("Something wrong"),
     "dialog_progress_action_cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "dialog_progress_content" : MessageLookupByLibrary.simpleMessage("Loading..."),
-    "duration_day" : m41,
-    "duration_hour" : m42,
-    "duration_minute" : m43,
+    "duration_day" : m42,
+    "duration_hour" : m43,
+    "duration_minute" : m44,
     "file_gallery_empty" : MessageLookupByLibrary.simpleMessage("You don\'t have media"),
     "file_gallery_folder_empty" : MessageLookupByLibrary.simpleMessage("This folder doesn\'t have media"),
     "file_gallery_state_loadingNotStarted" : MessageLookupByLibrary.simpleMessage("Loading not started"),
@@ -536,16 +542,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "file_picker_single_video_confirm_dialog_title" : MessageLookupByLibrary.simpleMessage("Video"),
     "form_field_text_email_error_invalid_desc" : MessageLookupByLibrary.simpleMessage("Invalid email"),
     "form_field_text_error_empty_desc" : MessageLookupByLibrary.simpleMessage("Must be not empty"),
-    "form_field_text_error_length_maxOnly_desc" : m44,
-    "form_field_text_error_length_minAndMax_desc" : m45,
-    "form_field_text_error_length_minOnly_desc" : m46,
+    "form_field_text_error_length_maxOnly_desc" : m45,
+    "form_field_text_error_length_minAndMax_desc" : m46,
+    "form_field_text_error_length_minOnly_desc" : m47,
     "form_field_text_password_error_notMatch_desc" : MessageLookupByLibrary.simpleMessage("Password and confirm password must match"),
     "form_field_text_url_error_invalid_desc" : MessageLookupByLibrary.simpleMessage("Invalid URL"),
     "form_field_value_error_null_desc" : MessageLookupByLibrary.simpleMessage("Required"),
-    "link_error_dialog_content" : m47,
+    "link_error_dialog_content" : m48,
     "link_error_dialog_title" : MessageLookupByLibrary.simpleMessage("Can\'t launch URL"),
-    "media_player_failed" : m48,
-    "media_player_initializing" : m49,
+    "media_player_failed" : m49,
+    "media_player_initializing" : m50,
     "pagination_list_empty" : MessageLookupByLibrary.simpleMessage("Nothing found"),
     "permission_grant_action_grant" : MessageLookupByLibrary.simpleMessage("Grant permission")
   };

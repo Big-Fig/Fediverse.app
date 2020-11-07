@@ -15,10 +15,13 @@ import 'package:flutter/material.dart';
 class TimelineSettingsWidget extends StatelessWidget {
   final TimelineType type;
   final bool isNullablePossible;
+  final bool shrinkWrap;
 
   TimelineSettingsWidget({
     @required this.type,
     @required this.isNullablePossible,
+    @required this.shrinkWrap,
+
   });
 
   @override
@@ -87,6 +90,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     }
 
     return ListView(
+      shrinkWrap: shrinkWrap,
       children: children,
     );
   }

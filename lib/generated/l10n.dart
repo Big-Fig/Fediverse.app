@@ -2444,11 +2444,51 @@ class S {
     );
   }
 
-  /// `'{timeline}' timeline settings`
-  String app_timeline_settings_title(Object timeline) {
+  /// `Delete`
+  String get app_timeline_storage_delete_dialog_title {
     return Intl.message(
-      '\'$timeline\' timeline settings',
+      'Delete',
+      name: 'app_timeline_storage_delete_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete {timeline} Timeline?`
+  String app_timeline_storage_delete_dialog_content(Object timeline) {
+    return Intl.message(
+      'Are you sure you want to delete $timeline Timeline?',
+      name: 'app_timeline_storage_delete_dialog_content',
+      desc: '',
+      args: [timeline],
+    );
+  }
+
+  /// `Delete`
+  String get app_timeline_storage_delete_dialog_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_timeline_storage_delete_dialog_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings:`
+  String get app_timeline_settings_title {
+    return Intl.message(
+      'Settings:',
       name: 'app_timeline_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{timeline} Timeline`
+  String app_timeline_settings_content(Object timeline) {
+    return Intl.message(
+      '$timeline Timeline',
+      name: 'app_timeline_settings_content',
       desc: '',
       args: [timeline],
     );
