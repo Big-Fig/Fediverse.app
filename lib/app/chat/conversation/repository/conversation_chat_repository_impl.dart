@@ -297,4 +297,12 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       ),
     );
   }
+
+
+  @override
+  Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
+
+  @override
+  Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
+
 }

@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
@@ -162,13 +163,15 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       ],
       content: null,
       endingWidgets: [
-        FediBlurredTextButton(
-          S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
-          onPressed: () {
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .isNewChatsEnabledFieldBloc
-                .changeCurrentValue(false);
-          },
+        ConversationChatUnreadBadgeCountWidget(
+          child: FediBlurredTextButton(
+            S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
+            onPressed: () {
+              IMyAccountSettingsBloc.of(context, listen: false)
+                  .isNewChatsEnabledFieldBloc
+                  .changeCurrentValue(false);
+            },
+          ),
         ),
         const FediBigHorizontalSpacer(),
         if (isPleromaInstance && isSupportChats)

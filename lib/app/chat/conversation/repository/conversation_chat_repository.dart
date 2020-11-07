@@ -54,4 +54,8 @@ abstract class IConversationChatRepository
       @required IPleromaConversation newRemoteConversation});
 
   Future<bool> markAsRead({@required IConversationChat conversation});
+
+  Future<int> getTotalUnreadCount();
+
+  Stream<int> watchTotalUnreadCount();
 }

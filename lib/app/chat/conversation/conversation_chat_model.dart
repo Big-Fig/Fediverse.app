@@ -44,7 +44,11 @@ class DbConversationChatWrapper implements IConversationChat {
       dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
-        unread: (unread != null && unread > 0) ? true : false ?? this.unread,
+        unread: unread != null
+            ? unread > 0
+                ? true
+                : false
+            : this.unread,
         updatedAt: updatedAt ?? this.updatedAt,
       ),
     );
@@ -56,6 +60,7 @@ class DbConversationChatWrapper implements IConversationChat {
       other is DbConversationChatWrapper &&
           runtimeType == other.runtimeType &&
           dbConversation == other.dbConversation;
+
   @override
   int get hashCode => dbConversation.hashCode;
 
