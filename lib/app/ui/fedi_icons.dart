@@ -90,6 +90,10 @@ class FediIcons {
   static const IconData sound_off = IconData(0xe87f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sound_on = IconData(0xe880, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData download = IconData(0xe881, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_auto = IconData(0xe891, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_dark = IconData(0xe892, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_light = IconData(0xe893, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData refresh = IconData(0xe894, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unpin = IconData(0xe8bc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unfollow = IconData(0xe8bd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unbookmark = IconData(0xe8be, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -103,11 +107,6 @@ class FediIcons {
   static const IconData sort = IconData(0xe8c7, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unmute = IconData(0xe8e3, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unblock = IconData(0xe8e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-
-  static const IconData reload = Icons.refresh;
   static const IconData forward = Icons.forward;
   static const IconData list = Icons.list;
-  static const IconData theme_system = Icons.brightness_6;
-  static const IconData theme_light = Icons.brightness_7;
-  static const IconData theme_night = Icons.brightness_3;
 }

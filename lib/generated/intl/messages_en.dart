@@ -410,7 +410,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_theme_chooser_label" : MessageLookupByLibrary.simpleMessage("Color scheme"),
     "app_theme_type_dark" : MessageLookupByLibrary.simpleMessage("Dark"),
     "app_theme_type_light" : MessageLookupByLibrary.simpleMessage("Light"),
-    "app_theme_type_system" : MessageLookupByLibrary.simpleMessage("System"),
+    "app_theme_type_system" : MessageLookupByLibrary.simpleMessage("Auto"),
     "app_timeline_create_field_id_label" : MessageLookupByLibrary.simpleMessage("Unique id"),
     "app_timeline_create_field_title_hint" : MessageLookupByLibrary.simpleMessage("Timeline name"),
     "app_timeline_create_field_title_label" : MessageLookupByLibrary.simpleMessage("Title"),

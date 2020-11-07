@@ -3,7 +3,7 @@
   "app_theme_chooser_label": "Color scheme",
   "app_theme_type_dark": "Dark",
   "app_theme_type_light": "Light",
-  "app_theme_type_system": "System",
+  "app_theme_type_system": "Auto",
   "app_customList_type_accounts_label": "Accounts in list",
   "app_customList_type_accounts_action_add": "Add account from followings",
   "app_customList_create_title": "Create list",

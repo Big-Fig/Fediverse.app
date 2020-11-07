@@ -102,7 +102,7 @@ class EmojiPickerWidget extends StatelessWidget {
           if (category is EmojiPickerCustomImageUrlCategoryBloc) {
             return FediIcons.heart;
           } else if (category is EmojiPickerRecentCategoryBloc) {
-            return FediIcons.reload;
+            return FediIcons.refresh;
           } else {
             return null;
           }
