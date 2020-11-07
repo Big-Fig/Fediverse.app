@@ -128,7 +128,7 @@ class _FediAudioPlayerErrorReloadButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.reload),
+        icon: Icon(FediIcons.refresh),
         color: IFediUiColorTheme.of(context).white,
         onPressed: () {
           var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);

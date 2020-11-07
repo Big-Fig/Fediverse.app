@@ -65,10 +65,10 @@ class S {
     );
   }
 
-  /// `System`
+  /// `Auto`
   String get app_theme_type_system {
     return Intl.message(
-      'System',
+      'Auto',
       name: 'app_theme_type_system',
       desc: '',
       args: [],

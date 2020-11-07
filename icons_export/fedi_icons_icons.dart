@@ -87,6 +87,10 @@ class FediIcons {
   static const IconData sound_off = IconData(0xe87f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sound_on = IconData(0xe880, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData download = IconData(0xe881, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_auto = IconData(0xe891, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_dark = IconData(0xe892, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appearance_light = IconData(0xe893, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData refresh = IconData(0xe894, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unpin = IconData(0xe8bc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unfollow = IconData(0xe8bd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unbookmark = IconData(0xe8be, fontFamily: _kFontFam, fontPackage: _kFontPkg);

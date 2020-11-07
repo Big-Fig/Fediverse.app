@@ -115,11 +115,11 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
 
   IconData mapThemeToIcon(BuildContext context, IFediUiTheme theme) {
     if (theme == null) {
-      return FediIcons.theme_system;
+      return FediIcons.appearance_auto;
     } else if (theme == lightFediUiTheme) {
-      return FediIcons.theme_light;
+      return FediIcons.appearance_light;
     } else if (theme == darkFediUiTheme) {
-      return FediIcons.theme_night;
+      return FediIcons.appearance_dark;
     } else {
       throw "unsupported theme $theme";
     }
