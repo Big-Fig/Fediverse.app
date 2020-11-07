@@ -19,7 +19,7 @@ void showPostStatusScheduleDialog(
     await FediSimpleAlertDialog(
       context: context,
       title: S.of(context).app_status_post_schedule_error_notInFuture_dialog_title,
-      contentText: S.of(context).app_status_post_schedule_error_notInFuture_dialog_title,
+      contentText: S.of(context).app_status_post_schedule_error_notInFuture_dialog_content,
     ).show(context);
   } else {
     postStatusBloc.schedule(newTime);

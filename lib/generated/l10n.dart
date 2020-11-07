@@ -75,16 +75,6 @@ class S {
     );
   }
 
-  /// `"{listTitle}" list statuses`
-  String app_customList_type_title(Object listTitle) {
-    return Intl.message(
-      '"$listTitle" list statuses',
-      name: 'app_customList_type_title',
-      desc: '',
-      args: [listTitle],
-    );
-  }
-
   /// `Accounts in list`
   String get app_customList_type_accounts_label {
     return Intl.message(
@@ -220,26 +210,6 @@ class S {
     return Intl.message(
       'Share as link',
       name: 'app_share_external_field_shareAsLink',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Share`
-  String get app_share_external_progress_title {
-    return Intl.message(
-      'Share',
-      name: 'app_share_external_progress_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sharing...`
-  String get app_share_external_progress_content {
-    return Intl.message(
-      'Sharing...',
-      name: 'app_share_external_progress_content',
       desc: '',
       args: [],
     );
@@ -483,16 +453,6 @@ class S {
     return Intl.message(
       'Follow',
       name: 'app_account_action_follow',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Request follow`
-  String get app_account_action_requestFollow {
-    return Intl.message(
-      'Request follow',
-      name: 'app_account_action_requestFollow',
       desc: '',
       args: [],
     );
@@ -1018,16 +978,6 @@ class S {
     );
   }
 
-  /// `Discard`
-  String get app_account_my_edit_field {
-    return Intl.message(
-      'Discard',
-      name: 'app_account_my_edit_field',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Confirm selection?`
   String get app_account_my_edit_field_avatar_dialog_title {
     return Intl.message(
@@ -1053,16 +1003,6 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'app_account_my_edit_field_avatar_dialog_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Header`
-  String get app_account_my_edit_field_header_label {
-    return Intl.message(
-      'Header',
-      name: 'app_account_my_edit_field_header_label',
       desc: '',
       args: [],
     );
@@ -1198,16 +1138,6 @@ class S {
     );
   }
 
-  /// `Select account`
-  String get app_account_select_title {
-    return Intl.message(
-      'Select account',
-      name: 'app_account_select_title',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pleroma API error`
   String get app_async_pleroma_error_common_dialog_title {
     return Intl.message(
@@ -1249,20 +1179,20 @@ class S {
   }
 
   /// `Forbidden. Invalid action or session expired`
-  String get app_async_pleroma_error_invalidCredentials_dialog_title {
+  String get app_async_pleroma_error_forbidden_dialog_title {
     return Intl.message(
       'Forbidden. Invalid action or session expired',
-      name: 'app_async_pleroma_error_invalidCredentials_dialog_title',
+      name: 'app_async_pleroma_error_forbidden_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `{content}`
-  String app_async_pleroma_error_invalidCredentials_dialog_content(Object content) {
+  String app_async_pleroma_error_forbidden_dialog_content(Object content) {
     return Intl.message(
       '$content',
-      name: 'app_async_pleroma_error_invalidCredentials_dialog_content',
+      name: 'app_async_pleroma_error_forbidden_dialog_content',
       desc: '',
       args: [content],
     );
@@ -1598,16 +1528,6 @@ class S {
     );
   }
 
-  /// `Please enter a valid username`
-  String get app_auth_instance_register_field_username_error_invalid {
-    return Intl.message(
-      'Please enter a valid username',
-      name: 'app_auth_instance_register_field_username_error_invalid',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Captcha*`
   String get app_auth_instance_register_field_captcha_label {
     return Intl.message(
@@ -1648,16 +1568,6 @@ class S {
     );
   }
 
-  /// `Please enter a valid email`
-  String get app_auth_instance_register_field_email_error_invalid {
-    return Intl.message(
-      'Please enter a valid email',
-      name: 'app_auth_instance_register_field_email_error_invalid',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Password*`
   String get app_auth_instance_register_field_password_label {
     return Intl.message(
@@ -1673,16 +1583,6 @@ class S {
     return Intl.message(
       'Password',
       name: 'app_auth_instance_register_field_password_hint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password must be at least 4 characters`
-  String get app_auth_instance_register_field_password_error_tooSmall {
-    return Intl.message(
-      'Password must be at least 4 characters',
-      name: 'app_auth_instance_register_field_password_error_tooSmall',
       desc: '',
       args: [],
     );
@@ -1705,66 +1605,6 @@ class S {
       name: 'app_auth_instance_register_field_confirmPassword_hint',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `Password and password confirmation must match`
-  String get app_auth_instance_register_field_confirmPassword_error_notMatch {
-    return Intl.message(
-      'Password and password confirmation must match',
-      name: 'app_auth_instance_register_field_confirmPassword_error_notMatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Creating account`
-  String get app_auth_instance_register_progress_dialog_content {
-    return Intl.message(
-      'Creating account',
-      name: 'app_auth_instance_register_progress_dialog_content',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Success`
-  String get app_auth_instance_register_success_dialog_title {
-    return Intl.message(
-      'Success',
-      name: 'app_auth_instance_register_success_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You can now login with given credentials`
-  String get app_auth_instance_register_success_dialog_content {
-    return Intl.message(
-      'You can now login with given credentials',
-      name: 'app_auth_instance_register_success_dialog_content',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Server Error`
-  String get app_auth_instance_register_fail_dialog_title {
-    return Intl.message(
-      'Server Error',
-      name: 'app_auth_instance_register_fail_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Response: {error}`
-  String app_auth_instance_register_fail_dialog_content(Object error) {
-    return Intl.message(
-      'Response: $error',
-      name: 'app_auth_instance_register_fail_dialog_content',
-      desc: '',
-      args: [error],
     );
   }
 
@@ -1810,16 +1650,6 @@ class S {
     );
   }
 
-  /// `Start chat`
-  String get app_chat_pleroma_start_title {
-    return Intl.message(
-      'Start chat',
-      name: 'app_chat_pleroma_start_title',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `More`
   String get app_chat_action_more {
     return Intl.message(
@@ -1860,31 +1690,11 @@ class S {
     );
   }
 
-  /// `Post`
-  String get app_chat_post_action_post {
-    return Intl.message(
-      'Post',
-      name: 'app_chat_post_action_post',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Share to conversations`
   String get app_chat_conversation_share_title {
     return Intl.message(
       'Share to conversations',
       name: 'app_chat_conversation_share_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Start a message`
-  String get app_chat_conversation_post_field_content_hint {
-    return Intl.message(
-      'Start a message',
-      name: 'app_chat_conversation_post_field_content_hint',
       desc: '',
       args: [],
     );
@@ -2644,26 +2454,6 @@ class S {
     );
   }
 
-  /// `WebSockets updates`
-  String get app_timeline_settings_field_webSocketsUpdates_label {
-    return Intl.message(
-      'WebSockets updates',
-      name: 'app_timeline_settings_field_webSocketsUpdates_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `WebSockets disabled in account settings`
-  String get app_timeline_settings_field_webSocketsUpdates_disabled_desc {
-    return Intl.message(
-      'WebSockets disabled in account settings',
-      name: 'app_timeline_settings_field_webSocketsUpdates_disabled_desc',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Only local`
   String get app_timeline_settings_field_onlyLocal_label {
     return Intl.message(
@@ -2775,30 +2565,10 @@ class S {
   }
 
   /// `Unable to refresh`
-  String get app_list_loading_unableToFetch {
-    return Intl.message(
-      'Unable to refresh',
-      name: 'app_list_loading_unableToFetch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to refresh`
   String get app_list_refresh_unableToFetch {
     return Intl.message(
       'Unable to refresh',
       name: 'app_list_refresh_unableToFetch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Everything up to date`
-  String get app_list_refresh_upToDate {
-    return Intl.message(
-      'Everything up to date',
-      name: 'app_list_refresh_upToDate',
       desc: '',
       args: [],
     );
@@ -2889,16 +2659,6 @@ class S {
     return Intl.message(
       'Saving...',
       name: 'app_media_attachment_addToGallery_progress_content',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Saved`
-  String get app_media_attachment_addToGallery_success_toast {
-    return Intl.message(
-      'Saved',
-      name: 'app_media_attachment_addToGallery_success_toast',
       desc: '',
       args: [],
     );
@@ -3044,41 +2804,11 @@ class S {
     );
   }
 
-  /// `Search term is empty`
-  String get app_search_desc_empty {
-    return Intl.message(
-      'Search term is empty',
-      name: 'app_search_desc_empty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Results for: '{searchTerm}'`
-  String app_search_desc_value(Object searchTerm) {
-    return Intl.message(
-      'Results for: \'$searchTerm\'',
-      name: 'app_search_desc_value',
-      desc: '',
-      args: [searchTerm],
-    );
-  }
-
   /// `Search`
   String get app_search_field_input_hint {
     return Intl.message(
       'Search',
       name: 'app_search_field_input_hint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Error during initialization. Try to re-install app`
-  String get app_splash_state_error {
-    return Intl.message(
-      'Error during initialization. Try to re-install app',
-      name: 'app_splash_state_error',
       desc: '',
       args: [],
     );
@@ -3226,26 +2956,6 @@ class S {
     );
   }
 
-  /// `Share status`
-  String get app_status_share_title {
-    return Intl.message(
-      'Share status',
-      name: 'app_status_share_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sharing...`
-  String get app_status_share_progress_content {
-    return Intl.message(
-      'Sharing...',
-      name: 'app_status_share_progress_content',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Collapse`
   String get app_status_collapsible_action_collapse {
     return Intl.message(
@@ -3281,36 +2991,6 @@ class S {
     return Intl.message(
       'Comment',
       name: 'app_status_action_comment',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Favourite`
-  String get app_status_action_favourite {
-    return Intl.message(
-      'Favourite',
-      name: 'app_status_action_favourite',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Reblog`
-  String get app_status_action_reblog {
-    return Intl.message(
-      'Reblog',
-      name: 'app_status_action_reblog',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Report`
-  String get app_status_action_report {
-    return Intl.message(
-      'Report',
-      name: 'app_status_action_report',
       desc: '',
       args: [],
     );
@@ -3396,56 +3076,6 @@ class S {
     );
   }
 
-  /// `Share as text`
-  String get app_status_action_shareAsText {
-    return Intl.message(
-      'Share as text',
-      name: 'app_status_action_shareAsText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Share as link`
-  String get app_status_action_shareAsLink {
-    return Intl.message(
-      'Share as link',
-      name: 'app_status_action_shareAsLink',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Share to Chats`
-  String get app_status_action_shareToChats {
-    return Intl.message(
-      'Share to Chats',
-      name: 'app_status_action_shareToChats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Share to DMs`
-  String get app_status_action_shareToDms {
-    return Intl.message(
-      'Share to DMs',
-      name: 'app_status_action_shareToDms',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `More`
-  String get app_status_action_more {
-    return Intl.message(
-      'More',
-      name: 'app_status_action_more',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Show this thread`
   String get app_status_action_showThisThread {
     return Intl.message(
@@ -3461,16 +3091,6 @@ class S {
     return Intl.message(
       'Status Actions',
       name: 'app_status_action_popup_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `More actions for:`
-  String get app_status_action_popup_moreActionsFor {
-    return Intl.message(
-      'More actions for:',
-      name: 'app_status_action_popup_moreActionsFor',
       desc: '',
       args: [],
     );
@@ -3616,66 +3236,6 @@ class S {
     );
   }
 
-  /// `Cancel`
-  String get app_status_post_schedule_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_status_post_schedule_dialog_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit`
-  String get app_status_post_schedule_dialog_action_edit {
-    return Intl.message(
-      'Edit',
-      name: 'app_status_post_schedule_dialog_action_edit',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Clear`
-  String get app_status_post_schedule_dialog_action_clear {
-    return Intl.message(
-      'Clear',
-      name: 'app_status_post_schedule_dialog_action_clear',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Schedule`
-  String get app_status_post_schedule_dialog_title {
-    return Intl.message(
-      'Schedule',
-      name: 'app_status_post_schedule_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not scheduled`
-  String get app_status_post_schedule_dialog_content_notScheduled {
-    return Intl.message(
-      'Not scheduled',
-      name: 'app_status_post_schedule_dialog_content_notScheduled',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Scheduled at: {formattedDate}`
-  String app_status_post_schedule_dialog_content_scheduled(Object formattedDate) {
-    return Intl.message(
-      'Scheduled at: $formattedDate',
-      name: 'app_status_post_schedule_dialog_content_scheduled',
-      desc: '',
-      args: [formattedDate],
-    );
-  }
-
   /// `Posting...`
   String get app_status_post_dialog_async_content {
     return Intl.message(
@@ -3803,38 +3363,6 @@ class S {
       name: 'app_status_post_visibility_state_private',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `Cancel`
-  String get app_status_post_visibility_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_status_post_visibility_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `NSFW`
-  String get app_status_post_nsfw_title {
-    return Intl.message(
-      'NSFW',
-      name: 'app_status_post_nsfw_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `{count,plural, =1{1 mention} other{{count} mentions}}`
-  String app_status_post_mention_content(num count) {
-    return Intl.plural(
-      count,
-      one: '1 mention',
-      other: '$count mentions',
-      name: 'app_status_post_mention_content',
-      desc: '',
-      args: [count],
     );
   }
 
@@ -3998,36 +3526,6 @@ class S {
     );
   }
 
-  /// `Error: {errorMessage}`
-  String camera_state_error(Object errorMessage) {
-    return Intl.message(
-      'Error: $errorMessage',
-      name: 'camera_state_error',
-      desc: '',
-      args: [errorMessage],
-    );
-  }
-
-  /// `Initializing`
-  String get camera_state_initializing {
-    return Intl.message(
-      'Initializing',
-      name: 'camera_state_initializing',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Non initialized`
-  String get camera_state_notInitialized {
-    return Intl.message(
-      'Non initialized',
-      name: 'camera_state_notInitialized',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `You don't have any media`
   String get file_picker_empty {
     return Intl.message(
@@ -4043,66 +3541,6 @@ class S {
     return Intl.message(
       'Choose media',
       name: 'file_picker_single_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Video`
-  String get file_picker_single_video_confirm_dialog_title {
-    return Intl.message(
-      'Video',
-      name: 'file_picker_single_video_confirm_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select`
-  String get file_picker_single_video_confirm_dialog_action_select {
-    return Intl.message(
-      'Select',
-      name: 'file_picker_single_video_confirm_dialog_action_select',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel`
-  String get file_picker_single_video_confirm_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'file_picker_single_video_confirm_dialog_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You don't have media`
-  String get file_gallery_empty {
-    return Intl.message(
-      'You don\'t have media',
-      name: 'file_gallery_empty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Loading not started`
-  String get file_gallery_state_loadingNotStarted {
-    return Intl.message(
-      'Loading not started',
-      name: 'file_gallery_state_loadingNotStarted',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This folder doesn't have media`
-  String get file_gallery_folder_empty {
-    return Intl.message(
-      'This folder doesn\'t have media',
-      name: 'file_gallery_folder_empty',
       desc: '',
       args: [],
     );
@@ -4305,26 +3743,6 @@ class S {
       name: 'link_error_dialog_content',
       desc: '',
       args: [url],
-    );
-  }
-
-  /// `Initializing: {initMessage}`
-  String media_player_initializing(Object initMessage) {
-    return Intl.message(
-      'Initializing: $initMessage',
-      name: 'media_player_initializing',
-      desc: '',
-      args: [initMessage],
-    );
-  }
-
-  /// `Failed to load: {errorMessage}`
-  String media_player_failed(Object errorMessage) {
-    return Intl.message(
-      'Failed to load: $errorMessage',
-      name: 'media_player_failed',
-      desc: '',
-      args: [errorMessage],
     );
   }
 

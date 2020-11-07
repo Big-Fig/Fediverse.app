@@ -73,10 +73,10 @@ class PleromaAsyncOperationHelper {
         stackTrace: stackTrace,
         titleCreator: (context) => S
             .of(context)
-            .app_async_pleroma_error_invalidCredentials_dialog_title,
+            .app_async_pleroma_error_forbidden_dialog_title,
         contentCreator: (context) => S
             .of(context)
-            .app_async_pleroma_error_invalidCredentials_dialog_content(
+            .app_async_pleroma_error_forbidden_dialog_content(
                 error.body),
       );
     } else {

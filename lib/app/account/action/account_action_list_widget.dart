@@ -110,8 +110,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
     return FediBlurredTextButton(
       S.of(context).app_account_action_message,
       onPressed: () async {
-        var authInstanceBloc =
-            ICurrentAuthInstanceBloc.of(context);
+        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context);
         var accountBloc = IAccountBloc.of(context);
         var account = accountBloc.account;
 
@@ -160,9 +159,15 @@ class _AccountActionListFollowWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var relationship = accountBloc.accountRelationship;
         if (relationship.requested && !relationship.following) {
-          return FediBlurredTextButton(
-            S.of(context).app_account_action_followRequested,
-            onPressed: null,
+          return PleromaAsyncOperationButtonBuilderWidget(
+            showProgressDialog: false,
+            asyncButtonAction: accountBloc.toggleFollow,
+            builder: (BuildContext context, VoidCallback onPressed) {
+              return FediBlurredTextButton(
+                S.of(context).app_account_action_followRequested,
+                onPressed: onPressed,
+              );
+            },
           );
         } else {
           return PleromaAsyncOperationButtonBuilderWidget(
@@ -170,9 +175,11 @@ class _AccountActionListFollowWidget extends StatelessWidget {
             asyncButtonAction: accountBloc.toggleFollow,
             builder: (BuildContext context, VoidCallback onPressed) {
               return FediBlurredTextButton(
-                relationship?.following == true
-                    ? S.of(context).app_account_action_unfollow
-                    : S.of(context).app_account_action_follow,
+                relationship?.requested == true
+                    ? S.of(context).app_account_action_followRequested
+                    : relationship?.following == true
+                        ? S.of(context).app_account_action_unfollow
+                        : S.of(context).app_account_action_follow,
                 onPressed: onPressed,
               );
             },
