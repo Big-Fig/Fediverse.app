@@ -1,5 +1,6 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_buffering_widget.dart';
@@ -14,19 +15,13 @@ import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../fedi_icons.dart';
-
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
     return Stack(
       alignment: Alignment.center,
       children: [
-        AspectRatio(
-          aspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
-          child: _FediVideoPlayerBodyWidget(),
-        ),
+        const _FediVideoPlayerBodyWidget(),
         const FediVideoPlayerBufferingWidget(),
         const FediVideoPlayerPlayPauseButtonWidget(),
         const _FediVideoPlayerControlsWidget(),
@@ -155,9 +150,15 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isInitialized = snapshot.data;
         if (isInitialized) {
-          return const _FediVideoPlayerInitializedWidget();
+          return AspectRatio(
+            aspectRatio: videoMediaPlayerBloc.actualAspectRatio,
+            child: const _FediVideoPlayerInitializedWidget(),
+          );
         } else {
-          return const _FediVideoPlayerNotInitializedWidget();
+          return AspectRatio(
+            aspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
+            child: const _FediVideoPlayerNotInitializedWidget(),
+          );
         }
       },
     );
