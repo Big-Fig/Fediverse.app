@@ -16,11 +16,13 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UploadMediaAttachmentListNonMediaItemWidget extends StatefulWidget {
   @override
   _UploadMediaAttachmentListNonMediaItemWidgetState createState() =>
       _UploadMediaAttachmentListNonMediaItemWidgetState();
+
   const UploadMediaAttachmentListNonMediaItemWidget();
 }
 
@@ -64,12 +66,16 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
                 uploadState?.type == UploadMediaAttachmentStateType.uploaded;
 
             if (isUploaded) {
-              return DisposableProvider<IMediaFilePathBloc>(
-                create: (context) => MediaFilePathBloc(path: filePath),
-                child: const MediaFilePathWidget(
-                  opacity: 1.0,
-                  actionsWidget:
-                      _UploadMediaAttachmentListNonMediaItemActionsWidget(),
+              return Provider<String>.value(
+                value: filePath,
+                child: DisposableProxyProvider<String, IMediaFilePathBloc>(
+                  update: (context, filePath, _) =>
+                      MediaFilePathBloc(path: filePath),
+                  child: const MediaFilePathWidget(
+                    opacity: 1.0,
+                    actionsWidget:
+                        _UploadMediaAttachmentListNonMediaItemActionsWidget(),
+                  ),
                 ),
               );
             } else {
@@ -105,27 +111,25 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
     var mediaItemBloc = IUploadMediaAttachmentBloc.of(context);
     return StreamBuilder<UploadMediaAttachmentState>(
         stream: mediaItemBloc.uploadStateStream,
+        initialData: mediaItemBloc.uploadState,
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
 
           switch (
               uploadState.type ?? UploadMediaAttachmentStateType.uploading) {
             case UploadMediaAttachmentStateType.uploading:
-              return const
-              _UploadMediaAttachmentListNonMediaItemLoadingWidget();
+              return const _UploadMediaAttachmentListNonMediaItemLoadingWidget();
               break;
             case UploadMediaAttachmentStateType.notUploaded:
             case UploadMediaAttachmentStateType.uploaded:
-              return const
-              _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
+              return const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
             case UploadMediaAttachmentStateType.failed:
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
                   const FediSmallHorizontalSpacer(),
-                  const
-                  _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
+                  const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
                 ],
               );
             default:
