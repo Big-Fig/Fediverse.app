@@ -15,8 +15,24 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
       (isHaveAtLeastOneError, isSomethingChanged) =>
           !isHaveAtLeastOneError && isSomethingChanged).asBroadcastStream();
 
+  BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
+
+  FormBloc() {
+    addDisposable(subject: itemsSubject);
+    onItemsChanged();
+  }
+
   @override
-  Stream<List<IFormItemBloc>> get itemsStream => Stream.value(items);
+  Stream<List<IFormItemBloc>> get itemsStream => itemsSubject.stream;
+
+  @override
+  List<IFormItemBloc> get items => itemsSubject.value;
+
+  List<IFormItemBloc> get currentItems;
+
+  void onItemsChanged() {
+    itemsSubject.add(currentItems);
+  }
 
   @override
   void clear() {

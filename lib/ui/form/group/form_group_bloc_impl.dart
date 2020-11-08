@@ -48,22 +48,23 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
 
   FormGroupBloc() {
     addDisposable(subject: errorsSubject);
-    _resubscribeForErrors();
     addDisposable(disposable: itemsErrorSubscription);
 
     try {
       addDisposable(streamSubscription: itemsStream.listen((newItems) {
         itemsErrorSubscription?.dispose();
-        _resubscribeForErrors();
+        if (newItems?.isNotEmpty == true) {
+          _resubscribeForErrors(newItems);
+        }
       }));
     } catch (e, stackTrace) {
       _logger.warning(() => "failed to subscribe for items", e, stackTrace);
     }
   }
 
-  void _resubscribeForErrors() {
+  void _resubscribeForErrors(List<T> newItems) {
     itemsErrorSubscription = DisposableOwner();
-    items.forEach((IFormItemBloc item) {
+    newItems.forEach((IFormItemBloc item) {
       itemsErrorSubscription.addDisposable(
           streamSubscription: item.errorsStream.listen((_) {
         recalculateErrors();

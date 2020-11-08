@@ -322,7 +322,7 @@
   "app_notification_push_settings_field_follows_label": "Follows",
   "app_notification_push_settings_field_mentions_label": "Mentions",
   "app_notification_push_settings_field_reblogs_label": "Reblogs",
-  "app_notification_push_settings_field_polls_label": "Polls",
+  "app_notification_push_settings_field_polls_label": "Voted Poll ended",
   "app_notification_push_settings_field_chat_label": "Chat",
   "app_notification_header_follow": "Followed you",
   "app_notification_header_favourite": "Liked: {status}",
@@ -349,8 +349,8 @@
       }
     }
   },
-  "app_notification_header_poll": "Poll notification",
-  "app_notification_header_move": "Move notification",
+  "app_notification_header_poll": "Poll",
+  "app_notification_header_move": "Move",
   "app_notification_header_followRequest": "Follow request",
   "app_notification_header_pleromaEmojiReaction": "{emoji} for: \"{status}",
   "@app_notification_header_pleromaEmojiReaction": {

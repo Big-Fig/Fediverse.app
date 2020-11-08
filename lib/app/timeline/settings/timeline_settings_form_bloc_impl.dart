@@ -250,7 +250,7 @@ class TimelineSettingsFormBloc extends FormBloc
   }
 
   @override
-  List<IFormItemBloc> get items => [
+  List<IFormItemBloc> get currentItems => [
         onlyWithMediaFieldBloc,
         excludeNsfwSensitiveFieldBloc,
         excludeRepliesFieldBloc,
