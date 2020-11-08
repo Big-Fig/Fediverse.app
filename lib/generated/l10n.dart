@@ -1964,10 +1964,10 @@ class S {
     );
   }
 
-  /// `Polls`
+  /// `Voted Poll ended`
   String get app_notification_push_settings_field_polls_label {
     return Intl.message(
-      'Polls',
+      'Voted Poll ended',
       name: 'app_notification_push_settings_field_polls_label',
       desc: '',
       args: [],
@@ -2024,20 +2024,20 @@ class S {
     );
   }
 
-  /// `Poll notification`
+  /// `Poll`
   String get app_notification_header_poll {
     return Intl.message(
-      'Poll notification',
+      'Poll',
       name: 'app_notification_header_poll',
       desc: '',
       args: [],
     );
   }
 
-  /// `Move notification`
+  /// `Move`
   String get app_notification_header_move {
     return Intl.message(
-      'Move notification',
+      'Move',
       name: 'app_notification_header_move',
       desc: '',
       args: [],

@@ -91,7 +91,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   @override
-  List<IFormItemBloc> get items => [
+  List<IFormItemBloc> get currentItems => [
         nameFieldBloc,
         typeFieldBloc,
         settingsFormBloc,

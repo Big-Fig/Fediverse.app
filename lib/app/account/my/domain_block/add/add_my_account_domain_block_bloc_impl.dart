@@ -23,7 +23,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
   );
 
   @override
-  List<IFormItemBloc> get items => [domainField];
+  List<IFormItemBloc> get currentItems => [domainField];
 
   @override
   Future submit() =>

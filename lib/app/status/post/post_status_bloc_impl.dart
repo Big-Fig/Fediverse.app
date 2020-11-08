@@ -37,6 +37,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   final bool markMediaNsfwByDefault;
   bool alreadyMarkMediaNsfwByDefault = false;
+  final PleromaInstancePollLimits pleromaInstancePollLimits;
 
   PostStatusBloc({
     @required this.pleromaStatusService,
@@ -46,7 +47,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required int maximumMessageLength,
     @required IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required this.pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required this.markMediaNsfwByDefault,
   }) : super(

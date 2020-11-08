@@ -68,7 +68,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         durationLengthFieldBloc = createDurationLengthBloc(pollLimits);
 
   @override
-  List<IFormItemBloc> get items => [
+  List<IFormItemBloc> get currentItems => [
         durationLengthFieldBloc,
         multiplyFieldBloc,
         pollOptionsGroupBloc,
@@ -98,11 +98,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     int maximumOptionLength,
   ) {
     return FormStringFieldBloc(
-        originValue: originValue,
-        validators: [
-          FormNonEmptyStringFieldValidationError.createValidator(),
-        ],
-        maxLength: maximumOptionLength);
+      originValue: originValue,
+      validators: [
+        FormNonEmptyStringFieldValidationError.createValidator(),
+      ],
+      maxLength: maximumOptionLength,
+    );
   }
 
   @override
@@ -124,5 +125,24 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         },
       );
     }
+  }
+
+  @override
+  void clear() {
+    // super.clear();
+
+    var oldBloc = pollOptionsGroupBloc;
+
+    pollOptionsGroupBloc = FormOneTypeGroupBloc<IFormStringFieldBloc>(
+      originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
+      minimumFieldsCount: 2,
+      maximumFieldsCount: pollLimits?.maxOptions ?? 20,
+      newEmptyFieldCreator: () =>
+          createPollOptionBloc(pollLimits?.maxOptionChars),
+    );
+
+    onItemsChanged();
+
+    oldBloc.dispose();
   }
 }
