@@ -16,6 +16,9 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   final double desiredAspectRatio;
 
   @override
+  double get actualAspectRatio => videoPlayerController.value.aspectRatio;
+
+  @override
   final bool isFullScreenSupportEnabled;
   @override
   final bool isNeedEnableWakelockOnFullScreen;

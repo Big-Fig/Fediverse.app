@@ -15,6 +15,8 @@ abstract class IVideoMediaPlayerBloc implements IMediaPlayerBloc {
 
   double get desiredAspectRatio;
 
+  double get actualAspectRatio;
+
   bool get isFullScreenSupportEnabled;
 
   bool get isFullscreen;
