@@ -31,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger("notification_list_item_widget.dart");
@@ -241,6 +242,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
+    unawaited(notificationBloc.markAsRead());
     var status = notificationBloc.status;
     var account = notificationBloc.account;
     var chatRemoteId = notificationBloc.chatRemoteId;

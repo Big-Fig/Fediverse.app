@@ -349,7 +349,7 @@
       }
     }
   },
-  "app_notification_header_poll": "Poll",
+  "app_notification_header_poll": "Voted poll ended",
   "app_notification_header_move": "Move",
   "app_notification_header_followRequest": "Follow request",
   "app_notification_header_pleromaEmojiReaction": "{emoji} for: \"{status}",

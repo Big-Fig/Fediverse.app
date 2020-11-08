@@ -320,7 +320,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_notification_header_move" : MessageLookupByLibrary.simpleMessage("Move"),
     "app_notification_header_pleromaChatMention" : m19,
     "app_notification_header_pleromaEmojiReaction" : m20,
-    "app_notification_header_poll" : MessageLookupByLibrary.simpleMessage("Poll"),
+    "app_notification_header_poll" : MessageLookupByLibrary.simpleMessage("Voted poll ended"),
     "app_notification_header_reblog" : m21,
     "app_notification_header_unknown" : m22,
     "app_notification_list_newItems_action_tapToLoadNew" : m23,
