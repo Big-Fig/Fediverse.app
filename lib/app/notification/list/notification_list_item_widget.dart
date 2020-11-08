@@ -527,10 +527,16 @@ class _NotificationListItemCreatedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return NotificationCreatedAtWidget(
-      textStyle: notificationBloc.unread
-          ? fediUiTextTheme.smallShortPrimaryDark
-          : fediUiTextTheme.smallShortGrey,
-    );
+    return StreamBuilder<bool>(
+        stream: notificationBloc.unreadStream,
+        initialData: notificationBloc.unread,
+        builder: (context, snapshot) {
+          var unread = snapshot.data;
+          return NotificationCreatedAtWidget(
+            textStyle: unread
+                ? fediUiTextTheme.smallShortPrimaryDark
+                : fediUiTextTheme.smallShortGrey,
+          );
+        });
   }
 }
