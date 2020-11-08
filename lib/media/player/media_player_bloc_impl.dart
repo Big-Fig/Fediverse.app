@@ -13,9 +13,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   @override
   VideoPlayerController videoPlayerController;
 
+  @override
   final MediaPlayerSource mediaPlayerSource;
 
+  @override
   final bool autoInit;
+  @override
   final bool autoPlay;
 
   final BehaviorSubject<VideoPlayerValue> videoPlayerValueSubject =

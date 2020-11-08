@@ -24,7 +24,6 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   @override
   final List<DeviceOrientation> deviceOrientationsAfterFullScreen;
 
-  BehaviorSubject<bool> isFullscreenSubject = BehaviorSubject.seeded(false);
   BehaviorSubject<DateTime> lastIterationDateTimeSubject =
       BehaviorSubject.seeded(DateTime.now());
 
@@ -39,6 +38,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     @required this.isFullScreenSupportEnabled,
     @required bool autoInit,
     @required bool autoPlay,
+    @required this.isFullscreen,
     this.systemOverlaysAfterFullScreen = SystemUiOverlay.values,
     this.isNeedEnableWakelockOnFullScreen = true,
     this.deviceOrientationsAfterFullScreen = const [
@@ -52,7 +52,6 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
           autoInit: autoInit,
           autoPlay: autoPlay,
         ) {
-    addDisposable(subject: isFullscreenSubject);
     addDisposable(subject: lastIterationDateTimeSubject);
   }
 
@@ -63,6 +62,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     bool isFullScreenSupportEnabled = true,
     @required bool autoInit,
     @required bool autoPlay,
+    @required bool isFullscreen,
   }) {
     return VideoMediaPlayerBloc(
       mediaPlayerSource: mediaPlayerSource,
@@ -70,6 +70,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
       isFullScreenSupportEnabled: isFullScreenSupportEnabled,
       autoInit: autoInit,
       autoPlay: autoPlay,
+      isFullscreen: isFullscreen,
     );
   }
 
@@ -81,6 +82,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     bool isFullScreenSupportEnabled = true,
     @required bool autoInit,
     @required bool autoPlay,
+    @required bool isFullscreen,
   }) {
     return DisposableProvider<IVideoMediaPlayerBloc>(
       create: (context) => VideoMediaPlayerBloc.createFromContext(
@@ -90,6 +92,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         isFullScreenSupportEnabled: isFullScreenSupportEnabled,
         autoInit: autoInit,
         autoPlay: autoPlay,
+        isFullscreen: isFullscreen,
       ),
       child: VideoMediaPlayerBlocProxyProvider(
         child: child,
@@ -103,18 +106,6 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     final height = size.height;
 
     return width > height ? width / height : height / width;
-  }
-
-  @override
-  Future enterFullscreen() async {
-    _onNewIteration();
-    isFullscreenSubject.add(true);
-  }
-
-  @override
-  Future exitFullscreen() async {
-    _onNewIteration();
-    isFullscreenSubject.add(false);
   }
 
   @override
@@ -154,10 +145,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   }
 
   @override
-  bool get isFullscreen => isFullscreenSubject.value;
-
-  @override
-  Stream<bool> get isFullscreenStream => isFullscreenSubject.stream;
+  final bool isFullscreen;
 
   @override
   bool get isControlsVisible =>

@@ -1,44 +1,41 @@
-import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/media/player/media_player_bloc.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
+
+final _logger =
+    Logger("fedi_video_player_control_toggle_fullscreen_button_widget.dart");
 
 class FediVideoPlayerToggleControlFullscreenButtonWidget
     extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
     var mediaPlayerBloc = videoMediaPlayerBloc;
-    return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isInitializedStream,
-        builder: (context, snapshot) {
-          var isInitialized = snapshot.data ?? false;
-
-          if (isInitialized && mediaPlayerBloc.isFullScreenSupportEnabled) {
-            return const _FediVideoPlayerToggleControlFullscreenButtonInitializedWidget();
-          } else {
-            return const _FediVideoPlayerToggleControlFullscreenButtonNotInitializedWidget();
-          }
-        });
+    if (mediaPlayerBloc.isFullScreenSupportEnabled) {
+      return const _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget();
+    } else {
+      return const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget();
+    }
   }
 
   const FediVideoPlayerToggleControlFullscreenButtonWidget();
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonInitializedWidget
+class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
     extends StatelessWidget {
-  const _FediVideoPlayerToggleControlFullscreenButtonInitializedWidget({
+  const _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget({
     Key key,
   }) : super(key: key);
 
@@ -46,31 +43,20 @@ class _FediVideoPlayerToggleControlFullscreenButtonInitializedWidget
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
 
-    var mediaPlayerBloc = videoMediaPlayerBloc;
-    return StreamBuilder<bool>(
-        stream: mediaPlayerBloc.isFullscreenStream,
-        builder: (context, snapshot) {
-          var isFullscreen = snapshot.data ?? false;
+    var isFullscreen = videoMediaPlayerBloc.isFullscreen;
+    _logger.finest(() => "onClick isFullscreen $isFullscreen");
 
-          return AsyncOperationButtonBuilderWidget(
-            builder: (BuildContext context, void Function() onPressed) {
-              return FediIconButton(
-                icon: Icon(
-                    isFullscreen ? FediIcons.minimize : FediIcons.maximize),
-                color: IFediUiColorTheme.of(context).white,
-                onPressed: onPressed,
-              );
-            },
-            asyncButtonAction: () async {
-              if (mediaPlayerBloc.isFullscreen) {
-                Navigator.of(context, rootNavigator: true).pop();
-              } else {
-                unawaited(pushFullScreenPage(context, videoMediaPlayerBloc));
-              }
-              return mediaPlayerBloc.toggleFullscreen();
-            },
-          );
-        });
+    return FediIconButton(
+      icon: Icon(isFullscreen ? FediIcons.minimize : FediIcons.maximize),
+      color: IFediUiColorTheme.of(context).white,
+      onPressed: () {
+        if (isFullscreen) {
+          Navigator.of(context, rootNavigator: true).pop();
+        } else {
+          unawaited(pushFullScreenPage(context, videoMediaPlayerBloc));
+        }
+      },
+    );
   }
 }
 
@@ -83,10 +69,17 @@ Future<dynamic> pushFullScreenPage(
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget child) {
-          return Provider<IMediaPlayerBloc>.value(
-            value: videoMediaPlayerBloc,
-            child: Provider<IVideoMediaPlayerBloc>.value(
-              value: videoMediaPlayerBloc,
+          return DisposableProvider<IVideoMediaPlayerBloc>(
+            create: (context) => VideoMediaPlayerBloc(
+              mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
+              desiredAspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
+              isFullScreenSupportEnabled:
+                  videoMediaPlayerBloc.isFullScreenSupportEnabled,
+              autoInit: videoMediaPlayerBloc.autoInit,
+              autoPlay: videoMediaPlayerBloc.autoPlay,
+              isFullscreen: true,
+            ),
+            child: VideoMediaPlayerBlocProxyProvider(
               child: const _FediVideoPlayerToggleControlFullscreenPage(),
             ),
           );
@@ -108,7 +101,6 @@ Future<dynamic> pushFullScreenPage(
   }
 
   await Navigator.of(context, rootNavigator: true).push(route);
-  await videoMediaPlayerBloc.exitFullscreen();
 
   // The wakelock plugins checks whether it needs to perform an action internally,
   // so we do not need to check Wakelock.isEnabled.
@@ -120,9 +112,9 @@ Future<dynamic> pushFullScreenPage(
       videoMediaPlayerBloc.deviceOrientationsAfterFullScreen);
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonNotInitializedWidget
+class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
     extends StatelessWidget {
-  const _FediVideoPlayerToggleControlFullscreenButtonNotInitializedWidget({
+  const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget({
     Key key,
   }) : super(key: key);
 
@@ -149,7 +141,7 @@ class _FediVideoPlayerToggleControlFullscreenPage extends StatelessWidget {
       body: Container(
         alignment: Alignment.center,
         color: fediUiColorTheme.black,
-        child: FediVideoPlayerWidget(),
+        child: const FediVideoPlayerWidget(),
       ),
     );
   }

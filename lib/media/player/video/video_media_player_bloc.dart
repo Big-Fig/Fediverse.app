@@ -19,27 +19,9 @@ abstract class IVideoMediaPlayerBloc implements IMediaPlayerBloc {
 
   bool get isFullscreen;
 
-  Stream<bool> get isFullscreenStream;
-
   bool get isControlsVisible;
 
   Stream<bool> get isControlsVisibleStream;
 
-  Future enterFullscreen();
-
-  Future exitFullscreen();
-
   void onTapOnVideo();
-
-
-}
-
-extension IVideoMediaPlayerBlocExtension on IVideoMediaPlayerBloc {
-  Future toggleFullscreen() async {
-    if (isFullscreen) {
-      await exitFullscreen();
-    } else {
-      await enterFullscreen();
-    }
-  }
 }

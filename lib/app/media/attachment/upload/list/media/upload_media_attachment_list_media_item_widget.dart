@@ -111,6 +111,7 @@ class _UploadMediaAttachmentListMediaItemWidgetState
 class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
     extends StatelessWidget {
   final IMediaDeviceFile mediaDeviceFile;
+
   const _UploadMediaAttachmentListMediaItemMediaPreviewWidget({
     Key key,
     @required this.mediaDeviceFile,
@@ -119,7 +120,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future:  mediaDeviceFile.loadFile(),
+      future: mediaDeviceFile.loadFile(),
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
         var file = snapshot.data;
         if (file == null) {
@@ -142,6 +143,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
               child: const FediVideoPlayerWidget(),
               autoInit: true,
               autoPlay: false,
+              isFullscreen: false,
             );
             break;
           case MediaDeviceFileType.other:
@@ -157,7 +159,6 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
 
 class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
     extends StatelessWidget {
-
   const _UploadMediaAttachmentListMediaItemTopLeftActionWidget({
     Key key,
   }) : super(key: key);
@@ -173,8 +174,7 @@ class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
           switch (
               uploadState?.type ?? UploadMediaAttachmentStateType.uploading) {
             case UploadMediaAttachmentStateType.failed:
-              return const
-              _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
+              return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
 
               break;
             case UploadMediaAttachmentStateType.notUploaded:
@@ -204,8 +204,7 @@ class _UploadMediaAttachmentListMediaItemTopRightActionWidget
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
 
-          switch (
-              uploadState.type) {
+          switch (uploadState.type) {
             case UploadMediaAttachmentStateType.notUploaded:
             case UploadMediaAttachmentStateType.uploading:
               return const _UploadMediaAttachmentListMediaItemLoadingWidget();
@@ -300,8 +299,9 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
     var bloc = IUploadMediaAttachmentBloc.of(context);
     Widget mediaPreview;
     if (bloc is UploadMediaAttachmentBlocDevice) {
-      mediaPreview = _UploadMediaAttachmentListMediaItemMediaPreviewWidget
-        (mediaDeviceFile: bloc.mediaDeviceFile,);
+      mediaPreview = _UploadMediaAttachmentListMediaItemMediaPreviewWidget(
+        mediaDeviceFile: bloc.mediaDeviceFile,
+      );
     } else if (bloc is UploadedUploadMediaAttachmentBloc) {
       var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
       mediaPreview = Provider<IPleromaMediaAttachment>.value(
