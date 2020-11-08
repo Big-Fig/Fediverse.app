@@ -9,6 +9,12 @@ abstract class IMediaPlayerBloc implements IDisposable, IAsyncInitLoadingBloc {
   static IMediaPlayerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMediaPlayerBloc>(context, listen: listen);
 
+  bool get autoInit;
+
+  bool get autoPlay;
+
+  MediaPlayerSource get mediaPlayerSource;
+
   VideoPlayerController get videoPlayerController;
 
   MediaPlayerState get playerState;

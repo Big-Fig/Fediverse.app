@@ -20,6 +20,7 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
       update: (context, mediaAttachment, _) =>
           VideoMediaPlayerBloc.createFromContext(
         context,
+        isFullscreen: false,
         desiredAspectRatio:
             VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
         autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
