@@ -2024,10 +2024,10 @@ class S {
     );
   }
 
-  /// `Poll`
+  /// `Voted poll ended`
   String get app_notification_header_poll {
     return Intl.message(
-      'Poll',
+      'Voted poll ended',
       name: 'app_notification_header_poll',
       desc: '',
       args: [],
