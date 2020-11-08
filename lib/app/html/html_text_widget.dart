@@ -28,6 +28,9 @@ class HtmlTextWidget extends StatelessWidget {
           _logger.finest(() => "onImageTap $source");
         },
         style: htmlTextBloc.htmlStyles,
+        onLinkTap: (url) {
+          htmlTextBloc.onLinkClicked(url: url);
+        },
       );
     } else {
       var settings = htmlTextBloc.settings;
