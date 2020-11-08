@@ -35,7 +35,7 @@ class EditPostStatusBloc extends PostStatusBloc {
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-    markMediaNsfwByDefault: markMediaNsfwByDefault,
+          markMediaNsfwByDefault: markMediaNsfwByDefault,
         );
 
   static EditPostStatusBloc createFromContext(
@@ -47,7 +47,7 @@ class EditPostStatusBloc extends PostStatusBloc {
         .currentInstance
         .info;
     var myAccountSettingsBloc =
-    IMyAccountSettingsBloc.of(context, listen: false);
+        IMyAccountSettingsBloc.of(context, listen: false);
     return EditPostStatusBloc(
       pleromaStatusService: IPleromaStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
@@ -59,7 +59,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaNsfwByDefault:
-      myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
+          myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
     );
   }
 

@@ -36,6 +36,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   final bool markMediaNsfwByDefault;
+  bool alreadyMarkMediaNsfwByDefault = false;
 
   PostStatusBloc({
     @required this.pleromaStatusService,
@@ -123,6 +124,19 @@ abstract class PostStatusBloc extends PostMessageBloc
       initialData.mediaAttachments.forEach((attachment) {
         mediaAttachmentsBloc.addUploadedAttachment(attachment);
       });
+    }
+    if (markMediaNsfwByDefault) {
+      addDisposable(
+        streamSubscription:
+            mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+          (blocs) {
+            if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
+              alreadyMarkMediaNsfwByDefault = true;
+              nsfwSensitiveSubject.add(true);
+            }
+          },
+        ),
+      );
     }
   }
 
@@ -486,7 +500,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     super.clear();
 
     visibilitySubject.add(initialData.visibility.toPleromaVisibility());
-
+    alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
