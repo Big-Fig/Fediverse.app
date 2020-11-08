@@ -10,8 +10,9 @@ class MediaFilePathBloc extends DisposableOwner implements IMediaFilePathBloc {
   final String name;
   @override
   final String extension;
+
   MediaFilePathBloc({
     @required this.path,
-  })  : extension = path_lib.extension(path),
-        name = path_lib.basename(path);
+  })  : extension = path?.isNotEmpty == true ? path_lib.extension(path) : "",
+        name = path?.isNotEmpty == true ? path_lib.basename(path) : "";
 }
