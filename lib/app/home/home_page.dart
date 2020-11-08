@@ -6,14 +6,14 @@ import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_providier.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_page.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_providier.dart';
@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
         return Scaffold(
           body: Stack(
             children: [
-               RepaintBoundary(
+              RepaintBoundary(
                 child: Container(
                   height: 180,
                   child: const _HomePageBackgroundWidget(),
@@ -103,11 +103,7 @@ class _HomePageBackgroundWidget extends StatelessWidget {
     return FediLightStatusBarStyleArea(
       child: Container(
         color: IFediUiColorTheme.of(context).primary,
-        child: FediInstanceImageBackgroundWidget(
-          defaultImage:
-              Image.asset("assets/images/default_timeline_header.png"),
-          child: Container(),
-        ),
+        child: const FediInstanceImageBackgroundWidget(),
       ),
     );
   }
