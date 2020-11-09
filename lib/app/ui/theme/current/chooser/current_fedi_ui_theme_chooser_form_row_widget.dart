@@ -12,6 +12,7 @@ class CurrentFediUiThemeChooserFormRowWidget extends StatelessWidget {
     return FormFediThemeFieldFormRowWidget(
       field: currentFediUiThemeChooserBloc,
       label: S.of(context).app_theme_chooser_label,
+      displayIcon: false,
     );
   }
 

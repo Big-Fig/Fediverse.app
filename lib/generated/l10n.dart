@@ -728,6 +728,56 @@ class S {
     );
   }
 
+  /// `Account`
+  String get app_account_my_menu_action_account {
+    return Intl.message(
+      'Account',
+      name: 'app_account_my_menu_action_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get app_account_my_menu_action_settings {
+    return Intl.message(
+      'Settings',
+      name: 'app_account_my_menu_action_settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmarks`
+  String get app_account_my_menu_action_bookmarks {
+    return Intl.message(
+      'Bookmarks',
+      name: 'app_account_my_menu_action_bookmarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lists`
+  String get app_account_my_menu_action_lists {
+    return Intl.message(
+      'Lists',
+      name: 'app_account_my_menu_action_lists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get app_account_my_menu_account_subpage_title {
+    return Intl.message(
+      'Account',
+      name: 'app_account_my_menu_account_subpage_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get app_account_my_settings_title {
     return Intl.message(
