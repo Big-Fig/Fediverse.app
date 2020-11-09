@@ -1,4 +1,5 @@
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
@@ -19,6 +20,8 @@ abstract class IMyAccountSettingsBloc extends IDisposable {
   FormBoolFieldBloc get isAlwaysShowNsfwFieldBloc;
 
   FormValueFieldBloc<PleromaVisibility> get defaultVisibilityFieldBloc;
+
+  FormValueFieldBloc<LocalizationLocale> get localizationLocaleFieldBloc;
 
   FormBoolFieldBloc get markMediaNsfwByDefaultFieldBloc;
 

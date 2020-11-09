@@ -35,6 +35,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
@@ -51,6 +52,7 @@ import 'package:moor/moor.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/localization/localization_model.dart';
 
 import 'generated/l10n.dart';
 
@@ -192,6 +194,7 @@ Future runInitializedCurrentInstanceApp({
     pushHandlerBloc: appContextBloc.get(),
     fcmPushService: appContextBloc.get(),
     webSocketsService: appContextBloc.get(),
+    localizationCurrentLocaleLocalPreferencesBloc: appContextBloc.get(),
   );
   await currentInstanceContextBloc.performAsyncInit();
 
@@ -343,6 +346,10 @@ class FediApp extends StatelessWidget {
     var currentFediUiThemeBloc =
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
+
+    var localizationCurrentLocaleLocalPreferencesBloc =
+    ILocalizationCurrentLocaleLocalPreferencesBloc.of(context, listen: false);
+
     return UiThemeSystemBrightnessHandlerWidget(
       child: StreamBuilder<IFediUiTheme>(
           stream: currentFediUiThemeBloc.adaptiveBrightnessCurrentThemeStream,
@@ -361,31 +368,38 @@ class FediApp extends StatelessWidget {
               child: OverlaySupport(
                 child: provideCurrentTheme(
                   currentTheme: currentTheme ?? lightFediUiTheme,
-                  child: MaterialApp(
-                    // checkerboardRasterCacheImages: true,
-                    // checkerboardOffscreenLayers: true,
-                    debugShowCheckedModeBanner: false,
-                    title: appTitle,
-                    localizationsDelegates: [
-                      S.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                    ],
-                    supportedLocales: S.delegate.supportedLocales,
-                    // TODO: support localization preference inside app
-                    // locale: localizationProvider.locale,
-                    theme: lightFediUiTheme.themeData,
-                    darkTheme: darkFediUiTheme.themeData,
-                    themeMode: themeMode,
-                    initialRoute: "/",
-                    home: child,
-                    navigatorKey: navigatorKey,
-                    navigatorObservers: [
-                      FirebaseAnalyticsObserver(
-                          analytics:
-                              IAnalyticsService.of(context, listen: false)
-                                  .firebaseAnalytics),
-                    ],
+                  child: StreamBuilder<LocalizationLocale>(
+                    stream: localizationCurrentLocaleLocalPreferencesBloc.stream,
+                    builder: (context, snapshot) {
+                      var localizationLocale = snapshot.data;
+                      return MaterialApp(
+                        // checkerboardRasterCacheImages: true,
+                        // checkerboardOffscreenLayers: true,
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        localizationsDelegates: [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        localeListResolutionCallback: ,
+                        // TODO: support localization preference inside app
+                        // locale: localizationProvider.locale,
+                        theme: lightFediUiTheme.themeData,
+                        darkTheme: darkFediUiTheme.themeData,
+                        themeMode: themeMode,
+                        initialRoute: "/",
+                        home: child,
+                        navigatorKey: navigatorKey,
+                        navigatorObservers: [
+                          FirebaseAnalyticsObserver(
+                              analytics:
+                                  IAnalyticsService.of(context, listen: false)
+                                      .firebaseAnalytics),
+                        ],
+                      );
+                    }
                   ),
                 ),
               ),

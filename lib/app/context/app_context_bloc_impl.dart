@@ -32,6 +32,8 @@ import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
+import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
+import 'package:fedi/localization/localization_current_locale_local_preferences_bloc_impl.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';
@@ -191,7 +193,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
             pushHandlerUnhandledLocalPreferencesBloc);
-
+    addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
     var pushHandlerBloc = PushHandlerBloc(
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,
@@ -199,10 +201,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         fcmPushService: fcmPushService);
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
+    addDisposable(disposable: pushHandlerBloc);
 
     var webSocketsService = WebSocketsService();
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
+    addDisposable(disposable: webSocketsService);
 
     var currentUiThemeIdLocalPreferenceBloc =
         CurrentUiThemeIdLocalPreferenceBloc(localPreferencesService);
@@ -210,11 +214,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
             currentUiThemeIdLocalPreferenceBloc);
+    addDisposable(disposable: currentUiThemeIdLocalPreferenceBloc);
 
     var uiThemeSystemBrightnessBloc = UiThemeSystemBrightnessBloc();
 
     await globalProviderService.asyncInitAndRegister<
         IUiThemeSystemBrightnessBloc>(uiThemeSystemBrightnessBloc);
+    addDisposable(disposable: uiThemeSystemBrightnessBloc);
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
       currentUiThemeIdLocalPreferenceBloc: currentUiThemeIdLocalPreferenceBloc,
@@ -225,5 +231,17 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<ICurrentFediUiThemeBloc>(currentFediUiThemeBloc);
+
+    addDisposable(disposable: currentFediUiThemeBloc);
+
+    var localizationCurrentLocaleLocalPreferencesBloc =
+        LocalizationCurrentLocaleLocalPreferencesBloc(
+      localPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<ILocalizationCurrentLocaleLocalPreferencesBloc>(
+            localizationCurrentLocaleLocalPreferencesBloc);
+    addDisposable(disposable: localizationCurrentLocaleLocalPreferencesBloc);
   }
 }

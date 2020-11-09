@@ -30,6 +30,7 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:fedi/localization/localization_model.dart';
 
 class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
@@ -85,5 +86,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(TimelineSettingsAdapter(), 79); // 79
     Hive.registerAdapter(PleromaListAdapter(), 80); // 80
     Hive.registerAdapter(TimelinesHomeTabStorageAdapter(), 81); // 81
+    Hive.registerAdapter(LocalizationLocaleAdapter(), 82); // 82
   }
 }

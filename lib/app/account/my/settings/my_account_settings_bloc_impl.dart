@@ -2,6 +2,8 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/widgets.dart';
 class MyAccountSettingsBloc extends DisposableOwner
     implements IMyAccountSettingsBloc {
   final IMyAccountSettingsLocalPreferenceBloc localPreferencesBloc;
+  final ILocalizationCurrentLocaleLocalPreferencesBloc
+      localizationCurrentLocaleLocalPreferencesBloc;
   @override
   final FormBoolFieldBloc isRealtimeWebSocketsEnabledFieldBloc;
 
@@ -36,8 +40,13 @@ class MyAccountSettingsBloc extends DisposableOwner
   @override
   final FormBoolFieldBloc mediaAutoPlayFieldBloc;
 
-  MyAccountSettingsBloc({@required this.localPreferencesBloc})
-      : isRealtimeWebSocketsEnabledFieldBloc = FormBoolFieldBloc(
+  @override
+  final FormValueFieldBloc<LocalizationLocale> localizationLocaleFieldBloc;
+
+  MyAccountSettingsBloc({
+    @required this.localPreferencesBloc,
+    @required this.localizationCurrentLocaleLocalPreferencesBloc,
+  })  : isRealtimeWebSocketsEnabledFieldBloc = FormBoolFieldBloc(
             originValue:
                 localPreferencesBloc.value?.isRealtimeWebSocketsEnabled ??
                     true),
@@ -54,6 +63,10 @@ class MyAccountSettingsBloc extends DisposableOwner
                 PleromaVisibility.public,
             validators: <
                 FormValueFieldValidationError Function(PleromaVisibility)>[]),
+        localizationLocaleFieldBloc = FormValueFieldBloc<LocalizationLocale>(
+          originValue: localizationCurrentLocaleLocalPreferencesBloc.value,
+          validators: [],
+        ),
         markMediaNsfwByDefaultFieldBloc = FormBoolFieldBloc(
             originValue:
                 localPreferencesBloc.value?.markMediaNsfwByDefault ?? false),
@@ -126,11 +139,11 @@ class MyAccountSettingsBloc extends DisposableOwner
     var newMediaAutoInit = mediaAutoInitFieldBloc.currentValue;
     var newMediaAutoPlay = mediaAutoPlayFieldBloc.currentValue;
 
-    if(newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+    if (newMediaAutoPlay == true && oldMediaAutoPlay == false) {
       newMediaAutoInit = true;
       mediaAutoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
     }
-    if(newMediaAutoInit == false && oldMediaAutoInit == true) {
+    if (newMediaAutoInit == false && oldMediaAutoInit == true) {
       newMediaAutoPlay = false;
       mediaAutoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
     }
