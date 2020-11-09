@@ -5,10 +5,10 @@ import 'package:fedi/app/account/database/account_followers_database_dao.dart';
 import 'package:fedi/app/account/database/account_followings_database_dao.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
-import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/database/chat_accounts_database_dao.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/database/conversation_accounts_database_dao.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_dao.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
@@ -130,7 +130,8 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
-      {@required conversationRemoteId, @required String chatRemoteId}) async {
+      {@required String conversationRemoteId, @required String chatRemoteId})
+  async {
     await upsert(mapRemoteAccountToDbAccount(remoteAccount));
 
     if (conversationRemoteId != null) {
@@ -234,8 +235,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future<List<DbAccountWrapper>> getAccounts(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
+      @required IConversationChat onlyInConversation,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -270,8 +271,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   Stream<List<DbAccountWrapper>> watchAccounts(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
+      @required IConversationChat onlyInConversation,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -305,8 +306,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   JoinedSelectStatement createQuery(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
+      @required IConversationChat onlyInConversation,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -396,8 +397,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future<DbAccountWrapper> getAccount(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
+      @required IConversationChat onlyInConversation,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -424,8 +425,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   Stream<DbAccountWrapper> watchAccount(
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IChat onlyInChat,
+      @required IConversationChat onlyInConversation,
+      @required IPleromaChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -516,7 +517,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<IAccount>> getConversationAccounts(
-          {@required IConversation conversation}) =>
+          {@required IConversationChat conversation}) =>
       getAccounts(
           searchQuery: null,
           olderThanAccount: null,
@@ -533,7 +534,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IAccount>> watchConversationAccounts(
-          {@required IConversation conversation}) =>
+          {@required IConversationChat conversation}) =>
       watchAccounts(
           searchQuery: null,
           olderThanAccount: null,
@@ -549,7 +550,7 @@ class AccountRepository extends AsyncInitLoadingBloc
           onlyInChat: null);
 
   @override
-  Future<List<IAccount>> getChatAccounts({@required IChat chat}) => getAccounts(
+  Future<List<IAccount>> getChatAccounts({@required IPleromaChat chat}) => getAccounts(
       searchQuery: null,
       olderThanAccount: null,
       newerThanAccount: null,
@@ -564,7 +565,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       onlyInChat: chat);
 
   @override
-  Stream<List<IAccount>> watchChatAccounts({@required IChat chat}) =>
+  Stream<List<IAccount>> watchChatAccounts({@required IPleromaChat chat}) =>
       watchAccounts(
           searchQuery: null,
           olderThanAccount: null,

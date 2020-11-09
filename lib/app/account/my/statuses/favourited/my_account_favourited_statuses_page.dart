@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -21,9 +21,9 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.statuses.favourited.title".tr(),
+        title: S.of(context).app_account_my_statuses_favourited_title,
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: CollapsibleOwnerWidget(
           child: StatusCachedPaginationListTimelineWidget(
             needWatchLocalRepositoryForUpdates: true,
@@ -32,6 +32,8 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
       ),
     );
   }
+
+  const MyAccountFavouritedStatusesPage();
 }
 
 void goToMyAccountFavouritedStatusesPage(BuildContext context) {
@@ -65,7 +67,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
             context,
             child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
               context,
-              child: MyAccountFavouritedStatusesPage(),
+              child: const MyAccountFavouritedStatusesPage(),
               mergeNewItemsImmediately: false,
               mergeOwnStatusesImmediately: false,
             ),

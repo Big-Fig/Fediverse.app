@@ -1,7 +1,7 @@
 import 'package:fedi/disposable/disposable.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-abstract class IPermissionBloc implements Disposable {
+abstract class IPermissionBloc implements IDisposable {
   PermissionStatus get permissionStatus;
 
   Stream<PermissionStatus> get permissionStatusStream;

@@ -1,15 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusVisibilityActionWidget extends StatelessWidget {
+  const PostStatusVisibilityActionWidget();
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -30,32 +32,44 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
               onPressed: () {
                 showFediSelectionChooserDialog(
                     context: context,
-                    title: "app.status.post.visibility.title".tr(),
+                    title: S.of(context).app_status_post_visibility_title,
                     actions: [
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.public),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.public,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.direct),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.direct,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.unlisted),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.unlisted,
+                      ),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.private),
+                        context: context,
+                        postStatusBloc: postStatusBloc,
+                        visibility: PleromaVisibility.private,
+                      ),
                     ]);
               });
         });
   }
 
-  SelectionDialogAction buildVisibilityDialogAction(
-    BuildContext context,
-    IPostStatusBloc postStatusBloc,
-    PleromaVisibility visibility,
-  ) {
-    Null Function() onPressed;
+  SelectionDialogAction buildVisibilityDialogAction({
+    @required BuildContext context,
+    @required IPostStatusBloc postStatusBloc,
+    @required PleromaVisibility visibility,
+  }) {
+    DialogActionCallback onPressed;
     var isPossibleToChangeVisibility =
         postStatusBloc.isPossibleToChangeVisibility;
     var isSelectedVisibility = postStatusBloc.visibility == visibility;
     if (isPossibleToChangeVisibility) {
-      onPressed = () {
+      onPressed = (context) {
         postStatusBloc.changeVisibility(visibility);
         Navigator.of(context).pop();
       };

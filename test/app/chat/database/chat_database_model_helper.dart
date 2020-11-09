@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/chat_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,9 +19,9 @@ Future<DbChat> createTestDbChat({
       accountRemoteId: dbAccount.remoteId,
     );
 
-Future<DbChatPopulated> createTestDbChatPopulated(
+Future<DbPleromaChatPopulated> createTestDbChatPopulated(
     DbChat dbChat, AccountRepository accountRepository) async {
-  DbChatPopulated dbChatPopulated = DbChatPopulated(
+  DbPleromaChatPopulated dbChatPopulated = DbPleromaChatPopulated(
     dbChat: dbChat,
     dbAccount:
     (await accountRepository.findByRemoteId(dbChat.accountRemoteId))
@@ -30,7 +30,7 @@ Future<DbChatPopulated> createTestDbChatPopulated(
   return dbChatPopulated;
 }
 
-void expectDbChat(IChat actual, DbChat expected) {
+void expectDbChat(IPleromaChat actual, DbChat expected) {
   if (actual == null && expected == null) {
     return;
   }

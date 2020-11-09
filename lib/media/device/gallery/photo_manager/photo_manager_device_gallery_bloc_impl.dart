@@ -14,8 +14,8 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
       : super(
             storagePermissionBloc: storagePermissionBloc,
             typesToPick: typesToPick) {
-    addDisposable(disposable: CustomDisposable(() {
-      PhotoManager.releaseCache();
+    addDisposable(disposable: CustomDisposable(() async {
+      await PhotoManager.releaseCache();
     }));
   }
 

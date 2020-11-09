@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
@@ -7,8 +6,8 @@ import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_exte
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_account_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_in_remote_list_form_field_row_widget.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_reply_visibility_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,13 @@ import 'package:flutter/material.dart';
 class TimelineSettingsWidget extends StatelessWidget {
   final TimelineType type;
   final bool isNullablePossible;
+  final bool shrinkWrap;
 
   TimelineSettingsWidget({
     @required this.type,
     @required this.isNullablePossible,
+    @required this.shrinkWrap,
+
   });
 
   @override
@@ -40,7 +42,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
-          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.public:
@@ -50,7 +52,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildOnlyRemoteField(context, settingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
-          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.customList:
@@ -88,6 +90,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     }
 
     return ListView(
+      shrinkWrap: shrinkWrap,
       children: children,
     );
   }
@@ -98,7 +101,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.with_muted.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_withMuted_label,
       fieldBloc: settingsBloc.withMutedFieldBloc,
       isSupported: type.isWithMutedFilterSupportedOnInstance(authInstance),
     );
@@ -110,7 +114,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.only_with_media.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_onlyWithMedia_label,
       fieldBloc: settingsBloc.onlyWithMediaFieldBloc,
       isSupported: type.isOnlyWithMediaFilterSupportedOnInstance(authInstance),
     );
@@ -122,7 +127,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.only_local.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_onlyLocal_label,
       fieldBloc: settingsBloc.onlyLocalFieldBloc,
       isSupported: type.isOnlyLocalFilterSupportedOnInstance(authInstance),
     );
@@ -134,7 +140,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.only_remote.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_onlyRemote_label,
       fieldBloc: settingsBloc.onlyRemoteFieldBloc,
       isSupported: type.isOnlyRemoteFilterSupportedOnInstance(authInstance),
     );
@@ -146,7 +153,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.only_pinned.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_onlyPinned_label,
       fieldBloc: settingsBloc.onlyPinnedFieldBloc,
       isSupported: type.isOnlyPinnedFilterSupportedOnInstance(authInstance),
     );
@@ -158,7 +166,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.exclude_reblogs.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_excludeReblogs_label,
       fieldBloc: settingsBloc.excludeReblogsFieldBloc,
       isSupported: type.isExcludeReblogsSupportedOnInstance(authInstance),
     );
@@ -170,7 +179,8 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.exclude_replies.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_excludeReplies_label,
       fieldBloc: settingsBloc.excludeRepliesFieldBloc,
       isSupported: type.isExcludeRepliesFilterSupportedOnInstance(authInstance),
     );
@@ -182,11 +192,14 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.web_sockets_updates.label"),
+      context: context,
+      label:
+          S.of(context).app_account_my_settings_field_websocketsEnabled_label,
       fieldBloc: settingsBloc.webSocketsUpdatesFieldBloc,
       isSupported: type.isWebSocketsUpdatesFilterSupportedOnInstance(context),
-      errorDesc:
-          tr("app.timeline.settings.field.web_sockets_updates.disabled.desc"),
+      errorDesc: S
+          .of(context)
+          .app_account_my_settings_field_websocketsEnabled_description,
     );
   }
 
@@ -196,31 +209,32 @@ class TimelineSettingsWidget extends StatelessWidget {
     AuthInstance authInstance,
   ) {
     return buildBoolField(
-      label: tr("app.timeline.settings.field.exclude_nsfw.label"),
+      context: context,
+      label: S.of(context).app_timeline_settings_field_excludeNsfw_label,
       fieldBloc: settingsBloc.excludeNsfwSensitiveFieldBloc,
       isSupported:
           type.isExcludeNsfwSensitiveFilterSupportedOnInstance(authInstance),
     );
   }
 
-  Widget buildReplyVisibilityFilterField(
-    BuildContext context,
-    ITimelineSettingsFormBloc settingsBloc,
-    AuthInstance authInstance,
-  ) {
-    // TODO: not supported in local repository yet
-    return SizedBox.shrink();
-    var isSupported =
-        type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
-
-    return TimelineSettingsReplyVisibilityFormFieldRowWidget(
-      formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
-      enabled: isSupported,
-      desc: isSupported
-          ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
-    );
-  }
+  // Widget buildReplyVisibilityFilterField(
+  //   BuildContext context,
+  //   ITimelineSettingsFormBloc settingsBloc,
+  //   AuthInstance authInstance,
+  // ) {
+  //   // TODO: not supported in local repository yet
+  //   return SizedBox.shrink();
+  //   var isSupported =
+  //       type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
+  //
+  //   return TimelineSettingsReplyVisibilityFormFieldRowWidget(
+  //     formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
+  //     enabled: isSupported,
+  //     desc: isSupported
+  //         ? null
+  //         : "app.timeline.settings.field.not_supported.desc".tr(),
+  //   );
+  // }
 
   Widget buildCustomListField(
     BuildContext context,
@@ -235,7 +249,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
+          : S.of(context).app_timeline_settings_field_notSupported_desc,
       nullable: isNullablePossible,
     );
   }
@@ -253,7 +267,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
+          : S.of(context).app_timeline_settings_field_notSupported_desc,
       nullable: isNullablePossible,
     );
   }
@@ -267,9 +281,9 @@ class TimelineSettingsWidget extends StatelessWidget {
 
     return FormStringFieldFormRowWidget(
       enabled: isSupported,
-      label: "app.timeline.settings.with_remote_hashtag.field.label".tr(),
+      label: S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
       autocorrect: false,
-      hint: "app.timeline.settings.with_remote_hashtag.field.hint".tr(),
+      hint: S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
       formStringFieldBloc: settingsBloc.withRemoteHashtagFieldBloc,
       onSubmitted: null,
       textInputAction: TextInputAction.done,
@@ -277,6 +291,7 @@ class TimelineSettingsWidget extends StatelessWidget {
   }
 
   FormBoolFieldFormRowWidget buildBoolField({
+    @required BuildContext context,
     @required String label,
     @required IFormBoolFieldBloc fieldBloc,
     @required bool isSupported,
@@ -288,7 +303,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : errorDesc ?? "app.timeline.settings.field.not_supported.desc".tr(),
+          : S.of(context).app_timeline_settings_field_notSupported_desc,
     );
   }
 }

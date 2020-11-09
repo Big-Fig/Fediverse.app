@@ -1,8 +1,11 @@
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -62,15 +65,22 @@ class StatusCachedPaginationListTimelineWidget
                 isFirstInList:
                     index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
-                child: StatusListItemTimelineWidget.list(
-                  collapsible: true,
-                  statusCallback: (BuildContext context, IStatus status) {
-                    goToStatusThreadPage(context,
-                        status: status, initialMediaAttachment: null);
-                  },
-                  initialMediaAttachment: null,
+                child: DisposableProxyProvider<IStatus,
+                    IStatusListItemTimelineBloc>(
+                  update: (context, status, _) =>
+                      StatusListItemTimelineBloc.list(
+                    status: status,
+                    collapsible: true,
+                    statusCallback: _onStatusClick,
+                    initialMediaAttachment: null,
+                  ),
+                  child: const StatusListItemTimelineWidget(),
                 ),
               ),
             );
           });
+}
+
+void _onStatusClick(BuildContext context, IStatus status) {
+  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
 }

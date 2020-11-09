@@ -1,8 +1,7 @@
 import 'package:async/async.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,9 +37,9 @@ abstract class FediProgressDialog extends BaseDialog {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Text(
-        titleMessage ?? tr("dialog.progress.content"),
+        titleMessage ?? S.of(context).dialog_progress_content,
         textAlign: TextAlign.center,
-        style: FediTextStyles.subHeaderShortBoldDarkGrey,
+        style: IFediUiTextTheme.of(context).subHeaderShortBoldDarkGrey,
       ),
     );
   }
@@ -51,7 +50,7 @@ abstract class FediProgressDialog extends BaseDialog {
       child: Text(
         contentMessage,
         textAlign: TextAlign.center,
-        style: FediTextStyles.bigShortDarkGrey.copyWith(
+        style: IFediUiTextTheme.of(context).bigShortDarkGrey.copyWith(
           height: 1,
         ),
       ),
@@ -59,7 +58,7 @@ abstract class FediProgressDialog extends BaseDialog {
   }
 
   @override
-  Widget buildDialog(BuildContext context) => Dialog(
+  Widget buildDialogBody(BuildContext context) => Dialog(
       insetAnimationCurve: Curves.easeInOut,
       insetAnimationDuration: Duration(milliseconds: 100),
       elevation: 10.0,
@@ -78,7 +77,7 @@ abstract class FediProgressDialog extends BaseDialog {
             padding: const EdgeInsets.all(2.0),
             child: FediCircularProgressIndicator(
               size: 35.0,
-              color: FediColors.primary,
+              color: IFediUiColorTheme.of(context).primary,
             ),
           ),
           buildDialogTitle(context),
@@ -96,14 +95,14 @@ abstract class FediProgressDialog extends BaseDialog {
                       _isCanceledSubject.add(true);
                       await cancelableOperation.cancel();
                       if(isShowing) {
-                        hide(context);
+                        await hide(context);
                       }
                     };
                   }
                   return InkWell(
                     child: Text(
-                      tr("dialog.progress.action.cancel"),
-                      style: FediTextStyles.mediumShortPrimary,
+                      S.of(context).dialog_progress_action_cancel,
+                      style: IFediUiTextTheme.of(context).mediumShortPrimary,
                     ),
                     onTap: onPressed,
                   );

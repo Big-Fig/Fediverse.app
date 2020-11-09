@@ -1,10 +1,10 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPostMessageBloc implements Disposable {
+abstract class IPostMessageBloc implements IDisposable {
   static IPostMessageBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostMessageBloc>(context, listen: listen);
 
@@ -45,4 +45,10 @@ abstract class IPostMessageBloc implements Disposable {
   void clearSelectedAction();
 
   void onFileSelected();
+
+  Stream<bool> get isExpandedStream;
+
+  bool get isExpanded;
+
+  void toggleExpanded();
 }

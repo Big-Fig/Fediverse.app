@@ -100,7 +100,7 @@ class PleromaAccountFollowRequestsService
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

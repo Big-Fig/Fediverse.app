@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -60,14 +60,14 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final IPleromaTimelineService pleromaTimelineService;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final IMyAccountSettingsBloc myAccountSettingsBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final bool listenWebSockets;
   final ILocalPreferencesService preferencesService;
@@ -101,16 +101,21 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       updateTabBlocs();
     }));
 
-    addDisposable(custom: () {
-      disposeTabControllerListener();
+    addDisposable(custom: () async {
+      await disposeTabControllerListener();
     });
   }
 
-  void disposeTabControllerListener() {
+  Future disposeTabControllerListener() async {
     if (tabControllerListener != null &&
         timelineTabBlocsList?.tabController != null) {
       timelineTabBlocsList.tabController.removeListener(tabControllerListener);
       tabControllerListener = null;
+    }
+
+    for (ITimelineTabBloc bloc
+        in timelineTabBlocsList?.timelineTabBlocs ?? []) {
+      await bloc.dispose();
     }
   }
 
@@ -122,11 +127,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   bool updateTabBlocsInProgress = false;
 
   Future updateTabBlocs() async {
-
     _logger.finest(() => "updateTabBlocs "
         "updateTabBlocsInProgress $updateTabBlocsInProgress");
 
-    if(updateTabBlocsInProgress) {
+    if (updateTabBlocsInProgress) {
       return;
     }
 
@@ -144,7 +148,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       return;
     }
 
-    disposeTabControllerListener();
+    await disposeTabControllerListener();
 
     var oldBlocs = timelineTabBlocsList?.timelineTabBlocs;
     var oldTabController = timelineTabBlocsList?.tabController;
@@ -236,13 +240,13 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         conversationRepository:
-            IConversationRepository.of(context, listen: false),
+            IConversationChatRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         myAccountSettingsBloc:
             IMyAccountSettingsBloc.of(context, listen: false),
         chatNewMessagesHandlerBloc:
-            IChatNewMessagesHandlerBloc.of(context, listen: false),
+            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         currentAuthInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
         preferencesService: ILocalPreferencesService.of(context, listen: false),

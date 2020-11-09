@@ -1,105 +1,167 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("timelines_home_tab_storage_widget.dart");
 
-class TimelinesHomeTabStorageWidget extends StatefulWidget {
-  @override
-  _TimelinesHomeTabStorageWidgetState createState() =>
-      _TimelinesHomeTabStorageWidgetState();
-}
-
-class _TimelinesHomeTabStorageWidgetState
-    extends State<TimelinesHomeTabStorageWidget> {
+class TimelinesHomeTabStorageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var timelinesHomeTabStorageBloc =
-        ITimelinesHomeTabStorageBloc.of(context, listen: false);
+    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
 
-    return StreamBuilder<List<Timeline>>(
-        stream: timelinesHomeTabStorageBloc.timelinesStream,
-        builder: (context, snapshot) {
-          var items = snapshot.data;
+    return StreamProvider<List<Timeline>>.value(
+      value: timelinesHomeTabStorageBloc.timelinesDistinctStream,
+      child: const _TimelinesHomeTabStorageListWidget(),
+    );
+  }
 
-          if (items == null) {
-            return FediCircularProgressIndicator();
-          }
+  const TimelinesHomeTabStorageWidget();
+}
 
-          if (items.isEmpty) {
-            return Center(child: Text("app.timeline.storage.empty".tr()));
-          }
-          return ReorderableListView(
-            children: items.map(
-              (item) {
-                var isPossibleToDelete = item.isPossibleToDelete == true;
-                return ListTile(
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      FediIconButton(
-                        color: FediColors.darkGrey,
-                        icon: Icon(FediIcons.settings),
-                        onPressed: () {
-                          goToTimelineSettingsPage(
-                            context,
-                            timeline: item,
-                          );
-                        },
-                      ),
-                      if (isPossibleToDelete)
-                        FediIconButton(
-                          color: FediColors.darkGrey,
-                          icon: Icon(FediIcons.remove),
-                          onPressed: () {
-                            timelinesHomeTabStorageBloc.remove(item);
-                          },
-                        ),
-                      if (!isPossibleToDelete)
-                        SizedBox(
-                          width: 48,
-                        ),
-                    ],
-                  ),
-                  leading: Icon(
-                    FediIcons.reorder,
-                    color: FediColors.darkGrey,
-                  ),
-                  key: Key(
-                    item.id,
-                  ),
-                  title: Text(
-                    item.label,
-                    style: FediTextStyles.mediumShortDarkGrey,
-                  ),
-                );
-              },
-            ).toList(),
-            onReorder: (oldIndex, newIndex) {
-              _logger.finest(
-                  () => "onReorder oldIndex $oldIndex newIndex $newIndex");
-              _logger.finest(() => "onReorder oldItems $items");
-              if (newIndex > oldIndex) {
-                newIndex -= 1;
-              }
+class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
+  const _TimelinesHomeTabStorageListWidget({
+    Key key,
+  }) : super(key: key);
 
-              final oldValue = items.removeAt(oldIndex);
-              items.insert(newIndex, oldValue);
+  @override
+  Widget build(BuildContext context) {
+    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
 
-              _logger.finest(() => "onReorder afterItems $items");
+    var items = Provider.of<List<Timeline>>(context);
 
-              timelinesHomeTabStorageBloc.onItemsUpdated(items);
-            },
+    if (items == null) {
+      return const FediCircularProgressIndicator();
+    }
+
+    if (items.isEmpty) {
+      return Center(
+        child: Text(
+          S.of(context).app_timeline_storage_empty,
+        ),
+      );
+    }
+
+    return ReorderableListView(
+      padding: EdgeInsets.zero,
+      children: items
+          .map(
+            (item) => Provider<Timeline>.value(
+              key: Key(
+                item.id,
+              ),
+              value: item,
+              child: const _TimelinesHomeTabStorageListItemWidget(),
+            ),
+          )
+          .toList(),
+      onReorder: (oldIndex, newIndex) {
+        _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
+        _logger.finest(() => "onReorder oldItems $items");
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+
+        final oldValue = items.removeAt(oldIndex);
+        items.insert(newIndex, oldValue);
+
+        _logger.finest(() => "onReorder afterItems $items");
+
+        timelinesHomeTabStorageBloc.onItemsUpdated(items);
+      },
+    );
+  }
+}
+
+class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
+  const _TimelinesHomeTabStorageListItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var timeline = Provider.of<Timeline>(context);
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
+      key: Key(
+        timeline.id,
+      ),
+      leading: const _TimelinesHomeTabStorageListItemRemoveButtonWidget(),
+      trailing: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 26.0),
+        child: Icon(
+          FediIcons.sort,
+          size: 20.0,
+          color: IFediUiColorTheme.of(context).lightGrey,
+        ),
+      ),
+      title: InkWell(
+        onTap: () {
+          showTimelineSettingsDialog(
+            context: context,
+            timeline: timeline,
           );
-        });
+        },
+        child: Row(
+          children: [
+            Text(
+              timeline.label,
+              style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TimelinesHomeTabStorageListItemRemoveButtonWidget
+    extends StatelessWidget {
+  const _TimelinesHomeTabStorageListItemRemoveButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+    var timeline = Provider.of<Timeline>(context);
+
+    var isPossibleToDelete = timeline.isPossibleToDelete == true;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (isPossibleToDelete)
+          FediIconButton(
+            color: IFediUiColorTheme.of(context).darkGrey,
+            icon: Icon(FediIcons.remove_circle),
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              FediConfirmAlertDialog(
+                context: context,
+                title: S.of(context).app_timeline_storage_delete_dialog_title,
+                contentText: S.of(context).app_timeline_storage_delete_dialog_content(timeline.label),
+                okActionLabel: S.of(context).app_timeline_storage_delete_dialog_action_delete,
+                onAction: (BuildContext context) {
+                  timelinesHomeTabStorageBloc.remove(timeline);
+                },
+              ).show(context);
+            },
+          ),
+        if (!isPossibleToDelete)
+          SizedBox(
+            width: 48,
+          ),
+      ],
+    );
   }
 }

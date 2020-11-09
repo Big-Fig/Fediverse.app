@@ -33,12 +33,12 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     _eventsStreamController =
         StreamController.broadcast(onCancel: _onCancel, onListen: _onListen);
 
-    addDisposable(disposable: CustomDisposable(() {
-      _eventsStreamController.close();
+    addDisposable(disposable: CustomDisposable(() async {
+      await _eventsStreamController.close();
     }));
-    addDisposable(disposable: CustomDisposable(() {
-      _source?.dispose();
-      _sourceSubscription?.cancel();
+    addDisposable(disposable: CustomDisposable(() async {
+      await _source?.dispose();
+      await _sourceSubscription?.cancel();
     }));
   }
 

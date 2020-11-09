@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
                 value: currentValue == true,
                 enabled: enabled,
               ),
-              if (desc != null) Text(desc),
+              if (desc != null) FediFormColumnDesc(desc),
             ],
           );
         });

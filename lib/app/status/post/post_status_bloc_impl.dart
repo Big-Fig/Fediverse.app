@@ -36,6 +36,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   final bool markMediaNsfwByDefault;
+  bool alreadyMarkMediaNsfwByDefault = false;
+  final PleromaInstancePollLimits pleromaInstancePollLimits;
 
   PostStatusBloc({
     @required this.pleromaStatusService,
@@ -45,7 +47,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required int maximumMessageLength,
     @required IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required this.pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required this.markMediaNsfwByDefault,
   }) : super(
@@ -82,7 +84,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     inputFocusNode.addListener(focusListener);
 
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       inputFocusNode.removeListener(focusListener);
     }));
 
@@ -95,7 +97,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     };
     subjectTextController.addListener(editTextListener);
 
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       subjectTextController.removeListener(editTextListener);
     }));
 
@@ -123,6 +125,19 @@ abstract class PostStatusBloc extends PostMessageBloc
       initialData.mediaAttachments.forEach((attachment) {
         mediaAttachmentsBloc.addUploadedAttachment(attachment);
       });
+    }
+    if (markMediaNsfwByDefault) {
+      addDisposable(
+        streamSubscription:
+            mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+          (blocs) {
+            if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
+              alreadyMarkMediaNsfwByDefault = true;
+              nsfwSensitiveSubject.add(true);
+            }
+          },
+        ),
+      );
     }
   }
 
@@ -486,7 +501,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     super.clear();
 
     visibilitySubject.add(initialData.visibility.toPleromaVisibility());
-
+    alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();

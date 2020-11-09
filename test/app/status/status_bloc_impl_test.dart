@@ -63,9 +63,9 @@ void main() {
   });
 
   tearDown(() async {
-    statusBloc.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await statusBloc.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 
@@ -205,50 +205,6 @@ void main() {
 
     await await subscription.cancel();
   });
-  test('contentWithEmojisWithoutAccount', () async {
-    var newValue = "newContent :emoji: :emoji1: :emoji2: @<span>acct<\/span>";
-
-    var listenedValue;
-
-    var subscription =
-        statusBloc.contentWithEmojisWithoutAccountStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    // same if emojis is empty or null
-    await _update(status.copyWith(content: newValue, emojis: []));
-
-    expect(statusBloc.contentWithEmojisWithoutAccount,
-        "<html><body><p>newContent :emoji: :emoji1: :emoji2: </a></p></body></html>");
-    expect(listenedValue,
-        "<html><body><p>newContent :emoji: :emoji1: :emoji2: </a></p></body></html>");
-
-    // same if emojis is empty or null
-    await _update(status.copyWith(content: newValue, emojis: [
-      PleromaEmoji(shortcode: "emoji1", url: "https://fedi.app/emoji1.png"),
-      PleromaEmoji(shortcode: "emoji2", url: "https://fedi.app/emoji2.png")
-    ]));
-
-    expect(
-        statusBloc.contentWithEmojisWithoutAccount,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\"> "
-        "</a>"
-        "</p></body></html>");
-    expect(
-        listenedValue,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\"> "
-        "</a>"
-        "</p></body></html>");
-
-    await await subscription.cancel();
-  });
-
   test('card', () async {
     expect(statusBloc.card, status.card);
 
@@ -703,38 +659,38 @@ void main() {
     expect(listenedValue, newValue);
     await subscription.cancel();
   });
-
-  test('nsfwSensitiveAndDisplayEnabled', () async {
-    var listenedValue;
-
-    var subscription =
-        statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    await _update(status.copyWith(nsfwSensitive: true));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-    expect(listenedValue, false);
-
-    statusBloc.changeDisplayNsfwSensitive(true);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
-    expect(listenedValue, true);
-
-    statusBloc.changeDisplayNsfwSensitive(false);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-    expect(listenedValue, false);
-
-    await subscription.cancel();
-  });
+  //
+  // test('nsfwSensitiveAndDisplayEnabled', () async {
+  //   var listenedValue;
+  //
+  //   var subscription =
+  //       statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
+  //     listenedValue = newValue;
+  //   });
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await _update(status.copyWith(nsfwSensitive: true));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   statusBloc.changeDisplayNsfwSensitive(true);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
+  //   expect(listenedValue, true);
+  //
+  //   statusBloc.changeDisplayNsfwSensitive(false);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   await subscription.cancel();
+  // });
 
   test('containsSpoiler', () async {
     expect(statusBloc.containsSpoiler, status.spoilerText?.isNotEmpty == true);
@@ -761,37 +717,38 @@ void main() {
     expect(listenedValue, false);
     await subscription.cancel();
   });
-  test('containsSpoilerAndDisplayEnabled', () async {
-    var listenedValue;
-
-    var subscription =
-        statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    await _update(status.copyWith(spoilerText: "newSpoilerText"));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-    expect(listenedValue, false);
-
-    statusBloc.changeDisplaySpoiler(true);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
-    expect(listenedValue, true);
-
-    statusBloc.changeDisplaySpoiler(false);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-    expect(listenedValue, false);
-
-    await subscription.cancel();
-  });
+  //
+  // test('containsSpoilerAndDisplayEnabled', () async {
+  //   var listenedValue;
+  //
+  //   var subscription =
+  //       statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
+  //     listenedValue = newValue;
+  //   });
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await _update(status.copyWith(spoilerText: "newSpoilerText"));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   statusBloc.changeDisplaySpoiler(true);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
+  //   expect(listenedValue, true);
+  //
+  //   statusBloc.changeDisplaySpoiler(false);
+  //   // hack to execute notify callbacks
+  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
+  //   expect(listenedValue, false);
+  //
+  //   await subscription.cancel();
+  // });
 
   test('createdAt', () async {
     expect(statusBloc.createdAt, status.createdAt);

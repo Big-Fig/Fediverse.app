@@ -13,16 +13,15 @@ import 'package:flutter/material.dart';
 class ChatAccountsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: false);
+    var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
         stream: chatBloc.accountsStream,
-        initialData: chatBloc.accounts,
         builder: (context, snapshot) {
           var items = snapshot.data;
 
           if (items == null) {
-            return Center(child: FediCircularProgressIndicator());
+            return const _ChatAccountsLoadingWidget();
           }
 
           return ListView.builder(
@@ -36,15 +35,29 @@ class ChatAccountsWidget extends StatelessWidget {
                       isNeedPreFetchRelationship: false),
                   child: Column(
                     children: [
-                      AccountListItemWidget(
-                        accountSelectedCallback:
-                            (BuildContext context, IAccount account) {
-                          goToAccountDetailsPage(context, account);
-                        },
+                      const AccountListItemWidget(
+                        accountSelectedCallback: _accountSelectedCallback,
                       ),
                       const FediUltraLightGreyDivider()
                     ],
                   )));
         });
   }
+
+  const ChatAccountsWidget();
+}
+
+class _ChatAccountsLoadingWidget extends StatelessWidget {
+  const _ChatAccountsLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: FediCircularProgressIndicator());
+  }
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  goToAccountDetailsPage(context, account);
 }

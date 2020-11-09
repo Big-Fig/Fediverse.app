@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 class LoggingService extends AsyncInitLoadingBloc implements ILoggingService {
   @override
   Future internalAsyncInit() async {
-    if (kReleaseMode) {
+    if (kReleaseMode || kProfileMode) {
       Logger.root.level = Level.OFF; // defaults to Level.INFO
     } else {
       Logger.root.level = Level.ALL; // defaults to Level.INFO

@@ -1,6 +1,8 @@
-import 'package:fedi/app/chat/repository/chat_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChatUnreadBadgeCountWidget extends FediBoolBadgeWidget {
   const ChatUnreadBadgeCountWidget({
@@ -10,9 +12,18 @@ class ChatUnreadBadgeCountWidget extends FediBoolBadgeWidget {
 
   @override
   Stream<bool> retrieveBoolStream(BuildContext context) {
-    var chatRepository = IChatRepository.of(context, listen: false);
-    return chatRepository
-        .watchTotalUnreadCount()
-        .map((count) => count != null && count > 0);
+    var conversationChatRepository =
+        IConversationChatRepository.of(context, listen: false);
+    var pleromaChatRepository =
+        IPleromaChatRepository.of(context, listen: false);
+
+    return Rx.combineLatest2(
+        pleromaChatRepository
+            .watchTotalUnreadCount()
+            .map((count) => count != null && count > 0),
+        conversationChatRepository
+            .watchTotalUnreadCount()
+            .map((count) => count != null && count > 0),
+        (a, b) => a || b);
   }
 }

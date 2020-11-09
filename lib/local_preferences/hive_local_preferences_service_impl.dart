@@ -99,11 +99,13 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> isStorageExist() async => _box.length > 0;
 
   @override
-  Disposable listenKeyPreferenceChanged<T>(String key, ValueCallback<T> onChanged) =>
+  IDisposable listenKeyPreferenceChanged<T>(String key, ValueCallback<T> onChanged) =>
       StreamSubscriptionDisposable(
         _box.watch().listen(
           (boxEvent) {
-            onChanged(boxEvent.value);
+            if(boxEvent.key == key) {
+              onChanged(boxEvent.value);
+            }
           },
         ),
       );

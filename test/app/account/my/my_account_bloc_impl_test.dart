@@ -60,11 +60,10 @@ void main() {
   });
 
   tearDown(() async {
-
-    myAccountBloc.dispose();
-    accountRepository.dispose();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountBloc.dispose();
+    await accountRepository.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
 
     await Future.delayed(Duration(microseconds: 100));
     await database.close();
@@ -370,7 +369,7 @@ void main() {
     when(pleromaMyAccountServiceMock.verifyCredentials())
         .thenAnswer((_) async => newValue.remoteAccount);
 
-    await myAccountBloc.refreshFromNetwork(false);
+    await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 

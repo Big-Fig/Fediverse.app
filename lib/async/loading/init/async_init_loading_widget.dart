@@ -1,8 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger("async_init_loading_widget.dart");
 
 class AsyncInitLoadingWidget extends StatelessWidget {
   final IAsyncInitLoadingBloc asyncInitLoadingBloc;
@@ -14,8 +17,10 @@ class AsyncInitLoadingWidget extends StatelessWidget {
     @required this.loadingFinishedBuilder,
     this.loadingWidget,
   }) {
-    if (asyncInitLoadingBloc.initLoadingState ==
-        AsyncInitLoadingState.notStarted) {
+    var state = asyncInitLoadingBloc.initLoadingState;
+    _logger.finest(() => "AsyncInitLoadingWidget state $state");
+
+    if (state == AsyncInitLoadingState.notStarted) {
       asyncInitLoadingBloc.performAsyncInit();
     }
   }
@@ -33,7 +38,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(tr("async.init.state.not_started")),
+                  child: Text(S.of(context).async_init_state_notStarted),
                 ),
               );
               break;
@@ -53,9 +58,12 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(tr("async.init.state.failed", args: [
-                      asyncInitLoadingBloc.initLoadingException.toString()
-                    ])),
+                    child: Text(
+                      S.of(context).async_init_state_failed(
+                            asyncInitLoadingBloc.initLoadingException
+                                .toString(),
+                          ),
+                    ),
                   ));
               break;
           }

@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/chat/chat_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../account/account_model_helper.dart';
 import 'database/chat_database_model_helper.dart';
 
-Future<DbChatPopulatedWrapper> createTestChat(
+Future<DbPleromaChatPopulatedWrapper> createTestChat(
     {@required String seed,
     String remoteId,
     int unread,
@@ -14,7 +14,7 @@ Future<DbChatPopulatedWrapper> createTestChat(
     DbAccountWrapper account}) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
-  return DbChatPopulatedWrapper(DbChatPopulated(
+  return DbPleromaChatPopulatedWrapper(DbPleromaChatPopulated(
     dbChat: await createTestDbChat(
         seed: seed,
         remoteId: remoteId,
@@ -25,7 +25,7 @@ Future<DbChatPopulatedWrapper> createTestChat(
   ));
 }
 
-void expectChat(IChat actual, IChat expected) {
+void expectChat(IPleromaChat actual, IPleromaChat expected) {
   if (actual == null && expected == null) {
     return;
   }

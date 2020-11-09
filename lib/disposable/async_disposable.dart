@@ -12,5 +12,5 @@ class StreamSubscriptionDisposable extends CustomDisposable {
 class TimerDisposable extends CustomDisposable {
   final Timer timer;
 
-  TimerDisposable(this.timer) : super(() => timer.cancel());
+  TimerDisposable(this.timer) : super(() async => timer.cancel());
 }

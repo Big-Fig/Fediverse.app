@@ -41,7 +41,7 @@ class PleromaEmojiService implements IPleromaEmojiService {
   PleromaEmojiService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 
@@ -61,7 +61,6 @@ class PleromaEmojiService implements IPleromaEmojiService {
         RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) {
-
         var jsonData = json.decode(body);
         if (jsonData == null || !(jsonData is Map<String, dynamic>)) {
           return [];

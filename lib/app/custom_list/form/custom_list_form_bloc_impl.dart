@@ -21,5 +21,5 @@ class CustomListFormBloc extends FormBloc implements ICustomListFormBloc {
   }
 
   @override
-  List<IFormItemBloc> get items => [titleField];
+  List<IFormItemBloc> get currentItems => [titleField];
 }

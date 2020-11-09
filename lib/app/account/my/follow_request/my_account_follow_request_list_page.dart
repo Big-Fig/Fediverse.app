@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_account_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_network_only_account_list_bloc_impl.dart';
@@ -19,13 +19,15 @@ class MyAccountFollowRequestListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.account.my.follow_request.title".tr(),
+        title: S.of(context).app_account_my_followRequest_title,
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: MyAccountFollowRequestAccountPaginationListWidget(),
       ),
     );
   }
+
+  const MyAccountFollowRequestListPage();
 }
 
 void goToMyAccountFollowRequestListPage(BuildContext context) {
@@ -50,7 +52,7 @@ MaterialPageRoute createMyAccountFollowRequestListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
-              child: MyAccountFollowRequestListPage(),
+              child: const MyAccountFollowRequestListPage(),
             ),
           ),
         ),

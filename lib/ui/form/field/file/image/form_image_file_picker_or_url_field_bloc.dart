@@ -5,5 +5,5 @@ abstract class IFormImageFilePickerOrUrlFieldBloc
     extends IFormFilePickerOrUrlFieldBloc {
   Stream<MediaImageSource> get imageSourceStream;
 
-  Future<MediaImageSource> get imageSource;
+  MediaImageSource get imageSource;
 }

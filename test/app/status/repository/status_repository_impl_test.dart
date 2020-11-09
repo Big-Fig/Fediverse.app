@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -51,8 +51,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountRepository.dispose();
-    statusRepository.dispose();
+    await accountRepository.dispose();
+    await statusRepository.dispose();
     await database.close();
   });
 
@@ -1105,7 +1105,7 @@ void main() {
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
     var query = statusRepository.createQuery(
-      onlyInConversation: DbConversationWrapper(DbConversation(
+      onlyInConversation: DbConversationChatWrapper(DbConversation(
           remoteId: conversationRemoteId, unread: false, id: null)),
       onlyFromAccount: null,
       onlyWithMedia: null,

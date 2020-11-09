@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ISearchBloc extends Disposable {
+abstract class ISearchBloc extends IDisposable {
   static ISearchBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ISearchBloc>(context, listen: listen);
 

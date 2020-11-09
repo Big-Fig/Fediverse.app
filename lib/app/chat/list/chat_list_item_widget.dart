@@ -1,35 +1,41 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/avatar/chat_avatar_widget.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
-import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class ChatListItemWidget extends StatelessWidget {
-  ChatListItemWidget();
+  final OnClickUiCallback onClick;
+  const ChatListItemWidget({
+    @required this.onClick,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IChatBloc.of(context, listen: true);
-
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        goToChatPage(context, chat: chatBloc.chat);
+        onClick(context);
       },
       child: Container(
         height: FediSizes.chatListItemPreviewHeight,
@@ -42,93 +48,138 @@ class ChatListItemWidget extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ChatAvatarWidget(),
+                    const ChatAvatarWidget(),
                     const FediBigHorizontalSpacer(),
                     Flexible(
-                      child: buildChatPreview(context, chatBloc),
+                      child: const _ChatListItemPreviewWidget(),
                     ),
                   ],
                 ),
               ),
-              buildGoToChatButton(context, chatBloc),
+              _ChatListItemGoToChatButtonWidget(
+                onClick: onClick,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Column buildChatPreview(BuildContext context, IChatBloc chatBloc) {
+class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
+  final OnClickUiCallback onClick;
+  const _ChatListItemGoToChatButtonWidget({
+    @required this.onClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconButton(
+      tooltip: S.of(context).app_chat_action_more,
+      color: IFediUiColorTheme.of(context).darkGrey,
+      iconSize: FediSizes.mediumIconSize,
+      icon: Icon(FediIcons.arrow_right),
+      onPressed: () {
+        onClick(context);
+      },
+    );
+  }
+}
+
+class _ChatListItemPreviewWidget extends StatelessWidget {
+  const _ChatListItemPreviewWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        ChatTitleWidget(),
-        buildLastMessageText(context, chatBloc),
+        const ChatTitleWidget(),
+        const _ChatListItemLastMessageWidget(),
       ],
     );
   }
+}
 
-  Widget buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
-    return FediIconButton(
-      tooltip: tr("app.chat.action.more"),
-      color: FediColors.darkGrey,
-      iconSize: FediSizes.mediumIconSize,
-      icon: Icon(FediIcons.arrow_right),
-      onPressed: () {
-        goToChatPage(context, chat: chatBloc.chat);
+class _ChatListItemLastMessageWidget extends StatelessWidget {
+  const _ChatListItemLastMessageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var chatBloc = IChatBloc.of(context);
+
+    return StreamBuilder<IChatMessage>(
+      stream: chatBloc.lastChatMessageStream,
+      builder: (context, snapshot) {
+        var lastMessage = snapshot.data;
+
+        if (lastMessage == null) {
+          return const SizedBox.shrink();
+        }
+        var content = lastMessage.content;
+        if (content?.isNotEmpty != true) {
+          content = lastMessage.mediaAttachments.map(
+            (mediaAttachment) {
+              var description = mediaAttachment.description;
+              if (description?.isNotEmpty == true) {
+                return description;
+              } else {
+                return path.basename(mediaAttachment.url);
+              }
+            },
+          ).join(", ");
+        } else {
+          content = _extractContent(context, lastMessage, content);
+        }
+
+        var fediUiColorTheme = IFediUiColorTheme.of(context);
+        var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+        return Provider<EmojiText>.value(
+          value: EmojiText(text: content, emojis: lastMessage.emojis),
+          child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+            update: (context, emojiText, _) {
+              return HtmlTextBloc(
+                inputData: HtmlTextInputData(
+                  input: emojiText.text,
+                  emojis: emojiText.emojis,
+                ),
+                settings: HtmlTextSettings(
+                  drawNewLines: false,
+                  textMaxLines: 1,
+                  textOverflow: TextOverflow.ellipsis,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w300,
+                  color: fediUiColorTheme.mediumGrey,
+                  linkColor: fediUiColorTheme.primary,
+                  textScaleFactor: textScaleFactor,
+                  lineHeight: null,
+                ),
+              );
+            },
+            child: const HtmlTextWidget(),
+          ),
+        );
       },
     );
   }
+}
 
-  Widget buildLastMessageText(BuildContext context, IChatBloc chatBloc) {
-    return StreamBuilder<IChatMessage>(
-        stream: chatBloc.lastChatMessageStream,
-        builder: (context, snapshot) {
-          var lastMessage = snapshot.data;
+String _extractContent(
+    BuildContext context, IChatMessage chatMessage, String content) {
+  String formattedText =
+      HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
 
-          if (lastMessage == null) {
-            return SizedBox.shrink();
-          }
-          var content = lastMessage.content;
-          if (content?.isNotEmpty != true) {
-            var mediaAttachment = lastMessage.mediaAttachment;
-            var description = mediaAttachment.description;
-            if(description?.isNotEmpty == true) {
-              content = description;
-            } else {
-              content = path.basename(mediaAttachment.url);
-            }
-          } else {
-            content = extractContent(context, lastMessage, content);
-          }
+  var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-          var contentWithEmojis =
-              addEmojiToHtmlContent(content, lastMessage.emojis);
-          return HtmlTextWidget(
-            drawNewLines: false,
-            textMaxLines: 1,
-            textOverflow: TextOverflow.ellipsis,
-            data: contentWithEmojis,
-            onLinkTap: null,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w300,
-            color: FediColors.mediumGrey,
-          );
-        });
+  if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
+    formattedText = S.of(context).app_chat_preview_you(formattedText);
   }
 
-  String extractContent(
-      BuildContext context, IChatMessage chatMessage, String content) {
-    String formattedText =
-        HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
-
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
-
-    if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-      formattedText = tr("app.chat.preview.you", args: [formattedText]);
-    }
-
-    return formattedText;
-  }
+  return formattedText;
 }

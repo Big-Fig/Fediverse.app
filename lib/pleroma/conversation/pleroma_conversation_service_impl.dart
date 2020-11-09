@@ -16,7 +16,6 @@ class PleromaConversationService implements IPleromaConversationService {
   @override
   final IPleromaAuthRestService restService;
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -42,7 +41,7 @@ class PleromaConversationService implements IPleromaConversationService {
   PleromaConversationService({@required this.restService});
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

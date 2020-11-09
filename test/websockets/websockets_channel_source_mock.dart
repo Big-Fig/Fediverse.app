@@ -20,8 +20,8 @@ class WebSocketsChannelSourceMock<T extends WebSocketsEvent>
   final Uri url;
 
   WebSocketsChannelSourceMock({@required this.url}) {
-    addDisposable(disposable: CustomDisposable(() {
-      _eventsStreamController.close();
+    addDisposable(disposable: CustomDisposable(() async {
+      await _eventsStreamController.close();
     }));
   }
 }

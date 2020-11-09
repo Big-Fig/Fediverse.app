@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/database/conversation_statuses_database_dao.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
@@ -249,7 +249,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -301,7 +301,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -354,7 +354,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -370,6 +370,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
     @required bool onlyNotDeleted,
+    bool forceJoinConversation = false,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
@@ -455,7 +456,8 @@ class StatusRepository extends AsyncInitLoadingBloc
           includeAccountFollowing: needFilterByFollowing,
           includeStatusLists: needFilterByList,
           includeStatusHashtags: needFilterByTag,
-          includeConversations: needFilterByConversation,
+          includeConversations:
+              needFilterByConversation || forceJoinConversation,
           includeHomeTimeline: needFilterByHomeTimeline),
     );
 
@@ -617,7 +619,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -665,7 +667,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IConversation onlyInConversation,
+    @required IConversationChat onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
@@ -710,8 +712,27 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
+  Future incrementRepliesCount({@required String remoteId}) =>
+      dao.incrementRepliesCount(remoteId: remoteId);
+
+  @override
+  Future removeAccountStatusesFromHome({
+    @required String accountRemoteId,
+  }) =>
+      homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+
+  @override
+  Future markStatusAsDeleted({@required String statusRemoteId}) =>
+      dao.markAsDeleted(remoteId: statusRemoteId);
+
+  @override
+  Future clearListStatusesConnection({@required String listRemoteId}) async {
+    await listsDao.deleteByRemoteId(listRemoteId);
+  }
+
+  @override
   Future<IStatus> getConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   }) =>
       getStatus(
@@ -739,7 +760,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<IStatus> watchConversationLastStatus({
-    @required IConversation conversation,
+    @required IConversationChat conversation,
     bool onlyNotDeleted = true,
   }) =>
       watchStatus(
@@ -766,21 +787,74 @@ class StatusRepository extends AsyncInitLoadingBloc
       );
 
   @override
-  Future incrementRepliesCount({@required String remoteId}) =>
-      dao.incrementRepliesCount(remoteId: remoteId);
+  Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
+    @required List<IConversationChat> conversations,
+    bool onlyNotDeleted = true,
+  }) async {
+    var query = createQuery(
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      forceJoinConversation: true,
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccount: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyInConversation: null,
+      onlyLocal: null,
+      onlyWithMedia: null,
+      withMuted: null,
+      excludeVisibilities: null,
+      olderThanStatus: null,
+      newerThanStatus: null,
+      onlyNoNsfwSensitive: null,
+      onlyNoReplies: null,
+      limit: null,
+      offset: null,
+      isFromHomeTimeline: null,
+      onlyFavourited: null,
+      onlyBookmarked: null,
+      onlyNotDeleted: null,
+    );
 
-  @override
-  Future removeAccountStatusesFromHome({
-    @required String accountRemoteId,
-  }) =>
-      homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
+    var typedResultList = await query.get();
 
-  @override
-  Future markStatusAsDeleted({@required String statusRemoteId}) =>
-      dao.markAsDeleted(remoteId: statusRemoteId);
+    Map<IConversationChat, IStatus> result = {};
 
-  @override
-  Future clearListStatusesConnection({@required String listRemoteId}) async {
-    await listsDao.deleteByRemoteId(listRemoteId);
+    conversations.forEach((conversation) {
+      TypedResult typedResult = typedResultList.firstWhere(
+        (typedResult) {
+          var conversationStatuses =
+              typedResult.readTable(dao.conversationStatusesAlias);
+
+          return conversationStatuses.conversationRemoteId ==
+              conversation.remoteId;
+        },
+        orElse: () => null,
+      );
+
+      IStatus status;
+
+      if (typedResult != null) {
+        status = mapDataClassToItem(
+          dao.typedResultToPopulated(
+            typedResult,
+          ),
+        );
+      }
+
+      result[conversation] = status;
+    });
+
+    return result;
+  }
+
+  void addGroupByConversationId(JoinedSelectStatement query) {
+    query.groupBy(
+      [
+        conversationStatusesDao.dbConversationStatuses.conversationRemoteId,
+      ],
+      having: CustomExpression("MAX(db_statuses.created_at)"),
+    );
   }
 }

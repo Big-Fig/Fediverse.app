@@ -1,8 +1,8 @@
 import 'package:async/async.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/app/ui/progress/fedi_indeterminate_progress_dialog.dart';
+import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +35,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
         cancelable: cancelable,
-        contentMessage: contentMessage ?? tr("dialog.progress.content"),
+        contentMessage: contentMessage ?? S.of(context).dialog_progress_content,
         cancelableOperation: cancelableOperation);
     progressDialog.show(context);
   }
@@ -59,16 +59,21 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
     if (errorData == null && showDefaultErrorAlertDialogOnUnhandledError) {
       errorData = ErrorData(
-        titleText: tr("dialog.error.title"),
-        contentText: tr("dialog.error.content", args: [error.toString()]),
+        titleCreator: (context) => S.of(context).dialog_error_title,
+        contentCreator: (context) => S.of(context).dialog_error_content(
+              error.toString(),
+            ),
         stackTrace: null,
         error: null,
       );
     }
 
     if (needRethrow) {
-      _logger.severe(() => "rethrow error during "
-          "doAsyncOperationWithFediDialog", error, stackTrace);
+      _logger.severe(
+          () => "rethrow error during "
+              "doAsyncOperationWithFediDialog",
+          error,
+          stackTrace);
     } else {
       _logger.warning(
           () => "handled error during "
@@ -79,6 +84,11 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   } finally {
     progressDialog?.hide(context);
   }
+
+  // wait until progress dialog actually hides
+  await Future.delayed(Duration(milliseconds: 100), () {
+
+  });
 
   AsyncDialogResult dialogResult;
   if (progressDialog?.isCanceled == true) {

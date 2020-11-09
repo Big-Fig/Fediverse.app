@@ -6,7 +6,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class INotificationTabsBloc extends Disposable {
+abstract class INotificationTabsBloc extends IDisposable {
   static INotificationTabsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<INotificationTabsBloc>(context, listen: listen);
 

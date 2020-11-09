@@ -11,13 +11,16 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.25+225
+version: 2.0.28+228
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
+    sdk: flutter
+
+  flutter_localizations:
     sdk: flutter
 
   # firebase auth
@@ -57,11 +60,11 @@ dependencies:
   # better image viewer with gestures support
   photo_view: ^0.10.2
   # positioned list view
-  flutter_widgets: ^0.1.12
+  scrollable_positioned_list: ^0.1.8
   # edit images during account editing
   image_cropper: ^1.3.1
   # cache images locally
-  cached_network_image: ^2.3.2+1
+  cached_network_image: ^2.3.3
   # reactive programming
   rxdart: ^0.24.1
   # text size to fit constraints
@@ -75,11 +78,6 @@ dependencies:
 
   # customizable datetime picker
   flutter_datetime_picker: ^1.4.0
-
-  # localization via .json files
-  # command to regenerate loader
-  # flutter pub run easy_localization:generate -S assets/langs -O lib/app/localization -o localization_loader.dart
-  easy_localization: ^2.3.3
 
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
@@ -140,7 +138,7 @@ dependencies:
   video_player: '>=0.10.11+2 <2.0.0'
 
   # pull to refresh and pull to load more
-  pull_to_refresh: ^1.6.1
+  pull_to_refresh: ^1.6.2
 
   # custom scroll view which fix bugs related to inner scrollables sync
   extended_nested_scroll_view: ^1.0.1
@@ -158,7 +156,7 @@ dependencies:
   shared_preferences: ^0.5.10
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^4.0.0
+  extended_text_field: ^5.0.0
 
   # detect keyboard visibility
   flutter_keyboard_visibility: ^3.2.2
@@ -226,7 +224,6 @@ flutter:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/default_timeline_header.png
-    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -253,3 +250,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

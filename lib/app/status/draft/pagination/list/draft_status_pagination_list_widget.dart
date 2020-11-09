@@ -13,7 +13,7 @@ class DraftStatusPaginationListTimelineWidget
     extends DraftStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
 
-  DraftStatusPaginationListTimelineWidget(
+  const DraftStatusPaginationListTimelineWidget(
       {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
       : super(key: key);
 
@@ -24,22 +24,23 @@ class DraftStatusPaginationListTimelineWidget
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) => Provider<IDraftStatus>.value(
-                value: items[index],
-                child: DisposableProxyProvider<IDraftStatus, IDraftStatusBloc>(
-                    update: (context, draftStatus, oldValue) {
-                      return DraftStatusBloc.createFromContext(
-                          context, draftStatus,
-                          isNeedWatchLocalRepositoryForUpdates:
-                              needWatchLocalRepositoryForUpdates);
-                    },
-                    child: FediListTile(
-                      isFirstInList: index == 0,
-                      child: DraftStatusListItemWidget(),
-                    )),
-              ));
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) => Provider<IDraftStatus>.value(
+          value: items[index],
+          child: DisposableProxyProvider<IDraftStatus, IDraftStatusBloc>(
+            update: (context, draftStatus, oldValue) {
+              return DraftStatusBloc.createFromContext(context, draftStatus,
+                  isNeedWatchLocalRepositoryForUpdates:
+                      needWatchLocalRepositoryForUpdates);
+            },
+            child: FediListTile(
+              isFirstInList: index == 0,
+              child: const DraftStatusListItemWidget(),
+            ),
+          ),
+        ),
+      );
 }

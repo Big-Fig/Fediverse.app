@@ -1,8 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -25,19 +26,25 @@ class AccountStatusesMediaOnlyCachedListBloc
     @required IPleromaAccountService pleromaAccountService,
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
-    @required IConversationRepository conversationRepository,
+    @required IConversationChatRepository conversationRepository,
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
-    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required
+        IConversationChatNewMessagesHandlerBloc
+            conversationChatNewMessagesHandlerBloc,
   }) : super(
-            account: account,
-            pleromaAccountService: pleromaAccountService,
-            statusRepository: statusRepository,
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-            pleromaWebSocketsService: pleromaWebSocketsService,
-            listenWebSocketsChanges: listenWebSocketsChanges,
-            chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
+          account: account,
+          pleromaAccountService: pleromaAccountService,
+          statusRepository: statusRepository,
+          notificationRepository: notificationRepository,
+          conversationRepository: conversationRepository,
+          pleromaWebSocketsService: pleromaWebSocketsService,
+          listenWebSocketsChanges: listenWebSocketsChanges,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          conversationChatNewMessagesHandlerBloc:
+              conversationChatNewMessagesHandlerBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
@@ -50,7 +57,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       conversationRepository:
-          IConversationRepository.of(context, listen: false),
+          IConversationChatRepository.of(context, listen: false),
       listenWebSocketsChanges: IMyAccountSettingsBloc.of(context, listen: false)
           .isRealtimeWebSocketsEnabledFieldBloc
           .currentValue,
@@ -59,7 +66,9 @@ class AccountStatusesMediaOnlyCachedListBloc
       pleromaWebSocketsService:
           IPleromaWebSocketsService.of(context, listen: false),
       chatNewMessagesHandlerBloc:
-          IChatNewMessagesHandlerBloc.of(context, listen: false),
+          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
+      conversationChatNewMessagesHandlerBloc:
+          IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
     );
   }
 

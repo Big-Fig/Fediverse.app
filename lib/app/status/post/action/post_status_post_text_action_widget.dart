@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,11 +26,17 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
 
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: true,
-            progressContentMessage: tr("app.status.post.dialog.async.content"),
+            progressContentMessage:
+                S.of(context).app_status_post_dialog_async_content,
             asyncButtonAction: () async {
+              var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.post();
-              if (success) {
-                showPostStatusPostOverlayNotification(context, postStatusBloc);
+              if (success == true) {
+                showPostStatusPostOverlayNotification(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  isScheduled: isScheduled,
+                );
               }
               FocusScope.of(context).requestFocus(FocusNode()); //remove focus
               if (success && successCallback != null) {
@@ -41,19 +47,22 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
               (context, error, stackTrace) {
                 var isScheduled = postStatusBloc.isScheduled;
                 return ErrorData(
-                  error: error,
-                  stackTrace: stackTrace,
-                  titleText: isScheduled
-                      ? tr("app.status.post.dialog.error.title.schedule")
-                      : tr("app.status.post.dialog.error.title.post"),
-                  contentText: tr("app.status.post.dialog.error.content",
-                      args: [error.toString()]),
-                );
+                    error: error,
+                    stackTrace: stackTrace,
+                    titleCreator: (context) => isScheduled
+                        ? S
+                            .of(context)
+                            .app_status_post_dialog_error_title_schedule
+                        : S.of(context).app_status_post_dialog_error_title_post,
+                    contentCreator: (context) => S
+                        .of(context)
+                        .app_status_post_dialog_error_content(
+                            error.toString()));
               }
             ],
             builder: (BuildContext context, onPressed) {
               return FediPrimaryFilledTextButton(
-                tr("app.status.post.action.post"),
+                S.of(context).app_status_post_action_post,
                 onPressed: isReadyToPost ? onPressed : null,
               );
             },

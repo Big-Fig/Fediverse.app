@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
-import 'package:fedi/app/local_prefernces/fedi_local_preferences_service_migration_bloc_impl.dart';
+import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,6 +19,11 @@ void main() {
   ILocalPreferencesService outputPreferencesService;
 
   setUp(() async {
+    var outputFile = File("$folder$outputFileName");
+
+    if (outputFile.existsSync()) {
+      outputFile.deleteSync();
+    }
     Hive.init(folder);
 
     HiveService.registerAdapters();
@@ -32,10 +37,9 @@ void main() {
   });
 
   tearDown(() async {
+    await File("$folder$outputFileName").delete();
     await inputPreferencesService.dispose();
     await outputPreferencesService.dispose();
-
-    await File("$folder$outputFileName").delete();
   });
 
   test('test migration', () async {
@@ -57,8 +61,8 @@ void main() {
 
     await serviceMigrationBloc.migrateData();
 
-    inputLocalPreferenceBloc.dispose();
-    outputLocalPreferenceBloc.dispose();
+    await inputLocalPreferenceBloc.dispose();
+    await outputLocalPreferenceBloc.dispose();
 
     inputLocalPreferenceBloc =
         CurrentAuthInstanceLocalPreferenceBloc(inputPreferencesService);
@@ -70,7 +74,7 @@ void main() {
 
     expect(outputLocalPreferenceBloc.value, inputLocalPreferenceBloc.value);
 
-    inputLocalPreferenceBloc.dispose();
-    outputLocalPreferenceBloc.dispose();
+    await inputLocalPreferenceBloc.dispose();
+    await outputLocalPreferenceBloc.dispose();
   });
 }

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
-    implements Disposable, IAsyncInitLoadingBloc {
+    implements IDisposable, IAsyncInitLoadingBloc {
   static IPaginationListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPaginationListBloc>(context, listen: listen);
 
@@ -20,6 +20,7 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   List<TItem> get items;
 
   Stream<List<TItem>> get itemsStream;
+  Stream<List<TItem>> get itemsDistinctStream;
 
   Future<PaginationListLoadingState> refreshWithoutController();
 

@@ -15,7 +15,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
   final bool alwaysShowFooter;
   final Widget footer;
 
-  ShareSelectAccountWidget({
+  const ShareSelectAccountWidget({
     this.header,
     this.footer,
     this.alwaysShowHeader,
@@ -43,8 +43,8 @@ class ShareSelectAccountWidget extends StatelessWidget {
                 header: Column(
                   children: [
                     header,
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
                       child: SearchInputWidget(),
                     ),
                   ],

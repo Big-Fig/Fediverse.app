@@ -1,14 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_helper.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("pleroma_async_operation_helper.dart");
 
 class PleromaAsyncOperationHelper {
   static const List<ErrorDataBuilder> pleromaErrorDataBuilders = [
@@ -39,29 +35,12 @@ class PleromaAsyncOperationHelper {
       showNotificationOnError: showNotificationOnError,
       showProgressDialog: showProgressDialog,
       errorCallback: (context, errorData) {
-        
-        if (errorData.error is PleromaInvalidCredentialsRestException) {
-          // todo: if auto-logout needed in all invalid credentials cases
-          _autoLogoutOnSessionExpired(context);
-        }
-
         if (errorCallback != null) {
           errorCallback(context, errorData);
         }
       },
       cancelable: cancelable,
     );
-  }
-
-  static void _autoLogoutOnSessionExpired(BuildContext context) {
-       try {
-      var currentAuthInstanceBloc =
-          ICurrentAuthInstanceBloc.of(context, listen: false);
-      currentAuthInstanceBloc.logoutCurrentInstance();
-    } catch (e, stackTrace) {
-      _logger.warning(
-          () => "failed to logout on invalid credentials", e, stackTrace);
-    }
   }
 
   static ErrorData pleromaThrottledErrorAlertDialogBuilder(
@@ -73,25 +52,32 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.throttled.dialog.title"),
-        contentText: tr("app.async.pleroma.error.throttled.dialog.content"),
+        titleCreator: (context) =>
+            S.of(context).app_async_pleroma_error_throttled_dialog_title,
+        contentCreator: (context) =>
+            S.of(context).app_async_pleroma_error_throttled_dialog_content,
       );
     } else {
       return null;
     }
   }
+
   static ErrorData pleromaInvalidCredentialsErrorAlertDialogBuilder(
     BuildContext context,
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaInvalidCredentialsRestException) {
+    if (error is PleromaForbiddenRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.invalid_credentials.dialog"
-            ".title"),
-        contentText: tr("app.async.pleroma.error.invalid_credentials.dialog.content"),
+        titleCreator: (context) => S
+            .of(context)
+            .app_async_pleroma_error_forbidden_dialog_title,
+        contentCreator: (context) => S
+            .of(context)
+            .app_async_pleroma_error_forbidden_dialog_content(
+                error.body),
       );
     } else {
       return null;
@@ -107,9 +93,12 @@ class PleromaAsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleText: tr("app.async.pleroma.error.common.dialog.title"),
-        contentText: tr("app.async.pleroma.error.common.dialog.content",
-            args: [error.toString()]),
+        titleCreator: (context) =>
+            S.of(context).app_async_pleroma_error_common_dialog_title,
+        contentCreator: (context) =>
+            S.of(context).app_async_pleroma_error_common_dialog_content(
+                  error.toString(),
+                ),
       );
     } else {
       return null;

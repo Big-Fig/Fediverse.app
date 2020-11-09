@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/custom_list/create/create_custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_app_bar_save_action_widget.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +12,12 @@ class CreateCustomListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: "app.custom_list.create.title".tr(),
+        title: S.of(context).app_customList_create_title,
         actions: <Widget>[
           EditCustomListAppBarSaveActionWidget(),
         ],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Padding(
           padding: FediPadding.allBigPadding,
           child: CustomListFormWidget(),
@@ -25,6 +25,8 @@ class CreateCustomListPage extends StatelessWidget {
       ),
     );
   }
+
+  const CreateCustomListPage();
 }
 
 void goToCreateCustomListPage({
@@ -47,8 +49,8 @@ MaterialPageRoute createCreateCustomListPageRoute({
   return MaterialPageRoute(
     builder: (context) => CreateCustomListBloc.provideToContext(
       context,
-      child: CreateCustomListPage(),
-        successCallback:successCallback,
+      child: const CreateCustomListPage(),
+      successCallback: successCallback,
     ),
   );
 }

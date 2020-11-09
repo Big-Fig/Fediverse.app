@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
@@ -32,7 +32,7 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
           enabled: enabled,
           desc: desc,
           error: formValueFieldBloc.isHaveAtLeastOneError
-              ? "form.field.value.error.null.desc".tr()
+              ? S.of(context).form_field_value_error_null_desc
               : null,
           nullable: nullable,
           clearCallback: () {
@@ -54,16 +54,16 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
 
               showFediSelectionChooserDialog(
                 context: context,
-                title:
-                    "app.timeline.settings.only_in_remote_list.field.chooser.dialog.title"
-                        .tr(),
+                title: S
+                    .of(context)
+                    .app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title,
                 actions: remoteLists
                     .map(
                       (remoteList) => SelectionDialogAction(
                         isSelected: remoteList?.id ==
                             formValueFieldBloc.currentValue?.id,
                         label: remoteList.title,
-                        onAction: () {
+                        onAction: (context) {
                           formValueFieldBloc.changeCurrentValue(remoteList);
                           Navigator.of(context).pop();
                         },
@@ -73,11 +73,11 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
               );
             }
           },
-          label: "app.timeline.settings.only_in_remote_list.field.label".tr(),
+          label: S.of(context).app_timeline_settings_onlyInRemoteList_field_label,
           value: currentValue,
           valueToTextMapper: (pleromaList) =>
               pleromaList?.title ??
-              "app.timeline.settings.only_in_remote_list.field.null".tr(),
+                  S.of(context).app_timeline_settings_onlyInRemoteList_field_null,
           valueToIconMapper: null,
         );
       });

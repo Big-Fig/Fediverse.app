@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
@@ -14,7 +13,6 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -23,6 +21,8 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -30,6 +30,7 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -86,14 +87,12 @@ class EditMyAccountWidget extends StatelessWidget {
                 buildPleromaBackgroundFieldImage(context, editMyAccountBloc),
               buildTextField(
                   formStringFieldBloc: editMyAccountBloc.displayNameField,
-                  label: tr("app.account.my.edit.field"
-                      ".display_name.label"),
+                  label:
+                      S.of(context).app_account_my_edit_field_displayName_label,
                   nextFormStringFieldBloc: editMyAccountBloc.noteField),
               buildTextField(
                 formStringFieldBloc: editMyAccountBloc.noteField,
-                label: tr(
-                  "app.account.my.edit.field.note.label",
-                ),
+                label: S.of(context).app_account_my_edit_field_note_label,
                 nextFormStringFieldBloc: null,
               ),
               buildLockedField(context, editMyAccountBloc),
@@ -143,9 +142,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -162,9 +162,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -198,9 +199,9 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback: (context,IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountAvatarDialog(context, mediaDeviceFile,
-          (filePickerFile) async {
+          (context,filePickerFile) async {
         try {
           await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -232,38 +233,45 @@ class EditMyAccountWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(editAccountAvatarAndBorderSize / 2),
         border: Border.all(
           width: editAccountAvatarCircleBorderWidth,
-          color: FediColors.white,
+          color: IFediUiColorTheme.of(context).white,
           style: BorderStyle.solid,
         ),
       ),
-      child: StreamBuilder<MediaImageSource>(
-          stream: editMyAccountBloc.avatarField.imageSourceStream,
-          builder: (context, snapshot) {
-            var source = snapshot.data;
+      child: buildAvatarMediaImageSourceStreamBuilder(editMyAccountBloc),
+      // child: FediCircularProgressIndicator(),
+    );
+  }
 
-            if (source == null) {
-              return FediCircularProgressIndicator();
-            }
-            if (source.url != null) {
-              var url = source.url;
-              return CachedNetworkImage(
-                imageUrl: url,
-                placeholder: (context, url) => Container(
-                  width: editAccountProgressSize,
-                  height: editAccountProgressSize,
-                  child: FediCircularProgressIndicator(),
-                ),
-                imageBuilder: (context, imageProvider) {
-                  return buildAvatarImageContainer(imageProvider);
-                },
-                errorWidget: (context, url, error) => Icon(FediIcons.warning),
-                height: editAccountAvatarSize,
-                width: editAccountAvatarSize,
-              );
-            } else {
-              return buildAvatarImageContainer(Image.file(source.file).image);
-            }
-          }),
+  StreamBuilder<MediaImageSource> buildAvatarMediaImageSourceStreamBuilder(
+      IEditMyAccountBloc editMyAccountBloc) {
+    return StreamBuilder<MediaImageSource>(
+      stream: editMyAccountBloc.avatarField.imageSourceStream,
+      builder: (context, snapshot) {
+        var source = snapshot.data;
+
+        if (source == null) {
+          return FediCircularProgressIndicator();
+        }
+        if (source.url != null) {
+          var url = source.url;
+          return CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => Container(
+              width: editAccountProgressSize,
+              height: editAccountProgressSize,
+              child: FediCircularProgressIndicator(),
+            ),
+            imageBuilder: (context, imageProvider) {
+              return buildAvatarImageContainer(imageProvider);
+            },
+            errorWidget: (context, url, error) => Icon(FediIcons.warning),
+            height: editAccountAvatarSize,
+            width: editAccountAvatarSize,
+          );
+        } else {
+          return buildAvatarImageContainer(Image.file(source.file).image);
+        }
+      },
     );
   }
 
@@ -300,35 +308,42 @@ class EditMyAccountWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: StreamBuilder<MediaImageSource>(
-          stream: editMyAccountBloc.headerField.imageSourceStream,
-          builder: (context, snapshot) {
-            var source = snapshot.data;
-            if (source == null) {
-              return FediCircularProgressIndicator();
-            }
-            if (source.url != null) {
-              var url = source.url;
-              return CachedNetworkImage(
-                imageUrl: url,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: Container(
-                    width: editAccountProgressSize,
-                    height: editAccountProgressSize,
-                    child: FediCircularProgressIndicator(),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Icon(FediIcons.warning),
-              );
-            } else {
-              return Image.file(
-                source.file,
-                fit: BoxFit.cover,
-              );
-            }
-          }),
+      child: buildHeaderImageSourceStreamBuilder(editMyAccountBloc),
+      // child: FediCircularProgressIndicator(),
     );
+  }
+
+  StreamBuilder<MediaImageSource> buildHeaderImageSourceStreamBuilder(
+      IEditMyAccountBloc editMyAccountBloc) {
+    return StreamBuilder<MediaImageSource>(
+        stream: editMyAccountBloc.headerField.imageSourceStream,
+        builder: (context, snapshot) {
+          var source = snapshot.data;
+
+          if (source == null) {
+            return FediCircularProgressIndicator();
+          }
+          if (source.url != null) {
+            var url = source.url;
+            return CachedNetworkImage(
+              imageUrl: url,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Center(
+                child: Container(
+                  width: editAccountProgressSize,
+                  height: editAccountProgressSize,
+                  child: FediCircularProgressIndicator(),
+                ),
+              ),
+              errorWidget: (context, url, error) => Icon(FediIcons.warning),
+            );
+          } else {
+            return Image.file(
+              source.file,
+              fit: BoxFit.cover,
+            );
+          }
+        });
   }
 
   Widget buildPleromaBackgroundFieldImage(
@@ -337,7 +352,7 @@ class EditMyAccountWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         FediFormColumnLabel(
-          tr("app.account.my.edit.field.background_image.label"),
+          S.of(context).app_account_my_edit_field_backgroundImage_label,
         ),
         FediSmallVerticalSpacer(),
         StreamBuilder<MediaImageSource>(
@@ -373,7 +388,9 @@ class EditMyAccountWidget extends StatelessWidget {
                 return Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediPrimaryFilledTextButton(
-                    tr("app.account.my.edit.field.background_image.action.add"),
+                    S
+                        .of(context)
+                        .app_account_my_edit_field_backgroundImage_action_add,
                     onPressed: () {
                       startChoosingFileToUploadBackground(
                           context, editMyAccountBloc);
@@ -435,7 +452,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildLockedField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = tr("app.account.my.edit.field.locked.label");
+    var label = S.of(context).app_account_my_edit_field_locked_label;
     var field = editMyAccountBloc.lockedField;
     return FormBoolFieldFormRowWidget(label: label, field: field);
   }
@@ -480,8 +497,9 @@ class EditMyAccountWidget extends StatelessWidget {
                       return Padding(
                         padding: FediPadding.allBigPadding,
                         child: FediPrimaryFilledTextButton(
-                          tr("app.account.my.edit.field.custom_field.action"
-                              ".add_new"),
+                          S
+                              .of(context)
+                              .app_account_my_edit_field_customField_action_addNew,
                           onPressed: () {
                             customFieldsGroupBloc.addNewEmptyField();
                           },
@@ -507,17 +525,19 @@ class EditMyAccountWidget extends StatelessWidget {
           IFormLinkPairFieldGroupBloc nextCustomField,
       @required
           int index}) {
+    var number = index + 1;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           child: FediFormPairEditTextRow(
-            label: tr("app.account.my.edit.field.custom_field.label",
-                args: [(index + 1).toString()]),
-            nameHint: tr("app.account.my.edit.field.custom_field.name"
-                ".label"),
-            valueHint: tr("app.account.my.edit.field.custom_field.value"
-                ".label"),
+            label: S
+                .of(context)
+                .app_account_my_edit_field_customField_label(number),
+            nameHint:
+                S.of(context).app_account_my_edit_field_customField_name_label,
+            valueHint:
+                S.of(context).app_account_my_edit_field_customField_value_label,
             nameStringFieldBloc: customField.keyField,
             valueStringFieldBloc: customField.valueField,
             ending: FediIconButton(
@@ -541,21 +561,23 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, dynamic e) {
     String contentText;
     if (e is UploadMediaExceedFileSizeLimitException) {
-      contentText = "app.account.my.edit.media.upload.failed.notification"
-              ".exceed_size.content"
-          .tr(
-        args: [
-          _numberFormat.format(e.currentFileSizeInBytes / pow(1024, 2)),
-          _numberFormat.format(e.maximumFileSizeInBytes / pow(1024, 2)),
-        ],
-      );
+      // todo: refactor
+      contentText =
+          S.of(context).app_media_upload_failed_notification_exceedSize_content(
+                _numberFormat.format(
+                  e.currentFileSizeInBytes / pow(1024, 2),
+                ),
+                _numberFormat.format(
+                  e.maximumFileSizeInBytes / pow(1024, 2),
+                ),
+              );
     } else {
       contentText = e.toString();
     }
     return showErrorFediNotificationOverlay(
+      context: context,
       contentText: contentText,
-      titleText:
-          "app.account.my.edit.media.upload.failed.notification.title".tr(),
+      titleText: S.of(context).app_media_upload_failed_notification_title,
     );
   }
 }

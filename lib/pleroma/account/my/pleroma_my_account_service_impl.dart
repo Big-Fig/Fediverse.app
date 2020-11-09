@@ -190,7 +190,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 

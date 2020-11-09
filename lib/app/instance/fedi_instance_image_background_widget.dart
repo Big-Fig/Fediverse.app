@@ -1,98 +1,165 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 var urlPath = path.posix;
 
+final Image defaultImage =
+    Image.asset("assets/images/default_timeline_header.png");
 var _logger = Logger("fedi_instance_image_background_widget.dart");
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
-  final Widget child;
-
-  const FediInstanceImageBackgroundWidget({@required this.child});
+  const FediInstanceImageBackgroundWidget();
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
     var currentInstance = currentAuthInstanceBloc.currentInstance;
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-    var accountBackgroundImage = myAccountBloc.account.pleromaBackgroundImage;
+    var myAccountBloc = IMyAccountBloc.of(context);
 
-    String backgroundImage = accountBackgroundImage;
+    return StreamBuilder<String>(
+      stream: myAccountBloc.pleromaBackgroundImageStream,
+      builder: (context, snapshot) {
+        var accountBackgroundImage = snapshot.data;
 
-    if (backgroundImage?.isNotEmpty != true) {
-      backgroundImage = currentInstance?.info?.backgroundImage;
-    }
+        String backgroundImage = accountBackgroundImage;
 
-    var backgroundImageAbsolutePath;
+        if (backgroundImage?.isNotEmpty != true) {
+          backgroundImage = currentInstance?.info?.backgroundImage;
+        }
 
-    // backgroundImage maybe relative path or absolute path]
-    if (backgroundImage != null) {
-      var backgroundImageUri = Uri.parse(backgroundImage);
-      var isRelative = backgroundImageUri.host?.isNotEmpty != true;
-      if (isRelative) {
-        var hostPath = currentInstance.url.toString();
-        backgroundImageAbsolutePath = hostPath + backgroundImage;
-      } else {
-        backgroundImageAbsolutePath = backgroundImage;
-      }
-    }
+        var backgroundImageAbsolutePath;
 
-    _logger.finest(
-        () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
-    if (backgroundImageAbsolutePath?.isNotEmpty == true) {
-      // todo: think about unnecessary redraw performance
-      return CachedNetworkImage(
-        imageUrl: backgroundImageAbsolutePath,
-        errorWidget: (BuildContext context, String url, Object error) =>
-            buildDefault(child),
-        placeholder: (_, __) => Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: FediColors.primaryDark,
-          child: child,
-        ),
-        imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
-            buildWithImageProvider(imageProvider, child),
-      );
-    } else {
-      return buildDefault(child);
-    }
-  }
+        // backgroundImage maybe relative path or absolute path]
+        if (backgroundImage != null) {
+          var backgroundImageUri = Uri.parse(backgroundImage);
+          var isRelative = backgroundImageUri.host?.isNotEmpty != true;
+          if (isRelative) {
+            var hostPath = currentInstance.url.toString();
+            backgroundImageAbsolutePath = hostPath + backgroundImage;
+          } else {
+            backgroundImageAbsolutePath = backgroundImage;
+          }
+        }
 
-  Widget buildDefault(Widget child) {
-    var imageProvider = getDefaultBackgroundImage().image;
-    return buildWithImageProvider(imageProvider, child);
-  }
+        _logger.finest(
+            () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
 
-  Widget buildWithImageProvider(ImageProvider imageProvider, Widget child) {
-    return Stack(
-      children: [
-        Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.topCenter,
-                    image: imageProvider)),
-            child: child),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(color: FediColors.imageDarkOverlay),
-        )
-      ],
+        return Provider<String>.value(
+          value: backgroundImageAbsolutePath,
+          child: const _FediInstanceImageBackgroundCachedNetworkImageWidget(),
+        );
+      },
     );
   }
+}
 
-  Image getDefaultBackgroundImage() =>
-      Image.asset("assets/images/default_timeline_header.png");
+class _FediInstanceImageBackgroundCachedNetworkImageWidget
+    extends StatelessWidget {
+  const _FediInstanceImageBackgroundCachedNetworkImageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var backgroundImageAbsolutePath = Provider.of<String>(context);
+
+    if (backgroundImageAbsolutePath?.isNotEmpty == true) {
+      return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return CachedNetworkImage(
+          imageUrl: backgroundImageAbsolutePath,
+          width: constraints.maxWidth,
+          memCacheWidth: constraints.maxWidth.toInt(),
+          errorWidget: (BuildContext context, String url, Object error) =>
+              buildDefault(
+            context: context,
+          ),
+          placeholder: (_, __) =>
+              const _FediInstanceImageBackgroundPlaceholderWidget(),
+          imageBuilder: (BuildContext context, ImageProvider imageProvider) {
+            return Provider<ImageProvider>.value(
+              value: imageProvider,
+              child: const _FediInstanceImageBackgroundImageProviderWidget(),
+            );
+          },
+        );
+      });
+    } else {
+      return buildDefault(
+        context: context,
+      );
+    }
+  }
+}
+
+Widget buildDefault({
+  @required BuildContext context,
+}) {
+  return Provider<ImageProvider>.value(
+    value: defaultImage.image,
+    child: const _FediInstanceImageBackgroundImageProviderWidget(),
+  );
+}
+
+class _FediInstanceImageBackgroundPlaceholderWidget extends StatelessWidget {
+  const _FediInstanceImageBackgroundPlaceholderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: IFediUiColorTheme.of(context).primaryDark,
+    );
+  }
+}
+
+class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
+  const _FediInstanceImageBackgroundImageProviderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var imageProvider = Provider.of<ImageProvider>(context);
+    return RepaintBoundary(
+      child: Stack(
+        children: [
+          Image(
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            image: imageProvider,
+          ),
+          const _FediInstanceImageBackgroundDarkOverlayWidget(child: null),
+        ],
+      ),
+    );
+  }
+}
+
+class _FediInstanceImageBackgroundDarkOverlayWidget extends StatelessWidget {
+  const _FediInstanceImageBackgroundDarkOverlayWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        child: child,
+        decoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).imageDarkOverlay),
+      );
 }

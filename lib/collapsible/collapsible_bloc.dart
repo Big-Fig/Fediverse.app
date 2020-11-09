@@ -3,7 +3,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICollapsibleBloc extends Disposable {
+abstract class ICollapsibleBloc extends IDisposable {
   static ICollapsibleBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICollapsibleBloc>(context, listen: listen);
 
@@ -15,9 +15,9 @@ abstract class ICollapsibleBloc extends Disposable {
 
   Stream<List<ICollapsibleItem>> get visibleItemsStream;
 
-  void addVisibleItem(ICollapsibleItem item);
+  Future addVisibleItem(ICollapsibleItem item);
 
-  void removeVisibleItem(ICollapsibleItem item);
+  Future removeVisibleItem(ICollapsibleItem item);
 
   void collapseAllVisibleItems();
 }

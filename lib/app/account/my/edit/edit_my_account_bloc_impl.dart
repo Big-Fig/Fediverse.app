@@ -44,7 +44,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IFormImageFilePickerOrUrlFieldBloc backgroundField;
 
   @override
-  List<IFormItemBloc> get items => [
+  List<IFormItemBloc> get currentItems => [
         avatarField,
         headerField,
         backgroundField,

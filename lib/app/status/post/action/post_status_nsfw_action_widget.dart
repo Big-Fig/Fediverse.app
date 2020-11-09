@@ -1,10 +1,13 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusNsfwActionWidget extends StatelessWidget {
+  const PostStatusNsfwActionWidget();
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -18,8 +21,11 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
             return FediIconButton(
               icon: Icon(
-                Icons.visibility,
-                color: calculateColor(nsfwSensitive),
+                nsfwSensitive == true ? FediIcons.hide : FediIcons.show,
+                color: calculateColor(
+                  context,
+                  nsfwSensitive,
+                ),
               ),
               onPressed: () {
                 postStatusBloc.changeNsfwSensitive(
@@ -34,7 +40,11 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
     );
   }
 
-  Color calculateColor(bool sensitive) {
-    return sensitive ? FediColors.primary : FediColors.darkGrey;
-  }
+  Color calculateColor(
+    BuildContext context,
+    bool sensitive,
+  ) =>
+      sensitive
+          ? IFediUiColorTheme.of(context).primary
+          : IFediUiColorTheme.of(context).darkGrey;
 }

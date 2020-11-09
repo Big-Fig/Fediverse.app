@@ -24,10 +24,8 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
@@ -36,73 +34,66 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/provider/tab_controller_provider.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-var _headerBackgroundHeight = 200.0;
+const _headerBackgroundHeight = 200.0;
 
 const _tabs = [
   AccountStatusesTab.withoutReplies,
   AccountStatusesTab.pinned,
-  AccountStatusesTab.withReplies,
   AccountStatusesTab.media,
+  AccountStatusesTab.withReplies,
 ];
 
-class AccountHomeTabPage extends StatefulWidget {
+class AccountHomeTabPage extends StatelessWidget {
   const AccountHomeTabPage({Key key}) : super(key: key);
 
   @override
-  _AccountHomeTabPageState createState() => _AccountHomeTabPageState();
-}
-
-class _AccountHomeTabPageState extends State<AccountHomeTabPage>
-    with TickerProviderStateMixin {
-  TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(
-      vsync: this,
-      length: _tabs.length,
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    tabController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FediColors.white,
-      body: Stack(
-        children: [
-          ProxyProvider<IMyAccountBloc, IAccountBloc>(
-            update: (context, value, previous) => value,
-            child: Container(
-              height: _headerBackgroundHeight,
-              child: const AccountHeaderBackgroundWidget(),
+    return TabControllerProvider(
+      tabControllerCreator:
+          (BuildContext context, TickerProvider tickerProvider) =>
+              TabController(
+        vsync: tickerProvider,
+        length: _tabs.length,
+      ),
+      child: Scaffold(
+        backgroundColor: IFediUiColorTheme.of(context).white,
+        body: Stack(
+          children: [
+            ProxyProvider<IMyAccountBloc, IAccountBloc>(
+              update: (context, value, previous) => value,
+              child: Container(
+                height: _headerBackgroundHeight,
+                child: const AccountHeaderBackgroundWidget(),
+              ),
             ),
-          ),
-          _buildBody(context),
-        ],
+            const _AccountHomeTabPageBody(),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildBody(BuildContext context) {
+class _AccountHomeTabPageBody extends StatelessWidget {
+  const _AccountHomeTabPageBody();
+
+  @override
+  Widget build(BuildContext context) {
     var accountHomeTabBloc = IAccountHomeTabBloc.of(context, listen: false);
+    var tabController = Provider.of<TabController>(context);
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -114,236 +105,340 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: 100,
         topSliverWidgets: [
-          FediTabMainHeaderBarWidget(
-            leadingWidgets: null,
-            content: Column(
-              children: <Widget>[
-                Row(
-                  children: [
-                    _buildDrawerAction(context),
-                    const FediBigHorizontalSpacer(),
-                    Expanded(child: buildAccountChooserButton(context)),
-                    const FediBigHorizontalSpacer(),
-                    _buildSettingsAction(context)
-                  ],
-                ),
-                FediSmallVerticalSpacer(),
-                _buildTabIndicatorWidget(),
-              ],
-            ),
-            endingWidgets: null,
-          ),
-          ProxyProvider<IMyAccountBloc, IAccountBloc>(
-            update: (context, value, previous) => value,
-            child: FediDarkStatusBarStyleArea(
-              child: ClipRRect(
-                borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-                child: Container(
-                  color: FediColors.offWhite,
-                  child: FediListTile(
-                    isFirstInList: true,
-                    child: MyAccountWidget(
-                      onStatusesTapCallback: () {
-                        var scrollControllerBloc =
-                            IScrollControllerBloc.of(context, listen: false);
-                        scrollControllerBloc.scrollController.animateTo(
-                          MediaQuery.of(context).size.height / 2,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeOut,
-                        );
-                      },
-                    ),
-                    // special hack to avoid 1px horizontal line on some devices
-                    oneSidePadding: FediSizes.bigPadding - 1,
-//                    oneSidePadding: FediSizes.smallPadding - 1,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          const _AccountHomeTabFediTabMainHeaderBarWidget(),
+          const _AccountHomeTabMyAccountWidget(),
         ],
         tabKeyPrefix: "AccountHomeTabPage",
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) =>
-                ProxyProvider<IMyAccountBloc, IAccountBloc>(
-          update: (context, value, previous) => value,
-          child: Builder(
-            builder: (context) {
-              var tab = _tabs[index];
-
-              var accountBloc = IAccountBloc.of(context, listen: false);
-
-              switch (tab) {
-                case AccountStatusesTab.withReplies:
-                  return AccountStatusesWithRepliesCachedListBloc
-                      .provideToContext(
-                    context,
-                    account: accountBloc.account,
-                    child: StatusCachedPaginationBloc.provideToContext(
-                      context,
-                      child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(
-                        context,
-                        mergeNewItemsImmediately: true,
-                        child: child,
-                        mergeOwnStatusesImmediately: false,
-                      ),
-                    ),
-                  );
-                case AccountStatusesTab.withoutReplies:
-                  return AccountStatusesWithoutRepliesListBloc.provideToContext(
-                    context,
-                    account: accountBloc.account,
-                    child: StatusCachedPaginationBloc.provideToContext(
-                      context,
-                      child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(
-                        context,
-                        mergeNewItemsImmediately: true,
-                        child: child,
-                        mergeOwnStatusesImmediately: false,
-                      ),
-                    ),
-                  );
-                  break;
-                case AccountStatusesTab.media:
-                  return AccountStatusesMediaOnlyCachedListBloc
-                      .provideToContext(
-                    context,
-                    account: accountBloc.account,
-                    child: StatusCachedPaginationBloc.provideToContext(
-                      context,
-                      child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(
-                        context,
-                        mergeNewItemsImmediately: true,
-                        child: child,
-                        mergeOwnStatusesImmediately: false,
-                      ),
-                    ),
-                  );
-                  break;
-                case AccountStatusesTab.pinned:
-                  return AccountStatusesPinnedOnlyNetworkOnlyListBloc
-                      .provideToContext(
-                    context,
-                    account: accountBloc.account,
-                    child: StatusNetworkOnlyPaginationBloc.provideToContext(
-                      context,
-                      child: DisposableProvider<
-                          IPaginationListBloc<PaginationPage<IStatus>,
-                              IStatus>>(
-                        create: (context) => PaginationListBloc<
-                            PaginationPage<IStatus>, IStatus>(
-                          paginationBloc: Provider.of<
-                              IPaginationBloc<PaginationPage<IStatus>,
-                                  IStatus>>(context, listen: false),
-                        ),
-                        child: child,
-                      ),
-                    ),
-                  );
-                  break;
-                default:
-                  throw "Invalid tab $tab";
-              }
-            },
-          ),
+                buildTabBodyProvider(index, child),
+        tabBodyContentBuilder: (BuildContext context, int index) => Container(
+          color: IFediUiColorTheme.of(context).offWhite,
+          child: _buildTabContent(_tabs[index]),
         ),
-        tabBodyContentBuilder: (BuildContext context, int index) {
-          var tab = _tabs[index];
-
-          switch (tab) {
-            case AccountStatusesTab.withReplies:
-            case AccountStatusesTab.withoutReplies:
-            case AccountStatusesTab.pinned:
-              return CollapsibleOwnerWidget(
-                child: AccountStatusesTimelineWidget(),
-              );
-              break;
-            case AccountStatusesTab.media:
-              return AccountStatusesMediaWidget();
-              break;
-            default:
-              throw "Invalid tab $tab";
-          }
-        },
-        tabBodyOverlayBuilder: (BuildContext context, int index) {
-          var tab = _tabs[index];
-
-          switch (tab) {
-            case AccountStatusesTab.withReplies:
-            case AccountStatusesTab.withoutReplies:
-            case AccountStatusesTab.media:
-              return StatusListTapToLoadOverlayWidget();
-              break;
-            case AccountStatusesTab.pinned:
-              return SizedBox.shrink();
-              break;
-            default:
-              throw "Invalid tab $tab";
-          }
-        },
+        tabBodyOverlayBuilder: (BuildContext context, int index) =>
+            _buildTabOverlay(_tabs[index]),
         tabBarViewContainerBuilder: null,
       ),
     );
   }
 
-  Widget _buildSettingsAction(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.settings,
-        onPressed: () {
-          goToEditMyAccountPage(context);
-        },
-      );
+  Widget buildTabBodyProvider(int index, Widget child) {
+    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
+      update: (context, value, previous) => value,
+      child: Builder(
+        builder: (context) {
+          var tab = _tabs[index];
 
-  Widget _buildDrawerAction(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.filter,
-        onPressed: () {
-          goMyAccountSettingsPage(context);
-        },
-      );
+          switch (tab) {
+            case AccountStatusesTab.withReplies:
+              return _AccountHomeTabProviderWithRepliesTabProviderWidget(
+                child: child,
+              );
+            case AccountStatusesTab.withoutReplies:
+              return _AccountHomeTabProviderWithoutRepliesTabProviderWidget(
+                child: child,
+              );
 
-  Widget buildAccountChooserButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showMyAccountActionListBottomSheetDialog(context);
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Flexible(child: buildCurrentInstanceNameWidget(context)),
-          const FediSmallHorizontalSpacer(),
-          const Icon(
-            FediIcons.chevron_down,
-            size: 18.0,
-            color: FediColors.white,
-          ),
-        ],
+              break;
+            case AccountStatusesTab.media:
+              return _AccountHomeTabProviderMediaTabProviderWidget(
+                child: child,
+              );
+
+              break;
+            case AccountStatusesTab.pinned:
+              return _AccountHomeTabProviderPinnedTabProviderWidget(
+                child: child,
+              );
+
+              break;
+            default:
+              throw "Invalid tab $tab";
+          }
+        },
       ),
     );
   }
 
-  Widget _buildTabIndicatorWidget() => Padding(
-        padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-        child: AccountTabTextTabIndicatorItemWidget(
-          tabController: tabController,
-          accountTabs: _tabs,
-        ),
-      );
+  Widget _buildTabOverlay(AccountStatusesTab tab) {
+    switch (tab) {
+      case AccountStatusesTab.withReplies:
+      case AccountStatusesTab.withoutReplies:
+      case AccountStatusesTab.media:
+        return const StatusListTapToLoadOverlayWidget();
+        break;
+      case AccountStatusesTab.pinned:
+        return const SizedBox.shrink();
+        break;
+      default:
+        throw "Invalid tab $tab";
+    }
+  }
 
-  Widget buildCurrentInstanceNameWidget(BuildContext context) {
+  Widget _buildTabContent(AccountStatusesTab tab) {
+    switch (tab) {
+      case AccountStatusesTab.withReplies:
+      case AccountStatusesTab.withoutReplies:
+      case AccountStatusesTab.pinned:
+        return const CollapsibleOwnerWidget(
+          child: AccountStatusesTimelineWidget(),
+        );
+        break;
+      case AccountStatusesTab.media:
+        return const AccountStatusesMediaWidget();
+        break;
+      default:
+        throw "Invalid tab $tab";
+    }
+  }
+}
+
+class _AccountHomeTabMyAccountWidget extends StatelessWidget {
+  const _AccountHomeTabMyAccountWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
+      update: (context, value, previous) => value,
+      child: FediDarkStatusBarStyleArea(
+        child: ClipRRect(
+          borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+          child: Container(
+            color: IFediUiColorTheme.of(context).offWhite,
+            child: FediListTile(
+              isFirstInList: true,
+              child: MyAccountWidget(
+                onStatusesTapCallback: _onStatusesTapCallback,
+              ),
+              // special hack to avoid 1px horizontal line on some devices
+              oneSidePadding: FediSizes.bigPadding - 1,
+//                    oneSidePadding: FediSizes.smallPadding - 1,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void _onStatusesTapCallback(BuildContext context) {
+  var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
+  scrollControllerBloc.scrollController.animateTo(
+    MediaQuery.of(context).size.height / 2,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeOut,
+  );
+}
+
+class _AccountHomeTabProviderWithRepliesTabProviderWidget
+    extends StatelessWidget {
+  final Widget child;
+
+  const _AccountHomeTabProviderWithRepliesTabProviderWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesWithRepliesCachedListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabProviderWithoutRepliesTabProviderWidget
+    extends StatelessWidget {
+  final Widget child;
+
+  const _AccountHomeTabProviderWithoutRepliesTabProviderWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesWithoutRepliesListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabProviderMediaTabProviderWidget extends StatelessWidget {
+  final Widget child;
+
+  const _AccountHomeTabProviderMediaTabProviderWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusCachedPaginationBloc.provideToContext(
+        context,
+        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
+  final Widget child;
+
+  const _AccountHomeTabProviderPinnedTabProviderWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return AccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
+      context,
+      account: accountBloc.account,
+      child: StatusNetworkOnlyPaginationBloc.provideToContext(
+        context,
+        child: DisposableProvider<
+            IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+          create: (context) =>
+              PaginationListBloc<PaginationPage<IStatus>, IStatus>(
+            paginationBloc:
+                Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                    context,
+                    listen: false),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
+  const _AccountHomeTabCurrentInstanceNameWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var currentInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
-      minFontSize: FediTextStyles.smallShortBoldWhite.fontSize,
-      maxFontSize: FediTextStyles.subHeaderShortBoldWhite.fontSize,
+      minFontSize: IFediUiTextTheme.of(context).smallShortBoldWhite.fontSize,
+      maxFontSize:
+          IFediUiTextTheme.of(context).subHeaderShortBoldWhite.fontSize,
       maxLines: 1,
-      style: FediTextStyles.subHeaderShortBoldWhite,
+      style: IFediUiTextTheme.of(context).subHeaderShortBoldWhite,
     );
   }
+}
+
+class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
+  const _AccountHomeTabTextIndicatorWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const Padding(
+        padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+        child: AccountTabTextTabIndicatorItemWidget(
+          accountTabs: _tabs,
+        ),
+      );
+}
+
+class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
+  const _AccountHomeTabFediTabMainHeaderBarWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediTabMainHeaderBarWidget(
+        leadingWidgets: null,
+        content: Column(
+          children: <Widget>[
+            Row(
+              children: [
+
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      showMyAccountActionListBottomSheetDialog(context);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Flexible(
+                          child:
+                              const _AccountHomeTabCurrentInstanceNameWidget(),
+                        ),
+                        const FediSmallHorizontalSpacer(),
+                        Icon(
+                          FediIcons.chevron_down,
+                          size: 18.0,
+                          color: IFediUiColorTheme.of(context).white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const FediBigHorizontalSpacer(),
+                FediIconInCircleBlurredButton(
+                  FediIcons.settings,
+                  onPressed: () {
+                    goMyAccountSettingsPage(context);
+                  },
+                ),
+                const FediBigHorizontalSpacer(),
+                FediIconInCircleBlurredButton(
+                  FediIcons.pen,
+                  onPressed: () {
+                    goToEditMyAccountPage(context);
+                  },
+                ),
+              ],
+            ),
+            const FediSmallVerticalSpacer(),
+            const _AccountHomeTabTextIndicatorWidget(),
+          ],
+        ),
+        endingWidgets: null,
+      );
 }

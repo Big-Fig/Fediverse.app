@@ -1,6 +1,5 @@
 import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +27,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final bool highlightMentions;
   final int maxLength;
   final bool enabled;
+  final Color customBorderColor;
 
   FediTransparentEditTextField({
     @required this.expanded,
@@ -40,57 +40,74 @@ class FediTransparentEditTextField extends StatelessWidget {
     @required this.textEditingController,
     this.displayUnderlineBorder = false,
     @required this.focusNode,
-    this.hintStyle = FediTextStyles.subHeaderTallLightGrey,
-    this.textStyle = FediTextStyles.subHeaderTallDarkGrey,
+    this.hintStyle,
+    this.textStyle,
+    this.border,
+    this.focusedBorder,
+    this.errorBorder,
     this.keyboardType,
-    Color customBorderColor,
+    this.customBorderColor,
     this.autocorrect = true,
     this.obscureText = false,
     @required this.highlightMentions,
     @required this.maxLength,
     this.enabled = true,
-  })  : border = UnderlineInputBorder(
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var hintStyle =
+        this.hintStyle ?? IFediUiTextTheme.of(context).subHeaderTallLightGrey;
+    var textStyle =
+        this.textStyle ?? IFediUiTextTheme.of(context).subHeaderTallDarkGrey;
+
+    var border = this.border ??
+        UnderlineInputBorder(
           borderSide: BorderSide(
-              width: 1.0, color: customBorderColor ?? FediColors.lightGrey),
-        ),
-        focusedBorder = UnderlineInputBorder(
+              width: 1.0,
+              color:
+                  customBorderColor ?? IFediUiColorTheme.of(context).lightGrey),
+        );
+    var focusedBorder = this.focusedBorder ??
+        UnderlineInputBorder(
           borderSide: BorderSide(
             width: 1.0,
-            color: customBorderColor ?? FediColors.primary,
+            color: customBorderColor ?? IFediUiColorTheme.of(context).primary,
           ),
-        ),
-        errorBorder = UnderlineInputBorder(
+        );
+    var errorBorder = this.errorBorder ??
+        UnderlineInputBorder(
           borderSide: BorderSide(
             width: 1.0,
-            color: FediColors.error,
+            color: IFediUiColorTheme.of(context).error,
           ),
         );
 
-  @override
-  Widget build(BuildContext context) => FediBaseEditTextField(
-        enabled: enabled,
-        highlightMentions: highlightMentions,
-        autocorrect: autocorrect,
-        focusNode: focusNode,
-        textInputAction:
-            maxLines == 1 ? textInputAction : TextInputAction.newline,
-        onSubmitted: onSubmitted,
-        textStyle: textStyle,
-        obscureText: obscureText,
-        autofocus: autofocus,
-        textEditingController: textEditingController,
-        minLines: null,
-        maxLines: maxLines,
-        expanded: expanded,
-        keyboardType: keyboardType,
-        hintText: hintText,
-        errorText: errorText,
-        border: border,
-        errorBorder: errorBorder,
-        focusedBorder: focusedBorder,
-        contentPadding: null,
-        displayBorder: displayUnderlineBorder,
-        hintStyle: hintStyle,
-        maxLength: maxLength,
-      );
+    return FediBaseEditTextField(
+      enabled: enabled,
+      highlightMentions: highlightMentions,
+      autocorrect: autocorrect,
+      focusNode: focusNode,
+      textInputAction:
+          maxLines == 1 ? textInputAction : TextInputAction.newline,
+      onSubmitted: onSubmitted,
+      textStyle: textStyle,
+      obscureText: obscureText,
+      autofocus: autofocus,
+      textEditingController: textEditingController,
+      minLines: null,
+      maxLines: maxLines,
+      expanded: expanded,
+      keyboardType: keyboardType,
+      hintText: hintText,
+      errorText: errorText,
+      border: border,
+      errorBorder: errorBorder,
+      focusedBorder: focusedBorder,
+      contentPadding: null,
+      displayBorder: displayUnderlineBorder,
+      hintStyle: hintStyle,
+      maxLength: maxLength,
+    );
+  }
 }

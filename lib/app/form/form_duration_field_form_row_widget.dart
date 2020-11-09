@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,6 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
         initialData: field.currentValue,
         builder: (context, snapshot) {
           var currentValue = snapshot.data;
-
           _logger.finest(() => "currentValue $currentValue");
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +42,7 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     label,
-                    style: FediTextStyles.bigTallMediumGrey,
+                    style: IFediUiTextTheme.of(context).bigTallMediumGrey,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -53,14 +52,18 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
                           showDatePicker(context);
                         },
                         child: Text(
-                          formatDuration(field.currentValue),
-                          style: FediTextStyles.bigTallBoldMediumGrey,
+                          formatDuration(
+                            context: context,
+                            duration: field.currentValue,
+                          ),
+                          style: IFediUiTextTheme.of(context)
+                              .bigTallBoldMediumGrey,
                         ),
                       ),
                       const FediSmallHorizontalSpacer(),
                       FediIconButton(
                         icon: Icon(FediIcons.chevron_down),
-                        color: FediColors.darkGrey,
+                        color: IFediUiColorTheme.of(context).darkGrey,
                         onPressed: () {
                           showDatePicker(context);
                         },
@@ -69,7 +72,7 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              if (desc != null) Text(desc),
+              if (desc != null) FediFormColumnDesc(desc),
             ],
           );
         });
@@ -86,7 +89,10 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
       minDateTime: minDuration != null ? now.add(minDuration) : null,
       maxDateTime: maxDuration != null ? now.add(maxDuration) : null,
       currentDateTime: now.add(field.currentValue ?? now),
-      theme: FediDatePickerTheme.byDefault(customTitle: popupTitle),
+      theme: FediDatePickerTheme.byDefault(
+        context: context,
+        customTitle: popupTitle,
+      ),
       onCancel: () {},
       onConfirm: (date) {},
     );
@@ -103,24 +109,26 @@ class FormDurationFieldFormRowWidget extends StatelessWidget {
     }
   }
 
-  String formatDuration(Duration duration) {
+  String formatDuration({
+    @required BuildContext context,
+    @required Duration duration,
+  }) {
     var inDays = duration.inDays;
 
     if (inDays > 0) {
-      return "duration.day".plural(inDays);
+      return S.of(context).duration_day(inDays);
     } else {
       var inHours = duration.inHours;
 
       if (inHours > 0) {
-        return "duration.hour".plural(inHours);
+        return S.of(context).duration_day(inHours);
       } else {
         var inMinutes = duration.inMinutes;
 
         if (inMinutes == 0) {
           inMinutes = 1;
         }
-
-        return "duration.minute".plural(inMinutes);
+        return S.of(context).duration_day(inMinutes);
       }
     }
   }

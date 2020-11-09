@@ -6,14 +6,15 @@ import 'package:fedi/app/account/info/account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/material.dart';
 
 class AccountWidget extends StatelessWidget {
-  final VoidCallback onStatusesTapCallback;
+  final OnClickUiCallback onStatusesTapCallback;
   final Widget footer;
 
-  AccountWidget({
+  const AccountWidget({
     @required this.onStatusesTapCallback,
     @required this.footer,
   });
@@ -24,11 +25,7 @@ class AccountWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     return Stack(
       children: <Widget>[
-        Positioned(
-          top: 0.0,
-          bottom: 0.0,
-          left: 0.0,
-          right: 0.0,
+        const Positioned.fill(
           child: AccountHeaderBackgroundWidget(),
         ),
         Padding(
@@ -48,24 +45,43 @@ class AccountWidget extends StatelessWidget {
               ),
               if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
                 const AccountActionListWidget(),
-              AccountNoteWidget(
-                textStyle: FediTextStyles.bigTallBoldWhite,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left:
-                      FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,
-                  right: FediSizes.bigPadding,
-                ),
-                child: const AccountFieldListWidget(
-                  brightness: Brightness.light,
-                ),
-              ),
+              const _AccountNoteWidget(),
+              const _AccountFieldListWidget(),
               footer
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class _AccountFieldListWidget extends StatelessWidget {
+  const _AccountFieldListWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const Padding(
+        padding: EdgeInsets.only(
+          left: FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,
+          right: FediSizes.bigPadding,
+        ),
+        child: AccountFieldListWidget(
+          brightness: Brightness.light,
+        ),
+      );
+}
+
+class _AccountNoteWidget extends StatelessWidget {
+  const _AccountNoteWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AccountNoteWidget(
+      textStyle: IFediUiTextTheme.of(context).bigTallBoldWhite,
     );
   }
 }

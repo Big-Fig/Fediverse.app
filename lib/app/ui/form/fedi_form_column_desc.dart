@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormColumnDesc extends StatelessWidget {
@@ -9,6 +9,6 @@ class FediFormColumnDesc extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         text,
-        style: FediTextStyles.mediumTallLightGrey,
+        style: IFediUiTextTheme.of(context).smallShortGrey,
       );
 }

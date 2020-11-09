@@ -102,7 +102,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> isStorageExist() async => preferences.isNotEmpty;
 
   @override
-  Disposable listenKeyPreferenceChanged<T>(
+  IDisposable listenKeyPreferenceChanged<T>(
       String key, ValueCallback<T> onChanged) {
     if (!listeners.containsKey(key)) {
       listeners[key] = [];
@@ -110,7 +110,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
     listeners[key].add(onChanged);
 
-    return CustomDisposable(() {
+    return CustomDisposable(() async {
       listeners[key].remove(onChanged);
     });
   }

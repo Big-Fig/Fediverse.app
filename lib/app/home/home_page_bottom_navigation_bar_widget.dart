@@ -1,17 +1,16 @@
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/unread/chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_widget.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,9 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           });
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
-    var color = isSelected ? FediColors.primary : FediColors.darkGrey;
+    var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
+    var color =
+        isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
 
     // todo: refactor UI
     const insets = FediPadding.allBigPadding;
@@ -103,29 +104,14 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               ),
             ));
         break;
-      case HomeTab.messages:
-        var myAccountSettingsBloc =
-            IMyAccountSettingsBloc.of(context, listen: false);
-        return StreamBuilder<bool>(
-            stream: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
-            builder: (context, snapshot) {
-              var isNewChatsEnabled = snapshot.data;
-
-              final iconData = FediIcons.chat;
-              if (isNewChatsEnabled == true) {
-                return ChatUnreadBadgeCountWidget(
-                    offset: badgeOffset,
-                    child: Padding(
-                  padding: insets,
-                  child: FediTransparentIcon(iconData, color: color),
-                ));
-              } else {
-                return Padding(
-                  padding: insets,
-                  child: FediTransparentIcon(iconData, color: color),
-                );
-              }
-            });
+      case HomeTab.chat:
+        return ChatUnreadBadgeCountWidget(
+          offset: badgeOffset,
+          child: Padding(
+            padding: insets,
+            child: FediTransparentIcon(FediIcons.chat, color: color),
+          ),
+        );
         break;
       case HomeTab.account:
         return GestureDetector(

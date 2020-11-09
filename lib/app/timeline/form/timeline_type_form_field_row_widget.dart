@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_from_list_field_row.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
@@ -26,32 +26,32 @@ class TimelineTypeFormFieldRowWidget extends StatelessWidget {
             nullable: false,
             enabled: enabled,
             error: formValueFieldBloc.isHaveAtLeastOneError
-                ? "form.field.value.error.null.desc".tr()
+                ? S.of(context).form_field_value_error_null_desc
                 : null,
             desc: desc,
-            label: "app.timeline.type.field.label".tr(),
-            chooserTitle: "app.timeline.type.field.chooser.dialog.title".tr(),
+            label: S.of(context).app_timeline_type_field_label,
+            chooserTitle: S.of(context).app_timeline_type_field_chooser_dialog_title,
             value: currentValue,
             possibleValues: TimelineType.values,
             valueToTextMapper: (timelineType) {
               if (timelineType == null) {
-                return "app.timeline.type.field.null".tr();
+                return S.of(context).app_timeline_type_field_null;
               }
               switch (timelineType) {
                 case TimelineType.public:
-                  return "app.timeline.type.public".tr();
+                  return S.of(context).app_timeline_type_public;
                   break;
                 case TimelineType.customList:
-                  return "app.timeline.type.custom_list".tr();
+                  return S.of(context).app_timeline_type_customList;
                   break;
                 case TimelineType.home:
-                  return "app.timeline.type.home".tr();
+                  return S.of(context).app_timeline_type_home;
                   break;
                 case TimelineType.hashtag:
-                  return "app.timeline.type.hashtag".tr();
+                  return S.of(context).app_timeline_type_hashtag;
                   break;
                 case TimelineType.account:
-                  return "app.timeline.type.account".tr();
+                  return S.of(context).app_timeline_type_account;
                   break;
               }
               throw "Invalid timelineType $timelineType";

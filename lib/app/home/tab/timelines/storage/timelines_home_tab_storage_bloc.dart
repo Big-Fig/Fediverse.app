@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabStorageBloc
-    implements IAsyncInitLoadingBloc, Disposable {
+    implements IAsyncInitLoadingBloc, IDisposable {
   static ITimelinesHomeTabStorageBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<ITimelinesHomeTabStorageBloc>(context, listen: listen);
@@ -22,6 +22,7 @@ abstract class ITimelinesHomeTabStorageBloc
   List<Timeline> get timelines;
 
   Stream<List<Timeline>> get timelinesStream;
+  Stream<List<Timeline>> get timelinesDistinctStream;
 
   Future onItemsUpdated(List<Timeline> timelines);
 

@@ -44,7 +44,7 @@ abstract class LocalPreferencesServiceMigrationBloc
       await outputBloc.setValue(currentValue);
     }
 
-    inputBloc.dispose();
-    outputBloc.dispose();
+    await inputBloc.dispose();
+    await outputBloc.dispose();
   }
 }

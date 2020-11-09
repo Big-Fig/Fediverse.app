@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -23,7 +23,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final IPleromaNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   BehaviorSubject<NotificationPushLoaderNotification>
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
@@ -46,7 +46,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       pushHandlerBloc.removeRealTimeHandler(handlePush);
     }));
   }

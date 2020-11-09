@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,12 +15,13 @@ import 'package:provider/provider.dart';
 var _logger = Logger("status_list_item_media_widget.dart");
 
 class StatusListItemMediaWidget extends StatelessWidget {
-  StatusListItemMediaWidget() : super();
+  const StatusListItemMediaWidget() : super();
 
   Container mediaAttachmentPreviewUrlWidget(
       String previewUrl, BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
-      color: Colors.black.withOpacity(0.2),
+      color: fediUiColorTheme.black.withOpacity(0.2),
       child: SizedBox.expand(
         child: CachedNetworkImage(
           fit: BoxFit.cover,
@@ -42,33 +45,49 @@ class StatusListItemMediaWidget extends StatelessWidget {
 
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
+
+    var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
+    var body = buildBody(
+      child: child,
+      statusBloc: statusBloc,
+    );
     return StreamBuilder<bool>(
         stream: statusBloc.deletedStream.distinct(),
-        initialData: statusBloc.deleted,
         builder: (context, snapshot) {
-          var deleted = snapshot.data;
+          var deleted = snapshot.data ?? false;
 
           if (deleted == true) {
-            return StatusDeletedOverlayWidget(
-              child: buildBody(
-                statusBloc,
-                previewUrl,
-              ),
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: const StatusDeletedOverlayWidget(),
+                ),
+                body,
+              ],
             );
           } else {
-            return buildBody(statusBloc, previewUrl);
+            return body;
           }
         });
   }
 
-  StreamBuilder<bool> buildBody(IStatusBloc statusBloc, String previewUrl) {
-    return StreamBuilder<bool>(
-        stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
-        initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
+  Widget buildBody({
+    @required Widget child,
+    @required IStatusBloc statusBloc,
+  }) {
+    return StreamBuilder<StatusWarningState>(
+        stream: statusBloc.statusWarningStateStream.distinct(),
         builder: (context, snapshot) {
-          var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
+          var statusWarningState = snapshot.data;
 
-          var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
+          if (statusWarningState == null) {
+            return child;
+          }
+
+          var nsfwSensitiveAndDisplayNsfwContentEnabled =
+              statusWarningState.nsfwSensitive != true ||
+                  statusWarningState.displayNsfwSensitive == true;
+
           if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
             // todo: display all medias in list
             return child;

@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator.dart';
@@ -30,7 +30,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
     var borderHeight = 2.0;
 
     var fediTabIndicatorBloc =
-        IFediTabIndicatorBloc.of<T>(context, listen: false);
+        IFediTabIndicatorBloc.of<T>(context);
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
@@ -38,7 +38,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       indicator: FediTabIndicator(
         indicatorHeight: FediSizes.tabIndicatorTextHeight - borderHeight,
         indicatorRadius: (FediSizes.textButtonHeight + borderHeight) / 2,
-        indicatorColor: FediColors.primary,
+        indicatorColor: IFediUiColorTheme.of(context).primary,
         padding: EdgeInsets.only(top: borderHeight),
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,

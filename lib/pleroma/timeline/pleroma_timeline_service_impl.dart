@@ -204,7 +204,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

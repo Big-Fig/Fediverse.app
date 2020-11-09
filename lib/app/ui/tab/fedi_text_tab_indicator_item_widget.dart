@@ -1,7 +1,7 @@
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,18 +32,20 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
           Widget text;
 
           var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
+
+
           if (isSelected) {
             return FediPrimaryFilledTextButton(
               label,
               onPressed: () {
                 onSelect(fediTabIndicatorItemBloc);
               },
-              textStyle: FediPrimaryFilledTextButton.defaultTextStyle.copyWith(
+              textStyle:  IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
                 fontSize: fontSize,
                 fontWeight: FontWeight.w500,
                 height: lineHeight,
               ),
-              enabledBackgroundColor: FediColors.primary.withOpacity(0.8),
+              enabledBackgroundColor: IFediUiColorTheme.of(context).primary.withOpacity(0.8),
             );
           } else {
             var fontWeight = FontWeight.normal;
@@ -53,7 +55,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                 onPressed: () {
                   onSelect(fediTabIndicatorItemBloc);
                 },
-                textStyle: FediBlurredTextButton.defaultTextStyle.copyWith(
+                textStyle: IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
                   fontSize: fontSize,
                   fontWeight: fontWeight,
                   height: lineHeight,
@@ -65,12 +67,12 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                 onPressed: () {
                   onSelect(fediTabIndicatorItemBloc);
                 },
-                textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
+                textStyle: IFediUiTextTheme.of(context).mediumShortBoldMediumGrey.copyWith(
                   fontSize: fontSize,
                   fontWeight: fontWeight,
                   height: lineHeight,
                 ),
-                color: FediColors.mediumGrey,
+                color: IFediUiColorTheme.of(context).mediumGrey,
               );
             }
           }

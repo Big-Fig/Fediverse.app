@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
-  static final selfActionError = SelfActionNotPossibleException();
+  static final selfActionError = const SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
@@ -73,7 +73,8 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship) async {
+  Future<bool> refreshFromNetwork(
+      {@required bool isNeedPreFetchRelationship}) async {
     if (pleromaMyAccountService.isApiReadyToUse) {
       var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 

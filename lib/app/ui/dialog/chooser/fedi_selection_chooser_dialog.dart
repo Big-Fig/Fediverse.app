@@ -1,8 +1,7 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,43 +38,64 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
   });
 
   Widget _buildAction({
+    @required BuildContext context,
     @required DialogAction action,
     @required bool isSelected,
-  }) =>
-      Padding(
-        padding: FediPadding.horizontalBigPadding,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: () {
-                if (action.onAction != null) {
-                  action.onAction();
-                }
-              },
-              child: Row(
-                children: [
-                  if (action.icon != null)
-                    Icon(action.icon,
-                        color: isSelected
-                            ? FediColors.primary
-                            : FediColors.darkGrey),
-                  Padding(
-                    padding: FediPadding.allMediumPadding,
-                    child: Text(
-                      action.label,
-                      style: isSelected
-                          ? FediTextStyles.bigTallPrimary
-                          : FediTextStyles.bigTallDarkGrey,
-                    ),
+  }) {
+    var actionExist = action.onAction != null;
+    return Padding(
+      padding: FediPadding.horizontalBigPadding,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          StreamBuilder<bool>(
+              initialData: action.isActionEnabledFetcher != null
+                  ? action.isActionEnabledFetcher(context)
+                  : true,
+              stream: action.isActionEnabledStreamFetcher != null
+                  ? action.isActionEnabledStreamFetcher(context)
+                  : Stream.value(true),
+              builder: (context, snapshot) {
+                var enabled = snapshot.data;
+                var fediUiColorTheme = IFediUiColorTheme.of(context);
+                var fediUiTextTheme = IFediUiTextTheme.of(context);
+                return InkWell(
+                  onTap: enabled
+                      ? () {
+                          if (actionExist && enabled) {
+                            action.onAction(context);
+                          }
+                        }
+                      : null,
+                  child: Row(
+                    children: [
+                      if (action.icon != null)
+                        Icon(action.icon,
+                            color: isSelected
+                                ? fediUiColorTheme.primary
+                                : actionExist && enabled
+                                    ? IFediUiColorTheme.of(context).darkGrey
+                                    : IFediUiColorTheme.of(context).lightGrey),
+                      Padding(
+                        padding: FediPadding.allMediumPadding,
+                        child: Text(
+                          action.label,
+                          style: isSelected
+                              ? fediUiTextTheme.bigTallPrimary
+                              : actionExist && enabled
+                                  ? fediUiTextTheme.bigTallDarkGrey
+                                  : fediUiTextTheme.bigTallLightGrey,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
+                );
+              }),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +108,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
               title,
-              style: FediTextStyles.dialogTitleBoldDarkGrey,
+              style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
         if (content != null)
@@ -96,7 +116,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
               content,
-              style: FediTextStyles.dialogContentDarkGrey,
+              style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
         Align(
@@ -107,6 +127,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
             children: [
               ...actions
                   .map((action) => _buildAction(
+                        context: context,
                         action: action,
                         isSelected: action.isSelected,
                       ))
@@ -116,8 +137,9 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
         ),
         if (cancelable)
           _buildAction(
+            context: context,
             action: BaseDialog.createDefaultCancelAction(
-              context,
+              context: context,
             ),
             isSelected: true,
           ),

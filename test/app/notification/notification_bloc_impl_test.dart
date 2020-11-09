@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_bloc_impl.dart';
@@ -29,7 +29,7 @@ void main() {
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
-  IChatMessageRepository chatMessageRepository;
+  IPleromaChatMessageRepository chatMessageRepository;
   INotificationRepository notificationRepository;
 
   setUp(() async {
@@ -37,7 +37,7 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
     notificationRepository = NotificationRepository(
         chatMessageRepository: chatMessageRepository,
@@ -62,10 +62,10 @@ void main() {
   });
 
   tearDown(() async {
-    notificationBloc.dispose();
-    notificationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await notificationBloc.dispose();
+    await notificationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 

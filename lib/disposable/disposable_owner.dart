@@ -7,12 +7,12 @@ import 'package:fedi/disposable/ui_disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DisposableOwner extends Disposable {
+class DisposableOwner extends IDisposable {
   bool disposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
   void addDisposable({
-    Disposable disposable,
+    IDisposable disposable,
     StreamSubscription streamSubscription,
     TextEditingController textEditingController,
     ScrollController scrollController,
@@ -20,7 +20,7 @@ class DisposableOwner extends Disposable {
     Subject subject,
     StreamController streamController,
     Timer timer,
-    VoidCallback custom,
+    FutureOr Function() custom,
   }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
@@ -61,8 +61,8 @@ class DisposableOwner extends Disposable {
 
   @override
   @mustCallSuper
-  void dispose() {
+  Future dispose() async {
     disposed = true;
-    _compositeDisposable.dispose();
+    await _compositeDisposable.dispose();
   }
 }

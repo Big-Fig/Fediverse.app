@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class INotificationPushLoaderBloc extends Disposable
+abstract class INotificationPushLoaderBloc extends IDisposable
     implements IAsyncInitLoadingBloc {
 
   static INotificationPushLoaderBloc of(BuildContext context,

@@ -22,7 +22,7 @@ class FediTabIndicator extends Decoration {
 
   const FediTabIndicator({
     this.indicatorHeight = 20.0,
-    this.indicatorColor = Colors.greenAccent,
+    @required this.indicatorColor,
     this.indicatorRadius = 100.0,
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
     this.padding = FediPadding.horizontalSmallPadding,
@@ -39,6 +39,10 @@ class FediTabIndicator extends Decoration {
       return FediTabIndicator(
         padding: EdgeInsetsGeometry.lerp(a.padding, padding, t),
         insets: EdgeInsetsGeometry.lerp(a.insets, insets, t),
+        indicatorColor: a.indicatorColor,
+        indicatorHeight: a.indicatorHeight,
+        indicatorRadius: a.indicatorRadius,
+        tabBarIndicatorSize: a.tabBarIndicatorSize,
       );
     }
     return super.lerpFrom(a, t);
@@ -50,6 +54,10 @@ class FediTabIndicator extends Decoration {
       return FediTabIndicator(
         padding: EdgeInsetsGeometry.lerp(padding, b.padding, t),
         insets: EdgeInsetsGeometry.lerp(insets, b.insets, t),
+        indicatorColor: b.indicatorColor,
+        indicatorHeight: b.indicatorHeight,
+        indicatorRadius: b.indicatorRadius,
+        tabBarIndicatorSize: b.tabBarIndicatorSize,
       );
     }
     return super.lerpTo(b, t);

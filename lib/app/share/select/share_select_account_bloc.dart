@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IShareSelectAccountBloc extends Disposable {
+abstract class IShareSelectAccountBloc extends IDisposable {
   static IShareSelectAccountBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IShareSelectAccountBloc>(context, listen: listen);

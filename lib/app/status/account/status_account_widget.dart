@@ -57,8 +57,8 @@ class StatusAccountWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    AccountDisplayNameWidget(),
-                    AccountAcctWidget()
+                    const AccountDisplayNameWidget(),
+                    const AccountAcctWidget()
                   ],
                 ),
               ),

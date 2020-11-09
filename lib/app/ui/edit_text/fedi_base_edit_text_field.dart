@@ -1,5 +1,5 @@
 import 'package:extended_text_field/extended_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -57,42 +57,86 @@ class FediBaseEditTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedTextField(
-      enabled: enabled,
-      specialTextSpanBuilder: _SpecialTextSpanBuilder(),
-//    return TextField(
-      maxLength: maxLength,
-      autocorrect: autocorrect,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      textInputAction:
-          maxLines == 1 ? textInputAction : TextInputAction.newline,
-      onSubmitted: onSubmitted,
-      decoration: InputDecoration(
-        border: displayBorder ? border : InputBorder.none,
-        enabledBorder: displayBorder ? border : InputBorder.none,
-        focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
-        errorBorder: displayBorder ? errorBorder : InputBorder.none,
-        focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
-        errorStyle: textStyle.copyWith(
-          color: FediColors.error,
+    // return TextField(
+    var actualTextInputAction = maxLines == 1 ? textInputAction : TextInputAction.newline;
+    if (highlightMentions) {
+      return ExtendedTextField(
+        enabled: enabled,
+        specialTextSpanBuilder: _SpecialTextSpanBuilder(
+          color: IFediUiColorTheme.of(context).primary,
         ),
-        hintText: hintText,
-        errorText: errorText,
-        contentPadding: contentPadding,
-        hintStyle: hintStyle,
-      ),
-      style: textStyle,
-      autofocus: autofocus,
-      controller: textEditingController,
-      minLines: minLines,
-      maxLines: maxLines,
-      expands: expanded,
-      keyboardType: keyboardType,
-      buildCounter: (BuildContext context,
-              {int currentLength, int maxLength, bool isFocused}) =>
-          null,
-    );
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction:
+            actualTextInputAction,
+        onSubmitted: (value) {
+          onSubmitted(value);
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+        ),
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: (BuildContext context,
+                {int currentLength, int maxLength, bool isFocused}) =>
+            null,
+      );
+    } else {
+      return TextField(
+        enabled: enabled,
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction:
+            actualTextInputAction,
+        onSubmitted: (value) {
+          onSubmitted(value);
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+        ),
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: (BuildContext context,
+                {int currentLength, int maxLength, bool isFocused}) =>
+            null,
+      );
+    }
   }
 }
 
@@ -128,13 +172,21 @@ class _MentionSpecialText extends SpecialText {
 }
 
 class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
+  final Color color;
+
+  _SpecialTextSpanBuilder({
+    @required this.color,
+  });
+
   @override
   SpecialText createSpecialText(String flag,
       {TextStyle textStyle, SpecialTextGestureTapCallback onTap, int index}) {
     ///index is end index of start flag, so text start index should be index-(flag.length-1)
     if (flag?.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(
-        textStyle: textStyle?.copyWith(color: FediColors.primary),
+        textStyle: textStyle?.copyWith(
+          color: color,
+        ),
         onTap: onTap,
         start: index - (_MentionSpecialText.flag.length - 1),
       );

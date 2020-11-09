@@ -28,9 +28,14 @@ class StatusVisibilityIconWidget extends StatelessWidget {
           @required PleromaVisibility visibility,
           @required isPossibleToChangeVisibility,
           @required isSelectedVisibility}) =>
-      Icon(mapVisibilityToIconData(visibility),
-          color: calculateVisibilityColor(
-              isSelectedVisibility, isPossibleToChangeVisibility));
+      Icon(
+        mapVisibilityToIconData(visibility),
+        color: calculateVisibilityColor(
+          context: context,
+          isSelectedVisibility: isSelectedVisibility,
+          isPossibleToChangeVisibility: isPossibleToChangeVisibility,
+        ),
+      );
 
   static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
     switch (visibility) {

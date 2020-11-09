@@ -12,7 +12,8 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-typedef IStatusCallback = Function(BuildContext context, IStatus status);
+typedef StatusAndContextCallback = Function(BuildContext context, IStatus status);
+typedef StatusCallback = Function(IStatus status);
 
 abstract class IStatus {
   IStatus get reblog;
@@ -637,4 +638,51 @@ DbStatus dbStatusFromStatus(IStatus status) {
     pleromaEmojiReactions: status.pleromaEmojiReactions,
     deleted: null,
   );
+}
+
+class StatusWarningState {
+  bool nsfwSensitive;
+  bool containsSpoiler;
+  bool displayNsfwSensitive;
+  bool displayContainsSpoiler;
+
+  bool get containsSpoilerAndDisplayEnabled =>
+      containsSpoiler != true || displayContainsSpoiler;
+
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled =>
+      nsfwSensitive != true || displayNsfwSensitive;
+
+  StatusWarningState({
+    @required this.nsfwSensitive,
+    @required this.containsSpoiler,
+    @required this.displayNsfwSensitive,
+    @required this.displayContainsSpoiler,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StatusWarningState &&
+          runtimeType == other.runtimeType &&
+          nsfwSensitive == other.nsfwSensitive &&
+          containsSpoiler == other.containsSpoiler &&
+          displayNsfwSensitive == other.displayNsfwSensitive &&
+          displayContainsSpoiler == other.displayContainsSpoiler;
+
+  @override
+  int get hashCode =>
+      nsfwSensitive.hashCode ^
+      containsSpoiler.hashCode ^
+      displayNsfwSensitive.hashCode ^
+      displayContainsSpoiler.hashCode;
+
+  @override
+  String toString() {
+    return 'StatusWarning{'
+        'nsfwSensitive: $nsfwSensitive,'
+        ' containsSpoiler: $containsSpoiler,'
+        ' displayNsfwSensitive: $displayNsfwSensitive,'
+        ' displayContainsSpoiler: $displayContainsSpoiler'
+        '}';
+  }
 }

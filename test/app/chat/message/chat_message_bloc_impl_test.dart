@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/message/chat_message_bloc.dart';
-import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
-import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/message/chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,18 +18,18 @@ import '../../../pleroma/chat/pleroma_chat_service_mock.dart';
 import 'chat_message_model_helper.dart';
 
 void main() {
-  IChatMessage chatMessage;
-  IChatMessageBloc chatMessageBloc;
+  IPleromaChatMessage chatMessage;
+  IPleromaChatMessageBloc chatMessageBloc;
   PleromaChatServiceMock pleromaChatServiceMock;
   PleromaAccountServiceMock pleromaAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
-  IChatMessageRepository chatMessageRepository;
+  IPleromaChatMessageRepository chatMessageRepository;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
 
     pleromaChatServiceMock = PleromaChatServiceMock();
@@ -44,7 +44,7 @@ void main() {
         conversationRemoteId: null,
         chatRemoteId: chatMessage.chatRemoteId);
 
-    chatMessageBloc = ChatMessageBloc(
+    chatMessageBloc = PleromaChatMessageBloc(
       chatMessage: chatMessage,
       pleromaChatService: pleromaChatServiceMock,
       chatMessageRepository: chatMessageRepository,
@@ -56,15 +56,15 @@ void main() {
   });
 
   tearDown(() async {
-    chatMessageBloc.dispose();
-    chatMessageRepository.dispose();
-    accountRepository.dispose();
+    await chatMessageBloc.dispose();
+    await chatMessageRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 
-  Future _update(IChatMessage chatMessage) async {
+  Future _update(IPleromaChatMessage chatMessage) async {
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage));
+        mapLocalPleromaChatMessageToRemoteChatMessage(chatMessage));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }

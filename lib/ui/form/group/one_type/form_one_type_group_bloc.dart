@@ -1,8 +1,15 @@
 import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:fedi/ui/form/group/form_group_bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 abstract class IFormOneTypeGroupBloc<T extends IFormItemBloc>
     extends IFormGroupBloc<T> {
+  static IFormOneTypeGroupBloc<T> of<T extends IFormItemBloc>(
+          BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<IFormOneTypeGroupBloc<T>>(context, listen: listen);
+
   T addNewEmptyField();
 
   void removeField(T field);
@@ -30,4 +37,10 @@ abstract class IFormOneTypeGroupBloc<T extends IFormItemBloc>
   T addNewField(T value);
 
   void removeAllFields();
+
+  bool isLast(T item);
+
+  T findNextItemFor(T item);
+
+  int indexOf(T item);
 }

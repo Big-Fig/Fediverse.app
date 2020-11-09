@@ -1,9 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_validation.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
-class FormLengthStringFieldValidationError extends FormStringFieldValidationError {
+class FormLengthStringFieldValidationError
+    extends FormStringFieldValidationError {
   final int minLength;
   final int maxLength;
 
@@ -15,19 +16,18 @@ class FormLengthStringFieldValidationError extends FormStringFieldValidationErro
   @override
   String createErrorDescription(BuildContext context) {
     if (minLength != null && maxLength != null) {
-      return tr("form.field.text.error.length.min_and_max.desc",
-          args: [minLength.toString(), maxLength.toString()]);
+      return S
+          .of(context)
+          .form_field_text_error_length_minAndMax_desc(minLength, maxLength);
     } else if (minLength != null) {
-      return tr("form.field.text.error.length.min_only.desc",
-          args: [minLength.toString()]);
+      return S.of(context).form_field_text_error_length_minOnly_desc(minLength);
     } else if (maxLength != null) {}
-    return tr("form.field.text.error.length.max_only.desc",
-        args: [maxLength.toString()]);
+    return S.of(context).form_field_text_error_length_maxOnly_desc(maxLength);
   }
 
   static FormValueFieldValidation createValidator(
-      {@required int minLength, @required int maxLength}) =>
-          (currentValue) {
+          {@required int minLength, @required int maxLength}) =>
+      (currentValue) {
         assert(minLength != null || maxLength != null);
         var length = currentValue?.length ?? 0;
         bool moreThanMin;

@@ -120,6 +120,21 @@ class MyAccountSettingsBloc extends DisposableOwner
 
   void _onSomethingChanged() {
     var oldPreferences = localPreferencesBloc.value;
+    var oldMediaAutoInit = oldPreferences?.mediaAutoInit ?? false;
+    var oldMediaAutoPlay = oldPreferences?.mediaAutoPlay ?? false;
+
+    var newMediaAutoInit = mediaAutoInitFieldBloc.currentValue;
+    var newMediaAutoPlay = mediaAutoPlayFieldBloc.currentValue;
+
+    if(newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+      newMediaAutoInit = true;
+      mediaAutoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
+    }
+    if(newMediaAutoInit == false && oldMediaAutoInit == true) {
+      newMediaAutoPlay = false;
+      mediaAutoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
+    }
+
     var newPreferences = MyAccountSettings(
       isRealtimeWebSocketsEnabled:
           isRealtimeWebSocketsEnabledFieldBloc.currentValue,
@@ -132,8 +147,8 @@ class MyAccountSettingsBloc extends DisposableOwner
           foregroundSoundForChatAndDmFieldBloc.currentValue,
       foregroundSoundForMention:
           foregroundSoundForMentionFieldBloc.currentValue,
-      mediaAutoInit: mediaAutoInitFieldBloc.currentValue,
-      mediaAutoPlay: mediaAutoPlayFieldBloc.currentValue,
+      mediaAutoInit: newMediaAutoInit,
+      mediaAutoPlay: newMediaAutoPlay,
     );
     if (newPreferences != oldPreferences) {
       localPreferencesBloc.setValue(newPreferences);

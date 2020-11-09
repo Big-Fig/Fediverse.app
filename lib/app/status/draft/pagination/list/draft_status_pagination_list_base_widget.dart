@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 abstract class DraftStatusPaginationListBaseWidget
     extends FediPaginationListWidget<IDraftStatus> {
-  DraftStatusPaginationListBaseWidget({
+  const DraftStatusPaginationListBaseWidget({
     @required Key key,
     Widget header,
     Widget footer,

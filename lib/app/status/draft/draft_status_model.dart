@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
@@ -170,7 +171,7 @@ class DraftStatusAdapterToStatus implements IStatus {
   bool get pleromaThreadMuted => null;
 
   @override
-  PleromaPoll get poll => null;
+  PleromaPoll get poll => draftStatus?.data?.poll?.toPleromaPoll();
 
   @override
   IStatus get reblog => null;

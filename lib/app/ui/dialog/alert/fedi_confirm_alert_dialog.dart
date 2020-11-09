@@ -1,22 +1,21 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediConfirmAlertDialog extends FediBaseAlertDialog {
   FediConfirmAlertDialog(
       {@required BuildContext context,
-      @required VoidCallback onAction,
+      @required DialogActionCallback onAction,
       String title,
-      String content,
+      String contentText,
       String okActionLabel})
       : super(
             title: title,
-            content: content,
+            contentText: contentText,
             actions: [
               DialogAction(
-                  label: okActionLabel ??
-                      tr("dialog.action.ok"),
+                  label: okActionLabel ?? S.of(context).dialog_action_ok,
                   onAction: onAction)
             ],
             cancelable: true);

@@ -1,7 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_visibility_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_pleroma_visibility_field_form_row_widget.dart';
+import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_form_row_widget.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,60 +10,142 @@ class MyAccountSettingsWidget extends StatelessWidget {
   const MyAccountSettingsWidget();
 
   @override
-  Widget build(BuildContext context) {
-    var myAccountSettingsBloc =
-        IMyAccountSettingsBloc.of(context, listen: true);
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CurrentFediUiThemeChooserFormRowWidget(),
+          const _MyAccountSettingsWebSocketsFieldWidget(),
+          const _MyAccountSettingsShowSpoilerFieldWidget(),
+          const _MyAccountSettingsShowNsfwSpoilerWidget(),
+          const _MyAccountSettingsDefaultVisibilityFieldWidget(),
+          const _MyAccountSettingsMediaNsfwByDefaultFieldWidget(),
+          const _MyAccountSettingsMediaAutoInitFieldWidget(),
+          const _MyAccountSettingsMediaAutoPlayFieldWidget(),
+        ],
+      );
+}
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.websockets_enabled.label"),
-          desc: tr(
-              "app.account.my.settings.field.websockets_enabled.description"),
-          field: myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.new_chats_enabled.label"),
-          desc:
-              tr("app.account.my.settings.field.new_chats_enabled.description"),
-          field: myAccountSettingsBloc.isNewChatsEnabledFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.always_show_spoiler.label"),
-          desc: null,
-          field: myAccountSettingsBloc.isAlwaysShowSpoilerFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.always_show_nsfw.label"),
-          desc:
-              null,
-          field: myAccountSettingsBloc.isAlwaysShowNsfwFieldBloc,
-        ),
-        FormPleromaVisibilityFieldFormRowWidget(
-          label: tr("app.account.my.settings.field.default_visibility.label"),
-          desc: null,
-          field: myAccountSettingsBloc.defaultVisibilityFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label:
-              tr("app.account.my.settings.field.media_nsfw_by_default.label"),
-          desc: null,
-          field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label:
-              tr("app.account.my.settings.field.media_auto_init.label"),
-          desc: null,
-          field: myAccountSettingsBloc.mediaAutoInitFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label:
-              tr("app.account.my.settings.field.media_auto_play.label"),
-          desc: null,
-          field: myAccountSettingsBloc.mediaAutoPlayFieldBloc,
-        ),
-      ],
+class _MyAccountSettingsMediaAutoPlayFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsMediaAutoPlayFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label: S.of(context).app_account_my_settings_field_mediaAutoPlay_label,
+      desc: null,
+      field: myAccountSettingsBloc.mediaAutoPlayFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsMediaAutoInitFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsMediaAutoInitFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label: S.of(context).app_account_my_settings_field_mediaAutoInit_label,
+      desc: null,
+      field: myAccountSettingsBloc.mediaAutoInitFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsMediaNsfwByDefaultFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsMediaNsfwByDefaultFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label:
+          S.of(context).app_account_my_settings_field_mediaNsfwByDefault_label,
+      desc: null,
+      field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsDefaultVisibilityFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsDefaultVisibilityFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormPleromaVisibilityFieldFormRowWidget(
+      label:
+          S.of(context).app_account_my_settings_field_defaultVisibility_label,
+      desc: null,
+      field: myAccountSettingsBloc.defaultVisibilityFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsShowNsfwSpoilerWidget extends StatelessWidget {
+  const _MyAccountSettingsShowNsfwSpoilerWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label: S.of(context).app_account_my_settings_field_alwaysShowNsfw_label,
+      desc: null,
+      field: myAccountSettingsBloc.isAlwaysShowNsfwFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsShowSpoilerFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsShowSpoilerFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label:
+          S.of(context).app_account_my_settings_field_alwaysShowSpoiler_label,
+      desc: null,
+      field: myAccountSettingsBloc.isAlwaysShowSpoilerFieldBloc,
+    );
+  }
+}
+
+class _MyAccountSettingsWebSocketsFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsWebSocketsFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+
+    return FormBoolFieldFormRowWidget(
+      label:
+          S.of(context).app_account_my_settings_field_websocketsEnabled_label,
+      desc: S
+          .of(context)
+          .app_account_my_settings_field_websocketsEnabled_description,
+      field: myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc,
     );
   }
 }

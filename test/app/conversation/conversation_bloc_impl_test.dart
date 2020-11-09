@@ -7,12 +7,12 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/conversation/conversation_bloc.dart';
-import 'package:fedi/app/conversation/conversation_bloc_impl.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/conversation_model_adapter.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model_adapter.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
@@ -31,14 +31,14 @@ import '../status/status_model_helper.dart';
 import 'conversation_model_helper.dart';
 
 void main() {
-  IConversation conversation;
-  IConversationBloc conversationBloc;
+  IConversationChat conversation;
+  IConversationChatBloc conversationBloc;
   PleromaConversationServiceMock pleromaConversationServiceMock;
   PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
-  IConversationRepository conversationRepository;
+  IConversationChatRepository conversationRepository;
   IMyAccountBloc myAccountBloc;
   IMyAccount myAccount;
 
@@ -51,7 +51,7 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
-    conversationRepository = ConversationRepository(
+    conversationRepository = ConversationChatRepository(
         appDatabase: database,
         accountRepository: accountRepository,
         statusRepository: statusRepository);
@@ -81,30 +81,32 @@ void main() {
 
     conversation = await createTestConversation(seed: "seed1");
 
-    conversationBloc = ConversationBloc(
-        conversation: conversation,
-        pleromaConversationService: pleromaConversationServiceMock,
-        accountRepository: accountRepository,
-        statusRepository: statusRepository,
-        conversationRepository: conversationRepository,
-        delayInit: false,
-        myAccountBloc: myAccountBloc);
+    conversationBloc = ConversationChatBloc(
+      conversation: conversation,
+      pleromaConversationService: pleromaConversationServiceMock,
+      accountRepository: accountRepository,
+      statusRepository: statusRepository,
+      conversationRepository: conversationRepository,
+      delayInit: false,
+      myAccountBloc: myAccountBloc,
+      lastChatMessage: null,
+    );
   });
 
   tearDown(() async {
-    conversationBloc.dispose();
-    conversationRepository.dispose();
-    statusRepository.dispose();
-    accountRepository.dispose();
+    await conversationBloc.dispose();
+    await conversationRepository.dispose();
+    await statusRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
-    myAccountLocalPreferenceBloc.dispose();
-    preferencesService.dispose();
+    await myAccountLocalPreferenceBloc.dispose();
+    await preferencesService.dispose();
   });
 
-  Future _update(IConversation conversation,
+  Future _update(IConversationChat conversation,
       {IStatus lastStatus, List<IAccount> accounts}) async {
     await conversationRepository.upsertRemoteConversation(
-        mapLocalConversationToRemoteConversation(conversation,
+        mapLocalConversationChatToRemoteConversation(conversation,
             lastStatus: lastStatus, accounts: accounts));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -243,7 +245,7 @@ void main() {
 
     when(pleromaConversationServiceMock.getConversation(
             conversationRemoteId: conversation.remoteId))
-        .thenAnswer((_) async => mapLocalConversationToRemoteConversation(
+        .thenAnswer((_) async => mapLocalConversationChatToRemoteConversation(
             newValue,
             accounts: [],
             lastStatus: null));

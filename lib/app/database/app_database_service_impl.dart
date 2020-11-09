@@ -32,8 +32,8 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
     appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
         path: '$dbName.sqlite', logStatements: false));
 
-    addDisposable(disposable: CustomDisposable(() {
-      appDatabase.close();
+    addDisposable(disposable: CustomDisposable(() async {
+      await appDatabase.close();
     }));
   }
 

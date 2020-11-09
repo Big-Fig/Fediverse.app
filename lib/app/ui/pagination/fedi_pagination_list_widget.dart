@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -74,7 +74,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                 success = await additionalPreRefreshAction(context);
               } catch (e, stackTrace) {
                 success = false;
-                _logger.severe(() => "additionalPreRefreshAction()", e, stackTrace);
+                _logger.severe(
+                    () => "additionalPreRefreshAction()", e, stackTrace);
               }
 
               _logger.finest(() => "additionalPreRefreshAction() $success");
@@ -98,7 +99,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     if (items == null) {
       _logger.finest(() => "build loading");
       return buildNotListBody(
-        Center(
+        const Center(
           child: FediCircularProgressIndicator(),
         ),
       );
@@ -109,7 +110,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
           context: context, items: items, header: header, footer: footer);
     } else {
       _logger.finest(() => "build empty");
-      return buildNotListBody(StreamBuilder<PaginationListLoadingState>(
+      return buildNotListBody(
+        StreamBuilder<PaginationListLoadingState>(
           stream: paginationListBloc.refreshStateStream,
           initialData: paginationListBloc.refreshState,
           builder: (context, snapshot) {
@@ -118,14 +120,22 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             switch (refreshState) {
               case PaginationListLoadingState.initialized:
               case PaginationListLoadingState.loading:
-                return Center(child: FediCircularProgressIndicator());
+                return const Center(
+                  child: FediCircularProgressIndicator(),
+                );
               case PaginationListLoadingState.failed:
               case PaginationListLoadingState.loaded:
               default:
-                return Center(child: Text(tr("pagination.list.empty")));
+                return Center(
+                  child: Text(
+                    S.of(context).pagination_list_empty,
+                  ),
+                );
                 break;
             }
-          }));
+          },
+        ),
+      );
     }
   }
 }

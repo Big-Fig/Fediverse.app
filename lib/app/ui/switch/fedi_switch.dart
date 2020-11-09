@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/switch/custom_switch.dart';
 import 'package:fedi/ui/switch/custom_switch_bloc.dart';
@@ -35,8 +35,13 @@ class FediSwitch extends StatelessWidget {
             indicatorSize: 11.0,
             backgroundBorderRadius: 19.0,
             indicatorPadding: EdgeInsets.all(4.0),
-            indicatorActiveColor: FediColors.primary,
-            indicatorInactiveColor: FediColors.lightGrey,
+            indicatorActiveColor: IFediUiColorTheme.of(context).primary,
+            indicatorInactiveColor: IFediUiColorTheme.of(context).lightGrey,
+            backgroundActiveColor: IFediUiColorTheme.of(context).transparent,
+            backgroundInactiveColor: IFediUiColorTheme.of(context).transparent,
+            backgroundDisabledColor: IFediUiColorTheme.of(context).transparent,
+            indicatorDisabledColor: IFediUiColorTheme.of(context).grey,
+            borderColor: IFediUiColorTheme.of(context).black,
             enabled: enabled,
           ),
         ),

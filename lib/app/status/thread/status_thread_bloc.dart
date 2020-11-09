@@ -5,8 +5,9 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-abstract class IStatusThreadBloc implements Disposable {
+abstract class IStatusThreadBloc implements IDisposable {
   static IStatusThreadBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusThreadBloc>(context, listen: listen);
 
@@ -15,6 +16,7 @@ abstract class IStatusThreadBloc implements Disposable {
   Stream<List<IPleromaMention>> get mentionsStream;
 
   IStatus get initialStatusToFetchThread;
+
   IPleromaMediaAttachment get initialMediaAttachment;
 
   int get initialStatusToFetchThreadIndex;
@@ -35,6 +37,8 @@ abstract class IStatusThreadBloc implements Disposable {
 
   Stream<List<IStatus>> get statusesStream;
 
+  Stream<List<IStatus>> get statusesDistinctStream;
+
   List<String> get mentionAccts;
 
   Stream<List<String>> get mentionAcctsStream;
@@ -48,4 +52,14 @@ abstract class IStatusThreadBloc implements Disposable {
   void addStatusInThread(IStatus status);
 
   Stream<IStatus> get onNewStatusAddedStream;
+
+  ItemScrollController get itemScrollController;
+
+  ItemPositionsListener get itemPositionListener;
+
+  bool get isJumpedToStartState;
+
+  void scrollToIndex(int startStatusIndex);
+
+  void scrollToStartIndex();
 }

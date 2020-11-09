@@ -12,7 +12,7 @@ var _logger = Logger("home_bloc_impl.dart");
 const List<HomeTab> _tabs = [
   HomeTab.timelines,
   HomeTab.notifications,
-  HomeTab.messages,
+  HomeTab.chat,
   HomeTab.account,
 ];
 

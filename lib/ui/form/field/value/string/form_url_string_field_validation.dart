@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_validation.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
 class FormUrlStringFieldValidationError extends FormStringFieldValidationError {
@@ -9,14 +9,14 @@ class FormUrlStringFieldValidationError extends FormStringFieldValidationError {
 
   @override
   String createErrorDescription(BuildContext context) =>
-      tr("form.field.text.url.error.invalid.desc");
+      S.of(context).form_field_text_url_error_invalid_desc;
 
   static FormValueFieldValidation createValidator() => (currentValue) {
-    bool emailValid = urlRegex.hasMatch(currentValue ?? "");
-    if (emailValid) {
-      return null;
-    } else {
-      return FormUrlStringFieldValidationError();
-    }
-  };
+        bool emailValid = urlRegex.hasMatch(currentValue ?? "");
+        if (emailValid) {
+          return null;
+        } else {
+          return FormUrlStringFieldValidationError();
+        }
+      };
 }

@@ -1,18 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 final secondsFormat = NumberFormat("00");
 
 class FediPlayerControlDurationWidget extends StatelessWidget {
-  final Duration duration;
-
-  FediPlayerControlDurationWidget({
-    @required this.duration,
-  });
+  const FediPlayerControlDurationWidget();
 
   @override
   Widget build(BuildContext context) {
+    var duration = Provider.of<Duration>(context);
     int totalMinutes;
     var durationExist = duration != null;
     if (durationExist) {
@@ -26,8 +24,8 @@ class FediPlayerControlDurationWidget extends StatelessWidget {
     return Text(
       "$totalMinutes:${secondsFormat.format(seconds)}",
       style: durationExist
-          ? FediTextStyles.smallShortBoldWhite
-          : FediTextStyles.smallShortBoldGrey,
+          ? IFediUiTextTheme.of(context).smallShortBoldWhite
+          : IFediUiTextTheme.of(context).smallShortBoldGrey,
     );
   }
 }

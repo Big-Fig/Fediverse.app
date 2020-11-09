@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
@@ -30,7 +30,7 @@ class TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget
           nullable: nullable,
           enabled: enabled,
           error: formValueFieldBloc.isHaveAtLeastOneError
-              ? "form.field.value.error.null.desc".tr()
+              ? S.of(context).form_field_value_error_null_desc
               : null,
           desc: desc,
           clearCallback: () {
@@ -49,10 +49,12 @@ class TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget
                 customLocalAccountListLoader: null);
           },
           label:
-              "app.timeline.settings.only_from_remote_account.field.label".tr(),
+              S.of(context)
+                  .app_timeline_settings_onlyFromRemoteAccount_field_label,
           value: currentValue,
           valueToTextMapper: (pleromaAccount) => pleromaAccount?.acct ??
-              "app.timeline.settings.only_from_remote_account.field.null".tr(),
+              S.of(context)
+                  .app_timeline_settings_onlyFromRemoteAccount_field_null,
           valueToIconMapper: null,
         );
       });

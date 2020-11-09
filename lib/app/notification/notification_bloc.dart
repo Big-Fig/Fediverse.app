@@ -7,7 +7,7 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class INotificationBloc implements Disposable {
+abstract class INotificationBloc implements IDisposable {
   Stream<bool> get dismissedStream;
 
   bool get dismissed;
@@ -50,6 +50,10 @@ abstract class INotificationBloc implements Disposable {
   bool get unread;
 
   Stream<bool> get unreadStream;
+
+  NotificationState get state;
+
+  Stream<NotificationState> get stateStream;
 
   Future dismiss();
 

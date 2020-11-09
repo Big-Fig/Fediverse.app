@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,9 +23,10 @@ class UrlHelper {
       await launch(url);
     } else {
       await FediSimpleAlertDialog(
-          context: context,
-          title: tr("link.error.dialog.title"),
-          content: tr("link.error.dialog.content", args: [url])).show(context);
+        context: context,
+        title: S.of(context).link_error_dialog_title,
+        contentText: S.of(context).link_error_dialog_content(url),
+      ).show(context);
     }
   }
 

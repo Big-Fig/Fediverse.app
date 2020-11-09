@@ -1,49 +1,64 @@
-import 'dart:ui';
-
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/app/account/header/account_header_bloc.dart';
+import 'package:fedi/app/account/header/account_header_bloc_impl.dart';
 import 'package:fedi/app/account/header/account_header_followers_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_following_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_statuses_count_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/account/info/account_info_bloc.dart';
+import 'package:fedi/app/account/info/account_info_bloc_impl.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountInfoWidget extends StatelessWidget {
-  final VoidCallback onStatusesTapCallback;
+  final OnClickUiCallback onStatusesTapCallback;
 
-  MyAccountInfoWidget({this.onStatusesTapCallback});
+  MyAccountInfoWidget({
+    @required this.onStatusesTapCallback,
+  });
 
   @override
   Widget build(BuildContext context) => Padding(
         padding: FediPadding.allBigPadding,
         child: Row(
           children: [
-            AccountAvatarWidget(
+            const AccountAvatarWidget(
               imageSize: FediSizes.accountAvatarBigSize,
               progressSize: FediSizes.accountAvatarProgressBigSize,
             ),
             const FediSmallHorizontalSpacer(),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  AccountHeaderStatusesCountWidget(
-                    onStatusesTapCallback: onStatusesTapCallback,
-                    color: FediColors.darkGrey,
+            DisposableProvider<IAccountInfoBloc>(
+              create: (context) => AccountInfoBloc(
+                brightness: Brightness.dark,
+                onStatusesTapCallback: onStatusesTapCallback,
+              ),
+              child:
+                  DisposableProxyProvider<IAccountInfoBloc, IAccountHeaderBloc>(
+                update: (context, value, _) => AccountHeaderBloc(
+                  brightness: value.brightness,
+                ),
+                child: Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      const AccountHeaderStatusesCountWidget(
+                        onStatusesTapCallback: _onStatusesTapCallback,
+                      ),
+                      const AccountHeaderFollowingCountWidget(),
+                      const AccountHeaderFollowersCountWidget(),
+                    ],
                   ),
-                  AccountHeaderFollowingCountWidget(
-                    color: FediColors.darkGrey,
-                  ),
-                  AccountHeaderFollowersCountWidget(
-                    color: FediColors.darkGrey,
-                  ),
-                ],
+                ),
               ),
             ),
           ],
         ),
       );
 }
+
+void _onStatusesTapCallback(BuildContext context) =>
+    IAccountInfoBloc.of(context, listen: false).onStatusesTapCallback(context);

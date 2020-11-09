@@ -3,7 +3,7 @@ import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPollBloc implements Disposable {
+abstract class IPollBloc implements IDisposable {
   static IPollBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPollBloc>(context, listen: listen);
 

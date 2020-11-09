@@ -65,32 +65,14 @@ class MediaPickerFileGridWidget
             index--;
           }
         }
-        return _buildItem(
-          context,
-          items[index],
-        );
-      },
-    );
-  }
-
-  Widget _buildItem(BuildContext context, IMediaDeviceFile mediaDeviceFile) {
-    return Provider<IMediaDeviceFile>.value(
-      value: mediaDeviceFile,
-      child: DisposableProxyProvider<IMediaDeviceFile, IMediaDeviceFileBloc>(
-          update: (BuildContext context, file, previous) {
-            if (file is PhotoManagerMediaDeviceFile) {
-              var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
-                  photoManagerMediaDeviceFile: file);
-              mediaDeviceFileBloc.performAsyncInit();
-              return mediaDeviceFileBloc;
-            } else {
-              throw "IMediaDeviceFile file type not supported $file";
-            }
-          },
-          child: MediaPickerFileGridItemWidget(
+        return Provider<IMediaDeviceFile>.value(
+          value: items[index],
+          child: _MediaPickerFileGridItemWidget(
             onFileSelectedCallback: onFileSelectedCallback,
             loadingWidget: loadingWidget,
-          )),
+          ),
+        );
+      },
     );
   }
 
@@ -101,4 +83,34 @@ class MediaPickerFileGridWidget
     bool listen,
   }) =>
           IMediaDeviceFilePaginationListBloc.of(context, listen: listen);
+}
+
+class _MediaPickerFileGridItemWidget extends StatelessWidget {
+  const _MediaPickerFileGridItemWidget({
+    Key key,
+    @required this.onFileSelectedCallback,
+    @required this.loadingWidget,
+  }) : super(key: key);
+
+  final MediaDeviceFileCallback onFileSelectedCallback;
+  final Widget loadingWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProxyProvider<IMediaDeviceFile, IMediaDeviceFileBloc>(
+        update: (BuildContext context, file, previous) {
+          if (file is PhotoManagerMediaDeviceFile) {
+            var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
+                photoManagerMediaDeviceFile: file);
+            mediaDeviceFileBloc.performAsyncInit();
+            return mediaDeviceFileBloc;
+          } else {
+            throw "IMediaDeviceFile file type not supported $file";
+          }
+        },
+        child: MediaPickerFileGridItemWidget(
+          onFileSelectedCallback: onFileSelectedCallback,
+          loadingWidget: loadingWidget,
+        ));
+  }
 }

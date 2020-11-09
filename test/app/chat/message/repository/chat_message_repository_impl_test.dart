@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/message/chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
@@ -20,7 +20,7 @@ final String baseUrl = "https://pleroma.com";
 void main() {
   AppDatabase database;
   AccountRepository accountRepository;
-  ChatMessageRepository chatMessageRepository;
+  PleromaChatMessageRepository chatMessageRepository;
 
   DbChatMessagePopulated dbChatMessagePopulated;
   DbChatMessage dbChatMessage;
@@ -30,7 +30,7 @@ void main() {
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = ChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: database, accountRepository: accountRepository);
 
     dbAccount = await createTestDbAccount(seed: "seed1");
@@ -47,8 +47,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountRepository.dispose();
-    chatMessageRepository.dispose();
+    await accountRepository.dispose();
+    await chatMessageRepository.dispose();
     await database.close();
   });
 
@@ -63,7 +63,7 @@ void main() {
     expect(await chatMessageRepository.countAll(), 0);
 
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated)));
 
     expect(await chatMessageRepository.countAll(), 1);
@@ -76,7 +76,7 @@ void main() {
 
     // item with same id updated
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated)));
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
@@ -90,7 +90,7 @@ void main() {
   test('upsertRemoteChatMessages', () async {
     expect(await chatMessageRepository.countAll(), 0);
     await chatMessageRepository.upsertRemoteChatMessages([
-      mapLocalChatMessageToRemoteChatMessage(
+      mapLocalPleromaChatMessageToRemoteChatMessage(
           DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     ]);
 
@@ -103,7 +103,7 @@ void main() {
         await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
 
     await chatMessageRepository.upsertRemoteChatMessages([
-      mapLocalChatMessageToRemoteChatMessage(
+      mapLocalPleromaChatMessageToRemoteChatMessage(
           DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     ]);
 
@@ -159,7 +159,7 @@ void main() {
             dbChatMessage: dbChatMessage.copyWith(id: id),
             dbAccount: dbAccount));
     var newContent = "newContent";
-    var newRemoteChatMessage = mapLocalChatMessageToRemoteChatMessage(
+    var newRemoteChatMessage = mapLocalPleromaChatMessageToRemoteChatMessage(
         DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
             dbChatMessage: dbChatMessage.copyWith(id: id, content: newContent),
             dbAccount: dbAccount)));
@@ -208,7 +208,7 @@ void main() {
           seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(2005)),
       limit: null,
       offset: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt),
       olderThanChatMessage: null,
@@ -248,7 +248,7 @@ void main() {
       newerThanChatMessage: null,
       limit: null,
       offset: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt),
       olderThanChatMessage: await createTestChatMessage(
@@ -296,7 +296,7 @@ void main() {
           createdAt: DateTime(2002)),
       limit: null,
       offset: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt),
       olderThanChatMessage: await createTestChatMessage(
@@ -354,7 +354,7 @@ void main() {
       newerThanChatMessage: null,
       limit: null,
       offset: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.asc),
       olderThanChatMessage: null,
@@ -389,7 +389,7 @@ void main() {
       newerThanChatMessage: null,
       limit: null,
       offset: null,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThanChatMessage: null,
@@ -424,7 +424,7 @@ void main() {
       newerThanChatMessage: null,
       limit: 1,
       offset: 1,
-      orderingTermData: ChatMessageOrderingTermData(
+      orderingTermData: PleromaChatMessageOrderingTermData(
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThanChatMessage: null,
@@ -456,7 +456,7 @@ void main() {
     var chatRemoteId = "chatRemoteId";
     var query = chatMessageRepository.createQuery(
       onlyInChats: [
-        DbChatPopulatedWrapper(DbChatPopulated(
+        DbPleromaChatPopulatedWrapper(DbPleromaChatPopulated(
             dbChat: DbChat(
                 remoteId: chatRemoteId,
                 unread: 0,
@@ -495,7 +495,7 @@ void main() {
 
     // duplicate adding. Should be skipped
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        mapLocalPleromaChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             DbChatMessagePopulated(
                 dbChatMessage: await createTestDbChatMessage(
                     seed: "seed3",
@@ -520,7 +520,7 @@ void main() {
 
     // 1 is not related to chat
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        mapLocalPleromaChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
                 dbChatMessage.copyWith(
                     remoteId: "chatMessage1", createdAt: DateTime(2001)),
@@ -531,7 +531,7 @@ void main() {
 
     // 2 is related to chat
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        mapLocalPleromaChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
                 dbChatMessage.copyWith(
                     remoteId: "chatMessage2",
@@ -546,7 +546,7 @@ void main() {
 
     // 4 is newer than 2
     await chatMessageRepository.upsertRemoteChatMessage(
-      mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
+      mapLocalPleromaChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
           await createTestDbChatMessagePopulated(
               dbChatMessage.copyWith(
                   remoteId: "chatMessage4",
@@ -561,7 +561,7 @@ void main() {
 
     // remain 4
     await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
+        mapLocalPleromaChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
                 dbChatMessage.copyWith(
                     remoteId: "chatMessage3",
@@ -584,31 +584,31 @@ void main() {
         dbChatMessagePopulated.copyWith(chatRemoteId: chatRemoteId);
 
     await chatMessageRepository.upsertRemoteChatMessages([
-      mapLocalChatMessageToRemoteChatMessage(
+      mapLocalPleromaChatMessageToRemoteChatMessage(
           DbChatMessagePopulatedWrapper(dbChatMessagePopulated))
     ]);
     await chatMessageRepository.upsertRemoteChatMessages(
       [
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated))
       ],
     );
 
     var future1 = chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated)));
     var future2 = chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated)));
 
     var future3 = chatMessageRepository.upsertRemoteChatMessages(
       [
-        mapLocalChatMessageToRemoteChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
             DbChatMessagePopulatedWrapper(dbChatMessagePopulated))
       ],
     );
     var future4 = chatMessageRepository.upsertRemoteChatMessages([
-      mapLocalChatMessageToRemoteChatMessage(
+      mapLocalPleromaChatMessageToRemoteChatMessage(
           DbChatMessagePopulatedWrapper(dbChatMessagePopulated))
     ]);
 

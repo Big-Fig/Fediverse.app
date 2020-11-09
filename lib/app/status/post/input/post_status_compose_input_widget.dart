@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -27,27 +27,44 @@ class PostStatusComposeInputWidget extends StatelessWidget {
     return FediTransparentEditTextField(
       textEditingController: postStatusBloc.inputTextController,
       focusNode: postStatusBloc.inputFocusNode,
-      hintText: hintText ?? tr("app.status.post.field.message.hint"),
+      hintText: hintText ?? S.of(context).app_status_post_field_message_hint,
       expanded: expanded,
       autofocus: autofocus,
       maxLines: maxLines,
       textInputAction: TextInputAction.send,
       onSubmitted: (String value) async {
         if (postStatusBloc.isReadyToPost) {
+          var isScheduled = postStatusBloc.isScheduled;
           var dialogResult =
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
             asyncCode: () => postStatusBloc.post(),
           );
           var success = dialogResult.result;
+
           if (success) {
-            showPostStatusPostOverlayNotification(context, postStatusBloc);
+            showPostStatusPostOverlayNotification(
+              context: context,
+              postStatusBloc: postStatusBloc,
+              isScheduled: isScheduled,
+            );
           }
         } else {
-          await FediSimpleAlertDialog(
-                  context: context,
-                  title: tr("app.status.post.error.empty.dialog.title"))
-              .show(context);
+
+          if(postStatusBloc.pollBloc.isHaveAtLeastOneError) {
+            await FediSimpleAlertDialog(
+                context: context,
+
+            title: S.of(context).app_status_post_error_poll_dialog_title)
+                .show(context);
+          } else {
+            await FediSimpleAlertDialog(
+                context: context,
+
+            title: S.of(context).app_status_post_error_empty_dialog_title)
+                .show(context);
+          }
+
         }
       },
       errorText: null,

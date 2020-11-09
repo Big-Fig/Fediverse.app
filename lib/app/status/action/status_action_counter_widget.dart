@@ -1,19 +1,23 @@
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StatusActionCounterWidget extends StatelessWidget {
-  final VoidCallback onPressed;
-  final int value;
+  final OnClickUiCallback onClick;
 
-  StatusActionCounterWidget({
-    @required this.onPressed,
-    @required this.value,
+  const StatusActionCounterWidget({
+    @required this.onClick,
   });
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onPressed,
+  Widget build(BuildContext context) {
+    var value = Provider.of<int>(context);
+    return InkWell(
+        onTap: () {
+          onClick(context);
+        },
         child: Padding(
           padding: const EdgeInsets.only(
             right: 4.0,
@@ -22,9 +26,10 @@ class StatusActionCounterWidget extends StatelessWidget {
             constraints: BoxConstraints(minWidth: 10),
             child: Text(
               value == 0 ? "" : value.toString(),
-              style: FediTextStyles.smallShortDarkGrey,
+              style: IFediUiTextTheme.of(context).smallShortDarkGrey,
             ),
           ),
         ),
       );
+  }
 }

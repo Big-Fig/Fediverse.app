@@ -1,19 +1,19 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/chat_helper.dart';
-import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
+import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,84 +21,101 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("account_actions_widget.dart");
 
+var _topPadding = FediSizes.smallPadding;
+var _bottomPadding = FediSizes.bigPadding;
+var _height = FediSizes.textButtonHeight + _topPadding + _bottomPadding;
+
 class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
+    var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
       stream: accountBloc.accountRelationshipStream,
-      initialData: accountBloc.accountRelationship,
       builder: (context, snapshot) {
         var relationship = snapshot.data;
 
         _logger.finest(() => "relationship $relationship");
 
-        var topPadding = FediSizes.smallPadding;
-        var bottomPadding = FediSizes.bigPadding;
         if (relationship?.following == null) {
           return Container(
-            height: FediSizes.textButtonHeight + topPadding + bottomPadding,
-            child: const Center(
-              child: FediCircularProgressIndicator(
-                color: FediColors.white,
-              ),
-            ),
+            height: _height,
+            child: const _AccountActionListLoadingWidget(),
           );
         } else {
-          return LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
-
-              return FediFadeShaderMask(
-                fadingColor: FediColors.darkGrey,
-                fadingPercent: fadingPercent,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: topPadding, bottom: bottomPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      buildFollowButton(accountBloc, relationship),
-                      const FediBigHorizontalSpacer(),
-                      buildMessageButton(context, accountBloc),
-                      const FediBigHorizontalSpacer(),
-                      buildMoreButton(context, accountBloc, relationship),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          return const _AccountActionListBodyLayoutBuilderWidget();
         }
       },
     );
   }
 
-  Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
-      IPleromaAccountRelationship relationship) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.menu,
-      onPressed: () async {
-        showAccountActionMoreDialog(
-          context: context,
-          accountBloc: accountBloc,
-          relationship: relationship,
+  const AccountActionListWidget();
+}
+
+class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
+  const _AccountActionListBodyLayoutBuilderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
+
+        return FediFadeShaderMask(
+          fadingColor: IFediUiColorTheme.of(context).darkGrey,
+          fadingPercent: fadingPercent,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: _topPadding,
+              bottom: _bottomPadding,
+              right: FediSizes.smallPadding,
+            ),
+            child: const _AccountActionListBodyWidget(),
+          ),
         );
       },
     );
   }
+}
 
-  Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
+class _AccountActionListBodyWidget extends StatelessWidget {
+  const _AccountActionListBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        const _AccountActionListFollowWidget(),
+        const FediBigHorizontalSpacer(),
+        const _AccountActionListMessageWidget(),
+        const FediBigHorizontalSpacer(),
+        const _AccountActionListMoreWidget(),
+      ],
+    );
+  }
+}
+
+class _AccountActionListMessageWidget extends StatelessWidget {
+  const _AccountActionListMessageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FediBlurredTextButton(
-      tr("app.account.action.message"),
+      S.of(context).app_account_action_message,
       onPressed: () async {
-        var authInstanceBloc =
-            ICurrentAuthInstanceBloc.of(context, listen: false);
+        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+        var accountBloc = IAccountBloc.of(context);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToChatWithAccount(context: context, account: account);
+          goToPleromaChatWithAccount(context: context, account: account);
         } else {
           goToPostStatusStartConversationPage(context,
               conversationAccountsWithoutMe: <IAccount>[account]);
@@ -106,29 +123,84 @@ class AccountActionListWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildFollowButton(
-      IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
-    if (relationship.requested && !relationship.following) {
-      return FediBlurredTextButton(
-        tr("app.account.action.follow_requested"),
-        onPressed: null,
-      );
-    } else {
-      return PleromaAsyncOperationButtonBuilderWidget(
-        showProgressDialog: false,
-        asyncButtonAction: accountBloc.toggleFollow,
-        builder: (BuildContext context, VoidCallback onPressed) {
-          return FediBlurredTextButton(
-            relationship?.following == true
-                ? tr("app.account.action.unfollow")
-                : tr("app.account.action.follow"),
-            onPressed: onPressed,
-          );
-        },
-      );
-    }
+class _AccountActionListMoreWidget extends StatelessWidget {
+  const _AccountActionListMoreWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.menu,
+      onPressed: () async {
+        var accountBloc = IAccountBloc.of(context, listen: false);
+        showAccountActionMoreDialog(
+          context: context,
+          accountBloc: accountBloc,
+        );
+      },
+    );
   }
+}
 
-  const AccountActionListWidget();
+class _AccountActionListFollowWidget extends StatelessWidget {
+  const _AccountActionListFollowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+    return StreamBuilder<IPleromaAccountRelationship>(
+      stream: accountBloc.accountRelationshipStream,
+      initialData: accountBloc.accountRelationship,
+      builder: (context, snapshot) {
+        var relationship = accountBloc.accountRelationship;
+        if (relationship.requested && !relationship.following) {
+          return PleromaAsyncOperationButtonBuilderWidget(
+            showProgressDialog: false,
+            asyncButtonAction: accountBloc.toggleFollow,
+            builder: (BuildContext context, VoidCallback onPressed) {
+              return FediBlurredTextButton(
+                S.of(context).app_account_action_followRequested,
+                onPressed: onPressed,
+              );
+            },
+          );
+        } else {
+          return PleromaAsyncOperationButtonBuilderWidget(
+            showProgressDialog: false,
+            asyncButtonAction: accountBloc.toggleFollow,
+            builder: (BuildContext context, VoidCallback onPressed) {
+              return FediBlurredTextButton(
+                relationship?.requested == true
+                    ? S.of(context).app_account_action_followRequested
+                    : relationship?.following == true
+                        ? S.of(context).app_account_action_unfollow
+                        : S.of(context).app_account_action_follow,
+                onPressed: onPressed,
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}
+
+class _AccountActionListLoadingWidget extends StatelessWidget {
+  const _AccountActionListLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+      ),
+    );
+  }
 }

@@ -33,7 +33,7 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
 
     addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() {
+    addDisposable(disposable: CustomDisposable(() async {
       textEditingController.removeListener(listener);
     }));
   }
@@ -41,4 +41,10 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
   @override
   bool isValueChanged(String newValue, String originValue) =>
       (newValue ?? "") != (originValue ?? "");
+
+  @override
+  void clear() {
+    textEditingController.text = originValue ?? "";
+    super.clear();
+  }
 }

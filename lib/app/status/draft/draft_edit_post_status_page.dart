@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
@@ -6,6 +5,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +23,14 @@ class DraftEditPostStatusPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: "app.status.draft.edit.title".tr(),
+          title: S.of(context).app_status_draft_edit_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context);
             },
           ),
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: EditPostStatusWidget(),
         ),
       ),

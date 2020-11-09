@@ -1,8 +1,9 @@
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/conversation/websockets/my_account_conversations_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -19,10 +20,12 @@ import 'package:flutter/widgets.dart';
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
   final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IConversationRepository conversationRepository;
+  final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
-  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IConversationChatNewMessagesHandlerBloc conversationChatNewMessagesHandlerBloc;
+
 
   WebSocketsHandlerManagerBloc({
     @required this.pleromaWebSocketsService,
@@ -30,10 +33,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     @required this.notificationRepository,
     @required this.statusRepository,
     @required this.chatNewMessagesHandlerBloc,
+    @required
+    this.conversationChatNewMessagesHandlerBloc,
   });
 
   @override
-  Disposable listenMyAccountChannel({
+  IDisposable listenMyAccountChannel({
     @required bool notification,
     @required bool chat,
   }) =>
@@ -45,10 +50,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
-  Disposable listenAccountChannel({
+  IDisposable listenAccountChannel({
     @required String accountId,
     @required bool notification,
   }) =>
@@ -58,22 +65,26 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
         accountId: accountId,
         notification: notification,
       );
 
   @override
-  Disposable listenDirectChannel() => MyAccountConversationsWebSocketsHandler(
+  IDisposable listenDirectChannel() => ConversationChatWebSocketsHandler(
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+    conversationChatNewMessagesHandlerBloc:
+    conversationChatNewMessagesHandlerBloc,
         accountId: null,
       );
 
   @override
-  Disposable listenPublicChannel({
+  IDisposable listenPublicChannel({
     @required bool local,
     @required bool onlyMedia,
   }) =>
@@ -85,10 +96,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
-  Disposable listenHashtagChannel({
+  IDisposable listenHashtagChannel({
     @required String hashtag,
     @required bool local,
   }) =>
@@ -100,10 +113,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 
   @override
-  Disposable listenListChannel({
+  IDisposable listenListChannel({
     @required String listId,
   }) =>
       CustomListStatusListWebSocketsHandler(
@@ -113,5 +128,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+        conversationChatNewMessagesHandlerBloc,
       );
 }

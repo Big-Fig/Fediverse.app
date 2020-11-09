@@ -1,7 +1,11 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc_impl.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_local_only_pagination_bloc_impl.dart';
+import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc_impl.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
+import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_bloc_impl.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_model.dart';
 import 'package:fedi/permission/permission_bloc.dart';
@@ -11,7 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
-    implements Disposable, IPermissionBloc, IMediaDeviceGalleryBloc {
+    implements IDisposable, IPermissionBloc, IMediaDeviceGalleryBloc {
   final IStoragePermissionBloc storagePermissionBloc;
   final List<MediaDeviceFileType> typesToPick;
 
@@ -22,6 +26,9 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     addDisposable(subject: foldersSubject);
     addDisposable(subject: selectedFolderSubject);
     addDisposable(subject: galleryStateSubject);
+    addDisposable(custom: () async {
+      await disposeSelectedFolderBlocs();
+    });
   }
 
   // ignore: close_sinks
@@ -34,18 +41,53 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   List<IMediaDeviceFolder> get folders => foldersSubject.value;
 
   // ignore: close_sinks
-  BehaviorSubject<IMediaDeviceFolder> selectedFolderSubject = BehaviorSubject();
+  BehaviorSubject<MediaDeviceGallerySelectedFolderData> selectedFolderSubject =
+      BehaviorSubject();
 
   @override
-  void selectFolder(IMediaDeviceFolder folder) {
-    selectedFolderSubject.add(folder);
+  Future selectFolder(IMediaDeviceFolder folder) async {
+    var oldFolderData = selectedFolderData;
+    if (oldFolderData?.folder?.id == folder?.id) {
+      return;
+    }
+
+    selectedFolderSubject.add(null);
+
+    await oldFolderData?.dispose();
+
+    var folderBloc = PhotoManagerFileGalleryFolderBloc(
+      storagePermissionBloc: storagePermissionBloc,
+      folder: folder,
+    );
+    var listBloc = MediaDeviceFileLocalOnlyListBloc(
+      folderBloc: folderBloc,
+    );
+    var paginationBloc = MediaDeviceFileLocalOnlyPaginationBloc(
+      listBloc: listBloc,
+      maximumCachedPagesCount: null,
+      itemsCountPerPage: 20,
+    );
+
+    var paginationListBloc = MediaDeviceFilePaginationListBloc(
+      paginationBloc: paginationBloc,
+    );
+    var newFolderData = MediaDeviceGallerySelectedFolderData(
+      folder: folder,
+      folderBloc: folderBloc,
+      filesListBloc: listBloc,
+      filesPaginationBloc: paginationBloc,
+      filesPaginationListBloc: paginationListBloc,
+    );
+
+    selectedFolderSubject.add(newFolderData);
   }
 
   @override
-  IMediaDeviceFolder get selectedFolder => selectedFolderSubject.value;
+  MediaDeviceGallerySelectedFolderData get selectedFolderData =>
+      selectedFolderSubject.value;
 
   @override
-  Stream<IMediaDeviceFolder> get selectedFolderStream =>
+  Stream<MediaDeviceGallerySelectedFolderData> get selectedFolderDataStream =>
       selectedFolderSubject.stream;
 
   // ignore: close_sinks
@@ -84,29 +126,29 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   @override
   Future refreshFoldersInformation() async {
     assert(permissionGranted);
-    var oldSelectedFolder = selectedFolder;
+    var oldSelectedFolder = selectedFolderData;
     galleryStateSubject.add(MediaDeviceGalleryState.loading);
     var folders = await loadFoldersInformation();
 
     foldersSubject.add(folders);
     galleryStateSubject.add(MediaDeviceGalleryState.loaded);
 
-    if (oldSelectedFolder != null) {
+    if (oldSelectedFolder?.folder != null) {
       var newSelectedFolder = folders.firstWhere(
-        (folder) => folder.id == oldSelectedFolder.id,
+        (folder) => folder.id == oldSelectedFolder?.folder?.id,
         orElse: () => null,
       );
 
       if (newSelectedFolder != null) {
-        selectedFolderSubject.add(newSelectedFolder);
+        await selectFolder(newSelectedFolder);
       } else {
         if (folders?.isNotEmpty == true) {
-          selectedFolderSubject.add(folders.first);
+          await selectFolder(folders.first);
         }
       }
     } else {
       if (folders?.isNotEmpty == true) {
-        selectedFolderSubject.add(folders.first);
+        await selectFolder(folders.first);
       }
     }
   }
@@ -135,4 +177,8 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   @override
   Future<PermissionStatus> requestPermission() =>
       storagePermissionBloc.requestPermission();
+
+  Future disposeSelectedFolderBlocs() async {
+    await selectedFolderData?.dispose();
+  }
 }

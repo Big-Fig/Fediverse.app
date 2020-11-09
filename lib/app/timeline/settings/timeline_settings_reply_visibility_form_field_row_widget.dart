@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_from_list_field_row.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,30 +28,34 @@ class TimelineSettingsReplyVisibilityFormFieldRowWidget
               enabled: enabled,
               nullable: true,
               error: formValueFieldBloc.isHaveAtLeastOneError
-                  ? "form.field.value.error.null.desc".tr()
+                  ? S.of(context).form_field_value_error_null_desc
                   : null,
               desc: desc,
-              label: "app.timeline.settings.reply_visibility_filter.field.label"
-                  .tr(),
-              chooserTitle:
-                  "app.timeline.settings.reply_visibility_filter.field.chooser.dialog.title"
-                      .tr(),
+              label: S
+                  .of(context)
+                  .app_timeline_settings_replyVisibilityFilter_field_label,
+              chooserTitle: S
+                  .of(context)
+                  .app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title,
               value: currentValue,
               possibleValues: PleromaReplyVisibilityFilter.values,
               valueToTextMapper: (pleromaReplyVisibilityFilter) {
                 if (pleromaReplyVisibilityFilter == null) {
-                  return "app.timeline.settings.reply_visibility_filter.field.null"
-                      .tr();
+                  return S
+                      .of(context)
+                      .app_timeline_settings_replyVisibilityFilter_field_null;
                 }
 
                 switch (pleromaReplyVisibilityFilter) {
                   case PleromaReplyVisibilityFilter.self:
-                    return "app.timeline.settings.reply_visibility_filter.self"
-                        .tr();
+                    return S
+                        .of(context)
+                        .app_timeline_settings_replyVisibilityFilter_self;
                     break;
                   case PleromaReplyVisibilityFilter.following:
-                    return "app.timeline.settings.reply_visibility_filter.following"
-                        .tr();
+                    return S
+                        .of(context)
+                        .app_timeline_settings_replyVisibilityFilter_following;
                     break;
                 }
                 throw "Invalid PleromaReplyVisibilityFilter $pleromaReplyVisibilityFilter";

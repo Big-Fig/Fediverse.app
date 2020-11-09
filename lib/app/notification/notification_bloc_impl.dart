@@ -141,10 +141,9 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
+  Future dispose() {
     _logger.finest(() => "dispose");
+    return super.dispose();
   }
 
   @override
@@ -178,4 +177,20 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Stream<bool> get dismissedStream =>
       notificationStream.map((notification) => notification.dismissed);
+
+  @override
+  NotificationState get state => NotificationState(
+        dismissed: dismissed,
+        unread: unread,
+      );
+
+  @override
+  Stream<NotificationState> get stateStream => Rx.combineLatest2(
+        dismissedStream,
+        unreadStream,
+        (dismissed, unread) => NotificationState(
+          dismissed: dismissed,
+          unread: unread,
+        ),
+      ).distinct();
 }

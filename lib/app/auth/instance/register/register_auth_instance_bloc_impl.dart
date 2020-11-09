@@ -47,7 +47,7 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
   final IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
   @override
-  List<IFormStringFieldBloc> get items => [
+  List<IFormStringFieldBloc> get currentItems => [
         usernameFieldBloc,
         emailFieldBloc,
         passwordFieldBloc,

@@ -1,9 +1,8 @@
 import 'dart:ui';
 
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -22,17 +21,16 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
   final bool limitMinWidth;
 
   final TextStyle textStyle;
-  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
   FediPrimaryFilledTextButton(
     this.text, {
     @required this.onPressed,
-    this.enabledBackgroundColor = FediColors.primary,
-    this.disabledBackgroundColor = FediColors.lightGrey,
-    this.enabledBorderColor = FediColors.white,
-    this.disabledBorderColor = FediColors.white,
+    this.enabledBackgroundColor,
+    this.disabledBackgroundColor,
+    this.enabledBorderColor,
+    this.disabledBorderColor,
     this.height = FediSizes.textButtonHeight,
-    this.textStyle = defaultTextStyle,
+    this.textStyle,
     this.borderWidth = 1,
     this.expanded = true,
     this.limitMinWidth = false,
@@ -40,6 +38,18 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textStyle =
+        this.textStyle ?? IFediUiTextTheme.of(context).mediumShortBoldWhite;
+
+    var enabledBackgroundColor =
+        this.enabledBackgroundColor ?? IFediUiColorTheme.of(context).primary;
+    var disabledBackgroundColor =
+        this.disabledBackgroundColor ?? IFediUiColorTheme.of(context).lightGrey;
+    var enabledBorderColor =
+        this.enabledBorderColor ?? IFediUiColorTheme.of(context).white;
+    var disabledBorderColor =
+        this.disabledBorderColor ?? IFediUiColorTheme.of(context).white;
+
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
 

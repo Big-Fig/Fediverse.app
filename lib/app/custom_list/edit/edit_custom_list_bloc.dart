@@ -5,7 +5,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IEditCustomListBloc extends Disposable {
+abstract class IEditCustomListBloc extends IDisposable {
   static IEditCustomListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditCustomListBloc>(context, listen: listen);
 

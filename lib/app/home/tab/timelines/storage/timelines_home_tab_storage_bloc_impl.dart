@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("timelines_home_tab_storage_bloc_impl.dart");
+Function _listEqual = const ListEquality().equals;
 
 class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
@@ -48,7 +50,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
       var timeline = bloc.value;
       timelines.add(timeline);
-      bloc.dispose();
+      await bloc.dispose();
     }
 
     timelinesSubject.add(timelines);
@@ -68,6 +70,11 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<Timeline>> get timelinesStream => timelinesSubject.stream;
+  @override
+  Stream<List<Timeline>> get timelinesDistinctStream =>
+      timelinesStream.distinct(
+        (a, b) => _listEqual(a, b),
+      );
 
   @override
   TimelinesHomeTabStorage get storage => preferences.value;
@@ -94,7 +101,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
     await settingsLocalPreferencesBloc.setValue(timeline);
 
-    settingsLocalPreferencesBloc.dispose();
+    await settingsLocalPreferencesBloc.dispose();
 
     timelines.add(timeline);
 
@@ -115,7 +122,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
     await settingsLocalPreferencesBloc.clearValue();
 
-    settingsLocalPreferencesBloc.dispose();
+    await settingsLocalPreferencesBloc.dispose();
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart'
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,8 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediTabIndicatorItemBloc =
         IFediTabIndicatorItemBloc.of<T>(context, listen: false);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var onPressed = () {
       fediTabIndicatorItemBloc.select();
@@ -31,7 +34,7 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
             button = FediIconInCircleFilledButton(
               iconData,
               onPressed: onPressed,
-              enabledBackgroundColor: Colors.transparent,
+              enabledBackgroundColor: fediUiColorTheme.transparent,
             );
           } else {
             button = FediIconInCircleBlurredButton(

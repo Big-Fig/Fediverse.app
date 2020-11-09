@@ -4,7 +4,6 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -80,9 +79,9 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  Future dispose() {
     // _logger.finest(() => "AccountBloc dispose");
+    return super.dispose();
   }
 
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
@@ -99,7 +98,8 @@ class AccountBloc extends IAccountBloc {
       }
 
       if (needRefreshFromNetworkOnInit == true) {
-        refreshFromNetwork(isNeedPreFetchRelationship);
+        refreshFromNetwork(
+            isNeedPreFetchRelationship: isNeedPreFetchRelationship);
       } else {
         if (isNeedPreFetchRelationship &&
             accountRelationship?.following == null) {
@@ -128,11 +128,6 @@ class AccountBloc extends IAccountBloc {
   @override
   Stream<IAccount> get accountStream => _accountSubject.stream.distinct();
 
-  @override
-  Stream<EmojiText> get displayNameEmojiTextStream => accountStream
-      .map((account) =>
-          EmojiText(text: account.displayName, emojis: account.emojis))
-      .distinct();
 
   @override
   Future report() => pleromaAccountService.reportAccount(
@@ -181,7 +176,7 @@ class AccountBloc extends IAccountBloc {
   Future<IPleromaAccountRelationship> toggleFollow() async {
     assert(accountRelationship != null);
     var newRelationship;
-    if (accountRelationship.following == true) {
+    if (accountRelationship.requested == true || accountRelationship.following == true) {
       newRelationship = await pleromaAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
       await accountRepository.updateLocalAccountByRemoteAccount(
@@ -267,7 +262,8 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship) async {
+  Future<bool> refreshFromNetwork(
+      {@required bool isNeedPreFetchRelationship}) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     IPleromaAccount remoteAccount;

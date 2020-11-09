@@ -4,8 +4,9 @@ import 'package:flutter/widgets.dart';
 
 class SearchResultItemListWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => CollapsibleOwnerWidget(
+  Widget build(BuildContext context) => const CollapsibleOwnerWidget(
           child: SearchResultItemPaginationListWidget(
         key: PageStorageKey("SearchResultItemListWidget"),
       ));
+  const SearchResultItemListWidget();
 }

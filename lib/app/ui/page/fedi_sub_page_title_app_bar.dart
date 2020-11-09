@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,9 @@ class FediSubPageTitleAppBar extends StatelessWidget
 
   // AppBar size without bottom
   @override
-  final preferredSize = Size.fromHeight(kToolbarHeight);
+  final preferredSize = calculatePreferredSize();
+
+  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight);
 
   FediSubPageTitleAppBar({
     @required this.title,
@@ -23,12 +25,15 @@ class FediSubPageTitleAppBar extends StatelessWidget
   });
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        centerTitle: centerTitle,
-        actions: actions,
-        brightness: Brightness.light,
-        backgroundColor: FediColors.white,
-        title: title != null ? FediSubHeaderText(title) : null,
-        leading: leading,
-      );
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return AppBar(
+      centerTitle: centerTitle,
+      actions: actions,
+      brightness: fediUiColorTheme.brightness,
+      backgroundColor: fediUiColorTheme.white,
+      title: title != null ? FediSubHeaderText(title) : null,
+      leading: leading,
+    );
+  }
 }

@@ -25,10 +25,12 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future refresh() async {
+  Future refreshFromNetwork() async {
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
+    var isApiReadyToUse = pleromaInstanceService.isApiReadyToUse;
+    _logger.finest(() => "refresh isApiReadyToUse $isApiReadyToUse");
 
-    if (pleromaInstanceService.isApiReadyToUse) {
+    if (isApiReadyToUse) {
       try {
         var info = await pleromaInstanceService.getInstance();
         var currentInstance = currentAuthInstanceBloc.currentInstance;
@@ -39,7 +41,9 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
       }
     }
 
-    await myAccountBloc.refreshFromNetwork(false).then((_) {
+    await myAccountBloc
+        .refreshFromNetwork(isNeedPreFetchRelationship: false)
+        .then((_) {
       if (myAccountBloc.isLocalCacheExist) {
         stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
       } else {
@@ -71,6 +75,6 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    await refresh();
+    await refreshFromNetwork();
   }
 }

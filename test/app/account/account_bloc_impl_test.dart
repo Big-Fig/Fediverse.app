@@ -60,8 +60,8 @@ void main() {
   });
 
   tearDown(() async {
-    accountBloc.dispose();
-    accountRepository.dispose();
+    await accountBloc.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 
@@ -388,7 +388,7 @@ void main() {
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
-    await accountBloc.refreshFromNetwork(true);
+    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 

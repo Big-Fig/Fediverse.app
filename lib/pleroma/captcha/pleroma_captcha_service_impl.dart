@@ -58,7 +58,7 @@ class PleromaCaptchaService implements IPleromaCaptchaService {
   }
 
   @override
-  void dispose() {
+  Future dispose() async {
     // nothing
   }
 }

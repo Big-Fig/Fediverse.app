@@ -15,7 +15,9 @@ abstract class IAccountBloc extends DisposableOwner {
   Stream<IAccount> get accountStream;
 
   bool get isOnRemoteDomain => remoteDomainOrNull != null;
+
   String get remoteDomainOrNull;
+
   String get acct => account.acct;
 
   Stream<String> get acctStream => accountStream.map((account) => account.acct);
@@ -24,6 +26,11 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<String> get avatarStream =>
       accountStream.map((account) => account.avatar);
+
+  String get pleromaBackgroundImage => account?.pleromaBackgroundImage;
+
+  Stream<String> get pleromaBackgroundImageStream =>
+      accountStream.map((account) => account.pleromaBackgroundImage);
 
   List<IPleromaField> get fields => account.fields;
 
@@ -49,7 +56,6 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<String> get noteStream => accountStream.map((account) => account.note);
 
-
   EmojiText get noteEmojiText => account != null
       ? EmojiText(text: account.note, emojis: account.emojis)
       : null;
@@ -58,7 +64,6 @@ abstract class IAccountBloc extends DisposableOwner {
       accountStream.map((account) => account != null
           ? EmojiText(text: account.note, emojis: account.emojis)
           : null);
-
 
   int get statusesCount => account.statusesCount;
 
@@ -90,9 +95,10 @@ abstract class IAccountBloc extends DisposableOwner {
   Future<IPleromaAccountRelationship> togglePin();
 
   Future<IPleromaAccountRelationship> toggleBlock();
+
   Future<IPleromaAccountRelationship> toggleBlockDomain();
 
   Future report();
 
-  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship);
+  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship});
 }

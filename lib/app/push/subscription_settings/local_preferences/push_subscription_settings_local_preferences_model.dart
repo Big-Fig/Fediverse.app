@@ -43,6 +43,15 @@ class PushSubscriptionSettingsLocalPreferences extends IPreferencesObject {
           poll: true,
           chat: true,
         );
+  PushSubscriptionSettingsLocalPreferences.defaultAllDisabled()
+      : this(
+          favourite: false,
+          follow: false,
+          mention: false,
+          reblog: false,
+          poll: false,
+          chat: false,
+        );
 
   PushSubscriptionSettingsLocalPreferences copyWith({
     bool favourite,

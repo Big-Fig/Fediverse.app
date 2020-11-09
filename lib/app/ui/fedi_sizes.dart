@@ -10,7 +10,9 @@ class FediSizes {
   static const smallPadding = 8.0;
   static const bigPadding = 16.0;
   static const mediumPadding = 12.0;
-  static const tabIndicatorIconHeight = 42.0;
+
+  static const tabIndicatorIconHeight = 40.0;
+
   static const tabIndicatorTextHeight = 38.0;
   static const chatListItemPreviewHeight = 88.0;
 
@@ -19,6 +21,7 @@ class FediSizes {
 
   static const smallFilledButtonHeight = 32.0;
   static const textButtonHeight = 36.0;
+  static const iconButtonHeight = 36.0;
 
   static const borderRadiusBigSize = 16.0;
   static const borderRadiusSmallSize = 8.0;
@@ -33,6 +36,4 @@ class FediSizes {
 
   static const mediumIconSize = 16.0;
   static const bigIconSize = 20.0;
-
-
 }

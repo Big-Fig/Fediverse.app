@@ -1,172 +1,275 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/card/card_widget.dart';
-import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/html/html_text_bloc.dart';
+import 'package:fedi/app/html/html_text_bloc_impl.dart';
+import 'package:fedi/app/html/html_text_model.dart';
+import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
-import 'package:fedi/app/status/content/status_content_with_emojis_widget.dart';
+import 'package:fedi/app/status/body/status_body_bloc.dart';
+import 'package:fedi/app/status/body/status_body_link_helper.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_warning_overlay_widget.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 const _defaultPadding = FediPadding.horizontalBigPadding;
 
-class StatusBodyWidget extends StatelessWidget {
-  final bool collapsible;
-  final IPleromaMediaAttachment initialMediaAttachment;
+final _logger = Logger("status_body_widget.dart");
 
-  StatusBodyWidget({
-    @required this.collapsible,
-    @required this.initialMediaAttachment,
-  });
+class StatusBodyWidget extends StatelessWidget {
+  const StatusBodyWidget();
 
   @override
   Widget build(BuildContext context) {
-    IStatusBloc statusBloc = IStatusBloc.of(context, listen: false);
     return Column(
       children: [
-        buildChips(context, statusBloc),
-        StreamBuilder<bool>(
-            stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
-            initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
-            builder: (context, snapshot) {
-              var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
-
-              var child = StreamBuilder<bool>(
-                  stream: statusBloc
-                      .containsSpoilerAndDisplaySpoilerContentEnabledStream,
-                  initialData:
-                      statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
-                  builder: (context, snapshot) {
-                    var containsSpoilerAndDisplayEnabled = snapshot.data;
-
-                    // todo: remove temp hack
-                    var alreadyClickedShowContent = statusBloc.nsfwSensitive;
-                    if (containsSpoilerAndDisplayEnabled ||
-                        alreadyClickedShowContent) {
-                      return buildStatusBodyWidget(context, statusBloc);
-                    } else {
-                      return buildSpoilerWithoutBodyWidget(context, statusBloc);
-                    }
-                  });
-              if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-                return child;
-              } else {
-                return StatusNsfwWarningOverlayWidget(
-                  child: child,
-                );
-              }
-            }),
+        const _StatusBodyChipsWidget(),
+        const _StatusBodyChildWithWarningsWidget(),
       ],
     );
   }
+}
 
-  Widget buildStatusBodyWidget(
-    BuildContext context,
-    IStatusBloc statusBloc, {
-    bool showSpoiler = true,
-  }) =>
-      Column(
+class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
+  const _StatusBodyChildWithWarningsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    IStatusBloc statusBloc = IStatusBloc.of(context);
+    return StreamBuilder<StatusWarningState>(
+        stream: statusBloc.statusWarningStateStream.distinct(),
+        builder: (context, snapshot) {
+          var statusWarningState = snapshot.data;
+
+          _logger.finest(
+              () => "StreamBuilder statusWarningState $statusWarningState");
+
+          if (statusWarningState == null) {
+            return const SizedBox.shrink();
+          }
+
+          Widget child;
+          // todo: remove temp hack
+          var alreadyClickedShowContent = statusWarningState.nsfwSensitive;
+          if (statusWarningState.containsSpoilerAndDisplayEnabled ||
+              alreadyClickedShowContent) {
+            child = const _StatusBodyContentWidget(
+              showSpoiler: true,
+            );
+          } else {
+            child = const _StatusBodyWithoutContentWidget();
+          }
+
+          if (statusWarningState.nsfwSensitiveAndDisplayNsfwContentEnabled) {
+            return child;
+          } else {
+            return StatusNsfwWarningOverlayWidget(
+              child: child,
+            );
+          }
+        });
+  }
+}
+
+class _StatusBodyWithoutContentWidget extends StatelessWidget {
+  const _StatusBodyWithoutContentWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: _defaultPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: _defaultPadding,
-            child: Column(
-              children: [
-                if (showSpoiler) StatusSpoilerWidget(),
-                collapsible
-                    ? StatusContentWithEmojisWidget(
-                        collapsible: true,
-                      )
-                    : StatusContentWithEmojisWidget(
-                        collapsible: false,
-                      ),
-                if (collapsible && statusBloc.isPossibleToCollapse)
-                  buildCollapsibleButton(context, statusBloc),
-                StreamBuilder<IPleromaCard>(
-                    stream: statusBloc.reblogOrOriginalCardStream,
-                    initialData: statusBloc.reblogOrOriginalCard,
-                    builder: (context, snapshot) {
-                      var card = snapshot.data;
-
-                      if (card == null) {
-                        return SizedBox.shrink();
-                      }
-                      return Provider.value(value: card, child: CardWidget());
-                    }),
-              ],
+          const StatusSpoilerWidget(),
+          const StatusSpoilerWarningOverlayWidget(
+            child: _StatusBodyContentWidget(
+              showSpoiler: false,
             ),
           ),
-          if (statusBloc.poll != null)
-            Provider<IPollBloc>.value(
-              value: statusBloc.pollBloc,
-              child: PollWidget(),
-            ),
-          if (statusBloc.mediaAttachments?.isNotEmpty == true &&
-              (statusBloc.content?.isNotEmpty == true ||
-                  statusBloc.poll != null))
-            FediSmallVerticalSpacer(),
-          StreamBuilder<List<IPleromaMediaAttachment>>(
-              stream: statusBloc.mediaAttachmentsStream,
-              initialData: statusBloc.mediaAttachments,
-              builder: (context, snapshot) {
-                var mediaAttachments = snapshot.data;
-
-                if (mediaAttachments?.isNotEmpty == true) {
-                  return MediaAttachmentsWidget(
-                    mediaAttachments: snapshot.data,
-                    initialMediaAttachment: initialMediaAttachment,
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              }),
         ],
-      );
+      ),
+    );
+  }
+}
 
-  Widget buildSpoilerWithoutBodyWidget(
-          BuildContext context, IStatusBloc statusBloc) =>
-      Padding(
-        padding: _defaultPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            StatusSpoilerWidget(),
-            StatusSpoilerWarningOverlayWidget(
-              child: buildStatusBodyWidget(context, statusBloc,
-                  showSpoiler: false),
-            ),
-          ],
+class _StatusBodyContentWidget extends StatelessWidget {
+  final bool showSpoiler;
+
+  const _StatusBodyContentWidget({
+    Key key,
+    @required this.showSpoiler,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+
+    var statusBodyBloc = IStatusBodyBloc.of(context);
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: _defaultPadding,
+          child: Column(
+            children: [
+              if (showSpoiler) const StatusSpoilerWidget(),
+              const _StatusBodyContentWithEmojisWidget(),
+              if (statusBodyBloc.collapsible && statusBloc.isPossibleToCollapse)
+                const _StatusBodyCollapsibleButtonWidget(),
+              const _StatusBodyCardWidget(),
+            ],
+          ),
         ),
+        if (statusBloc.poll != null) const _StatusBodyPollWidget(),
+        if (statusBloc.mediaAttachments?.isNotEmpty == true &&
+            (statusBloc.content?.isNotEmpty == true || statusBloc.poll != null))
+          const FediSmallVerticalSpacer(),
+        const _StatusBodyContentMediaAttachmentsWidget(),
+      ],
+    );
+  }
+}
+
+class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
+  const _StatusBodyContentMediaAttachmentsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+    var statusBodyBloc = IStatusBodyBloc.of(context);
+    return StreamBuilder<List<IPleromaMediaAttachment>>(
+      stream: statusBloc.mediaAttachmentsStream,
+      builder: (context, snapshot) {
+        var mediaAttachments = snapshot.data;
+
+        if (mediaAttachments?.isNotEmpty == true) {
+          return DisposableProvider<IMediaAttachmentListBloc>(
+            create: (context) => MediaAttachmentListBloc(
+              mediaAttachments: snapshot.data,
+              initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+            ),
+            child: const MediaAttachmentListCarouselWidget(),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
+    );
+  }
+}
+
+class _StatusBodyPollWidget extends StatelessWidget {
+  const _StatusBodyPollWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc>(
+        update: (context, statusBloc, _) => statusBloc.pollBloc,
+        child: PollWidget(),
       );
+}
 
-  Widget buildCollapsibleButton(BuildContext context, IStatusBloc statusBloc) =>
-      Center(
-          child: StreamBuilder<bool>(
-              stream: statusBloc.isCollapsedStream,
-              initialData: statusBloc.isCollapsed,
-              builder: (context, snapshot) {
-                var isCollapsed = snapshot.data;
-                return FediPrimaryFilledTextButton(
-                  isCollapsed
-                      ? tr("app.status.collapsible.action.expand")
-                      : tr("app.status.collapsible.action.collapse"),
-                  onPressed: () {
-                    statusBloc.toggleCollapseExpand();
-                  },
-                );
-              }));
+class _StatusBodyCardWidget extends StatelessWidget {
+  const _StatusBodyCardWidget({
+    Key key,
+  }) : super(key: key);
 
-  Widget buildChips(BuildContext context, IStatusBloc statusBloc) {
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+    return StreamBuilder<IPleromaCard>(
+        stream: statusBloc.reblogOrOriginalCardStream,
+        builder: (context, snapshot) {
+          var card = snapshot.data;
+
+          if (card == null) {
+            return const SizedBox.shrink();
+          }
+          return Provider.value(
+            value: card,
+            child: const CardWidget(),
+          );
+        });
+  }
+}
+
+class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
+  const _StatusBodyCollapsibleButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+    return Center(
+      child: StreamBuilder<bool>(
+        stream: statusBloc.isCollapsedStream,
+        builder: (context, snapshot) {
+          var isCollapsed = snapshot.data ?? true;
+          return FediPrimaryFilledTextButton(
+            isCollapsed
+                ? S.of(context).app_status_collapsible_action_expand
+                : S.of(context).app_status_collapsible_action_collapse,
+            onPressed: () {
+              statusBloc.toggleCollapseExpand();
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _StatusBodySpoilerChipWidget extends StatelessWidget {
+  const _StatusBodySpoilerChipWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: FediSizes.smallPadding),
+      child: FediGreyChip(
+        label: S.of(context).app_status_spoiler_chip,
+      ),
+    );
+  }
+}
+
+class _StatusBodyChipsWidget extends StatelessWidget {
+  const _StatusBodyChipsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
     final containsNsfw = statusBloc.nsfwSensitive;
     final containsSpoiler = statusBloc.containsSpoiler;
 
@@ -175,25 +278,145 @@ class StatusBodyWidget extends StatelessWidget {
         padding: FediPadding.horizontalBigPadding,
         child: Row(
           children: [
-            if (containsNsfw)
-              Padding(
-                padding: EdgeInsets.only(right: FediSizes.smallPadding),
-                child: FediGreyChip(
-                  label: "app.status.nsfw.chip".tr(),
-                ),
-              ),
-            if (containsSpoiler)
-              Padding(
-                padding: EdgeInsets.only(right: FediSizes.smallPadding),
-                child: FediGreyChip(
-                  label: "app.status.spoiler.chip".tr(),
-                ),
-              ),
+            if (containsNsfw) const _StatusBodyNsfwChipWidget(),
+            if (containsSpoiler) const _StatusBodySpoilerChipWidget(),
           ],
         ),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
+  }
+}
+
+class _StatusBodyNsfwChipWidget extends StatelessWidget {
+  const _StatusBodyNsfwChipWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: FediSizes.smallPadding),
+      child: FediGreyChip(
+        label: S.of(context).app_status_nsfw_chip,
+      ),
+    );
+  }
+}
+
+void _onLinkTap(
+  BuildContext context,
+  String url,
+) async {
+  await handleStatusBodyLinkClick(
+    context: context,
+    statusBloc: IStatusBloc.of(context, listen: false),
+    link: url,
+  );
+}
+
+class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
+  const _StatusBodyContentWithEmojisWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+
+    return StreamBuilder<EmojiText>(
+        stream: statusBloc.contentWithEmojisStream.distinct(),
+        initialData: statusBloc.contentWithEmojis,
+        builder: (context, snapshot) {
+          var contentWithEmojis = snapshot.data;
+
+          _logger.finest(() => "contentWithEmojis $contentWithEmojis");
+
+          if (contentWithEmojis?.text?.isNotEmpty == true) {
+            return Provider<EmojiText>.value(
+              value: contentWithEmojis,
+              child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        });
+  }
+}
+
+class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
+  const _StatusBodyContentWithEmojisCollapsibleWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
+
+    var statusBodyBloc = IStatusBodyBloc.of(context);
+    var collapsible = statusBodyBloc.collapsible;
+
+    _logger.finest(() => "build collapsible $collapsible "
+        "statusBloc ${statusBloc.remoteId}");
+
+    var isNeedCollapse = collapsible && statusBloc.isPossibleToCollapse;
+    const htmlTextWidget = _StatusBodyContentWithEmojisHtmlTextWidget();
+    return StreamBuilder<bool>(
+        stream: statusBloc.isCollapsedStream.distinct(),
+        builder: (context, snapshot) {
+          var isCollapsed = snapshot.data ?? false;
+          if (isCollapsed && isNeedCollapse) {
+            return Container(
+              height: 200,
+              child: htmlTextWidget,
+            );
+          } else {
+            return htmlTextWidget;
+          }
+        });
+  }
+}
+
+class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
+  const _StatusBodyContentWithEmojisHtmlTextWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
+    return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+      update : (context, contentWithEmojis, _) {
+        var htmlTextBloc = HtmlTextBloc(
+          inputData: HtmlTextInputData(
+            input: contentWithEmojis?.text,
+            emojis: contentWithEmojis?.emojis,
+          ),
+          settings: HtmlTextSettings(
+            lineHeight: 1.5,
+            fontSize: 16.0,
+            // todo: 1000 is hack, actually it should be null, but don't
+            //  work as expected
+            textMaxLines: 1000,
+            textOverflow: TextOverflow.ellipsis,
+            linkColor: fediUiColorTheme.primary,
+            color: fediUiColorTheme.darkGrey,
+            textScaleFactor: textScaleFactor,
+            fontWeight: FontWeight.normal,
+            drawNewLines: false,
+          ),
+        );
+        htmlTextBloc.addDisposable(
+          streamSubscription: htmlTextBloc.linkClickedStream.listen(
+            (url) {
+              _onLinkTap(context, url);
+            },
+          ),
+        );
+        return htmlTextBloc;
+      },
+      child: const HtmlTextWidget(),
+    );
   }
 }

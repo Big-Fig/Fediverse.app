@@ -79,7 +79,10 @@ class _AsyncOperationButtonBuilderWidgetState
                   var successToastMessage = widget.successToastMessage;
                   if (successToastMessage != null) {
                     showInfoFediNotificationOverlay(
-                        contentText: successToastMessage, titleText: null);
+                      context: context,
+                      contentText: successToastMessage,
+                      titleText: null,
+                    );
                   }
                 }).catchError((error, stacktrace) {
                   _logger.severe(() => "Fail to execute async operation", error,

@@ -144,7 +144,8 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   @override
   @JsonKey(name: "application_id")
-  final String applicationId;
+  // int or String
+  final dynamic applicationId;
 
   PleromaScheduledStatusParams(
       {this.text,
@@ -466,7 +467,7 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
   @override
   int expiresInSeconds;
 
-  @JsonKey(name: "hide_totals")
+  @JsonKey(name: "hide_totals", includeIfNull: false)
   @override
   bool hideTotals;
 
@@ -513,10 +514,10 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @JsonKey(ignore: true)
   final String idempotencyKey;
   @override
-  @JsonKey(name: "in_reply_to_conversation_id")
+  @JsonKey(name: "in_reply_to_conversation_id", includeIfNull: false)
   final String inReplyToConversationId;
   @override
-  @JsonKey(name: "in_reply_to_id")
+  @JsonKey(name: "in_reply_to_id", includeIfNull: false)
   final String inReplyToId;
   @override
   final String language;

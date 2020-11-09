@@ -2,12 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +34,7 @@ class StatusHeaderWidget extends StatelessWidget {
                   horizontal: FediSizes.bigPadding),
               child: buildHeader(account, context),
             ),
-            FediUltraLightGreyDivider()
+            const FediUltraLightGreyDivider()
           ],
         ),
       ),
@@ -50,9 +49,10 @@ class StatusHeaderWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: account.avatar,
             placeholder: (context, url) => Container(
-                width: FediSizes.accountAvatarSmallSize,
-                height: FediSizes.accountAvatarSmallSize,
-                child: FediCircularProgressIndicator()),
+              width: FediSizes.accountAvatarSmallSize,
+              height: FediSizes.accountAvatarSmallSize,
+              child: const FediCircularProgressIndicator(),
+            ),
             errorWidget: (context, url, error) => Icon(Icons.error),
             height: FediSizes.accountAvatarProgressSmallSize,
             width: FediSizes.accountAvatarProgressSmallSize,
@@ -61,26 +61,27 @@ class StatusHeaderWidget extends StatelessWidget {
         const FediSmallHorizontalSpacer(),
         Text(
           account.acct,
-          style: FediTextStyles.mediumShortDarkGrey,
+          style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
         ),
-        FediMediumHorizontalSpacer(),
+        const FediMediumHorizontalSpacer(),
         Icon(
           icon,
           size: 16,
-          color: FediColors.grey,
+          color: IFediUiColorTheme.of(context).grey,
         ),
-        FediMediumHorizontalSpacer(),
+        const FediMediumHorizontalSpacer(),
         Flexible(
-          child: Text(
-            descText,
-            overflow: TextOverflow.ellipsis,
-            style: FediTextStyles.smallShortDarkGrey
-          ),
+          child: Text(descText,
+              overflow: TextOverflow.ellipsis,
+              style: IFediUiTextTheme.of(context).smallShortDarkGrey),
         )
       ],
     );
   }
 
-  const StatusHeaderWidget(
-      {@required this.account, @required this.descText, @required this.icon});
+  const StatusHeaderWidget({
+    @required this.account,
+    @required this.descText,
+    @required this.icon,
+  });
 }

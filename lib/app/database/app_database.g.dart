@@ -3854,8 +3854,12 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   final int id;
   final String remoteId;
   final bool unread;
+  final DateTime updatedAt;
   DbConversation(
-      {@required this.id, @required this.remoteId, @required this.unread});
+      {@required this.id,
+      @required this.remoteId,
+      @required this.unread,
+      this.updatedAt});
   factory DbConversation.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -3863,12 +3867,15 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbConversation(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       remoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
       unread:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -3883,6 +3890,9 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
     if (!nullToAbsent || unread != null) {
       map['unread'] = Variable<bool>(unread);
     }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
     return map;
   }
 
@@ -3894,6 +3904,9 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
           : Value(remoteId),
       unread:
           unread == null && nullToAbsent ? const Value.absent() : Value(unread),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -3904,6 +3917,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       id: serializer.fromJson<int>(json['id']),
       remoteId: serializer.fromJson<String>(json['remoteId']),
       unread: serializer.fromJson<bool>(json['unread']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -3913,70 +3927,84 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       'id': serializer.toJson<int>(id),
       'remoteId': serializer.toJson<String>(remoteId),
       'unread': serializer.toJson<bool>(unread),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
-  DbConversation copyWith({int id, String remoteId, bool unread}) =>
+  DbConversation copyWith(
+          {int id, String remoteId, bool unread, DateTime updatedAt}) =>
       DbConversation(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
         unread: unread ?? this.unread,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('DbConversation(')
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
-          ..write('unread: $unread')
+          ..write('unread: $unread, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(remoteId.hashCode, unread.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is DbConversation &&
           other.id == this.id &&
           other.remoteId == this.remoteId &&
-          other.unread == this.unread);
+          other.unread == this.unread &&
+          other.updatedAt == this.updatedAt);
 }
 
 class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
   final Value<int> id;
   final Value<String> remoteId;
   final Value<bool> unread;
+  final Value<DateTime> updatedAt;
   const DbConversationsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.unread = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   DbConversationsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
     @required bool unread,
+    this.updatedAt = const Value.absent(),
   })  : remoteId = Value(remoteId),
         unread = Value(unread);
   static Insertable<DbConversation> custom({
     Expression<int> id,
     Expression<String> remoteId,
     Expression<bool> unread,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (remoteId != null) 'remote_id': remoteId,
       if (unread != null) 'unread': unread,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
   DbConversationsCompanion copyWith(
-      {Value<int> id, Value<String> remoteId, Value<bool> unread}) {
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<bool> unread,
+      Value<DateTime> updatedAt}) {
     return DbConversationsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
       unread: unread ?? this.unread,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -3992,6 +4020,9 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
     if (unread.present) {
       map['unread'] = Variable<bool>(unread.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
     return map;
   }
 
@@ -4000,7 +4031,8 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
     return (StringBuffer('DbConversationsCompanion(')
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
-          ..write('unread: $unread')
+          ..write('unread: $unread, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -4041,8 +4073,20 @@ class $DbConversationsTable extends DbConversations
     );
   }
 
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  List<GeneratedColumn> get $columns => [id, remoteId, unread];
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, remoteId, unread, updatedAt];
   @override
   $DbConversationsTable get asDslTable => this;
   @override
@@ -4068,6 +4112,10 @@ class $DbConversationsTable extends DbConversations
           unread.isAcceptableOrUnknown(data['unread'], _unreadMeta));
     } else if (isInserting) {
       context.missing(_unreadMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     }
     return context;
   }

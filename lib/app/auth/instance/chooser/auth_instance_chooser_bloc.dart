@@ -3,7 +3,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAuthInstanceChooserBloc implements Disposable {
+abstract class IAuthInstanceChooserBloc implements IDisposable {
   static IAuthInstanceChooserBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IAuthInstanceChooserBloc>(context, listen: listen);

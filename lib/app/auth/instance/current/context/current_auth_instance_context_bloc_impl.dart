@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
@@ -11,18 +10,24 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/chat_new_messages_handler_bloc_impl.dart';
-import 'package:fedi/app/chat/current/current_chat_bloc.dart';
-import 'package:fedi/app/chat/current/current_chat_bloc_impl.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/repository/chat_repository.dart';
-import 'package:fedi/app/chat/repository/chat_repository_impl.dart';
-import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository.dart';
-import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository_impl.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
+import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
+import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
@@ -35,6 +40,10 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
+import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
@@ -54,6 +63,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
@@ -138,11 +148,20 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
 
-    await fcmPushService.askPermissions();
-
     var globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
+
+    var fcmPushPermissionAskedLocalPreferencesBloc =
+        FcmPushPermissionAskedLocalPreferencesBloc(
+      preferencesService,
+      userAtHost,
+    );
+
+    addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IFcmPushPermissionAskedLocalPreferencesBloc>(
+            fcmPushPermissionAskedLocalPreferencesBloc);
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
         preferencesService, currentInstance.userAtHost);
@@ -181,28 +200,28 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
 
-    var conversationRepository = ConversationRepository(
+    var conversationRepository = ConversationChatRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
         statusRepository: statusRepository);
     addDisposable(disposable: conversationRepository);
-    await globalProviderService
-        .asyncInitAndRegister<IConversationRepository>(conversationRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IConversationChatRepository>(conversationRepository);
 
-    var chatMessageRepository = ChatMessageRepository(
+    var chatMessageRepository = PleromaChatMessageRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository);
     addDisposable(disposable: chatMessageRepository);
-    await globalProviderService
-        .asyncInitAndRegister<IChatMessageRepository>(chatMessageRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaChatMessageRepository>(chatMessageRepository);
 
-    var chatRepository = ChatRepository(
+    var chatRepository = PleromaChatRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
         chatMessageRepository: chatMessageRepository);
     addDisposable(disposable: chatRepository);
     await globalProviderService
-        .asyncInitAndRegister<IChatRepository>(chatRepository);
+        .asyncInitAndRegister<IPleromaChatRepository>(chatRepository);
 
     var notificationRepository = NotificationRepository(
         appDatabase: moorDatabaseService.appDatabase,
@@ -213,13 +232,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
 
-    var chatWithLastMessageRepository = ChatWithLastMessageRepository(
+    var pleromaChatWithLastMessageRepository =
+        PleromaChatWithLastMessageRepository(
       chatRepository: chatRepository,
       chatMessageRepository: chatMessageRepository,
     );
-    addDisposable(disposable: chatWithLastMessageRepository);
-    await globalProviderService.asyncInitAndRegister<
-        IChatWithLastMessageRepository>(chatWithLastMessageRepository);
+    addDisposable(disposable: pleromaChatWithLastMessageRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaChatWithLastMessageRepository>(
+            pleromaChatWithLastMessageRepository);
+
+    var conversationChatWithLastMessageRepository =
+        ConversationChatWithLastMessageRepository(
+      conversationChatRepository: conversationRepository,
+      statusRepository: statusRepository,
+    );
+    addDisposable(disposable: conversationChatWithLastMessageRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IConversationChatWithLastMessageRepository>(
+            conversationChatWithLastMessageRepository);
 
     var restService = RestService(baseUrl: currentInstance.url);
     addDisposable(disposable: restService);
@@ -407,38 +438,50 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSubscriptionBloc = PushSubscriptionSettingsBloc(
-        pushRelayService: pushRelayService,
-        localPreferencesBloc: pushSubscriptionLocalPreferenceBloc,
-        pleromaPushService: pleromaPushService,
-        currentInstance: currentInstance,
-        fcmPushService: fcmPushService);
+    var pushSubscriptionSettingsBloc = PushSubscriptionSettingsBloc(
+      pushRelayService: pushRelayService,
+      pushSubscriptionSettingsLocalPreferencesBloc:
+          pushSubscriptionLocalPreferenceBloc,
+      pleromaPushService: pleromaPushService,
+      currentInstance: currentInstance,
+      fcmPushService: fcmPushService,
+    );
 
-    addDisposable(disposable: pushSubscriptionBloc);
+    addDisposable(disposable: pushSubscriptionSettingsBloc);
     await globalProviderService.asyncInitAndRegister<
-        IPushSubscriptionSettingsBloc>(pushSubscriptionBloc);
+        IPushSubscriptionSettingsBloc>(pushSubscriptionSettingsBloc);
 
-    var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
-    if (!isHaveSubscription) {
-      await pushSubscriptionBloc.subscribeWithDefaultPreferences();
-    }
-
-    var currentChatBloc = CurrentChatBloc();
+    var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
     await globalProviderService
-        .asyncInitAndRegister<ICurrentChatBloc>(currentChatBloc);
+        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
 
-    addDisposable(disposable: currentChatBloc);
-
-    var chatNewMessagesHandlerBloc = ChatNewMessagesHandlerBloc(
-        chatRepository: chatRepository,
-        currentChatBloc: currentChatBloc,
-        pleromaChatService: pleromaChatService);
-
-    addDisposable(disposable: chatNewMessagesHandlerBloc);
+    addDisposable(disposable: currentPleromaChatBloc);
+    var currentConversationChatBloc = ConversationChatCurrentBloc();
 
     await globalProviderService.asyncInitAndRegister<
-        IChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
+        IConversationChatCurrentBloc>(currentConversationChatBloc);
+
+    addDisposable(disposable: currentConversationChatBloc);
+
+    var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
+        chatRepository: chatRepository,
+        currentChatBloc: currentPleromaChatBloc,
+        pleromaChatService: pleromaChatService);
+
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
+    addDisposable(disposable: chatNewMessagesHandlerBloc);
+    var conversationChatNewMessagesHandlerBloc =
+        ConversationChatNewMessagesHandlerBloc(
+            conversationRepository: conversationRepository,
+            currentChatBloc: currentConversationChatBloc,
+            conversationChatService: pleromaConversationService);
+
+    await globalProviderService
+        .asyncInitAndRegister<IConversationChatNewMessagesHandlerBloc>(
+            conversationChatNewMessagesHandlerBloc);
+    addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
 
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
@@ -483,6 +526,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       notificationRepository: notificationRepository,
       statusRepository: statusRepository,
       chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      conversationChatNewMessagesHandlerBloc:
+          conversationChatNewMessagesHandlerBloc,
     );
 
     addDisposable(disposable: webSocketsHandlerManagerBloc);
@@ -494,22 +539,24 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         true) {
       var remoteLists = await pleromaListService.getLists();
 
+// todo: rework with enums and move localization outside of this bloc
+      var localizationDelegate = S.current;
       var timelines = [
         Timeline.home(
-          label: "app.home.tab.timelines.tab.home".tr(),
+          label: localizationDelegate.app_home_tab_timelines_tab_home,
           id: "home",
           isPossibleToDelete: false,
           settings: TimelineSettings.createDefaultHomeSettings(),
         ),
         Timeline.public(
-          label: "app.home.tab.timelines.tab.local".tr(),
+          label: localizationDelegate.app_home_tab_timelines_tab_local,
           id: "local",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: true,
           ),
         ),
         Timeline.public(
-          label: "app.home.tab.timelines.tab.public".tr(),
+          label: localizationDelegate.app_home_tab_timelines_tab_public,
           id: "public",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: false,
@@ -540,10 +587,21 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         );
         await timelineLocalPreferencesBloc.performAsyncInit();
         await timelineLocalPreferencesBloc.setValue(timeline);
-        timelineLocalPreferencesBloc.dispose();
+        await timelineLocalPreferencesBloc.dispose();
       }
 
       await timelinesHomeTabStorageLocalPreferences.setValue(storage);
     }
+
+    var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
+      fcmPushService: fcmPushService,
+      fcmPushPermissionAskedLocalPreferencesBloc:
+          fcmPushPermissionAskedLocalPreferencesBloc,
+      pushSubscriptionSettingsBloc: pushSubscriptionSettingsBloc,
+    );
+
+    addDisposable(disposable: fcmPushPermissionCheckerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
   }
 }

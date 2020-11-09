@@ -1,19 +1,23 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 Future<File> cropImageToSquare(File file, BuildContext context) {
+  var fediUiColorTheme = IFediUiColorTheme.of(
+    context,
+    listen: false,
+  );
   return ImageCropper.cropImage(
       sourcePath: file.path,
       aspectRatio: CropAspectRatio(ratioY: 1, ratioX: 1),
       aspectRatioPresets: [CropAspectRatioPreset.square],
       androidUiSettings: AndroidUiSettings(
-          toolbarTitle:
-              tr("app.file.image.crop.title"),
-          toolbarColor: Colors.blue,
-          toolbarWidgetColor: Colors.white,
+          toolbarTitle: S.of(context).app_file_image_crop_title,
+          toolbarColor: fediUiColorTheme.primary,
+          toolbarWidgetColor: fediUiColorTheme.white,
           initAspectRatio: CropAspectRatioPreset.square,
           lockAspectRatio: false),
       iosUiSettings: IOSUiSettings(
@@ -22,6 +26,11 @@ Future<File> cropImageToSquare(File file, BuildContext context) {
 }
 
 Future<File> cropImage(File file, BuildContext context) {
+  var fediUiColorTheme = IFediUiColorTheme.of(
+    context,
+    listen: false,
+  );
+
   return ImageCropper.cropImage(
       sourcePath: file.path,
       aspectRatioPresets: [
@@ -32,10 +41,9 @@ Future<File> cropImage(File file, BuildContext context) {
         CropAspectRatioPreset.ratio16x9
       ],
       androidUiSettings: AndroidUiSettings(
-          toolbarTitle:
-              tr("app.file.image.crop.title"),
-          toolbarColor: Colors.blue,
-          toolbarWidgetColor: Colors.white,
+          toolbarTitle: S.of(context).app_file_image_crop_title,
+          toolbarColor: fediUiColorTheme.primary,
+          toolbarWidgetColor: fediUiColorTheme.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),
       iosUiSettings: IOSUiSettings(

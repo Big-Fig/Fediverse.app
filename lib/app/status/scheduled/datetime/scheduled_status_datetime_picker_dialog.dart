@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,9 @@ Future<DateTime> showScheduledStatusDateTimePickerDialog(
     maxDateTime: now.add(Duration(days: 365)),
     currentDateTime: initialDate,
     theme: FediDatePickerTheme.byDefault(
-        customTitle: "app.status.scheduled.datetime.picker.title".tr()),
+      context: context,
+      customTitle: S.of(context).app_status_scheduled_datetime_picker_title,
+    ),
     onCancel: () {},
     onConfirm: (date) {},
   );

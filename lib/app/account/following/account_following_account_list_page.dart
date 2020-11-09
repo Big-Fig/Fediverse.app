@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/following/account_following_account_cached_list_bloc_impl.dart';
@@ -6,7 +6,7 @@ import 'package:fedi/app/account/pagination/cached/account_cached_pagination_blo
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,28 +20,38 @@ class AccountFollowingAccountListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.account.following.title", args: [account.acct]),
+        title: S.of(context).app_account_following_title(account.acct),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: FediPadding.allBigPadding,
-              child: Text(
-                "app.account.list.privacy".tr(),
-                textAlign: TextAlign.center,
-                style: FediTextStyles.mediumShortBoldGrey,
-              ),
+      body: const _AccountFollowingAccountListBodyPage(),
+    );
+  }
+}
+
+class _AccountFollowingAccountListBodyPage extends StatelessWidget {
+  const _AccountFollowingAccountListBodyPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: Text(
+              S.of(context).app_account_list_privacy,
+              textAlign: TextAlign.center,
+              style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
             ),
-            Expanded(
-              child: AccountPaginationListWidget(
-                accountSelectedCallback: (context, account) =>
-                    goToAccountDetailsPage(context, account),
-                key: PageStorageKey("AccountFollowingAccountListPage"),
-              ),
+          ),
+          const Expanded(
+            child: AccountPaginationListWidget(
+              accountSelectedCallback: goToAccountDetailsPage,
+              key: PageStorageKey("AccountFollowingAccountListPage"),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

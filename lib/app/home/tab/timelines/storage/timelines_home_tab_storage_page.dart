@@ -1,4 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
@@ -6,7 +7,7 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_l
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_widget.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -21,26 +22,42 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
-        title: "app.timeline.storage.title".tr(),
-        actions: [
-          Padding(
-            padding: FediPadding.horizontalBigPadding,
-            child: FediIconButton(
-              icon: Icon(FediIcons.plus),
-              color: FediColors.darkGrey,
-              onPressed: () {
-                goToCreateItemTimelinesHomeTabStoragePage(context);
-              },
-            ),
-          )
-        ],
-      ),
+      appBar: const _TimelinesHomeTabStoragePagePageAppBar(),
       body: SafeArea(
-        child: TimelinesHomeTabStorageWidget(),
+        child: const TimelinesHomeTabStorageWidget(),
       ),
     );
   }
+}
+
+class _TimelinesHomeTabStoragePagePageAppBar extends StatelessWidget implements 
+    PreferredSizeWidget {
+  const _TimelinesHomeTabStoragePagePageAppBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediSubPageTitleAppBar(
+      title: S.of(context).app_timeline_storage_title,
+      leading: const FediDismissIconButton(),
+      actions: [
+        Padding(
+          padding: FediPadding.horizontalBigPadding,
+          child: FediIconButton(
+            icon: Icon(FediIcons.plus),
+            color: IFediUiColorTheme.of(context).darkGrey,
+            onPressed: () {
+              goToCreateItemTimelinesHomeTabStoragePage(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => FediSubPageTitleAppBar.calculatePreferredSize();
 }
 
 void goToTimelinesHomeTabStoragePage(BuildContext context) {

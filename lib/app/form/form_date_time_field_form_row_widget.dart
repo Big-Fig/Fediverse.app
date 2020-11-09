@@ -1,13 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("form_date_time_field_form_row_widget.dart");
@@ -49,7 +49,7 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     label,
-                    style: FediTextStyles.bigTallMediumGrey,
+                    style: IFediUiTextTheme.of(context).bigTallMediumGrey,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -60,13 +60,13 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
                         },
                         child: Text(
                           format.format(field.currentValue),
-                          style: FediTextStyles.bigTallMediumGrey,
+                          style: IFediUiTextTheme.of(context).bigTallMediumGrey,
                         ),
                       ),
                       const FediSmallHorizontalSpacer(),
                       FediIconButton(
                         icon: Icon(FediIcons.chevron_down),
-                        color: FediColors.darkGrey,
+                        color: IFediUiColorTheme.of(context).darkGrey,
                         onPressed: () {
                           showDatePicker(context);
                         },
@@ -75,7 +75,7 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              if (desc != null) Text(desc),
+              if (desc != null) FediFormColumnDesc(desc),
             ],
           );
         });
@@ -90,7 +90,10 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
       minDateTime: minDateTime,
       maxDateTime: maxDateTime,
       currentDateTime: field.currentValue,
-      theme: FediDatePickerTheme.byDefault(customTitle: popupTitle),
+      theme: FediDatePickerTheme.byDefault(
+        context: context,
+        customTitle: popupTitle,
+      ),
       onCancel: () {},
       onConfirm: (date) {},
     );

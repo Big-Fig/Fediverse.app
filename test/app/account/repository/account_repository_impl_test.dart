@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
-import 'package:fedi/app/conversation/conversation_model.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,7 +32,7 @@ void main() {
   });
 
   tearDown(() async {
-    accountRepository.dispose();
+    await accountRepository.dispose();
     await database.close();
   });
 
@@ -344,7 +344,7 @@ void main() {
 
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
-    var conversation = DbConversationWrapper(DbConversation(
+    var conversation = DbConversationChatWrapper(DbConversation(
         id: null, remoteId: conversationRemoteId, unread: false));
 
     var query = accountRepository.createQuery(

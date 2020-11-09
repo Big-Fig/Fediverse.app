@@ -1,88 +1,43 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("chat_message_bloc_impl.dart");
+abstract class ChatMessageBloc extends DisposableOwner
+    implements IChatMessageBloc {
+  BehaviorSubject<IChatMessage> get _chatMessageSubject;
 
-final int minimumCharactersLimitToCollapse = 400;
-
-class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
-  static ChatMessageBloc createFromContext(
-    BuildContext context,
-    IChatMessage chatMessage, {
-    bool isNeedWatchLocalRepositoryForUpdates = true,
-    bool delayInit = true,
-  }) =>
-      ChatMessageBloc(
-          pleromaChatService: IPleromaChatService.of(context, listen: false),
-          pleromaAccountService:
-              IPleromaAccountService.of(context, listen: false),
-          chatMessageRepository:
-              IChatMessageRepository.of(context, listen: false),
-          accountRepository: IAccountRepository.of(context, listen: false),
-          chatMessage: chatMessage,
-          needRefreshFromNetworkOnInit: false,
-          delayInit: delayInit,
-          isNeedWatchLocalRepositoryForUpdates:
-              isNeedWatchLocalRepositoryForUpdates);
-
-  final BehaviorSubject<IChatMessage> _chatMessageSubject;
-
-  final IPleromaChatService pleromaChatService;
-  final IPleromaAccountService pleromaAccountService;
-  final IChatMessageRepository chatMessageRepository;
-  final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ChatMessageBloc({
-    @required this.pleromaChatService,
-    @required this.pleromaAccountService,
-    @required this.chatMessageRepository,
-    @required this.accountRepository,
-    @required
-        IChatMessage chatMessage, // for better performance we don't update
+//for better performance we don't update
     // account too often
-    bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
+    @required bool needRefreshFromNetworkOnInit, // todo: remove hack. Don't
+    // init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
-    bool delayInit = true,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-  }) : _chatMessageSubject = BehaviorSubject.seeded(chatMessage) {
-    addDisposable(subject: _chatMessageSubject);
-
+    @required bool delayInit,
+    @required this.isNeedWatchLocalRepositoryForUpdates,
+  }) {
     assert(needRefreshFromNetworkOnInit != null);
     assert(isNeedWatchLocalRepositoryForUpdates != null);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
-        _init(chatMessage, needRefreshFromNetworkOnInit);
+        _init(needRefreshFromNetworkOnInit);
       });
     } else {
-      _init(chatMessage, needRefreshFromNetworkOnInit);
+      _init(needRefreshFromNetworkOnInit);
     }
   }
 
-  void _init(IChatMessage chatMessage, bool needRefreshFromNetworkOnInit) {
+  void _init(bool needRefreshFromNetworkOnInit) {
     if (!disposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-            streamSubscription: chatMessageRepository
-                .watchByRemoteId(chatMessage.remoteId)
-                .listen((updatedChatMessage) {
-          if (updatedChatMessage != null) {
-            _chatMessageSubject.add(updatedChatMessage);
-          }
-        }));
+        watchLocalRepositoryChanges();
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -91,11 +46,12 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
   }
 
   @override
-  IPleromaMediaAttachment get mediaAttachment => chatMessage.mediaAttachment;
+  List<IPleromaMediaAttachment> get mediaAttachments => chatMessage
+      .mediaAttachments;
 
   @override
-  Stream<IPleromaMediaAttachment> get mediaAttachmentStream =>
-      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachment);
+  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
+      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachments);
 
   @override
   IPleromaCard get card => chatMessage.card;
@@ -143,34 +99,16 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
       accountStream.map((account) => account.avatar).distinct();
 
   @override
-  Future refreshFromNetwork() async {
-    throw "not supported by API yet";
-//    var remoteChatMessage =
-//        await pleromaChatService.getChatMessage(chatMessageRemoteId: remoteId);
-//
-//    return _updateByRemoteChatMessage(remoteChatMessage);
-  }
-
-//  Future _updateByRemoteChatMessage(IPleromaChatMessage remoteChatMessage) {
-//    return chatMessageRepository.updateLocalChatMessageByRemoteChatMessage(
-//        oldLocalChatMessage: chatMessage,
-//        newRemoteChatMessage: remoteChatMessage);
-//  }
+  EmojiText get contentWithEmojis =>
+      EmojiText(text: chatMessage.content, emojis: chatMessage.emojis);
 
   @override
-  String get contentWithEmojis =>
-      addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis);
-
-  @override
-  Stream<String> get contentWithEmojisStream => chatMessageStream
-      .map((chatMessage) =>
-          addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis))
+  Stream<EmojiText> get contentWithEmojisStream => chatMessageStream
+      .map(
+        (chatMessage) =>
+            EmojiText(text: chatMessage.content, emojis: chatMessage.emojis),
+      )
       .distinct();
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    _logger.finest(() => "dispose");
-  }
+  void watchLocalRepositoryChanges();
 }

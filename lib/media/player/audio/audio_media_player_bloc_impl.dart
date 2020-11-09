@@ -1,10 +1,9 @@
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc.dart';
-import 'package:fedi/media/player/media_player_bloc.dart';
+import 'package:fedi/media/player/audio/audio_media_player_bloc_provider.dart';
 import 'package:fedi/media/player/media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class AudioMediaPlayerBloc extends MediaPlayerBloc
     implements IAudioMediaPlayerBloc {
@@ -44,8 +43,7 @@ class AudioMediaPlayerBloc extends MediaPlayerBloc
         autoInit: autoInit,
         autoPlay: autoPlay,
       ),
-      child: ProxyProvider<IAudioMediaPlayerBloc, IMediaPlayerBloc>(
-        update: (context, value, previous) => value,
+      child: AudioMediaPlayerBlocProxyProvider(
         child: child,
       ),
     );

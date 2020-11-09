@@ -58,17 +58,19 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
   Widget build(BuildContext context) => Provider<IScrollControllerBloc>.value(
         value: scrollControllerBloc,
         child: AccountDetailsWidget.buildAccountDetailsProviders(
-            context, buildListWithNewItemsOverlayContainer(context)),
+          context,
+          buildListWithNewItemsOverlayContainer(context),
+        ),
       );
 
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
         children: [
           DisposableProvider<IScrollControllerBloc>(
-              create: (context) =>
-                  ScrollControllerBloc(scrollController: scrollController),
-              child:
-                  AccountDetailsBodyWidget(scrollController: scrollController)),
-          StatusListTapToLoadOverlayWidget(),
+            create: (context) =>
+                ScrollControllerBloc(scrollController: scrollController),
+            child: AccountDetailsBodyWidget(scrollController: scrollController),
+          ),
+          const StatusListTapToLoadOverlayWidget(),
         ],
       );
 }

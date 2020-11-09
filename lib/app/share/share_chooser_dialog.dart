@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -15,26 +15,26 @@ void showShareChooserDialog(
       ICurrentAuthInstanceBloc.of(context, listen: false);
   showFediChooserDialog(
       context: context,
-      title: "app.share.title".tr(),
+      title: S.of(context).app_share_title,
       actions: [
         DialogAction(
             icon: FediIcons.share,
-            label: tr("app.share.action.share_to_external"),
-            onAction: () {
+            label: S.of(context).app_share_action_shareToExternal,
+            onAction: (context) {
               externalShareAction();
             }),
         DialogAction(
           icon: FediIcons.envelope,
-          label: tr("app.share.action.share_to_conversations"),
-          onAction: () {
+          label: S.of(context).app_share_action_shareToConversations,
+          onAction: (context) {
             conversationsShareAction();
           },
         ),
         if (currentAuthInstanceBloc.currentInstance.isSupportChats)
           DialogAction(
             icon: FediIcons.chat,
-            label: tr("app.share.action.share_to_chats"),
-            onAction: () {
+            label: S.of(context).app_share_action_shareToChats,
+            onAction: (context) {
               chatsShareAction();
             },
           ),

@@ -11,7 +11,7 @@ abstract class INotificationRepository
     implements
         IReadIdListRepository<INotification, int>,
         IWriteIdListRepository<DbNotification, int>,
-        Disposable {
+        IDisposable {
   static INotificationRepository of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<INotificationRepository>(context, listen: listen);

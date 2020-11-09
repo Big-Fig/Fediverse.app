@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -7,15 +6,18 @@ import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -50,16 +52,28 @@ class SearchResultItemPaginationListWidget
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.statuses".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_statuses,
+              ),
+            );
             break;
           case SearchResultItemType.account:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.accounts".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_accounts,
+              ),
+            );
             break;
           case SearchResultItemType.hashtag:
-            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
-                item: null, separator: "app.search.tab.hashtags".tr()));
+            itemWithSeparators.add(
+              _ItemOrSeparator<ISearchResultItem>(
+                item: null,
+                separator: S.of(context).app_search_tab_hashtags,
+              ),
+            );
             break;
         }
       }
@@ -82,7 +96,7 @@ class SearchResultItemPaginationListWidget
               padding: FediPadding.allMediumPadding,
               child: Text(
                 itemOrSeparator.separator,
-                style: FediTextStyles.bigTallBoldDarkGrey,
+                style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
               ),
             );
           } else {
@@ -110,9 +124,7 @@ class SearchResultItemPaginationListWidget
       value: item.hashtag,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: HashtagListItemWidget(
-          hashtag: item.hashtag,
-        ),
+        child: const HashtagListItemWidget(),
       ),
     );
   }
@@ -122,12 +134,14 @@ class SearchResultItemPaginationListWidget
       value: item.status,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
-        child: StatusListItemTimelineWidget.list(
-          collapsible: true,
-          statusCallback: (BuildContext context, IStatus status) {
-            goToStatusThreadPage(context,
-                status: status, initialMediaAttachment: null);
-          }, initialMediaAttachment: null,
+        child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+          update: (context, status, _) => StatusListItemTimelineBloc.list(
+            status: status,
+            collapsible: true,
+            statusCallback: _onStatusClick,
+            initialMediaAttachment: null,
+          ),
+          child: const StatusListItemTimelineWidget(),
         ),
       ),
     );
@@ -146,10 +160,9 @@ class SearchResultItemPaginationListWidget
               isNeedPreFetchRelationship: false),
           child: Column(
             children: [
-              AccountListItemWidget(
-                  accountSelectedCallback: (context, account) {
-                goToAccountDetailsPage(context, account);
-              }),
+              const AccountListItemWidget(
+                accountSelectedCallback: _accountSelectedCallback,
+              ),
               const FediUltraLightGreyDivider()
             ],
           )),
@@ -164,6 +177,10 @@ class SearchResultItemPaginationListWidget
                   ISearchResultItem>>(context, listen: listen);
 }
 
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  goToAccountDetailsPage(context, account);
+}
+
 class _ItemOrSeparator<T> {
   final T item;
   final String separator;
@@ -172,4 +189,8 @@ class _ItemOrSeparator<T> {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));
   }
+}
+
+void _onStatusClick(BuildContext context, IStatus status) {
+  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
 }

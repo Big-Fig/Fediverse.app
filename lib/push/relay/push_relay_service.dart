@@ -2,7 +2,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushRelayService extends Disposable {
+abstract class IPushRelayService extends IDisposable {
   static IPushRelayService of(BuildContext context, {listen = true}) =>
       Provider.of<IPushRelayService>(context, listen: listen);
 

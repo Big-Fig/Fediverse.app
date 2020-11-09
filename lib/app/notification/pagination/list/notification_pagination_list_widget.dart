@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class NotificationPaginationListWidget
     extends NotificationPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
-  NotificationPaginationListWidget({
+  const NotificationPaginationListWidget({
      Key key,
     @required this.needWatchLocalRepositoryForUpdates,
     ScrollController scrollController,
@@ -42,7 +42,7 @@ class NotificationPaginationListWidget
                               needWatchLocalRepositoryForUpdates),
                   child: Column(
                     children: <Widget>[
-                      NotificationListItemWidget(),
+                      const NotificationListItemWidget(),
                       const FediUltraLightGreyDivider()
                     ],
                   )),
