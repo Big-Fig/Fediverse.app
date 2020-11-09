@@ -19,12 +19,14 @@ var _logger = Logger("form_fedi_theme_field_form_row_widget.dart");
 class FormFediThemeFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
+  final bool displayIcon;
   final IFormValueFieldBloc<IFediUiTheme> field;
 
   FormFediThemeFieldFormRowWidget({
     @required this.label,
     this.desc,
     @required this.field,
+    @required this.displayIcon,
   });
 
   @override
@@ -53,14 +55,15 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FediIconButton(
-                            onPressed: () {
-                              _showDialog(context, currentValue);
-                            },
-                            icon: Icon(
-                              mapThemeToIcon(context, currentValue),
+                          if (displayIcon)
+                            FediIconButton(
+                              onPressed: () {
+                                _showDialog(context, currentValue);
+                              },
+                              icon: Icon(
+                                mapThemeToIcon(context, currentValue),
+                              ),
                             ),
-                          ),
                           Text(
                             mapThemeToTitle(context, currentValue),
                             style: fediUiTextTheme.mediumShortDarkGrey,
@@ -78,18 +81,14 @@ class FormFediThemeFieldFormRowWidget extends StatelessWidget {
   }
 
   void _showDialog(BuildContext context, IFediUiTheme currentValue) {
-      showFediSelectionChooserDialog(
+    showFediSelectionChooserDialog(
         context: context,
-        title: S
-            .of(context)
-            .app_status_post_visibility_title,
+        title: S.of(context).app_status_post_visibility_title,
         actions: [
+          buildThemeDialogAction(context, field, null, currentValue),
           buildThemeDialogAction(
-              context, field, null, currentValue),
-          buildThemeDialogAction(context, field,
-              lightFediUiTheme, currentValue),
-          buildThemeDialogAction(context, field,
-              darkFediUiTheme, currentValue),
+              context, field, lightFediUiTheme, currentValue),
+          buildThemeDialogAction(context, field, darkFediUiTheme, currentValue),
         ]);
   }
 

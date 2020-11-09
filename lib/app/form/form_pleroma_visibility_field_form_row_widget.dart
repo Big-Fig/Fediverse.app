@@ -20,11 +20,13 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
   final IFormValueFieldBloc<PleromaVisibility> field;
+  final bool displayIcon;
 
   FormPleromaVisibilityFieldFormRowWidget({
     @required this.label,
     this.desc,
     @required this.field,
+    @required this.displayIcon,
   });
 
   @override
@@ -53,15 +55,16 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FediIconButton(
-                            onPressed: () {
-                              _showDialog(context, currentValue);
-                            },
-                            icon: Icon(
-                              StatusVisibilityIconWidget.mapVisibilityToIconData(
-                                  currentValue),
+                          if (displayIcon)
+                            FediIconButton(
+                              onPressed: () {
+                                _showDialog(context, currentValue);
+                              },
+                              icon: Icon(
+                                StatusVisibilityIconWidget
+                                    .mapVisibilityToIconData(currentValue),
+                              ),
                             ),
-                          ),
                           Text(
                             StatusVisibilityTitleWidget.mapVisibilityToTitle(
                                 context, currentValue),
@@ -80,20 +83,18 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
   }
 
   void _showDialog(BuildContext context, PleromaVisibility currentValue) {
-       showFediSelectionChooserDialog(
+    showFediSelectionChooserDialog(
         context: context,
-        title: S
-            .of(context)
-            .app_status_post_visibility_title,
+        title: S.of(context).app_status_post_visibility_title,
         actions: [
-          buildVisibilityDialogAction(context, field,
-              PleromaVisibility.public, currentValue),
-          buildVisibilityDialogAction(context, field,
-              PleromaVisibility.direct, currentValue),
-          buildVisibilityDialogAction(context, field,
-              PleromaVisibility.unlisted, currentValue),
-          buildVisibilityDialogAction(context, field,
-              PleromaVisibility.private, currentValue),
+          buildVisibilityDialogAction(
+              context, field, PleromaVisibility.public, currentValue),
+          buildVisibilityDialogAction(
+              context, field, PleromaVisibility.direct, currentValue),
+          buildVisibilityDialogAction(
+              context, field, PleromaVisibility.unlisted, currentValue),
+          buildVisibilityDialogAction(
+              context, field, PleromaVisibility.private, currentValue),
         ]);
   }
 

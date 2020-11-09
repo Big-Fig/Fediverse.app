@@ -62,9 +62,9 @@ class _CustomListListPageAddAction extends StatelessWidget {
   }
 }
 
-void goToCustomListListPage({
-  @required BuildContext context,
-}) {
+void goToCustomListListPage(
+  BuildContext context,
+) {
   Navigator.push(
     context,
     createCustomListListPageRoute(

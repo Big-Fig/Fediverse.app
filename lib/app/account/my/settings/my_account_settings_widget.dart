@@ -91,6 +91,7 @@ class _MyAccountSettingsDefaultVisibilityFieldWidget extends StatelessWidget {
           S.of(context).app_account_my_settings_field_defaultVisibility_label,
       desc: null,
       field: myAccountSettingsBloc.defaultVisibilityFieldBloc,
+      displayIcon: false,
     );
   }
 }
