@@ -11,21 +11,49 @@ void showFediModalBottomSheetDialog({
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
   showModalBottomSheet(
-      context: context,
-      backgroundColor: fediUiColorTheme.transparent,
-      barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
-      isScrollControlled: true,
-      builder: (BuildContext context) => ClipRRect(
-            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-            child: Container(
-              color: fediUiColorTheme.white,
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height / 4.0 * 3.0,
-              ),
-              child: Padding(
-                padding: FediPadding.verticalBigPadding,
-                child: child,
-              ),
+    context: context,
+    backgroundColor: fediUiColorTheme.transparent,
+    barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
+    isScrollControlled: true,
+    builder: (BuildContext context) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const _FediModalBottomSheetHandlerBar(),
+        ClipRRect(
+          borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+          child: Container(
+            color: fediUiColorTheme.white,
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height / 4.0 * 3.0,
             ),
-          ));
+            child: Padding(
+              padding: FediPadding.verticalBigPadding,
+              child: child,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _FediModalBottomSheetHandlerBar extends StatelessWidget {
+  const _FediModalBottomSheetHandlerBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Container(
+        width: 42.0,
+        height: 6.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(6.0),
+          ),
+          color: IFediUiColorTheme.of(context).lightGrey,
+        ),
+      ),
+    );
+  }
 }
