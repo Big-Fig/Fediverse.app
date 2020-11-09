@@ -65,6 +65,7 @@ import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -131,6 +132,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final IFcmPushService fcmPushService;
   final IPushHandlerBloc pushHandlerBloc;
   final IWebSocketsService webSocketsService;
+  final ILocalizationCurrentLocaleLocalPreferencesBloc
+      localizationCurrentLocaleLocalPreferencesBloc;
 
   bool get isPleromaInstance => currentInstance.isPleromaInstance;
 
@@ -142,6 +145,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     @required this.pushRelayService,
     @required this.fcmPushService,
     @required this.pushHandlerBloc,
+    @required this.localizationCurrentLocaleLocalPreferencesBloc,
   });
 
   @override
@@ -514,7 +518,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             myAccountSettingsLocalPreferenceBloc);
 
     var myAccountSettingsBloc = MyAccountSettingsBloc(
-        localPreferencesBloc: myAccountSettingsLocalPreferenceBloc);
+      localPreferencesBloc: myAccountSettingsLocalPreferenceBloc,
+      localizationCurrentLocaleLocalPreferencesBloc:
+          localizationCurrentLocaleLocalPreferencesBloc,
+    );
 
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService

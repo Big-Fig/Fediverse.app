@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_localization_current_locale_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_pleroma_visibility_field_form_row_widget.dart';
 import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_form_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -13,6 +14,7 @@ class MyAccountSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const _MyAccountSettingsLocalizationFieldWidget(),
           const CurrentFediUiThemeChooserFormRowWidget(),
           const _MyAccountSettingsWebSocketsFieldWidget(),
           const _MyAccountSettingsShowSpoilerFieldWidget(),
@@ -23,6 +25,21 @@ class MyAccountSettingsWidget extends StatelessWidget {
           const _MyAccountSettingsMediaAutoPlayFieldWidget(),
         ],
       );
+}
+
+class _MyAccountSettingsLocalizationFieldWidget extends StatelessWidget {
+  const _MyAccountSettingsLocalizationFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+    return FormLocalizationCurrentLocaleFieldFormRowWidget(
+      label: S.of(context).app_localization_form_field_label,
+      field: myAccountSettingsBloc.localizationLocaleFieldBloc,
+    );
+  }
 }
 
 class _MyAccountSettingsMediaAutoPlayFieldWidget extends StatelessWidget {

@@ -35,6 +35,56 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `English`
+  String get localization_locale_en {
+    return Intl.message(
+      'English',
+      name: 'localization_locale_en',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Russian`
+  String get localization_locale_ru {
+    return Intl.message(
+      'Russian',
+      name: 'localization_locale_ru',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get localization_locale_system {
+    return Intl.message(
+      'System',
+      name: 'localization_locale_system',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Localization`
+  String get app_localization_dialog_title {
+    return Intl.message(
+      'Localization',
+      name: 'app_localization_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Localization`
+  String get app_localization_form_field_label {
+    return Intl.message(
+      'Localization',
+      name: 'app_localization_form_field_label',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Failed to start app.\nTry restart or re-install app.`
   String get app_init_fail {
     return Intl.message(
@@ -3999,6 +4049,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 

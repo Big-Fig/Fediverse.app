@@ -1,5 +1,5 @@
 {
-  "@@locale": "en",
+  "@@locale": "ru",
   "localization_locale_en": "English",
   "localization_locale_ru": "Russian",
   "localization_locale_system": "System",
@@ -7,8 +7,8 @@
   "app_localization_form_field_label": "Localization",
   "app_init_fail": "Failed to start app.\nTry restart or re-install app.",
   "app_theme_chooser_label": "Color scheme",
-  "app_theme_type_dark": "Dark",
-  "app_theme_type_light": "Light",
+  "app_theme_type_dark": "Темная",
+  "app_theme_type_light": "Светлая",
   "app_theme_type_system": "Auto",
   "app_customList_type_accounts_label": "Accounts in list",
   "app_customList_type_accounts_action_add": "Add account from followings",
