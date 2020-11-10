@@ -435,7 +435,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   static const _bigSize = 16.0;
   static const _subHeaderSize = 18.0;
   static const _headerSize = 24.0;
-  static const _shortHeight = 0.7;
+  static const _shortHeight = 1.15;
   static const _defaultHeight = 1.0;
   static const _tallHeight = 1.5;
   static const _boldWeight = FontWeight.w500;
