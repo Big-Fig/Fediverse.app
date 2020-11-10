@@ -69,7 +69,6 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).darkGrey,
         iconSize: FediSizes.bigIconSize,
         icon: Icon(FediIcons.message),
-        tooltip: S.of(context).app_status_action_comment,
         onPressed: () {
           _onActionClick(context);
         },

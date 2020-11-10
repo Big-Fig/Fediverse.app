@@ -9,7 +9,6 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_heade
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
@@ -244,7 +243,6 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FediTabMainHeaderBarWidget(
       leadingWidgets: null,
       content: Column(
@@ -275,29 +273,12 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
             ),
           ),
           const FediBigVerticalSpacer(),
-          Row(
-            children: [
-              Expanded(
-                child: _TimelinesHomeTabIndicatorWidget(),
-              ),
-              Padding(
-                padding: FediPadding.horizontalSmallPadding,
-                child: FediIconInCircleBlurredButton(
-                  FediIcons.plus,
-                  onPressed: () {
-                    goToCreateItemTimelinesHomeTabStoragePage(context);
-                  },
-                ),
-              ),
-            ],
-          ),
+          _TimelinesHomeTabIndicatorWidget(),
         ],
       ),
       endingWidgets: null,
     );
   }
-
-
 }
 
 class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
@@ -316,8 +297,6 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
         child: TimelineTabListTextTabIndicatorItemWidget(),
       );
     }
-
-
   }
 }
 

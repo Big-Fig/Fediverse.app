@@ -7,6 +7,7 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
@@ -32,7 +33,10 @@ void showTimelineSettingsDialog({
         },
         child: Builder(
           builder: (context) => Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: FediSizes.smallPadding,
+              horizontal: FediSizes.bigPadding,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
