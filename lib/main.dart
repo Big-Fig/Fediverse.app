@@ -383,7 +383,6 @@ class FediApp extends StatelessWidget {
                           GlobalWidgetsLocalizations.delegate,
                         ],
                         supportedLocales: S.delegate.supportedLocales,
-                        localeListResolutionCallback: ,
                         // TODO: support localization preference inside app
                         // locale: localizationProvider.locale,
                         theme: lightFediUiTheme.themeData,

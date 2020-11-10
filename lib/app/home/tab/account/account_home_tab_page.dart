@@ -428,6 +428,7 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                 const FediBigHorizontalSpacer(),
                 FediIconInCircleBlurredButton(
                   FediIcons.menu_list,
+                  iconSize: 15.0,
                   onPressed: () {
                     showAccountHomeTabMenuDialog(context);
                   },

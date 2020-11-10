@@ -79,6 +79,7 @@ class AccountHomeTabMenuAccountSubPageItemWidget extends StatelessWidget {
           FediIconButton(
             color: IFediUiColorTheme.of(context).darkGrey,
             icon: Icon(FediIcons.chevron_right),
+            iconSize: 14.0,
             onPressed: onClick,
           ),
         ],
