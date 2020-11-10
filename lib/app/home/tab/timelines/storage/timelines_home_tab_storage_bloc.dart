@@ -29,6 +29,13 @@ abstract class ITimelinesHomeTabStorageBloc
 
   Stream<List<Timeline>> get timelinesDistinctStream;
 
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems;
+
+  Stream<List<TimelinesHomeTabStorageListItem>> get timelineStorageItemsStream;
+
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsDistinctStream;
+
   Future onItemsUpdated(List<Timeline> timelines);
 
   Future add(Timeline timeline);
@@ -38,4 +45,9 @@ abstract class ITimelinesHomeTabStorageBloc
   void switchToEditUiState();
 
   void switchToViewUiState();
+
+  void swapItemsAt(int oldIndex, int newIndex);
+
+  int indexOfKey(Key key);
+  Timeline timelineOfKey(Key key);
 }
