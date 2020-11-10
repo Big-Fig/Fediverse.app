@@ -22,10 +22,18 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
 
-    return StreamProvider<List<Timeline>>.value(
-      value: timelinesHomeTabStorageBloc.timelinesDistinctStream,
-      child: const _TimelinesHomeTabStorageListWidget(),
-    );
+    return StreamBuilder<List<Timeline>>(
+        stream: timelinesHomeTabStorageBloc.timelinesDistinctStream,
+        builder: (context, snapshot) {
+      var list = snapshot.data;
+      if (list == null) {
+        return const SizedBox.shrink();
+      }
+      return Provider.value(
+        value: list,
+        child: const _TimelinesHomeTabStorageListWidget(),
+      );
+    });
   }
 
   const TimelinesHomeTabStorageWidget();
@@ -270,19 +278,20 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                   title: S.of(context).app_timeline_storage_delete_dialog_title,
                   contentText: S
                       .of(context)
-                      .app_timeline_storage_delete_dialog_content(timeline.label),
+                      .app_timeline_storage_delete_dialog_content(
+                          timeline.label),
                   okActionLabel: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_action_delete,
                   onAction: (BuildContext context) {
                     timelinesHomeTabStorageBloc.remove(timeline);
+                    Navigator.of(context).pop();
                   },
                 ).show(context);
               },
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: FediSizes.smallPadding,
-                  right: FediSizes.bigPadding,
+                  left: FediSizes.smallPadding, right: FediSizes.bigPadding,
                   // top: FediSizes.smallPadding,
                   // bottom: FediSizes.smallPadding,
                 ),
