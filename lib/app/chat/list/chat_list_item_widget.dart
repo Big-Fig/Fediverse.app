@@ -76,7 +76,6 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconButton(
-      tooltip: S.of(context).app_chat_action_more,
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),

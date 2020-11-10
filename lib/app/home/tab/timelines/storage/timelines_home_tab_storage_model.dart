@@ -7,6 +7,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'timelines_home_tab_storage_model.g.dart';
 
+enum TimelinesHomeTabStorageUiState {
+  edit, view
+}
+
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x

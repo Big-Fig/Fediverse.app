@@ -1740,16 +1740,6 @@ class S {
     );
   }
 
-  /// `More`
-  String get app_chat_action_more {
-    return Intl.message(
-      'More',
-      name: 'app_chat_action_more',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `You: {message}`
   String app_chat_preview_you(Object message) {
     return Intl.message(
@@ -2339,6 +2329,26 @@ class S {
     return Intl.message(
       'Nothing found',
       name: 'app_timeline_storage_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_timeline_storage_appBar_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_timeline_storage_appBar_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get app_timeline_storage_appBar_action_done {
+    return Intl.message(
+      'Done',
+      name: 'app_timeline_storage_appBar_action_done',
       desc: '',
       args: [],
     );
@@ -3071,16 +3081,6 @@ class S {
     return Intl.message(
       'Delete',
       name: 'app_status_action_delete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Comment`
-  String get app_status_action_comment {
-    return Intl.message(
-      'Comment',
-      name: 'app_status_action_comment',
       desc: '',
       args: [],
     );

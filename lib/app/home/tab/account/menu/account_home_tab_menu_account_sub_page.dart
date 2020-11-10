@@ -5,11 +5,9 @@ import 'package:fedi/app/account/my/follow_request/my_account_follow_request_lis
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,41 +51,6 @@ class _AccountHomeTabMenuAccountSubPageBody extends StatelessWidget {
   }
 }
 
-class AccountHomeTabMenuAccountSubPageItemWidget extends StatelessWidget {
-  final String title;
-  final VoidCallback onClick;
-
-  const AccountHomeTabMenuAccountSubPageItemWidget({
-    @required this.title,
-    @required this.onClick,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onClick,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: FediPadding.horizontalSmallPadding,
-            child: Text(
-              title,
-              style: IFediUiTextTheme.of(context).bigTallMediumGrey,
-            ),
-          ),
-          FediIconButton(
-            color: IFediUiColorTheme.of(context).darkGrey,
-            icon: Icon(FediIcons.chevron_right),
-            iconSize: 14.0,
-            onPressed: onClick,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _MyAccountSettingsScheduledButton extends StatelessWidget {
   const _MyAccountSettingsScheduledButton({
     Key key,
@@ -95,7 +58,7 @@ class _MyAccountSettingsScheduledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_scheduledPosts,
       onClick: () {
         goToScheduledStatusListPage(context);
@@ -111,7 +74,7 @@ class _MyAccountSettingsDraftsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_draftPosts,
       onClick: () {
         goToDraftStatusListPage(context);
@@ -127,7 +90,7 @@ class _MyAccountSettingsFavouritedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_favourited,
       onClick: () {
         goToMyAccountFavouritedStatusesPage(context);
@@ -143,7 +106,7 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_followRequests,
       onClick: () {
         goToMyAccountFollowRequestListPage(context);
@@ -159,7 +122,7 @@ class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_accountBlocks,
       onClick: () {
         goToMyAccountAccountBlockListPage(context);
@@ -175,7 +138,7 @@ class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_accountMutes,
       onClick: () {
         goToMyAccountAccountMuteListPage(context);
@@ -191,7 +154,7 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AccountHomeTabMenuAccountSubPageItemWidget(
+    return SimpleFediSelectionItemRowWidget(
       title: S.of(context).app_account_my_settings_action_domainBlocks,
       onClick: () {
         goToMyAccountDomainBlockListPage(context);

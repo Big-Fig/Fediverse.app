@@ -283,7 +283,6 @@
     }
   },
   "app_chat_pleroma_accounts_title": "Chat accounts",
-  "app_chat_action_more": "More",
   "app_chat_preview_you": "You: {message}",
   "@app_chat_preview_you": {
     "placeholders": {
@@ -407,6 +406,8 @@
   "app_timeline_type_field_chooser_dialog_title": "Choose timeline type",
   "app_timeline_storage_title": "Timelines",
   "app_timeline_storage_empty": "Nothing found",
+  "app_timeline_storage_appBar_action_edit": "Edit",
+  "app_timeline_storage_appBar_action_done": "Done",
   "app_timeline_storage_delete_dialog_title": "Delete",
   "app_timeline_storage_delete_dialog_content": "Are you sure you want to delete {timeline} Timeline?",
   "app_timeline_storage_delete_dialog_action_delete": "Delete",
@@ -520,7 +521,6 @@
   "app_status_collapsible_action_collapse": "Collapse",
   "app_status_collapsible_action_expand": "Expand",
   "app_status_action_delete": "Delete",
-  "app_status_action_comment": "Comment",
   "app_status_action_mute": "Mute conversation",
   "app_status_action_unmute": "Unmute conversation",
   "app_status_action_openInBrowser": "Open in browser",

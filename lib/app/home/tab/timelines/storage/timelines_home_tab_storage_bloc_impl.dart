@@ -20,6 +20,15 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   final AuthInstance authInstance;
   final ITimelinesHomeTabStorageLocalPreferences preferences;
 
+  final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
+      BehaviorSubject.seeded(TimelinesHomeTabStorageUiState.view);
+
+  @override
+  TimelinesHomeTabStorageUiState get uiState => uiStateSubject.value;
+  @override
+  Stream<TimelinesHomeTabStorageUiState> get uiStateStream =>
+      uiStateSubject.stream;
+
   TimelinesHomeTabStorageBloc({
     @required this.preferencesService,
     @required this.preferences,
@@ -34,6 +43,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     );
 
     addDisposable(subject: timelinesSubject);
+    addDisposable(subject: uiStateSubject);
   }
 
   Future updateTimelines() async {
@@ -128,5 +138,15 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     await updateTimelines();
+  }
+
+  @override
+  void switchToEditUiState() {
+    uiStateSubject.add(TimelinesHomeTabStorageUiState.edit);
+  }
+
+  @override
+  void switchToViewUiState() {
+    uiStateSubject.add(TimelinesHomeTabStorageUiState.view);
   }
 }
