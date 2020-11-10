@@ -91,6 +91,12 @@ class FediIcons {
   static const IconData appearance_dark = IconData(0xe892, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData appearance_light = IconData(0xe893, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData refresh = IconData(0xe894, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData info = IconData(0xe8a6, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData add = IconData(0xe8a7, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu_list = IconData(0xe8a8, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData account = IconData(0xe8a9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lists = IconData(0xe8aa, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chevron_right = IconData(0xe8ab, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unpin = IconData(0xe8bc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unfollow = IconData(0xe8bd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unbookmark = IconData(0xe8be, fontFamily: _kFontFam, fontPackage: _kFontPkg);
