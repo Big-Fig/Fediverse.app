@@ -87,6 +87,27 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       );
 
   @override
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems =>
+      timelines.map(
+        (timeline) => TimelinesHomeTabStorageListItem(timeline),
+      )?.toList();
+
+  @override
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsStream => timelinesStream.map(
+            (timelines) => timelines?.map(
+              (timeline) => TimelinesHomeTabStorageListItem(timeline),
+            )?.toList(),
+          );
+
+  @override
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsDistinctStream =>
+      timelineStorageItemsStream.distinct(
+            (a, b) => _listEqual(a, b),
+      );
+
+  @override
   TimelinesHomeTabStorage get storage => preferences.value;
 
   @override
@@ -149,4 +170,21 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   void switchToViewUiState() {
     uiStateSubject.add(TimelinesHomeTabStorageUiState.view);
   }
+
+  @override
+  void swapItemsAt(int oldIndex, int newIndex) {
+
+    final oldValue = timelines.removeAt(oldIndex);
+    timelines.insert(newIndex, oldValue);
+
+    _logger.finest(() => "swapItemsAt afterItems $timelines");
+
+    onItemsUpdated(timelines);
+  }
+
+  @override
+  int indexOfKey(Key key) => timelineStorageItems.indexWhere((item) => item.key == key);
+
+  @override
+  Timeline timelineOfKey(Key key) => timelines[indexOfKey(key)];
 }
