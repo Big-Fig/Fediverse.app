@@ -2354,6 +2354,16 @@ class S {
     );
   }
 
+  /// `Add Timelines..`
+  String get app_timeline_storage_action_add {
+    return Intl.message(
+      'Add Timelines..',
+      name: 'app_timeline_storage_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete`
   String get app_timeline_storage_delete_dialog_title {
     return Intl.message(

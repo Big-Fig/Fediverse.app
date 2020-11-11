@@ -408,6 +408,7 @@
   "app_timeline_storage_empty": "Nothing found",
   "app_timeline_storage_appBar_action_edit": "Edit",
   "app_timeline_storage_appBar_action_done": "Done",
+  "app_timeline_storage_action_add": "Add Timelines..",
   "app_timeline_storage_delete_dialog_title": "Delete",
   "app_timeline_storage_delete_dialog_content": "Are you sure you want to delete {timeline} Timeline?",
   "app_timeline_storage_delete_dialog_action_delete": "Delete",
