@@ -2,7 +2,7 @@ import 'package:fedi/localization/localization_model.dart';
 
 final supportedLocalizationLocales = <LocalizationLocale>[
   defaultLocale,
-  LocalizationLocale(locale: "ru"),
+  LocalizationLocale(languageCode: "ru"),
 ];
 
-final defaultLocale = LocalizationLocale(locale: "en");
+final defaultLocale = LocalizationLocale(languageCode: "en");

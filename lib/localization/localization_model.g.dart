@@ -13,12 +13,23 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LocalizationLocale(locale: fields[0]);
+    return LocalizationLocale(
+      languageCode: fields[0] as String,
+    )
+      ..scriptCode = fields[1] as String
+      ..countryCode = fields[2] as String;
   }
 
   @override
   void write(BinaryWriter writer, LocalizationLocale obj) {
-    writer..writeByte(0);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.languageCode)
+      ..writeByte(1)
+      ..write(obj.scriptCode)
+      ..writeByte(2)
+      ..write(obj.countryCode);
   }
 }
 
@@ -28,11 +39,15 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
 
 LocalizationLocale _$LocalizationLocaleFromJson(Map<String, dynamic> json) {
   return LocalizationLocale(
-    locale:json['locale'] as String,
-  );
+    languageCode: json['languageCode'] as String,
+  )
+    ..scriptCode = json['scriptCode'] as String
+    ..countryCode = json['countryCode'] as String;
 }
 
 Map<String, dynamic> _$LocalizationLocaleToJson(LocalizationLocale instance) =>
     <String, dynamic>{
-      'locale': instance.locale,
+      'languageCode': instance.languageCode,
+      'scriptCode': instance.scriptCode,
+      'countryCode': instance.countryCode,
     };

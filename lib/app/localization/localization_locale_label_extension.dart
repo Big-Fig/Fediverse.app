@@ -12,7 +12,7 @@ extension LocalizaionLocaleLabelExtension on LocalizationLocale {
         return s.localization_locale_system;
     }
 
-    switch (locale) {
+    switch (localeString) {
       case "en":
         return s.localization_locale_en;
 
@@ -20,8 +20,8 @@ extension LocalizaionLocaleLabelExtension on LocalizationLocale {
         return s.localization_locale_ru;
 
       default:
-        _logger.severe(() => "not supported locale $locale");
-        return locale;
+        _logger.severe(() => "not supported locale $localeString");
+        return localeString;
     }
   }
 }

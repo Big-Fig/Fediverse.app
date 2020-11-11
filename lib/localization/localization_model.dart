@@ -9,9 +9,27 @@ part 'localization_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 @HiveType()
 class LocalizationLocale implements IPreferencesObject {
-  String locale;
+  @HiveField(0)
+  String languageCode;
+  @HiveField(1)
+  String scriptCode;
+  @HiveField(2)
+  String countryCode;
 
-  LocalizationLocale({this.locale});
+  String get localeString {
+    var result = "$languageCode";
+    if (scriptCode != null) {
+      result = "_$scriptCode";
+    }
+    if (countryCode != null) {
+      result = "_$countryCode";
+    }
+    return result;
+  }
+
+  LocalizationLocale({
+    this.languageCode,
+  });
 
   factory LocalizationLocale.fromJson(Map<String, dynamic> json) =>
       _$LocalizationLocaleFromJson(json);
@@ -32,11 +50,16 @@ class LocalizationLocale implements IPreferencesObject {
       identical(this, other) ||
       other is LocalizationLocale &&
           runtimeType == other.runtimeType &&
-          locale == other.locale;
+          languageCode == other.languageCode &&
+          scriptCode == other.scriptCode &&
+          countryCode == other.countryCode;
   @override
-  int get hashCode => locale.hashCode;
+  int get hashCode =>
+      languageCode.hashCode ^ scriptCode.hashCode ^ countryCode.hashCode;
   @override
   String toString() {
-    return 'LocalizationLocale{locale: $locale}';
+    return 'LocalizationLocale{languageCode: $languageCode,'
+        ' scriptCode: $scriptCode,'
+        ' countryCode: $countryCode}';
   }
 }
