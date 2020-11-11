@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 class SingleMediaPickerBloc extends DisposableOwner
     implements ISingleMediaPickerBloc {
   @override
-  final MediaDeviceFileCallback fileSelectedCallback;
+  final MediaDeviceFileCallback onFileSelectedCallback;
   SingleMediaPickerBloc({
-    @required this.fileSelectedCallback,
+    @required this.onFileSelectedCallback,
   });
 }

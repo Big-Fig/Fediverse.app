@@ -177,13 +177,11 @@ class _SingleMediaPickerPageGalleryFolderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var storagePermissionBloc = IStoragePermissionBloc.of(context);
-    var singleMediaPickerBloc = ISingleMediaPickerBloc.of(context);
+  
     return FileGalleryFolderWidget(
       headerItemBuilder: (BuildContext context) {
         return const _FileGalleryFolderPickFromCameraHeaderItemWidget();
       },
-      onFileSelectedCallback: singleMediaPickerBloc.fileSelectedCallback,
-      loadingWidget: const FediCircularProgressIndicator(),
       permissionButtonBuilder: (context, grantedBuilder) {
         return FediGrantPermissionWidget(
           grantedBuilder: grantedBuilder,
@@ -212,7 +210,7 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
         if (pickedFile != null) {
           var singleMediaPickerBloc =
               ISingleMediaPickerBloc.of(context, listen: false);
-          singleMediaPickerBloc.fileSelectedCallback(
+          singleMediaPickerBloc.onFileSelectedCallback(
             context,
             FileMediaDeviceFile(
               type: MediaDeviceFileType.image,
@@ -256,7 +254,7 @@ void goToSingleMediaPickerPage(
         }, // provide parent abstract implementation by type
         child: DisposableProvider<ISingleMediaPickerBloc>(
           create: (context) => SingleMediaPickerBloc(
-              fileSelectedCallback: onFileSelectedCallback),
+              onFileSelectedCallback: onFileSelectedCallback),
           child: const SingleMediaPickerPage(),
         ),
       ),
