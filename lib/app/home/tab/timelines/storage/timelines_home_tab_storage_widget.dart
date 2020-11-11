@@ -1,5 +1,6 @@
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
@@ -9,6 +10,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,7 +89,10 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
       onReorderDone: (Key item) =>
           _onReorderDone(timelinesHomeTabStorageBloc, item),
       child: ListView(
-        children: children,
+        children: [
+          ...children,
+          const _TimelinesHomeTabStorageListAddTimelineItemWidget(),
+        ],
       ),
     );
   }
@@ -107,6 +112,59 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
       ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc, Key item) {
     final draggedItem = timelinesHomeTabStorageBloc.timelineOfKey(item);
     debugPrint("Reordering finished for ${draggedItem}}");
+  }
+}
+
+class _TimelinesHomeTabStorageListAddTimelineItemWidget
+    extends StatelessWidget {
+  const _TimelinesHomeTabStorageListAddTimelineItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
+    return StreamBuilder<TimelinesHomeTabStorageUiState>(
+      stream: timelinesHomeTabStorageBloc.uiStateStream,
+      initialData: timelinesHomeTabStorageBloc.uiState,
+      builder: (context, snapshot) {
+        var uiState = snapshot.data;
+
+        Widget child;
+        switch (uiState) {
+          case TimelinesHomeTabStorageUiState.edit:
+            child = const SizedBox.shrink();
+            break;
+          case TimelinesHomeTabStorageUiState.view:
+            child = InkWell(
+              onTap: () {
+                goToCreateItemTimelinesHomeTabStoragePage(context);
+              },
+              child: Padding(
+                padding: FediPadding.horizontalBigPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      FediIcons.add,
+                      size: 20.0,
+                      color: IFediUiColorTheme.of(context).primary,
+                    ),
+                    const FediSmallHorizontalSpacer(),
+                    Text(
+                      S.of(context).app_timeline_storage_action_add,
+                      style: IFediUiTextTheme.of(context).bigTallPrimary,
+                    ),
+                  ],
+                ),
+              ),
+            );
+            break;
+        }
+        return child;
+      },
+    );
   }
 }
 
@@ -175,8 +233,6 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
-    var timeline = Provider.of<Timeline>(context);
-
     return StreamBuilder<TimelinesHomeTabStorageUiState>(
       stream: timelinesHomeTabStorageBloc.uiStateStream,
       initialData: timelinesHomeTabStorageBloc.uiState,

@@ -465,6 +465,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_timeline_settings_title" : MessageLookupByLibrary.simpleMessage("Settings:"),
     "app_timeline_settings_withRemoteHashtag_field_hint" : MessageLookupByLibrary.simpleMessage("pleroma"),
     "app_timeline_settings_withRemoteHashtag_field_label" : MessageLookupByLibrary.simpleMessage("With hashtag"),
+    "app_timeline_storage_action_add" : MessageLookupByLibrary.simpleMessage("Add Timelines.."),
     "app_timeline_storage_appBar_action_done" : MessageLookupByLibrary.simpleMessage("Done"),
     "app_timeline_storage_appBar_action_edit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "app_timeline_storage_delete_dialog_action_delete" : MessageLookupByLibrary.simpleMessage("Delete"),
