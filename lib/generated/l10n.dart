@@ -45,10 +45,10 @@ class S {
     );
   }
 
-  /// `Russian`
+  /// `Русский`
   String get localization_locale_ru {
     return Intl.message(
-      'Russian',
+      'Русский',
       name: 'localization_locale_ru',
       desc: '',
       args: [],
@@ -65,20 +65,20 @@ class S {
     );
   }
 
-  /// `Localization`
+  /// `Language`
   String get app_localization_dialog_title {
     return Intl.message(
-      'Localization',
+      'Language',
       name: 'app_localization_dialog_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Localization`
+  /// `Language`
   String get app_localization_form_field_label {
     return Intl.message(
-      'Localization',
+      'Language',
       name: 'app_localization_form_field_label',
       desc: '',
       args: [],

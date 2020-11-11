@@ -93,6 +93,15 @@ class MyAccountSettingsBloc extends DisposableOwner
     addDisposable(disposable: mediaAutoPlayFieldBloc);
 
     addDisposable(
+      streamSubscription: localizationLocaleFieldBloc.currentValueStream.listen(
+        (localizationLocale) {
+          localizationCurrentLocaleLocalPreferencesBloc
+              .setValue(localizationLocale);
+        },
+      ),
+    );
+
+    addDisposable(
         streamSubscription: isRealtimeWebSocketsEnabledFieldBloc
             .currentValueStream
             .listen(onSomethingChanged));
