@@ -5,6 +5,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_animations.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
@@ -72,65 +73,37 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
             childBuilder: (BuildContext context, ReorderableItemState state) =>
                 Provider<Timeline>.value(
               value: item.timeline,
-              child: const _TimelinesHomeTabStorageListItemWidget(),
+              child: Opacity(
+                opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+                child: const _TimelinesHomeTabStorageListItemWidget(),
+              ),
             ),
           ),
         )
         .toList();
     return ReorderableList(
       onReorder: (Key item, Key newPosition) =>
-          _reorderCallback(timelinesHomeTabStorageBloc, item, newPosition),
+          _onReorder(timelinesHomeTabStorageBloc, item, newPosition),
       onReorderDone: (Key item) =>
-          _reorderDone(timelinesHomeTabStorageBloc, item),
+          _onReorderDone(timelinesHomeTabStorageBloc, item),
       child: ListView(
         children: children,
       ),
-      // onReorder: (oldIndex, newIndex) {
-      //   _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
-      //   _logger.finest(() => "onReorder oldItems $items");
-      //   if (newIndex > oldIndex) {
-      //     newIndex -= 1;
-      //   }
-      //
-      //   final oldValue = items.removeAt(oldIndex);
-      //   items.insert(newIndex, oldValue);
-      //
-      //   _logger.finest(() => "onReorder afterItems $items");
-      //
-      //   timelinesHomeTabStorageBloc.onItemsUpdated(items);
-      // },
     );
   }
 
-  bool _reorderCallback(
-      ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
-      Key item,
-      Key newPosition) {
+  bool _onReorder(ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+      Key item, Key newPosition) {
     int oldIndex = timelinesHomeTabStorageBloc.indexOfKey(item);
     int newIndex = timelinesHomeTabStorageBloc.indexOfKey(newPosition);
 
     _logger.finest(() => "onReorder oldIndex $oldIndex newIndex $newIndex");
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
-    }
 
     timelinesHomeTabStorageBloc.swapItemsAt(oldIndex, newIndex);
-
-    //
-    // // Uncomment to allow only even target reorder possition
-    // // if (newPositionIndex % 2 == 1)
-    // //   return false;
-    //
-    // final draggedItem = _items[draggingIndex];
-    // setState(() {
-    //   debugPrint("Reordering $item -> $newPosition");
-    //   _items.removeAt(draggingIndex);
-    //   _items.insert(newPositionIndex, draggedItem);
-    // });
     return true;
   }
 
-  void _reorderDone(
+  void _onReorderDone(
       ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc, Key item) {
     final draggedItem = timelinesHomeTabStorageBloc.timelineOfKey(item);
     debugPrint("Reordering finished for ${draggedItem}}");
@@ -214,27 +187,15 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = ReorderableListener(
-              child: Container(
-                padding: EdgeInsets.only(right: 18.0, left: 18.0),
-                color: Color(0x08000000),
-                child: Center(
-                  child: Icon(Icons.reorder, color: Color(0xFF888888)),
+              child: Padding(
+                padding: FediPadding.allSmallPadding,
+                child: Icon(
+                  FediIcons.sort,
+                  size: 16.0,
+                  color: IFediUiColorTheme.of(context).lightGrey,
                 ),
               ),
             );
-            // child = InkWell(
-            //   onTap: () {
-            //     showTimelineSettingsDialog(
-            //       context: context,
-            //       timeline: timeline,
-            //     );
-            //   },
-            //   child: Icon(
-            //     FediIcons.sort,
-            //     size: 16.0,
-            //     color: IFediUiColorTheme.of(context).lightGrey,
-            //   ),
-            // );
             break;
           case TimelinesHomeTabStorageUiState.view:
             child = FediSelectionItemIconWidget(
@@ -247,7 +208,6 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
             );
             break;
         }
-
         return child;
       },
     );
@@ -344,8 +304,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
               },
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: FediSizes.smallPadding,
-                  right: FediSizes.bigPadding,
+                  left: FediSizes.smallPadding, right: FediSizes.bigPadding,
                   // top: FediSizes.smallPadding,
                   // bottom: FediSizes.smallPadding,
                 ),
