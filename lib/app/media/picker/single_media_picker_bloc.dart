@@ -9,5 +9,5 @@ abstract class ISingleMediaPickerBloc implements IDisposable {
       Provider.of<ISingleMediaPickerBloc>(context, listen: listen);
 
 
-  MediaDeviceFileCallback get fileSelectedCallback;
+  MediaDeviceFileCallback get onFileSelectedCallback;
 }

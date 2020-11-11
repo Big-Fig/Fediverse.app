@@ -16,15 +16,11 @@ import 'package:provider/provider.dart';
 
 class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFile> {
-  final MediaDeviceFileCallback onFileSelectedCallback;
-  final Widget loadingWidget;
   final WidgetBuilder headerItemBuilder;
 
   MediaPickerFileGridWidget({
     Key key,
     ScrollController scrollController,
-    @required this.onFileSelectedCallback,
-    @required this.loadingWidget,
     @required this.headerItemBuilder,
   }) : super(
           key: key,
@@ -67,10 +63,7 @@ class MediaPickerFileGridWidget
         }
         return Provider<IMediaDeviceFile>.value(
           value: items[index],
-          child: _MediaPickerFileGridItemWidget(
-            onFileSelectedCallback: onFileSelectedCallback,
-            loadingWidget: loadingWidget,
-          ),
+          child: const _MediaPickerFileGridItemWidget(),
         );
       },
     );
@@ -88,29 +81,22 @@ class MediaPickerFileGridWidget
 class _MediaPickerFileGridItemWidget extends StatelessWidget {
   const _MediaPickerFileGridItemWidget({
     Key key,
-    @required this.onFileSelectedCallback,
-    @required this.loadingWidget,
   }) : super(key: key);
-
-  final MediaDeviceFileCallback onFileSelectedCallback;
-  final Widget loadingWidget;
 
   @override
   Widget build(BuildContext context) {
     return DisposableProxyProvider<IMediaDeviceFile, IMediaDeviceFileBloc>(
-        update: (BuildContext context, file, previous) {
-          if (file is PhotoManagerMediaDeviceFile) {
-            var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
-                photoManagerMediaDeviceFile: file);
-            mediaDeviceFileBloc.performAsyncInit();
-            return mediaDeviceFileBloc;
-          } else {
-            throw "IMediaDeviceFile file type not supported $file";
-          }
-        },
-        child: MediaPickerFileGridItemWidget(
-          onFileSelectedCallback: onFileSelectedCallback,
-          loadingWidget: loadingWidget,
-        ));
+      update: (BuildContext context, file, previous) {
+        if (file is PhotoManagerMediaDeviceFile) {
+          var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
+              photoManagerMediaDeviceFile: file);
+          mediaDeviceFileBloc.performAsyncInit();
+          return mediaDeviceFileBloc;
+        } else {
+          throw "IMediaDeviceFile file type not supported $file";
+        }
+      },
+      child: const MediaPickerFileGridItemWidget(),
+    );
   }
 }
