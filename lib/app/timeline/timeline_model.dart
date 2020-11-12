@@ -109,7 +109,7 @@ class Timeline implements IPreferencesObject {
           id: remoteList.calculateTimelineId(),
           type: TimelineType.customList,
           settings: settings,
-          label: remoteList.id,
+          label: remoteList.title,
           isPossibleToDelete: isPossibleToDelete,
         );
 

@@ -1822,36 +1822,6 @@ class S {
     );
   }
 
-  /// `All`
-  String get app_home_tab_timelines_tab_public {
-    return Intl.message(
-      'All',
-      name: 'app_home_tab_timelines_tab_public',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Home`
-  String get app_home_tab_timelines_tab_home {
-    return Intl.message(
-      'Home',
-      name: 'app_home_tab_timelines_tab_home',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Local`
-  String get app_home_tab_timelines_tab_local {
-    return Intl.message(
-      'Local',
-      name: 'app_home_tab_timelines_tab_local',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Conversations`
   String get app_home_tab_chat_conversation_title {
     return Intl.message(
@@ -2249,6 +2219,26 @@ class S {
     return Intl.message(
       'Public',
       name: 'app_timeline_type_public',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get app_timeline_type_public_all {
+    return Intl.message(
+      'All',
+      name: 'app_timeline_type_public_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Local`
+  String get app_timeline_type_public_local {
+    return Intl.message(
+      'Local',
+      name: 'app_timeline_type_public_local',
       desc: '',
       args: [],
     );

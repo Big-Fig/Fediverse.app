@@ -18,6 +18,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/app/timeline/timeline_label_extension.dart';
 
 void showTimelineSettingsDialog({
   @required BuildContext context,
@@ -45,7 +46,8 @@ void showTimelineSettingsDialog({
                   style: IFediUiTextTheme.of(context).subHeaderTallBoldDarkGrey,
                 ),
                 Text(
-                  S.of(context).app_timeline_settings_content(timeline.label),
+                  S.of(context).app_timeline_settings_content(timeline
+                      .calculateLabel(context)),
                   style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 ),
                 const FediBigVerticalSpacer(),

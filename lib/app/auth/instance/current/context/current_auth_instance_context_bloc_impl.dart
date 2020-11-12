@@ -63,7 +63,6 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -546,24 +545,22 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         true) {
       var remoteLists = await pleromaListService.getLists();
 
-// todo: rework with enums and move localization outside of this bloc
-      var localizationDelegate = S.current;
       var timelines = [
         Timeline.home(
-          label: localizationDelegate.app_home_tab_timelines_tab_home,
+          label: null,
           id: "home",
           isPossibleToDelete: false,
           settings: TimelineSettings.createDefaultHomeSettings(),
         ),
         Timeline.public(
-          label: localizationDelegate.app_home_tab_timelines_tab_local,
+          label: null,
           id: "local",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: true,
           ),
         ),
         Timeline.public(
-          label: localizationDelegate.app_home_tab_timelines_tab_public,
+          label: null,
           id: "public",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: false,

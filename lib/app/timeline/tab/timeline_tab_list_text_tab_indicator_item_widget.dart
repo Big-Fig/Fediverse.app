@@ -13,6 +13,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/app/timeline/timeline_label_extension.dart';
 
 class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
   const TimelineTabListTextTabIndicatorItemWidget();
@@ -63,5 +64,6 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
     );
   }
 
-  static String mapTabToTitle(BuildContext context, Timeline tab) => tab.label;
+  static String mapTabToTitle(BuildContext context, Timeline tab) => tab
+      .calculateLabel(context);
 }

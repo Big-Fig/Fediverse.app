@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/app/timeline/timeline_label_extension.dart';
 
 var _logger = Logger("timelines_home_tab_storage_widget.dart");
 
@@ -206,6 +207,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var timeline = Provider.of<Timeline>(context);
 
+    var label = timeline.calculateLabel(context);
     return InkWell(
       onTap: () {
         showTimelineSettingsDialog(
@@ -216,7 +218,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            timeline.label,
+            label,
             style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
           ),
         ],
@@ -348,7 +350,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                   contentText: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_content(
-                          timeline.label),
+                          timeline.calculateLabel(context)),
                   okActionLabel: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_action_delete,
