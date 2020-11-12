@@ -57,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m18(status) => "<b>Mentioned you:</b> ${status}";
 
-  static m19(status) => "Chat mention in \"${status}\"";
+  static m19(message) => "Chat mention in \"${message}\"";
 
   static m20(status, emoji) => "${emoji} for: \"${status}";
 
@@ -89,7 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m34(errorMessage) => "Failed to init ${errorMessage}";
 
-  static m35(errorMessage) => "An error has occurred. Please retry your action again. \n${errorMessage}";
+  static m35(errorMessage) => "An error has occurred. \n${errorMessage}";
 
   static m36(count) => "${Intl.plural(count, one: '1 day', other: '${count} days')}";
 
@@ -241,7 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_auth_instance_logout_dialog_content" : m10,
     "app_auth_instance_logout_dialog_title" : MessageLookupByLibrary.simpleMessage("Log Out"),
     "app_auth_instance_register_action_createAccount" : MessageLookupByLibrary.simpleMessage("Sign up"),
-    "app_auth_instance_register_approvalRequired_notification_content" : MessageLookupByLibrary.simpleMessage("You can once moderators will approve your account"),
+    "app_auth_instance_register_approvalRequired_notification_content" : MessageLookupByLibrary.simpleMessage("You can login once moderators will approve your account"),
     "app_auth_instance_register_approvalRequired_notification_title" : MessageLookupByLibrary.simpleMessage("Success registration"),
     "app_auth_instance_register_field_captcha_hint" : MessageLookupByLibrary.simpleMessage("Characters from picture"),
     "app_auth_instance_register_field_captcha_label" : MessageLookupByLibrary.simpleMessage("Captcha*"),
@@ -251,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_auth_instance_register_field_email_label" : MessageLookupByLibrary.simpleMessage("Email Address*"),
     "app_auth_instance_register_field_password_hint" : MessageLookupByLibrary.simpleMessage("Password"),
     "app_auth_instance_register_field_password_label" : MessageLookupByLibrary.simpleMessage("Password*"),
-    "app_auth_instance_register_field_username_hint" : MessageLookupByLibrary.simpleMessage("e.g. lain"),
+    "app_auth_instance_register_field_username_hint" : MessageLookupByLibrary.simpleMessage("lain"),
     "app_auth_instance_register_field_username_label" : MessageLookupByLibrary.simpleMessage("Username*"),
     "app_auth_instance_register_title" : MessageLookupByLibrary.simpleMessage("Create account"),
     "app_chat_conversation_accounts_title" : MessageLookupByLibrary.simpleMessage("Conversation accounts"),
@@ -283,7 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_home_tab_chat_conversation_title" : MessageLookupByLibrary.simpleMessage("Conversations"),
     "app_home_tab_chat_pleroma_action_switch_to_dms" : MessageLookupByLibrary.simpleMessage("To Conversations"),
     "app_home_tab_chat_pleroma_notSupported_mastodon" : MessageLookupByLibrary.simpleMessage("Chats not supported on Mastodon instances"),
-    "app_home_tab_chat_pleroma_notSupported_pleroma" : MessageLookupByLibrary.simpleMessage("This instance don\'t support chats yet"),
+    "app_home_tab_chat_pleroma_notSupported_pleroma" : MessageLookupByLibrary.simpleMessage("This instance don\'t support chats"),
     "app_home_tab_chat_pleroma_title" : MessageLookupByLibrary.simpleMessage("Chats"),
     "app_home_tab_timelines_tab_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "app_home_tab_timelines_tab_local" : MessageLookupByLibrary.simpleMessage("Local"),
@@ -335,11 +335,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_notification_push_permission_declined_dialog_content" : MessageLookupByLibrary.simpleMessage("Please enable push notification in app settings to receive updates"),
     "app_notification_push_permission_declined_dialog_title" : MessageLookupByLibrary.simpleMessage("Permission required"),
     "app_notification_push_settings_desc" : MessageLookupByLibrary.simpleMessage("All messages will be forwarded through Fedi proxy server"),
-    "app_notification_push_settings_field_chat_label" : MessageLookupByLibrary.simpleMessage("Chat"),
+    "app_notification_push_settings_field_chat_label" : MessageLookupByLibrary.simpleMessage("Chats"),
     "app_notification_push_settings_field_favourites_label" : MessageLookupByLibrary.simpleMessage("Favourites"),
     "app_notification_push_settings_field_follows_label" : MessageLookupByLibrary.simpleMessage("Follows"),
     "app_notification_push_settings_field_mentions_label" : MessageLookupByLibrary.simpleMessage("Mentions"),
-    "app_notification_push_settings_field_polls_label" : MessageLookupByLibrary.simpleMessage("Voted Poll ended"),
+    "app_notification_push_settings_field_polls_label" : MessageLookupByLibrary.simpleMessage("Polls"),
     "app_notification_push_settings_field_reblogs_label" : MessageLookupByLibrary.simpleMessage("Reblogs"),
     "app_notification_push_settings_title" : MessageLookupByLibrary.simpleMessage("Push notifications settings"),
     "app_poll_metadata_expires_expired" : MessageLookupByLibrary.simpleMessage("Poll ended"),
@@ -421,8 +421,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_reblog_header" : MessageLookupByLibrary.simpleMessage("reposted"),
     "app_status_rebloggedBy_title" : MessageLookupByLibrary.simpleMessage("Reblogged by"),
     "app_status_reply_header" : MessageLookupByLibrary.simpleMessage("reply to"),
-    "app_status_reply_loading_failed" : MessageLookupByLibrary.simpleMessage("Failed to load original status"),
-    "app_status_reply_loading_progress" : MessageLookupByLibrary.simpleMessage("Loading original status"),
+    "app_status_reply_loading_failed" : MessageLookupByLibrary.simpleMessage("Failed to load first status"),
+    "app_status_reply_loading_progress" : MessageLookupByLibrary.simpleMessage("Loading first status"),
     "app_status_reply_replyingTo" : m30,
     "app_status_scheduled_datetime_picker_title" : MessageLookupByLibrary.simpleMessage("Schedule"),
     "app_status_scheduled_edit_title" : MessageLookupByLibrary.simpleMessage("Scheduled post"),

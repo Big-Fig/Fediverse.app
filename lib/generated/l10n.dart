@@ -1588,10 +1588,10 @@ class S {
     );
   }
 
-  /// `You can once moderators will approve your account`
+  /// `You can login once moderators will approve your account`
   String get app_auth_instance_register_approvalRequired_notification_content {
     return Intl.message(
-      'You can once moderators will approve your account',
+      'You can login once moderators will approve your account',
       name: 'app_auth_instance_register_approvalRequired_notification_content',
       desc: '',
       args: [],
@@ -1608,10 +1608,10 @@ class S {
     );
   }
 
-  /// `e.g. lain`
+  /// `lain`
   String get app_auth_instance_register_field_username_hint {
     return Intl.message(
-      'e.g. lain',
+      'lain',
       name: 'app_auth_instance_register_field_username_hint',
       desc: '',
       args: [],
@@ -1892,10 +1892,10 @@ class S {
     );
   }
 
-  /// `This instance don't support chats yet`
+  /// `This instance don't support chats`
   String get app_home_tab_chat_pleroma_notSupported_pleroma {
     return Intl.message(
-      'This instance don\'t support chats yet',
+      'This instance don\'t support chats',
       name: 'app_home_tab_chat_pleroma_notSupported_pleroma',
       desc: '',
       args: [],
@@ -2054,20 +2054,20 @@ class S {
     );
   }
 
-  /// `Voted Poll ended`
+  /// `Polls`
   String get app_notification_push_settings_field_polls_label {
     return Intl.message(
-      'Voted Poll ended',
+      'Polls',
       name: 'app_notification_push_settings_field_polls_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Chat`
+  /// `Chats`
   String get app_notification_push_settings_field_chat_label {
     return Intl.message(
-      'Chat',
+      'Chats',
       name: 'app_notification_push_settings_field_chat_label',
       desc: '',
       args: [],
@@ -2154,13 +2154,13 @@ class S {
     );
   }
 
-  /// `Chat mention in "{status}"`
-  String app_notification_header_pleromaChatMention(Object status) {
+  /// `Chat mention in "{message}"`
+  String app_notification_header_pleromaChatMention(Object message) {
     return Intl.message(
-      'Chat mention in "$status"',
+      'Chat mention in "$message"',
       name: 'app_notification_header_pleromaChatMention',
       desc: '',
-      args: [status],
+      args: [message],
     );
   }
 
@@ -3566,20 +3566,20 @@ class S {
     );
   }
 
-  /// `Loading original status`
+  /// `Loading first status`
   String get app_status_reply_loading_progress {
     return Intl.message(
-      'Loading original status',
+      'Loading first status',
       name: 'app_status_reply_loading_progress',
       desc: '',
       args: [],
     );
   }
 
-  /// `Failed to load original status`
+  /// `Failed to load first status`
   String get app_status_reply_loading_failed {
     return Intl.message(
-      'Failed to load original status',
+      'Failed to load first status',
       name: 'app_status_reply_loading_failed',
       desc: '',
       args: [],
@@ -3696,10 +3696,10 @@ class S {
     );
   }
 
-  /// `An error has occurred. Please retry your action again. \n{errorMessage}`
+  /// `An error has occurred. \n{errorMessage}`
   String dialog_error_content(Object errorMessage) {
     return Intl.message(
-      'An error has occurred. Please retry your action again. \n$errorMessage',
+      'An error has occurred. \n$errorMessage',
       name: 'dialog_error_content',
       desc: '',
       args: [errorMessage],
