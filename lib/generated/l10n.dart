@@ -2115,12 +2115,12 @@ class S {
   }
 
   /// `{emoji} for: "{status}`
-  String app_notification_header_pleromaEmojiReaction(Object status, Object emoji) {
+  String app_notification_header_pleromaEmojiReaction(Object emoji, Object status) {
     return Intl.message(
       '$emoji for: "$status',
       name: 'app_notification_header_pleromaEmojiReaction',
       desc: '',
-      args: [status, emoji],
+      args: [emoji, status],
     );
   }
 
@@ -3913,22 +3913,22 @@ class S {
   }
 
   /// `now`
-  String timeago_lessThanOneMinute(Object seconds) {
+  String get timeago_lessThanOneMinute {
     return Intl.message(
       'now',
       name: 'timeago_lessThanOneMinute',
       desc: '',
-      args: [seconds],
+      args: [],
     );
   }
 
   /// `1 min`
-  String timeago_aboutAMinute(Object seconds) {
+  String get timeago_aboutAMinute {
     return Intl.message(
       '1 min',
       name: 'timeago_aboutAMinute',
       desc: '',
-      args: [seconds],
+      args: [],
     );
   }
 
@@ -3945,12 +3945,12 @@ class S {
   }
 
   /// `~1 h`
-  String timeago_aboutAnHour(Object minutes) {
+  String get timeago_aboutAnHour {
     return Intl.message(
       '~1 h',
       name: 'timeago_aboutAnHour',
       desc: '',
-      args: [minutes],
+      args: [],
     );
   }
 
@@ -3967,12 +3967,12 @@ class S {
   }
 
   /// `~1 d`
-  String timeago_aDay(Object hours) {
+  String get timeago_aDay {
     return Intl.message(
       '~1 d',
       name: 'timeago_aDay',
       desc: '',
-      args: [hours],
+      args: [],
     );
   }
 
@@ -3989,12 +3989,12 @@ class S {
   }
 
   /// `~1 mo`
-  String timeago_aboutAMonth(Object days) {
+  String get timeago_aboutAMonth {
     return Intl.message(
       '~1 mo',
       name: 'timeago_aboutAMonth',
       desc: '',
-      args: [days],
+      args: [],
     );
   }
 
@@ -4011,12 +4011,12 @@ class S {
   }
 
   /// `~1 y`
-  String timeago_aboutAYear(Object year) {
+  String get timeago_aboutAYear {
     return Intl.message(
       '~1 y',
       name: 'timeago_aboutAYear',
       desc: '',
-      args: [year],
+      args: [],
     );
   }
 
@@ -4038,6 +4038,66 @@ class S {
       ' ',
       name: 'timeago_wordSeparator',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fedi for Pleroma and Mastodon`
+  String get app_googlePlay_appName {
+    return Intl.message(
+      'Fedi for Pleroma and Mastodon',
+      name: 'app_googlePlay_appName',
+      desc: 'GooglePlay title',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_googlePlay_shortDescription {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_googlePlay_shortDescription',
+      desc: 'GooglePlay short description',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_googlePlay_fullDescription {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_googlePlay_fullDescription',
+      desc: 'GooglePlay full description',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_appStore_promotionalText {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_appStore_promotionalText',
+      desc: 'AppStore short description',
+      args: [],
+    );
+  }
+
+  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.`
+  String get app_appStore_description {
+    return Intl.message(
+      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.',
+      name: 'app_appStore_description',
+      desc: 'AppStore full description',
+      args: [],
+    );
+  }
+
+  /// `Fedi for Pleroma and Mastodon`
+  String get app_appStore_title {
+    return Intl.message(
+      'Fedi for Pleroma and Mastodon',
+      name: 'app_appStore_title',
+      desc: 'AppStore title',
       args: [],
     );
   }

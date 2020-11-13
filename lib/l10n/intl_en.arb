@@ -1,756 +1,426 @@
 {
-  "@@locale": "en",
-  "localization_locale_en": "English",
-  "localization_locale_ru": "Русский",
-  "localization_locale_system": "System",
-  "app_localization_dialog_title": "Language",
-  "app_localization_form_field_label": "Language",
-  "app_init_fail": "Failed to start app.\nTry restart or re-install app.",
-  "app_theme_chooser_label": "Color scheme",
-  "app_theme_type_dark": "Dark",
-  "app_theme_type_light": "Light",
-  "app_theme_type_system": "Auto",
-  "app_customList_type_accounts_label": "Accounts in list",
-  "app_customList_type_accounts_action_add": "Add account from followings",
-  "app_customList_create_title": "Create list",
-  "app_customList_edit_title": "Edit list",
-  "app_customList_title": "List {listTitle}",
-  "@app_customList_title": {
-    "placeholders": {
-      "listTitle": {
-        "type": "String"
-      }
-    }
-  },
-  "app_customList_list_title": "Lists",
-  "app_customList_form_field_title_label": "Title*",
-  "app_customList_form_field_title_hint": "List name",
-  "app_emoji_custom_empty": "This instance don't have custom emojis",
-  "app_emoji_recent_empty": "No recent emojis",
-  "app_emoji_category_empty": "This category don't have suitable emojis",
-  "app_share_title": "Share",
-  "app_share_external_title": "Share to external app",
-  "app_share_external_field_shareAsLink": "Share as link",
-  "app_share_toast_success": "Shared successfully",
-  "app_share_with_message_field_message_label": "Message",
-  "app_share_with_message_field_message_hint": "Describe content (optional)",
-  "app_share_action_share": "Share",
-  "app_share_action_shareToExternal": "Share to external app",
-  "app_share_action_shareToChats": "Share to Chats",
-  "app_share_action_shareToConversations": "Share to Conversations",
-  "app_poll_metadata_hideResults": "Hide results",
-  "app_poll_metadata_showResults": "View results",
-  "app_poll_metadata_expires_expired": "Poll ended",
-  "app_poll_metadata_expires_notExpired": " {dayCount} left",
-  "@app_poll_metadata_expires_notExpired": {
-    "placeholders": {
-      "dayCount": {
-        "type": "String",
-        "example": "2 days"
-      }
-    }
-  },
-  "app_poll_metadata_totalVotes": "{count,plural, =0{No votes} =1{1 vote} other{{count} votes}}",
-  "@app_poll_metadata_totalVotes": {
-    "placeholders": {
-      "count": {
-      }
-    }
-  },
-  "app_poll_vote": "Vote",
-  "app_datetime_title": "Select date",
-  "app_datetime_picker_action_ok": "Set time",
-  "app_datetime_picker_action_cancel": "Cancel",
-  "app_account_statuses_tab_withReplies": "Including replies",
-  "app_account_statuses_tab_withoutReplies": "Posts",
-  "app_account_statuses_tab_pinned": "Pinned",
-  "app_account_statuses_tab_media": "Media",
-  "app_account_list_privacy": "Some information may be missed due to privacy settings",
-  "app_account_follower_title": "{accountAcct} followers",
-  "@app_account_follower_title": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_following_title": "{accountAcct} followings",
-  "@app_account_following_title": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_follow": "Follow",
-  "app_account_action_unfollow": "Unfollow",
-  "app_account_action_followRequested": "Requested",
-  "app_account_action_message": "Message",
-  "app_account_action_block": "Block",
-  "app_account_action_unblock": "Unblock",
-  "app_account_action_blockDomain": "Block domain {domain}",
-  "@app_account_action_blockDomain": {
-    "placeholders": {
-      "domain": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_unblockDomain": "Unblock domain {domain}",
-  "@app_account_action_unblockDomain": {
-    "placeholders": {
-      "domain": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_mute": "Mute",
-  "app_account_action_unmute": "Unmute",
-  "app_account_action_openInBrowser": "Open in browser",
-  "app_account_action_report_label": "Report",
-  "app_account_action_report_success_toast": "Successfully reported",
-  "app_account_action_report_fail_dialog_title": "Failed to report",
-  "app_account_action_report_fail_dialog_content": "Something wrong",
-  "app_account_action_popup_title": "More actions for:",
-  "app_account_info_followers": "Followers",
-  "app_account_info_following": "Following",
-  "app_account_info_statuses": "Statuses",
-  "app_account_my_followRequest_title": "Follow requests",
-  "app_account_my_accountBlock_title": "Account blocks",
-  "app_account_my_accountMute_title": "Account mutes",
-  "app_account_my_domainBlock_title": "Domain blocks",
-  "app_account_my_domainBlock_add_dialog_title": "Add domain block",
-  "app_account_my_domainBlock_add_dialog_field_domain_hint": "mastodon.social",
-  "app_account_my_statuses_bookmarked_title": "Bookmarks",
-  "app_account_my_statuses_favourited_title": "Favourites",
-  "app_account_my_menu_action_account": "Account",
-  "app_account_my_menu_action_settings": "Settings",
-  "app_account_my_menu_action_bookmarks": "Bookmarks",
-  "app_account_my_menu_action_lists": "Lists",
-  "app_account_my_menu_account_subpage_title": "Account",
-  "app_account_my_settings_title": "Settings",
-  "app_account_my_settings_field_websocketsEnabled_label": "WebSockets real-time updates",
-  "app_account_my_settings_field_websocketsEnabled_description": "Disable to reduce battery usage",
-  "app_account_my_settings_field_alwaysShowSpoiler_label": "Show spoilers by default",
-  "app_account_my_settings_field_alwaysShowNsfw_label": "Show NSFW by default",
-  "app_account_my_settings_field_defaultVisibility_label": "Default visibility",
-  "app_account_my_settings_field_mediaNsfwByDefault_label": "Mark media as NSFW on uploading",
-  "app_account_my_settings_field_mediaAutoInit_label": "Audio/Video auto-init",
-  "app_account_my_settings_field_mediaAutoPlay_label": "Audio/Video auto-play",
-  "app_account_my_settings_action_scheduledPosts": "Scheduled posts",
-  "app_account_my_settings_action_draftPosts": "Draft posts",
-  "app_account_my_settings_action_lists": "Lists",
-  "app_account_my_settings_action_bookmarked": "Bookmarks",
-  "app_account_my_settings_action_favourited": "Favourites",
-  "app_account_my_settings_action_followRequests": "Follow requests",
-  "app_account_my_settings_action_accountBlocks": "Account blocks",
-  "app_account_my_settings_action_accountMutes": "Account mutes",
-  "app_account_my_settings_action_domainBlocks": "Domain blocks",
-  "app_account_my_edit_title": "Edit account",
-  "app_media_upload_failed_notification_title": "Failed to upload",
-  "app_media_upload_failed_notification_exceedSize_content": "File size is {formattedFileSize} MB, but max is {formattedMaxFileSize} MB",
-  "@app_media_upload_failed_notification_exceedSize_content": {
-    "placeholders": {
-      "formattedFileSize": {
-        "type": "String"
-      },
-      "formattedMaxFileSize": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_my_edit_action_save": "Save",
-  "app_account_my_edit_unsaved_dialog_title": "You have unsaved changes",
-  "app_account_my_edit_unsaved_dialog_action_discard": "Discard",
-  "app_account_my_edit_field_avatar_dialog_title": "Confirm selection?",
-  "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Select & crop",
-  "app_account_my_edit_field_avatar_dialog_action_cancel": "Cancel",
-  "app_account_my_edit_field_header_dialog_title": "Confirm selection?",
-  "app_account_my_edit_field_header_dialog_action_select": "Select",
-  "app_account_my_edit_field_header_dialog_action_crop": "Crop",
-  "app_account_my_edit_field_header_dialog_action_cancel": "Cancel",
-  "app_account_my_edit_field_backgroundImage_label": "Background image",
-  "app_account_my_edit_field_backgroundImage_action_add": "Add",
-  "app_account_my_edit_field_displayName_label": "Display name*",
-  "app_account_my_edit_field_note_label": "Note",
-  "app_account_my_edit_field_locked_label": "Locked to followers only",
-  "app_account_my_edit_field_customField_label": "Link field #{number}",
-  "@app_account_my_edit_field_customField_label": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "app_account_my_edit_field_customField_name_label": "Name*",
-  "app_account_my_edit_field_customField_value_label": "URL*",
-  "app_account_my_edit_field_customField_action_addNew": "Add link field",
-  "app_async_pleroma_error_common_dialog_title": "Pleroma API error",
-  "app_async_pleroma_error_common_dialog_content": "Message: {message}",
-  "@app_async_pleroma_error_common_dialog_content": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_async_pleroma_error_throttled_dialog_title": "Throttled. Server blocked action.",
-  "app_async_pleroma_error_throttled_dialog_content": "Too much operations per minute. Please wait before do something again.",
-  "app_async_pleroma_error_forbidden_dialog_title": "Forbidden. Invalid action or session expired",
-  "app_async_pleroma_error_forbidden_dialog_content": "{content}",
-  "@app_async_pleroma_error_forbidden_dialog_content": {
-    "placeholders": {
-      "content": {
-        "type": "String"
-      }
-    }
-  },
-  "app_async_socket_error_dialog_title": "Check your connection",
-  "app_async_socket_error_dialog_content": "No network or remote server unavailable",
-  "app_async_timeout_error_dialog_title": "Timeout reached",
-  "app_async_timeout_error_dialog_content": "No network or remote server unavailable",
-  "app_auth_instance_logout_dialog_title": "Log Out",
-  "app_auth_instance_logout_dialog_content": "Log out of {userAtHost}",
-  "@app_auth_instance_logout_dialog_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_chooser_action_addInstance": "Add account",
-  "app_auth_instance_current_context_loading_loading_title": "Loading Instance",
-  "app_auth_instance_current_context_loading_loading_content": "{userAtHost}",
-  "@app_auth_instance_current_context_loading_loading_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_current_context_loading_cantLoad_content": "Can't load {userAtHost} instance.\nApp error or session expired",
-  "@app_auth_instance_current_context_loading_cantLoad_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_current_context_loading_cantLoad_action_refresh": "Refresh",
-  "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount": "Choose different account",
-  "app_auth_instance_current_context_loading_cantLoad_action_logout": "Logout",
-  "app_auth_instance_join_new_title": "Join new instance",
-  "app_auth_instance_join_action_tos_prefix": "By using Fedi, you agree to our",
-  "app_auth_instance_join_action_tos_terms": "Terms",
-  "app_auth_instance_join_action_tos_postfix": ".",
-  "app_auth_instance_join_action_login": "Login",
-  "app_auth_instance_join_action_signUp": "Sign up",
-  "app_auth_instance_join_field_host_hint": "Fedi.app",
-  "app_auth_instance_join_field_host_helper": "Pleroma or Mastodon Instance",
-  "app_auth_instance_join_progress_dialog_content": "Checking instance",
-  "app_auth_instance_join_fail_dialog_title": "Fail to connect to instance. You can try verified fedi.app or pleroma.com",
-  "app_auth_instance_join_fail_dialog_content": "Details: {error}",
-  "@app_auth_instance_join_fail_dialog_content": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_join_registrationDisabled_dialog_title": "Instance owner disabled registration",
-  "app_auth_instance_join_registrationDisabled_dialog_content": "Try any other instance, like fedi.app",
-  "app_auth_instance_join_invitesOnly_dialog_title": "Instance owner limit registration to invites-only",
-  "app_auth_instance_join_invitesOnly_dialog_content": "Try any other instance, or register by invite link in your browser",
-  "app_auth_instance_register_title": "Create account",
-  "app_auth_instance_register_approvalRequired_notification_title": "Success registration",
-  "app_auth_instance_register_approvalRequired_notification_content": "You can login once moderators will approve your account",
-  "app_auth_instance_register_field_username_label": "Username*",
-  "app_auth_instance_register_field_username_hint": "lain",
-  "app_auth_instance_register_field_captcha_label": "Captcha*",
-  "app_auth_instance_register_field_captcha_hint": "Characters from picture",
-  "app_auth_instance_register_field_email_label": "Email Address*",
-  "app_auth_instance_register_field_email_hint": "you@example.com",
-  "app_auth_instance_register_field_password_label": "Password*",
-  "app_auth_instance_register_field_password_hint": "Password",
-  "app_auth_instance_register_field_confirmPassword_label": "Password confirmation*",
-  "app_auth_instance_register_field_confirmPassword_hint": "Password",
-  "app_auth_instance_register_action_createAccount": "Sign up",
-  "app_chat_pleroma_share_title": "Share to chats",
-  "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}",
-  "@app_chat_pleroma_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_chat_pleroma_accounts_title": "Chat accounts",
-  "app_chat_preview_you": "You: {message}",
-  "@app_chat_preview_you": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_chat_post_field_content_hint": "Start a message",
-  "app_chat_post_error_empty_dialog_title": "Can't send empty message",
-  "app_chat_conversation_share_title": "Share to conversations",
-  "app_chat_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}",
-  "@app_chat_conversation_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_chat_conversation_accounts_title": "Conversation accounts",
-  "app_chat_conversation_start_title": "Start conversation",
-  "app_file_image_crop_title": "Crop as",
-  "app_home_tab_chat_conversation_title": "Conversations",
-  "app_home_tab_chat_conversation_action_switchToChats": "To Chats",
-  "app_home_tab_chat_pleroma_title": "Chats",
-  "app_home_tab_chat_pleroma_notSupported_mastodon": "Chats not supported on Mastodon instances",
-  "app_home_tab_chat_pleroma_notSupported_pleroma": "This instance don't support chats",
-  "app_home_tab_chat_pleroma_action_switch_to_dms": "To Conversations",
-  "app_notification_action_popup_title": "Notification actions",
-  "app_notification_action_markAsRead": "Mark as read",
-  "app_notification_action_dismiss": "Dismiss",
-  "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new notification. Tap to load.} other{{count} new notifications. Tap to load.}}",
-  "@app_notification_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_notification_push_permission_ask_dialog_title": "Push notifications",
-  "app_notification_push_permission_ask_dialog_content": "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server",
-  "app_notification_push_permission_declined_dialog_title": "Permission required",
-  "app_notification_push_permission_declined_dialog_content": "Please enable push notification in app settings to receive updates",
-  "app_notification_push_settings_title": "Push notifications settings",
-  "app_notification_push_settings_desc": "All messages will be forwarded through Fedi proxy server",
-  "app_notification_push_settings_field_favourites_label": "Favourites",
-  "app_notification_push_settings_field_follows_label": "Follows",
-  "app_notification_push_settings_field_mentions_label": "Mentions",
-  "app_notification_push_settings_field_reblogs_label": "Reblogs",
-  "app_notification_push_settings_field_polls_label": "Polls",
-  "app_notification_push_settings_field_chat_label": "Chats",
-  "app_notification_header_follow": "Followed you",
-  "app_notification_header_favourite": "Liked: {status}",
-  "@app_notification_header_favourite": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_mention": "<b>Mentioned you:</b> {status}",
-  "@app_notification_header_mention": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_reblog": "Reblogged: {status}",
-  "@app_notification_header_reblog": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_poll": "Voted poll ended",
-  "app_notification_header_move": "Move",
-  "app_notification_header_followRequest": "Follow request",
-  "app_notification_header_pleromaEmojiReaction": "{emoji} for: \"{status}",
-  "@app_notification_header_pleromaEmojiReaction": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
+    "@@locale": "en",
+    "@@last_modified": "2020-11-13T15:29:22+00:00",
+    "localization_locale_en": "English",
+    "localization_locale_ru": "Русский",
+    "localization_locale_system": "System",
+    "app_localization_dialog_title": "Language",
+    "app_localization_form_field_label": "Language",
+    "app_init_fail": "Failed to start app.\nTry restart or re-install app.",
+    "app_theme_chooser_label": "Color scheme",
+    "app_theme_type_dark": "Dark",
+    "app_theme_type_light": "Light",
+    "app_theme_type_system": "Auto",
+    "app_customList_type_accounts_label": "Accounts in list",
+    "app_customList_type_accounts_action_add": "Add account from followings",
+    "app_customList_create_title": "Create list",
+    "app_customList_edit_title": "Edit list",
+    "app_customList_title": "List {listTitle}",
+    "app_customList_list_title": "Lists",
+    "app_customList_form_field_title_label": "Title*",
+    "app_customList_form_field_title_hint": "List name",
+    "app_emoji_custom_empty": "This instance don't have custom emojis",
+    "app_emoji_recent_empty": "No recent emojis",
+    "app_emoji_category_empty": "This category don't have suitable emojis",
+    "app_share_title": "Share",
+    "app_share_external_title": "Share to external app",
+    "app_share_external_field_shareAsLink": "Share as link",
+    "app_share_toast_success": "Shared successfully",
+    "app_share_with_message_field_message_label": "Message",
+    "app_share_with_message_field_message_hint": "Describe content (optional)",
+    "app_share_action_share": "Share",
+    "app_share_action_shareToExternal": "Share to external app",
+    "app_share_action_shareToChats": "Share to Chats",
+    "app_share_action_shareToConversations": "Share to Conversations",
+    "app_poll_metadata_hideResults": "Hide results",
+    "app_poll_metadata_showResults": "View results",
+    "app_poll_metadata_expires_expired": "Poll ended",
+    "app_poll_metadata_expires_notExpired": " {dayCount} left",
+    "app_poll_metadata_totalVotes": "{count,plural, =0{No votes} =1{1 vote} other{{count} votes}}",
+    "app_poll_vote": "Vote",
+    "app_datetime_title": "Select date",
+    "app_datetime_picker_action_ok": "Set time",
+    "app_datetime_picker_action_cancel": "Cancel",
+    "app_account_statuses_tab_withReplies": "Including replies",
+    "app_account_statuses_tab_withoutReplies": "Posts",
+    "app_account_statuses_tab_pinned": "Pinned",
+    "app_account_statuses_tab_media": "Media",
+    "app_account_list_privacy": "Some information may be missed due to privacy settings",
+    "app_account_follower_title": "{accountAcct} followers",
+    "app_account_following_title": "{accountAcct} followings",
+    "app_account_action_follow": "Follow",
+    "app_account_action_unfollow": "Unfollow",
+    "app_account_action_followRequested": "Requested",
+    "app_account_action_message": "Message",
+    "app_account_action_block": "Block",
+    "app_account_action_unblock": "Unblock",
+    "app_account_action_blockDomain": "Block domain {domain}",
+    "app_account_action_unblockDomain": "Unblock domain {domain}",
+    "app_account_action_mute": "Mute",
+    "app_account_action_unmute": "Unmute",
+    "app_account_action_openInBrowser": "Open in browser",
+    "app_account_action_report_label": "Report",
+    "app_account_action_report_success_toast": "Successfully reported",
+    "app_account_action_report_fail_dialog_title": "Failed to report",
+    "app_account_action_report_fail_dialog_content": "Something wrong",
+    "app_account_action_popup_title": "More actions for:",
+    "app_account_info_followers": "Followers",
+    "app_account_info_following": "Following",
+    "app_account_info_statuses": "Statuses",
+    "app_account_my_followRequest_title": "Follow requests",
+    "app_account_my_accountBlock_title": "Account blocks",
+    "app_account_my_accountMute_title": "Account mutes",
+    "app_account_my_domainBlock_title": "Domain blocks",
+    "app_account_my_domainBlock_add_dialog_title": "Add domain block",
+    "app_account_my_domainBlock_add_dialog_field_domain_hint": "mastodon.social",
+    "app_account_my_statuses_bookmarked_title": "Bookmarks",
+    "app_account_my_statuses_favourited_title": "Favourites",
+    "app_account_my_menu_action_account": "Account",
+    "app_account_my_menu_action_settings": "Settings",
+    "app_account_my_menu_action_bookmarks": "Bookmarks",
+    "app_account_my_menu_action_lists": "Lists",
+    "app_account_my_menu_account_subpage_title": "Account",
+    "app_account_my_settings_title": "Settings",
+    "app_account_my_settings_field_websocketsEnabled_label": "WebSockets real-time updates",
+    "app_account_my_settings_field_websocketsEnabled_description": "Disable to reduce battery usage",
+    "app_account_my_settings_field_alwaysShowSpoiler_label": "Show spoilers by default",
+    "app_account_my_settings_field_alwaysShowNsfw_label": "Show NSFW by default",
+    "app_account_my_settings_field_defaultVisibility_label": "Default visibility",
+    "app_account_my_settings_field_mediaNsfwByDefault_label": "Mark media as NSFW on uploading",
+    "app_account_my_settings_field_mediaAutoInit_label": "Audio\/Video auto-init",
+    "app_account_my_settings_field_mediaAutoPlay_label": "Audio\/Video auto-play",
+    "app_account_my_settings_action_scheduledPosts": "Scheduled posts",
+    "app_account_my_settings_action_draftPosts": "Draft posts",
+    "app_account_my_settings_action_lists": "Lists",
+    "app_account_my_settings_action_bookmarked": "Bookmarks",
+    "app_account_my_settings_action_favourited": "Favourites",
+    "app_account_my_settings_action_followRequests": "Follow requests",
+    "app_account_my_settings_action_accountBlocks": "Account blocks",
+    "app_account_my_settings_action_accountMutes": "Account mutes",
+    "app_account_my_settings_action_domainBlocks": "Domain blocks",
+    "app_account_my_edit_title": "Edit account",
+    "app_media_upload_failed_notification_title": "Failed to upload",
+    "app_media_upload_failed_notification_exceedSize_content": "File size is {formattedFileSize} MB, but max is {formattedMaxFileSize} MB",
+    "app_account_my_edit_action_save": "Save",
+    "app_account_my_edit_unsaved_dialog_title": "You have unsaved changes",
+    "app_account_my_edit_unsaved_dialog_action_discard": "Discard",
+    "app_account_my_edit_field_avatar_dialog_title": "Confirm selection?",
+    "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Select & crop",
+    "app_account_my_edit_field_avatar_dialog_action_cancel": "Cancel",
+    "app_account_my_edit_field_header_dialog_title": "Confirm selection?",
+    "app_account_my_edit_field_header_dialog_action_select": "Select",
+    "app_account_my_edit_field_header_dialog_action_crop": "Crop",
+    "app_account_my_edit_field_header_dialog_action_cancel": "Cancel",
+    "app_account_my_edit_field_backgroundImage_label": "Background image",
+    "app_account_my_edit_field_backgroundImage_action_add": "Add",
+    "app_account_my_edit_field_displayName_label": "Display name*",
+    "app_account_my_edit_field_note_label": "Note",
+    "app_account_my_edit_field_locked_label": "Locked to followers only",
+    "app_account_my_edit_field_customField_label": "Link field #{number}",
+    "app_account_my_edit_field_customField_name_label": "Name*",
+    "app_account_my_edit_field_customField_value_label": "URL*",
+    "app_account_my_edit_field_customField_action_addNew": "Add link field",
+    "app_async_pleroma_error_common_dialog_title": "Pleroma API error",
+    "app_async_pleroma_error_common_dialog_content": "Message: {message}",
+    "app_async_pleroma_error_throttled_dialog_title": "Throttled. Server blocked action.",
+    "app_async_pleroma_error_throttled_dialog_content": "Too much operations per minute. Please wait before do something again.",
+    "app_async_pleroma_error_forbidden_dialog_title": "Forbidden. Invalid action or session expired",
+    "app_async_pleroma_error_forbidden_dialog_content": "{content}",
+    "app_async_socket_error_dialog_title": "Check your connection",
+    "app_async_socket_error_dialog_content": "No network or remote server unavailable",
+    "app_async_timeout_error_dialog_title": "Timeout reached",
+    "app_async_timeout_error_dialog_content": "No network or remote server unavailable",
+    "app_auth_instance_logout_dialog_title": "Log Out",
+    "app_auth_instance_logout_dialog_content": "Log out of {userAtHost}",
+    "app_auth_instance_chooser_action_addInstance": "Add account",
+    "app_auth_instance_current_context_loading_loading_title": "Loading Instance",
+    "app_auth_instance_current_context_loading_loading_content": "{userAtHost}",
+    "app_auth_instance_current_context_loading_cantLoad_content": "Can't load {userAtHost} instance.\nApp error or session expired",
+    "app_auth_instance_current_context_loading_cantLoad_action_refresh": "Refresh",
+    "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount": "Choose different account",
+    "app_auth_instance_current_context_loading_cantLoad_action_logout": "Logout",
+    "app_auth_instance_join_new_title": "Join new instance",
+    "app_auth_instance_join_action_tos_prefix": "By using Fedi, you agree to our",
+    "app_auth_instance_join_action_tos_terms": "Terms",
+    "app_auth_instance_join_action_tos_postfix": ".",
+    "app_auth_instance_join_action_login": "Login",
+    "app_auth_instance_join_action_signUp": "Sign up",
+    "app_auth_instance_join_field_host_hint": "Fedi.app",
+    "app_auth_instance_join_field_host_helper": "Pleroma or Mastodon Instance",
+    "app_auth_instance_join_progress_dialog_content": "Checking instance",
+    "app_auth_instance_join_fail_dialog_title": "Fail to connect to instance. You can try verified fedi.app or pleroma.com",
+    "app_auth_instance_join_fail_dialog_content": "Details: {error}",
+    "app_auth_instance_join_registrationDisabled_dialog_title": "Instance owner disabled registration",
+    "app_auth_instance_join_registrationDisabled_dialog_content": "Try any other instance, like fedi.app",
+    "app_auth_instance_join_invitesOnly_dialog_title": "Instance owner limit registration to invites-only",
+    "app_auth_instance_join_invitesOnly_dialog_content": "Try any other instance, or register by invite link in your browser",
+    "app_auth_instance_register_title": "Create account",
+    "app_auth_instance_register_approvalRequired_notification_title": "Success registration",
+    "app_auth_instance_register_approvalRequired_notification_content": "You can login once moderators will approve your account",
+    "app_auth_instance_register_field_username_label": "Username*",
+    "app_auth_instance_register_field_username_hint": "lain",
+    "app_auth_instance_register_field_captcha_label": "Captcha*",
+    "app_auth_instance_register_field_captcha_hint": "Characters from picture",
+    "app_auth_instance_register_field_email_label": "Email Address*",
+    "app_auth_instance_register_field_email_hint": "you@example.com",
+    "app_auth_instance_register_field_password_label": "Password*",
+    "app_auth_instance_register_field_password_hint": "Password",
+    "app_auth_instance_register_field_confirmPassword_label": "Password confirmation*",
+    "app_auth_instance_register_field_confirmPassword_hint": "Password",
+    "app_auth_instance_register_action_createAccount": "Sign up",
+    "app_chat_pleroma_share_title": "Share to chats",
+    "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}",
+    "app_chat_pleroma_accounts_title": "Chat accounts",
+    "app_chat_preview_you": "You: {message}",
+    "app_chat_post_field_content_hint": "Start a message",
+    "app_chat_post_error_empty_dialog_title": "Can't send empty message",
+    "app_chat_conversation_share_title": "Share to conversations",
+    "app_chat_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new conversation. Tap to load.} other{{count} new conversations. Tap to load.}}",
+    "app_chat_conversation_accounts_title": "Conversation accounts",
+    "app_chat_conversation_start_title": "Start conversation",
+    "app_file_image_crop_title": "Crop as",
+    "app_home_tab_chat_conversation_title": "Conversations",
+    "app_home_tab_chat_conversation_action_switchToChats": "To Chats",
+    "app_home_tab_chat_pleroma_title": "Chats",
+    "app_home_tab_chat_pleroma_notSupported_mastodon": "Chats not supported on Mastodon instances",
+    "app_home_tab_chat_pleroma_notSupported_pleroma": "This instance don't support chats",
+    "app_home_tab_chat_pleroma_action_switch_to_dms": "To Conversations",
+    "app_notification_action_popup_title": "Notification actions",
+    "app_notification_action_markAsRead": "Mark as read",
+    "app_notification_action_dismiss": "Dismiss",
+    "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new notification. Tap to load.} other{{count} new notifications. Tap to load.}}",
+    "app_notification_push_permission_ask_dialog_title": "Push notifications",
+    "app_notification_push_permission_ask_dialog_content": "Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server",
+    "app_notification_push_permission_declined_dialog_title": "Permission required",
+    "app_notification_push_permission_declined_dialog_content": "Please enable push notification in app settings to receive updates",
+    "app_notification_push_settings_title": "Push notifications settings",
+    "app_notification_push_settings_desc": "All messages will be forwarded through Fedi proxy server",
+    "app_notification_push_settings_field_favourites_label": "Favourites",
+    "app_notification_push_settings_field_follows_label": "Follows",
+    "app_notification_push_settings_field_mentions_label": "Mentions",
+    "app_notification_push_settings_field_reblogs_label": "Reblogs",
+    "app_notification_push_settings_field_polls_label": "Polls",
+    "app_notification_push_settings_field_chat_label": "Chats",
+    "app_notification_header_follow": "Followed you",
+    "app_notification_header_favourite": "Liked: {status}",
+    "app_notification_header_mention": "<b>Mentioned you:<\/b> {status}",
+    "app_notification_header_reblog": "Reblogged: {status}",
+    "app_notification_header_poll": "Voted poll ended",
+    "app_notification_header_move": "Move",
+    "app_notification_header_followRequest": "Follow request",
+    "app_notification_header_pleromaEmojiReaction": "{emoji} for: \"{status}",
+    "app_notification_header_pleromaChatMention": "Chat mention in \"{message}\"",
+    "app_notification_header_unknown": "Unknown: {status}",
+    "app_notification_dismissed": "Dismissed",
+    "app_timeline_loading": "Loading timelines",
+    "app_timeline_create_title": "Create new timeline",
+    "app_timeline_create_field_title_label": "Title",
+    "app_timeline_create_field_title_hint": "Timeline name",
+    "app_timeline_create_field_id_label": "Unique id",
+    "app_timeline_type_home": "Home",
+    "app_timeline_type_public": "Public",
+    "app_timeline_type_public_all": "All",
+    "app_timeline_type_public_local": "Local",
+    "app_timeline_type_customList": "List",
+    "app_timeline_type_hashtag": "Hashtag",
+    "app_timeline_type_account": "Account",
+    "app_timeline_type_field_label": "Type",
+    "app_timeline_type_field_null": "Not selected",
+    "app_timeline_type_field_chooser_dialog_title": "Choose timeline type",
+    "app_timeline_storage_title": "Timelines",
+    "app_timeline_storage_empty": "Nothing found",
+    "app_timeline_storage_appBar_action_edit": "Edit",
+    "app_timeline_storage_appBar_action_done": "Done",
+    "app_timeline_storage_action_add": "Add Timelines..",
+    "app_timeline_storage_delete_dialog_title": "Delete",
+    "app_timeline_storage_delete_dialog_content": "Are you sure you want to delete {timeline} Timeline?",
+    "app_timeline_storage_delete_dialog_action_delete": "Delete",
+    "app_timeline_settings_title": "Settings:",
+    "app_timeline_settings_content": "{timeline} Timeline",
+    "app_timeline_settings_replyVisibilityFilter_self": "Self",
+    "app_timeline_settings_replyVisibilityFilter_following": "Following",
+    "app_timeline_settings_replyVisibilityFilter_field_label": "Reply visibility filter",
+    "app_timeline_settings_replyVisibilityFilter_field_null": "Not selected",
+    "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Choose reply visibility filter",
+    "app_timeline_settings_onlyFromRemoteAccount_field_label": "Only from account",
+    "app_timeline_settings_onlyFromRemoteAccount_field_null": "Not selected",
+    "app_timeline_settings_withRemoteHashtag_field_label": "With hashtag",
+    "app_timeline_settings_withRemoteHashtag_field_hint": "pleroma",
+    "app_timeline_settings_onlyInRemoteList_field_label": "Only in list",
+    "app_timeline_settings_onlyInRemoteList_field_null": "Not selected",
+    "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Choose list",
+    "app_timeline_settings_field_notSupported_desc": "Not supported on this instance",
+    "app_timeline_settings_field_onlyWithMedia_label": "Only with media",
+    "app_timeline_settings_field_onlyRemote_label": "Only remote",
+    "app_timeline_settings_field_onlyLocal_label": "Only local",
+    "app_timeline_settings_field_onlyPinned_label": "Only pinned",
+    "app_timeline_settings_field_withMuted_label": "With muted",
+    "app_timeline_settings_field_excludeReblogs_label": "Exclude reblogs",
+    "app_timeline_settings_field_excludeReplies_label": "Exclude replies",
+    "app_timeline_settings_field_excludeNsfw_label": "Exclude NSFW",
+    "app_list_empty": "Items not found",
+    "app_list_cantUpdateFromNetwork": "Can't update from network",
+    "app_list_loading_state_canLoadMore": "Can load more",
+    "app_list_loading_state_noMoreData": "No more data",
+    "app_list_loading_state_failed": "Failed to load more",
+    "app_list_refresh_unableToFetch": "Unable to refresh",
+    "app_media_player_error_desc": "Something wrong",
+    "app_media_player_error_action_reload": "Reload",
+    "app_media_player_error_action_moreDetails": "More details",
+    "app_media_attachment_type_gallery": "Gallery",
+    "app_media_attachment_type_photo": "Photo",
+    "app_media_attachment_type_video": "Video",
+    "app_media_attachment_type_file": "File",
+    "app_media_attachment_type_audio": "Audio",
+    "app_media_attachment_addToGallery_progress_content": "Saving...",
+    "app_media_attachment_addToGallery_error_dialog_title": "Can't save media",
+    "app_media_attachment_addToGallery_error_dialog_content": "Media type is not supported, network not available or permission not granted",
+    "app_media_attachment_details_title": "Media attachment",
+    "app_media_attachment_details_notSupported_type": "Not supported type {mediaType}",
+    "app_media_attachment_upload_remove_dialog_content": "Are you sure you want to remove the attachment?",
+    "app_media_attachment_upload_remove_dialog_action_remove": "Remove",
+    "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
+    "app_search_title": "Search",
+    "app_search_recent_title": "Recent",
+    "app_search_recent_empty": "No recent searches",
+    "app_search_tab_all": "All",
+    "app_search_tab_accounts": "Users",
+    "app_search_tab_statuses": "Posts",
+    "app_search_tab_hashtags": "Hashtags",
+    "app_search_field_input_hint": "Search",
+    "app_status_draft_title": "Drafts",
+    "app_status_draft_state_canceled": "Canceled",
+    "app_status_draft_state_alreadyPosted": "Already posted",
+    "app_status_draft_edit_title": "Edit Draft",
+    "app_status_emoji_error_cantAdd_dialog_title": "Can't add emoji",
+    "app_status_emoji_error_cantAdd_dialog_content": "Error: {errorMessage}",
+    "app_status_thread_start_loading": "Loading start status",
+    "app_status_thread_post_hint": "Reply to @{accountAcct}",
+    "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new post. Tap to load.} other{{count} new posts. Tap to load.}}",
+    "app_status_scheduled_title": "Queue",
+    "app_status_scheduled_state_canceled": "Canceled",
+    "app_status_scheduled_state_alreadyPosted": "Already posted",
+    "app_status_scheduled_datetime_picker_title": "Schedule",
+    "app_status_scheduled_edit_title": "Scheduled post",
+    "app_status_collapsible_action_collapse": "Collapse",
+    "app_status_collapsible_action_expand": "Expand",
+    "app_status_action_delete": "Delete",
+    "app_status_action_mute": "Mute conversation",
+    "app_status_action_unmute": "Unmute conversation",
+    "app_status_action_openInBrowser": "Open in browser",
+    "app_status_action_pin": "Pin",
+    "app_status_action_unpin": "Unpin",
+    "app_status_action_bookmark": "Bookmark",
+    "app_status_action_unbookmark": "Unbookmark",
+    "app_status_action_copyLink": "Copy link",
+    "app_status_action_showThisThread": "Show this thread",
+    "app_status_action_popup_title": "Status Actions",
+    "app_status_nsfw_chip": "NSFW!",
+    "app_status_nsfw_action_view": "Tap to view",
+    "app_status_deleted_desc": "Status deleted",
+    "app_status_spoiler_chip": "Spoilers!",
+    "app_status_spoiler_action_view": "Tap to view",
+    "app_status_copyLink_toast": "Copied",
+    "app_status_favouritedBy_title": "Favourited by",
+    "app_status_rebloggedBy_title": "Reblogged by",
+    "app_status_post_poll_field_option_hint": "Option {optionNumber}",
+    "app_status_post_poll_field_multiply_label": "Multiple selection",
+    "app_status_post_poll_field_length_label": "Poll length",
+    "app_status_post_poll_field_length_picker_title": "Poll length",
+    "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid time",
+    "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",
+    "app_status_post_dialog_async_content": "Posting...",
+    "app_status_post_dialog_error_title_post": "Failed to post status",
+    "app_status_post_dialog_error_title_schedule": "Failed to schedule status",
+    "app_status_post_dialog_error_content": "Error: {errorMessage}",
+    "app_status_post_toast_success_post": "Status posted",
+    "app_status_post_toast_success_schedule": "Status scheduled",
+    "app_status_post_action_post": "Post",
+    "app_status_post_visibility_title": "Visibility",
+    "app_status_post_visibility_state_public": "Public",
+    "app_status_post_visibility_state_unlisted": "Unlisted",
+    "app_status_post_visibility_state_direct": "Direct",
+    "app_status_post_visibility_state_list": "List",
+    "app_status_post_visibility_state_private": "Private",
+    "app_status_post_error_empty_dialog_title": "Can't send empty message",
+    "app_status_post_error_poll_dialog_title": "Enter at least two poll options",
+    "app_status_post_field_subject": "Subject (optional)",
+    "app_status_post_field_message_hint": "What’s going on today?",
+    "app_status_post_new_title": "New status",
+    "app_status_post_new_unsaved_dialog_title": "You have unsaved changes",
+    "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Save as draft",
+    "app_status_post_new_unsaved_dialog_action_discard": "Discard",
+    "app_status_reblog_header": "reposted",
+    "app_status_reply_header": "reply to",
+    "app_status_reply_loading_progress": "Loading first status",
+    "app_status_reply_loading_failed": "Failed to load first status",
+    "app_status_reply_replyingTo": "Replying to {accountAcct}",
+    "app_tos_title": "Terms of service",
+    "async_init_state_notStarted": "Async init not started",
+    "async_init_state_failed": "Failed to init {errorMessage}",
+    "file_picker_empty": "You don't have any media",
+    "file_picker_single_title": "Choose media",
+    "pagination_list_empty": "Nothing found",
+    "permission_grant_action_grant": "Grant permission",
+    "dialog_progress_content": "Loading...",
+    "dialog_progress_action_cancel": "Cancel",
+    "dialog_error_title": "Something wrong",
+    "dialog_error_content": "An error has occurred. \n{errorMessage}",
+    "dialog_action_yes": "Yes",
+    "dialog_action_no": "No",
+    "dialog_action_ok": "OK",
+    "dialog_action_cancel": "Cancel",
+    "form_field_value_error_null_desc": "Required",
+    "form_field_text_email_error_invalid_desc": "Invalid email",
+    "form_field_text_url_error_invalid_desc": "Invalid URL",
+    "form_field_text_password_error_notMatch_desc": "Password and confirm password must match",
+    "form_field_text_error_empty_desc": "Must be not empty",
+    "form_field_text_error_length_minOnly_desc": "Must be at least {minCharactersCount} characters",
+    "form_field_text_error_length_maxOnly_desc": "Must be less than {maxCharactersCount} characters",
+    "form_field_text_error_length_minAndMax_desc": "Must be between {minCharactersCount} and {maxCharactersCount} characters",
+    "link_error_dialog_title": "Can't launch URL",
+    "link_error_dialog_content": "URL {url} have invalid format",
+    "duration_day": "{count,plural, =1{1 day} other{{count} days}}",
+    "duration_hour": "{count,plural, =1{1 hour} other{{count} hours}}",
+    "duration_minute": "{count,plural, =1{1 minute} other{{count} minutes}}",
+    "timeago_prefixAgo": "",
+    "timeago_prefixFromNow": "",
+    "timeago_suffixAgo": "",
+    "timeago_suffixFromNow": "",
+    "timeago_lessThanOneMinute": "now",
+    "timeago_aboutAMinute": "1 min",
+    "timeago_minutes": "{minutes,plural, =1{1 min} other{{minutes} min}}",
+    "timeago_aboutAnHour": "~1 h",
+    "timeago_hours": "{hours,plural, =1{1 h} other{{hours} h}}",
+    "timeago_aDay": "~1 d",
+    "timeago_days": "{days,plural, =1{1 d} other{{days} d}}",
+    "timeago_aboutAMonth": "~1 mo",
+    "timeago_months": "{months,plural, =1{1 mo} other{{months} mo}}",
+    "timeago_aboutAYear": "~1 y",
+    "timeago_years": "{years,plural, =1{1 y} other{{years} y}}",
+    "timeago_wordSeparator": " ",
+    "app_googlePlay_appName": "Fedi for Pleroma and Mastodon",
+    "@app_googlePlay_appName": {
+        "description": "GooglePlay title"
     },
-    "emoji": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_pleromaChatMention": "Chat mention in \"{message}\"",
-  "@app_notification_header_pleromaChatMention": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_unknown": "Unknown: {status}",
-  "@app_notification_header_unknown": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_dismissed": "Dismissed",
-  "app_timeline_loading": "Loading timelines",
-  "app_timeline_create_title": "Create new timeline",
-  "app_timeline_create_field_title_label": "Title",
-  "app_timeline_create_field_title_hint": "Timeline name",
-  "app_timeline_create_field_id_label": "Unique id",
-  "app_timeline_type_home": "Home",
-  "app_timeline_type_public": "Public",
-  "app_timeline_type_public_all": "All",
-  "app_timeline_type_public_local": "Local",
-  "app_timeline_type_customList": "List",
-  "app_timeline_type_hashtag": "Hashtag",
-  "app_timeline_type_account": "Account",
-  "app_timeline_type_field_label": "Type",
-  "app_timeline_type_field_null": "Not selected",
-  "app_timeline_type_field_chooser_dialog_title": "Choose timeline type",
-  "app_timeline_storage_title": "Timelines",
-  "app_timeline_storage_empty": "Nothing found",
-  "app_timeline_storage_appBar_action_edit": "Edit",
-  "app_timeline_storage_appBar_action_done": "Done",
-  "app_timeline_storage_action_add": "Add Timelines..",
-  "app_timeline_storage_delete_dialog_title": "Delete",
-  "app_timeline_storage_delete_dialog_content": "Are you sure you want to delete {timeline} Timeline?",
-  "app_timeline_storage_delete_dialog_action_delete": "Delete",
-  "@app_timeline_storage_delete_dialog_action_delete": {
-    "timeline": {
-      "timeline": {
-        "type": "String"
-      }
-    }
-  },
-  "app_timeline_settings_title": "Settings:",
-  "app_timeline_settings_content": "{timeline} Timeline",
-  "@app_timeline_settings_content": {
-    "placeholders": {
-      "timeline": {
-        "type": "String"
-      }
-    }
-  },
-  "app_timeline_settings_replyVisibilityFilter_self": "Self",
-  "app_timeline_settings_replyVisibilityFilter_following": "Following",
-  "app_timeline_settings_replyVisibilityFilter_field_label": "Reply visibility filter",
-  "app_timeline_settings_replyVisibilityFilter_field_null": "Not selected",
-  "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Choose reply visibility filter",
-  "app_timeline_settings_onlyFromRemoteAccount_field_label": "Only from account",
-  "app_timeline_settings_onlyFromRemoteAccount_field_null": "Not selected",
-  "app_timeline_settings_withRemoteHashtag_field_label": "With hashtag",
-  "app_timeline_settings_withRemoteHashtag_field_hint": "pleroma",
-  "app_timeline_settings_onlyInRemoteList_field_label": "Only in list",
-  "app_timeline_settings_onlyInRemoteList_field_null": "Not selected",
-  "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Choose list",
-  "app_timeline_settings_field_notSupported_desc": "Not supported on this instance",
-  "app_timeline_settings_field_onlyWithMedia_label": "Only with media",
-  "app_timeline_settings_field_onlyRemote_label": "Only remote",
-  "app_timeline_settings_field_onlyLocal_label": "Only local",
-  "app_timeline_settings_field_onlyPinned_label": "Only pinned",
-  "app_timeline_settings_field_withMuted_label": "With muted",
-  "app_timeline_settings_field_excludeReblogs_label": "Exclude reblogs",
-  "app_timeline_settings_field_excludeReplies_label": "Exclude replies",
-  "app_timeline_settings_field_excludeNsfw_label": "Exclude NSFW",
-  "app_list_empty": "Items not found",
-  "app_list_cantUpdateFromNetwork": "Can't update from network",
-  "app_list_loading_state_canLoadMore": "Can load more",
-  "app_list_loading_state_noMoreData": "No more data",
-  "app_list_loading_state_failed": "Failed to load more",
-  "app_list_refresh_unableToFetch": "Unable to refresh",
-  "app_media_player_error_desc": "Something wrong",
-  "app_media_player_error_action_reload": "Reload",
-  "app_media_player_error_action_moreDetails": "More details",
-  "app_media_attachment_type_gallery": "Gallery",
-  "app_media_attachment_type_photo": "Photo",
-  "app_media_attachment_type_video": "Video",
-  "app_media_attachment_type_file": "File",
-  "app_media_attachment_type_audio": "Audio",
-  "app_media_attachment_addToGallery_progress_content": "Saving...",
-  "app_media_attachment_addToGallery_error_dialog_title": "Can't save media",
-  "app_media_attachment_addToGallery_error_dialog_content": "Media type is not supported, network not available or permission not granted",
-  "app_media_attachment_details_title": "Media attachment",
-  "app_media_attachment_details_notSupported_type": "Not supported type {mediaType}",
-  "@app_media_attachment_details_notSupported_type": {
-    "placeholders": {
-      "mediaType": {
-        "type": "String"
-      }
-    }
-  },
-  "app_media_attachment_upload_remove_dialog_content": "Are you sure you want to remove the attachment?",
-  "app_media_attachment_upload_remove_dialog_action_remove": "Remove",
-  "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
-  "app_search_title": "Search",
-  "app_search_recent_title": "Recent",
-  "app_search_recent_empty": "No recent searches",
-  "app_search_tab_all": "All",
-  "app_search_tab_accounts": "Users",
-  "app_search_tab_statuses": "Posts",
-  "app_search_tab_hashtags": "Hashtags",
-  "app_search_field_input_hint": "Search",
-  "app_status_draft_title": "Drafts",
-  "app_status_draft_state_canceled": "Canceled",
-  "app_status_draft_state_alreadyPosted": "Already posted",
-  "app_status_draft_edit_title": "Edit Draft",
-  "app_status_emoji_error_cantAdd_dialog_title": "Can't add emoji",
-  "app_status_emoji_error_cantAdd_dialog_content": "Error: {errorMessage}",
-  "@app_status_emoji_error_cantAdd_dialog_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_thread_start_loading": "Loading start status",
-  "app_status_thread_post_hint": "Reply to @{accountAcct}",
-  "@app_status_thread_post_hint": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new post. Tap to load.} other{{count} new posts. Tap to load.}}",
-  "@app_status_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_status_scheduled_title": "Queue",
-  "app_status_scheduled_state_canceled": "Canceled",
-  "app_status_scheduled_state_alreadyPosted": "Already posted",
-  "app_status_scheduled_datetime_picker_title": "Schedule",
-  "app_status_scheduled_edit_title": "Scheduled post",
-  "app_status_collapsible_action_collapse": "Collapse",
-  "app_status_collapsible_action_expand": "Expand",
-  "app_status_action_delete": "Delete",
-  "app_status_action_mute": "Mute conversation",
-  "app_status_action_unmute": "Unmute conversation",
-  "app_status_action_openInBrowser": "Open in browser",
-  "app_status_action_pin": "Pin",
-  "app_status_action_unpin": "Unpin",
-  "app_status_action_bookmark": "Bookmark",
-  "app_status_action_unbookmark": "Unbookmark",
-  "app_status_action_copyLink": "Copy link",
-  "app_status_action_showThisThread": "Show this thread",
-  "app_status_action_popup_title": "Status Actions",
-  "app_status_nsfw_chip": "NSFW!",
-  "app_status_nsfw_action_view": "Tap to view",
-  "app_status_deleted_desc": "Status deleted",
-  "app_status_spoiler_chip": "Spoilers!",
-  "app_status_spoiler_action_view": "Tap to view",
-  "app_status_copyLink_toast": "Copied",
-  "app_status_favouritedBy_title": "Favourited by",
-  "app_status_rebloggedBy_title": "Reblogged by",
-  "app_status_post_poll_field_option_hint": "Option {optionNumber}",
-  "@app_status_post_poll_field_option_hint": {
-    "placeholders": {
-      "optionNumber": {
-        "type": "int"
-      }
-    }
-  },
-  "app_status_post_poll_field_multiply_label": "Multiple selection",
-  "app_status_post_poll_field_length_label": "Poll length",
-  "app_status_post_poll_field_length_picker_title": "Poll length",
-  "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid time",
-  "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",
-  "app_status_post_dialog_async_content": "Posting...",
-  "app_status_post_dialog_error_title_post": "Failed to post status",
-  "app_status_post_dialog_error_title_schedule": "Failed to schedule status",
-  "app_status_post_dialog_error_content": "Error: {errorMessage}",
-  "@app_status_post_dialog_error_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_post_toast_success_post": "Status posted",
-  "app_status_post_toast_success_schedule": "Status scheduled",
-  "app_status_post_action_post": "Post",
-  "app_status_post_visibility_title": "Visibility",
-  "app_status_post_visibility_state_public": "Public",
-  "app_status_post_visibility_state_unlisted": "Unlisted",
-  "app_status_post_visibility_state_direct": "Direct",
-  "app_status_post_visibility_state_list": "List",
-  "app_status_post_visibility_state_private": "Private",
-  "app_status_post_error_empty_dialog_title": "Can't send empty message",
-  "app_status_post_error_poll_dialog_title": "Enter at least two poll options",
-  "app_status_post_field_subject": "Subject (optional)",
-  "app_status_post_field_message_hint": "What’s going on today?",
-  "app_status_post_new_title": "New status",
-  "app_status_post_new_unsaved_dialog_title": "You have unsaved changes",
-  "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Save as draft",
-  "app_status_post_new_unsaved_dialog_action_discard": "Discard",
-  "app_status_reblog_header": "reposted",
-  "app_status_reply_header": "reply to",
-  "app_status_reply_loading_progress": "Loading first status",
-  "app_status_reply_loading_failed": "Failed to load first status",
-  "app_status_reply_replyingTo": "Replying to {accountAcct}",
-  "@app_status_reply_replyingTo": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_tos_title": "Terms of service",
-  "async_init_state_notStarted": "Async init not started",
-  "async_init_state_failed": "Failed to init {errorMessage}",
-  "@async_init_state_failed": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "file_picker_empty": "You don't have any media",
-  "file_picker_single_title": "Choose media",
-  "pagination_list_empty": "Nothing found",
-  "permission_grant_action_grant": "Grant permission",
-  "dialog_progress_content": "Loading...",
-  "dialog_progress_action_cancel": "Cancel",
-  "dialog_error_title": "Something wrong",
-  "dialog_error_content": "An error has occurred. \n{errorMessage}",
-  "@dialog_error_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "dialog_action_yes": "Yes",
-  "dialog_action_no": "No",
-  "dialog_action_ok": "OK",
-  "dialog_action_cancel": "Cancel",
-  "form_field_value_error_null_desc": "Required",
-  "form_field_text_email_error_invalid_desc": "Invalid email",
-  "form_field_text_url_error_invalid_desc": "Invalid URL",
-  "form_field_text_password_error_notMatch_desc": "Password and confirm password must match",
-  "form_field_text_error_empty_desc": "Must be not empty",
-  "form_field_text_error_length_minOnly_desc": "Must be at least {minCharactersCount} characters",
-  "@form_field_text_error_length_minOnly_desc": {
-    "minCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
-    }
-  },
-  "form_field_text_error_length_maxOnly_desc": "Must be less than {maxCharactersCount} characters",
-  "@form_field_text_error_length_maxOnly_desc": {
-    "maxCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
-    }
-  },
-  "form_field_text_error_length_minAndMax_desc": "Must be between {minCharactersCount} and {maxCharactersCount} characters",
-  "@form_field_text_error_length_minAndMax_desc": {
-    "minCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
+    "app_googlePlay_shortDescription": "A client for Pleroma and Mastodon social network instances",
+    "@app_googlePlay_shortDescription": {
+        "description": "GooglePlay short description"
     },
-    "maxCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
+    "app_googlePlay_fullDescription": "A client for Pleroma and Mastodon social network instances",
+    "@app_googlePlay_fullDescription": {
+        "description": "GooglePlay full description"
+    },
+    "app_appStore_promotionalText": "A client for Pleroma and Mastodon social network instances",
+    "@app_appStore_promotionalText": {
+        "description": "AppStore short description"
+    },
+    "app_appStore_description": "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.",
+    "@app_appStore_description": {
+        "description": "AppStore full description"
+    },
+    "app_appStore_title": "Fedi for Pleroma and Mastodon",
+    "@app_appStore_title": {
+        "description": "AppStore title"
     }
-  },
-  "link_error_dialog_title": "Can't launch URL",
-  "link_error_dialog_content": "URL {url} have invalid format",
-  "@link_error_dialog_content": {
-    "url": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "duration_day": "{count,plural, =1{1 day} other{{count} days}}",
-  "@duration_day": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "duration_hour": "{count,plural, =1{1 hour} other{{count} hours}}",
-  "@duration_hour": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "duration_minute": "{count,plural, =1{1 minute} other{{count} minutes}}",
-  "@duration_minute": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "timeago_prefixAgo": "",
-  "timeago_prefixFromNow": "",
-  "timeago_suffixAgo": "",
-  "timeago_suffixFromNow": "",
-  "timeago_lessThanOneMinute": "now",
-  "@timeago_lessThanOneMinute": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "timeago_aboutAMinute": "1 min",
-  "@timeago_aboutAMinute": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "timeago_minutes": "{minutes,plural, =1{1 min} other{{minutes} min}}",
-  "@timeago_minutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
-  "timeago_aboutAnHour": "~1 h",
-  "@timeago_aboutAnHour": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
-  "timeago_hours": "{hours,plural, =1{1 h} other{{hours} h}}",
-  "@timeago_hours": {
-    "placeholders": {
-      "hours": {}
-    }
-  },
-  "timeago_aDay": "~1 d",
-  "@timeago_aDay": {
-    "placeholders": {
-      "hours": {}
-    }
-  },
-  "timeago_days": "{days,plural, =1{1 d} other{{days} d}}",
-  "@timeago_days": {
-    "placeholders": {
-      "days": {}
-    }
-  },
-  "timeago_aboutAMonth": "~1 mo",
-  "@timeago_aboutAMonth": {
-    "placeholders": {
-      "days": {}
-    }
-  },
-  "timeago_months": "{months,plural, =1{1 mo} other{{months} mo}}",
-  "@timeago_months": {
-    "placeholders": {
-      "months": {}
-    }
-  },
-  "timeago_aboutAYear": "~1 y",
-  "@timeago_aboutAYear": {
-    "placeholders": {
-      "year": {}
-    }
-  },
-  "timeago_years": "{years,plural, =1{1 y} other{{years} y}}",
-  "@timeago_years": {
-    "placeholders": {
-      "years": {}
-    }
-  },
-  "timeago_wordSeparator": " "
 }

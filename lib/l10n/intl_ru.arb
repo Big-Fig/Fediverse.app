@@ -1,756 +1,426 @@
 {
-  "@@locale": "ru",
-  "localization_locale_en": "English",
-  "localization_locale_ru": "Русский",
-  "localization_locale_system": "Системный",
-  "app_localization_dialog_title": "Язык",
-  "app_localization_form_field_label": "Язык",
-  "app_init_fail": "Ошибка при инициализации.\nПерезапустите или переустановите приложение",
-  "app_theme_chooser_label": "Тема",
-  "app_theme_type_dark": "Темная",
-  "app_theme_type_light": "Светлая",
-  "app_theme_type_system": "Auto",
-  "app_customList_type_accounts_label": "Аккаунты в списке",
-  "app_customList_type_accounts_action_add": "Добавить аккаунт(из вашых подписок)",
-  "app_customList_create_title": "Создать список",
-  "app_customList_edit_title": "Редактировать",
-  "app_customList_title": "Список {listTitle}",
-  "@app_customList_title": {
-    "placeholders": {
-      "listTitle": {
-        "type": "String"
-      }
-    }
-  },
-  "app_customList_list_title": "Списки",
-  "app_customList_form_field_title_label": "Название*",
-  "app_customList_form_field_title_hint": "Название списка",
-  "app_emoji_custom_empty": "Данный сервер не имеет своих эмоджи",
-  "app_emoji_recent_empty": "У вас нет последних эмоджи",
-  "app_emoji_category_empty": "Эта категория не содержит подходящих эмоджи",
-  "app_share_title": "Поделиться",
-  "app_share_external_title": "Поделиться в другое приложение",
-  "app_share_external_field_shareAsLink": "Поделиться ссылкой",
-  "app_share_toast_success": "Успех",
-  "app_share_with_message_field_message_label": "Сообщение",
-  "app_share_with_message_field_message_hint": "Комментарий (не обязательно)",
-  "app_share_action_share": "Поделиться",
-  "app_share_action_shareToExternal": "Поделиться в другое приложение",
-  "app_share_action_shareToChats": "Поделиться в чат",
-  "app_share_action_shareToConversations": "Поделиться в беседу",
-  "app_poll_metadata_hideResults": "Скрыть результаты",
-  "app_poll_metadata_showResults": "Показать результаты",
-  "app_poll_metadata_expires_expired": "Опрос окончен",
-  "app_poll_metadata_expires_notExpired": " {dayCount} осталось",
-  "@app_poll_metadata_expires_notExpired": {
-    "placeholders": {
-      "dayCount": {
-        "type": "String",
-        "example": "2 days"
-      }
-    }
-  },
-  "app_poll_metadata_totalVotes": "{count,plural, =0{Нет голосов} =1{1 голос} other{{count} голосов}}",
-  "@app_poll_metadata_totalVotes": {
-    "placeholders": {
-      "count": {
-      }
-    }
-  },
-  "app_poll_vote": "Выбрать",
-  "app_datetime_title": "Выбрать дату",
-  "app_datetime_picker_action_ok": "Выбрать время",
-  "app_datetime_picker_action_cancel": "Отменить",
-  "app_account_statuses_tab_withReplies": "Включая ответы",
-  "app_account_statuses_tab_withoutReplies": "Без ответов",
-  "app_account_statuses_tab_pinned": "Прикрепленные",
-  "app_account_statuses_tab_media": "Медиа",
-  "app_account_list_privacy": "Часть данных может быть скрыта из-за настройких приватности",
-  "app_account_follower_title": "{accountAcct} подписчики",
-  "@app_account_follower_title": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_following_title": "{accountAcct} подписки",
-  "@app_account_following_title": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_follow": "Подписаться",
-  "app_account_action_unfollow": "Отписаться",
-  "app_account_action_followRequested": "Подверждение...",
-  "app_account_action_message": "Сообщение",
-  "app_account_action_block": "Блокировать",
-  "app_account_action_unblock": "Разблокировать",
-  "app_account_action_blockDomain": "Блокировать сервер {domain}",
-  "@app_account_action_blockDomain": {
-    "placeholders": {
-      "domain": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_unblockDomain": "Разблокировать сервер {domain}",
-  "@app_account_action_unblockDomain": {
-    "placeholders": {
-      "domain": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_action_mute": "Скрыть обновления",
-  "app_account_action_unmute": "Показывать обновления",
-  "app_account_action_openInBrowser": "Открыть в браузере",
-  "app_account_action_report_label": "Пожалоавться",
-  "app_account_action_report_success_toast": "Успех",
-  "app_account_action_report_fail_dialog_title": "Ошибка",
-  "app_account_action_report_fail_dialog_content": "Что-то пошло не так",
-  "app_account_action_popup_title": "Больше действий:",
-  "app_account_info_followers": "Подписчики",
-  "app_account_info_following": "Подписики",
-  "app_account_info_statuses": "Записи",
-  "app_account_my_followRequest_title": "Запросы подписки",
-  "app_account_my_accountBlock_title": "Заблокированные аккаунты",
-  "app_account_my_accountMute_title": "Скрытые аккаунты",
-  "app_account_my_domainBlock_title": "Заблокированные серверы",
-  "app_account_my_domainBlock_add_dialog_title": "Блокировка сервера",
-  "app_account_my_domainBlock_add_dialog_field_domain_hint": "mastodon.social",
-  "app_account_my_statuses_bookmarked_title": "Закладки",
-  "app_account_my_statuses_favourited_title": "Избранное",
-  "app_account_my_menu_action_account": "Аккаунт",
-  "app_account_my_menu_action_settings": "Настройки",
-  "app_account_my_menu_action_bookmarks": "Закладки",
-  "app_account_my_menu_action_lists": "Списки",
-  "app_account_my_menu_account_subpage_title": "Аккаунт",
-  "app_account_my_settings_title": "Закладки",
-  "app_account_my_settings_field_websocketsEnabled_label": "Быстрые обновления WebSockets",
-  "app_account_my_settings_field_websocketsEnabled_description": "Отключите для увеличения жизни баттареи",
-  "app_account_my_settings_field_alwaysShowSpoiler_label": "Показывать спойлеры по умолчанию",
-  "app_account_my_settings_field_alwaysShowNsfw_label": "Показывать NSFW по умолчанию",
-  "app_account_my_settings_field_defaultVisibility_label": "Видимость по умолчанию",
-  "app_account_my_settings_field_mediaNsfwByDefault_label": "Помечать файлы как NSFW по умолчанию",
-  "app_account_my_settings_field_mediaAutoInit_label": "Автозагрузка медиа файлов",
-  "app_account_my_settings_field_mediaAutoPlay_label": "Автостарт медиа файлов",
-  "app_account_my_settings_action_scheduledPosts": "Запланированны записи",
-  "app_account_my_settings_action_draftPosts": "Черновики",
-  "app_account_my_settings_action_lists": "Списки",
-  "app_account_my_settings_action_bookmarked": "Закладки",
-  "app_account_my_settings_action_favourited": "Избранное",
-  "app_account_my_settings_action_followRequests": "Запросы подписчиков",
-  "app_account_my_settings_action_accountBlocks": "Заблокированные аккаунты",
-  "app_account_my_settings_action_accountMutes": "Скрытые аккаунты",
-  "app_account_my_settings_action_domainBlocks": "Заблокированные серверы",
-  "app_account_my_edit_title": "Редактировать",
-  "app_media_upload_failed_notification_title": "Ошибка загрузки",
-  "app_media_upload_failed_notification_exceedSize_content": "Размер файла {formattedFileSize} MB, но максимум {formattedMaxFileSize} MB",
-  "@app_media_upload_failed_notification_exceedSize_content": {
-    "placeholders": {
-      "formattedFileSize": {
-        "type": "String"
-      },
-      "formattedMaxFileSize": {
-        "type": "String"
-      }
-    }
-  },
-  "app_account_my_edit_action_save": "Сохранить",
-  "app_account_my_edit_unsaved_dialog_title": "Не сохраненные данные",
-  "app_account_my_edit_unsaved_dialog_action_discard": "Отменить",
-  "app_account_my_edit_field_avatar_dialog_title": "Подтвердить?",
-  "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Выбрать и обрезать",
-  "app_account_my_edit_field_avatar_dialog_action_cancel": "Отменитьт",
-  "app_account_my_edit_field_header_dialog_title": "Подтвердить?",
-  "app_account_my_edit_field_header_dialog_action_select": "Выбрать",
-  "app_account_my_edit_field_header_dialog_action_crop": "Обрезать",
-  "app_account_my_edit_field_header_dialog_action_cancel": "Отменить",
-  "app_account_my_edit_field_backgroundImage_label": "Фон",
-  "app_account_my_edit_field_backgroundImage_action_add": "Добавить",
-  "app_account_my_edit_field_displayName_label": "Заметка*",
-  "app_account_my_edit_field_note_label": "Описание",
-  "app_account_my_edit_field_locked_label": "Доступен только для подписчиков",
-  "app_account_my_edit_field_customField_label": "Ссылка #{number}",
-  "@app_account_my_edit_field_customField_label": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "app_account_my_edit_field_customField_name_label": "Название*",
-  "app_account_my_edit_field_customField_value_label": "Ссылка*",
-  "app_account_my_edit_field_customField_action_addNew": "Добавить ссылку",
-  "app_async_pleroma_error_common_dialog_title": "Ошибка Pleroma API",
-  "app_async_pleroma_error_common_dialog_content": "Сообщение: {message}",
-  "@app_async_pleroma_error_common_dialog_content": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_async_pleroma_error_throttled_dialog_title": "Сервер заблокировал операцию",
-  "app_async_pleroma_error_throttled_dialog_content": "Слишком много операций за минуту. Пожалуйста подождите",
-  "app_async_pleroma_error_forbidden_dialog_title": "Запрещено. Неправильная операция или ваша сессия устарелаа",
-  "app_async_pleroma_error_forbidden_dialog_content": "{content}",
-  "@app_async_pleroma_error_forbidden_dialog_content": {
-    "placeholders": {
-      "content": {
-        "type": "String"
-      }
-    }
-  },
-  "app_async_socket_error_dialog_title": "Проверьте ваше соединение",
-  "app_async_socket_error_dialog_content": "Нет соединения или сервер недоступен",
-  "app_async_timeout_error_dialog_title": "Тайм-аут",
-  "app_async_timeout_error_dialog_content": "Нет соединения или сервер недоступен",
-  "app_auth_instance_logout_dialog_title": "Выйти",
-  "app_auth_instance_logout_dialog_content": "Выйти из {userAtHost}",
-  "@app_auth_instance_logout_dialog_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_chooser_action_addInstance": "Добавить аккаунт",
-  "app_auth_instance_current_context_loading_loading_title": "Загрузка аккаунта...",
-  "app_auth_instance_current_context_loading_loading_content": "{userAtHost}",
-  "@app_auth_instance_current_context_loading_loading_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_current_context_loading_cantLoad_content": "Не получается загрузить {userAtHost}.\nОшибка приложения или сессия истекла",
-  "@app_auth_instance_current_context_loading_cantLoad_content": {
-    "placeholders": {
-      "userAtHost": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_current_context_loading_cantLoad_action_refresh": "Перезагрузить",
-  "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount": "Выберите другой аккаунт",
-  "app_auth_instance_current_context_loading_cantLoad_action_logout": "Выйти",
-  "app_auth_instance_join_new_title": "Добавить аккаунт",
-  "app_auth_instance_join_action_tos_prefix": "Используя Fedi вы соглашаетесь с ",
-  "app_auth_instance_join_action_tos_terms": "нашими условиями",
-  "app_auth_instance_join_action_tos_postfix": ".",
-  "app_auth_instance_join_action_login": "Вход",
-  "app_auth_instance_join_action_signUp": "Регистрация",
-  "app_auth_instance_join_field_host_hint": "Fedi.app",
-  "app_auth_instance_join_field_host_helper": "Pleroma или Mastodon сервер",
-  "app_auth_instance_join_progress_dialog_content": "Проверка сервера",
-  "app_auth_instance_join_fail_dialog_title": "Невозможно поддключится к серверу. Попробуйте fedi.app или pleroma.com",
-  "app_auth_instance_join_fail_dialog_content": "Детали: {error}",
-  "@app_auth_instance_join_fail_dialog_content": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "app_auth_instance_join_registrationDisabled_dialog_title": "Владелец сервера отключил регистрацию",
-  "app_auth_instance_join_registrationDisabled_dialog_content": "Попробуйте другой сервр, например fedi.app",
-  "app_auth_instance_join_invitesOnly_dialog_title": "Владелец сервера включил регистрацию только по приглашениям",
-  "app_auth_instance_join_invitesOnly_dialog_content": "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере",
-  "app_auth_instance_register_title": "Создать аккаунт",
-  "app_auth_instance_register_approvalRequired_notification_title": "Успешная регистрация",
-  "app_auth_instance_register_approvalRequired_notification_content": "Вы сможете войти как толькоо модераторы подтвердят ваш аккаунт",
-  "app_auth_instance_register_field_username_label": "Никнейм*",
-  "app_auth_instance_register_field_username_hint": "lain",
-  "app_auth_instance_register_field_captcha_label": "Капча*",
-  "app_auth_instance_register_field_captcha_hint": "Символы с картинк",
-  "app_auth_instance_register_field_email_label": "Email*",
-  "app_auth_instance_register_field_email_hint": "you@example.com",
-  "app_auth_instance_register_field_password_label": "Пароль*",
-  "app_auth_instance_register_field_password_hint": "Пароль",
-  "app_auth_instance_register_field_confirmPassword_label": "Подтвердите пароль*",
-  "app_auth_instance_register_field_confirmPassword_hint": "Пароль",
-  "app_auth_instance_register_action_createAccount": "Регистрация",
-  "app_chat_pleroma_share_title": "Поделится в чаты",
-  "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новый чат. Нажмите для загрузки.} other{{count} новых чатов. Нажмите для загрузки.}}",
-  "@app_chat_pleroma_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_chat_pleroma_accounts_title": "Аккаунты чата",
-  "app_chat_preview_you": "Вы: {message}",
-  "@app_chat_preview_you": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_chat_post_field_content_hint": "Начните сообщение",
-  "app_chat_post_error_empty_dialog_title": "Невозможно отправить пустое сообщение",
-  "app_chat_conversation_share_title": "Поделиться в беседы",
-  "app_chat_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новая беседа. Нажмите для загрузки.} other{{count} новых бесед. Нажмите для загрузки.}}",
-  "@app_chat_conversation_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_chat_conversation_accounts_title": "Аккаунты в беседе",
-  "app_chat_conversation_start_title": "Начать беседу",
-  "app_file_image_crop_title": "Обрезать как",
-  "app_home_tab_chat_conversation_title": "Беседы",
-  "app_home_tab_chat_conversation_action_switchToChats": "В чаты",
-  "app_home_tab_chat_pleroma_title": "Чаты",
-  "app_home_tab_chat_pleroma_notSupported_mastodon": "Чаты не поддерживаются на Mastodon серверах",
-  "app_home_tab_chat_pleroma_notSupported_pleroma": "Этот сервер не поддерживает функционал чатов",
-  "app_home_tab_chat_pleroma_action_switch_to_dms": "В беседы",
-  "app_notification_action_popup_title": "Операции с оповещением",
-  "app_notification_action_markAsRead": "Пометить как прочитанное",
-  "app_notification_action_dismiss": "Скрыть",
-  "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новое оповещение. Нажмите для загрузки.} other{{count} новых оповещений. Нажмите для загрузки.}}",
-  "@app_notification_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_notification_push_permission_ask_dialog_title": "Push оповещения",
-  "app_notification_push_permission_ask_dialog_content": "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер",
-  "app_notification_push_permission_declined_dialog_title": "Необходимо разрешение",
-  "app_notification_push_permission_declined_dialog_content": "Включите push оповещения в настройках для получения обновлений",
-  "app_notification_push_settings_title": "Настройки push оповещений",
-  "app_notification_push_settings_desc": "Все сообщения буду пересланы через Fedi push прокси сервер",
-  "app_notification_push_settings_field_favourites_label": "Лайки",
-  "app_notification_push_settings_field_follows_label": "Подписки",
-  "app_notification_push_settings_field_mentions_label": "Упоминания",
-  "app_notification_push_settings_field_reblogs_label": "Реблоги",
-  "app_notification_push_settings_field_polls_label": "Опросы",
-  "app_notification_push_settings_field_chat_label": "Чаты",
-  "app_notification_header_follow": "Подписался на вас",
-  "app_notification_header_favourite": "Понравилось: {status}",
-  "@app_notification_header_favourite": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_mention": "<b>Упоминул вас:</b> {status}",
-  "@app_notification_header_mention": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_reblog": "Поделился: {status}",
-  "@app_notification_header_reblog": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_poll": "Опрос окончен",
-  "app_notification_header_move": "Перемещен",
-  "app_notification_header_followRequest": "Запрос подписки",
-  "app_notification_header_pleromaEmojiReaction": "{emoji} для: \"{status}",
-  "@app_notification_header_pleromaEmojiReaction": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
+    "@@locale": "ru",
+    "@@last_modified": "2020-11-13T16:49:02+00:00",
+    "localization_locale_en": "English",
+    "localization_locale_ru": "Русский",
+    "localization_locale_system": "Системный",
+    "app_localization_dialog_title": "Язык",
+    "app_localization_form_field_label": "Язык",
+    "app_init_fail": "Ошибка при инициализации.\nПерезапустите или переустановите приложение",
+    "app_theme_chooser_label": "Тема",
+    "app_theme_type_dark": "Темная",
+    "app_theme_type_light": "Светлая",
+    "app_theme_type_system": "Auto",
+    "app_customList_type_accounts_label": "Аккаунты в списке",
+    "app_customList_type_accounts_action_add": "Добавить аккаунт(из вашых подписок)",
+    "app_customList_create_title": "Создать список",
+    "app_customList_edit_title": "Редактировать",
+    "app_customList_title": "Список {listTitle}",
+    "app_customList_list_title": "Списки",
+    "app_customList_form_field_title_label": "Название*",
+    "app_customList_form_field_title_hint": "Название списка",
+    "app_emoji_custom_empty": "Данный сервер не имеет своих эмоджи",
+    "app_emoji_recent_empty": "У вас нет последних эмоджи",
+    "app_emoji_category_empty": "Эта категория не содержит подходящих эмоджи",
+    "app_share_title": "Поделиться",
+    "app_share_external_title": "Поделиться в другое приложение",
+    "app_share_external_field_shareAsLink": "Поделиться ссылкой",
+    "app_share_toast_success": "Успех",
+    "app_share_with_message_field_message_label": "Сообщение",
+    "app_share_with_message_field_message_hint": "Комментарий (не обязательно)",
+    "app_share_action_share": "Поделиться",
+    "app_share_action_shareToExternal": "Поделиться в другое приложение",
+    "app_share_action_shareToChats": "Поделиться в чат",
+    "app_share_action_shareToConversations": "Поделиться в беседу",
+    "app_poll_metadata_hideResults": "Скрыть результаты",
+    "app_poll_metadata_showResults": "Показать результаты",
+    "app_poll_metadata_expires_expired": "Опрос окончен",
+    "app_poll_metadata_expires_notExpired": " {dayCount} осталось",
+    "app_poll_metadata_totalVotes": "{count,plural, =0{Нет голосов} =1{1 голос} other{{count} голосов}}",
+    "app_poll_vote": "Выбрать",
+    "app_datetime_title": "Выбрать дату",
+    "app_datetime_picker_action_ok": "Выбрать время",
+    "app_datetime_picker_action_cancel": "Отменить",
+    "app_account_statuses_tab_withReplies": "Включая ответы",
+    "app_account_statuses_tab_withoutReplies": "Без ответов",
+    "app_account_statuses_tab_pinned": "Прикрепленные",
+    "app_account_statuses_tab_media": "Медиа",
+    "app_account_list_privacy": "Часть данных может быть скрыта из-за настройких приватности",
+    "app_account_follower_title": "{accountAcct} подписчики",
+    "app_account_following_title": "{accountAcct} подписки",
+    "app_account_action_follow": "Подписаться",
+    "app_account_action_unfollow": "Отписаться",
+    "app_account_action_followRequested": "Подверждение...",
+    "app_account_action_message": "Сообщение",
+    "app_account_action_block": "Блокировать",
+    "app_account_action_unblock": "Разблокировать",
+    "app_account_action_blockDomain": "Блокировать сервер {domain}",
+    "app_account_action_unblockDomain": "Разблокировать сервер {domain}",
+    "app_account_action_mute": "Скрыть обновления",
+    "app_account_action_unmute": "Показывать обновления",
+    "app_account_action_openInBrowser": "Открыть в браузере",
+    "app_account_action_report_label": "Пожалоавться",
+    "app_account_action_report_success_toast": "Успех",
+    "app_account_action_report_fail_dialog_title": "Ошибка",
+    "app_account_action_report_fail_dialog_content": "Что-то пошло не так",
+    "app_account_action_popup_title": "Больше действий:",
+    "app_account_info_followers": "Подписчики",
+    "app_account_info_following": "Подписики",
+    "app_account_info_statuses": "Записи",
+    "app_account_my_followRequest_title": "Запросы подписки",
+    "app_account_my_accountBlock_title": "Заблокированные аккаунты",
+    "app_account_my_accountMute_title": "Скрытые аккаунты",
+    "app_account_my_domainBlock_title": "Заблокированные серверы",
+    "app_account_my_domainBlock_add_dialog_title": "Блокировка сервера",
+    "app_account_my_domainBlock_add_dialog_field_domain_hint": "mastodon.social",
+    "app_account_my_statuses_bookmarked_title": "Закладки",
+    "app_account_my_statuses_favourited_title": "Избранное",
+    "app_account_my_menu_action_account": "Аккаунт",
+    "app_account_my_menu_action_settings": "Настройки",
+    "app_account_my_menu_action_bookmarks": "Закладки",
+    "app_account_my_menu_action_lists": "Списки",
+    "app_account_my_menu_account_subpage_title": "Аккаунт",
+    "app_account_my_settings_title": "Закладки",
+    "app_account_my_settings_field_websocketsEnabled_label": "Быстрые обновления WebSockets",
+    "app_account_my_settings_field_websocketsEnabled_description": "Отключите для увеличения жизни баттареи",
+    "app_account_my_settings_field_alwaysShowSpoiler_label": "Показывать спойлеры по умолчанию",
+    "app_account_my_settings_field_alwaysShowNsfw_label": "Показывать NSFW по умолчанию",
+    "app_account_my_settings_field_defaultVisibility_label": "Видимость по умолчанию",
+    "app_account_my_settings_field_mediaNsfwByDefault_label": "Помечать файлы как NSFW",
+    "app_account_my_settings_field_mediaAutoInit_label": "Автозагрузка медиа файлов",
+    "app_account_my_settings_field_mediaAutoPlay_label": "Автостарт медиа файлов",
+    "app_account_my_settings_action_scheduledPosts": "Запланированны записи",
+    "app_account_my_settings_action_draftPosts": "Черновики",
+    "app_account_my_settings_action_lists": "Списки",
+    "app_account_my_settings_action_bookmarked": "Закладки",
+    "app_account_my_settings_action_favourited": "Избранное",
+    "app_account_my_settings_action_followRequests": "Запросы подписчиков",
+    "app_account_my_settings_action_accountBlocks": "Заблокированные аккаунты",
+    "app_account_my_settings_action_accountMutes": "Скрытые аккаунты",
+    "app_account_my_settings_action_domainBlocks": "Заблокированные серверы",
+    "app_account_my_edit_title": "Редактировать",
+    "app_media_upload_failed_notification_title": "Ошибка загрузки",
+    "app_media_upload_failed_notification_exceedSize_content": "Размер файла {formattedFileSize} MB, но максимум {formattedMaxFileSize} MB",
+    "app_account_my_edit_action_save": "Сохранить",
+    "app_account_my_edit_unsaved_dialog_title": "Не сохраненные данные",
+    "app_account_my_edit_unsaved_dialog_action_discard": "Отменить",
+    "app_account_my_edit_field_avatar_dialog_title": "Подтвердить?",
+    "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Выбрать и обрезать",
+    "app_account_my_edit_field_avatar_dialog_action_cancel": "Отменитьт",
+    "app_account_my_edit_field_header_dialog_title": "Подтвердить?",
+    "app_account_my_edit_field_header_dialog_action_select": "Выбрать",
+    "app_account_my_edit_field_header_dialog_action_crop": "Обрезать",
+    "app_account_my_edit_field_header_dialog_action_cancel": "Отменить",
+    "app_account_my_edit_field_backgroundImage_label": "Фон",
+    "app_account_my_edit_field_backgroundImage_action_add": "Добавить",
+    "app_account_my_edit_field_displayName_label": "Заметка*",
+    "app_account_my_edit_field_note_label": "Описание",
+    "app_account_my_edit_field_locked_label": "Доступен только для подписчиков",
+    "app_account_my_edit_field_customField_label": "Ссылка #{number}",
+    "app_account_my_edit_field_customField_name_label": "Название*",
+    "app_account_my_edit_field_customField_value_label": "Ссылка*",
+    "app_account_my_edit_field_customField_action_addNew": "Добавить ссылку",
+    "app_async_pleroma_error_common_dialog_title": "Ошибка Pleroma API",
+    "app_async_pleroma_error_common_dialog_content": "Сообщение: {message}",
+    "app_async_pleroma_error_throttled_dialog_title": "Сервер заблокировал операцию",
+    "app_async_pleroma_error_throttled_dialog_content": "Слишком много операций за минуту. Пожалуйста подождите",
+    "app_async_pleroma_error_forbidden_dialog_title": "Запрещено. Неправильная операция или ваша сессия устарелаа",
+    "app_async_pleroma_error_forbidden_dialog_content": "{content}",
+    "app_async_socket_error_dialog_title": "Проверьте ваше соединение",
+    "app_async_socket_error_dialog_content": "Нет соединения или сервер недоступен",
+    "app_async_timeout_error_dialog_title": "Тайм-аут",
+    "app_async_timeout_error_dialog_content": "Нет соединения или сервер недоступен",
+    "app_auth_instance_logout_dialog_title": "Выйти",
+    "app_auth_instance_logout_dialog_content": "Выйти из {userAtHost}",
+    "app_auth_instance_chooser_action_addInstance": "Добавить аккаунт",
+    "app_auth_instance_current_context_loading_loading_title": "Загрузка аккаунта...",
+    "app_auth_instance_current_context_loading_loading_content": "{userAtHost}",
+    "app_auth_instance_current_context_loading_cantLoad_content": "Не получается загрузить {userAtHost}.\nОшибка приложения или сессия истекла",
+    "app_auth_instance_current_context_loading_cantLoad_action_refresh": "Перезагрузить",
+    "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount": "Выберите другой аккаунт",
+    "app_auth_instance_current_context_loading_cantLoad_action_logout": "Выйти",
+    "app_auth_instance_join_new_title": "Добавить аккаунт",
+    "app_auth_instance_join_action_tos_prefix": "Используя Fedi вы соглашаетесь с ",
+    "app_auth_instance_join_action_tos_terms": "нашими условиями",
+    "app_auth_instance_join_action_tos_postfix": ".",
+    "app_auth_instance_join_action_login": "Вход",
+    "app_auth_instance_join_action_signUp": "Регистрация",
+    "app_auth_instance_join_field_host_hint": "Fedi.app",
+    "app_auth_instance_join_field_host_helper": "Pleroma или Mastodon сервер",
+    "app_auth_instance_join_progress_dialog_content": "Проверка сервера",
+    "app_auth_instance_join_fail_dialog_title": "Невозможно поддключится к серверу. Попробуйте fedi.app или pleroma.com",
+    "app_auth_instance_join_fail_dialog_content": "Детали: {error}",
+    "app_auth_instance_join_registrationDisabled_dialog_title": "Владелец сервера отключил регистрацию",
+    "app_auth_instance_join_registrationDisabled_dialog_content": "Попробуйте другой сервр, например fedi.app",
+    "app_auth_instance_join_invitesOnly_dialog_title": "Владелец сервера включил регистрацию только по приглашениям",
+    "app_auth_instance_join_invitesOnly_dialog_content": "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере",
+    "app_auth_instance_register_title": "Создать аккаунт",
+    "app_auth_instance_register_approvalRequired_notification_title": "Успешная регистрация",
+    "app_auth_instance_register_approvalRequired_notification_content": "Вы сможете войти как толькоо модераторы подтвердят ваш аккаунт",
+    "app_auth_instance_register_field_username_label": "Никнейм*",
+    "app_auth_instance_register_field_username_hint": "lain",
+    "app_auth_instance_register_field_captcha_label": "Капча*",
+    "app_auth_instance_register_field_captcha_hint": "Символы с картинк",
+    "app_auth_instance_register_field_email_label": "Email*",
+    "app_auth_instance_register_field_email_hint": "you@example.com",
+    "app_auth_instance_register_field_password_label": "Пароль*",
+    "app_auth_instance_register_field_password_hint": "Пароль",
+    "app_auth_instance_register_field_confirmPassword_label": "Подтвердите пароль*",
+    "app_auth_instance_register_field_confirmPassword_hint": "Пароль",
+    "app_auth_instance_register_action_createAccount": "Регистрация",
+    "app_chat_pleroma_share_title": "Поделится в чаты",
+    "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новый чат. Нажмите для загрузки.} other{{count} новых чатов. Нажмите для загрузки.}}",
+    "app_chat_pleroma_accounts_title": "Аккаунты чата",
+    "app_chat_preview_you": "Вы: {message}",
+    "app_chat_post_field_content_hint": "Начните сообщение",
+    "app_chat_post_error_empty_dialog_title": "Невозможно отправить пустое сообщение",
+    "app_chat_conversation_share_title": "Поделиться в беседы",
+    "app_chat_conversation_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новая беседа. Нажмите для загрузки.} other{{count} новых бесед. Нажмите для загрузки.}}",
+    "app_chat_conversation_accounts_title": "Аккаунты в беседе",
+    "app_chat_conversation_start_title": "Начать беседу",
+    "app_file_image_crop_title": "Обрезать как",
+    "app_home_tab_chat_conversation_title": "Беседы",
+    "app_home_tab_chat_conversation_action_switchToChats": "В чаты",
+    "app_home_tab_chat_pleroma_title": "Чаты",
+    "app_home_tab_chat_pleroma_notSupported_mastodon": "Чаты не поддерживаются на Mastodon серверах",
+    "app_home_tab_chat_pleroma_notSupported_pleroma": "Этот сервер не поддерживает функционал чатов",
+    "app_home_tab_chat_pleroma_action_switch_to_dms": "В беседы",
+    "app_notification_action_popup_title": "Операции с оповещением",
+    "app_notification_action_markAsRead": "Пометить как прочитанное",
+    "app_notification_action_dismiss": "Скрыть",
+    "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новое оповещение. Нажмите для загрузки.} other{{count} новых оповещений. Нажмите для загрузки.}}",
+    "app_notification_push_permission_ask_dialog_title": "Push оповещения",
+    "app_notification_push_permission_ask_dialog_content": "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi push прокси сервер",
+    "app_notification_push_permission_declined_dialog_title": "Необходимо разрешение",
+    "app_notification_push_permission_declined_dialog_content": "Включите push оповещения в настройках для получения обновлений",
+    "app_notification_push_settings_title": "Настройки push оповещений",
+    "app_notification_push_settings_desc": "Все сообщения буду пересланы через Fedi push прокси сервер",
+    "app_notification_push_settings_field_favourites_label": "Лайки",
+    "app_notification_push_settings_field_follows_label": "Подписки",
+    "app_notification_push_settings_field_mentions_label": "Упоминания",
+    "app_notification_push_settings_field_reblogs_label": "Реблоги",
+    "app_notification_push_settings_field_polls_label": "Опросы",
+    "app_notification_push_settings_field_chat_label": "Чаты",
+    "app_notification_header_follow": "Подписался на вас",
+    "app_notification_header_favourite": "Понравилось: {status}",
+    "app_notification_header_mention": "<b>Упоминул вас:<\/b> {status}",
+    "app_notification_header_reblog": "Поделился: {status}",
+    "app_notification_header_poll": "Опрос окончен",
+    "app_notification_header_move": "Перемещен",
+    "app_notification_header_followRequest": "Запрос подписки",
+    "app_notification_header_pleromaEmojiReaction": "{emoji} для: \"{status}",
+    "app_notification_header_pleromaChatMention": "Оповещения в чате \"{message}\"",
+    "app_notification_header_unknown": "Неизвестно: {status}",
+    "app_notification_dismissed": "Скрыто",
+    "app_timeline_loading": "Загрузка лент новостей",
+    "app_timeline_create_title": "Создать новую ленту новостей",
+    "app_timeline_create_field_title_label": "Название",
+    "app_timeline_create_field_title_hint": "Название ленты новостей",
+    "app_timeline_create_field_id_label": "Уникальный идентификатор",
+    "app_timeline_type_home": "Подписки",
+    "app_timeline_type_public": "Публичные",
+    "app_timeline_type_public_all": "Все",
+    "app_timeline_type_public_local": "Локальные",
+    "app_timeline_type_customList": "Список",
+    "app_timeline_type_hashtag": "Хэш-тэг",
+    "app_timeline_type_account": "Аккаунт",
+    "app_timeline_type_field_label": "Тип",
+    "app_timeline_type_field_null": "Не выбранно",
+    "app_timeline_type_field_chooser_dialog_title": "Выберите тип",
+    "app_timeline_storage_title": "Ленты новостей",
+    "app_timeline_storage_empty": "Ничего не найдено",
+    "app_timeline_storage_appBar_action_edit": "Редактировать",
+    "app_timeline_storage_appBar_action_done": "Сохранить",
+    "app_timeline_storage_action_add": "Добавить ленту..",
+    "app_timeline_storage_delete_dialog_title": "Удалить",
+    "app_timeline_storage_delete_dialog_content": "Вы действительно хотите удалить ленту: {timeline}?",
+    "app_timeline_storage_delete_dialog_action_delete": "Удалить",
+    "app_timeline_settings_title": "Настройки:",
+    "app_timeline_settings_content": "Лента {timeline}",
+    "app_timeline_settings_replyVisibilityFilter_self": "Свои",
+    "app_timeline_settings_replyVisibilityFilter_following": "Подписки",
+    "app_timeline_settings_replyVisibilityFilter_field_label": "Фильтр видимости ответов",
+    "app_timeline_settings_replyVisibilityFilter_field_null": "Не выбрано",
+    "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Выберите фильтер",
+    "app_timeline_settings_onlyFromRemoteAccount_field_label": "Только от аккаунта",
+    "app_timeline_settings_onlyFromRemoteAccount_field_null": "Не выбрано",
+    "app_timeline_settings_withRemoteHashtag_field_label": "С хэш-тэгом",
+    "app_timeline_settings_withRemoteHashtag_field_hint": "pleroma",
+    "app_timeline_settings_onlyInRemoteList_field_label": "Только в списке",
+    "app_timeline_settings_onlyInRemoteList_field_null": "Не выбрано",
+    "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Выберите список",
+    "app_timeline_settings_field_notSupported_desc": "Не поддерживается на этом сервере",
+    "app_timeline_settings_field_onlyWithMedia_label": "Только с медиа",
+    "app_timeline_settings_field_onlyRemote_label": "Только НЕ на этом сервере",
+    "app_timeline_settings_field_onlyLocal_label": "Только на этом сервере",
+    "app_timeline_settings_field_onlyPinned_label": "Только прикреленные",
+    "app_timeline_settings_field_withMuted_label": "Вместе с скрытыми",
+    "app_timeline_settings_field_excludeReblogs_label": "Убрать реблоги",
+    "app_timeline_settings_field_excludeReplies_label": "Убрать ответы",
+    "app_timeline_settings_field_excludeNsfw_label": "Убрать NSFW",
+    "app_list_empty": "Ничего не найдено",
+    "app_list_cantUpdateFromNetwork": "Не получилось обновить по сети",
+    "app_list_loading_state_canLoadMore": "Можно загрузить больше",
+    "app_list_loading_state_noMoreData": "Больше данных нет",
+    "app_list_loading_state_failed": "Не получилось загрузить больше",
+    "app_list_refresh_unableToFetch": "Не получилось обновить",
+    "app_media_player_error_desc": "Что-то пошло не так",
+    "app_media_player_error_action_reload": "Перезагрузить",
+    "app_media_player_error_action_moreDetails": "Больше информации",
+    "app_media_attachment_type_gallery": "Галерея",
+    "app_media_attachment_type_photo": "Фото",
+    "app_media_attachment_type_video": "Видео",
+    "app_media_attachment_type_file": "Файл",
+    "app_media_attachment_type_audio": "Аудио",
+    "app_media_attachment_addToGallery_progress_content": "Сохранение...",
+    "app_media_attachment_addToGallery_error_dialog_title": "Не получилось сохранить",
+    "app_media_attachment_addToGallery_error_dialog_content": "Тип файла не поддерживается, ошибка сети или недостаточно привелегий",
+    "app_media_attachment_details_title": "Прикрепленные файлы",
+    "app_media_attachment_details_notSupported_type": "Не поддерживается {mediaType}",
+    "app_media_attachment_upload_remove_dialog_content": "Вы действительно хотите убрать прикрепленный файл",
+    "app_media_attachment_upload_remove_dialog_action_remove": "Убрать",
+    "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
+    "app_search_title": "Поиск",
+    "app_search_recent_title": "Последнии",
+    "app_search_recent_empty": "Нет истории поиска",
+    "app_search_tab_all": "Все",
+    "app_search_tab_accounts": "Пользователи",
+    "app_search_tab_statuses": "Записи",
+    "app_search_tab_hashtags": "Хэш-теги",
+    "app_search_field_input_hint": "Поиск",
+    "app_status_draft_title": "Черновики",
+    "app_status_draft_state_canceled": "Отменен",
+    "app_status_draft_state_alreadyPosted": "Уже опубликовано",
+    "app_status_draft_edit_title": "Рекдактировать",
+    "app_status_emoji_error_cantAdd_dialog_title": "Не получилось добавить эмоджи",
+    "app_status_emoji_error_cantAdd_dialog_content": "Ошибка: {errorMessage}",
+    "app_status_thread_start_loading": "Загрузка начального статуса",
+    "app_status_thread_post_hint": "Ответ: @{accountAcct}",
+    "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новая запись. Нажмите для загрузки.} other{{count} новых записей. Нажмите для загрузки.}}",
+    "app_status_scheduled_title": "Очередь",
+    "app_status_scheduled_state_canceled": "Отменен",
+    "app_status_scheduled_state_alreadyPosted": "Уже опубликован",
+    "app_status_scheduled_datetime_picker_title": "Запланировать",
+    "app_status_scheduled_edit_title": "Запланированная запись",
+    "app_status_collapsible_action_collapse": "Свернуть",
+    "app_status_collapsible_action_expand": "Развернуть",
+    "app_status_action_delete": "Удалить",
+    "app_status_action_mute": "Скрыть записи из беседы",
+    "app_status_action_unmute": "Не скрывать записизаписи из беседы",
+    "app_status_action_openInBrowser": "Открыть в браузере",
+    "app_status_action_pin": "Прикрепить",
+    "app_status_action_unpin": "Открепить",
+    "app_status_action_bookmark": "В закладки",
+    "app_status_action_unbookmark": "Убрать из закладок",
+    "app_status_action_copyLink": "Скопировать ссылку",
+    "app_status_action_showThisThread": "Показать эту беседу",
+    "app_status_action_popup_title": "Операции с записью",
+    "app_status_nsfw_chip": "NSFW!",
+    "app_status_nsfw_action_view": "Нажмите для загрузки",
+    "app_status_deleted_desc": "Запись удалена",
+    "app_status_spoiler_chip": "Спойлеры!",
+    "app_status_spoiler_action_view": "Нажмите для загрузки",
+    "app_status_copyLink_toast": "Скопировано",
+    "app_status_favouritedBy_title": "Понравилось:",
+    "app_status_rebloggedBy_title": "Поделились:",
+    "app_status_post_poll_field_option_hint": "Ответ {optionNumber}",
+    "app_status_post_poll_field_multiply_label": "Мульти-выбор",
+    "app_status_post_poll_field_length_label": "Истекает",
+    "app_status_post_poll_field_length_picker_title": "Истекает",
+    "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильное время",
+    "app_status_post_schedule_error_notInFuture_dialog_content": "Запланированная запись должна быть хотя бы через 5 минут в будущем",
+    "app_status_post_dialog_async_content": "Публикация...",
+    "app_status_post_dialog_error_title_post": "Невозможно опубликовать запись",
+    "app_status_post_dialog_error_title_schedule": "Невозможно запланировать запись",
+    "app_status_post_dialog_error_content": "Ошибка: {errorMessage}",
+    "app_status_post_toast_success_post": "Статус опубликован",
+    "app_status_post_toast_success_schedule": "Статус запланирован",
+    "app_status_post_action_post": "Запись",
+    "app_status_post_visibility_title": "Видимость",
+    "app_status_post_visibility_state_public": "Публичная",
+    "app_status_post_visibility_state_unlisted": "Не публичная",
+    "app_status_post_visibility_state_direct": "Только беседа",
+    "app_status_post_visibility_state_list": "Только в списках",
+    "app_status_post_visibility_state_private": "Приватная",
+    "app_status_post_error_empty_dialog_title": "Не возможно отправить пустое сообщение",
+    "app_status_post_error_poll_dialog_title": "Введите минимум два ответа",
+    "app_status_post_field_subject": "Тема (опционально)",
+    "app_status_post_field_message_hint": "Что произошло сегодня?",
+    "app_status_post_new_title": "Новая запись",
+    "app_status_post_new_unsaved_dialog_title": "У вас есть не сохраненны данные",
+    "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Сохранить как черновик",
+    "app_status_post_new_unsaved_dialog_action_discard": "Удалить",
+    "app_status_reblog_header": "поделился",
+    "app_status_reply_header": "в ответ к",
+    "app_status_reply_loading_progress": "Загрузка стартовой записи",
+    "app_status_reply_loading_failed": "Ошибка при загрузке стартовой записи",
+    "app_status_reply_replyingTo": "Ответ: {accountAcct}",
+    "app_tos_title": "Условия использования",
+    "async_init_state_notStarted": "Асинхронная инициализация не началась",
+    "async_init_state_failed": "Ошибка инициализации: {errorMessage}",
+    "file_picker_empty": "Ничего не найдено",
+    "file_picker_single_title": "Выберите файл",
+    "pagination_list_empty": "Ничего не найдено",
+    "permission_grant_action_grant": "Разрешить",
+    "dialog_progress_content": "Загрузка...",
+    "dialog_progress_action_cancel": "Отмена",
+    "dialog_error_title": "Что-то пошло не так",
+    "dialog_error_content": "Ошибка: \n{errorMessage}",
+    "dialog_action_yes": "Да",
+    "dialog_action_no": "Нет",
+    "dialog_action_ok": "Хорошо",
+    "dialog_action_cancel": "Отмена",
+    "form_field_value_error_null_desc": "Необходимо",
+    "form_field_text_email_error_invalid_desc": "Неправильный email",
+    "form_field_text_url_error_invalid_desc": "Неправильный URL",
+    "form_field_text_password_error_notMatch_desc": "Пароли должны совпадать",
+    "form_field_text_error_empty_desc": "Не может быть пустым",
+    "form_field_text_error_length_minOnly_desc": "Минимальная длина: {minCharactersCount}",
+    "form_field_text_error_length_maxOnly_desc": "Максимальная длина: {maxCharactersCount}",
+    "form_field_text_error_length_minAndMax_desc": "Длина должна быть между {minCharactersCount} и {maxCharactersCount}",
+    "link_error_dialog_title": "Не возможно открыть URL",
+    "link_error_dialog_content": "URL {url} имеет неправильный формат",
+    "duration_day": "{count,plural, =1{1 день} other{{count} дни}}",
+    "duration_hour": "{count,plural, =1{1 час} other{{count} часы}}",
+    "duration_minute": "{count,plural, =1{1 минута} other{{count} минуты}}",
+    "timeago_prefixAgo": "",
+    "timeago_prefixFromNow": "",
+    "timeago_suffixAgo": "",
+    "timeago_suffixFromNow": "",
+    "timeago_lessThanOneMinute": "сейчас",
+    "timeago_aboutAMinute": "1 мин",
+    "timeago_minutes": "{minutes,plural, =1{1 мин} other{{minutes} мин}}",
+    "timeago_aboutAnHour": "~1 ч",
+    "timeago_hours": "{hours,plural, =1{1 ч} other{{hours} ч}}",
+    "timeago_aDay": "~1 д",
+    "timeago_days": "{days,plural, =1{1 д} other{{days} д}}",
+    "timeago_aboutAMonth": "~1 мес",
+    "timeago_months": "{months,plural, =1{1 мес} other{{months} мес}}",
+    "timeago_aboutAYear": "~1 г",
+    "timeago_years": "{years,plural, =1{1 г} other{{years} г}}",
+    "timeago_wordSeparator": " ",
+    "app_googlePlay_appName": "Fedi для Pleroma и Mastodon",
+    "@app_googlePlay_appName": {
+        "description": "GooglePlay title"
     },
-    "emoji": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_pleromaChatMention": "Оповещения в чате \"{message}\"",
-  "@app_notification_header_pleromaChatMention": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_header_unknown": "Неизвестно: {status}",
-  "@app_notification_header_unknown": {
-    "placeholders": {
-      "status": {
-        "type": "String"
-      }
-    }
-  },
-  "app_notification_dismissed": "Скрыто",
-  "app_timeline_loading": "Загрузка лент новостей",
-  "app_timeline_create_title": "Создать новую ленту новостей",
-  "app_timeline_create_field_title_label": "Название",
-  "app_timeline_create_field_title_hint": "Название ленты новостей",
-  "app_timeline_create_field_id_label": "Уникальный идентификатор",
-  "app_timeline_type_home": "Подписки",
-  "app_timeline_type_public": "Публичные",
-  "app_timeline_type_public_all": "Все",
-  "app_timeline_type_public_local": "Локальные",
-  "app_timeline_type_customList": "Список",
-  "app_timeline_type_hashtag": "Хэш-тэг",
-  "app_timeline_type_account": "Аккаунт",
-  "app_timeline_type_field_label": "Тип",
-  "app_timeline_type_field_null": "Не выбранно",
-  "app_timeline_type_field_chooser_dialog_title": "Выберите тип",
-  "app_timeline_storage_title": "Ленты новостей",
-  "app_timeline_storage_empty": "Ничего не найдено",
-  "app_timeline_storage_appBar_action_edit": "Редактировать",
-  "app_timeline_storage_appBar_action_done": "Сохранить",
-  "app_timeline_storage_action_add": "Добавить ленту..",
-  "app_timeline_storage_delete_dialog_title": "Удалить",
-  "app_timeline_storage_delete_dialog_content": "Вы действительно хотите удалить ленту: {timeline}?",
-  "app_timeline_storage_delete_dialog_action_delete": "Удалить",
-  "@app_timeline_storage_delete_dialog_action_delete": {
-    "timeline": {
-      "timeline": {
-        "type": "String"
-      }
-    }
-  },
-  "app_timeline_settings_title": "Настройки:",
-  "app_timeline_settings_content": "Лента {timeline}",
-  "@app_timeline_settings_content": {
-    "placeholders": {
-      "timeline": {
-        "type": "String"
-      }
-    }
-  },
-  "app_timeline_settings_replyVisibilityFilter_self": "Свои",
-  "app_timeline_settings_replyVisibilityFilter_following": "Подписки",
-  "app_timeline_settings_replyVisibilityFilter_field_label": "Фильтр видимости ответов",
-  "app_timeline_settings_replyVisibilityFilter_field_null": "Не выбрано",
-  "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Выберите фильтер",
-  "app_timeline_settings_onlyFromRemoteAccount_field_label": "Только от аккаунта",
-  "app_timeline_settings_onlyFromRemoteAccount_field_null": "Не выбрано",
-  "app_timeline_settings_withRemoteHashtag_field_label": "С хэш-тэгом",
-  "app_timeline_settings_withRemoteHashtag_field_hint": "pleroma",
-  "app_timeline_settings_onlyInRemoteList_field_label": "Только в списке",
-  "app_timeline_settings_onlyInRemoteList_field_null": "Не выбрано",
-  "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Выберите список",
-  "app_timeline_settings_field_notSupported_desc": "Не поддерживается на этом сервере",
-  "app_timeline_settings_field_onlyWithMedia_label": "Только с медиа",
-  "app_timeline_settings_field_onlyRemote_label": "Только НЕ на этом сервере",
-  "app_timeline_settings_field_onlyLocal_label": "Только на этом сервере",
-  "app_timeline_settings_field_onlyPinned_label": "Только прикреленные",
-  "app_timeline_settings_field_withMuted_label": "Вместе с скрытыми",
-  "app_timeline_settings_field_excludeReblogs_label": "Убрать реблоги",
-  "app_timeline_settings_field_excludeReplies_label": "Убрать ответы",
-  "app_timeline_settings_field_excludeNsfw_label": "Убрать NSFW",
-  "app_list_empty": "Ничего не найдено",
-  "app_list_cantUpdateFromNetwork": "Не получилось обновить по сети",
-  "app_list_loading_state_canLoadMore": "Можно загрузить больше",
-  "app_list_loading_state_noMoreData": "Больше данных нет",
-  "app_list_loading_state_failed": "Не получилось загрузить больше",
-  "app_list_refresh_unableToFetch": "Не получилось обновить",
-  "app_media_player_error_desc": "Что-то пошло не так",
-  "app_media_player_error_action_reload": "Перезагрузить",
-  "app_media_player_error_action_moreDetails": "Больше информации",
-  "app_media_attachment_type_gallery": "Галерея",
-  "app_media_attachment_type_photo": "Фото",
-  "app_media_attachment_type_video": "Видео",
-  "app_media_attachment_type_file": "Файл",
-  "app_media_attachment_type_audio": "Аудио",
-  "app_media_attachment_addToGallery_progress_content": "Сохранение...",
-  "app_media_attachment_addToGallery_error_dialog_title": "Не получилось сохранить",
-  "app_media_attachment_addToGallery_error_dialog_content": "Тип файла не поддерживается, ошибка сети или недостаточно привелегий",
-  "app_media_attachment_details_title": "Прикрепленные файлы",
-  "app_media_attachment_details_notSupported_type": "Не поддерживается {mediaType}",
-  "@app_media_attachment_details_notSupported_type": {
-    "placeholders": {
-      "mediaType": {
-        "type": "String"
-      }
-    }
-  },
-  "app_media_attachment_upload_remove_dialog_content": "Вы действительно хотите убрать прикрепленный файл",
-  "app_media_attachment_upload_remove_dialog_action_remove": "Убрать",
-  "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
-  "app_search_title": "Поиск",
-  "app_search_recent_title": "Последнии",
-  "app_search_recent_empty": "Нет истории поиска",
-  "app_search_tab_all": "Все",
-  "app_search_tab_accounts": "Пользователи",
-  "app_search_tab_statuses": "Записи",
-  "app_search_tab_hashtags": "Хэш-теги",
-  "app_search_field_input_hint": "Поиск",
-  "app_status_draft_title": "Черновики",
-  "app_status_draft_state_canceled": "Отменен",
-  "app_status_draft_state_alreadyPosted": "Уже опубликовано",
-  "app_status_draft_edit_title": "Рекдактировать",
-  "app_status_emoji_error_cantAdd_dialog_title": "Не получилось добавить эмоджи",
-  "app_status_emoji_error_cantAdd_dialog_content": "Ошибка: {errorMessage}",
-  "@app_status_emoji_error_cantAdd_dialog_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_thread_start_loading": "Загрузка начального статуса",
-  "app_status_thread_post_hint": "Ответ: @{accountAcct}",
-  "@app_status_thread_post_hint": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новая запись. Нажмите для загрузки.} other{{count} новых записей. Нажмите для загрузки.}}",
-  "@app_status_list_newItems_action_tapToLoadNew": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "app_status_scheduled_title": "Очередь",
-  "app_status_scheduled_state_canceled": "Отменен",
-  "app_status_scheduled_state_alreadyPosted": "Уже опубликован",
-  "app_status_scheduled_datetime_picker_title": "Запланировать",
-  "app_status_scheduled_edit_title": "Запланированная запись",
-  "app_status_collapsible_action_collapse": "Свернуть",
-  "app_status_collapsible_action_expand": "Развернуть",
-  "app_status_action_delete": "Удалить",
-  "app_status_action_mute": "Скрыть записи из беседы",
-  "app_status_action_unmute": "Не скрывать записизаписи из беседы",
-  "app_status_action_openInBrowser": "Открыть в браузере",
-  "app_status_action_pin": "Прикрепить",
-  "app_status_action_unpin": "Открепить",
-  "app_status_action_bookmark": "В закладки",
-  "app_status_action_unbookmark": "Убрать из закладок",
-  "app_status_action_copyLink": "Скопировать ссылку",
-  "app_status_action_showThisThread": "Показать эту беседу",
-  "app_status_action_popup_title": "Операции с записью",
-  "app_status_nsfw_chip": "NSFW!",
-  "app_status_nsfw_action_view": "Нажмите для загрузки",
-  "app_status_deleted_desc": "Запись удалена",
-  "app_status_spoiler_chip": "Спойлеры!",
-  "app_status_spoiler_action_view": "Нажмите для загрузки",
-  "app_status_copyLink_toast": "Скопировано",
-  "app_status_favouritedBy_title": "Понравилось:",
-  "app_status_rebloggedBy_title": "Поделились:",
-  "app_status_post_poll_field_option_hint": "Ответ {optionNumber}",
-  "@app_status_post_poll_field_option_hint": {
-    "placeholders": {
-      "optionNumber": {
-        "type": "int"
-      }
-    }
-  },
-  "app_status_post_poll_field_multiply_label": "Мульти-выбор",
-  "app_status_post_poll_field_length_label": "Истекает",
-  "app_status_post_poll_field_length_picker_title": "Истекает",
-  "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильное время",
-  "app_status_post_schedule_error_notInFuture_dialog_content": "Запланированная запись должна быть хотя бы через 5 минут в будущем",
-  "app_status_post_dialog_async_content": "Публикация...",
-  "app_status_post_dialog_error_title_post": "Невозможно опубликовать запись",
-  "app_status_post_dialog_error_title_schedule": "Невозможно запланировать запись",
-  "app_status_post_dialog_error_content": "Ошибка: {errorMessage}",
-  "@app_status_post_dialog_error_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "app_status_post_toast_success_post": "Статус опубликован",
-  "app_status_post_toast_success_schedule": "Статус запланирован",
-  "app_status_post_action_post": "Запись",
-  "app_status_post_visibility_title": "Видимость",
-  "app_status_post_visibility_state_public": "Публичная",
-  "app_status_post_visibility_state_unlisted": "Не публичная",
-  "app_status_post_visibility_state_direct": "Только беседа",
-  "app_status_post_visibility_state_list": "Только в списках",
-  "app_status_post_visibility_state_private": "Приватная",
-  "app_status_post_error_empty_dialog_title": "Не возможно отправить пустое сообщение",
-  "app_status_post_error_poll_dialog_title": "Введите минимум два ответа",
-  "app_status_post_field_subject": "Тема (опционально)",
-  "app_status_post_field_message_hint": "Что произошло сегодня?",
-  "app_status_post_new_title": "Новая запись",
-  "app_status_post_new_unsaved_dialog_title": "У вас есть не сохраненны данные",
-  "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Сохранить как черновик",
-  "app_status_post_new_unsaved_dialog_action_discard": "Удалить",
-  "app_status_reblog_header": "поделился",
-  "app_status_reply_header": "в ответ к",
-  "app_status_reply_loading_progress": "Загрузка стартовой записи",
-  "app_status_reply_loading_failed": "Ошибка при загрузке стартовой записи",
-  "app_status_reply_replyingTo": "Ответ: {accountAcct}",
-  "@app_status_reply_replyingTo": {
-    "placeholders": {
-      "accountAcct": {
-        "type": "String"
-      }
-    }
-  },
-  "app_tos_title": "Условия использования",
-  "async_init_state_notStarted": "Асинхронная инициализация не началась",
-  "async_init_state_failed": "Ошибка инициализации: {errorMessage}",
-  "@async_init_state_failed": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "file_picker_empty": "Ничего не найдено",
-  "file_picker_single_title": "Выберите файл",
-  "pagination_list_empty": "Ничего не найдено",
-  "permission_grant_action_grant": "Разрешить",
-  "dialog_progress_content": "Загрузка...",
-  "dialog_progress_action_cancel": "Отмена",
-  "dialog_error_title": "Что-то пошло не так",
-  "dialog_error_content": "Ошибка: \n{errorMessage}",
-  "@dialog_error_content": {
-    "placeholders": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "dialog_action_yes": "Да",
-  "dialog_action_no": "Нет",
-  "dialog_action_ok": "Хорошо",
-  "dialog_action_cancel": "Отмена",
-  "form_field_value_error_null_desc": "Необходимо",
-  "form_field_text_email_error_invalid_desc": "Неправильный email",
-  "form_field_text_url_error_invalid_desc": "Неправильный URL",
-  "form_field_text_password_error_notMatch_desc": "Пароли должны совпадать",
-  "form_field_text_error_empty_desc": "Не может быть пустым",
-  "form_field_text_error_length_minOnly_desc": "Минимальная длина: {minCharactersCount}",
-  "@form_field_text_error_length_minOnly_desc": {
-    "minCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
-    }
-  },
-  "form_field_text_error_length_maxOnly_desc": "Максимальная длина: {maxCharactersCount}",
-  "@form_field_text_error_length_maxOnly_desc": {
-    "maxCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
-    }
-  },
-  "form_field_text_error_length_minAndMax_desc": "Длина должна быть между {minCharactersCount} и {maxCharactersCount}",
-  "@form_field_text_error_length_minAndMax_desc": {
-    "minCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
+    "app_googlePlay_shortDescription": "Клиент для серверов социальных сетей Pleroma и Mastodon.",
+    "@app_googlePlay_shortDescription": {
+        "description": "GooglePlay short description"
     },
-    "maxCharactersCount": {
-      "errorMessage": {
-        "type": "int"
-      }
+    "app_googlePlay_fullDescription": "Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей.",
+    "@app_googlePlay_fullDescription": {
+        "description": "GooglePlay full description"
+    },
+    "app_appStore_promotionalText": "Клиент для серверов социальных сетей Pleroma и Mastodon.",
+    "@app_appStore_promotionalText": {
+        "description": "AppStore short description"
+    },
+    "app_appStore_description": "Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей.",
+    "@app_appStore_description": {
+        "description": "AppStore full description"
+    },
+    "app_appStore_title": "Fedi для Pleroma и Mastodon",
+    "@app_appStore_title": {
+        "description": "AppStore title"
     }
-  },
-  "link_error_dialog_title": "Не возможно открыть URL",
-  "link_error_dialog_content": "URL {url} имеет неправильный формат",
-  "@link_error_dialog_content": {
-    "url": {
-      "errorMessage": {
-        "type": "String"
-      }
-    }
-  },
-  "duration_day": "{count,plural, =1{1 день} other{{count} дни}}",
-  "@duration_day": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "duration_hour": "{count,plural, =1{1 час} other{{count} часы}}",
-  "@duration_hour": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "duration_minute": "{count,plural, =1{1 минута} other{{count} минуты}}",
-  "@duration_minute": {
-    "placeholders": {
-      "count": {}
-    }
-  },
-  "timeago_prefixAgo": "",
-  "timeago_prefixFromNow": "",
-  "timeago_suffixAgo": "",
-  "timeago_suffixFromNow": "",
-  "timeago_lessThanOneMinute": "сейчас",
-  "@timeago_lessThanOneMinute": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "timeago_aboutAMinute": "1 мин",
-  "@timeago_aboutAMinute": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "timeago_minutes": "{minutes,plural, =1{1 мин} other{{minutes} мин}}",
-  "@timeago_minutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
-  "timeago_aboutAnHour": "~1 ч",
-  "@timeago_aboutAnHour": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
-  "timeago_hours": "{hours,plural, =1{1 ч} other{{hours} ч}}",
-  "@timeago_hours": {
-    "placeholders": {
-      "hours": {}
-    }
-  },
-  "timeago_aDay": "~1 д",
-  "@timeago_aDay": {
-    "placeholders": {
-      "hours": {}
-    }
-  },
-  "timeago_days": "{days,plural, =1{1 д} other{{days} д}}",
-  "@timeago_days": {
-    "placeholders": {
-      "days": {}
-    }
-  },
-  "timeago_aboutAMonth": "~1 мес",
-  "@timeago_aboutAMonth": {
-    "placeholders": {
-      "days": {}
-    }
-  },
-  "timeago_months": "{months,plural, =1{1 мес} other{{months} мес}}",
-  "@timeago_months": {
-    "placeholders": {
-      "months": {}
-    }
-  },
-  "timeago_aboutAYear": "~1 г",
-  "@timeago_aboutAYear": {
-    "placeholders": {
-      "year": {}
-    }
-  },
-  "timeago_years": "{years,plural, =1{1 г} other{{years} г}}",
-  "@timeago_years": {
-    "placeholders": {
-      "years": {}
-    }
-  },
-  "timeago_wordSeparator": " "
 }
