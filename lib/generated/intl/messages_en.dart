@@ -196,6 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_statuses_tab_withoutReplies" : MessageLookupByLibrary.simpleMessage("Posts"),
     "app_appStore_description" : MessageLookupByLibrary.simpleMessage("A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app."),
     "app_appStore_promotionalText" : MessageLookupByLibrary.simpleMessage("A client for Pleroma and Mastodon social network instances"),
+    "app_appStore_subtitle" : MessageLookupByLibrary.simpleMessage("A client for Pleroma and Mastodon social network instances"),
     "app_appStore_title" : MessageLookupByLibrary.simpleMessage("Fedi for Pleroma and Mastodon"),
     "app_async_pleroma_error_common_dialog_content" : m5,
     "app_async_pleroma_error_common_dialog_title" : MessageLookupByLibrary.simpleMessage("Pleroma API error"),
