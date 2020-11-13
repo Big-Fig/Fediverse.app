@@ -15,8 +15,8 @@ abstract class IPleromaTag implements IMastodonTag {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 74)
+//@HiveType()
+@HiveType(typeId: -32 + 74)
 @JsonSerializable()
 class PleromaTag implements IPleromaTag {
   @override

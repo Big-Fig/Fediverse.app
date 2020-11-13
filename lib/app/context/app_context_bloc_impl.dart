@@ -93,35 +93,40 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
 
-    var localPreferencesService = SharedPreferencesLocalPreferencesService();
+    var hiveLocalPreferencesService =
+        HiveLocalPreferencesService(boxName: "local_preferences_v2");
+    await hiveLocalPreferencesService.performAsyncInit();
+    var hiveLocalPreferencesServiceExist =
+        await hiveLocalPreferencesService.isStorageExist();
+    if (!hiveLocalPreferencesServiceExist) {
+      var sharedPreferencesLocalPreferencesService =
+          SharedPreferencesLocalPreferencesService();
 
-    await localPreferencesService.performAsyncInit();
+      await sharedPreferencesLocalPreferencesService.performAsyncInit();
 
-    final sharedPreferencesStorageExist =
-        await localPreferencesService.isStorageExist();
-    _logger.finest(() =>
-        "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
-    if (!sharedPreferencesStorageExist) {
-      var hivePreferencesService =
-          HiveLocalPreferencesService(boxName: "local_preferences");
-      await hivePreferencesService.performAsyncInit();
-      var hivePreferencesExist = await hivePreferencesService.isStorageExist();
-      _logger.finest(() => "hivePreferencesExist == ${hivePreferencesExist}");
-      if (hivePreferencesExist) {
+      final sharedPreferencesStorageExist =
+          await sharedPreferencesLocalPreferencesService.isStorageExist();
+      _logger.finest(() =>
+          "sharedPreferencesStorageExist == ${sharedPreferencesStorageExist}}");
+
+      var sharedPreferencesLocalPreferencesServiceExist =
+          await sharedPreferencesLocalPreferencesService.isStorageExist();
+      _logger.finest(() => "sharedPreferencesLocalPreferencesServiceExist =="
+          " ${sharedPreferencesLocalPreferencesServiceExist}");
+      if (sharedPreferencesLocalPreferencesServiceExist) {
         var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
-          inputService: hivePreferencesService,
-          outputService: localPreferencesService,
+          inputService: sharedPreferencesLocalPreferencesService,
+          outputService: hiveLocalPreferencesService,
         );
 
         await migrationBloc.migrateData();
-        await hivePreferencesService.clearAllValuesAndDeleteStorage();
+        await sharedPreferencesLocalPreferencesService
+            .clearAllValuesAndDeleteStorage();
       }
-
-      await localPreferencesService.putStorageCreatedKey();
     }
 
     await globalProviderService.asyncInitAndRegister<ILocalPreferencesService>(
-        localPreferencesService);
+        hiveLocalPreferencesService);
 
     var cameraPermissionBloc =
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
@@ -141,13 +146,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
         PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
-            localPreferencesService);
+            hiveLocalPreferencesService);
     await globalProviderService.asyncInitAndRegister<
             IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
 
-    var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(localPreferencesService);
+    var instanceListLocalPreferenceBloc = AuthInstanceListLocalPreferenceBloc(
+        hiveLocalPreferencesService);
     await globalProviderService.asyncInitAndRegister<
         IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
@@ -157,7 +162,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(localPreferencesService);
+        CurrentAuthInstanceLocalPreferenceBloc(
+            hiveLocalPreferencesService);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
@@ -188,7 +194,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
     var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferencesBloc(localPreferencesService);
+        PushHandlerUnhandledLocalPreferencesBloc(
+            hiveLocalPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
@@ -209,7 +216,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: webSocketsService);
 
     var currentUiThemeIdLocalPreferenceBloc =
-        CurrentUiThemeIdLocalPreferenceBloc(localPreferencesService);
+        CurrentUiThemeIdLocalPreferenceBloc(
+            hiveLocalPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
@@ -236,7 +244,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var localizationCurrentLocaleLocalPreferencesBloc =
         LocalizationCurrentLocaleLocalPreferencesBloc(
-      localPreferencesService,
+          hiveLocalPreferencesService,
     );
 
     await globalProviderService

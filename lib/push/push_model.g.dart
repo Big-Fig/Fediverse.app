@@ -8,10 +8,13 @@ part of 'push_model.dart';
 
 class PushMessageAdapter extends TypeAdapter<PushMessage> {
   @override
+  final int typeId = 35;
+
+  @override
   PushMessage read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushMessage(
       typeString: fields[3] as String,
@@ -31,14 +34,27 @@ class PushMessageAdapter extends TypeAdapter<PushMessage> {
       ..writeByte(3)
       ..write(obj.typeString);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PushMessageAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PushNotificationAdapter extends TypeAdapter<PushNotification> {
   @override
+  final int typeId = 41;
+
+  @override
   PushNotification read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushNotification(
       title: fields[0] as String,
@@ -55,6 +71,16 @@ class PushNotificationAdapter extends TypeAdapter<PushNotification> {
       ..writeByte(1)
       ..write(obj.body);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PushNotificationAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

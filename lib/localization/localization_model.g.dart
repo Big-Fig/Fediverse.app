@@ -8,10 +8,13 @@ part of 'localization_model.dart';
 
 class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
   @override
+  final int typeId = 50;
+
+  @override
   LocalizationLocale read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocalizationLocale(
       languageCode: fields[0] as String,
@@ -31,6 +34,16 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
       ..writeByte(2)
       ..write(obj.countryCode);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocalizationLocaleAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

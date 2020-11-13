@@ -18,8 +18,8 @@ Function eq = const ListEquality().equals;
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 79)
+//@HiveType()
+@HiveType(typeId: -32 + 79)
 @JsonSerializable(explicitToJson: true)
 class TimelineSettings extends IPreferencesObject {
   static TimelineSettings createDefaultPublicSettings() =>

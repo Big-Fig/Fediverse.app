@@ -8,10 +8,13 @@ part of 'pleroma_oauth_model.dart';
 
 class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
   @override
+  final int typeId = 19;
+
+  @override
   PleromaOAuthToken read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaOAuthToken(
       accessToken: fields[0] as String,
@@ -34,6 +37,16 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
       ..writeByte(3)
       ..write(obj.createdAt);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaOAuthTokenAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

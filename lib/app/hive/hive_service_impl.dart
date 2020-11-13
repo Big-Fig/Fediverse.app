@@ -15,6 +15,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -30,7 +31,6 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:fedi/localization/localization_model.dart';
 
 class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
@@ -41,51 +41,49 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   }
 
   static void registerAdapters() {
-    Hive.registerAdapter(PleromaFieldAdapter(), 37);
-    Hive.registerAdapter(PleromaEmojiAdapter(), 38);
-    Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter(), 40);
+    Hive.registerAdapter(PleromaFieldAdapter());
+    Hive.registerAdapter(PleromaEmojiAdapter());
+    Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter());
     Hive.registerAdapter(
-        PleromaMyAccountPleromaPartNotificationsSettingsAdapter(), 41);
-    Hive.registerAdapter(PleromaAccountRelationshipAdapter(), 42);
-    Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
-    Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
-    Hive.registerAdapter(TimelineSettingsAdapter(), 46);
-    Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter(), 47);
-
-    Hive.registerAdapter(AuthInstanceListAdapter(), 49);
-    Hive.registerAdapter(AuthInstanceAdapter(), 50);
-    Hive.registerAdapter(PleromaOAuthTokenAdapter(), 51);
-    Hive.registerAdapter(PleromaClientApplicationAdapter(), 52);
-    Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
-    Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
-    Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
-    Hive.registerAdapter(PleromaPushMessageBodyAdapter(), 56);
-    Hive.registerAdapter(MyAccountSettingsAdapter(), 57);
-    Hive.registerAdapter(PleromaInstancePleromaPartAdapter(), 58);
-    Hive.registerAdapter(PleromaInstanceAdapter(), 59);
-    Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter(), 60);
-    Hive.registerAdapter(MastodonInstanceStatsAdapter(), 61);
-    Hive.registerAdapter(MastodonUrlsAdapter(), 62);
-    Hive.registerAdapter(PleromaInstancePollLimitsAdapter(), 63);
-    Hive.registerAdapter(PleromaAccountAdapter(), 64);
-    Hive.registerAdapter(RecentSearchListAdapter(), 65);
-    Hive.registerAdapter(PushHandlerMessageAdapter(), 66);
-    Hive.registerAdapter(PushMessageAdapter(), 67);
-    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter(), 68);
-    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter(), 69);
-    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter(), 70);
-    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter(), 71);
+        PleromaMyAccountPleromaPartNotificationsSettingsAdapter());
+    Hive.registerAdapter(PleromaAccountRelationshipAdapter());
+    Hive.registerAdapter(PleromaMyAccountSourceAdapter());
+    Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter());
+    Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter());
+    Hive.registerAdapter(AuthInstanceListAdapter());
+    Hive.registerAdapter(AuthInstanceAdapter());
+    Hive.registerAdapter(PleromaOAuthTokenAdapter());
+    Hive.registerAdapter(PleromaClientApplicationAdapter());
+    Hive.registerAdapter(MyAccountRemoteWrapperAdapter());
+    Hive.registerAdapter(PleromaMyAccountAdapter());
+    Hive.registerAdapter(PushHandlerUnhandledListAdapter());
+    Hive.registerAdapter(PleromaPushMessageBodyAdapter());
+    Hive.registerAdapter(MyAccountSettingsAdapter());
+    Hive.registerAdapter(PleromaInstancePleromaPartAdapter());
+    Hive.registerAdapter(PleromaInstanceAdapter());
+    Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter());
+    Hive.registerAdapter(MastodonInstanceStatsAdapter());
+    Hive.registerAdapter(MastodonUrlsAdapter());
+    Hive.registerAdapter(PleromaInstancePollLimitsAdapter());
+    Hive.registerAdapter(PleromaAccountAdapter());
+    Hive.registerAdapter(RecentSearchListAdapter());
+    Hive.registerAdapter(PushHandlerMessageAdapter());
+    Hive.registerAdapter(PushMessageAdapter());
+    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter());
+    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter());
+    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
+    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
     Hive.registerAdapter(
-        PleromaInstancePleromaPartMetadataFieldLimitsAdapter(), 72);
-    Hive.registerAdapter(PushNotificationAdapter(), 73);
-    Hive.registerAdapter(PleromaTagAdapter(), 74); // 74
-    Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 75); // 75
-    Hive.registerAdapter(PleromaCustomEmojiAdapter(), 76); // 76
-    Hive.registerAdapter(PleromaHistoryAdapter(), 77); // 77
-    Hive.registerAdapter(TimelineAdapter(), 78); // 78
-    Hive.registerAdapter(TimelineSettingsAdapter(), 79); // 79
-    Hive.registerAdapter(PleromaListAdapter(), 80); // 80
-    Hive.registerAdapter(TimelinesHomeTabStorageAdapter(), 81); // 81
-    Hive.registerAdapter(LocalizationLocaleAdapter(), 82); // 82
+        PleromaInstancePleromaPartMetadataFieldLimitsAdapter());
+    Hive.registerAdapter(PushNotificationAdapter());
+    Hive.registerAdapter(PleromaTagAdapter());
+    Hive.registerAdapter(PleromaAccountPleromaPartAdapter());
+    Hive.registerAdapter(PleromaCustomEmojiAdapter());
+    Hive.registerAdapter(PleromaHistoryAdapter());
+    Hive.registerAdapter(TimelineAdapter());
+    Hive.registerAdapter(TimelineSettingsAdapter());
+    Hive.registerAdapter(PleromaListAdapter());
+    Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
+    Hive.registerAdapter(LocalizationLocaleAdapter());
   }
 }

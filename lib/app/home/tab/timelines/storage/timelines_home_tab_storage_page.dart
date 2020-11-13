@@ -140,7 +140,7 @@ void goToTimelinesHomeTabStoragePage(BuildContext context) {
 MaterialPageRoute createTimelinesHomeTabStoragePageRoute() => MaterialPageRoute(
       builder: (context) => DisposableProvider<ITimelinesHomeTabStorageBloc>(
         create: (context) => TimelinesHomeTabStorageBloc(
-          preferences: ITimelinesHomeTabStorageLocalPreferences.of(
+          preferences: ITimelinesHomeTabStorageLocalPreferencesBloc.of(
             context,
             listen: false,
           ),

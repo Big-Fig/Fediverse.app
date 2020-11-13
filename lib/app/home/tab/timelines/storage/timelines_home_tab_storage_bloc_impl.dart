@@ -18,7 +18,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
   final ILocalPreferencesService preferencesService;
   final AuthInstance authInstance;
-  final ITimelinesHomeTabStorageLocalPreferences preferences;
+  final ITimelinesHomeTabStorageLocalPreferencesBloc preferences;
 
   final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
       BehaviorSubject.seeded(TimelinesHomeTabStorageUiState.view);

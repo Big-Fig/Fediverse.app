@@ -413,15 +413,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
             customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
-    var timelinesHomeTabStorageLocalPreferences =
-        TimelinesHomeTabStorageLocalPreferences(
+    var timelinesHomeTabStorageLocalPreferencesBloc =
+        TimelinesHomeTabStorageLocalPreferencesBloc(
       preferencesService,
-      userAtHost: userAtHost,
+      userAtHost,
     );
-    addDisposable(disposable: timelinesHomeTabStorageLocalPreferences);
+    addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
     await globalProviderService
-        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferences>(
-            timelinesHomeTabStorageLocalPreferences);
+        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferencesBloc>(
+            timelinesHomeTabStorageLocalPreferencesBloc);
 
     var pushSubscriptionLocalPreferenceBloc =
         PushSubscriptionSettingsLocalPreferencesBloc(
@@ -540,7 +540,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
 
-    if (timelinesHomeTabStorageLocalPreferences
+    if (timelinesHomeTabStorageLocalPreferencesBloc
             .value?.timelineIds?.isNotEmpty !=
         true) {
       var remoteLists = await pleromaListService.getLists();
@@ -594,7 +594,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         await timelineLocalPreferencesBloc.dispose();
       }
 
-      await timelinesHomeTabStorageLocalPreferences.setValue(storage);
+      await timelinesHomeTabStorageLocalPreferencesBloc.setValue(storage);
     }
 
     var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(

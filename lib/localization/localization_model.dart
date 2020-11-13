@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'localization_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 82)
 class LocalizationLocale implements IPreferencesObject {
   @HiveField(0)
   String languageCode;
