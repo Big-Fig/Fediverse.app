@@ -81,19 +81,19 @@ class _TimeagoLocalizationAdapter implements LookupMessages {
   _TimeagoLocalizationAdapter(this.s);
 
   @override
-  String aDay(int hours) => s.timeago_aDay(hours);
+  String aDay(int hours) => s.timeago_aDay;
 
   @override
-  String aboutAMinute(int minutes) => s.timeago_aboutAMinute(hours);
+  String aboutAMinute(int minutes) => s.timeago_aboutAMinute;
 
   @override
-  String aboutAMonth(int days) => s.timeago_aboutAMonth(days);
+  String aboutAMonth(int days) => s.timeago_aboutAMonth;
 
   @override
-  String aboutAYear(int year) => s.timeago_aboutAYear(year);
+  String aboutAYear(int year) => s.timeago_aboutAYear;
 
   @override
-  String aboutAnHour(int minutes) => s.timeago_aboutAnHour(minutes);
+  String aboutAnHour(int minutes) => s.timeago_aboutAnHour;
 
   @override
   String days(int days) => s.timeago_days(days);
@@ -102,7 +102,7 @@ class _TimeagoLocalizationAdapter implements LookupMessages {
   String hours(int hours) => s.timeago_hours(hours);
 
   @override
-  String lessThanOneMinute(int seconds) => s.timeago_lessThanOneMinute(seconds);
+  String lessThanOneMinute(int seconds) => s.timeago_lessThanOneMinute;
 
   @override
   String minutes(int minutes) => s.timeago_minutes(minutes);

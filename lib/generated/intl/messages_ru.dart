@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m19(message) => "Оповещения в чате \"${message}\"";
 
-  static m20(status, emoji) => "${emoji} для: \"${status}";
+  static m20(emoji, status) => "${emoji} для: \"${status}";
 
   static m21(status) => "Поделился: ${status}";
 
@@ -105,27 +105,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m42(url) => "URL ${url} имеет неправильный формат";
 
-  static m43(hours) => "~1 д";
+  static m43(days) => "${Intl.plural(days, one: '1 д', other: '${days} д')}";
 
-  static m44(seconds) => "1 мин";
+  static m44(hours) => "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
 
-  static m45(days) => "~1 мес";
+  static m45(minutes) => "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
 
-  static m46(year) => "~1 г";
+  static m46(months) => "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
 
-  static m47(minutes) => "~1 ч";
-
-  static m48(days) => "${Intl.plural(days, one: '1 д', other: '${days} д')}";
-
-  static m49(hours) => "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
-
-  static m50(seconds) => "сейчас";
-
-  static m51(minutes) => "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
-
-  static m52(months) => "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
-
-  static m53(years) => "${Intl.plural(years, one: '1 г', other: '${years} г')}";
+  static m47(years) => "${Intl.plural(years, one: '1 г', other: '${years} г')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -196,7 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_my_settings_field_defaultVisibility_label" : MessageLookupByLibrary.simpleMessage("Видимость по умолчанию"),
     "app_account_my_settings_field_mediaAutoInit_label" : MessageLookupByLibrary.simpleMessage("Автозагрузка медиа файлов"),
     "app_account_my_settings_field_mediaAutoPlay_label" : MessageLookupByLibrary.simpleMessage("Автостарт медиа файлов"),
-    "app_account_my_settings_field_mediaNsfwByDefault_label" : MessageLookupByLibrary.simpleMessage("Помечать файлы как NSFW по умолчанию"),
+    "app_account_my_settings_field_mediaNsfwByDefault_label" : MessageLookupByLibrary.simpleMessage("Помечать файлы как NSFW"),
     "app_account_my_settings_field_websocketsEnabled_description" : MessageLookupByLibrary.simpleMessage("Отключите для увеличения жизни баттареи"),
     "app_account_my_settings_field_websocketsEnabled_label" : MessageLookupByLibrary.simpleMessage("Быстрые обновления WebSockets"),
     "app_account_my_settings_title" : MessageLookupByLibrary.simpleMessage("Закладки"),
@@ -206,6 +194,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Прикрепленные"),
     "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("Включая ответы"),
     "app_account_statuses_tab_withoutReplies" : MessageLookupByLibrary.simpleMessage("Без ответов"),
+    "app_appStore_description" : MessageLookupByLibrary.simpleMessage("Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей."),
+    "app_appStore_promotionalText" : MessageLookupByLibrary.simpleMessage("Клиент для серверов социальных сетей Pleroma и Mastodon."),
+    "app_appStore_title" : MessageLookupByLibrary.simpleMessage("Fedi для Pleroma и Mastodon"),
     "app_async_pleroma_error_common_dialog_content" : m5,
     "app_async_pleroma_error_common_dialog_title" : MessageLookupByLibrary.simpleMessage("Ошибка Pleroma API"),
     "app_async_pleroma_error_forbidden_dialog_content" : m6,
@@ -279,6 +270,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_emoji_custom_empty" : MessageLookupByLibrary.simpleMessage("Данный сервер не имеет своих эмоджи"),
     "app_emoji_recent_empty" : MessageLookupByLibrary.simpleMessage("У вас нет последних эмоджи"),
     "app_file_image_crop_title" : MessageLookupByLibrary.simpleMessage("Обрезать как"),
+    "app_googlePlay_appName" : MessageLookupByLibrary.simpleMessage("Fedi для Pleroma и Mastodon"),
+    "app_googlePlay_fullDescription" : MessageLookupByLibrary.simpleMessage("Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей."),
+    "app_googlePlay_shortDescription" : MessageLookupByLibrary.simpleMessage("Клиент для серверов социальных сетей Pleroma и Mastodon."),
     "app_home_tab_chat_conversation_action_switchToChats" : MessageLookupByLibrary.simpleMessage("В чаты"),
     "app_home_tab_chat_conversation_title" : MessageLookupByLibrary.simpleMessage("Беседы"),
     "app_home_tab_chat_pleroma_action_switch_to_dms" : MessageLookupByLibrary.simpleMessage("В беседы"),
@@ -511,21 +505,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "localization_locale_system" : MessageLookupByLibrary.simpleMessage("Системный"),
     "pagination_list_empty" : MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
     "permission_grant_action_grant" : MessageLookupByLibrary.simpleMessage("Разрешить"),
-    "timeago_aDay" : m43,
-    "timeago_aboutAMinute" : m44,
-    "timeago_aboutAMonth" : m45,
-    "timeago_aboutAYear" : m46,
-    "timeago_aboutAnHour" : m47,
-    "timeago_days" : m48,
-    "timeago_hours" : m49,
-    "timeago_lessThanOneMinute" : m50,
-    "timeago_minutes" : m51,
-    "timeago_months" : m52,
+    "timeago_aDay" : MessageLookupByLibrary.simpleMessage("~1 д"),
+    "timeago_aboutAMinute" : MessageLookupByLibrary.simpleMessage("1 мин"),
+    "timeago_aboutAMonth" : MessageLookupByLibrary.simpleMessage("~1 мес"),
+    "timeago_aboutAYear" : MessageLookupByLibrary.simpleMessage("~1 г"),
+    "timeago_aboutAnHour" : MessageLookupByLibrary.simpleMessage("~1 ч"),
+    "timeago_days" : m43,
+    "timeago_hours" : m44,
+    "timeago_lessThanOneMinute" : MessageLookupByLibrary.simpleMessage("сейчас"),
+    "timeago_minutes" : m45,
+    "timeago_months" : m46,
     "timeago_prefixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_prefixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_wordSeparator" : MessageLookupByLibrary.simpleMessage(" "),
-    "timeago_years" : m53
+    "timeago_years" : m47
   };
 }

@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m19(message) => "Chat mention in \"${message}\"";
 
-  static m20(status, emoji) => "${emoji} for: \"${status}";
+  static m20(emoji, status) => "${emoji} for: \"${status}";
 
   static m21(status) => "Reblogged: ${status}";
 
@@ -105,27 +105,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m42(url) => "URL ${url} have invalid format";
 
-  static m43(hours) => "~1 d";
+  static m43(days) => "${Intl.plural(days, one: '1 d', other: '${days} d')}";
 
-  static m44(seconds) => "1 min";
+  static m44(hours) => "${Intl.plural(hours, one: '1 h', other: '${hours} h')}";
 
-  static m45(days) => "~1 mo";
+  static m45(minutes) => "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
 
-  static m46(year) => "~1 y";
+  static m46(months) => "${Intl.plural(months, one: '1 mo', other: '${months} mo')}";
 
-  static m47(minutes) => "~1 h";
-
-  static m48(days) => "${Intl.plural(days, one: '1 d', other: '${days} d')}";
-
-  static m49(hours) => "${Intl.plural(hours, one: '1 h', other: '${hours} h')}";
-
-  static m50(seconds) => "now";
-
-  static m51(minutes) => "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
-
-  static m52(months) => "${Intl.plural(months, one: '1 mo', other: '${months} mo')}";
-
-  static m53(years) => "${Intl.plural(years, one: '1 y', other: '${years} y')}";
+  static m47(years) => "${Intl.plural(years, one: '1 y', other: '${years} y')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -206,6 +194,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Pinned"),
     "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("Including replies"),
     "app_account_statuses_tab_withoutReplies" : MessageLookupByLibrary.simpleMessage("Posts"),
+    "app_appStore_description" : MessageLookupByLibrary.simpleMessage("A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app."),
+    "app_appStore_promotionalText" : MessageLookupByLibrary.simpleMessage("A client for Pleroma and Mastodon social network instances"),
+    "app_appStore_title" : MessageLookupByLibrary.simpleMessage("Fedi for Pleroma and Mastodon"),
     "app_async_pleroma_error_common_dialog_content" : m5,
     "app_async_pleroma_error_common_dialog_title" : MessageLookupByLibrary.simpleMessage("Pleroma API error"),
     "app_async_pleroma_error_forbidden_dialog_content" : m6,
@@ -279,6 +270,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_emoji_custom_empty" : MessageLookupByLibrary.simpleMessage("This instance don\'t have custom emojis"),
     "app_emoji_recent_empty" : MessageLookupByLibrary.simpleMessage("No recent emojis"),
     "app_file_image_crop_title" : MessageLookupByLibrary.simpleMessage("Crop as"),
+    "app_googlePlay_appName" : MessageLookupByLibrary.simpleMessage("Fedi for Pleroma and Mastodon"),
+    "app_googlePlay_fullDescription" : MessageLookupByLibrary.simpleMessage("A client for Pleroma and Mastodon social network instances"),
+    "app_googlePlay_shortDescription" : MessageLookupByLibrary.simpleMessage("A client for Pleroma and Mastodon social network instances"),
     "app_home_tab_chat_conversation_action_switchToChats" : MessageLookupByLibrary.simpleMessage("To Chats"),
     "app_home_tab_chat_conversation_title" : MessageLookupByLibrary.simpleMessage("Conversations"),
     "app_home_tab_chat_pleroma_action_switch_to_dms" : MessageLookupByLibrary.simpleMessage("To Conversations"),
@@ -511,21 +505,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "localization_locale_system" : MessageLookupByLibrary.simpleMessage("System"),
     "pagination_list_empty" : MessageLookupByLibrary.simpleMessage("Nothing found"),
     "permission_grant_action_grant" : MessageLookupByLibrary.simpleMessage("Grant permission"),
-    "timeago_aDay" : m43,
-    "timeago_aboutAMinute" : m44,
-    "timeago_aboutAMonth" : m45,
-    "timeago_aboutAYear" : m46,
-    "timeago_aboutAnHour" : m47,
-    "timeago_days" : m48,
-    "timeago_hours" : m49,
-    "timeago_lessThanOneMinute" : m50,
-    "timeago_minutes" : m51,
-    "timeago_months" : m52,
+    "timeago_aDay" : MessageLookupByLibrary.simpleMessage("~1 d"),
+    "timeago_aboutAMinute" : MessageLookupByLibrary.simpleMessage("1 min"),
+    "timeago_aboutAMonth" : MessageLookupByLibrary.simpleMessage("~1 mo"),
+    "timeago_aboutAYear" : MessageLookupByLibrary.simpleMessage("~1 y"),
+    "timeago_aboutAnHour" : MessageLookupByLibrary.simpleMessage("~1 h"),
+    "timeago_days" : m43,
+    "timeago_hours" : m44,
+    "timeago_lessThanOneMinute" : MessageLookupByLibrary.simpleMessage("now"),
+    "timeago_minutes" : m45,
+    "timeago_months" : m46,
     "timeago_prefixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_prefixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_wordSeparator" : MessageLookupByLibrary.simpleMessage(" "),
-    "timeago_years" : m53
+    "timeago_years" : m47
   };
 }
