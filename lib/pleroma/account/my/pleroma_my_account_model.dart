@@ -203,8 +203,8 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 43)
+//@HiveType()
+@HiveType(typeId: -32 + 43)
 @JsonSerializable()
 class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @override
@@ -260,8 +260,8 @@ class PleromaMyAccountSource implements IPleromaMyAccountSource {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 44)
+//@HiveType()
+@HiveType(typeId: -32 + 44)
 @JsonSerializable()
 class PleromaMyAccountSourcePleromaPart {
   //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
@@ -321,8 +321,8 @@ class PleromaMyAccountFilesRequest {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 75)
+//@HiveType()
+@HiveType(typeId: -32 + 75)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
@@ -462,8 +462,8 @@ abstract class IPleromaMyAccountPleromaPart
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 54)
+//@HiveType()
+@HiveType(typeId: -32 + 54)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   @override
@@ -637,8 +637,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 41)
+//@HiveType()
+@HiveType(typeId: -32 + 41)
 @JsonSerializable()
 class PleromaMyAccountPleromaPartNotificationsSettings {
   @HiveField(0)
@@ -682,8 +682,8 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 40)
+//@HiveType()
+@HiveType(typeId: -32 + 40)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/

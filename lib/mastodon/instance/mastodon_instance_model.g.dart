@@ -8,10 +8,13 @@ part of 'mastodon_instance_model.dart';
 
 class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
   @override
+  final int typeId = 29;
+
+  @override
   MastodonInstanceStats read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MastodonInstanceStats(
       userCount: fields[0] as int,
@@ -31,14 +34,27 @@ class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
       ..writeByte(2)
       ..write(obj.domainCount);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MastodonInstanceStatsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
   @override
+  final int typeId = 30;
+
+  @override
   MastodonUrls read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MastodonUrls(
       streamingApi: fields[0] as String,
@@ -52,6 +68,16 @@ class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
       ..writeByte(0)
       ..write(obj.streamingApi);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MastodonUrlsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

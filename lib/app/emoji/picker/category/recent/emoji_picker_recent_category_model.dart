@@ -12,8 +12,8 @@ part 'emoji_picker_recent_category_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 70)
+//@HiveType()
+@HiveType(typeId: -32 + 70)
 @JsonSerializable(explicitToJson: true)
 class EmojiPickerRecentCategoryItemsList
     implements IPreferencesObject {

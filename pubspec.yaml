@@ -38,8 +38,8 @@ dependencies:
   # launch browser to view links
   url_launcher: ^5.6.0
   # object serialization
-  hive: ^0.4.1
-#  hive_flutter: ^0.3.1
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
   #flutter_html: ^1.0.2
   # actually it is ^1.0.2 with additional text style features
@@ -170,9 +170,6 @@ dependencies:
   # disable wakelock for video player
   wakelock: ^0.1.4+2
 
-dependency_overrides:
-  path: ^1.7.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -181,7 +178,7 @@ dev_dependencies:
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: ^1.10.0
+  build_runner: ^1.10.4
   # build tool to generate json from & to methods
   json_serializable: ^3.4.1
   # sql orm generator
@@ -194,7 +191,7 @@ dev_dependencies:
   sqlite3_flutter_libs: ^0.2.0
 
   # object serialization generator
-  hive_generator: ^0.5.0
+  hive_generator: ^0.8.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

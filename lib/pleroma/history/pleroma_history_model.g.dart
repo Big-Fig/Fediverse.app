@@ -8,10 +8,13 @@ part of 'pleroma_history_model.dart';
 
 class PleromaHistoryAdapter extends TypeAdapter<PleromaHistory> {
   @override
+  final int typeId = 45;
+
+  @override
   PleromaHistory read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaHistory(
       accounts: fields[0] as dynamic,
@@ -31,6 +34,16 @@ class PleromaHistoryAdapter extends TypeAdapter<PleromaHistory> {
       ..writeByte(2)
       ..write(obj.uses);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaHistoryAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

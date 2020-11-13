@@ -3,10 +3,10 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ITimelinesHomeTabStorageLocalPreferences
+abstract class ITimelinesHomeTabStorageLocalPreferencesBloc
     implements ILocalPreferenceBloc<TimelinesHomeTabStorage> {
-  static ITimelinesHomeTabStorageLocalPreferences of(BuildContext context,
+  static ITimelinesHomeTabStorageLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<ITimelinesHomeTabStorageLocalPreferences>(context,
+      Provider.of<ITimelinesHomeTabStorageLocalPreferencesBloc>(context,
           listen: listen);
 }

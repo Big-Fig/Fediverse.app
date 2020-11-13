@@ -55,7 +55,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         return mainTimelineTabBloc;
       });
 
-  final ITimelinesHomeTabStorageLocalPreferences
+  final ITimelinesHomeTabStorageLocalPreferencesBloc
       timelinesHomeTabStorageLocalPreferences;
   final IPleromaTimelineService pleromaTimelineService;
   final IPleromaAccountService pleromaAccountService;
@@ -257,7 +257,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
                 .currentValue ==
             true,
         timelinesHomeTabStorageLocalPreferences:
-            ITimelinesHomeTabStorageLocalPreferences.of(
+            ITimelinesHomeTabStorageLocalPreferencesBloc.of(
           context,
           listen: false,
         ),

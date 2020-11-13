@@ -13,8 +13,8 @@ abstract class IPleromaField implements IMastodonField {}
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 37)
+//@HiveType()
+@HiveType(typeId: -32 + 37)
 @JsonSerializable()
 class PleromaField implements IPleromaField {
   @override

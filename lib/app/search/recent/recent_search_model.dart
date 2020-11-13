@@ -9,8 +9,8 @@ part 'recent_search_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 65)
+//@HiveType()
+@HiveType(typeId: -32 + 65)
 @JsonSerializable(explicitToJson: true)
 class RecentSearchList implements IPreferencesObject {
   @HiveField(0)

@@ -54,8 +54,8 @@ class PleromaApplication implements IPleromaApplication {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 52)
+//@HiveType()
+@HiveType(typeId: -32 + 52)
 @JsonSerializable(explicitToJson: true)
 class PleromaClientApplication
     implements IPleromaClientApplication, IPreferencesObject {

@@ -8,10 +8,13 @@ part of 'pleroma_account_model.dart';
 
 class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
   @override
+  final int typeId = 32;
+
+  @override
   PleromaAccount read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaAccount(
       username: fields[0] as String,
@@ -82,15 +85,28 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
       ..writeByte(20)
       ..write(obj.lastStatusAt);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaAccountRelationshipAdapter
     extends TypeAdapter<PleromaAccountRelationship> {
   @override
+  final int typeId = 10;
+
+  @override
   PleromaAccountRelationship read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaAccountRelationship(
       blocking: fields[1] as bool,
@@ -140,6 +156,16 @@ class PleromaAccountRelationshipAdapter
       ..writeByte(14)
       ..write(obj.note);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountRelationshipAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

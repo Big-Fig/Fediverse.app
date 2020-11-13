@@ -9,10 +9,13 @@ part of 'emoji_picker_recent_category_model.dart';
 class EmojiPickerRecentCategoryItemsListAdapter
     extends TypeAdapter<EmojiPickerRecentCategoryItemsList> {
   @override
+  final int typeId = 38;
+
+  @override
   EmojiPickerRecentCategoryItemsList read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return EmojiPickerRecentCategoryItemsList(
       recentCodeItems: (fields[2] as List)?.cast<CustomEmojiPickerCodeItem>(),
@@ -30,6 +33,16 @@ class EmojiPickerRecentCategoryItemsListAdapter
       ..writeByte(3)
       ..write(obj.recentImageItems);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EmojiPickerRecentCategoryItemsListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

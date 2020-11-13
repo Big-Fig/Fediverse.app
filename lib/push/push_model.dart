@@ -11,8 +11,8 @@ typedef dynamic PushMessageListener(PushMessage message);
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 67)
+//@HiveType()
+@HiveType(typeId: -32 + 67)
 @JsonSerializable(explicitToJson: true)
 class PushMessage {
   PushMessageType get type =>
@@ -68,8 +68,8 @@ EnumValues<PushMessageType> pushMessageTypeEnumValues = EnumValues({
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 73)
+//@HiveType()
+@HiveType(typeId: -32 + 73)
 @JsonSerializable(explicitToJson: true)
 class PushNotification {
   @HiveField(0)
