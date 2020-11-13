@@ -196,6 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_statuses_tab_withoutReplies" : MessageLookupByLibrary.simpleMessage("Без ответов"),
     "app_appStore_description" : MessageLookupByLibrary.simpleMessage("Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей."),
     "app_appStore_promotionalText" : MessageLookupByLibrary.simpleMessage("Клиент для серверов социальных сетей Pleroma и Mastodon."),
+    "app_appStore_subtitle" : MessageLookupByLibrary.simpleMessage("Клиент для серверов социальных сетей Pleroma и Mastodon."),
     "app_appStore_title" : MessageLookupByLibrary.simpleMessage("Fedi для Pleroma и Mastodon"),
     "app_async_pleroma_error_common_dialog_content" : m5,
     "app_async_pleroma_error_common_dialog_title" : MessageLookupByLibrary.simpleMessage("Ошибка Pleroma API"),

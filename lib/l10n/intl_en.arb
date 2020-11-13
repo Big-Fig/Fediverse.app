@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-13T15:29:22+00:00",
+    "@@last_modified": "2020-11-13T17:53:14+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -422,5 +422,9 @@
     "app_appStore_title": "Fedi for Pleroma and Mastodon",
     "@app_appStore_title": {
         "description": "AppStore title"
+    },
+    "app_appStore_subtitle": "A client for Pleroma and Mastodon social network instances",
+    "@app_appStore_subtitle": {
+        "description": "AppStore subtitle"
     }
 }

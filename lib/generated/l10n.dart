@@ -4101,6 +4101,16 @@ class S {
       args: [],
     );
   }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_appStore_subtitle {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_appStore_subtitle',
+      desc: 'AppStore subtitle',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
