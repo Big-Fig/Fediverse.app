@@ -1,11 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -38,7 +38,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-          markMediaNsfwByDefault: markMediaNsfwByDefault,
+          markMediaAsNsfwOnAttach: markMediaNsfwByDefault,
         );
 
   static ConversationChatPostMessageBloc createFromContext(BuildContext context,
@@ -47,8 +47,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
-    var myAccountSettingsBloc =
-        IMyAccountSettingsBloc.of(context, listen: false);
+
     return ConversationChatPostMessageBloc(
       conversation: conversation,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
@@ -59,8 +58,8 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      markMediaNsfwByDefault:
-          myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
+      markMediaNsfwByDefault: IWebSocketsSettingsBloc.of(context, listen: false)
+          .isRealtimeWebSocketsEnabled,
     );
   }
 

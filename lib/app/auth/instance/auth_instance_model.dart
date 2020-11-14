@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
@@ -16,7 +16,7 @@ part 'auth_instance_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 50)
 @JsonSerializable(explicitToJson: true)
-class AuthInstance extends IPreferencesObject {
+class AuthInstance extends IJsonObject {
   @HiveField(0)
   @JsonKey(name: "url_schema")
   final String urlSchema;

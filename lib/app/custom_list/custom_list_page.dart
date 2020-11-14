@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -14,7 +13,8 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -90,9 +90,10 @@ MaterialPageRoute createCustomListPageRoute({
   @required BuildContext context,
   @required ICustomList customList,
 }) {
-  var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context, listen: false);
+  var webSocketsSettingsBloc =
+      IWebSocketsSettingsBloc.of(context, listen: false);
   var isRealtimeWebSocketsEnabled =
-      myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc.currentValue;
+      webSocketsSettingsBloc.isRealtimeWebSocketsEnabled;
 
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);

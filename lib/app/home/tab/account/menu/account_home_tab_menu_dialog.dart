@@ -1,7 +1,8 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_page.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
+import 'package:fedi/app/settings/global/global_settings_page.dart';
+import 'package:fedi/app/settings/instance/instance_settings_page.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
@@ -26,7 +27,8 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const _SettingsHomeTabMenuDialogBodySettingsItemWidget(),
+        const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget(),
+        const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget(),
         const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
@@ -54,8 +56,9 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
   }
 }
 
-class _SettingsHomeTabMenuDialogBodySettingsItemWidget extends StatelessWidget {
-  const _SettingsHomeTabMenuDialogBodySettingsItemWidget({
+class _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget
+    extends StatelessWidget {
+  const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget({
     Key key,
   }) : super(key: key);
 
@@ -63,10 +66,30 @@ class _SettingsHomeTabMenuDialogBodySettingsItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        goMyAccountSettingsPage(context);
+        goToGlobalSettingsPage(context);
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.settings,
+        text: S.of(context).app_account_my_menu_action_settings,
+      ),
+    );
+  }
+}
+
+class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
+    extends StatelessWidget {
+  const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        goToInstanceSettingsPage(context);
+      },
+      child: _AccountHomeTabMenuDialogBodyItem(
+        iconData: FediIcons.instance,
         text: S.of(context).app_account_my_menu_action_settings,
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -12,7 +11,8 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -64,7 +64,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final INotificationRepository notificationRepository;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
-  final IMyAccountSettingsBloc myAccountSettingsBloc;
+  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
@@ -85,7 +85,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     @required this.conversationRepository,
     @required this.notificationRepository,
     @required this.myAccountBloc,
-    @required this.myAccountSettingsBloc,
+    @required this.webSocketsSettingsBloc,
     @required this.currentInstanceBloc,
     @required this.timelinesHomeTabStorageLocalPreferences,
     @required this.pleromaWebSocketsService,
@@ -243,8 +243,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
             IConversationChatRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
-        myAccountSettingsBloc:
-            IMyAccountSettingsBloc.of(context, listen: false),
+        webSocketsSettingsBloc:
+            IWebSocketsSettingsBloc.of(context, listen: false),
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         currentAuthInstanceBloc:
@@ -252,10 +252,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),
-        listenWebSockets: IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabledFieldBloc
-                .currentValue ==
-            true,
+        listenWebSockets: IWebSocketsSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabled,
         timelinesHomeTabStorageLocalPreferences:
             ITimelinesHomeTabStorageLocalPreferencesBloc.of(
           context,

@@ -1,6 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -68,7 +68,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> setObjectPreference(
-      String key, IPreferencesObject preferencesObject) async {
+      String key, IJsonObject preferencesObject) async {
     preferences[key] = preferencesObject;
     notifyKeyValueChanged(key, preferencesObject);
     return true;

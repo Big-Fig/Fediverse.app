@@ -2,10 +2,6 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc_impl.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -45,10 +41,10 @@ import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bl
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
+import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -60,8 +56,8 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
@@ -506,25 +502,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
         pleromaWebSocketsService);
-
-    var myAccountSettingsLocalPreferenceBloc =
-        MyAccountSettingsLocalPreferenceBloc(
-            preferencesService, currentInstance.userAtHost);
-
-    addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IMyAccountSettingsLocalPreferenceBloc>(
-            myAccountSettingsLocalPreferenceBloc);
-
-    var myAccountSettingsBloc = MyAccountSettingsBloc(
-      localPreferencesBloc: myAccountSettingsLocalPreferenceBloc,
-      localizationCurrentLocaleLocalPreferencesBloc:
-          localizationCurrentLocaleLocalPreferencesBloc,
-    );
-
-    addDisposable(disposable: myAccountSettingsBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
 
     var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
       pleromaWebSocketsService: pleromaWebSocketsService,

@@ -1,10 +1,10 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/conversation_chat_start_page.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_count_widget.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -131,9 +131,8 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       child: FediBlurredTextButton(
           S.of(context).app_home_tab_chat_conversation_action_switchToChats,
           onPressed: () {
-        IMyAccountSettingsBloc.of(context, listen: false)
-            .isNewChatsEnabledFieldBloc
-            .changeCurrentValue(true);
+        IChatSettingsBloc.of(context, listen: false)
+            .changeReplaceConversationsWithChats(true);
       }),
     );
   }

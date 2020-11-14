@@ -26,6 +26,13 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   @override
   T get currentValue => _currentValueSubject.value;
 
+
+  @override
+  final bool isEnabled;
+
+  @override
+  final Stream<bool> isEnabledStream;
+
   // distinct is important, we don't need new value in stream on each widget
   // build
   @override
@@ -34,6 +41,8 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   FormValueFieldBloc({
     @required this.originValue,
     @required this.validators,
+    this.isEnabled = true,
+    this.isEnabledStream = const Stream.empty(),
   })  : _currentValueSubject = BehaviorSubject.seeded(originValue),
         _currentErrorSubject =
             BehaviorSubject.seeded(_validate(originValue, validators)) {
@@ -81,4 +90,5 @@ class FormValueFieldBloc<T> extends FormFieldBloc
     this.validators = validators;
     revalidate();
   }
+
 }

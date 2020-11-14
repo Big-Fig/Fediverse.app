@@ -5,7 +5,7 @@ import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/enum/enum_values.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
@@ -23,7 +23,7 @@ part 'timeline_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 78)
 @JsonSerializable(explicitToJson: true)
-class Timeline implements IPreferencesObject {
+class Timeline implements IJsonObject {
   @HiveField(0)
   final String id;
   @HiveField(1)

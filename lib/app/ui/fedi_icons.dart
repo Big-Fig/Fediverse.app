@@ -113,4 +113,5 @@ class FediIcons {
   static const IconData unmute = IconData(0xe8e3, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unblock = IconData(0xe8e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward = Icons.forward;
+  static const IconData instance = Icons.settings;
 }

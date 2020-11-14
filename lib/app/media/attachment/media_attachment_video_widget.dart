@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
+import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/player/media_player_model.dart';
@@ -13,8 +13,7 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settingsLocalPreferenceBloc =
-        IMyAccountSettingsLocalPreferenceBloc.of(context);
+    var mediaSettingsBloc = IMediaSettingsBloc.of(context);
     return DisposableProxyProvider<IPleromaMediaAttachment,
         IVideoMediaPlayerBloc>(
       update: (context, mediaAttachment, _) =>
@@ -23,8 +22,8 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
         isFullscreen: false,
         desiredAspectRatio:
             VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-        autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
-        autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
+        autoInit: mediaSettingsBloc.autoInit,
+        autoPlay: mediaSettingsBloc.autoPlay,
         mediaPlayerSource:
             MediaPlayerSource.network(networkUrl: mediaAttachment.url),
       ),
