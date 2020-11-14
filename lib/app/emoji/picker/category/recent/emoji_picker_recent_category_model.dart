@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,7 +16,7 @@ part 'emoji_picker_recent_category_model.g.dart';
 @HiveType(typeId: -32 + 70)
 @JsonSerializable(explicitToJson: true)
 class EmojiPickerRecentCategoryItemsList
-    implements IPreferencesObject {
+    implements IJsonObject {
 
   List<CustomEmojiPickerItem> get recentItems {
     var result = <CustomEmojiPickerItem>[];

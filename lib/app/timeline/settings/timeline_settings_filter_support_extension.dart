@@ -1,6 +1,6 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 
@@ -56,8 +56,10 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     return false;
   }
   bool isWebSocketsUpdatesFilterSupportedOnInstance(BuildContext context) {
-    var myAccountSettingsLocalPreferenceBloc = IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
-    return myAccountSettingsLocalPreferenceBloc.value?.isRealtimeWebSocketsEnabled ?? true;
+
+    var webSocketsSettingsBloc = IWebSocketsSettingsBloc.of(context, listen: false);
+
+    return webSocketsSettingsBloc.isRealtimeWebSocketsEnabled;
   }
 
   bool isOnlyRemoteFilterSupportedOnInstance(AuthInstance authInstance) {

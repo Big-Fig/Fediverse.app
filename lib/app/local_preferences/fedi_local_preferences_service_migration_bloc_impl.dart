@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
@@ -9,7 +8,7 @@ import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_catego
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -52,11 +51,11 @@ class FediLocalPreferencesServiceMigrationBloc
         (lps) => EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
             lps, userAtHost),
         (lps) => MyAccountLocalPreferenceBloc(lps, userAtHost),
-        (lps) => MyAccountSettingsLocalPreferenceBloc(lps, userAtHost),
         (lps) => RecentSearchLocalPreferenceBloc(lps, userAtHost),
         (lps) => PushSubscriptionSettingsLocalPreferencesBloc(lps, userAtHost),
         (lps) => FcmPushPermissionAskedLocalPreferencesBloc(lps, userAtHost),
         (lps) => TimelinesHomeTabStorageLocalPreferencesBloc(lps, userAtHost),
+        // (lps) => MyAccountSettingsLocalPreferenceBloc(lps, userAtHost),
       ]);
 
       var timelinesHomeTabStorageLocalPreferencesBloc =

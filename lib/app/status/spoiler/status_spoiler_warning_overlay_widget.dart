@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -14,11 +14,10 @@ class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var myAccountSettingsBloc =
-        IMyAccountSettingsBloc.of(context, listen: false);
+    var statusSensitiveSettingsBloc =
+        IStatusSensitiveSettingsBloc.of(context, listen: false);
 
-    var isAlwaysShowSpoiler =
-        myAccountSettingsBloc.isAlwaysShowSpoilerFieldBloc.currentValue == true;
+    var isAlwaysShowSpoiler = statusSensitiveSettingsBloc.isAlwaysShowSpoiler;
     if (isAlwaysShowSpoiler) {
       return child;
     } else {

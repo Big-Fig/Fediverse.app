@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
@@ -6,6 +5,7 @@ import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_widget.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -167,9 +167,8 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
           child: FediBlurredTextButton(
             S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
             onPressed: () {
-              IMyAccountSettingsBloc.of(context, listen: false)
-                  .isNewChatsEnabledFieldBloc
-                  .changeCurrentValue(false);
+              IChatSettingsBloc.of(context, listen: false)
+                  .changeReplaceConversationsWithChats(false);
             },
           ),
         ),

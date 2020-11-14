@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -17,7 +16,8 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -111,9 +111,9 @@ MaterialPageRoute createHashtagPageRoute({
   @required BuildContext context,
   @required IHashtag hashtag,
 }) {
-  var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context, listen: false);
   var isRealtimeWebSocketsEnabled =
-      myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc.currentValue;
+      IWebSocketsSettingsBloc.of(context, listen: false)
+          .isRealtimeWebSocketsEnabled;
 
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);

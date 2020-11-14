@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -9,6 +8,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -59,9 +59,8 @@ class AccountStatusesWithoutRepliesListBloc
       statusRepository: IStatusRepository.of(context, listen: false),
       conversationRepository:
           IConversationChatRepository.of(context, listen: false),
-      listenWebSocketsChanges: IMyAccountSettingsBloc.of(context, listen: false)
-          .isRealtimeWebSocketsEnabledFieldBloc
-          .currentValue,
+      listenWebSocketsChanges: IWebSocketsSettingsBloc.of(context, listen: false)
+          .isRealtimeWebSocketsEnabled,
       notificationRepository:
           INotificationRepository.of(context, listen: false),
       pleromaWebSocketsService:

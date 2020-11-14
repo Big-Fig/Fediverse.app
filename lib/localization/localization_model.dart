@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,7 +8,7 @@ part 'localization_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 82)
-class LocalizationLocale implements IPreferencesObject {
+class LocalizationLocale implements IJsonObject {
   @HiveField(0)
   String languageCode;
   @HiveField(1)

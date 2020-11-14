@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/list/cached/conversation_chat_cached_list_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websocke
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -103,9 +103,8 @@ class ConversationChatListBloc extends DisposableOwner
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         listenWebSocketsChanges:
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabledFieldBloc
-                .currentValue,
+            IWebSocketsSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabled,
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         conversationChatNewMessagesHandlerBloc:

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
@@ -12,7 +12,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'my_account_model.g.dart';
 
-abstract class IMyAccount extends IAccount implements IPreferencesObject {
+abstract class IMyAccount extends IAccount implements IJsonObject {
   PleromaMyAccountPleromaPartNotificationsSettings
       get pleromaNotificationSettings;
 

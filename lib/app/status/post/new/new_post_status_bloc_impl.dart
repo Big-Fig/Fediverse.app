@@ -1,8 +1,8 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
@@ -20,7 +20,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required PleromaVisibility initialVisibility,
-    @required bool markMediaNsfwByDefault,
+    @required bool markMediaAsNsfwOnAttach,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -30,7 +30,7 @@ class NewPostStatusBloc extends PostStatusBloc {
               .copyWith(visibility: initialVisibility.toJsonValue()),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-    markMediaNsfwByDefault: markMediaNsfwByDefault,
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
         );
 
   static NewPostStatusBloc createFromContext(BuildContext context) {
@@ -38,8 +38,8 @@ class NewPostStatusBloc extends PostStatusBloc {
         .currentInstance
         .info;
 
-    var myAccountSettingsBloc =
-        IMyAccountSettingsBloc.of(context, listen: false);
+    var postStatusSettingsBloc =
+        IPostStatusSettingsBloc.of(context, listen: false);
 
     return NewPostStatusBloc(
       pleromaStatusService: IPleromaStatusService.of(context, listen: false),
@@ -49,10 +49,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      initialVisibility:
-          myAccountSettingsBloc.defaultVisibilityFieldBloc.currentValue,
-      markMediaNsfwByDefault:
-      myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
+      initialVisibility: postStatusSettingsBloc.defaultVisibility,
+      markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
     );
   }
 

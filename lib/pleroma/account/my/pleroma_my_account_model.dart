@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/account/my/mastodon_my_account_model.dart';
 import 'package:fedi/mastodon/visibility/mastodon_visibility_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -465,7 +465,7 @@ abstract class IPleromaMyAccountPleromaPart
 //@HiveType()
 @HiveType(typeId: -32 + 54)
 @JsonSerializable(explicitToJson: true)
-class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
+class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   @override
   @HiveField(0)
   final String username;

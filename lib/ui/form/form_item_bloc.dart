@@ -3,6 +3,9 @@ import 'package:fedi/ui/form/form_item_validation.dart';
 
 abstract class IFormItemBloc extends IDisposable {
 
+  bool get isEnabled;
+
+  Stream<bool> get isEnabledStream;
 
   bool get isSomethingChanged;
 

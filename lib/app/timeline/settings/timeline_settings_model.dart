@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
@@ -21,7 +21,7 @@ Function eq = const ListEquality().equals;
 //@HiveType()
 @HiveType(typeId: -32 + 79)
 @JsonSerializable(explicitToJson: true)
-class TimelineSettings extends IPreferencesObject {
+class TimelineSettings extends IJsonObject {
   static TimelineSettings createDefaultPublicSettings() =>
       TimelineSettings.public(
         onlyWithMedia: false,

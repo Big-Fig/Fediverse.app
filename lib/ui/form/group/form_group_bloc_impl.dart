@@ -13,6 +13,31 @@ var _logger = Logger("form_group_bloc_impl.dart");
 abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     implements IFormGroupBloc<T> {
   @override
+  final bool isEnabled;
+
+  @override
+  final Stream<bool> isEnabledStream;
+
+  FormGroupBloc({
+    this.isEnabled = true,
+    this.isEnabledStream = const Stream.empty(),
+  }) {
+    addDisposable(subject: errorsSubject);
+    addDisposable(disposable: itemsErrorSubscription);
+
+    try {
+      addDisposable(streamSubscription: itemsStream.listen((newItems) {
+        itemsErrorSubscription?.dispose();
+        if (newItems?.isNotEmpty == true) {
+          _resubscribeForErrors(newItems);
+        }
+      }));
+    } catch (e, stackTrace) {
+      _logger.warning(() => "failed to subscribe for items", e, stackTrace);
+    }
+  }
+
+  @override
   bool get isSomethingChanged => items
           .map((field) => field.isSomethingChanged)
           .fold(false, (previousValue, element) {
@@ -45,22 +70,6 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   @override
   Stream<bool> get isHaveAtLeastOneErrorStream =>
       errorsStream.map((fieldsErrors) => fieldsErrors?.isNotEmpty == true);
-
-  FormGroupBloc() {
-    addDisposable(subject: errorsSubject);
-    addDisposable(disposable: itemsErrorSubscription);
-
-    try {
-      addDisposable(streamSubscription: itemsStream.listen((newItems) {
-        itemsErrorSubscription?.dispose();
-        if (newItems?.isNotEmpty == true) {
-          _resubscribeForErrors(newItems);
-        }
-      }));
-    } catch (e, stackTrace) {
-      _logger.warning(() => "failed to subscribe for items", e, stackTrace);
-    }
-  }
 
   void _resubscribeForErrors(List<T> newItems) {
     itemsErrorSubscription = DisposableOwner();

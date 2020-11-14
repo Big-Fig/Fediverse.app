@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
@@ -13,6 +12,7 @@ import 'package:fedi/app/notification/tab/notification_tab_bloc_impl.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/notification/websockets/my_notifications_websockets_handler_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -137,10 +137,9 @@ class NotificationsTabsBloc extends DisposableOwner
           notificationRepository:
           INotificationRepository.of(context, listen: false),
           listenWebSocketsChanges:
-          IMyAccountSettingsBloc
+          IWebSocketsSettingsBloc
               .of(context, listen: false)
-              .isRealtimeWebSocketsEnabledFieldBloc
-              .currentValue,
+              .isRealtimeWebSocketsEnabled,
           chatNewMessagesHandlerBloc:
           IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         conversationChatNewMessagesHandlerBloc:

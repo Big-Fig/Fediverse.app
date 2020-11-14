@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_model.dart';
@@ -8,7 +7,7 @@ import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_model.dart';
+import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
@@ -31,6 +30,13 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
+import 'package:fedi/app/toast/settings/toast_settings_model.dart';
+import 'package:fedi/app/media/settings/media_settings_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
+import 'package:fedi/app/localization/settings/localization_settings_model.dart';
+import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 
 class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
@@ -58,7 +64,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaMyAccountAdapter());
     Hive.registerAdapter(PushHandlerUnhandledListAdapter());
     Hive.registerAdapter(PleromaPushMessageBodyAdapter());
-    Hive.registerAdapter(MyAccountSettingsAdapter());
     Hive.registerAdapter(PleromaInstancePleromaPartAdapter());
     Hive.registerAdapter(PleromaInstanceAdapter());
     Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter());
@@ -85,5 +90,12 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaListAdapter());
     Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
     Hive.registerAdapter(LocalizationLocaleAdapter());
+    Hive.registerAdapter(PostStatusSettingsAdapter());
+    Hive.registerAdapter(StatusSensitiveSettingsAdapter());
+    Hive.registerAdapter(ToastSettingsAdapter());
+    Hive.registerAdapter(MediaSettingsAdapter());
+    Hive.registerAdapter(WebSocketsSettingsAdapter());
+    Hive.registerAdapter(LocalizationSettingsAdapter());
+    Hive.registerAdapter(UiSettingsAdapter());
   }
 }
