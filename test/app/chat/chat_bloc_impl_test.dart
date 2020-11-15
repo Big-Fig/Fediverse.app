@@ -7,14 +7,14 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -67,7 +67,9 @@ void main() {
     authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-        preferencesService, authInstance.userAtHost);
+      preferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
 
     await myAccountLocalPreferenceBloc.setValue(myAccount);
     // hack to execute notify callbacks
@@ -106,7 +108,8 @@ void main() {
   });
 
   Future _update(IPleromaChat chat,
-      {IPleromaChatMessage lastChatMessage, @required List<IAccount> accounts}) async {
+      {IPleromaChatMessage lastChatMessage,
+      @required List<IAccount> accounts}) async {
     await chatRepository.upsertRemoteChat(mapLocalPleromaChatToRemoteChat(chat,
         lastChatMessage: lastChatMessage, accounts: accounts));
     // hack to execute notify callbacks

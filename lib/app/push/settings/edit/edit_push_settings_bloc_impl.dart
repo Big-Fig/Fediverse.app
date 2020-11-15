@@ -16,10 +16,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("edit_push_settings_bloc_impl.dart");
 
-class PushSubscriptionSettingsBloc extends DisposableOwner
-    implements IPushSubscriptionSettingsBloc {
-  final IPushSubscriptionSettingsLocalPreferencesBloc
-      pushSubscriptionSettingsLocalPreferencesBloc;
+class PushSettingsBloc extends DisposableOwner
+    implements IPushSettingsBloc {
+  final IPushSettingsLocalPreferencesBloc
+      pushSettingsLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
@@ -44,35 +44,35 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc chatFieldBloc;
 
-  PushSubscriptionSettingsBloc({
-    @required this.pushSubscriptionSettingsLocalPreferencesBloc,
+  PushSettingsBloc({
+    @required this.pushSettingsLocalPreferencesBloc,
     @required this.pleromaPushService,
     @required this.pushRelayService,
     @required this.currentInstance,
     @required this.fcmPushService,
   })  : favouriteFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.favourite ??
+                pushSettingsLocalPreferencesBloc.value?.favourite ??
                     true),
         followFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.follow ??
+                pushSettingsLocalPreferencesBloc.value?.follow ??
                     true),
         mentionFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.mention ??
+                pushSettingsLocalPreferencesBloc.value?.mention ??
                     true),
         reblogFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.reblog ??
+                pushSettingsLocalPreferencesBloc.value?.reblog ??
                     true),
         pollFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.poll ??
+                pushSettingsLocalPreferencesBloc.value?.poll ??
                     true),
         chatFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSubscriptionSettingsLocalPreferencesBloc.value?.chat ??
+                pushSettingsLocalPreferencesBloc.value?.chat ??
                     true) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);
@@ -110,7 +110,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
 
     addDisposable(
       streamSubscription:
-          pushSubscriptionSettingsLocalPreferencesBloc.stream.listen(
+          pushSettingsLocalPreferencesBloc.stream.listen(
         (newPreferences) {
           fillNewPreferencesValues(newPreferences);
         },
@@ -119,7 +119,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   }
 
   void _onSomethingChanged() async {
-    var newPreferences = PushSubscriptionSettingsLocalPreferences(
+    var newPreferences = PushSettingsLocalPreferences(
       favourite: favouriteFieldBloc.currentValue,
       follow: followFieldBloc.currentValue,
       mention: mentionFieldBloc.currentValue,
@@ -128,7 +128,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
       chat: chatFieldBloc.currentValue,
     );
 
-    var oldPreferences = pushSubscriptionSettingsLocalPreferencesBloc.value;
+    var oldPreferences = pushSettingsLocalPreferencesBloc.value;
     var changed = newPreferences != oldPreferences;
     if (changed) {
       var success = await updateSubscriptionPreferences(newPreferences);
@@ -147,7 +147,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
   }
 
   Future<bool> updateSubscriptionPreferences(
-      PushSubscriptionSettingsLocalPreferences newPreferences) async {
+      PushSettingsLocalPreferences newPreferences) async {
     var deviceToken = fcmPushService.deviceToken;
     var permissionGranted = await fcmPushService.askPermissions();
 
@@ -180,7 +180,7 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
       }
 
       if (success) {
-        await pushSubscriptionSettingsLocalPreferencesBloc
+        await pushSettingsLocalPreferencesBloc
             .setValue(newPreferences);
       }
     } else {
@@ -204,25 +204,25 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
 
   @override
   bool get isHaveSubscription =>
-      pushSubscriptionSettingsLocalPreferencesBloc.isSavedPreferenceExist;
+      pushSettingsLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
   Future subscribeAllEnabled() => updateSubscriptionPreferences(
-      PushSubscriptionSettingsLocalPreferences.defaultAllEnabled());
+      PushSettingsLocalPreferences.defaultAllEnabled());
 
   void fillNewPreferencesValues(
-      PushSubscriptionSettingsLocalPreferences newPreferences) {
+      PushSettingsLocalPreferences newPreferences) {
     favouriteFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.favourite);
+        pushSettingsLocalPreferencesBloc.value?.favourite);
     followFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.follow);
+        pushSettingsLocalPreferencesBloc.value?.follow);
     mentionFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.mention);
+        pushSettingsLocalPreferencesBloc.value?.mention);
     reblogFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.reblog);
+        pushSettingsLocalPreferencesBloc.value?.reblog);
     pollFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.poll);
+        pushSettingsLocalPreferencesBloc.value?.poll);
     chatFieldBloc.changeCurrentValue(
-        pushSubscriptionSettingsLocalPreferencesBloc.value?.chat);
+        pushSettingsLocalPreferencesBloc.value?.chat);
   }
 }

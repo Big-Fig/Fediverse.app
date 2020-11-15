@@ -100,7 +100,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
               IMyAccountLocalPreferenceBloc>(
             update: (context, value, previous) => MyAccountLocalPreferenceBloc(
                 ILocalPreferencesService.of(context, listen: false),
-                value.userAtHost),
+                userAtHost: value.userAtHost),
             child: Builder(
               builder: (context) => FediAsyncInitLoadingWidget(
                 asyncInitLoadingBloc:

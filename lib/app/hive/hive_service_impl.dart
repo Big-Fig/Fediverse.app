@@ -55,7 +55,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaAccountRelationshipAdapter());
     Hive.registerAdapter(PleromaMyAccountSourceAdapter());
     Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter());
-    Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter());
+    Hive.registerAdapter(PushSettingsLocalPreferencesAdapter());
     Hive.registerAdapter(AuthInstanceListAdapter());
     Hive.registerAdapter(AuthInstanceAdapter());
     Hive.registerAdapter(PleromaOAuthTokenAdapter());

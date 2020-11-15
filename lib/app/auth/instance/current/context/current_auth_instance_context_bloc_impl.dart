@@ -43,8 +43,8 @@ import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -154,7 +154,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var fcmPushPermissionAskedLocalPreferencesBloc =
         FcmPushPermissionAskedLocalPreferencesBloc(
       preferencesService,
-      userAtHost,
+      userAtHost: userAtHost,
     );
 
     addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
@@ -163,7 +163,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             fcmPushPermissionAskedLocalPreferencesBloc);
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
-        preferencesService, currentInstance.userAtHost);
+      preferencesService,
+      userAtHost: currentInstance.userAtHost,
+    );
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -385,15 +387,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaPushService>(pleromaPushService);
     addDisposable(disposable: pleromaPushService);
 
-    var myAccountLocalPreferenceBloc =
-        MyAccountLocalPreferenceBloc(preferencesService, userAtHost);
+    var myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(disposable: myAccountLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
 
     var emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc =
         EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
-            preferencesService, userAtHost);
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(
         disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -402,7 +408,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var customEmojiPickerRecentCategoryLocalPreferenceBloc =
         EmojiPickerRecentCategoryLocalPreferenceBloc(
-            preferencesService, userAtHost);
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(
         disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
     await globalProviderService
@@ -412,20 +420,22 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var timelinesHomeTabStorageLocalPreferencesBloc =
         TimelinesHomeTabStorageLocalPreferencesBloc(
       preferencesService,
-      userAtHost,
+      userAtHost: userAtHost,
     );
     addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
     await globalProviderService
         .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferencesBloc>(
             timelinesHomeTabStorageLocalPreferencesBloc);
 
-    var pushSubscriptionLocalPreferenceBloc =
-        PushSubscriptionSettingsLocalPreferencesBloc(
-            preferencesService, userAtHost);
-    addDisposable(disposable: pushSubscriptionLocalPreferenceBloc);
+    var instancePushSettingsLocalPreferenceBloc =
+        InstancePushSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: instancePushSettingsLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionSettingsLocalPreferencesBloc>(
-            pushSubscriptionLocalPreferenceBloc);
+        .asyncInitAndRegister<IPushSettingsLocalPreferencesBloc>(
+            instancePushSettingsLocalPreferenceBloc);
 
     var myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountService,
@@ -437,18 +447,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSubscriptionSettingsBloc = PushSubscriptionSettingsBloc(
+    var pushSettingsBloc = PushSettingsBloc(
       pushRelayService: pushRelayService,
-      pushSubscriptionSettingsLocalPreferencesBloc:
-          pushSubscriptionLocalPreferenceBloc,
+      pushSettingsLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
       pleromaPushService: pleromaPushService,
       currentInstance: currentInstance,
       fcmPushService: fcmPushService,
     );
 
-    addDisposable(disposable: pushSubscriptionSettingsBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IPushSubscriptionSettingsBloc>(pushSubscriptionSettingsBloc);
+    addDisposable(disposable: pushSettingsBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
 
     var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
@@ -578,7 +587,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       fcmPushService: fcmPushService,
       fcmPushPermissionAskedLocalPreferencesBloc:
           fcmPushPermissionAskedLocalPreferencesBloc,
-      pushSubscriptionSettingsBloc: pushSubscriptionSettingsBloc,
+      pushSettingsBloc: pushSettingsBloc,
     );
 
     addDisposable(disposable: fcmPushPermissionCheckerBloc);

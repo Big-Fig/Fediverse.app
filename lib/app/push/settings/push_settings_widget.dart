@@ -7,22 +7,22 @@ import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PushSubscriptionSettingsWidget extends StatefulWidget {
+class PushSettingsWidget extends StatefulWidget {
   @override
-  _PushSubscriptionSettingsWidgetState createState() =>
-      _PushSubscriptionSettingsWidgetState();
+  _PushSettingsWidgetState createState() =>
+      _PushSettingsWidgetState();
 
-  const PushSubscriptionSettingsWidget();
+  const PushSettingsWidget();
 }
 
-class _PushSubscriptionSettingsWidgetState
-    extends State<PushSubscriptionSettingsWidget> {
+class _PushSettingsWidgetState
+    extends State<PushSettingsWidget> {
   StreamSubscription failedToUpdateSubscription;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var settingsBloc = IPushSubscriptionSettingsBloc.of(context, listen: false);
+    var settingsBloc = IPushSettingsBloc.of(context, listen: false);
 
     failedToUpdateSubscription = settingsBloc.failedToUpdateStream.listen((_) {
       showErrorFediNotificationOverlay(
@@ -41,7 +41,7 @@ class _PushSubscriptionSettingsWidgetState
 
   @override
   Widget build(BuildContext context) {
-    var settingsBloc = IPushSubscriptionSettingsBloc.of(context, listen: true);
+    var settingsBloc = IPushSettingsBloc.of(context, listen: true);
 
     return ListView(
       children: [
