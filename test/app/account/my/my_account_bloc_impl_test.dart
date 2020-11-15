@@ -47,7 +47,9 @@ void main() {
     authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-        preferencesService, authInstance.userAtHost);
+      preferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
 
     await myAccountLocalPreferenceBloc.setValue(myAccount);
     await Future.delayed(Duration(milliseconds: 1));

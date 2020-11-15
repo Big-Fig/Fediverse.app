@@ -3,10 +3,10 @@ import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushSubscriptionSettingsBloc extends IDisposable {
-  static IPushSubscriptionSettingsBloc of(BuildContext context,
+abstract class IPushSettingsBloc extends IDisposable {
+  static IPushSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IPushSubscriptionSettingsBloc>(context, listen: listen);
+      Provider.of<IPushSettingsBloc>(context, listen: listen);
 
   Future subscribeAllEnabled();
 

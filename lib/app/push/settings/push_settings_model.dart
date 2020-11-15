@@ -12,7 +12,7 @@ part 'push_settings_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 47)
-class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
+class PushSettingsLocalPreferences extends IJsonObject {
   @HiveField(1)
   final bool favourite;
   @HiveField(2)
@@ -25,7 +25,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
   final bool poll;
   @HiveField(6)
   final bool chat;
-  PushSubscriptionSettingsLocalPreferences({
+  PushSettingsLocalPreferences({
     this.favourite,
     this.follow,
     this.mention,
@@ -34,7 +34,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
     this.chat,
   });
 
-  PushSubscriptionSettingsLocalPreferences.defaultAllEnabled()
+  PushSettingsLocalPreferences.defaultAllEnabled()
       : this(
           favourite: true,
           follow: true,
@@ -43,7 +43,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
           poll: true,
           chat: true,
         );
-  PushSubscriptionSettingsLocalPreferences.defaultAllDisabled()
+  PushSettingsLocalPreferences.defaultAllDisabled()
       : this(
           favourite: false,
           follow: false,
@@ -53,7 +53,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
           chat: false,
         );
 
-  PushSubscriptionSettingsLocalPreferences copyWith({
+  PushSettingsLocalPreferences copyWith({
     bool favourite,
     bool follow,
     bool mention,
@@ -61,7 +61,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
     bool poll,
     bool chat,
   }) =>
-      PushSubscriptionSettingsLocalPreferences(
+      PushSettingsLocalPreferences(
         favourite: favourite ?? this.favourite,
         follow: follow ?? this.follow,
         mention: mention ?? this.mention,
@@ -73,7 +73,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
 
   @override
   String toString() {
-    return 'PushSubscriptionSettingsLocalPreferences{favourite: $favourite,'
+    return 'PushSettingsLocalPreferences{favourite: $favourite,'
         ' follow: $follow, mention: $mention,'
         ' reblog: $reblog, poll: $poll, chat: $chat}';
   }
@@ -81,7 +81,7 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushSubscriptionSettingsLocalPreferences &&
+      other is PushSettingsLocalPreferences &&
           runtimeType == other.runtimeType &&
           favourite == other.favourite &&
           follow == other.follow &&
@@ -99,16 +99,16 @@ class PushSubscriptionSettingsLocalPreferences extends IJsonObject {
       poll.hashCode ^
       chat.hashCode;
 
-  factory PushSubscriptionSettingsLocalPreferences.fromJson(
+  factory PushSettingsLocalPreferences.fromJson(
           Map<String, dynamic> json) =>
-      _$PushSubscriptionSettingsLocalPreferencesFromJson(json);
+      _$PushSettingsLocalPreferencesFromJson(json);
 
-  factory PushSubscriptionSettingsLocalPreferences.fromJsonString(String jsonString) =>
-      _$PushSubscriptionSettingsLocalPreferencesFromJson(jsonDecode(jsonString));
+  factory PushSettingsLocalPreferences.fromJsonString(String jsonString) =>
+      _$PushSettingsLocalPreferencesFromJson(jsonDecode(jsonString));
 
   @override
   Map<String, dynamic> toJson() =>
-      _$PushSubscriptionSettingsLocalPreferencesToJson(this);
+      _$PushSettingsLocalPreferencesToJson(this);
   String toJsonString() =>
-      jsonEncode(_$PushSubscriptionSettingsLocalPreferencesToJson(this));
+      jsonEncode(_$PushSettingsLocalPreferencesToJson(this));
 }

@@ -6,18 +6,18 @@ part of 'push_settings_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PushSubscriptionSettingsLocalPreferencesAdapter
-    extends TypeAdapter<PushSubscriptionSettingsLocalPreferences> {
+class PushSettingsLocalPreferencesAdapter
+    extends TypeAdapter<PushSettingsLocalPreferences> {
   @override
   final int typeId = 15;
 
   @override
-  PushSubscriptionSettingsLocalPreferences read(BinaryReader reader) {
+  PushSettingsLocalPreferences read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PushSubscriptionSettingsLocalPreferences(
+    return PushSettingsLocalPreferences(
       favourite: fields[1] as bool,
       follow: fields[2] as bool,
       mention: fields[3] as bool,
@@ -28,8 +28,7 @@ class PushSubscriptionSettingsLocalPreferencesAdapter
   }
 
   @override
-  void write(
-      BinaryWriter writer, PushSubscriptionSettingsLocalPreferences obj) {
+  void write(BinaryWriter writer, PushSettingsLocalPreferences obj) {
     writer
       ..writeByte(6)
       ..writeByte(1)
@@ -52,7 +51,7 @@ class PushSubscriptionSettingsLocalPreferencesAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushSubscriptionSettingsLocalPreferencesAdapter &&
+      other is PushSettingsLocalPreferencesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -61,10 +60,9 @@ class PushSubscriptionSettingsLocalPreferencesAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSubscriptionSettingsLocalPreferences
-    _$PushSubscriptionSettingsLocalPreferencesFromJson(
-        Map<String, dynamic> json) {
-  return PushSubscriptionSettingsLocalPreferences(
+PushSettingsLocalPreferences _$PushSettingsLocalPreferencesFromJson(
+    Map<String, dynamic> json) {
+  return PushSettingsLocalPreferences(
     favourite: json['favourite'] as bool,
     follow: json['follow'] as bool,
     mention: json['mention'] as bool,
@@ -74,8 +72,8 @@ PushSubscriptionSettingsLocalPreferences
   );
 }
 
-Map<String, dynamic> _$PushSubscriptionSettingsLocalPreferencesToJson(
-        PushSubscriptionSettingsLocalPreferences instance) =>
+Map<String, dynamic> _$PushSettingsLocalPreferencesToJson(
+        PushSettingsLocalPreferences instance) =>
     <String, dynamic>{
       'favourite': instance.favourite,
       'follow': instance.follow,

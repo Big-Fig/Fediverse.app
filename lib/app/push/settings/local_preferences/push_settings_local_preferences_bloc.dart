@@ -3,10 +3,10 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushSubscriptionSettingsLocalPreferencesBloc
-    implements LocalPreferenceBloc<PushSubscriptionSettingsLocalPreferences> {
-  static IPushSubscriptionSettingsLocalPreferencesBloc of(BuildContext context,
+abstract class IPushSettingsLocalPreferencesBloc
+    implements LocalPreferenceBloc<PushSettingsLocalPreferences> {
+  static IPushSettingsLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IPushSubscriptionSettingsLocalPreferencesBloc>(context,
+      Provider.of<IPushSettingsLocalPreferencesBloc>(context,
           listen: listen);
 }

@@ -3,20 +3,16 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-class PushSubscriptionSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PushSubscriptionSettingsLocalPreferences>
-    implements IPushSubscriptionSettingsLocalPreferencesBloc {
-  PushSubscriptionSettingsLocalPreferencesBloc(
+abstract class PushSettingsLocalPreferencesBloc
+    extends ObjectLocalPreferenceBloc<PushSettingsLocalPreferences>
+    implements IPushSettingsLocalPreferencesBloc {
+  PushSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
-    String userAtHost,
+    String key,
   ) : super(
           preferencesService,
-          "$userAtHost.push.subscription",
+          key,
           1,
-          (json) => PushSubscriptionSettingsLocalPreferences.fromJson(json),
+          (json) => PushSettingsLocalPreferences.fromJson(json),
         );
-
-  @override
-  PushSubscriptionSettingsLocalPreferences get defaultValue =>
-      PushSubscriptionSettingsLocalPreferences.defaultAllDisabled();
 }

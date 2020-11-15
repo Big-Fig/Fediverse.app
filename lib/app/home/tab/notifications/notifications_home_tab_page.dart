@@ -186,7 +186,7 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
         FediIconInCircleBlurredButton(
           FediIcons.filter,
           onPressed: () {
-            goPushSubscriptionSettingsPage(context);
+            goPushSettingsPage(context);
           },
         )
       ],

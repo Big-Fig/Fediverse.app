@@ -2,13 +2,15 @@ import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_catego
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:flutter/widgets.dart';
 
 class EmojiPickerRecentCategoryLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<EmojiPickerRecentCategoryItemsList>
     implements IEmojiPickerRecentCategoryLocalPreferenceBloc {
   EmojiPickerRecentCategoryLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService, String userAtHost)
-      : super(
+    ILocalPreferencesService preferencesService, {
+    @required String userAtHost,
+  }) : super(
           preferencesService,
           "$userAtHost.emoji.recent",
           1,

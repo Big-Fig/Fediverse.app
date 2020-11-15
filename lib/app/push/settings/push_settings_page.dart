@@ -6,7 +6,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PushSubscriptionSettingsPage extends StatelessWidget {
+class PushSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class PushSubscriptionSettingsPage extends StatelessWidget {
               style: IFediUiTextTheme.of(context).smallShortBoldLightGrey,
             ),
             Expanded(
-              child: PushSubscriptionSettingsWidget(),
+              child: PushSettingsWidget(),
             ),
           ],
         ),
@@ -30,18 +30,18 @@ class PushSubscriptionSettingsPage extends StatelessWidget {
     );
   }
 
-  const PushSubscriptionSettingsPage();
+  const PushSettingsPage();
 }
 
-void goPushSubscriptionSettingsPage(BuildContext context) {
+void goPushSettingsPage(BuildContext context) {
   Navigator.push(
     context,
-    createPushSubscriptionSettingsPageRoute(),
+    createPushSettingsPageRoute(),
   );
 }
 
-MaterialPageRoute createPushSubscriptionSettingsPageRoute() {
+MaterialPageRoute createPushSettingsPageRoute() {
   return MaterialPageRoute(
-    builder: (context) => PushSubscriptionSettingsPage(),
+    builder: (context) => PushSettingsPage(),
   );
 }

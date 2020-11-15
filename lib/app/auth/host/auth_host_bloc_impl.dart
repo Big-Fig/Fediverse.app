@@ -69,10 +69,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     assert(instanceBaseUrlSchema?.isNotEmpty == true);
     assert(instanceBaseUrlHost?.isNotEmpty == true);
     hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
-        preferencesService, instanceBaseUrlHost);
+        preferencesService,
+        host: instanceBaseUrlHost);
     addDisposable(disposable: hostApplicationLocalPreferenceBloc);
     hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
-        preferencesService, instanceBaseUrlHost);
+        preferencesService,
+        host: instanceBaseUrlHost);
     addDisposable(disposable: hostAccessTokenLocalPreferenceBloc);
     restService = RestService(baseUrl: instanceBaseUrl);
     addDisposable(disposable: restService);
@@ -288,8 +290,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       } else {
         throw DisabledRegistrationAuthHostException();
       }
-
-
     } finally {
       await pleromaInstanceService?.dispose();
     }
