@@ -2,14 +2,15 @@ import 'package:fedi/app/media/settings/local_preferences/media_settings_local_p
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
+import 'package:flutter/cupertino.dart';
 
 class MediaSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<MediaSettings>
     implements IMediaSettingsBloc {
-  MediaSettingsBloc(
-    IMediaSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    IMediaSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-  ) : super(
+  MediaSettingsBloc({
+    @required IMediaSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
+    @required IMediaSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+  }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );

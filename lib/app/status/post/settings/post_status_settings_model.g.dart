@@ -8,7 +8,7 @@ part of 'post_status_settings_model.dart';
 
 class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
   @override
-  final int typeId = 50;
+  final int typeId = 52;
 
   @override
   PostStatusSettings read(BinaryReader reader) {

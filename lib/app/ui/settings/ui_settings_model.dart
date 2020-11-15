@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ui_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 88)
+@HiveType(typeId: -32 + 91)
 class UiSettings implements IJsonObject, ISettings<UiSettings> {
   @HiveField(0)
   @JsonKey(name: "theme_id")

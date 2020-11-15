@@ -5,12 +5,19 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/localization/settings/localization_settings_model.dart';
+import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/toast/settings/toast_settings_model.dart';
+import 'package:fedi/app/ui/settings/ui_settings_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
@@ -30,13 +37,6 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
-import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
-import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:fedi/app/media/settings/media_settings_model.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
-import 'package:fedi/app/localization/settings/localization_settings_model.dart';
-import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 
 class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
@@ -55,7 +55,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaAccountRelationshipAdapter());
     Hive.registerAdapter(PleromaMyAccountSourceAdapter());
     Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter());
-    Hive.registerAdapter(PushSettingsLocalPreferencesAdapter());
+    Hive.registerAdapter(PushSettingsAdapter());
     Hive.registerAdapter(AuthInstanceListAdapter());
     Hive.registerAdapter(AuthInstanceAdapter());
     Hive.registerAdapter(PleromaOAuthTokenAdapter());

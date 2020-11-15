@@ -21,6 +21,7 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
 import 'package:fedi/app/init/init_bloc.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
@@ -28,14 +29,12 @@ import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
-import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
@@ -188,13 +187,7 @@ Future runInitializedCurrentInstanceApp({
 
   currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
     currentInstance: currentInstance,
-    preferencesService: appContextBloc.get(),
-    connectionService: appContextBloc.get(),
-    pushRelayService: appContextBloc.get(),
-    pushHandlerBloc: appContextBloc.get(),
-    fcmPushService: appContextBloc.get(),
-    webSocketsService: appContextBloc.get(),
-    localizationCurrentLocaleLocalPreferencesBloc: appContextBloc.get(),
+    appContextBloc: appContextBloc,
   );
   await currentInstanceContextBloc.performAsyncInit();
 
@@ -346,9 +339,8 @@ class FediApp extends StatelessWidget {
     var currentFediUiThemeBloc =
         ICurrentFediUiThemeBloc.of(context, listen: false);
 
-    var localizationCurrentLocaleLocalPreferencesBloc =
-        ILocalizationCurrentLocaleLocalPreferencesBloc.of(context,
-            listen: false);
+    var localizationSettingsBloc =
+        ILocalizationSettingsBloc.of(context, listen: false);
 
     return UiThemeSystemBrightnessHandlerWidget(
       child: StreamBuilder<IFediUiTheme>(
@@ -364,52 +356,49 @@ class FediApp extends StatelessWidget {
 
             _logger.finest(() => "currentTheme $currentTheme "
                 "themeMode $themeMode");
-            return CurrentFediUiThemeBlocProxyProvider(
-              child: OverlaySupport(
-                child: provideCurrentTheme(
-                  currentTheme: currentTheme ?? lightFediUiTheme,
-                  child: StreamBuilder<LocalizationLocale>(
-                      stream:
-                          localizationCurrentLocaleLocalPreferencesBloc.stream,
-                      builder: (context, snapshot) {
-                        var localizationLocale = snapshot.data;
+            return OverlaySupport(
+              child: provideCurrentTheme(
+                currentTheme: currentTheme ?? lightFediUiTheme,
+                child: StreamBuilder<LocalizationLocale>(
+                    stream: localizationSettingsBloc.localizationLocaleStream,
+                    builder: (context, snapshot) {
+                      var localizationLocale = snapshot.data;
 
-                        Locale locale;
-                        if (localizationLocale != null) {
-                          locale = Locale.fromSubtags(
-                            languageCode: localizationLocale.languageCode,
-                            countryCode: localizationLocale.countryCode,
-                            scriptCode: localizationLocale.scriptCode,
-                          );
-                        }
-                        _logger.finest(() => "locale $locale");
-                        return MaterialApp(
-                          // checkerboardRasterCacheImages: true,
-                          // checkerboardOffscreenLayers: true,
-                          debugShowCheckedModeBanner: false,
-                          title: appTitle,
-                          localizationsDelegates: [
-                            S.delegate,
-                            GlobalMaterialLocalizations.delegate,
-                            GlobalWidgetsLocalizations.delegate,
-                          ],
-                          supportedLocales: S.delegate.supportedLocales,
-                          locale: locale,
-                          theme: lightFediUiTheme.themeData,
-                          darkTheme: darkFediUiTheme.themeData,
-                          themeMode: themeMode,
-                          initialRoute: "/",
-                          home: child,
-                          navigatorKey: navigatorKey,
-                          navigatorObservers: [
-                            FirebaseAnalyticsObserver(
-                                analytics:
-                                    IAnalyticsService.of(context, listen: false)
-                                        .firebaseAnalytics),
-                          ],
+                      Locale locale;
+                      if (localizationLocale != null) {
+                        locale = Locale.fromSubtags(
+                          languageCode: localizationLocale.languageCode,
+                          countryCode: localizationLocale.countryCode,
+                          scriptCode: localizationLocale.scriptCode,
                         );
-                      }),
-                ),
+                      }
+                      _logger.finest(() => "locale $locale");
+                      return MaterialApp(
+                        // checkerboardRasterCacheImages: true,
+                        // checkerboardOffscreenLayers: true,
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        localizationsDelegates: [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: locale,
+                        theme: lightFediUiTheme.themeData,
+                        darkTheme: darkFediUiTheme.themeData,
+                        themeMode: themeMode,
+                        initialRoute: "/",
+                        home: child,
+                        navigatorKey: navigatorKey,
+                        navigatorObservers: [
+                          FirebaseAnalyticsObserver(
+                              analytics:
+                                  IAnalyticsService.of(context, listen: false)
+                                      .firebaseAnalytics),
+                        ],
+                      );
+                    }),
               ),
             );
           }),

@@ -2,14 +2,15 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
+import 'package:flutter/widgets.dart';
 
-class PostStatusSettingBloc
+class ToastSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<ToastSettings>
     implements IToastSettingsBloc {
-  PostStatusSettingBloc(
-    IToastSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    IToastSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-  ) : super(
+  ToastSettingsBloc({
+    @required IToastSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
+    @required IToastSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+  }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );

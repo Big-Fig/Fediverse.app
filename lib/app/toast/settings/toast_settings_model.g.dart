@@ -8,7 +8,7 @@ part of 'toast_settings_model.dart';
 
 class ToastSettingsAdapter extends TypeAdapter<ToastSettings> {
   @override
-  final int typeId = 52;
+  final int typeId = 54;
 
   @override
   ToastSettings read(BinaryReader reader) {

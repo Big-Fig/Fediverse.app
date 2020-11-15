@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'toast_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 84)
+@HiveType(typeId: -32 + 86)
 class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
   @HiveField(0)
   @JsonKey(name: "notification_for_mention")

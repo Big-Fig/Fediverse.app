@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'post_status_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 82)
+@HiveType(typeId: -32 + 84)
 class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @HiveField(0)
   @JsonKey(name: "mark_media_as_nsfw_on_attach")

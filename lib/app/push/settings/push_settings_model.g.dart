@@ -6,18 +6,17 @@ part of 'push_settings_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PushSettingsLocalPreferencesAdapter
-    extends TypeAdapter<PushSettingsLocalPreferences> {
+class PushSettingsAdapter extends TypeAdapter<PushSettings> {
   @override
   final int typeId = 15;
 
   @override
-  PushSettingsLocalPreferences read(BinaryReader reader) {
+  PushSettings read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PushSettingsLocalPreferences(
+    return PushSettings(
       favourite: fields[1] as bool,
       follow: fields[2] as bool,
       mention: fields[3] as bool,
@@ -28,7 +27,7 @@ class PushSettingsLocalPreferencesAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PushSettingsLocalPreferences obj) {
+  void write(BinaryWriter writer, PushSettings obj) {
     writer
       ..writeByte(6)
       ..writeByte(1)
@@ -51,7 +50,7 @@ class PushSettingsLocalPreferencesAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushSettingsLocalPreferencesAdapter &&
+      other is PushSettingsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -60,9 +59,8 @@ class PushSettingsLocalPreferencesAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSettingsLocalPreferences _$PushSettingsLocalPreferencesFromJson(
-    Map<String, dynamic> json) {
-  return PushSettingsLocalPreferences(
+PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
+  return PushSettings(
     favourite: json['favourite'] as bool,
     follow: json['follow'] as bool,
     mention: json['mention'] as bool,
@@ -72,8 +70,7 @@ PushSettingsLocalPreferences _$PushSettingsLocalPreferencesFromJson(
   );
 }
 
-Map<String, dynamic> _$PushSettingsLocalPreferencesToJson(
-        PushSettingsLocalPreferences instance) =>
+Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
     <String, dynamic>{
       'favourite': instance.favourite,
       'follow': instance.follow,

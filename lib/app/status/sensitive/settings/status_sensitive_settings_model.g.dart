@@ -9,7 +9,7 @@ part of 'status_sensitive_settings_model.dart';
 class StatusSensitiveSettingsAdapter
     extends TypeAdapter<StatusSensitiveSettings> {
   @override
-  final int typeId = 51;
+  final int typeId = 53;
 
   @override
   StatusSensitiveSettings read(BinaryReader reader) {

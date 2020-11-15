@@ -8,7 +8,7 @@ part of 'web_sockets_settings_model.dart';
 
 class WebSocketsSettingsAdapter extends TypeAdapter<WebSocketsSettings> {
   @override
-  final int typeId = 54;
+  final int typeId = 57;
 
   @override
   WebSocketsSettings read(BinaryReader reader) {

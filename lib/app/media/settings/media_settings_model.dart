@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'media_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 85)
+@HiveType(typeId: -32 + 88)
 class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   @HiveField(0)
   @JsonKey(name: "auto_init")

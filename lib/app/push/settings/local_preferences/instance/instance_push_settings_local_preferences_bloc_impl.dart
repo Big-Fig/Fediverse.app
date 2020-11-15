@@ -16,6 +16,6 @@ class InstancePushSettingsLocalPreferencesBloc
         );
 
   @override
-  PushSettingsLocalPreferences get defaultValue =>
-      PushSettingsLocalPreferences.defaultAllDisabled();
+  PushSettings get defaultValue =>
+      PushSettings.defaultAllDisabled();
 }

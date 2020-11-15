@@ -8,7 +8,7 @@ part of 'media_settings_model.dart';
 
 class MediaSettingsAdapter extends TypeAdapter<MediaSettings> {
   @override
-  final int typeId = 53;
+  final int typeId = 56;
 
   @override
   MediaSettings read(BinaryReader reader) {

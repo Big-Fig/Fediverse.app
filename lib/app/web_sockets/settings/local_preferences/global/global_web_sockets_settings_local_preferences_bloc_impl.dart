@@ -1,5 +1,6 @@
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/web_sockets_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class GlobalWebSocketsSettingsLocalPreferencesBloc
@@ -8,4 +9,10 @@ class GlobalWebSocketsSettingsLocalPreferencesBloc
   GlobalWebSocketsSettingsLocalPreferencesBloc(
       ILocalPreferencesService preferencesService)
       : super(preferencesService, "webSockets.settings.global");
+
+  @override
+  WebSocketsSettings get defaultValue => WebSocketsSettings(
+        typeString:
+            WebSocketsSettingsType.currentScreenAndAllIndicators.toJsonValue(),
+      );
 }
