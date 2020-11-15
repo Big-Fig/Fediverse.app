@@ -2,14 +2,17 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/web_sockets/settings/local_preferences/web_sockets_settings_local_preference_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
+import 'package:flutter/widgets.dart';
 
-class PostStatusSettingBloc
+class WebSocketsSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<WebSocketsSettings>
     implements IWebSocketsSettingsBloc {
-  PostStatusSettingBloc(
-    IWebSocketsSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    IWebSocketsSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-  ) : super(
+  WebSocketsSettingsBloc({
+    @required
+        IWebSocketsSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
+    @required
+        IWebSocketsSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+  }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );

@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'status_sensitive_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 83)
+@HiveType(typeId: -32 + 85)
 class StatusSensitiveSettings
     implements IJsonObject, ISettings<StatusSensitiveSettings> {
   @HiveField(0)

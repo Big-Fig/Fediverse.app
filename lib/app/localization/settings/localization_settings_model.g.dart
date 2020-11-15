@@ -8,7 +8,7 @@ part of 'localization_settings_model.dart';
 
 class LocalizationSettingsAdapter extends TypeAdapter<LocalizationSettings> {
   @override
-  final int typeId = 55;
+  final int typeId = 58;
 
   @override
   LocalizationSettings read(BinaryReader reader) {

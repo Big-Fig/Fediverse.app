@@ -8,14 +8,23 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/localization/settings/local_preference/global/global_localization_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/localization/settings/local_preference/localization_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
+import 'package:fedi/app/localization/settings/localization_settings_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
@@ -23,17 +32,28 @@ import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_pre
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
+import 'package:fedi/app/ui/settings/ui_settings_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
-import 'package:fedi/localization/localization_current_locale_local_preferences_bloc.dart';
-import 'package:fedi/localization/localization_current_locale_local_preferences_bloc_impl.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';
@@ -49,8 +69,6 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
-import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc.dart';
-import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
@@ -151,8 +169,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
             IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
 
-    var instanceListLocalPreferenceBloc = AuthInstanceListLocalPreferenceBloc(
-        hiveLocalPreferencesService);
+    var instanceListLocalPreferenceBloc =
+        AuthInstanceListLocalPreferenceBloc(hiveLocalPreferencesService);
     await globalProviderService.asyncInitAndRegister<
         IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
@@ -162,8 +180,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(
-            hiveLocalPreferencesService);
+        CurrentAuthInstanceLocalPreferenceBloc(hiveLocalPreferencesService);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
@@ -194,8 +211,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
     var pushHandlerUnhandledLocalPreferencesBloc =
-        PushHandlerUnhandledLocalPreferencesBloc(
-            hiveLocalPreferencesService);
+        PushHandlerUnhandledLocalPreferencesBloc(hiveLocalPreferencesService);
 
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
@@ -215,14 +231,23 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
     addDisposable(disposable: webSocketsService);
 
-    var currentUiThemeIdLocalPreferenceBloc =
-        CurrentUiThemeIdLocalPreferenceBloc(
-            hiveLocalPreferencesService);
+    var globalUiSettingsLocalPreferencesBloc =
+        GlobalUiSettingsLocalPreferencesBloc(hiveLocalPreferencesService);
 
     await globalProviderService
-        .asyncInitAndRegister<ICurrentUiThemeIdLocalPreferenceBloc>(
-            currentUiThemeIdLocalPreferenceBloc);
-    addDisposable(disposable: currentUiThemeIdLocalPreferenceBloc);
+        .asyncInitAndRegister<IGlobalUiSettingsLocalPreferencesBloc>(
+            globalUiSettingsLocalPreferencesBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IUiSettingsLocalPreferencesBloc>(globalUiSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalUiSettingsLocalPreferencesBloc);
+
+    var uiSettingsBloc = UiSettingsBloc(
+      uiSettingsLocalPreferencesBloc: globalUiSettingsLocalPreferencesBloc,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IUiSettingsBloc>(uiSettingsBloc);
+    addDisposable(disposable: uiSettingsBloc);
 
     var uiThemeSystemBrightnessBloc = UiThemeSystemBrightnessBloc();
 
@@ -231,10 +256,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: uiThemeSystemBrightnessBloc);
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
-      currentUiThemeIdLocalPreferenceBloc: currentUiThemeIdLocalPreferenceBloc,
+      uiSettingsBloc: uiSettingsBloc,
       lightTheme: lightFediUiTheme,
       darkTheme: darkFediUiTheme,
       systemBrightnessHandlerBloc: uiThemeSystemBrightnessBloc,
+      availableThemes: [
+        lightFediUiTheme,
+        darkFediUiTheme,
+      ],
     );
 
     await globalProviderService
@@ -242,14 +271,87 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     addDisposable(disposable: currentFediUiThemeBloc);
 
-    var localizationCurrentLocaleLocalPreferencesBloc =
-        LocalizationCurrentLocaleLocalPreferencesBloc(
-          hiveLocalPreferencesService,
+    var globalLocalizationSettingsLocalPreferencesBloc =
+        GlobalLocalizationSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
     );
 
     await globalProviderService
-        .asyncInitAndRegister<ILocalizationCurrentLocaleLocalPreferencesBloc>(
-            localizationCurrentLocaleLocalPreferencesBloc);
-    addDisposable(disposable: localizationCurrentLocaleLocalPreferencesBloc);
+        .asyncInitAndRegister<ILocalizationSettingsLocalPreferencesBloc>(
+            globalLocalizationSettingsLocalPreferencesBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferencesBloc>(
+            globalLocalizationSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
+
+    var localizationSettingsBloc = LocalizationSettingsBloc(
+      localizationSettingsLocalPreferencesBloc:
+          globalLocalizationSettingsLocalPreferencesBloc,
+    );
+
+    await globalProviderService.asyncInitAndRegister<ILocalizationSettingsBloc>(
+        localizationSettingsBloc);
+    addDisposable(disposable: localizationSettingsBloc);
+
+    var globalChatSettingsLocalPreferencesBloc =
+        GlobalChatSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalChatSettingsLocalPreferencesBloc>(
+            globalChatSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalChatSettingsLocalPreferencesBloc);
+
+    var globalMediaSettingsLocalPreferencesBloc =
+        GlobalMediaSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalMediaSettingsLocalPreferencesBloc>(
+            globalMediaSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalMediaSettingsLocalPreferencesBloc);
+
+    var globalToastSettingsLocalPreferencesBloc =
+        GlobalToastSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalToastSettingsLocalPreferencesBloc>(
+            globalToastSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalToastSettingsLocalPreferencesBloc);
+
+    var globalPostStatusSettingsLocalPreferencesBloc =
+        GlobalPostStatusSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalPostStatusSettingsLocalPreferencesBloc>(
+            globalPostStatusSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalPostStatusSettingsLocalPreferencesBloc);
+
+    var globalStatusSensitiveSettingsLocalPreferencesBloc =
+        GlobalStatusSensitiveSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+            IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(
+        globalStatusSensitiveSettingsLocalPreferencesBloc);
+    addDisposable(
+        disposable: globalStatusSensitiveSettingsLocalPreferencesBloc);
+
+    var globalWebSocketsSettingsLocalPreferencesBloc =
+        GlobalWebSocketsSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
+            globalWebSocketsSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);
+
   }
 }

@@ -35,7 +35,7 @@ EnumValues<WebSocketsSettingsType> _webSocketsSettingsTypeEnumValues =
 });
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 86)
+@HiveType(typeId: -32 + 89)
 class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @HiveField(0)
   @JsonKey(name: "type_string")

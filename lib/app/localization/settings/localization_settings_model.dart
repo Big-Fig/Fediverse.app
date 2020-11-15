@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'localization_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 87)
+@HiveType(typeId: -32 + 90)
 class LocalizationSettings
     implements IJsonObject, ISettings<LocalizationSettings> {
   @HiveField(0)

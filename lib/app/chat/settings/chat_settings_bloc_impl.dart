@@ -1,15 +1,16 @@
-import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';
+import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
+import 'package:flutter/widgets.dart';
 
-class PostStatusSettingBloc
+class ChatSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferencesBloc<ChatSettings>
     implements IChatSettingsBloc {
-  PostStatusSettingBloc(
-    IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-  ) : super(
+  ChatSettingsBloc({
+    @required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
+    @required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+  }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
         );
@@ -49,16 +50,19 @@ class PostStatusSettingBloc
   }
 
   @override
-  bool get countConversationsInChatsUnreadBadges => settingsData.countConversationsInChatsUnreadBadges;
+  bool get countConversationsInChatsUnreadBadges =>
+      settingsData.countConversationsInChatsUnreadBadges;
 
   @override
   Stream<bool> get countConversationsInChatsUnreadBadgesStream =>
-      settingsDataStream.map((settings) => settings.countConversationsInChatsUnreadBadges);
+      settingsDataStream
+          .map((settings) => settings.countConversationsInChatsUnreadBadges);
 
   @override
-  bool get replaceConversationsWithChats => settingsData.replaceConversationsWithChats;
+  bool get replaceConversationsWithChats =>
+      settingsData.replaceConversationsWithChats;
 
   @override
-  Stream<bool> get replaceConversationsWithChatsStream =>
-      settingsDataStream.map((settings) => settings.replaceConversationsWithChats);
+  Stream<bool> get replaceConversationsWithChatsStream => settingsDataStream
+      .map((settings) => settings.replaceConversationsWithChats);
 }

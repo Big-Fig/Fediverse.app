@@ -119,7 +119,7 @@ class PushSettingsBloc extends DisposableOwner
   }
 
   void _onSomethingChanged() async {
-    var newPreferences = PushSettingsLocalPreferences(
+    var newPreferences = PushSettings(
       favourite: favouriteFieldBloc.currentValue,
       follow: followFieldBloc.currentValue,
       mention: mentionFieldBloc.currentValue,
@@ -147,7 +147,7 @@ class PushSettingsBloc extends DisposableOwner
   }
 
   Future<bool> updateSubscriptionPreferences(
-      PushSettingsLocalPreferences newPreferences) async {
+      PushSettings newPreferences) async {
     var deviceToken = fcmPushService.deviceToken;
     var permissionGranted = await fcmPushService.askPermissions();
 
@@ -208,10 +208,10 @@ class PushSettingsBloc extends DisposableOwner
 
   @override
   Future subscribeAllEnabled() => updateSubscriptionPreferences(
-      PushSettingsLocalPreferences.defaultAllEnabled());
+      PushSettings.defaultAllEnabled());
 
   void fillNewPreferencesValues(
-      PushSettingsLocalPreferences newPreferences) {
+      PushSettings newPreferences) {
     favouriteFieldBloc.changeCurrentValue(
         pushSettingsLocalPreferencesBloc.value?.favourite);
     followFieldBloc.changeCurrentValue(

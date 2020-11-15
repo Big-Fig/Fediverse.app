@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 abstract class PushSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PushSettingsLocalPreferences>
+    extends ObjectLocalPreferenceBloc<PushSettings>
     implements IPushSettingsLocalPreferencesBloc {
   PushSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
@@ -13,6 +13,6 @@ abstract class PushSettingsLocalPreferencesBloc
           preferencesService,
           key,
           1,
-          (json) => PushSettingsLocalPreferences.fromJson(json),
+          (json) => PushSettings.fromJson(json),
         );
 }
