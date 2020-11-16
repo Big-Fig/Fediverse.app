@@ -18,7 +18,7 @@ class EditWebSocketsSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   }) : typeFieldBloc = FormValueFieldBloc<WebSocketsSettingsType>(
           originValue: webSocketsSettingsBloc.type,
           validators: [],
-        ) {
+        ), super(webSocketsSettingsBloc) {
     _subscribeForType();
   }
 

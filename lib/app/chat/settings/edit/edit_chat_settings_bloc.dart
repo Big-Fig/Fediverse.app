@@ -11,5 +11,5 @@ abstract class IEditChatSettingsBloc
 
   IFormBoolFieldBloc get countConversationsInChatsUnreadBadgesFieldBloc;
 
-  IFormBoolFieldBloc get replaceConversationsWithChatsFieldBloc;
+  IFormBoolFieldBloc get replaceConversationsWithPleromaChatsFieldBloc;
 }

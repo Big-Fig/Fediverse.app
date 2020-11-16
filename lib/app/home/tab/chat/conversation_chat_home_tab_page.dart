@@ -132,7 +132,7 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
           S.of(context).app_home_tab_chat_conversation_action_switchToChats,
           onPressed: () {
         IChatSettingsBloc.of(context, listen: false)
-            .changeReplaceConversationsWithChats(true);
+            .changeReplaceConversationsWithPleromaChats(true);
       }),
     );
   }

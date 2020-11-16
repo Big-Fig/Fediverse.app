@@ -1,3 +1,13 @@
+import 'package:fedi/app/chat/settings/edit/global/edit_global_chat_settings_dialog.dart';
+import 'package:fedi/app/localization/settings/edit/global/edit_global_localization_settings_dialog.dart';
+import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
+import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_status_settings_dialog.dart';
+import 'package:fedi/app/status/sensitive/settings/edit/global/edit_global_status_sensitive_settings_dialog.dart';
+import 'package:fedi/app/toast/settings/edit/global/edit_global_toast_settings_dialog.dart';
+import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
+import 'package:fedi/app/ui/settings/edit/global/edit_global_ui_settings_dialog.dart';
+import 'package:fedi/app/web_sockets/settings/edit/global/edit_global_web_sockets_settings_dialog.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,156 +18,142 @@ class GlobalSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // const _GlobalSettingsLocalizationFieldWidget(),
-          // const CurrentFediUiThemeChooserFormRowWidget(),
-          // const _GlobalSettingsWebSocketsFieldWidget(),
-          // const _GlobalSettingsShowSpoilerFieldWidget(),
-          // const _GlobalSettingsShowNsfwSpoilerWidget(),
-          // const _GlobalSettingsDefaultVisibilityFieldWidget(),
-          // const _GlobalSettingsMediaNsfwByDefaultFieldWidget(),
-          // const _GlobalSettingsMediaAutoInitFieldWidget(),
-          // const _GlobalSettingsMediaAutoPlayFieldWidget(),
+          const _GlobalSettingsUiRowWidget(),
+          const _GlobalSettingsLocalizationRowWidget(),
+          const _GlobalSettingsMediaRowWidget(),
+          // const _GlobalSettingsToastRowWidget(),
+          const _GlobalSettingsStatusSensitiveRowWidget(),
+          const _GlobalSettingsPostStatusRowWidget(),
+          const _GlobalSettingsChatRowWidget(),
+          const _GlobalSettingsWebSocketsRowWidget(),
         ],
       );
 }
-//
-// class _GlobalSettingsLocalizationFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsLocalizationFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//     return FormLocalizationCurrentLocaleFieldFormRowWidget(
-//       label: S.of(context).app_localization_form_field_label,
-//       field: GlobalSettingsBloc.localizationLocaleFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsMediaAutoPlayFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsMediaAutoPlayFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label: S.of(context).app_account_my_settings_field_mediaAutoPlay_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.mediaAutoPlayFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsMediaAutoInitFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsMediaAutoInitFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label: S.of(context).app_account_my_settings_field_mediaAutoInit_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.mediaAutoInitFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsMediaNsfwByDefaultFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsMediaNsfwByDefaultFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label:
-//           S.of(context).app_account_my_settings_field_mediaNsfwByDefault_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.markMediaNsfwByDefaultFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsDefaultVisibilityFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsDefaultVisibilityFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormPleromaVisibilityFieldFormRowWidget(
-//       label:
-//           S.of(context).app_account_my_settings_field_defaultVisibility_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.defaultVisibilityFieldBloc,
-//       displayIcon: false,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsShowNsfwSpoilerWidget extends StatelessWidget {
-//   const _GlobalSettingsShowNsfwSpoilerWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label: S.of(context).app_account_my_settings_field_alwaysShowNsfw_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.isAlwaysShowNsfwFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsShowSpoilerFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsShowSpoilerFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label:
-//           S.of(context).app_account_my_settings_field_alwaysShowSpoiler_label,
-//       desc: null,
-//       field: GlobalSettingsBloc.isAlwaysShowSpoilerFieldBloc,
-//     );
-//   }
-// }
-//
-// class _GlobalSettingsWebSocketsFieldWidget extends StatelessWidget {
-//   const _GlobalSettingsWebSocketsFieldWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var GlobalSettingsBloc = IGlobalSettingsBloc.of(context);
-//
-//     return FormBoolFieldFormRowWidget(
-//       label:
-//           S.of(context).app_account_my_settings_field_websocketsEnabled_label,
-//       desc: S
-//           .of(context)
-//           .app_account_my_settings_field_websocketsEnabled_description,
-//       field: GlobalSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc,
-//     );
-//   }
-// }
+
+class _GlobalSettingsLocalizationRowWidget extends StatelessWidget {
+  const _GlobalSettingsLocalizationRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_localization_settings_title,
+      onClick: () {
+        showEditGlobalLocalizationSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsUiRowWidget extends StatelessWidget {
+  const _GlobalSettingsUiRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_ui_settings_title,
+      onClick: () {
+        showEditGlobalUiSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsMediaRowWidget extends StatelessWidget {
+  const _GlobalSettingsMediaRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_media_settings_title,
+      onClick: () {
+        showEditGlobalMediaSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsToastRowWidget extends StatelessWidget {
+  const _GlobalSettingsToastRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_toast_settings_title,
+      onClick: () {
+        showEditGlobalToastSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsStatusSensitiveRowWidget extends StatelessWidget {
+  const _GlobalSettingsStatusSensitiveRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_status_sensitive_settings_title,
+      onClick: () {
+        showEditGlobalStatusSensitiveSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsPostStatusRowWidget extends StatelessWidget {
+  const _GlobalSettingsPostStatusRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_status_post_settings_title,
+      onClick: () {
+        showEditGlobalPostStatusSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsChatRowWidget extends StatelessWidget {
+  const _GlobalSettingsChatRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_chat_settings_title,
+      onClick: () {
+        showEditGlobalChatSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsWebSocketsRowWidget extends StatelessWidget {
+  const _GlobalSettingsWebSocketsRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_web_sockets_settings_title,
+      onClick: () {
+        showEditGlobalWebSocketsSettingsDialog(context: context);
+      },
+    );
+  }
+}

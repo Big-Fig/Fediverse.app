@@ -13,9 +13,11 @@ class StatusSensitiveSettingsBloc
     @required
         IStatusSensitiveSettingsLocalPreferencesBloc
             instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+    forceUseGlobal: forceUseGlobal,
         );
 
   @override

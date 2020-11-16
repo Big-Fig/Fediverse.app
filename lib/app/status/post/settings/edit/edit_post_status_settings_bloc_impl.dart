@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 
 class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     implements IEditPostStatusSettingsBloc {
-  final IPostStatusSettingsBloc postStatusSettingBloc;
+  final IPostStatusSettingsBloc postStatusSettingsBloc;
 
   @override
   final IFormValueFieldBloc<PleromaVisibility> defaultVisibilityFormFieldBloc;
@@ -19,18 +19,18 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   final IFormBoolFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
 
   EditPostStatusSettingsBloc({
-    @required this.postStatusSettingBloc,
+    @required this.postStatusSettingsBloc,
   })  : defaultVisibilityFormFieldBloc = FormValueFieldBloc(
-          originValue: postStatusSettingBloc.defaultVisibility,
+          originValue: postStatusSettingsBloc.defaultVisibility,
           validators: [],
-          isEnabled: postStatusSettingBloc.isInstance,
-          isEnabledStream: postStatusSettingBloc.isInstanceStream,
+          isEnabled: postStatusSettingsBloc.isInstance,
+          isEnabledStream: postStatusSettingsBloc.isInstanceStream,
         ),
         markMediaAsNsfwOnAttachFormFieldBloc = FormBoolFieldBloc(
-          originValue: postStatusSettingBloc.markMediaAsNsfwOnAttach,
-          isEnabled: postStatusSettingBloc.isInstance,
-          isEnabledStream: postStatusSettingBloc.isInstanceStream,
-        ) {
+          originValue: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+          isEnabled: postStatusSettingsBloc.isInstance,
+          isEnabledStream: postStatusSettingsBloc.isInstanceStream,
+        ), super(postStatusSettingsBloc) {
     _subscribeForMarkMediaAsNsfwOnAttach();
 
     _subscribeForDefaultVisibility();
@@ -39,7 +39,7 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForDefaultVisibility() {
     addDisposable(
       streamSubscription:
-          postStatusSettingBloc.defaultVisibilityStream.distinct().listen(
+          postStatusSettingsBloc.defaultVisibilityStream.distinct().listen(
         (newValue) {
           defaultVisibilityFormFieldBloc.changeCurrentValue(newValue);
         },
@@ -49,7 +49,7 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           defaultVisibilityFormFieldBloc.currentValueStream.listen(
         (value) {
-          postStatusSettingBloc.changeDefaultVisibility(value);
+          postStatusSettingsBloc.changeDefaultVisibility(value);
         },
       ),
     );
@@ -58,7 +58,7 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForMarkMediaAsNsfwOnAttach() {
     addDisposable(
       streamSubscription:
-          postStatusSettingBloc.markMediaAsNsfwOnAttachStream.distinct().listen(
+          postStatusSettingsBloc.markMediaAsNsfwOnAttachStream.distinct().listen(
         (newValue) {
           markMediaAsNsfwOnAttachFormFieldBloc.changeCurrentValue(newValue);
         },
@@ -68,7 +68,7 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           markMediaAsNsfwOnAttachFormFieldBloc.currentValueStream.listen(
         (value) {
-          postStatusSettingBloc.changeMarkMediaAsNsfwOnAttach(value);
+          postStatusSettingsBloc.changeMarkMediaAsNsfwOnAttach(value);
         },
       ),
     );

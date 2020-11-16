@@ -10,10 +10,12 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
     extends DisposableOwner implements IGlobalOrInstanceSettingsBloc<T> {
   final ILocalPreferenceBloc<T> globalLocalPreferencesBloc;
   final ILocalPreferenceBloc<T> instanceLocalPreferencesBloc;
+  final bool forceUseGlobal;
 
   GlobalOrInstanceSettingsLocalPreferencesBloc({
     @required this.globalLocalPreferencesBloc,
     @required this.instanceLocalPreferencesBloc,
+    @required this.forceUseGlobal,
   });
 
   @override
@@ -35,19 +37,21 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
       );
 
   @override
-  bool get isGlobal => globalOrInstanceSettings.isGlobal;
+  bool get isGlobal => forceUseGlobal || globalOrInstanceSettings.isGlobal;
 
   @override
   Stream<bool> get isGlobalStream => globalOrInstanceSettingsStream.map(
-        (globalOrInstanceSettings) => globalOrInstanceSettings.isGlobal,
+        (globalOrInstanceSettings) =>
+            forceUseGlobal || globalOrInstanceSettings.isGlobal,
       );
 
   @override
-  bool get isInstance => globalOrInstanceSettings.isInstance;
+  bool get isInstance => !forceUseGlobal && globalOrInstanceSettings.isInstance;
 
   @override
   Stream<bool> get isInstanceStream => globalOrInstanceSettingsStream.map(
-        (globalOrInstanceSettings) => globalOrInstanceSettings.isInstance,
+        (globalOrInstanceSettings) =>
+            !forceUseGlobal && globalOrInstanceSettings.isInstance,
       );
 
   @override
@@ -75,7 +79,7 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
     @required T globalSettings,
     @required T instanceSettings,
   }) {
-    if (instanceSettings != null) {
+    if (instanceSettings != null && !forceUseGlobal) {
       return GlobalOrInstanceSettings(
         settings: instanceSettings,
         isInstance: true,

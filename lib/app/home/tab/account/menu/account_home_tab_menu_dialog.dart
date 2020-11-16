@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
 import 'package:fedi/app/settings/global/global_settings_page.dart';
@@ -50,7 +51,7 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.account,
-        text: S.of(context).app_account_my_menu_action_account,
+        text: S.of(context).app_account_home_tab_menu_action_account,
       ),
     );
   }
@@ -70,7 +71,7 @@ class _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.settings,
-        text: S.of(context).app_account_my_menu_action_settings,
+        text: S.of(context).app_account_home_tab_menu_action_global_settings,
       ),
     );
   }
@@ -84,13 +85,16 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
 
   @override
   Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     return InkWell(
       onTap: () {
         goToInstanceSettingsPage(context);
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.instance,
-        text: S.of(context).app_account_my_menu_action_settings,
+        text: S.of(context).app_account_home_tab_menu_action_instance_settings(
+              currentAuthInstanceBloc.currentInstance.userAtHost,
+            ),
       ),
     );
   }
@@ -110,7 +114,7 @@ class _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.unbookmark,
-        text: S.of(context).app_account_my_menu_action_bookmarks,
+        text: S.of(context).app_account_home_tab_menu_action_bookmarks,
       ),
     );
   }
@@ -129,7 +133,7 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.lists,
-        text: S.of(context).app_account_my_menu_action_lists,
+        text: S.of(context).app_account_home_tab_menu_action_lists,
       ),
     );
   }

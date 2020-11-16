@@ -13,9 +13,11 @@ class PostStatusSettingsBloc
         IPostStatusSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required
         IPostStatusSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+    forceUseGlobal: forceUseGlobal,
         );
 
   @override

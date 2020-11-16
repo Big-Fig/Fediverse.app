@@ -688,6 +688,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalChatSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
 
     await globalProviderService
@@ -698,6 +699,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc: instanceMediaSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalMediaSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
     await globalProviderService
         .asyncInitAndRegister<IMediaSettingsBloc>(mediaSettingsBloc);
@@ -707,6 +709,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instanceLocalPreferencesBloc: instanceToastSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalToastSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
 
     await globalProviderService
@@ -718,6 +721,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           instancePostStatusSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalPostStatusSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
 
     await globalProviderService
@@ -729,6 +733,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           instanceStatusSensitiveSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc: appContextBloc
           .get<IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
 
     await globalProviderService.asyncInitAndRegister<
@@ -740,6 +745,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           instanceWebSocketsSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferencesBloc>(),
+      forceUseGlobal: false,
     );
 
     await globalProviderService

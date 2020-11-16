@@ -8,7 +8,7 @@ part of 'chat_settings_model.dart';
 
 class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
   @override
-  final int typeId = 53;
+  final int typeId = 60;
 
   @override
   ChatSettings read(BinaryReader reader) {
@@ -17,7 +17,7 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChatSettings(
-      replaceConversationsWithChats: fields[0] as bool,
+      replaceConversationsWithPleromaChats: fields[0] as bool,
       countConversationsInChatsUnreadBadges: fields[1] as bool,
     );
   }
@@ -27,7 +27,7 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.replaceConversationsWithChats)
+      ..write(obj.replaceConversationsWithPleromaChats)
       ..writeByte(1)
       ..write(obj.countConversationsInChatsUnreadBadges);
   }
@@ -49,8 +49,8 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
 
 ChatSettings _$ChatSettingsFromJson(Map<String, dynamic> json) {
   return ChatSettings(
-    replaceConversationsWithChats:
-        json['replace_conversations_with_chats'] as bool,
+    replaceConversationsWithPleromaChats:
+        json['replace_conversations_with_pleroma_chats'] as bool,
     countConversationsInChatsUnreadBadges:
         json['count_conversations_in_chats_unread_badges'] as bool,
   );
@@ -58,8 +58,8 @@ ChatSettings _$ChatSettingsFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ChatSettingsToJson(ChatSettings instance) =>
     <String, dynamic>{
-      'replace_conversations_with_chats':
-          instance.replaceConversationsWithChats,
+      'replace_conversations_with_pleroma_chats':
+          instance.replaceConversationsWithPleromaChats,
       'count_conversations_in_chats_unread_badges':
           instance.countConversationsInChatsUnreadBadges,
     };

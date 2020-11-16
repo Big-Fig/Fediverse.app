@@ -12,7 +12,7 @@ class GlobalChatSettingsLocalPreferencesBloc
 
   @override
   ChatSettings get defaultValue => ChatSettings(
-        replaceConversationsWithChats: true,
+        replaceConversationsWithPleromaChats: true,
         countConversationsInChatsUnreadBadges: true,
       );
 }

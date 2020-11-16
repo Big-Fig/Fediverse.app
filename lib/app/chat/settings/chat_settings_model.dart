@@ -9,17 +9,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'chat_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: -32 + 85)
+@HiveType(typeId: -32 + 92)
 class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
   @HiveField(0)
-  @JsonKey(name: "replace_conversations_with_chats")
-  final bool replaceConversationsWithChats;
+  @JsonKey(name: "replace_conversations_with_pleroma_chats")
+  final bool replaceConversationsWithPleromaChats;
   @HiveField(1)
   @JsonKey(name: "count_conversations_in_chats_unread_badges")
   final bool countConversationsInChatsUnreadBadges;
 
   ChatSettings({
-    @required this.replaceConversationsWithChats,
+    @required this.replaceConversationsWithPleromaChats,
     @required this.countConversationsInChatsUnreadBadges,
   });
 
@@ -42,12 +42,13 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
   ChatSettings clone() => copyWith();
 
   ChatSettings copyWith({
-    bool replaceConversationsWithChats,
+    bool replaceConversationsWithPleromaChats,
     bool countConversationsInChatsUnreadBadges,
   }) =>
       ChatSettings(
-        replaceConversationsWithChats:
-            replaceConversationsWithChats ?? this.replaceConversationsWithChats,
+        replaceConversationsWithPleromaChats:
+            replaceConversationsWithPleromaChats ??
+                this.replaceConversationsWithPleromaChats,
         countConversationsInChatsUnreadBadges:
             countConversationsInChatsUnreadBadges ??
                 this.countConversationsInChatsUnreadBadges,

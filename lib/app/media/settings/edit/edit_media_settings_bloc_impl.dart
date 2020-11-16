@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 
 class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     implements IEditMediaSettingsBloc {
-  final IMediaSettingsBloc mediaSettingBloc;
+  final IMediaSettingsBloc mediaSettingsBloc;
 
   @override
   final IFormBoolFieldBloc autoPlayFieldBloc;
@@ -16,17 +16,17 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   final IFormBoolFieldBloc autoInitFieldBloc;
 
   EditMediaSettingsBloc({
-    @required this.mediaSettingBloc,
+    @required this.mediaSettingsBloc,
   })  : autoPlayFieldBloc = FormBoolFieldBloc(
-          originValue: mediaSettingBloc.autoPlay,
-          isEnabled: mediaSettingBloc.isInstance,
-          isEnabledStream: mediaSettingBloc.isInstanceStream,
+          originValue: mediaSettingsBloc.autoPlay,
+          isEnabled: mediaSettingsBloc.isInstance,
+          isEnabledStream: mediaSettingsBloc.isInstanceStream,
         ),
         autoInitFieldBloc = FormBoolFieldBloc(
-          originValue: mediaSettingBloc.autoInit,
-          isEnabled: mediaSettingBloc.isInstance,
-          isEnabledStream: mediaSettingBloc.isInstanceStream,
-        ) {
+          originValue: mediaSettingsBloc.autoInit,
+          isEnabled: mediaSettingsBloc.isInstance,
+          isEnabledStream: mediaSettingsBloc.isInstanceStream,
+        ), super(mediaSettingsBloc) {
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();
   }
@@ -34,7 +34,7 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForAutoInitFieldBloc() {
     addDisposable(
       streamSubscription:
-          mediaSettingBloc.autoInitStream.distinct().listen(
+          mediaSettingsBloc.autoInitStream.distinct().listen(
         (newValue) {
           autoInitFieldBloc.changeCurrentValue(newValue);
         },
@@ -43,7 +43,7 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     addDisposable(
       streamSubscription: autoInitFieldBloc.currentValueStream.listen(
         (value) {
-          mediaSettingBloc.changeAutoInit(value);
+          mediaSettingsBloc.changeAutoInit(value);
         },
       ),
     );
@@ -52,7 +52,7 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForAutoPlay() {
     addDisposable(
       streamSubscription:
-          mediaSettingBloc.autoPlayStream.distinct().listen(
+          mediaSettingsBloc.autoPlayStream.distinct().listen(
         (newValue) {
           autoPlayFieldBloc.changeCurrentValue(newValue);
         },
@@ -61,7 +61,7 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     addDisposable(
       streamSubscription: autoPlayFieldBloc.currentValueStream.listen(
         (value) {
-          mediaSettingBloc.changeAutoPlay(value);
+          mediaSettingsBloc.changeAutoPlay(value);
         },
       ),
     );

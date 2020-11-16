@@ -30,9 +30,9 @@ class LocalizationSettingsBloc extends DisposableOwner
   @override
   void changeLocalizationLocale(LocalizationLocale value) {
     localizationSettingsLocalPreferencesBloc.setValue(
-      settingsData.copyWith(
-        localizationLocale: value,
-      ),
+      LocalizationSettings(localizationLocale: value),
+      // copyWith don't set null values
+      // settingsData.copyWith(localizationLocale: value),
     );
   }
 }
