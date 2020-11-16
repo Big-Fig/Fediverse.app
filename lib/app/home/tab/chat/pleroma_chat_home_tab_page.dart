@@ -168,7 +168,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
             S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
             onPressed: () {
               IChatSettingsBloc.of(context, listen: false)
-                  .changeReplaceConversationsWithChats(false);
+                  .changeReplaceConversationsWithPleromaChats(false);
             },
           ),
         ),

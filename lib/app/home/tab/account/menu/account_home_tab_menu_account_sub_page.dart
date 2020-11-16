@@ -59,7 +59,7 @@ class _MyAccountSettingsScheduledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_scheduledPosts,
+      title: S.of(context).app_account_my_action_scheduledPosts,
       onClick: () {
         goToScheduledStatusListPage(context);
       },
@@ -75,7 +75,7 @@ class _MyAccountSettingsDraftsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_draftPosts,
+      title: S.of(context).app_account_my_action_draftPosts,
       onClick: () {
         goToDraftStatusListPage(context);
       },
@@ -91,7 +91,7 @@ class _MyAccountSettingsFavouritedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_favourited,
+      title: S.of(context).app_account_my_action_favourited,
       onClick: () {
         goToMyAccountFavouritedStatusesPage(context);
       },
@@ -107,7 +107,7 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_followRequests,
+      title: S.of(context).app_account_my_action_followRequests,
       onClick: () {
         goToMyAccountFollowRequestListPage(context);
       },
@@ -123,7 +123,7 @@ class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_accountBlocks,
+      title: S.of(context).app_account_my_action_accountBlocks,
       onClick: () {
         goToMyAccountAccountBlockListPage(context);
       },
@@ -139,7 +139,7 @@ class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_accountMutes,
+      title: S.of(context).app_account_my_action_accountMutes,
       onClick: () {
         goToMyAccountAccountMuteListPage(context);
       },
@@ -155,7 +155,7 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_settings_action_domainBlocks,
+      title: S.of(context).app_account_my_action_domainBlocks,
       onClick: () {
         goToMyAccountDomainBlockListPage(context);
       },

@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     implements IEditStatusSensitiveSettingsBloc {
-  final IStatusSensitiveSettingsBloc statusSensitiveSettingBloc;
+  final IStatusSensitiveSettingsBloc statusSensitiveSettingsBloc;
 
   @override
   final IFormValueFieldBloc<Duration> nsfwDisplayDelayDurationFieldBloc;
@@ -21,23 +21,23 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   final IFormBoolFieldBloc isAlwaysShowNsfwFieldBloc;
 
   EditStatusSensitiveSettingsBloc({
-    @required this.statusSensitiveSettingBloc,
+    @required this.statusSensitiveSettingsBloc,
   })  : nsfwDisplayDelayDurationFieldBloc = FormValueFieldBloc(
-          originValue: statusSensitiveSettingBloc.nsfwDisplayDelayDuration,
+          originValue: statusSensitiveSettingsBloc.nsfwDisplayDelayDuration,
           validators: [],
-          isEnabled: statusSensitiveSettingBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingBloc.isInstanceStream,
+          isEnabled: statusSensitiveSettingsBloc.isInstance,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
         ),
         isAlwaysShowSpoilerFieldBloc = FormBoolFieldBloc(
-          originValue: statusSensitiveSettingBloc.isAlwaysShowSpoiler,
-          isEnabled: statusSensitiveSettingBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingBloc.isInstanceStream,
+          originValue: statusSensitiveSettingsBloc.isAlwaysShowSpoiler,
+          isEnabled: statusSensitiveSettingsBloc.isInstance,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
         ),
         isAlwaysShowNsfwFieldBloc = FormBoolFieldBloc(
-          originValue: statusSensitiveSettingBloc.isAlwaysShowNsfw,
-          isEnabled: statusSensitiveSettingBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingBloc.isInstanceStream,
-        ) {
+          originValue: statusSensitiveSettingsBloc.isAlwaysShowNsfw,
+          isEnabled: statusSensitiveSettingsBloc.isInstance,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
+        ), super(statusSensitiveSettingsBloc) {
     _subscribeForNsfwDisplayDelayDuration();
     _subscribeForIsAlwaysShowNsfw();
     _subscribeForIsAlwaysShowSpoiler();
@@ -45,7 +45,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
 
   void _subscribeForNsfwDisplayDelayDuration() {
     addDisposable(
-      streamSubscription: statusSensitiveSettingBloc
+      streamSubscription: statusSensitiveSettingsBloc
           .nsfwDisplayDelayDurationStream
           .distinct()
           .listen(
@@ -58,7 +58,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           nsfwDisplayDelayDurationFieldBloc.currentValueStream.listen(
         (value) {
-          statusSensitiveSettingBloc.changeNsfwDisplayDelayDuration(value);
+          statusSensitiveSettingsBloc.changeNsfwDisplayDelayDuration(value);
         },
       ),
     );
@@ -67,7 +67,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForIsAlwaysShowNsfw() {
     addDisposable(
       streamSubscription:
-          statusSensitiveSettingBloc.isAlwaysShowNsfwStream.distinct().listen(
+          statusSensitiveSettingsBloc.isAlwaysShowNsfwStream.distinct().listen(
         (newValue) {
           isAlwaysShowNsfwFieldBloc.changeCurrentValue(newValue);
         },
@@ -76,7 +76,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     addDisposable(
       streamSubscription: isAlwaysShowNsfwFieldBloc.currentValueStream.listen(
         (value) {
-          statusSensitiveSettingBloc.changeIsAlwaysShowNsfw(value);
+          statusSensitiveSettingsBloc.changeIsAlwaysShowNsfw(value);
         },
       ),
     );
@@ -84,7 +84,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
 
   void _subscribeForIsAlwaysShowSpoiler() {
     addDisposable(
-      streamSubscription: statusSensitiveSettingBloc.isAlwaysShowSpoilerStream
+      streamSubscription: statusSensitiveSettingsBloc.isAlwaysShowSpoilerStream
           .distinct()
           .listen(
         (newValue) {
@@ -96,7 +96,7 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           isAlwaysShowSpoilerFieldBloc.currentValueStream.listen(
         (value) {
-          statusSensitiveSettingBloc.changeIsAlwaysShowSpoiler(value);
+          statusSensitiveSettingsBloc.changeIsAlwaysShowSpoiler(value);
         },
       ),
     );

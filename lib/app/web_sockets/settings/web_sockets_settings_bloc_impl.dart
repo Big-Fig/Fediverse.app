@@ -12,9 +12,11 @@ class WebSocketsSettingsBloc
         IWebSocketsSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required
         IWebSocketsSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+          forceUseGlobal: forceUseGlobal,
         );
 
   @override

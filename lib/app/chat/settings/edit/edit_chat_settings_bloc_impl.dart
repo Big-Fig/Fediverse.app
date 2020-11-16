@@ -7,26 +7,26 @@ import 'package:flutter/widgets.dart';
 
 class EditChatSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     implements IEditChatSettingsBloc {
-  final IChatSettingsBloc chatSettingBloc;
+  final IChatSettingsBloc chatSettingsBloc;
 
   @override
   final IFormBoolFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
 
   @override
-  final IFormBoolFieldBloc replaceConversationsWithChatsFieldBloc;
+  final IFormBoolFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
 
   EditChatSettingsBloc({
-    @required this.chatSettingBloc,
+    @required this.chatSettingsBloc,
   })  : countConversationsInChatsUnreadBadgesFieldBloc = FormBoolFieldBloc(
-          originValue: chatSettingBloc.countConversationsInChatsUnreadBadges,
-          isEnabled: chatSettingBloc.isInstance,
-          isEnabledStream: chatSettingBloc.isInstanceStream,
+          originValue: chatSettingsBloc.countConversationsInChatsUnreadBadges,
+          isEnabled: chatSettingsBloc.isInstance,
+          isEnabledStream: chatSettingsBloc.isInstanceStream,
         ),
-        replaceConversationsWithChatsFieldBloc = FormBoolFieldBloc(
-          originValue: chatSettingBloc.replaceConversationsWithChats,
-          isEnabled: chatSettingBloc.isInstance,
-          isEnabledStream: chatSettingBloc.isInstanceStream,
-        ) {
+        replaceConversationsWithPleromaChatsFieldBloc = FormBoolFieldBloc(
+          originValue: chatSettingsBloc.replaceConversationsWithChats,
+          isEnabled: chatSettingsBloc.isInstance,
+          isEnabledStream: chatSettingsBloc.isInstanceStream,
+        ), super(chatSettingsBloc) {
     _subscribeForReplaceConversationsWithChatsFieldBloc();
     _subscribeForCountConversationsInChatsUnreadBadges();
   }
@@ -34,16 +34,16 @@ class EditChatSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForReplaceConversationsWithChatsFieldBloc() {
     addDisposable(
       streamSubscription:
-          chatSettingBloc.replaceConversationsWithChatsStream.distinct().listen(
+          chatSettingsBloc.replaceConversationsWithChatsStream.distinct().listen(
         (newValue) {
-          replaceConversationsWithChatsFieldBloc.changeCurrentValue(newValue);
+          replaceConversationsWithPleromaChatsFieldBloc.changeCurrentValue(newValue);
         },
       ),
     );
     addDisposable(
-      streamSubscription: replaceConversationsWithChatsFieldBloc.currentValueStream.listen(
+      streamSubscription: replaceConversationsWithPleromaChatsFieldBloc.currentValueStream.listen(
         (value) {
-          chatSettingBloc.changeReplaceConversationsWithChats(value);
+          chatSettingsBloc.changeReplaceConversationsWithPleromaChats(value);
         },
       ),
     );
@@ -52,7 +52,7 @@ class EditChatSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForCountConversationsInChatsUnreadBadges() {
     addDisposable(
       streamSubscription:
-          chatSettingBloc.countConversationsInChatsUnreadBadgesStream.distinct().listen(
+          chatSettingsBloc.countConversationsInChatsUnreadBadgesStream.distinct().listen(
         (newValue) {
           countConversationsInChatsUnreadBadgesFieldBloc.changeCurrentValue(newValue);
         },
@@ -61,7 +61,7 @@ class EditChatSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     addDisposable(
       streamSubscription: countConversationsInChatsUnreadBadgesFieldBloc.currentValueStream.listen(
         (value) {
-          chatSettingBloc.changeCountConversationsInChatsUnreadBadges(value);
+          chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(value);
         },
       ),
     );

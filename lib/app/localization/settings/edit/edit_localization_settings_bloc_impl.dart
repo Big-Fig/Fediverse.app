@@ -1,12 +1,12 @@
 import 'package:fedi/app/localization/settings/edit/edit_localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
-import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-class EditLocalizationSettingsBloc extends EditGlobalOrInstanceSettingsBloc
+class EditLocalizationSettingsBloc extends DisposableOwner
     implements IEditLocalizationSettingsBloc {
   final ILocalizationSettingsBloc localizationSettingBloc;
 

@@ -10,9 +10,11 @@ class ToastSettingsBloc
   ToastSettingsBloc({
     @required IToastSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IToastSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+    forceUseGlobal: forceUseGlobal,
         );
 
   @override

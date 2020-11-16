@@ -19,16 +19,20 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
   @override
   void changeThemeId(String value) {
     uiSettingsLocalPreferencesBloc.setValue(
-      settingsData.copyWith(
+      UiSettings(
         themeId: value,
       ),
+      // copyWith don't set null values
+      // settingsData.copyWith(
+      //   themeId: value,
+      // ),
     );
   }
 
   @override
-  String get themeId => settingsData.themeId;
+  String get themeId => settingsData?.themeId;
 
   @override
   Stream<String> get themeIdStream =>
-      settingsDataStream.map((settings) => settings.themeId);
+      settingsDataStream.map((settings) => settings?.themeId);
 }

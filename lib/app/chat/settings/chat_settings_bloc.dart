@@ -13,7 +13,7 @@ abstract class IChatSettingsBloc
 
   Stream<bool> get replaceConversationsWithChatsStream;
 
-  void changeReplaceConversationsWithChats(bool value);
+  void changeReplaceConversationsWithPleromaChats(bool value);
 
   bool get countConversationsInChatsUnreadBadges;
 

@@ -10,9 +10,11 @@ class MediaSettingsBloc
   MediaSettingsBloc({
     @required IMediaSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IMediaSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+    forceUseGlobal: forceUseGlobal,
         );
 
   @override

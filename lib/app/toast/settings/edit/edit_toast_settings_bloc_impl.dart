@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 
 class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     implements IEditToastSettingsBloc {
-  final IToastSettingsBloc toastSettingBloc;
+  final IToastSettingsBloc toastSettingsBloc;
 
   @override
   final IFormBoolFieldBloc notificationForChatAndDmFieldBloc;
@@ -16,24 +16,24 @@ class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   final IFormBoolFieldBloc notificationForMentionFieldBloc;
 
   EditToastSettingsBloc({
-    @required this.toastSettingBloc,
+    @required this.toastSettingsBloc,
   })  : notificationForChatAndDmFieldBloc = FormBoolFieldBloc(
-          originValue: toastSettingBloc.notificationForChatAndDm,
-          isEnabled: toastSettingBloc.isInstance,
-          isEnabledStream: toastSettingBloc.isInstanceStream,
+          originValue: toastSettingsBloc.notificationForChatAndDm,
+          isEnabled: toastSettingsBloc.isInstance,
+          isEnabledStream: toastSettingsBloc.isInstanceStream,
         ),
         notificationForMentionFieldBloc = FormBoolFieldBloc(
-          originValue: toastSettingBloc.notificationForMention,
-          isEnabled: toastSettingBloc.isInstance,
-          isEnabledStream: toastSettingBloc.isInstanceStream,
-        ) {
+          originValue: toastSettingsBloc.notificationForMention,
+          isEnabled: toastSettingsBloc.isInstance,
+          isEnabledStream: toastSettingsBloc.isInstanceStream,
+        ), super(toastSettingsBloc) {
     _subscribeForNotificationForMentionFieldBloc();
     _subscribeForNotificationForChatAndDm();
   }
 
   void _subscribeForNotificationForMentionFieldBloc() {
     addDisposable(
-      streamSubscription: toastSettingBloc.notificationForMentionStream
+      streamSubscription: toastSettingsBloc.notificationForMentionStream
           .distinct()
           .listen(
         (newValue) {
@@ -45,7 +45,7 @@ class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           notificationForMentionFieldBloc.currentValueStream.listen(
         (value) {
-          toastSettingBloc.changeNotificationForMention(value);
+          toastSettingsBloc.changeNotificationForMention(value);
         },
       ),
     );
@@ -54,7 +54,7 @@ class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   void _subscribeForNotificationForChatAndDm() {
     addDisposable(
       streamSubscription:
-          toastSettingBloc.notificationForChatAndDmStream.distinct().listen(
+          toastSettingsBloc.notificationForChatAndDmStream.distinct().listen(
         (newValue) {
           notificationForChatAndDmFieldBloc.changeCurrentValue(newValue);
         },
@@ -64,7 +64,7 @@ class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
       streamSubscription:
           notificationForChatAndDmFieldBloc.currentValueStream.listen(
         (value) {
-          toastSettingBloc.changeNotificationForChatAndDm(value);
+          toastSettingsBloc.changeNotificationForChatAndDm(value);
         },
       ),
     );

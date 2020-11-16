@@ -8,14 +8,15 @@ var _logger = Logger("form_bool_field_form_row_widget.dart");
 
 class FormBoolFieldFormRowWidget extends StatelessWidget {
   final String label;
-  final String desc;
+  final String description;
   final IFormBoolFieldBloc field;
   final bool enabled;
 
   FormBoolFieldFormRowWidget({
     @required this.label,
-    this.desc,
+    this.description,
     @required this.field,
+    // todo: remove enabled arg, use always streams
     this.enabled = true,
   });
 
@@ -31,13 +32,20 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FediFormSwitchRow(
-                label: label,
-                onChanged: field.changeCurrentValue,
-                value: currentValue == true,
-                enabled: enabled,
+              StreamBuilder<bool>(
+                stream: field.isEnabledStream,
+                initialData: field.isEnabled,
+                builder: (context, snapshot) {
+                  var isEnabled = snapshot.data && enabled;
+                  return FediFormSwitchRow(
+                    label: label,
+                    onChanged: field.changeCurrentValue,
+                    value: currentValue == true,
+                    enabled: isEnabled,
+                  );
+                }
               ),
-              if (desc != null) FediFormColumnDesc(desc),
+              if (description != null) FediFormColumnDesc(description),
             ],
           );
         });

@@ -779,40 +779,40 @@ class S {
   }
 
   /// `Account`
-  String get app_account_my_menu_action_account {
+  String get app_account_home_tab_menu_action_account {
     return Intl.message(
       'Account',
-      name: 'app_account_my_menu_action_account',
+      name: 'app_account_home_tab_menu_action_account',
       desc: '',
       args: [],
     );
   }
 
-  /// `Settings`
-  String get app_account_my_menu_action_settings {
+  /// `Settings: global`
+  String get app_account_home_tab_menu_action_global_settings {
     return Intl.message(
-      'Settings',
-      name: 'app_account_my_menu_action_settings',
+      'Settings: global',
+      name: 'app_account_home_tab_menu_action_global_settings',
       desc: '',
       args: [],
     );
   }
 
   /// `Bookmarks`
-  String get app_account_my_menu_action_bookmarks {
+  String get app_account_home_tab_menu_action_bookmarks {
     return Intl.message(
       'Bookmarks',
-      name: 'app_account_my_menu_action_bookmarks',
+      name: 'app_account_home_tab_menu_action_bookmarks',
       desc: '',
       args: [],
     );
   }
 
   /// `Lists`
-  String get app_account_my_menu_action_lists {
+  String get app_account_home_tab_menu_action_lists {
     return Intl.message(
       'Lists',
-      name: 'app_account_my_menu_action_lists',
+      name: 'app_account_home_tab_menu_action_lists',
       desc: '',
       args: [],
     );
@@ -828,181 +828,101 @@ class S {
     );
   }
 
-  /// `Settings`
-  String get app_account_my_settings_title {
+  /// `Settings: global`
+  String get app_settings_global_title {
     return Intl.message(
-      'Settings',
-      name: 'app_account_my_settings_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `WebSockets real-time updates`
-  String get app_account_my_settings_field_websocketsEnabled_label {
-    return Intl.message(
-      'WebSockets real-time updates',
-      name: 'app_account_my_settings_field_websocketsEnabled_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Disable to reduce battery usage`
-  String get app_account_my_settings_field_websocketsEnabled_description {
-    return Intl.message(
-      'Disable to reduce battery usage',
-      name: 'app_account_my_settings_field_websocketsEnabled_description',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show spoilers by default`
-  String get app_account_my_settings_field_alwaysShowSpoiler_label {
-    return Intl.message(
-      'Show spoilers by default',
-      name: 'app_account_my_settings_field_alwaysShowSpoiler_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show NSFW by default`
-  String get app_account_my_settings_field_alwaysShowNsfw_label {
-    return Intl.message(
-      'Show NSFW by default',
-      name: 'app_account_my_settings_field_alwaysShowNsfw_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Default visibility`
-  String get app_account_my_settings_field_defaultVisibility_label {
-    return Intl.message(
-      'Default visibility',
-      name: 'app_account_my_settings_field_defaultVisibility_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mark media as NSFW on uploading`
-  String get app_account_my_settings_field_mediaNsfwByDefault_label {
-    return Intl.message(
-      'Mark media as NSFW on uploading',
-      name: 'app_account_my_settings_field_mediaNsfwByDefault_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio/Video auto-init`
-  String get app_account_my_settings_field_mediaAutoInit_label {
-    return Intl.message(
-      'Audio/Video auto-init',
-      name: 'app_account_my_settings_field_mediaAutoInit_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio/Video auto-play`
-  String get app_account_my_settings_field_mediaAutoPlay_label {
-    return Intl.message(
-      'Audio/Video auto-play',
-      name: 'app_account_my_settings_field_mediaAutoPlay_label',
+      'Settings: global',
+      name: 'app_settings_global_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Scheduled posts`
-  String get app_account_my_settings_action_scheduledPosts {
+  String get app_account_my_action_scheduledPosts {
     return Intl.message(
       'Scheduled posts',
-      name: 'app_account_my_settings_action_scheduledPosts',
+      name: 'app_account_my_action_scheduledPosts',
       desc: '',
       args: [],
     );
   }
 
   /// `Draft posts`
-  String get app_account_my_settings_action_draftPosts {
+  String get app_account_my_action_draftPosts {
     return Intl.message(
       'Draft posts',
-      name: 'app_account_my_settings_action_draftPosts',
+      name: 'app_account_my_action_draftPosts',
       desc: '',
       args: [],
     );
   }
 
   /// `Lists`
-  String get app_account_my_settings_action_lists {
+  String get app_account_my_action_lists {
     return Intl.message(
       'Lists',
-      name: 'app_account_my_settings_action_lists',
+      name: 'app_account_my_action_lists',
       desc: '',
       args: [],
     );
   }
 
   /// `Bookmarks`
-  String get app_account_my_settings_action_bookmarked {
+  String get app_account_my_action_bookmarked {
     return Intl.message(
       'Bookmarks',
-      name: 'app_account_my_settings_action_bookmarked',
+      name: 'app_account_my_action_bookmarked',
       desc: '',
       args: [],
     );
   }
 
   /// `Favourites`
-  String get app_account_my_settings_action_favourited {
+  String get app_account_my_action_favourited {
     return Intl.message(
       'Favourites',
-      name: 'app_account_my_settings_action_favourited',
+      name: 'app_account_my_action_favourited',
       desc: '',
       args: [],
     );
   }
 
   /// `Follow requests`
-  String get app_account_my_settings_action_followRequests {
+  String get app_account_my_action_followRequests {
     return Intl.message(
       'Follow requests',
-      name: 'app_account_my_settings_action_followRequests',
+      name: 'app_account_my_action_followRequests',
       desc: '',
       args: [],
     );
   }
 
   /// `Account blocks`
-  String get app_account_my_settings_action_accountBlocks {
+  String get app_account_my_action_accountBlocks {
     return Intl.message(
       'Account blocks',
-      name: 'app_account_my_settings_action_accountBlocks',
+      name: 'app_account_my_action_accountBlocks',
       desc: '',
       args: [],
     );
   }
 
   /// `Account mutes`
-  String get app_account_my_settings_action_accountMutes {
+  String get app_account_my_action_accountMutes {
     return Intl.message(
       'Account mutes',
-      name: 'app_account_my_settings_action_accountMutes',
+      name: 'app_account_my_action_accountMutes',
       desc: '',
       args: [],
     );
   }
 
   /// `Domain blocks`
-  String get app_account_my_settings_action_domainBlocks {
+  String get app_account_my_action_domainBlocks {
     return Intl.message(
       'Domain blocks',
-      name: 'app_account_my_settings_action_domainBlocks',
+      name: 'app_account_my_action_domainBlocks',
       desc: '',
       args: [],
     );
@@ -1964,10 +1884,10 @@ class S {
     );
   }
 
-  /// `Push notifications settings`
+  /// `Push notifications`
   String get app_notification_push_settings_title {
     return Intl.message(
-      'Push notifications settings',
+      'Push notifications',
       name: 'app_notification_push_settings_title',
       desc: '',
       args: [],
@@ -4108,6 +4028,306 @@ class S {
       'A client for Pleroma and Mastodon social network instances',
       name: 'app_appStore_subtitle',
       desc: 'AppStore subtitle',
+      args: [],
+    );
+  }
+
+  /// `Settings: {userAtHost}`
+  String app_account_home_tab_menu_action_instance_settings(Object userAtHost) {
+    return Intl.message(
+      'Settings: $userAtHost',
+      name: 'app_account_home_tab_menu_action_instance_settings',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Настройки: {userAtHost}`
+  String app_settings_instance_title(Object userAtHost) {
+    return Intl.message(
+      'Настройки: $userAtHost',
+      name: 'app_settings_instance_title',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Localization`
+  String get app_localization_settings_title {
+    return Intl.message(
+      'Localization',
+      name: 'app_localization_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UI`
+  String get app_ui_settings_title {
+    return Intl.message(
+      'UI',
+      name: 'app_ui_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Posting`
+  String get app_status_post_settings_title {
+    return Intl.message(
+      'Posting',
+      name: 'app_status_post_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NSFW & Spoilers`
+  String get app_status_sensitive_settings_title {
+    return Intl.message(
+      'NSFW & Spoilers',
+      name: 'app_status_sensitive_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In-app notifications`
+  String get app_toast_settings_title {
+    return Intl.message(
+      'In-app notifications',
+      name: 'app_toast_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get app_chat_settings_title {
+    return Intl.message(
+      'Chat',
+      name: 'app_chat_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data update (WebSockets)`
+  String get app_web_sockets_settings_title {
+    return Intl.message(
+      'Data update (WebSockets)',
+      name: 'app_web_sockets_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use global settings`
+  String get app_settings_global_or_instance_use_global_label {
+    return Intl.message(
+      'Use global settings',
+      name: 'app_settings_global_or_instance_use_global_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get app_localization_settings_field_localizationLocale_label {
+    return Intl.message(
+      'Language',
+      name: 'app_localization_settings_field_localizationLocale_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark media as NSFW on attach`
+  String get app_status_post_settings_field_markMediaAsNsfwOnAttach_label {
+    return Intl.message(
+      'Mark media as NSFW on attach',
+      name: 'app_status_post_settings_field_markMediaAsNsfwOnAttach_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Default visibility`
+  String get app_status_post_settings_field_defaultVisibility_label {
+    return Intl.message(
+      'Default visibility',
+      name: 'app_status_post_settings_field_defaultVisibility_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always show spoilers`
+  String get app_status_sensitive_settings_field_isAlwaysShowSpoiler_label {
+    return Intl.message(
+      'Always show spoilers',
+      name: 'app_status_sensitive_settings_field_isAlwaysShowSpoiler_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always show NSFW`
+  String get app_status_sensitive_settings_field_isAlwaysShowNsfw_label {
+    return Intl.message(
+      'Always show NSFW',
+      name: 'app_status_sensitive_settings_field_isAlwaysShowNsfw_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NSFW display duration`
+  String get app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label {
+    return Intl.message(
+      'NSFW display duration',
+      name: 'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mentions`
+  String get app_toast_settings_field_notificationForMention_label {
+    return Intl.message(
+      'Mentions',
+      name: 'app_toast_settings_field_notificationForMention_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chats & Conversations`
+  String get app_toast_settings_field_notificationForChatAndDm_label {
+    return Intl.message(
+      'Chats & Conversations',
+      name: 'app_toast_settings_field_notificationForChatAndDm_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count conversations in unread badges`
+  String get app_chat_settings_field_countConversationsInChatsUnreadBadges_label {
+    return Intl.message(
+      'Count conversations in unread badges',
+      name: 'app_chat_settings_field_countConversationsInChatsUnreadBadges_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Replace "Conversations" with "Chats"`
+  String get app_chat_settings_field_replaceConversationsWithPleromaChats_label {
+    return Intl.message(
+      'Replace "Conversations" with "Chats"',
+      name: 'app_chat_settings_field_replaceConversationsWithPleromaChats_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real-time updates`
+  String get app_web_sockets_settings_field_type_label {
+    return Intl.message(
+      'Real-time updates',
+      name: 'app_web_sockets_settings_field_type_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable to reduce battery usage`
+  String get app_web_sockets_settings_field_type_description {
+    return Intl.message(
+      'Disable to reduce battery usage',
+      name: 'app_web_sockets_settings_field_type_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WebSockets updates`
+  String get app_timeline_settings_field_enableWebSockets_label {
+    return Intl.message(
+      'WebSockets updates',
+      name: 'app_timeline_settings_field_enableWebSockets_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable to reduce battery usage`
+  String get app_timeline_settings_field_enableWebSockets_description {
+    return Intl.message(
+      'Disable to reduce battery usage',
+      name: 'app_timeline_settings_field_enableWebSockets_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Media`
+  String get app_media_settings_title {
+    return Intl.message(
+      'Media',
+      name: 'app_media_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto-load`
+  String get app_media_settings_field_autoInit_label {
+    return Intl.message(
+      'Auto-load',
+      name: 'app_media_settings_field_autoInit_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto-play`
+  String get app_media_settings_field_autoPlay_label {
+    return Intl.message(
+      'Auto-play',
+      name: 'app_media_settings_field_autoPlay_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disabled`
+  String get app_web_sockets_settings_type_disabled {
+    return Intl.message(
+      'Disabled',
+      name: 'app_web_sockets_settings_type_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only for current screen`
+  String get app_web_sockets_settings_type_onlyForCurrentScreen {
+    return Intl.message(
+      'Only for current screen',
+      name: 'app_web_sockets_settings_type_onlyForCurrentScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current screen & all indicators`
+  String get app_web_sockets_settings_type_currentScreenAndAllIndicators {
+    return Intl.message(
+      'Current screen & all indicators',
+      name: 'app_web_sockets_settings_type_currentScreenAndAllIndicators',
+      desc: '',
       args: [],
     );
   }

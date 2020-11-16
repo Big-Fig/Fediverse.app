@@ -10,9 +10,11 @@ class ChatSettingsBloc
   ChatSettingsBloc({
     @required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
+    forceUseGlobal: forceUseGlobal,
         );
 
   @override
@@ -33,17 +35,17 @@ class ChatSettingsBloc
   }
 
   @override
-  void changeReplaceConversationsWithChats(bool value) {
+  void changeReplaceConversationsWithPleromaChats(bool value) {
     if (isInstance) {
       instanceLocalPreferencesBloc.setValue(
         instanceSettingsData.copyWith(
-          replaceConversationsWithChats: value,
+          replaceConversationsWithPleromaChats: value,
         ),
       );
     } else {
       globalLocalPreferencesBloc.setValue(
         globalSettingsData.copyWith(
-          replaceConversationsWithChats: value,
+          replaceConversationsWithPleromaChats: value,
         ),
       );
     }
@@ -60,9 +62,9 @@ class ChatSettingsBloc
 
   @override
   bool get replaceConversationsWithChats =>
-      settingsData.replaceConversationsWithChats;
+      settingsData.replaceConversationsWithPleromaChats;
 
   @override
   Stream<bool> get replaceConversationsWithChatsStream => settingsDataStream
-      .map((settings) => settings.replaceConversationsWithChats);
+      .map((settings) => settings.replaceConversationsWithPleromaChats);
 }

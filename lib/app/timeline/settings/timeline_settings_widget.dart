@@ -21,7 +21,6 @@ class TimelineSettingsWidget extends StatelessWidget {
     @required this.type,
     @required this.isNullablePossible,
     @required this.shrinkWrap,
-
   });
 
   @override
@@ -194,12 +193,12 @@ class TimelineSettingsWidget extends StatelessWidget {
     return buildBoolField(
       context: context,
       label:
-          S.of(context).app_account_my_settings_field_websocketsEnabled_label,
+          S.of(context).app_timeline_settings_field_enableWebSockets_label,
       fieldBloc: settingsBloc.webSocketsUpdatesFieldBloc,
       isSupported: type.isWebSocketsUpdatesFilterSupportedOnInstance(context),
       errorDesc: S
           .of(context)
-          .app_account_my_settings_field_websocketsEnabled_description,
+          .app_timeline_settings_field_enableWebSockets_description,
     );
   }
 
@@ -301,7 +300,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       label: label,
       field: fieldBloc,
       enabled: isSupported,
-      desc: isSupported
+      description: isSupported
           ? null
           : S.of(context).app_timeline_settings_field_notSupported_desc,
     );
