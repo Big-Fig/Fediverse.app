@@ -99,6 +99,7 @@ class FediIcons {
   static const IconData account = IconData(0xe8a9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lists = IconData(0xe8aa, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData chevron_right = IconData(0xe8ab, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData instance = IconData(0xe8b2, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unpin = IconData(0xe8bc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unfollow = IconData(0xe8bd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unbookmark = IconData(0xe8be, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -113,5 +114,4 @@ class FediIcons {
   static const IconData unmute = IconData(0xe8e3, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unblock = IconData(0xe8e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward = Icons.forward;
-  static const IconData instance = Icons.settings;
 }
