@@ -60,7 +60,7 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
   @override
   Stream<T> get settingsDataStream => globalOrInstanceSettingsStream.map(
         (globalOrInstanceSettings) => globalOrInstanceSettings.settings,
-      );
+      ).distinct();
 
   @override
   T get globalSettingsData => globalLocalPreferencesBloc.value;
