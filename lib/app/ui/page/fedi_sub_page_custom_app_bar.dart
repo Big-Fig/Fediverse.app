@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class FediSubPageCustomAppBar extends StatelessWidget
   @override
   final preferredSize = calculatePreferredSize();
 
-  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight);
+  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
 
   FediSubPageCustomAppBar({
     @required this.child,
@@ -25,14 +26,22 @@ class FediSubPageCustomAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return AppBar(
-      leading: leading,
-      centerTitle: centerTitle,
-      titleSpacing: 0.0,
-      brightness: fediUiColorTheme.brightness,
-      backgroundColor: fediUiColorTheme.white,
-      title: child,
-      actions: actions,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppBar(
+          bottomOpacity: 0.0,
+          elevation: 0.0,
+          leading: leading,
+          centerTitle: centerTitle,
+          titleSpacing: 0.0,
+          brightness: fediUiColorTheme.brightness,
+          backgroundColor: fediUiColorTheme.white,
+          title: child,
+          actions: actions,
+        ),
+        const FediUltraLightGreyDivider(),
+      ],
     );
   }
 }
