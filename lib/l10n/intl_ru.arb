@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-11-17T13:51:10+00:00",
+    "@@last_modified": "2020-11-17T15:18:10+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -439,7 +439,7 @@
     "app_toast_settings_field_notificationForChatAndDm_label": "Чаты и Беседы",
     "app_chat_settings_field_countConversationsInChatsUnreadBadges_label": "Учитывать Беседы в непрочитанных",
     "app_chat_settings_field_replaceConversationsWithPleromaChats_label": "Заменить \"Беседы\" на \"Чаты\"",
-    "app_web_sockets_settings_field_type_label": "Обновления в реальном времени",
+    "app_web_sockets_settings_field_type_label": "WebSockets",
     "app_web_sockets_settings_field_type_description": "Отключите для меньшего расхода батареи",
     "app_timeline_settings_field_enableWebSockets_label": "WebSockets обновления",
     "app_timeline_settings_field_enableWebSockets_description": "Disable to reduce battery usage",

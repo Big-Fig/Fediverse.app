@@ -498,7 +498,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_tos_title" : MessageLookupByLibrary.simpleMessage("Условия использования"),
     "app_ui_settings_title" : MessageLookupByLibrary.simpleMessage("Интерфейс"),
     "app_web_sockets_settings_field_type_description" : MessageLookupByLibrary.simpleMessage("Отключите для меньшего расхода батареи"),
-    "app_web_sockets_settings_field_type_label" : MessageLookupByLibrary.simpleMessage("Обновления в реальном времени"),
+    "app_web_sockets_settings_field_type_label" : MessageLookupByLibrary.simpleMessage("WebSockets"),
     "app_web_sockets_settings_title" : MessageLookupByLibrary.simpleMessage("Обновление данных: (WebSockets)"),
     "app_web_sockets_settings_type_currentScreenAndAllIndicators" : MessageLookupByLibrary.simpleMessage("Для текущего окна и индикаторов"),
     "app_web_sockets_settings_type_disabled" : MessageLookupByLibrary.simpleMessage("Отключено"),
