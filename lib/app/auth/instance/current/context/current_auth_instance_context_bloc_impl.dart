@@ -52,10 +52,10 @@ import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bl
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
-import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -473,7 +473,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var pushSettingsBloc = PushSettingsBloc(
       pushRelayService: pushRelayService,
-      pushSettingsLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
+      instanceLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
       pleromaPushService: pleromaPushService,
       currentInstance: currentInstance,
       fcmPushService: fcmPushService,

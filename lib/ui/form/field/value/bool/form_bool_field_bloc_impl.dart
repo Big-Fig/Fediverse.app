@@ -14,4 +14,12 @@ class FormBoolFieldBloc extends FormValueFieldBloc<bool>
           isEnabled: isEnabled,
           isEnabledStream: isEnabledStream,
         );
+
+  @override
+  void changeCurrentValue(bool newValue) {
+    if (newValue == currentValue) {
+      return;
+    }
+    super.changeCurrentValue(newValue);
+  }
 }

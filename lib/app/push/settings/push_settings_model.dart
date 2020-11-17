@@ -25,7 +25,7 @@ class PushSettings extends ISettings<PushSettings> {
   @HiveField(5)
   final bool poll;
   @HiveField(6)
-  final bool pleromaChat;
+  final bool pleromaChatMention;
   @HiveField(7)
   final bool pleromaEmojiReaction;
 
@@ -35,7 +35,7 @@ class PushSettings extends ISettings<PushSettings> {
     @required this.mention,
     @required this.reblog,
     @required this.poll,
-    @required this.pleromaChat,
+    @required this.pleromaChatMention,
     @required this.pleromaEmojiReaction,
   });
 
@@ -46,7 +46,7 @@ class PushSettings extends ISettings<PushSettings> {
           mention: true,
           reblog: true,
           poll: true,
-          pleromaChat: true,
+          pleromaChatMention: true,
           pleromaEmojiReaction: true,
         );
 
@@ -57,7 +57,7 @@ class PushSettings extends ISettings<PushSettings> {
           mention: false,
           reblog: false,
           poll: false,
-          pleromaChat: false,
+          pleromaChatMention: false,
           pleromaEmojiReaction: false,
         );
 
@@ -71,7 +71,7 @@ class PushSettings extends ISettings<PushSettings> {
           mention == other.mention &&
           reblog == other.reblog &&
           poll == other.poll &&
-          pleromaChat == other.pleromaChat &&
+          pleromaChatMention == other.pleromaChatMention &&
           pleromaEmojiReaction == other.pleromaEmojiReaction;
 
   @override
@@ -81,7 +81,7 @@ class PushSettings extends ISettings<PushSettings> {
       mention.hashCode ^
       reblog.hashCode ^
       poll.hashCode ^
-      pleromaChat.hashCode ^
+      pleromaChatMention.hashCode ^
       pleromaEmojiReaction.hashCode;
 
   @override
@@ -89,7 +89,7 @@ class PushSettings extends ISettings<PushSettings> {
     return 'PushSettings{favourite: $favourite,'
         ' follow: $follow, mention: $mention,'
         ' reblog: $reblog, poll: $poll,'
-        ' pleromaChat: $pleromaChat, pleromaEmojiReaction: $pleromaEmojiReaction}';
+        ' pleromaChat: $pleromaChatMention, pleromaEmojiReaction: $pleromaEmojiReaction}';
   }
 
   factory PushSettings.fromJson(Map<String, dynamic> json) =>
@@ -109,7 +109,7 @@ class PushSettings extends ISettings<PushSettings> {
     bool mention,
     bool reblog,
     bool poll,
-    bool pleromaChat,
+    bool pleromaChatMention,
     bool pleromaEmojiReaction,
   }) =>
       PushSettings(
@@ -118,7 +118,7 @@ class PushSettings extends ISettings<PushSettings> {
         mention: mention ?? this.mention,
         reblog: reblog ?? this.reblog,
         poll: poll ?? this.poll,
-        pleromaChat: pleromaChat ?? this.pleromaChat,
+        pleromaChatMention: pleromaChatMention ?? this.pleromaChatMention,
         pleromaEmojiReaction: pleromaEmojiReaction ?? this.pleromaEmojiReaction,
       );
 
