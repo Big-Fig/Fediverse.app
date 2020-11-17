@@ -66,8 +66,12 @@ class _PushSettingsWidgetState
           field: settingsBloc.pollFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_chat_label,
-          field: settingsBloc.chatFieldBloc,
+          label: S.of(context).app_notification_push_settings_field_pleroma_chat_label,
+          field: settingsBloc.pleromaChatFieldBloc,
+        ),
+        FormBoolFieldFormRowWidget(
+          label: S.of(context).app_notification_push_settings_field_pleroma_emojiReaction_label,
+          field: settingsBloc.pleromaEmojiReactionFieldBloc,
         ),
       ],
     );

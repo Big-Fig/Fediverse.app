@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/app/settings/settings_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -24,14 +25,18 @@ class PushSettings extends ISettings<PushSettings> {
   @HiveField(5)
   final bool poll;
   @HiveField(6)
-  final bool chat;
+  final bool pleromaChat;
+  @HiveField(7)
+  final bool pleromaEmojiReaction;
+
   PushSettings({
-    this.favourite,
-    this.follow,
-    this.mention,
-    this.reblog,
-    this.poll,
-    this.chat,
+    @required this.favourite,
+    @required this.follow,
+    @required this.mention,
+    @required this.reblog,
+    @required this.poll,
+    @required this.pleromaChat,
+    @required this.pleromaEmojiReaction,
   });
 
   PushSettings.defaultAllEnabled()
@@ -41,8 +46,10 @@ class PushSettings extends ISettings<PushSettings> {
           mention: true,
           reblog: true,
           poll: true,
-          chat: true,
+          pleromaChat: true,
+          pleromaEmojiReaction: true,
         );
+
   PushSettings.defaultAllDisabled()
       : this(
           favourite: false,
@@ -50,16 +57,9 @@ class PushSettings extends ISettings<PushSettings> {
           mention: false,
           reblog: false,
           poll: false,
-          chat: false,
+          pleromaChat: false,
+          pleromaEmojiReaction: false,
         );
-
-
-  @override
-  String toString() {
-    return 'PushSettings{favourite: $favourite,'
-        ' follow: $follow, mention: $mention,'
-        ' reblog: $reblog, poll: $poll, chat: $chat}';
-  }
 
   @override
   bool operator ==(Object other) =>
@@ -71,7 +71,8 @@ class PushSettings extends ISettings<PushSettings> {
           mention == other.mention &&
           reblog == other.reblog &&
           poll == other.poll &&
-          chat == other.chat;
+          pleromaChat == other.pleromaChat &&
+          pleromaEmojiReaction == other.pleromaEmojiReaction;
 
   @override
   int get hashCode =>
@@ -80,20 +81,27 @@ class PushSettings extends ISettings<PushSettings> {
       mention.hashCode ^
       reblog.hashCode ^
       poll.hashCode ^
-      chat.hashCode;
+      pleromaChat.hashCode ^
+      pleromaEmojiReaction.hashCode;
 
-  factory PushSettings.fromJson(
-          Map<String, dynamic> json) =>
+  @override
+  String toString() {
+    return 'PushSettings{favourite: $favourite,'
+        ' follow: $follow, mention: $mention,'
+        ' reblog: $reblog, poll: $poll,'
+        ' pleromaChat: $pleromaChat, pleromaEmojiReaction: $pleromaEmojiReaction}';
+  }
+
+  factory PushSettings.fromJson(Map<String, dynamic> json) =>
       _$PushSettingsFromJson(json);
 
   factory PushSettings.fromJsonString(String jsonString) =>
       _$PushSettingsFromJson(jsonDecode(jsonString));
 
   @override
-  Map<String, dynamic> toJson() =>
-      _$PushSettingsToJson(this);
-  String toJsonString() =>
-      jsonEncode(_$PushSettingsToJson(this));
+  Map<String, dynamic> toJson() => _$PushSettingsToJson(this);
+
+  String toJsonString() => jsonEncode(_$PushSettingsToJson(this));
 
   PushSettings copyWith({
     bool favourite,
@@ -101,15 +109,18 @@ class PushSettings extends ISettings<PushSettings> {
     bool mention,
     bool reblog,
     bool poll,
-    bool chat,
-  }) => PushSettings(
-      favourite: favourite ?? this.favourite,
-      follow: follow ?? this.follow,
-      mention: mention ?? this.mention,
-      reblog: reblog ?? this.reblog,
-      poll: poll ?? this.poll,
-      chat: chat ?? this.chat,
-    );
+    bool pleromaChat,
+    bool pleromaEmojiReaction,
+  }) =>
+      PushSettings(
+        favourite: favourite ?? this.favourite,
+        follow: follow ?? this.follow,
+        mention: mention ?? this.mention,
+        reblog: reblog ?? this.reblog,
+        poll: poll ?? this.poll,
+        pleromaChat: pleromaChat ?? this.pleromaChat,
+        pleromaEmojiReaction: pleromaEmojiReaction ?? this.pleromaEmojiReaction,
+      );
 
   @override
   PushSettings clone() => copyWith();

@@ -127,19 +127,29 @@ PleromaPushSettingsDataAlerts _$PleromaPushSettingsDataAlertsFromJson(
     reblog: json['reblog'] as bool,
     poll: json['poll'] as bool,
     pleromaChatMention: json['pleroma:chat_mention'] as bool,
+    pleromaEmojiReaction: json['pleroma:emoji_reaction'] as bool,
   );
 }
 
 Map<String, dynamic> _$PleromaPushSettingsDataAlertsToJson(
-        PleromaPushSettingsDataAlerts instance) =>
-    <String, dynamic>{
-      'favourite': instance.favourite,
-      'follow': instance.follow,
-      'mention': instance.mention,
-      'reblog': instance.reblog,
-      'poll': instance.poll,
-      'pleroma:chat_mention': instance.pleromaChatMention,
-    };
+    PleromaPushSettingsDataAlerts instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('favourite', instance.favourite);
+  writeNotNull('follow', instance.follow);
+  writeNotNull('mention', instance.mention);
+  writeNotNull('reblog', instance.reblog);
+  writeNotNull('poll', instance.poll);
+  writeNotNull('pleroma:chat_mention', instance.pleromaChatMention);
+  writeNotNull('pleroma:emoji_reaction', instance.pleromaEmojiReaction);
+  return val;
+}
 
 PleromaPushSubscribeRequestSubscription
     _$PleromaPushSubscribeRequestSubscriptionFromJson(

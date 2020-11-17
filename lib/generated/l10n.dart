@@ -1954,11 +1954,11 @@ class S {
     );
   }
 
-  /// `Chats`
-  String get app_notification_push_settings_field_chat_label {
+  /// `Pleroma Chats`
+  String get app_notification_push_settings_field_pleroma_chat_label {
     return Intl.message(
-      'Chats',
-      name: 'app_notification_push_settings_field_chat_label',
+      'Pleroma Chats',
+      name: 'app_notification_push_settings_field_pleroma_chat_label',
       desc: '',
       args: [],
     );
@@ -2445,10 +2445,10 @@ class S {
   }
 
   /// `Not supported on this instance`
-  String get app_timeline_settings_field_notSupported_desc {
+  String get app_settings_field_notSupported_desc {
     return Intl.message(
       'Not supported on this instance',
-      name: 'app_timeline_settings_field_notSupported_desc',
+      name: 'app_settings_field_notSupported_desc',
       desc: '',
       args: [],
     );
@@ -4327,6 +4327,16 @@ class S {
     return Intl.message(
       'Current screen & all indicators',
       name: 'app_web_sockets_settings_type_currentScreenAndAllIndicators',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pleroma emoji reactions`
+  String get app_notification_push_settings_field_pleroma_emojiReaction_label {
+    return Intl.message(
+      'Pleroma emoji reactions',
+      name: 'app_notification_push_settings_field_pleroma_emojiReaction_label',
       desc: '',
       args: [],
     );
