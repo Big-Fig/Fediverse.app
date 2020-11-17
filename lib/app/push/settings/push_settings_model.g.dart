@@ -22,14 +22,15 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       mention: fields[3] as bool,
       reblog: fields[4] as bool,
       poll: fields[5] as bool,
-      chat: fields[6] as bool,
+      pleromaChat: fields[6] as bool,
+      pleromaEmojiReaction: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PushSettings obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(1)
       ..write(obj.favourite)
       ..writeByte(2)
@@ -41,7 +42,9 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       ..writeByte(5)
       ..write(obj.poll)
       ..writeByte(6)
-      ..write(obj.chat);
+      ..write(obj.pleromaChat)
+      ..writeByte(7)
+      ..write(obj.pleromaEmojiReaction);
   }
 
   @override
@@ -66,7 +69,8 @@ PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
     mention: json['mention'] as bool,
     reblog: json['reblog'] as bool,
     poll: json['poll'] as bool,
-    chat: json['chat'] as bool,
+    pleromaChat: json['pleromaChat'] as bool,
+    pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool,
   );
 }
 
@@ -77,5 +81,6 @@ Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
       'mention': instance.mention,
       'reblog': instance.reblog,
       'poll': instance.poll,
-      'chat': instance.chat,
+      'pleromaChat': instance.pleromaChat,
+      'pleromaEmojiReaction': instance.pleromaEmojiReaction,
     };

@@ -16,10 +16,8 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("edit_push_settings_bloc_impl.dart");
 
-class PushSettingsBloc extends DisposableOwner
-    implements IPushSettingsBloc {
-  final IPushSettingsLocalPreferencesBloc
-      pushSettingsLocalPreferencesBloc;
+class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
+  final IPushSettingsLocalPreferencesBloc pushSettingsLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
@@ -42,7 +40,9 @@ class PushSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc pollFieldBloc;
   @override
-  final IFormBoolFieldBloc chatFieldBloc;
+  final IFormBoolFieldBloc pleromaChatFieldBloc;
+  @override
+  final IFormBoolFieldBloc pleromaEmojiReactionFieldBloc;
 
   PushSettingsBloc({
     @required this.pushSettingsLocalPreferencesBloc,
@@ -52,34 +52,32 @@ class PushSettingsBloc extends DisposableOwner
     @required this.fcmPushService,
   })  : favouriteFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.favourite ??
-                    true),
+                pushSettingsLocalPreferencesBloc.value?.favourite ?? true),
         followFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.follow ??
-                    true),
+                pushSettingsLocalPreferencesBloc.value?.follow ?? true),
         mentionFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.mention ??
-                    true),
+                pushSettingsLocalPreferencesBloc.value?.mention ?? true),
         reblogFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.reblog ??
-                    true),
+                pushSettingsLocalPreferencesBloc.value?.reblog ?? true),
         pollFieldBloc = FormBoolFieldBloc(
+            originValue: pushSettingsLocalPreferencesBloc.value?.poll ?? true),
+        pleromaChatFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.poll ??
-                    true),
-        chatFieldBloc = FormBoolFieldBloc(
+                pushSettingsLocalPreferencesBloc.value?.pleromaChat ?? true),
+        pleromaEmojiReactionFieldBloc = FormBoolFieldBloc(
             originValue:
-                pushSettingsLocalPreferencesBloc.value?.chat ??
+                pushSettingsLocalPreferencesBloc.value?.pleromaEmojiReaction ??
                     true) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);
     addDisposable(disposable: mentionFieldBloc);
     addDisposable(disposable: reblogFieldBloc);
     addDisposable(disposable: pollFieldBloc);
-    addDisposable(disposable: chatFieldBloc);
+    addDisposable(disposable: pleromaChatFieldBloc);
+    addDisposable(disposable: pleromaEmojiReactionFieldBloc);
 
     addDisposable(streamController: failedToUpdateStreamController);
 
@@ -104,13 +102,17 @@ class PushSettingsBloc extends DisposableOwner
       _onSomethingChanged();
     }));
     addDisposable(
-        streamSubscription: chatFieldBloc.currentValueStream.listen((_) {
+        streamSubscription: pleromaChatFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+
+    addDisposable(streamSubscription:
+        pleromaEmojiReactionFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
 
     addDisposable(
-      streamSubscription:
-          pushSettingsLocalPreferencesBloc.stream.listen(
+      streamSubscription: pushSettingsLocalPreferencesBloc.stream.listen(
         (newPreferences) {
           fillNewPreferencesValues(newPreferences);
         },
@@ -125,7 +127,8 @@ class PushSettingsBloc extends DisposableOwner
       mention: mentionFieldBloc.currentValue,
       reblog: reblogFieldBloc.currentValue,
       poll: pollFieldBloc.currentValue,
-      chat: chatFieldBloc.currentValue,
+      pleromaChat: pleromaChatFieldBloc.currentValue,
+      pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
     );
 
     var oldPreferences = pushSettingsLocalPreferencesBloc.value;
@@ -141,7 +144,9 @@ class PushSettingsBloc extends DisposableOwner
         mentionFieldBloc.changeCurrentValue(oldPreferences.mention);
         reblogFieldBloc.changeCurrentValue(oldPreferences.reblog);
         pollFieldBloc.changeCurrentValue(oldPreferences.poll);
-        chatFieldBloc.changeCurrentValue(oldPreferences.chat);
+        pleromaChatFieldBloc.changeCurrentValue(oldPreferences.pleromaChat);
+        pleromaEmojiReactionFieldBloc
+            .changeCurrentValue(oldPreferences.pleromaEmojiReaction);
       }
     }
   }
@@ -158,19 +163,22 @@ class PushSettingsBloc extends DisposableOwner
     if (deviceToken != null && permissionGranted) {
       try {
         var subscription = await pleromaPushService.subscribe(
-            endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
-                account: currentInstance.acct,
-                baseServerUrl: currentInstance.url,
-                fcmDeviceToken: deviceToken),
-            data: PleromaPushSubscribeData(
-                alerts: PleromaPushSettingsDataAlerts(
+          endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
+              account: currentInstance.acct,
+              baseServerUrl: currentInstance.url,
+              fcmDeviceToken: deviceToken),
+          data: PleromaPushSubscribeData(
+            alerts: PleromaPushSettingsDataAlerts(
               favourite: newPreferences.favourite,
               follow: newPreferences.follow,
               mention: newPreferences.mention,
               reblog: newPreferences.reblog,
               poll: newPreferences.poll,
-              pleromaChatMention: newPreferences.chat,
-            )));
+              pleromaChatMention: newPreferences.pleromaChat,
+              pleromaEmojiReaction: newPreferences.pleromaEmojiReaction,
+            ),
+          ),
+        );
 
         success = subscription != null;
       } catch (error, stackTrace) {
@@ -180,8 +188,7 @@ class PushSettingsBloc extends DisposableOwner
       }
 
       if (success) {
-        await pushSettingsLocalPreferencesBloc
-            .setValue(newPreferences);
+        await pushSettingsLocalPreferencesBloc.setValue(newPreferences);
       }
     } else {
       success = false;
@@ -207,22 +214,23 @@ class PushSettingsBloc extends DisposableOwner
       pushSettingsLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeAllEnabled() => updateSubscriptionPreferences(
-      PushSettings.defaultAllEnabled());
+  Future subscribeAllEnabled() =>
+      updateSubscriptionPreferences(PushSettings.defaultAllEnabled());
 
-  void fillNewPreferencesValues(
-      PushSettings newPreferences) {
-    favouriteFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.favourite);
-    followFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.follow);
-    mentionFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.mention);
-    reblogFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.reblog);
-    pollFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.poll);
-    chatFieldBloc.changeCurrentValue(
-        pushSettingsLocalPreferencesBloc.value?.chat);
+  void fillNewPreferencesValues(PushSettings newPreferences) {
+    favouriteFieldBloc
+        .changeCurrentValue(pushSettingsLocalPreferencesBloc.value?.favourite);
+    followFieldBloc
+        .changeCurrentValue(pushSettingsLocalPreferencesBloc.value?.follow);
+    mentionFieldBloc
+        .changeCurrentValue(pushSettingsLocalPreferencesBloc.value?.mention);
+    reblogFieldBloc
+        .changeCurrentValue(pushSettingsLocalPreferencesBloc.value?.reblog);
+    pollFieldBloc
+        .changeCurrentValue(pushSettingsLocalPreferencesBloc.value?.poll);
+    pleromaChatFieldBloc.changeCurrentValue(
+        pushSettingsLocalPreferencesBloc.value?.pleromaChat);
+    pleromaEmojiReactionFieldBloc.changeCurrentValue(
+        pushSettingsLocalPreferencesBloc.value?.pleromaEmojiReaction);
   }
 }

@@ -3,7 +3,6 @@ import 'package:fedi/app/localization/settings/edit/global/edit_global_localizat
 import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global/edit_global_status_sensitive_settings_dialog.dart';
-import 'package:fedi/app/toast/settings/edit/global/edit_global_toast_settings_dialog.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/app/ui/settings/edit/global/edit_global_ui_settings_dialog.dart';
 import 'package:fedi/app/web_sockets/settings/edit/global/edit_global_web_sockets_settings_dialog.dart';
@@ -78,21 +77,21 @@ class _GlobalSettingsMediaRowWidget extends StatelessWidget {
   }
 }
 
-class _GlobalSettingsToastRowWidget extends StatelessWidget {
-  const _GlobalSettingsToastRowWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_toast_settings_title,
-      onClick: () {
-        showEditGlobalToastSettingsDialog(context: context);
-      },
-    );
-  }
-}
+// class _GlobalSettingsToastRowWidget extends StatelessWidget {
+//   const _GlobalSettingsToastRowWidget({
+//     Key key,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SimpleFediSelectionItemRowWidget(
+//       title: S.of(context).app_toast_settings_title,
+//       onClick: () {
+//         showEditGlobalToastSettingsDialog(context: context);
+//       },
+//     );
+//   }
+// }
 
 class _GlobalSettingsStatusSensitiveRowWidget extends StatelessWidget {
   const _GlobalSettingsStatusSensitiveRowWidget({

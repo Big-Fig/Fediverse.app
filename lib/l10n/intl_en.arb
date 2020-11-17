@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-16T21:01:20+00:00",
+    "@@last_modified": "2020-11-17T13:51:10+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -192,7 +192,7 @@
     "app_notification_push_settings_field_mentions_label": "Mentions",
     "app_notification_push_settings_field_reblogs_label": "Reblogs",
     "app_notification_push_settings_field_polls_label": "Polls",
-    "app_notification_push_settings_field_chat_label": "Chats",
+    "app_notification_push_settings_field_pleroma_chat_label": "Pleroma Chats",
     "app_notification_header_follow": "Followed you",
     "app_notification_header_favourite": "Liked: {status}",
     "app_notification_header_mention": "<b>Mentioned you:<\/b> {status}",
@@ -241,7 +241,7 @@
     "app_timeline_settings_onlyInRemoteList_field_label": "Only in list",
     "app_timeline_settings_onlyInRemoteList_field_null": "Not selected",
     "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Choose list",
-    "app_timeline_settings_field_notSupported_desc": "Not supported on this instance",
+    "app_settings_field_notSupported_desc": "Not supported on this instance",
     "app_timeline_settings_field_onlyWithMedia_label": "Only with media",
     "app_timeline_settings_field_onlyRemote_label": "Only remote",
     "app_timeline_settings_field_onlyLocal_label": "Only local",
@@ -448,5 +448,6 @@
     "app_media_settings_field_autoPlay_label": "Auto-play",
     "app_web_sockets_settings_type_disabled": "Disabled",
     "app_web_sockets_settings_type_onlyForCurrentScreen": "Only for current screen",
-    "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Current screen & all indicators"
+    "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Current screen & all indicators",
+    "app_notification_push_settings_field_pleroma_emojiReaction_label": "Pleroma emoji reactions"
 }

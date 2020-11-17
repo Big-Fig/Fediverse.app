@@ -248,7 +248,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : S.of(context).app_timeline_settings_field_notSupported_desc,
+          : S.of(context).app_settings_field_notSupported_desc,
       nullable: isNullablePossible,
     );
   }
@@ -266,7 +266,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : S.of(context).app_timeline_settings_field_notSupported_desc,
+          : S.of(context).app_settings_field_notSupported_desc,
       nullable: isNullablePossible,
     );
   }
@@ -302,7 +302,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       description: isSupported
           ? null
-          : S.of(context).app_timeline_settings_field_notSupported_desc,
+          : S.of(context).app_settings_field_notSupported_desc,
     );
   }
 }
