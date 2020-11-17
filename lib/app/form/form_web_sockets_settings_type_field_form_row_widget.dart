@@ -40,7 +40,9 @@ class FormWebSocketsSettingsTypeFieldFormRowWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                _showDialog(context, currentValue);
+                if (field.isEnabled) {
+                  _showDialog(context, currentValue);
+                }
               },
               child: FediFormRow(
                 child: Row(
@@ -48,16 +50,24 @@ class FormWebSocketsSettingsTypeFieldFormRowWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FediFormRowLabel(label),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          mapWebSocketsSettingsTypeToLabel(
-                              context, currentValue),
-                          style: fediUiTextTheme.mediumShortDarkGrey,
-                        ),
-                      ],
-                    ),
+                    StreamBuilder<bool>(
+                        stream: field.isEnabledStream,
+                        initialData: field.isEnabled,
+                        builder: (context, snapshot) {
+                          var isEnabled = snapshot.data;
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                mapWebSocketsSettingsTypeToLabel(
+                                    context, currentValue),
+                                style: isEnabled
+                                    ? fediUiTextTheme.mediumShortDarkGrey
+                                    : fediUiTextTheme.mediumShortLightGrey,
+                              ),
+                            ],
+                          );
+                        }),
                   ],
                 ),
               ),
@@ -124,7 +134,9 @@ String mapWebSocketsSettingsTypeToLabel(
       return S.of(context).app_web_sockets_settings_type_onlyForCurrentScreen;
       break;
     case WebSocketsSettingsType.currentScreenAndAllIndicators:
-      return S.of(context).app_web_sockets_settings_type_currentScreenAndAllIndicators;
+      return S
+          .of(context)
+          .app_web_sockets_settings_type_currentScreenAndAllIndicators;
       break;
   }
 

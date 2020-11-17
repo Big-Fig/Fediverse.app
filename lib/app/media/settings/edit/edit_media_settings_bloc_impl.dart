@@ -19,13 +19,13 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     @required this.mediaSettingsBloc,
   })  : autoPlayFieldBloc = FormBoolFieldBloc(
           originValue: mediaSettingsBloc.autoPlay,
-          isEnabled: mediaSettingsBloc.isInstance,
-          isEnabledStream: mediaSettingsBloc.isInstanceStream,
+          isEnabled: mediaSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: mediaSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         autoInitFieldBloc = FormBoolFieldBloc(
           originValue: mediaSettingsBloc.autoInit,
-          isEnabled: mediaSettingsBloc.isInstance,
-          isEnabledStream: mediaSettingsBloc.isInstanceStream,
+          isEnabled: mediaSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: mediaSettingsBloc.isInstanceOrForceGlobalStream,
         ), super(mediaSettingsBloc) {
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();

@@ -75,6 +75,13 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
   Stream<T> get instanceSettingsDataStream =>
       instanceLocalPreferencesBloc.stream;
 
+  @override
+  bool get isInstanceOrForceGlobal => isInstance || forceUseGlobal;
+
+  @override
+  Stream<bool> get isInstanceOrForceGlobalStream =>
+      isInstanceStream.map((isInstance) => isInstance || forceUseGlobal);
+
   GlobalOrInstanceSettings<T> _calculateGlobalOrInstanceSettings({
     @required T globalSettings,
     @required T instanceSettings,

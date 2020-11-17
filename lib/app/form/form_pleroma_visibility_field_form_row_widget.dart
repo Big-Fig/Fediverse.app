@@ -32,6 +32,7 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
     return StreamBuilder<PleromaVisibility>(
         stream: field.currentValueStream.distinct(),
         initialData: field.currentValue,
@@ -44,7 +45,9 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  _showDialog(context, currentValue);
+                  if (field.isEnabled) {
+                    _showDialog(context, currentValue);
+                  }
                 },
                 child: FediFormRow(
                   child: Row(
@@ -52,26 +55,39 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FediFormRowLabel(label),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (displayIcon)
-                            FediIconButton(
-                              onPressed: () {
-                                _showDialog(context, currentValue);
-                              },
-                              icon: Icon(
-                                StatusVisibilityIconWidget
-                                    .mapVisibilityToIconData(currentValue),
-                              ),
-                            ),
-                          Text(
-                            StatusVisibilityTitleWidget.mapVisibilityToTitle(
-                                context, currentValue),
-                            style: fediUiTextTheme.mediumShortDarkGrey,
-                          ),
-                        ],
-                      ),
+                      StreamBuilder<bool>(
+                          stream: field.isEnabledStream,
+                          initialData: field.isEnabled,
+                          builder: (context, snapshot) {
+                            var isEnabled = snapshot.data;
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (displayIcon)
+                                  FediIconButton(
+                                    color: isEnabled
+                                        ? fediUiColorTheme.darkGrey
+                                        : fediUiColorTheme.lightGrey,
+                                    onPressed: () {
+                                      _showDialog(context, currentValue);
+                                    },
+                                    icon: Icon(
+                                      StatusVisibilityIconWidget
+                                          .mapVisibilityToIconData(
+                                              currentValue),
+                                    ),
+                                  ),
+                                Text(
+                                  StatusVisibilityTitleWidget
+                                      .mapVisibilityToTitle(
+                                          context, currentValue),
+                                  style: isEnabled
+                                      ? fediUiTextTheme.mediumShortDarkGrey
+                                      : fediUiTextTheme.mediumShortLightGrey,
+                                ),
+                              ],
+                            );
+                          }),
                     ],
                   ),
                 ),

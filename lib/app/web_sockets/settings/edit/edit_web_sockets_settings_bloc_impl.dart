@@ -15,10 +15,13 @@ class EditWebSocketsSettingsBloc extends EditGlobalOrInstanceSettingsBloc
 
   EditWebSocketsSettingsBloc({
     @required this.webSocketsSettingsBloc,
-  }) : typeFieldBloc = FormValueFieldBloc<WebSocketsSettingsType>(
+  })  : typeFieldBloc = FormValueFieldBloc<WebSocketsSettingsType>(
           originValue: webSocketsSettingsBloc.type,
           validators: [],
-        ), super(webSocketsSettingsBloc) {
+          isEnabled: webSocketsSettingsBloc.isInstance,
+          isEnabledStream: webSocketsSettingsBloc.isInstanceStream,
+        ),
+        super(webSocketsSettingsBloc) {
     _subscribeForType();
   }
 
