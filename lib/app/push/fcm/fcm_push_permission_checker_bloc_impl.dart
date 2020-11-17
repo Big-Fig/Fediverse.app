@@ -1,6 +1,6 @@
 import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
-import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:flutter/widgets.dart';

@@ -3,15 +3,9 @@ import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushSettingsBloc extends IDisposable {
-  static IPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPushSettingsBloc>(context, listen: listen);
-
-  Future subscribeAllEnabled();
-
-  bool get isHaveSubscription;
-
-  Stream<bool> get failedToUpdateStream;
+abstract class IEditPushSettingsBloc extends IDisposable {
+  static IEditPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IEditPushSettingsBloc>(context, listen: listen);
 
   IFormBoolFieldBloc get favouriteFieldBloc;
 
@@ -23,7 +17,7 @@ abstract class IPushSettingsBloc extends IDisposable {
 
   IFormBoolFieldBloc get pollFieldBloc;
 
-  IFormBoolFieldBloc get pleromaChatFieldBloc;
+  IFormBoolFieldBloc get pleromaChatMentionFieldBloc;
 
   IFormBoolFieldBloc get pleromaEmojiReactionFieldBloc;
 }

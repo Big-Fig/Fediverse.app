@@ -1,22 +1,21 @@
 import 'dart:async';
 
-import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PushSettingsWidget extends StatefulWidget {
   @override
-  _PushSettingsWidgetState createState() =>
-      _PushSettingsWidgetState();
+  _PushSettingsWidgetState createState() => _PushSettingsWidgetState();
 
   const PushSettingsWidget();
 }
 
-class _PushSettingsWidgetState
-    extends State<PushSettingsWidget> {
+class _PushSettingsWidgetState extends State<PushSettingsWidget> {
   StreamSubscription failedToUpdateSubscription;
 
   @override
@@ -41,24 +40,29 @@ class _PushSettingsWidgetState
 
   @override
   Widget build(BuildContext context) {
-    var settingsBloc = IPushSettingsBloc.of(context, listen: true);
+    var settingsBloc = IEditPushSettingsBloc.of(context);
 
     return ListView(
       children: [
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_favourites_label,
+          label: S
+              .of(context)
+              .app_notification_push_settings_field_favourites_label,
           field: settingsBloc.favouriteFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_follows_label,
+          label:
+              S.of(context).app_notification_push_settings_field_follows_label,
           field: settingsBloc.followFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_mentions_label,
+          label:
+              S.of(context).app_notification_push_settings_field_mentions_label,
           field: settingsBloc.mentionFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_reblogs_label,
+          label:
+              S.of(context).app_notification_push_settings_field_reblogs_label,
           field: settingsBloc.reblogFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
@@ -66,11 +70,15 @@ class _PushSettingsWidgetState
           field: settingsBloc.pollFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_pleroma_chat_label,
-          field: settingsBloc.pleromaChatFieldBloc,
+          label: S
+              .of(context)
+              .app_notification_push_settings_field_pleroma_chat_label,
+          field: settingsBloc.pleromaChatMentionFieldBloc,
         ),
         FormBoolFieldFormRowWidget(
-          label: S.of(context).app_notification_push_settings_field_pleroma_emojiReaction_label,
+          label: S
+              .of(context)
+              .app_notification_push_settings_field_pleroma_emojiReaction_label,
           field: settingsBloc.pleromaEmojiReactionFieldBloc,
         ),
       ],
