@@ -16,6 +16,10 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   Stream<bool> get isInstanceStream;
 
+  bool get isInstanceOrForceGlobal;
+
+  Stream<bool> get isInstanceOrForceGlobalStream;
+
   bool get isGlobal;
 
   Stream<bool> get isGlobalStream;

@@ -25,18 +25,18 @@ class EditStatusSensitiveSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   })  : nsfwDisplayDelayDurationFieldBloc = FormValueFieldBloc(
           originValue: statusSensitiveSettingsBloc.nsfwDisplayDelayDuration,
           validators: [],
-          isEnabled: statusSensitiveSettingsBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
+          isEnabled: statusSensitiveSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         isAlwaysShowSpoilerFieldBloc = FormBoolFieldBloc(
           originValue: statusSensitiveSettingsBloc.isAlwaysShowSpoiler,
-          isEnabled: statusSensitiveSettingsBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
+          isEnabled: statusSensitiveSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         isAlwaysShowNsfwFieldBloc = FormBoolFieldBloc(
           originValue: statusSensitiveSettingsBloc.isAlwaysShowNsfw,
-          isEnabled: statusSensitiveSettingsBloc.isInstance,
-          isEnabledStream: statusSensitiveSettingsBloc.isInstanceStream,
+          isEnabled: statusSensitiveSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: statusSensitiveSettingsBloc.isInstanceOrForceGlobalStream,
         ), super(statusSensitiveSettingsBloc) {
     _subscribeForNsfwDisplayDelayDuration();
     _subscribeForIsAlwaysShowNsfw();

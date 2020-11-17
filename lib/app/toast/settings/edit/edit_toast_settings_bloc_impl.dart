@@ -19,23 +19,23 @@ class EditToastSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     @required this.toastSettingsBloc,
   })  : notificationForChatAndDmFieldBloc = FormBoolFieldBloc(
           originValue: toastSettingsBloc.notificationForChatAndDm,
-          isEnabled: toastSettingsBloc.isInstance,
-          isEnabledStream: toastSettingsBloc.isInstanceStream,
+          isEnabled: toastSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: toastSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         notificationForMentionFieldBloc = FormBoolFieldBloc(
           originValue: toastSettingsBloc.notificationForMention,
-          isEnabled: toastSettingsBloc.isInstance,
-          isEnabledStream: toastSettingsBloc.isInstanceStream,
-        ), super(toastSettingsBloc) {
+          isEnabled: toastSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: toastSettingsBloc.isInstanceOrForceGlobalStream,
+        ),
+        super(toastSettingsBloc) {
     _subscribeForNotificationForMentionFieldBloc();
     _subscribeForNotificationForChatAndDm();
   }
 
   void _subscribeForNotificationForMentionFieldBloc() {
     addDisposable(
-      streamSubscription: toastSettingsBloc.notificationForMentionStream
-          .distinct()
-          .listen(
+      streamSubscription:
+          toastSettingsBloc.notificationForMentionStream.distinct().listen(
         (newValue) {
           notificationForMentionFieldBloc.changeCurrentValue(newValue);
         },

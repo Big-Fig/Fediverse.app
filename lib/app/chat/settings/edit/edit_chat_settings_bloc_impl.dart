@@ -19,13 +19,13 @@ class EditChatSettingsBloc extends EditGlobalOrInstanceSettingsBloc
     @required this.chatSettingsBloc,
   })  : countConversationsInChatsUnreadBadgesFieldBloc = FormBoolFieldBloc(
           originValue: chatSettingsBloc.countConversationsInChatsUnreadBadges,
-          isEnabled: chatSettingsBloc.isInstance,
-          isEnabledStream: chatSettingsBloc.isInstanceStream,
+          isEnabled: chatSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: chatSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         replaceConversationsWithPleromaChatsFieldBloc = FormBoolFieldBloc(
           originValue: chatSettingsBloc.replaceConversationsWithChats,
-          isEnabled: chatSettingsBloc.isInstance,
-          isEnabledStream: chatSettingsBloc.isInstanceStream,
+          isEnabled: chatSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: chatSettingsBloc.isInstanceOrForceGlobalStream,
         ), super(chatSettingsBloc) {
     _subscribeForReplaceConversationsWithChatsFieldBloc();
     _subscribeForCountConversationsInChatsUnreadBadges();

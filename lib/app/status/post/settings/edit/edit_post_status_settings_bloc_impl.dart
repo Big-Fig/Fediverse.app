@@ -23,13 +23,13 @@ class EditPostStatusSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   })  : defaultVisibilityFormFieldBloc = FormValueFieldBloc(
           originValue: postStatusSettingsBloc.defaultVisibility,
           validators: [],
-          isEnabled: postStatusSettingsBloc.isInstance,
-          isEnabledStream: postStatusSettingsBloc.isInstanceStream,
+          isEnabled: postStatusSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: postStatusSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         markMediaAsNsfwOnAttachFormFieldBloc = FormBoolFieldBloc(
           originValue: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-          isEnabled: postStatusSettingsBloc.isInstance,
-          isEnabledStream: postStatusSettingsBloc.isInstanceStream,
+          isEnabled: postStatusSettingsBloc.isInstanceOrForceGlobal,
+          isEnabledStream: postStatusSettingsBloc.isInstanceOrForceGlobalStream,
         ), super(postStatusSettingsBloc) {
     _subscribeForMarkMediaAsNsfwOnAttach();
 
