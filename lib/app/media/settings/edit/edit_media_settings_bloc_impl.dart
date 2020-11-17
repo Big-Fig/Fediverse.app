@@ -26,22 +26,23 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
           originValue: mediaSettingsBloc.autoInit,
           isEnabled: mediaSettingsBloc.isInstanceOrForceGlobal,
           isEnabledStream: mediaSettingsBloc.isInstanceOrForceGlobalStream,
-        ), super(mediaSettingsBloc) {
+        ),
+        super(mediaSettingsBloc) {
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();
   }
 
   void _subscribeForAutoInitFieldBloc() {
     addDisposable(
-      streamSubscription:
-          mediaSettingsBloc.autoInitStream.distinct().listen(
+      streamSubscription: mediaSettingsBloc.autoInitStream.distinct().listen(
         (newValue) {
           autoInitFieldBloc.changeCurrentValue(newValue);
         },
       ),
     );
     addDisposable(
-      streamSubscription: autoInitFieldBloc.currentValueStream.listen(
+      streamSubscription:
+          autoInitFieldBloc.currentValueStream.distinct().listen(
         (value) {
           mediaSettingsBloc.changeAutoInit(value);
         },
@@ -51,15 +52,15 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
 
   void _subscribeForAutoPlay() {
     addDisposable(
-      streamSubscription:
-          mediaSettingsBloc.autoPlayStream.distinct().listen(
+      streamSubscription: mediaSettingsBloc.autoPlayStream.distinct().listen(
         (newValue) {
           autoPlayFieldBloc.changeCurrentValue(newValue);
         },
       ),
     );
     addDisposable(
-      streamSubscription: autoPlayFieldBloc.currentValueStream.listen(
+      streamSubscription:
+          autoPlayFieldBloc.currentValueStream.distinct().listen(
         (value) {
           mediaSettingsBloc.changeAutoPlay(value);
         },

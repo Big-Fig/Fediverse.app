@@ -29,7 +29,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget(),
-        const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget(),
+        // const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget(),
         const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
