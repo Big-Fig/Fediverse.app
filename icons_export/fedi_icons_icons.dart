@@ -62,6 +62,7 @@ class FediIcons {
   static const IconData share = IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData unlisted = IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData mute = IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chevron_light_highlight = IconData(0xe85a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData alias = IconData(0xe865, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio_solid = IconData(0xe866, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio = IconData(0xe867, fontFamily: _kFontFam, fontPackage: _kFontPkg);
