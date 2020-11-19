@@ -1,3 +1,4 @@
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -7,7 +8,6 @@ import 'package:fedi/app/ui/media/player/video/fedi_video_player_buffering_widge
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_content_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_control_toggle_fullscreen_button_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_play_pause_button_widget.dart';
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
@@ -91,10 +91,10 @@ class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).white,
       onPressed: () {
         var mediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
-        showErrorFediNotificationOverlay(
+        IToastService.of(context, listen: false).showErrorToast(
           context: context,
-          contentText: mediaPlayerBloc.error.toString(),
-          titleText: null,
+          title: mediaPlayerBloc.error.toString(),
+          content: null,
         );
       },
     );

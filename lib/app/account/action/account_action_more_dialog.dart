@@ -2,13 +2,13 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
-import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -83,11 +83,10 @@ class AccountActionMoreDialog extends StatelessWidget {
 
         var success = dialogResult.success;
         if (success) {
-          showInfoFediNotificationOverlay(
-              context: context,
-              contentText:
-                  S.of(context).app_account_action_report_success_toast,
-              titleText: null);
+          IToastService.of(context, listen: false).showInfoToast(
+            context: context,
+            title: S.of(context).app_account_action_report_success_toast,
+          );
         } else {
           await FediSimpleAlertDialog(
             context: context,
@@ -107,9 +106,9 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.accountRelationship?.blocking == true ? FediIcons
-          .unblock :
-      FediIcons.block,
+      icon: accountBloc.accountRelationship?.blocking == true
+          ? FediIcons.unblock
+          : FediIcons.block,
       label: accountBloc.accountRelationship?.blocking == true
           ? S.of(context).app_account_action_unblock
           : S.of(context).app_account_action_block,
@@ -147,7 +146,8 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountMuteAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon:  accountBloc.accountRelationship?.muting == true ? FediIcons.unmute
+      icon: accountBloc.accountRelationship?.muting == true
+          ? FediIcons.unmute
           : FediIcons.mute,
       label: accountBloc.accountRelationship?.muting == true
           ? S.of(context).app_account_action_unmute

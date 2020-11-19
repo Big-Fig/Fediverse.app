@@ -6,9 +6,9 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/captcha/form_captcha_string_field_row_widget.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -27,8 +27,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceRegisterBloc =
-        IRegisterAuthInstanceBloc.of(context);
+    var joinInstanceRegisterBloc = IRegisterAuthInstanceBloc.of(context);
 
     return UnfocusOnScrollAreaWidget(
       child: ListView(
@@ -137,11 +136,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       padding: FediPadding.horizontalBigPadding,
       child: FormCaptchaStringFieldFormRowWidget(
         formCaptchaStringFieldBloc: bloc.captchaFieldBloc,
-        label: S
-            .of(context)
-            .app_auth_instance_register_field_captcha_label,
-        hint:
-            S.of(context).app_auth_instance_register_field_captcha_hint,
+        label: S.of(context).app_auth_instance_register_field_captcha_label,
+        hint: S.of(context).app_auth_instance_register_field_captcha_hint,
         obscureText: false,
         autocorrect: false,
         onSubmitted: null,
@@ -225,12 +221,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var authInstance = dialogResult.result;
     if (authInstance != null) {
       if (authInstance.info.approvalRequired == true) {
-        showInfoFediNotificationOverlay(
+        IToastService.of(context, listen: false).showInfoToast(
           context: context,
-          titleText: S
+          title: S
               .of(context)
               .app_auth_instance_register_approvalRequired_notification_title,
-          contentText: S
+          content: S
               .of(context)
               .app_auth_instance_register_approvalRequired_notification_content,
         );
