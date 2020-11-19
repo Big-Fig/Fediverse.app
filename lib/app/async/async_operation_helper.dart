@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -33,10 +33,10 @@ class AsyncOperationHelper {
             errorCallback(context, errorData);
           }
           if (showNotificationOnError) {
-            showErrorFediNotificationOverlay(
+            IToastService.of(context, listen: false).showErrorToast(
               context: context,
-              titleText: errorData.titleCreator(context),
-              contentText: errorData.contentCreator(context),
+              title: errorData.titleCreator(context),
+              content: errorData.contentCreator(context),
             );
           }
         },
@@ -76,8 +76,10 @@ class AsyncOperationHelper {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
-        titleCreator: (context) => S.of(context).app_async_timeout_error_dialog_title,
-        contentCreator: (context) => S.of(context).app_async_timeout_error_dialog_content,
+        titleCreator: (context) =>
+            S.of(context).app_async_timeout_error_dialog_title,
+        contentCreator: (context) =>
+            S.of(context).app_async_timeout_error_dialog_content,
       );
     } else {
       return null;

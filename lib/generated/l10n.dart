@@ -1845,120 +1845,120 @@ class S {
   }
 
   /// `Push notifications`
-  String get app_notification_push_permission_ask_dialog_title {
+  String get app_push_permission_ask_dialog_title {
     return Intl.message(
       'Push notifications',
-      name: 'app_notification_push_permission_ask_dialog_title',
+      name: 'app_push_permission_ask_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server`
-  String get app_notification_push_permission_ask_dialog_content {
+  String get app_push_permission_ask_dialog_content {
     return Intl.message(
       'Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server',
-      name: 'app_notification_push_permission_ask_dialog_content',
+      name: 'app_push_permission_ask_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Permission required`
-  String get app_notification_push_permission_declined_dialog_title {
+  String get app_push_permission_declined_dialog_title {
     return Intl.message(
       'Permission required',
-      name: 'app_notification_push_permission_declined_dialog_title',
+      name: 'app_push_permission_declined_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Please enable push notification in app settings to receive updates`
-  String get app_notification_push_permission_declined_dialog_content {
+  String get app_push_permission_declined_dialog_content {
     return Intl.message(
       'Please enable push notification in app settings to receive updates',
-      name: 'app_notification_push_permission_declined_dialog_content',
+      name: 'app_push_permission_declined_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Push notifications`
-  String get app_notification_push_settings_title {
+  String get app_push_settings_title {
     return Intl.message(
       'Push notifications',
-      name: 'app_notification_push_settings_title',
+      name: 'app_push_settings_title',
       desc: '',
       args: [],
     );
   }
 
   /// `All messages will be forwarded through Fedi proxy server`
-  String get app_notification_push_settings_desc {
+  String get app_push_settings_desc {
     return Intl.message(
       'All messages will be forwarded through Fedi proxy server',
-      name: 'app_notification_push_settings_desc',
+      name: 'app_push_settings_desc',
       desc: '',
       args: [],
     );
   }
 
   /// `Favourites`
-  String get app_notification_push_settings_field_favourites_label {
+  String get app_push_settings_field_favourites_label {
     return Intl.message(
       'Favourites',
-      name: 'app_notification_push_settings_field_favourites_label',
+      name: 'app_push_settings_field_favourites_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Follows`
-  String get app_notification_push_settings_field_follows_label {
+  String get app_push_settings_field_follows_label {
     return Intl.message(
       'Follows',
-      name: 'app_notification_push_settings_field_follows_label',
+      name: 'app_push_settings_field_follows_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Mentions`
-  String get app_notification_push_settings_field_mentions_label {
+  String get app_push_settings_field_mentions_label {
     return Intl.message(
       'Mentions',
-      name: 'app_notification_push_settings_field_mentions_label',
+      name: 'app_push_settings_field_mentions_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Reblogs`
-  String get app_notification_push_settings_field_reblogs_label {
+  String get app_push_settings_field_reblogs_label {
     return Intl.message(
       'Reblogs',
-      name: 'app_notification_push_settings_field_reblogs_label',
+      name: 'app_push_settings_field_reblogs_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Polls`
-  String get app_notification_push_settings_field_polls_label {
+  String get app_push_settings_field_polls_label {
     return Intl.message(
       'Polls',
-      name: 'app_notification_push_settings_field_polls_label',
+      name: 'app_push_settings_field_polls_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Pleroma Chats`
-  String get app_notification_push_settings_field_pleroma_chat_label {
+  String get app_push_settings_field_pleroma_chat_label {
     return Intl.message(
       'Pleroma Chats',
-      name: 'app_notification_push_settings_field_pleroma_chat_label',
+      name: 'app_push_settings_field_pleroma_chat_label',
       desc: '',
       args: [],
     );
@@ -4333,10 +4333,20 @@ class S {
   }
 
   /// `Pleroma emoji reactions`
-  String get app_notification_push_settings_field_pleroma_emojiReaction_label {
+  String get app_push_settings_field_pleroma_emojiReaction_label {
     return Intl.message(
       'Pleroma emoji reactions',
-      name: 'app_notification_push_settings_field_pleroma_emojiReaction_label',
+      name: 'app_push_settings_field_pleroma_emojiReaction_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to change subscription settings`
+  String get app_push_settings_update_fail_dialog_title {
+    return Intl.message(
+      'Failed to change subscription settings',
+      name: 'app_push_settings_update_fail_dialog_title',
       desc: '',
       args: [],
     );

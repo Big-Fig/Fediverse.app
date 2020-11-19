@@ -10,8 +10,8 @@ FediBaseAlertDialog createAskFcmPushPermissionDialog({
   @required DialogActionCallback noAction,
 }) {
   return FediYesNoAlertDialog(
-    title: S.of(context).app_notification_push_permission_ask_dialog_title,
-    contentText: S.of(context).app_notification_push_permission_ask_dialog_content,
+    title: S.of(context).app_push_permission_ask_dialog_title,
+    contentText: S.of(context).app_push_permission_ask_dialog_content,
     context: context,
     yesAction: yesAction,
     noAction: noAction,

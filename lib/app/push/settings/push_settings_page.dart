@@ -15,14 +15,14 @@ class PushSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: S.of(context).app_notification_push_settings_title,
+        title: S.of(context).app_push_settings_title,
       ),
       body: Padding(
         padding: FediPadding.allBigPadding,
         child: Column(
           children: [
             Text(
-              S.of(context).app_notification_push_settings_desc,
+              S.of(context).app_push_settings_desc,
               style: IFediUiTextTheme.of(context).smallShortBoldLightGrey,
             ),
             const Expanded(

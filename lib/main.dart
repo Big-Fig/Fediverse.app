@@ -28,6 +28,7 @@ import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/toast/toast_service_provider.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -36,6 +37,7 @@ import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
+import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
@@ -49,7 +51,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
@@ -356,49 +357,51 @@ class FediApp extends StatelessWidget {
 
             _logger.finest(() => "currentTheme $currentTheme "
                 "themeMode $themeMode");
-            return OverlaySupport(
-              child: provideCurrentTheme(
-                currentTheme: currentTheme ?? lightFediUiTheme,
-                child: StreamBuilder<LocalizationLocale>(
-                    stream: localizationSettingsBloc.localizationLocaleStream,
-                    builder: (context, snapshot) {
-                      var localizationLocale = snapshot.data;
+            return OverlayNotificationServiceProvider(
+              child: ToastServiceProvider(
+                child: provideCurrentTheme(
+                  currentTheme: currentTheme ?? lightFediUiTheme,
+                  child: StreamBuilder<LocalizationLocale>(
+                      stream: localizationSettingsBloc.localizationLocaleStream,
+                      builder: (context, snapshot) {
+                        var localizationLocale = snapshot.data;
 
-                      Locale locale;
-                      if (localizationLocale != null) {
-                        locale = Locale.fromSubtags(
-                          languageCode: localizationLocale.languageCode,
-                          countryCode: localizationLocale.countryCode,
-                          scriptCode: localizationLocale.scriptCode,
+                        Locale locale;
+                        if (localizationLocale != null) {
+                          locale = Locale.fromSubtags(
+                            languageCode: localizationLocale.languageCode,
+                            countryCode: localizationLocale.countryCode,
+                            scriptCode: localizationLocale.scriptCode,
+                          );
+                        }
+                        _logger.finest(() => "locale $locale");
+                        return MaterialApp(
+                          // checkerboardRasterCacheImages: true,
+                          // checkerboardOffscreenLayers: true,
+                          debugShowCheckedModeBanner: false,
+                          title: appTitle,
+                          localizationsDelegates: [
+                            S.delegate,
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                          ],
+                          supportedLocales: S.delegate.supportedLocales,
+                          locale: locale,
+                          theme: lightFediUiTheme.themeData,
+                          darkTheme: darkFediUiTheme.themeData,
+                          themeMode: themeMode,
+                          initialRoute: "/",
+                          home: child,
+                          navigatorKey: navigatorKey,
+                          navigatorObservers: [
+                            FirebaseAnalyticsObserver(
+                                analytics:
+                                    IAnalyticsService.of(context, listen: false)
+                                        .firebaseAnalytics),
+                          ],
                         );
-                      }
-                      _logger.finest(() => "locale $locale");
-                      return MaterialApp(
-                        // checkerboardRasterCacheImages: true,
-                        // checkerboardOffscreenLayers: true,
-                        debugShowCheckedModeBanner: false,
-                        title: appTitle,
-                        localizationsDelegates: [
-                          S.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                        ],
-                        supportedLocales: S.delegate.supportedLocales,
-                        locale: locale,
-                        theme: lightFediUiTheme.themeData,
-                        darkTheme: darkFediUiTheme.themeData,
-                        themeMode: themeMode,
-                        initialRoute: "/",
-                        home: child,
-                        navigatorKey: navigatorKey,
-                        navigatorObservers: [
-                          FirebaseAnalyticsObserver(
-                              analytics:
-                                  IAnalyticsService.of(context, listen: false)
-                                      .firebaseAnalytics),
-                        ],
-                      );
-                    }),
+                      }),
+                ),
               ),
             );
           }),

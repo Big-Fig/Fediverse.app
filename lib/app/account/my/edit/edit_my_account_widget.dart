@@ -9,6 +9,7 @@ import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -18,7 +19,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -32,7 +32,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 const editAccountAvatarSize = 120.0;
 const editAccountProgressSize = 30.0;
@@ -199,9 +198,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (context,IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountAvatarDialog(context, mediaDeviceFile,
-          (context,filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -557,7 +557,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   static final _numberFormat = NumberFormat("#.#");
 
-  OverlaySupportEntry showMediaAttachmentFailedNotificationOverlay(
+  void showMediaAttachmentFailedNotificationOverlay(
       BuildContext context, dynamic e) {
     String contentText;
     if (e is UploadMediaExceedFileSizeLimitException) {
@@ -574,10 +574,11 @@ class EditMyAccountWidget extends StatelessWidget {
     } else {
       contentText = e.toString();
     }
-    return showErrorFediNotificationOverlay(
+
+    IToastService.of(context, listen: false).showErrorToast(
       context: context,
-      contentText: contentText,
-      titleText: S.of(context).app_media_upload_failed_notification_title,
+      content: contentText,
+      title: S.of(context).app_media_upload_failed_notification_title,
     );
   }
 }

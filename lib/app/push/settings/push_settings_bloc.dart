@@ -10,7 +10,7 @@ abstract class IPushSettingsBloc implements IDisposable {
 
   bool get isHaveSubscription;
 
-  Stream<bool> get failedToUpdateStream;
+  Stream<Exception> get failedToUpdateStream;
 
   bool get favourite;
 

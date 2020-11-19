@@ -20,11 +20,11 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
-  final StreamController<bool> failedToUpdateStreamController =
+  final StreamController<Exception> failedToUpdateStreamController =
       StreamController.broadcast();
 
   @override
-  Stream<bool> get failedToUpdateStream =>
+  Stream<Exception> get failedToUpdateStream =>
       failedToUpdateStreamController.stream;
 
   PushSettingsBloc({
