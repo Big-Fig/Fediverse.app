@@ -65,10 +65,4 @@ class CurrentFediUiThemeChooserBloc extends DisposableOwner
 
   @override
   List<FormValueFieldValidation<IFediUiTheme>> get validators => [];
-
-  @override
-  bool get isEnabled => true;
-
-  @override
-  Stream<bool> get isEnabledStream => Stream.value(true);
 }

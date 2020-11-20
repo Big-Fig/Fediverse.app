@@ -1,24 +1,19 @@
 import 'package:flutter/widgets.dart';
 
+enum GlobalOrInstanceSettingsType { instance, global }
+
 class GlobalOrInstanceSettings<T> {
   final T settings;
-  final bool isGlobal;
-  final bool isInstance;
+  final GlobalOrInstanceSettingsType type;
+
+  bool get isInstance => type == GlobalOrInstanceSettingsType.instance;
+
+  bool get isGlobal => type == GlobalOrInstanceSettingsType.global;
 
   GlobalOrInstanceSettings({
     @required this.settings,
-    @required this.isGlobal,
-    @required this.isInstance,
-  }) {
-    assert(isGlobal || isInstance);
-    assert(!(isGlobal && isInstance));
-  }
-
-  @override
-  String toString() {
-    return 'GlobalOrInstanceSettings{settings: $settings,'
-        ' isGlobal: $isGlobal, isInstance: $isInstance}';
-  }
+    @required this.type,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -26,10 +21,13 @@ class GlobalOrInstanceSettings<T> {
       other is GlobalOrInstanceSettings &&
           runtimeType == other.runtimeType &&
           settings == other.settings &&
-          isGlobal == other.isGlobal &&
-          isInstance == other.isInstance;
+          type == other.type;
 
   @override
-  int get hashCode =>
-      settings.hashCode ^ isGlobal.hashCode ^ isInstance.hashCode;
+  int get hashCode => settings.hashCode ^ type.hashCode;
+
+  @override
+  String toString() {
+    return 'GlobalOrInstanceSettings{settings: $settings, type: $type}';
+  }
 }

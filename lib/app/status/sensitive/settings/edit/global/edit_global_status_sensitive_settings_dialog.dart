@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_widget.dart';
@@ -25,12 +26,13 @@ void showEditGlobalStatusSensitiveSettingsDialog({
         globalLocalPreferencesBloc:
             IGlobalStatusSensitiveSettingsLocalPreferencesBloc.of(context,
                 listen: false),
-        forceUseGlobal: true,
       ),
       child: DisposableProxyProvider<IStatusSensitiveSettingsBloc,
           IEditStatusSensitiveSettingsBloc>(
         update: (context, value, previous) => EditStatusSensitiveSettingsBloc(
           statusSensitiveSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          enabled: true,
         ),
         child: const EditStatusSensitiveSettingsWidget(
           shrinkWrap: true,

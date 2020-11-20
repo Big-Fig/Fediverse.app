@@ -6,31 +6,40 @@ import 'package:flutter/cupertino.dart';
 class EditChatSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
-  const EditChatSettingsWidget({
+   const EditChatSettingsWidget({
     @required this.shrinkWrap,
   });
 
   @override
   Widget build(BuildContext context) {
     var editChatSettingsBloc = IEditChatSettingsBloc.of(context);
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        FormBoolFieldFormRowWidget(
-          label: S
-              .of(context)
-              .app_chat_settings_field_replaceConversationsWithPleromaChats_label,
-          field: editChatSettingsBloc
-              .replaceConversationsWithPleromaChatsFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: S
-              .of(context)
-              .app_chat_settings_field_countConversationsInChatsUnreadBadges_label,
-          field: editChatSettingsBloc
-              .countConversationsInChatsUnreadBadgesFieldBloc,
-        ),
-      ],
+    return StreamBuilder<bool>(
+      stream: editChatSettingsBloc.enabledStream,
+      initialData: editChatSettingsBloc.enabled,
+      builder: (context, snapshot) {
+        var enabled = snapshot.data;
+        return Column(
+          mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+          children: [
+            FormBoolFieldFormRowWidget(
+              label: S
+                  .of(context)
+                  .app_chat_settings_field_replaceConversationsWithPleromaChats_label,
+              field: editChatSettingsBloc
+                  .replaceConversationsWithPleromaChatsFieldBloc,
+              enabled: enabled,
+            ),
+            FormBoolFieldFormRowWidget(
+              label: S
+                  .of(context)
+                  .app_chat_settings_field_countConversationsInChatsUnreadBadges_label,
+              field: editChatSettingsBloc
+                  .countConversationsInChatsUnreadBadgesFieldBloc,
+              enabled: enabled,
+            ),
+          ],
+        );
+      }
     );
   }
 }

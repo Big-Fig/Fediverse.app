@@ -12,11 +12,9 @@ class WebSocketsSettingsBloc
         IWebSocketsSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required
         IWebSocketsSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-          forceUseGlobal: forceUseGlobal,
         );
 
   @override
@@ -28,19 +26,11 @@ class WebSocketsSettingsBloc
 
   @override
   void changeType(WebSocketsSettingsType value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          typeString: value.toJsonValue(),
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          typeString: value.toJsonValue(),
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        typeString: value.toJsonValue(),
+      ),
+    );
   }
 
   @override

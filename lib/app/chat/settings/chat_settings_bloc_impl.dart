@@ -10,46 +10,26 @@ class ChatSettingsBloc
   ChatSettingsBloc({
     @required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-    forceUseGlobal: forceUseGlobal,
         );
 
   @override
-  void changeCountConversationsInChatsUnreadBadges(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
+  Future changeCountConversationsInChatsUnreadBadges(bool value) async =>
+      updateSettings(
+        settingsData.copyWith(
           countConversationsInChatsUnreadBadges: value,
         ),
       );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          countConversationsInChatsUnreadBadges: value,
-        ),
-      );
-    }
-  }
 
   @override
-  void changeReplaceConversationsWithPleromaChats(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
+  Future changeReplaceConversationsWithPleromaChats(bool value) async =>
+      updateSettings(
+        settingsData.copyWith(
           replaceConversationsWithPleromaChats: value,
         ),
       );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          replaceConversationsWithPleromaChats: value,
-        ),
-      );
-    }
-  }
 
   @override
   bool get countConversationsInChatsUnreadBadges =>
@@ -61,10 +41,10 @@ class ChatSettingsBloc
           .map((settings) => settings.countConversationsInChatsUnreadBadges);
 
   @override
-  bool get replaceConversationsWithChats =>
+  bool get replaceConversationsWithPleromaChats =>
       settingsData.replaceConversationsWithPleromaChats;
 
   @override
-  Stream<bool> get replaceConversationsWithChatsStream => settingsDataStream
+  Stream<bool> get replaceConversationsWithPleromaChatsStream => settingsDataStream
       .map((settings) => settings.replaceConversationsWithPleromaChats);
 }

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditWebSocketsSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc {
+    implements IEditGlobalOrInstanceSettingsBloc<WebSocketsSettings> {
   static IEditWebSocketsSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEditWebSocketsSettingsBloc>(context, listen: listen);

@@ -1,17 +1,35 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_row.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
+
+final _logger = Logger("edit_global_or_instance_settings_dialog.dart");
+
+typedef EditGlobalOrInstanceSettingsDialogContextContextBuilder = Widget
+    Function({
+  @required BuildContext context,
+  @required Widget child,
+});
 
 void showEditGlobalOrInstanceSettingsDialog({
   @required BuildContext context,
   @required String subTitle,
   @required Widget child,
-  @required TransitionBuilder childContextBuilder,
+  @required
+      EditGlobalOrInstanceSettingsDialogContextContextBuilder
+          childContextBuilder,
+  @required IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc,
+  @required ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -23,31 +41,67 @@ void showEditGlobalOrInstanceSettingsDialog({
           currentInstance.userAtHost,
         ),
     subTitle: subTitle,
-    child: childContextBuilder(
-      context,
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const EditGlobalOrInstanceSettingsSwitcherRowWidget(),
-          const FediLightGreyDivider(),
-          child,
-        ],
+    child: DisposableProvider<IIsUseGlobalSettingsFormBoolFieldBloc>(
+      create: (context) => IsUseGlobalSettingsFormBoolFieldBloc(
+        globalOrInstanceSettingsBloc: globalOrInstanceSettingsBloc,
+      ),
+      child: Builder(
+        builder: (context) {
+          var isUseGlobalSettingsFormBoolFieldBloc =
+              IIsUseGlobalSettingsFormBoolFieldBloc.of(context);
+          return StreamBuilder<bool>(
+            stream: isUseGlobalSettingsFormBoolFieldBloc.currentValueStream
+                .distinct(),
+            builder: (context, snapshot) {
+              var isUseGlobalSettings = snapshot.data;
+              _logger.finest(() => "isUseGlobalSettings $isUseGlobalSettings");
+
+              if (isUseGlobalSettings == null) {
+                return const SizedBox.shrink();
+              }
+
+              return Provider<GlobalOrInstanceSettingsType>.value(
+                value: isUseGlobalSettings
+                    ? GlobalOrInstanceSettingsType.global
+                    : GlobalOrInstanceSettingsType.instance,
+                child: childContextBuilder(
+                  context: context,
+                  child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
+                    child: child,
+                    showGlobalSettingsDialogCallback:
+                        showGlobalSettingsDialogCallback,
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     ),
   );
 }
 
-class EditGlobalOrInstanceSettingsSwitcherRowWidget extends StatelessWidget {
-  const EditGlobalOrInstanceSettingsSwitcherRowWidget();
+class _EditGlobalOrInstanceSettingsDialogBodyWidget extends StatelessWidget {
+  final Widget child;
+  final ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback;
+
+  const _EditGlobalOrInstanceSettingsDialogBodyWidget({
+    Key key,
+    @required this.child,
+    @required this.showGlobalSettingsDialogCallback,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var editGlobalOrInstanceSettingsBloc =
-        IEditGlobalOrInstanceSettingsBloc.of(context);
-
-    return FormBoolFieldFormRowWidget(
-      label: S.of(context).app_settings_global_or_instance_use_global_label,
-      field: editGlobalOrInstanceSettingsBloc.isUseGlobalSettingsFormBoolField,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IsUseGlobalSettingsFormBoolFormFieldRowWidget(
+          showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
+        ),
+        const FediLightGreyDivider(),
+        child,
+      ],
     );
   }
 }

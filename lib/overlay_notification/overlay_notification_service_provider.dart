@@ -1,8 +1,8 @@
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:provider/provider.dart';
 
 class OverlayNotificationServiceProvider extends StatelessWidget {
   final Widget child;
@@ -12,7 +12,7 @@ class OverlayNotificationServiceProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlaySupport(
-      child: Provider<IOverlayNotificationService>(
+      child: DisposableProvider<IOverlayNotificationService>(
         create: (context) => OverlayNotificationService(),
         child: child,
       ),

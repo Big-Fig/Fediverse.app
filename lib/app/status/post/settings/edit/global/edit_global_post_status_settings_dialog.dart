@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_widget.dart';
@@ -25,12 +26,13 @@ void showEditGlobalPostStatusSettingsDialog({
         globalLocalPreferencesBloc:
             IGlobalPostStatusSettingsLocalPreferencesBloc.of(context,
                 listen: false),
-        forceUseGlobal: true,
       ),
       child: DisposableProxyProvider<IPostStatusSettingsBloc,
           IEditPostStatusSettingsBloc>(
         update: (context, value, previous) => EditPostStatusSettingsBloc(
           postStatusSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          enabled: true,
         ),
         child: const EditPostStatusSettingsWidget(
           shrinkWrap: true,

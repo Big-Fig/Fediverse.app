@@ -13,11 +13,9 @@ class PostStatusSettingsBloc
         IPostStatusSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required
         IPostStatusSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-    forceUseGlobal: forceUseGlobal,
         );
 
   @override
@@ -37,35 +35,19 @@ class PostStatusSettingsBloc
 
   @override
   void changeDefaultVisibility(PleromaVisibility value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          defaultVisibilityString: value.toJsonValue(),
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          defaultVisibilityString: value.toJsonValue(),
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        defaultVisibilityString: value.toJsonValue(),
+      ),
+    );
   }
 
   @override
   void changeMarkMediaAsNsfwOnAttach(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          markMediaAsNsfwOnAttach: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          markMediaAsNsfwOnAttach: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        markMediaAsNsfwOnAttach: value,
+      ),
+    );
   }
 }

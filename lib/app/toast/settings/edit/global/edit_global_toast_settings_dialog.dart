@@ -1,3 +1,4 @@
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_widget.dart';
@@ -24,12 +25,13 @@ void showEditGlobalToastSettingsDialog({
                 listen: false),
         globalLocalPreferencesBloc:
             IGlobalToastSettingsLocalPreferencesBloc.of(context, listen: false),
-        forceUseGlobal: true,
       ),
       child:
           DisposableProxyProvider<IToastSettingsBloc, IEditToastSettingsBloc>(
         update: (context, value, previous) => EditToastSettingsBloc(
           toastSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          enabled: true,
         ),
         child: const EditToastSettingsWidget(
           shrinkWrap: true,

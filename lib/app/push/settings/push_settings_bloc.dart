@@ -1,8 +1,10 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/app/push/settings/push_settings_model.dart';
+import 'package:fedi/app/settings/instance/instance_settings_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPushSettingsBloc implements IDisposable {
+abstract class IPushSettingsBloc
+    implements IInstanceSettingsBloc<PushSettings> {
   static IPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushSettingsBloc>(context, listen: listen);
 

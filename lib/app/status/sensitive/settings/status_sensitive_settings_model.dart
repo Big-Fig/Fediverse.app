@@ -24,7 +24,7 @@ class StatusSensitiveSettings
   final int nsfwDisplayDelayDurationMicrosecondsTotal;
 
   Duration get nsfwDisplayDelayDuration => Duration(
-        seconds: nsfwDisplayDelayDurationMicrosecondsTotal,
+        microseconds: nsfwDisplayDelayDurationMicrosecondsTotal,
       );
 
   StatusSensitiveSettings({

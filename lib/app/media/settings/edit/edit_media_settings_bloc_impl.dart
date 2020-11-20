@@ -1,11 +1,15 @@
 import 'package:fedi/app/media/settings/edit/edit_media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
+import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
-class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
+class EditMediaSettingsBloc
+    extends EditGlobalOrInstanceSettingsBloc<MediaSettings>
     implements IEditMediaSettingsBloc {
   final IMediaSettingsBloc mediaSettingsBloc;
 
@@ -15,19 +19,27 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
   @override
   final IFormBoolFieldBloc autoInitFieldBloc;
 
+  @override
+  List<IFormItemBloc> get currentItems => [
+        autoInitFieldBloc,
+        autoPlayFieldBloc,
+      ];
+
   EditMediaSettingsBloc({
     @required this.mediaSettingsBloc,
+    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    @required bool enabled,
   })  : autoPlayFieldBloc = FormBoolFieldBloc(
           originValue: mediaSettingsBloc.autoPlay,
-          isEnabled: mediaSettingsBloc.isInstanceOrForceGlobal,
-          isEnabledStream: mediaSettingsBloc.isInstanceOrForceGlobalStream,
         ),
         autoInitFieldBloc = FormBoolFieldBloc(
           originValue: mediaSettingsBloc.autoInit,
-          isEnabled: mediaSettingsBloc.isInstanceOrForceGlobal,
-          isEnabledStream: mediaSettingsBloc.isInstanceOrForceGlobalStream,
         ),
-        super(mediaSettingsBloc) {
+        super(
+          globalOrInstanceSettingsBloc: mediaSettingsBloc,
+          globalOrInstanceSettingsType: globalOrInstanceSettingsType,
+          enabled: enabled,
+        ) {
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();
   }
@@ -65,6 +77,22 @@ class EditMediaSettingsBloc extends EditGlobalOrInstanceSettingsBloc
           mediaSettingsBloc.changeAutoPlay(value);
         },
       ),
+    );
+  }
+
+  @override
+  MediaSettings calculateCurrentFormFieldsSettings() => MediaSettings(
+        autoInit: autoInitFieldBloc.currentValue,
+        autoPlay: autoPlayFieldBloc.currentValue,
+      );
+
+  @override
+  Future fillSettingsToFormFields(MediaSettings settings) async {
+    autoInitFieldBloc.changeCurrentValue(
+      settings.autoInit,
+    );
+    autoPlayFieldBloc.changeCurrentValue(
+      settings.autoPlay,
     );
   }
 }

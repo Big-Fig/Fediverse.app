@@ -21,10 +21,12 @@ void showEditGlobalUiSettingsDialog({
     subTitle: S.of(context).app_ui_settings_title,
     child: DisposableProvider<IEditUiSettingsBloc>(
       create: (context) => EditUiSettingsBloc(
-          uiSettingBloc: IUiSettingsBloc.of(
-        context,
-        listen: false,
-      )),
+        uiSettingBloc: IUiSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        enabled: true,
+      ),
       child: DisposableProvider<ICurrentFediUiThemeChooserBloc>(
         create: (context) {
           return CurrentFediUiThemeChooserBloc(

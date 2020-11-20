@@ -10,12 +10,10 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
     extends DisposableOwner implements IGlobalOrInstanceSettingsBloc<T> {
   final ILocalPreferenceBloc<T> globalLocalPreferencesBloc;
   final ILocalPreferenceBloc<T> instanceLocalPreferencesBloc;
-  final bool forceUseGlobal;
 
   GlobalOrInstanceSettingsLocalPreferencesBloc({
     @required this.globalLocalPreferencesBloc,
     @required this.instanceLocalPreferencesBloc,
-    @required this.forceUseGlobal,
   });
 
   @override
@@ -37,21 +35,19 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
       );
 
   @override
-  bool get isGlobal => forceUseGlobal || globalOrInstanceSettings.isGlobal;
+  bool get isGlobal => !isInstance;
 
   @override
-  Stream<bool> get isGlobalStream => globalOrInstanceSettingsStream.map(
-        (globalOrInstanceSettings) =>
-            forceUseGlobal || globalOrInstanceSettings.isGlobal,
+  Stream<bool> get isGlobalStream => isInstanceStream.map(
+        (isInstance) => !isInstance,
       );
 
   @override
-  bool get isInstance => !forceUseGlobal && globalOrInstanceSettings.isInstance;
+  bool get isInstance => globalOrInstanceSettings.isInstance;
 
   @override
   Stream<bool> get isInstanceStream => globalOrInstanceSettingsStream.map(
-        (globalOrInstanceSettings) =>
-            !forceUseGlobal && globalOrInstanceSettings.isInstance,
+        (globalOrInstanceSettings) => globalOrInstanceSettings.isInstance,
       );
 
   @override
@@ -60,7 +56,7 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
   @override
   Stream<T> get settingsDataStream => globalOrInstanceSettingsStream.map(
         (globalOrInstanceSettings) => globalOrInstanceSettings.settings,
-      ).distinct();
+      );
 
   @override
   T get globalSettingsData => globalLocalPreferencesBloc.value;
@@ -75,41 +71,61 @@ class GlobalOrInstanceSettingsLocalPreferencesBloc<T extends ISettings>
   Stream<T> get instanceSettingsDataStream =>
       instanceLocalPreferencesBloc.stream;
 
-  @override
-  bool get isInstanceOrForceGlobal => isInstance || forceUseGlobal;
-
-  @override
-  Stream<bool> get isInstanceOrForceGlobalStream =>
-      isInstanceStream.map((isInstance) => isInstance || forceUseGlobal);
-
   GlobalOrInstanceSettings<T> _calculateGlobalOrInstanceSettings({
     @required T globalSettings,
     @required T instanceSettings,
   }) {
-    if (instanceSettings != null && !forceUseGlobal) {
-      return GlobalOrInstanceSettings(
+    GlobalOrInstanceSettings<T> result;
+    var isInstance = instanceSettings != null;
+    if (isInstance) {
+      result = GlobalOrInstanceSettings(
         settings: instanceSettings,
-        isInstance: true,
-        isGlobal: false,
+        type: GlobalOrInstanceSettingsType.instance,
       );
     } else {
-      return GlobalOrInstanceSettings(
+      result = GlobalOrInstanceSettings(
         settings: globalSettings,
-        isInstance: false,
-        isGlobal: true,
+        type: GlobalOrInstanceSettingsType.global,
       );
+    }
+    // _logger.finest(() => "_calculateGlobalOrInstanceSettings "
+    //     "isInstance $isInstance \n"
+    //     "result $result");
+    return result;
+  }
+
+  @override
+  Future clearInstanceSettings() async {
+    await instanceLocalPreferencesBloc.clearValue();
+  }
+
+  @override
+  Future cloneGlobalToInstanceSettings() async {
+    await instanceLocalPreferencesBloc.setValue(
+      globalLocalPreferencesBloc.value.clone(),
+    );
+  }
+
+  @override
+  Future updateInstanceSettings(T newSettings) async {
+    if (instanceLocalPreferencesBloc.value != newSettings) {
+      await instanceLocalPreferencesBloc.setValue(newSettings);
     }
   }
 
   @override
-  void clearInstanceSettings() {
-    instanceLocalPreferencesBloc.clearValue();
+  Future updateGlobalSettings(T newSettings) async {
+    if (globalLocalPreferencesBloc.value != newSettings) {
+      await globalLocalPreferencesBloc.setValue(newSettings);
+    }
   }
 
   @override
-  void cloneGlobalToInstanceSettings() {
-    instanceLocalPreferencesBloc.setValue(
-      globalLocalPreferencesBloc.value.clone(),
-    );
+  Future updateSettings(T newSettings) async {
+    if (isInstance) {
+      return updateInstanceSettings(newSettings);
+    } else {
+      return updateGlobalSettings(newSettings);
+    }
   }
 }

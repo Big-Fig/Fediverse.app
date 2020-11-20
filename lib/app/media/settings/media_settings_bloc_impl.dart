@@ -10,45 +10,27 @@ class MediaSettingsBloc
   MediaSettingsBloc({
     @required IMediaSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IMediaSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-    forceUseGlobal: forceUseGlobal,
         );
 
   @override
   void changeAutoPlay(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          autoPlay: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          autoPlay: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        autoPlay: value,
+      ),
+    );
   }
 
   @override
   void changeAutoInit(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          autoInit: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          autoInit: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        autoInit: value,
+      ),
+    );
   }
 
   @override

@@ -12,16 +12,7 @@ var _logger = Logger("form_group_bloc_impl.dart");
 
 abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     implements IFormGroupBloc<T> {
-  @override
-  final bool isEnabled;
-
-  @override
-  final Stream<bool> isEnabledStream;
-
-  FormGroupBloc({
-    this.isEnabled = true,
-    this.isEnabledStream = const Stream.empty(),
-  }) {
+  FormGroupBloc() {
     addDisposable(subject: errorsSubject);
     addDisposable(disposable: itemsErrorSubscription);
 

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-19T14:43:35+00:00",
+    "@@last_modified": "2020-11-20T18:33:31+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -428,7 +428,7 @@
     "app_toast_settings_title": "In-app notifications",
     "app_chat_settings_title": "Chat",
     "app_web_sockets_settings_title": "Data update (WebSockets)",
-    "app_settings_global_or_instance_use_global_label": "Use global settings",
+    "app_settings_global_or_instance_use_global_label": "Global settings",
     "app_localization_settings_field_localizationLocale_label": "Language",
     "app_status_post_settings_field_markMediaAsNsfwOnAttach_label": "Mark media as NSFW on attach",
     "app_status_post_settings_field_defaultVisibility_label": "Default visibility",

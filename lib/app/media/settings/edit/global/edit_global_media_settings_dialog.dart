@@ -6,6 +6,7 @@ import 'package:fedi/app/media/settings/local_preferences/local/instance_media_s
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,12 +25,13 @@ void showEditGlobalMediaSettingsDialog({
                 listen: false),
         globalLocalPreferencesBloc:
             IGlobalMediaSettingsLocalPreferencesBloc.of(context, listen: false),
-        forceUseGlobal: true,
       ),
       child:
           DisposableProxyProvider<IMediaSettingsBloc, IEditMediaSettingsBloc>(
         update: (context, value, previous) => EditMediaSettingsBloc(
           mediaSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          enabled: true,
         ),
         child: const EditMediaSettingsWidget(
           shrinkWrap: true,

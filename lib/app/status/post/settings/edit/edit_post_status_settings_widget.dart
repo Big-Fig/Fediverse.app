@@ -23,6 +23,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
               .app_status_post_settings_field_defaultVisibility_label,
           field: editPostStatusSettingsBloc.defaultVisibilityFormFieldBloc,
           displayIcon: false,
+          enabled: editPostStatusSettingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label: S
@@ -30,6 +31,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
               .app_status_post_settings_field_markMediaAsNsfwOnAttach_label,
           field:
               editPostStatusSettingsBloc.markMediaAsNsfwOnAttachFormFieldBloc,
+          enabled: editPostStatusSettingsBloc.enabled,
         ),
       ],
     );

@@ -1,42 +1,54 @@
 import 'package:fedi/app/localization/settings/edit/edit_localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/app/localization/settings/localization_settings_model.dart';
+import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
-class EditLocalizationSettingsBloc extends DisposableOwner
+class EditLocalizationSettingsBloc
+    extends EditGlobalSettingsBloc<LocalizationSettings>
     implements IEditLocalizationSettingsBloc {
   final ILocalizationSettingsBloc localizationSettingBloc;
 
   @override
   final IFormValueFieldBloc<LocalizationLocale> localizationLocaleFieldBloc;
 
+  @override
+  List<IFormItemBloc> get currentItems => [
+        localizationLocaleFieldBloc,
+      ];
+
   EditLocalizationSettingsBloc({
     @required this.localizationSettingBloc,
-  }) : localizationLocaleFieldBloc = FormValueFieldBloc<LocalizationLocale>(
+    @required bool enabled,
+  })  : localizationLocaleFieldBloc = FormValueFieldBloc<LocalizationLocale>(
           originValue: localizationSettingBloc.localizationLocale,
           validators: [],
-        ) {
-    _subscribeForLocalizationLocale();
+        ),
+        super(enabled, localizationSettingBloc) {
+    addDisposable(disposable: localizationLocaleFieldBloc);
   }
 
-  void _subscribeForLocalizationLocale() {
-    addDisposable(
-      streamSubscription:
-          localizationSettingBloc.localizationLocaleStream.distinct().listen(
-        (newValue) {
-          localizationLocaleFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: localizationLocaleFieldBloc.currentValueStream.listen(
-        (value) {
-          localizationSettingBloc.changeLocalizationLocale(value);
-        },
-      ),
+  @override
+  LocalizationSettings get settingsData => localizationSettingBloc.settingsData;
+
+  @override
+  Stream<LocalizationSettings> get settingsDataStream =>
+      localizationSettingBloc.settingsDataStream;
+
+  @override
+  LocalizationSettings calculateCurrentFormFieldsSettings() =>
+      LocalizationSettings(
+        localizationLocale: localizationLocaleFieldBloc.currentValue,
+      );
+
+  @override
+  Future fillSettingsToFormFields(LocalizationSettings settings) async {
+    localizationLocaleFieldBloc.changeCurrentValue(
+      settings.localizationLocale,
     );
   }
 }
