@@ -2,7 +2,7 @@ import 'package:fedi/app/media/settings/edit/edit_media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/edit/edit_media_settings_bloc_impl.dart';
 import 'package:fedi/app/media/settings/edit/edit_media_settings_widget.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/media/settings/local_preferences/local/instance_media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';

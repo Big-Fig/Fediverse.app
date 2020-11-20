@@ -4,7 +4,7 @@ import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_blo
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_widget.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/web_sockets/settings/local_preferences/local/instance_web_sockets_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
