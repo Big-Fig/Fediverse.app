@@ -4,7 +4,7 @@ import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_se
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/status/sensitive/settings/local_preferences/local/instance_status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';

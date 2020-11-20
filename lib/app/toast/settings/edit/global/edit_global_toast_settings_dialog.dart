@@ -3,7 +3,7 @@ import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_widget.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/toast/settings/local_preferences/local/instance_toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
