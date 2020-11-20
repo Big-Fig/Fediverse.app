@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_st
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
-import 'package:fedi/app/settings/global/global_settings_page.dart';
-import 'package:fedi/app/settings/instance/instance_settings_page.dart';
+import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
+import 'package:fedi/app/settings/instance/list/instance_settings_list_page.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';

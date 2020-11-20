@@ -9,8 +9,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class InstanceSettingsWidget extends StatelessWidget {
-  const InstanceSettingsWidget();
+class InstanceSettingsListWidget extends StatelessWidget {
+  const InstanceSettingsListWidget();
 
   @override
   Widget build(BuildContext context) => Column(

@@ -10,8 +10,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class GlobalSettingsWidget extends StatelessWidget {
-  const GlobalSettingsWidget();
+class GlobalSettingsListWidget extends StatelessWidget {
+  const GlobalSettingsListWidget();
 
   @override
   Widget build(BuildContext context) => Column(
