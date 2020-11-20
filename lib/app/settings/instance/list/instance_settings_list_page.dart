@@ -1,11 +1,11 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/settings/instance/instance_settings_widget.dart';
+import 'package:fedi/app/settings/instance/list/instance_settings_list_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class InstanceSettingsPage extends StatelessWidget {
+class InstanceSettingsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
@@ -20,7 +20,7 @@ class InstanceSettingsPage extends StatelessWidget {
     );
   }
 
-  const InstanceSettingsPage();
+  const InstanceSettingsListPage();
 }
 
 class _InstanceSettingsBody extends StatelessWidget {
@@ -32,7 +32,7 @@ class _InstanceSettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const InstanceSettingsWidget(),
+        const InstanceSettingsListWidget(),
       ],
     );
   }
@@ -47,6 +47,6 @@ void goToInstanceSettingsPage(BuildContext context) {
 
 MaterialPageRoute createInstanceSettingsPageRoute() {
   return MaterialPageRoute(
-    builder: (context) => const InstanceSettingsPage(),
+    builder: (context) => const InstanceSettingsListPage(),
   );
 }

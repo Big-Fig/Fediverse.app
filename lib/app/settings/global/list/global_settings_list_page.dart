@@ -1,10 +1,10 @@
-import 'package:fedi/app/settings/global/global_settings_widget.dart';
+import 'package:fedi/app/settings/global/list/global_settings_list_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class GlobalSettingsPage extends StatelessWidget {
+class GlobalSettingsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +15,7 @@ class GlobalSettingsPage extends StatelessWidget {
     );
   }
 
-  const GlobalSettingsPage();
+  const GlobalSettingsListPage();
 }
 
 class _GlobalSettingsBody extends StatelessWidget {
@@ -27,7 +27,7 @@ class _GlobalSettingsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const GlobalSettingsWidget(),
+        const GlobalSettingsListWidget(),
       ],
     );
   }
@@ -42,6 +42,6 @@ void goToGlobalSettingsPage(BuildContext context) {
 
 MaterialPageRoute createGlobalSettingsPageRoute() {
   return MaterialPageRoute(
-    builder: (context) => const GlobalSettingsPage(),
+    builder: (context) => const GlobalSettingsListPage(),
   );
 }
