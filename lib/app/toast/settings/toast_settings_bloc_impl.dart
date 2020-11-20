@@ -10,45 +10,27 @@ class ToastSettingsBloc
   ToastSettingsBloc({
     @required IToastSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
     @required IToastSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-    forceUseGlobal: forceUseGlobal,
         );
 
   @override
   void changeNotificationForChatAndDm(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          notificationForChatAndDm: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          notificationForChatAndDm: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        notificationForChatAndDm: value,
+      ),
+    );
   }
 
   @override
   void changeNotificationForMention(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          notificationForMention: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          notificationForMention: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        notificationForMention: value,
+      ),
+    );
   }
 
   @override

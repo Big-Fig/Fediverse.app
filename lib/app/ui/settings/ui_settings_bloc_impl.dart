@@ -11,14 +11,16 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
     @required this.uiSettingsLocalPreferencesBloc,
   });
 
+  @override
   UiSettings get settingsData => uiSettingsLocalPreferencesBloc.value;
 
+  @override
   Stream<UiSettings> get settingsDataStream =>
       uiSettingsLocalPreferencesBloc.stream;
 
   @override
   void changeThemeId(String value) {
-    uiSettingsLocalPreferencesBloc.setValue(
+    updateSettings(
       UiSettings(
         themeId: value,
       ),
@@ -35,4 +37,11 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
   @override
   Stream<String> get themeIdStream =>
       settingsDataStream.map((settings) => settings?.themeId);
+
+  @override
+  Future updateSettings(UiSettings newSettings) async {
+    await uiSettingsLocalPreferencesBloc.setValue(
+      newSettings,
+    );
+  }
 }

@@ -1,8 +1,9 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/app/settings/global/global_settings_bloc.dart';
+import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUiSettingsBloc implements IDisposable {
+abstract class IUiSettingsBloc implements IGlobalSettingsBloc<UiSettings> {
   static IUiSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IUiSettingsBloc>(context, listen: listen);
 

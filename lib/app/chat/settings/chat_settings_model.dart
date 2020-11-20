@@ -53,4 +53,28 @@ class ChatSettings implements IJsonObject, ISettings<ChatSettings> {
             countConversationsInChatsUnreadBadges ??
                 this.countConversationsInChatsUnreadBadges,
       );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatSettings &&
+          runtimeType == other.runtimeType &&
+          replaceConversationsWithPleromaChats ==
+              other.replaceConversationsWithPleromaChats &&
+          countConversationsInChatsUnreadBadges ==
+              other.countConversationsInChatsUnreadBadges;
+
+  @override
+  int get hashCode =>
+      replaceConversationsWithPleromaChats.hashCode ^
+      countConversationsInChatsUnreadBadges.hashCode;
+
+  @override
+  String toString() {
+    return 'ChatSettings{'
+        'replaceConversationsWithPleromaChats: '
+        '$replaceConversationsWithPleromaChats, '
+        'countConversationsInChatsUnreadBadges: '
+        '$countConversationsInChatsUnreadBadges}';
+  }
 }

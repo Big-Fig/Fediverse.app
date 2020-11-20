@@ -37,8 +37,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     addDisposable(streamController: failedToUpdateStreamController);
   }
 
+  @override
   PushSettings get settingsData => instanceLocalPreferencesBloc.value;
 
+  @override
   Stream<PushSettings> get settingsDataStream =>
       instanceLocalPreferencesBloc.stream;
 
@@ -148,9 +150,9 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   Future subscribeAllEnabled() =>
       updateSettings(PushSettings.defaultAllEnabled());
 
+  @override
   Future updateSettings(PushSettings newSettings) async {
-
-    if(settingsData == newSettings) {
+    if (settingsData == newSettings) {
       _logger.finest(() => "Same settings");
       return;
     }
@@ -198,7 +200,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
             reblog: subscription.alerts.reblog ?? false,
             poll: subscription.alerts.poll ?? false,
             pleromaChatMention: subscription.alerts.pleromaChatMention ?? false,
-            pleromaEmojiReaction: subscription.alerts.pleromaEmojiReaction ?? false,
+            pleromaEmojiReaction:
+                subscription.alerts.pleromaEmojiReaction ?? false,
           ),
         );
       }

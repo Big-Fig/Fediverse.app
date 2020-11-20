@@ -48,10 +48,12 @@ MaterialPageRoute createPushSettingsPageRoute() {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IEditPushSettingsBloc>(
       create: (context) => EditPushSettingsBloc(
-          pushSettingsBloc: IPushSettingsBloc.of(
-        context,
-        listen: false,
-      )),
+        pushSettingsBloc: IPushSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        enabled: true,
+      ),
       child: const PushSettingsPage(),
     ),
   );

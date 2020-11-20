@@ -12,11 +12,13 @@ class LocalizationSettingsBloc extends DisposableOwner
 
   LocalizationSettingsBloc({
     @required this.localizationSettingsLocalPreferencesBloc,
-  }) : super();
+  });
 
+  @override
   LocalizationSettings get settingsData =>
       localizationSettingsLocalPreferencesBloc.value;
 
+  @override
   Stream<LocalizationSettings> get settingsDataStream =>
       localizationSettingsLocalPreferencesBloc.stream;
 
@@ -29,10 +31,17 @@ class LocalizationSettingsBloc extends DisposableOwner
 
   @override
   void changeLocalizationLocale(LocalizationLocale value) {
-    localizationSettingsLocalPreferencesBloc.setValue(
+    updateSettings(
       LocalizationSettings(localizationLocale: value),
       // copyWith don't set null values
       // settingsData.copyWith(localizationLocale: value),
+    );
+  }
+
+  @override
+  Future updateSettings(LocalizationSettings newSettings) async {
+    await localizationSettingsLocalPreferencesBloc.setValue(
+      newSettings,
     );
   }
 }

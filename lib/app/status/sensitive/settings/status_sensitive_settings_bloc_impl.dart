@@ -13,62 +13,37 @@ class StatusSensitiveSettingsBloc
     @required
         IStatusSensitiveSettingsLocalPreferencesBloc
             instanceLocalPreferencesBloc,
-    @required bool forceUseGlobal,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
-    forceUseGlobal: forceUseGlobal,
+
         );
 
   @override
   void changeIsAlwaysShowNsfw(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          isAlwaysShowNsfw: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          isAlwaysShowNsfw: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        isAlwaysShowNsfw: value,
+      ),
+    );
   }
 
   @override
   void changeIsAlwaysShowSpoiler(bool value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          isAlwaysShowSpoiler: value,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          isAlwaysShowSpoiler: value,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        isAlwaysShowSpoiler: value,
+      ),
+    );
   }
 
   @override
   void changeNsfwDisplayDelayDuration(Duration value) {
-    if (isInstance) {
-      instanceLocalPreferencesBloc.setValue(
-        instanceSettingsData.copyWith(
-          nsfwDisplayDelayDurationMicrosecondsTotal: value.inMicroseconds,
-        ),
-      );
-    } else {
-      globalLocalPreferencesBloc.setValue(
-        globalSettingsData.copyWith(
-          nsfwDisplayDelayDurationMicrosecondsTotal: value.inMicroseconds,
-        ),
-      );
-    }
+    updateInstanceSettings(
+      settingsData.copyWith(
+        nsfwDisplayDelayDurationMicrosecondsTotal: value.inMicroseconds,
+      ),
+    );
   }
 
   @override

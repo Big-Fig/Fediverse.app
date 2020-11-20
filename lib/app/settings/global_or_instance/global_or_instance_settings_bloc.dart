@@ -1,13 +1,9 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
+import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/disposable/disposable.dart';
 
 abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
-    implements IDisposable {
-  T get settingsData;
-
-  Stream<T> get settingsDataStream;
-
+    implements ISettingsBloc<T> {
   GlobalOrInstanceSettings<T> get globalOrInstanceSettings;
 
   Stream<GlobalOrInstanceSettings<T>> get globalOrInstanceSettingsStream;
@@ -15,10 +11,6 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
   bool get isInstance;
 
   Stream<bool> get isInstanceStream;
-
-  bool get isInstanceOrForceGlobal;
-
-  Stream<bool> get isInstanceOrForceGlobalStream;
 
   bool get isGlobal;
 
@@ -32,7 +24,11 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   Stream<T> get instanceSettingsDataStream;
 
-  void clearInstanceSettings();
+  Future clearInstanceSettings();
 
-  void cloneGlobalToInstanceSettings();
+  Future cloneGlobalToInstanceSettings();
+
+  Future updateInstanceSettings(T newSettings);
+
+  Future updateGlobalSettings(T newSettings);
 }

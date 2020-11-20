@@ -47,15 +47,7 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
   Stream<IMediaDeviceFile> get currentFilePickerFileStream =>
       _currentMediaDeviceFileSubject.stream;
 
-  @override
-  final bool isEnabled;
-
-  @override
-  final Stream<bool> isEnabledStream;
-
   FormFilePickerOrUrlFieldBloc({
-    this.isEnabled = true,
-    this.isEnabledStream = const Stream.empty(),
     @required this.originalUrl,
     @required this.maximumFileSizeInBytes,
     @required this.isPossibleToDeleteOriginal,

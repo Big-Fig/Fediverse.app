@@ -1,4 +1,5 @@
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,16 +30,16 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
               .app_status_sensitive_settings_field_isAlwaysShowNsfw_label,
           field: editStatusSensitiveSettingsBloc.isAlwaysShowNsfwFieldBloc,
         ),
-        // FormDurationFieldFormRowWidget(
-        //   label: S
-        //       .of(context)
-        //       .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-        //   popupTitle: S
-        //       .of(context)
-        //       .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-        //   field:
-        //       editStatusSensitiveSettingsBloc.nsfwDisplayDelayDurationFieldBloc,
-        // ),
+        FormDurationFieldFormRowWidget(
+          label: S
+              .of(context)
+              .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
+          popupTitle: S
+              .of(context)
+              .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
+          field:
+              editStatusSensitiveSettingsBloc.nsfwDisplayDelayDurationFieldBloc,
+        ),
       ],
     );
   }

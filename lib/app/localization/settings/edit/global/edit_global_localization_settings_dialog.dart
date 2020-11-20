@@ -16,10 +16,12 @@ void showEditGlobalLocalizationSettingsDialog({
     subTitle: S.of(context).app_localization_settings_title,
     child: DisposableProvider<IEditLocalizationSettingsBloc>(
       create: (context) => EditLocalizationSettingsBloc(
-          localizationSettingBloc: ILocalizationSettingsBloc.of(
-        context,
-        listen: false,
-      )),
+        localizationSettingBloc: ILocalizationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        enabled: true,
+      ),
       child: const EditLocalizationSettingsWidget(
         shrinkWrap: true,
       ),

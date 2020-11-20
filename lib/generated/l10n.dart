@@ -4122,10 +4122,10 @@ class S {
     );
   }
 
-  /// `Use global settings`
+  /// `Global settings`
   String get app_settings_global_or_instance_use_global_label {
     return Intl.message(
-      'Use global settings',
+      'Global settings',
       name: 'app_settings_global_or_instance_use_global_label',
       desc: '',
       args: [],

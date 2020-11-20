@@ -9,15 +9,15 @@ abstract class IChatSettingsBloc
           {bool listen = true}) =>
       Provider.of<IChatSettingsBloc>(context, listen: listen);
 
-  bool get replaceConversationsWithChats;
+  bool get replaceConversationsWithPleromaChats;
 
-  Stream<bool> get replaceConversationsWithChatsStream;
+  Stream<bool> get replaceConversationsWithPleromaChatsStream;
 
-  void changeReplaceConversationsWithPleromaChats(bool value);
+  Future changeReplaceConversationsWithPleromaChats(bool value);
 
   bool get countConversationsInChatsUnreadBadges;
 
   Stream<bool> get countConversationsInChatsUnreadBadgesStream;
 
-  void changeCountConversationsInChatsUnreadBadges(bool value);
+  Future changeCountConversationsInChatsUnreadBadges(bool value);
 }

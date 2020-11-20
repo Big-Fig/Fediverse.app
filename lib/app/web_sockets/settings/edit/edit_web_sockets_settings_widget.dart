@@ -21,6 +21,7 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
           description:
               S.of(context).app_web_sockets_settings_field_type_description,
           field: editWebSocketsSettingsBloc.typeFieldBloc,
+          enabled: editWebSocketsSettingsBloc.enabled,
         ),
       ],
     );

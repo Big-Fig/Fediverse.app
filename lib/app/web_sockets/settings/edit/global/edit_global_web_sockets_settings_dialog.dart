@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_widget.dart';
@@ -24,12 +25,13 @@ void showEditGlobalWebSocketsSettingsDialog({
                 listen: false),
         globalLocalPreferencesBloc:
             IGlobalWebSocketsSettingsLocalPreferencesBloc.of(context, listen: false),
-        forceUseGlobal: true,
       ),
       child:
           DisposableProxyProvider<IWebSocketsSettingsBloc, IEditWebSocketsSettingsBloc>(
         update: (context, value, previous) => EditWebSocketsSettingsBloc(
           webSocketsSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          enabled: true,
         ),
         child: const EditWebSocketsSettingsWidget(
           shrinkWrap: true,

@@ -11,8 +11,6 @@ class FormBoolFieldBloc extends FormValueFieldBloc<bool>
   }) : super(
           originValue: originValue,
           validators: [],
-          isEnabled: isEnabled,
-          isEnabledStream: isEnabledStream,
         );
 
   @override

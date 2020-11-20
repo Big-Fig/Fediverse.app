@@ -1,11 +1,13 @@
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/app/push/settings/push_settings_model.dart';
+import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
-class EditPushSettingsBloc extends DisposableOwner
+class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
     implements IEditPushSettingsBloc {
   final IPushSettingsBloc pushSettingsBloc;
 
@@ -24,8 +26,20 @@ class EditPushSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc pleromaEmojiReactionFieldBloc;
 
+  @override
+  List<IFormItemBloc> get currentItems => [
+        favouriteFieldBloc,
+        followFieldBloc,
+        mentionFieldBloc,
+        reblogFieldBloc,
+        pollFieldBloc,
+        pleromaChatMentionFieldBloc,
+        pleromaEmojiReactionFieldBloc,
+      ];
+
   EditPushSettingsBloc({
     @required this.pushSettingsBloc,
+    @required bool enabled,
   })  : favouriteFieldBloc =
             FormBoolFieldBloc(originValue: pushSettingsBloc.favourite),
         followFieldBloc =
@@ -38,7 +52,11 @@ class EditPushSettingsBloc extends DisposableOwner
         pleromaChatMentionFieldBloc =
             FormBoolFieldBloc(originValue: pushSettingsBloc.pleromaChatMention),
         pleromaEmojiReactionFieldBloc = FormBoolFieldBloc(
-            originValue: pushSettingsBloc.pleromaEmojiReaction) {
+            originValue: pushSettingsBloc.pleromaEmojiReaction),
+        super(
+          enabled,
+          pushSettingsBloc,
+        ) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);
     addDisposable(disposable: mentionFieldBloc);
@@ -46,137 +64,41 @@ class EditPushSettingsBloc extends DisposableOwner
     addDisposable(disposable: pollFieldBloc);
     addDisposable(disposable: pleromaChatMentionFieldBloc);
     addDisposable(disposable: pleromaEmojiReactionFieldBloc);
-
-    _subscribeForFavourite();
-    _subscribeForFollow();
-    _subscribeForMention();
-    _subscribeForReblog();
-    _subscribeForPoll();
-    _subscribeForPleromaChatMention();
-    _subscribeForPleromaEmojiReaction();
   }
 
-  void _subscribeForFavourite() {
-    addDisposable(
-      streamSubscription: pushSettingsBloc.favouriteStream.listen(
-        (newValue) {
-          favouriteFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription:
-          favouriteFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changeFavourite(value);
-        },
-      ),
-    );
-  }
+  @override
+  PushSettings calculateCurrentFormFieldsSettings() => PushSettings(
+        favourite: favouriteFieldBloc.currentValue,
+        follow: followFieldBloc.currentValue,
+        mention: mentionFieldBloc.currentValue,
+        reblog: reblogFieldBloc.currentValue,
+        poll: pollFieldBloc.currentValue,
+        pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
+        pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
+      );
 
-  void _subscribeForFollow() {
-    addDisposable(
-      streamSubscription: pushSettingsBloc.followStream.listen(
-        (newValue) {
-          followFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
+  @override
+  Future fillSettingsToFormFields(PushSettings settings) async {
+    favouriteFieldBloc.changeCurrentValue(
+      settings.favourite,
     );
-    addDisposable(
-      streamSubscription: followFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changeFollow(value);
-        },
-      ),
+    followFieldBloc.changeCurrentValue(
+      settings.follow,
     );
-  }
-
-  void _subscribeForMention() {
-    addDisposable(
-      streamSubscription: pushSettingsBloc.mentionStream.listen(
-        (newValue) {
-          mentionFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
+    mentionFieldBloc.changeCurrentValue(
+      settings.mention,
     );
-    addDisposable(
-      streamSubscription: mentionFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changeMention(value);
-        },
-      ),
+    reblogFieldBloc.changeCurrentValue(
+      settings.reblog,
     );
-  }
-
-  void _subscribeForReblog() {
-    addDisposable(
-      streamSubscription: pushSettingsBloc.reblogStream.listen(
-        (newValue) {
-          reblogFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
+    pollFieldBloc.changeCurrentValue(
+      settings.poll,
     );
-    addDisposable(
-      streamSubscription: reblogFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changeReblog(value);
-        },
-      ),
+    pleromaChatMentionFieldBloc.changeCurrentValue(
+      settings.pleromaChatMention,
     );
-  }
-
-  void _subscribeForPoll() {
-    addDisposable(
-      streamSubscription: pushSettingsBloc.pollStream.listen(
-        (newValue) {
-          pollFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: pollFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changePoll(value);
-        },
-      ),
-    );
-  }
-
-  void _subscribeForPleromaChatMention() {
-    addDisposable(
-      streamSubscription:
-          pushSettingsBloc.pleromaChatMentionStream.listen(
-        (newValue) {
-          pleromaChatMentionFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription:
-          pleromaChatMentionFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changePleromaChatMention(value);
-        },
-      ),
-    );
-  }
-
-  void _subscribeForPleromaEmojiReaction() {
-    addDisposable(
-      streamSubscription:
-          pushSettingsBloc.pleromaEmojiReactionStream.listen(
-        (newValue) {
-          pleromaEmojiReactionFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription:
-          pleromaEmojiReactionFieldBloc.currentValueStream.listen(
-        (value) {
-          pushSettingsBloc.changePleromaEmojiReaction(value);
-        },
-      ),
+    pleromaEmojiReactionFieldBloc.changeCurrentValue(
+      settings.pleromaEmojiReaction,
     );
   }
 }

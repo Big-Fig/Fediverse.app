@@ -1,12 +1,17 @@
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/app/settings/edit_settings_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
+import 'package:fedi/app/settings/settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IEditGlobalOrInstanceSettingsBloc extends IDisposable {
+abstract class IEditGlobalOrInstanceSettingsBloc<T extends ISettings>
+    extends IEditSettingsBloc<T> {
   static IEditGlobalOrInstanceSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEditGlobalOrInstanceSettingsBloc>(context, listen: listen);
 
-  IFormBoolFieldBloc get isUseGlobalSettingsFormBoolField;
+  IGlobalOrInstanceSettingsBloc<T> get globalOrInstanceSettingsBloc;
+
+  GlobalOrInstanceSettingsType get globalOrInstanceSettingsType;
 }

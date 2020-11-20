@@ -7,10 +7,8 @@ class FediFormRowLabel extends StatelessWidget {
   FediFormRowLabel(this.text);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
+  Widget build(BuildContext context) => Text(
       text,
       style: IFediUiTextTheme.of(context).bigTallMediumGrey,
     );
-  }
 }

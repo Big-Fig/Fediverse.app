@@ -18,11 +18,13 @@ class FormWebSocketsSettingsTypeFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String description;
   final IFormValueFieldBloc<WebSocketsSettingsType> field;
+  final bool enabled;
 
   FormWebSocketsSettingsTypeFieldFormRowWidget({
     @required this.label,
     this.description,
     @required this.field,
+    @required this.enabled,
   });
 
   @override
@@ -40,7 +42,7 @@ class FormWebSocketsSettingsTypeFieldFormRowWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                if (field.isEnabled) {
+                if (enabled) {
                   _showDialog(context, currentValue);
                 }
               },
@@ -50,24 +52,18 @@ class FormWebSocketsSettingsTypeFieldFormRowWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FediFormRowLabel(label),
-                    StreamBuilder<bool>(
-                        stream: field.isEnabledStream,
-                        initialData: field.isEnabled,
-                        builder: (context, snapshot) {
-                          var isEnabled = snapshot.data;
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                mapWebSocketsSettingsTypeToLabel(
-                                    context, currentValue),
-                                style: isEnabled
-                                    ? fediUiTextTheme.mediumShortDarkGrey
-                                    : fediUiTextTheme.mediumShortLightGrey,
-                              ),
-                            ],
-                          );
-                        }),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          mapWebSocketsSettingsTypeToLabel(
+                              context, currentValue),
+                          style: enabled
+                              ? fediUiTextTheme.mediumShortDarkGrey
+                              : fediUiTextTheme.mediumShortLightGrey,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

@@ -2,9 +2,6 @@ import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("form_bool_field_form_row_widget.dart");
 
 class FormBoolFieldFormRowWidget extends StatelessWidget {
   final String label;
@@ -16,38 +13,29 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
     @required this.label,
     this.description,
     @required this.field,
-    // todo: remove enabled arg, use always streams
     this.enabled = true,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
+  Widget build(BuildContext context) => StreamBuilder<bool>(
         stream: field.currentValueStream.distinct(),
         initialData: field.currentValue,
         builder: (context, snapshot) {
           var currentValue = snapshot.data;
 
-          _logger.finest(() => "currentValue $currentValue");
+          // _logger.finest(() => "currentValue $currentValue");
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StreamBuilder<bool>(
-                stream: field.isEnabledStream,
-                initialData: field.isEnabled,
-                builder: (context, snapshot) {
-                  var isEnabled = snapshot.data && enabled;
-                  return FediFormSwitchRow(
-                    label: label,
-                    onChanged: field.changeCurrentValue,
-                    value: currentValue == true,
-                    enabled: isEnabled,
-                  );
-                }
+              FediFormSwitchRow(
+                label: label,
+                onChanged: field.changeCurrentValue,
+                value: currentValue == true,
+                enabled: enabled,
               ),
               if (description != null) FediFormColumnDesc(description),
             ],
           );
-        });
-  }
+        },
+      );
 }

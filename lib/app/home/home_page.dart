@@ -244,8 +244,8 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatSettingsBloc = IChatSettingsBloc.of(context);
     return StreamBuilder<bool>(
-      stream: chatSettingsBloc.replaceConversationsWithChatsStream,
-      initialData: chatSettingsBloc.replaceConversationsWithChats,
+      stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
+      initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
       builder: (context, snapshot) {
         var isNewChatsEnabled = snapshot.data;
 

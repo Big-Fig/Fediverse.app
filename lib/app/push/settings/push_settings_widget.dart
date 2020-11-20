@@ -50,37 +50,44 @@ class _PushSettingsWidgetState extends State<PushSettingsWidget> {
               .of(context)
               .app_push_settings_field_favourites_label,
           field: settingsBloc.favouriteFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label:
               S.of(context).app_push_settings_field_follows_label,
           field: settingsBloc.followFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label:
               S.of(context).app_push_settings_field_mentions_label,
           field: settingsBloc.mentionFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label:
               S.of(context).app_push_settings_field_reblogs_label,
           field: settingsBloc.reblogFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label: S.of(context).app_push_settings_field_polls_label,
           field: settingsBloc.pollFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label: S
               .of(context)
               .app_push_settings_field_pleroma_chat_label,
           field: settingsBloc.pleromaChatMentionFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
         FormBoolFieldFormRowWidget(
           label: S
               .of(context)
               .app_push_settings_field_pleroma_emojiReaction_label,
           field: settingsBloc.pleromaEmojiReactionFieldBloc,
+          enabled: settingsBloc.enabled,
         ),
       ],
     );

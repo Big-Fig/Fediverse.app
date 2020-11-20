@@ -40,10 +40,4 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
       item.clear();
     }
   }
-
-  @override
-  bool get isEnabled => true;
-
-  @override
-  Stream<bool> get isEnabledStream => Stream.value(isEnabled);
 }
