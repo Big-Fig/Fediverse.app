@@ -4,10 +4,10 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/form/field/value/list/form_list_value_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -21,34 +21,34 @@ abstract class ITimelineSettingsFormBloc extends IFormBloc {
 
   Stream<TimelineSettings> get timelineSettingsStream;
 
-  IFormBoolFieldBloc get excludeRepliesFieldBloc;
+  IBoolValueFormFieldBloc get excludeRepliesFieldBloc;
 
-  IFormBoolFieldBloc get onlyWithMediaFieldBloc;
+  IBoolValueFormFieldBloc get onlyWithMediaFieldBloc;
 
-  IFormBoolFieldBloc get excludeNsfwSensitiveFieldBloc;
+  IBoolValueFormFieldBloc get excludeNsfwSensitiveFieldBloc;
 
-  IFormBoolFieldBloc get onlyRemoteFieldBloc;
+  IBoolValueFormFieldBloc get onlyRemoteFieldBloc;
 
-  IFormBoolFieldBloc get onlyLocalFieldBloc;
+  IBoolValueFormFieldBloc get onlyLocalFieldBloc;
 
-  IFormBoolFieldBloc get onlyPinnedFieldBloc;
+  IBoolValueFormFieldBloc get onlyPinnedFieldBloc;
 
-  IFormBoolFieldBloc get withMutedFieldBloc;
+  IBoolValueFormFieldBloc get withMutedFieldBloc;
 
-  IFormBoolFieldBloc get excludeReblogsFieldBloc;
+  IBoolValueFormFieldBloc get excludeReblogsFieldBloc;
 
-  IFormValueFieldBloc<PleromaAccount> get onlyFromRemoteAccountFieldBloc;
+  IValueFormFieldBloc<PleromaAccount> get onlyFromRemoteAccountFieldBloc;
 
-  IFormStringFieldBloc get withRemoteHashtagFieldBloc;
+  IStringValueFormFieldBloc get withRemoteHashtagFieldBloc;
 
-  IFormValueFieldBloc<PleromaList> get onlyInRemoteListFieldBloc;
+  IValueFormFieldBloc<PleromaList> get onlyInRemoteListFieldBloc;
 
-  IFormValueFieldBloc<PleromaReplyVisibilityFilter>
+  IValueFormFieldBloc<PleromaReplyVisibilityFilter>
       get replyVisibilityFilterFieldBloc;
 
-  FormListValueFieldBloc<PleromaVisibility> get excludeVisibilitiesFieldBloc;
+  ListValueFormFieldBloc<PleromaVisibility> get excludeVisibilitiesFieldBloc;
 
-  IFormBoolFieldBloc get webSocketsUpdatesFieldBloc;
+  IBoolValueFormFieldBloc get webSocketsUpdatesFieldBloc;
 
   void fill({
     @required TimelineType type,

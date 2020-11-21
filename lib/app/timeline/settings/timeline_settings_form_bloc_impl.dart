@@ -5,14 +5,14 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/list/form_list_value_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/form_non_null_value_field_validation.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_non_null_validation.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -33,44 +33,44 @@ class TimelineSettingsFormBloc extends FormBloc
       _timelineSettingsSubject.stream;
 
   @override
-  final IFormBoolFieldBloc onlyWithMediaFieldBloc;
+  final IBoolValueFormFieldBloc onlyWithMediaFieldBloc;
   @override
-  final IFormBoolFieldBloc excludeRepliesFieldBloc;
+  final IBoolValueFormFieldBloc excludeRepliesFieldBloc;
   @override
-  final IFormBoolFieldBloc excludeNsfwSensitiveFieldBloc;
+  final IBoolValueFormFieldBloc excludeNsfwSensitiveFieldBloc;
 
   @override
-  final IFormBoolFieldBloc onlyRemoteFieldBloc;
+  final IBoolValueFormFieldBloc onlyRemoteFieldBloc;
 
   @override
-  final IFormBoolFieldBloc onlyLocalFieldBloc;
+  final IBoolValueFormFieldBloc onlyLocalFieldBloc;
   @override
-  final IFormBoolFieldBloc onlyPinnedFieldBloc;
+  final IBoolValueFormFieldBloc onlyPinnedFieldBloc;
 
   @override
-  final IFormBoolFieldBloc withMutedFieldBloc;
+  final IBoolValueFormFieldBloc withMutedFieldBloc;
 
   @override
-  final IFormBoolFieldBloc excludeReblogsFieldBloc;
+  final IBoolValueFormFieldBloc excludeReblogsFieldBloc;
 
   @override
-  final IFormValueFieldBloc<PleromaAccount> onlyFromRemoteAccountFieldBloc;
+  final IValueFormFieldBloc<PleromaAccount> onlyFromRemoteAccountFieldBloc;
 
   @override
-  final IFormStringFieldBloc withRemoteHashtagFieldBloc;
+  final IStringValueFormFieldBloc withRemoteHashtagFieldBloc;
 
   @override
-  final IFormValueFieldBloc<PleromaList> onlyInRemoteListFieldBloc;
+  final IValueFormFieldBloc<PleromaList> onlyInRemoteListFieldBloc;
 
   @override
-  final IFormValueFieldBloc<PleromaReplyVisibilityFilter>
+  final IValueFormFieldBloc<PleromaReplyVisibilityFilter>
       replyVisibilityFilterFieldBloc;
 
   @override
-  FormListValueFieldBloc<PleromaVisibility> excludeVisibilitiesFieldBloc;
+  ListValueFormFieldBloc<PleromaVisibility> excludeVisibilitiesFieldBloc;
 
   @override
-  final IFormBoolFieldBloc webSocketsUpdatesFieldBloc;
+  final IBoolValueFormFieldBloc webSocketsUpdatesFieldBloc;
 
   TimelineType type;
 
@@ -78,34 +78,34 @@ class TimelineSettingsFormBloc extends FormBloc
     @required TimelineSettings originalSettings,
     @required this.type,
   })  : _timelineSettingsSubject = BehaviorSubject.seeded(originalSettings),
-        excludeRepliesFieldBloc = FormBoolFieldBloc(
+        excludeRepliesFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.excludeReplies ?? false),
-        onlyWithMediaFieldBloc = FormBoolFieldBloc(
+        onlyWithMediaFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.onlyWithMedia ?? false),
-        excludeNsfwSensitiveFieldBloc = FormBoolFieldBloc(
+        excludeNsfwSensitiveFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.excludeNsfwSensitive ?? false),
-        onlyRemoteFieldBloc = FormBoolFieldBloc(
+        onlyRemoteFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.onlyRemote ?? false),
-        onlyLocalFieldBloc = FormBoolFieldBloc(
+        onlyLocalFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.onlyLocal ?? false),
-        onlyPinnedFieldBloc = FormBoolFieldBloc(
+        onlyPinnedFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.onlyPinned ?? false),
-        excludeReblogsFieldBloc = FormBoolFieldBloc(
+        excludeReblogsFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.excludeReblogs ?? false),
-        withMutedFieldBloc = FormBoolFieldBloc(
+        withMutedFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.withMuted ?? false),
-        onlyFromRemoteAccountFieldBloc = FormValueFieldBloc(
+        onlyFromRemoteAccountFieldBloc = ValueFormFieldBloc(
             originValue: originalSettings?.onlyFromRemoteAccount,
             validators: [
               (currentValue) {
                 if (type != TimelineType.account || currentValue != null) {
                   return null;
                 } else {
-                  return FormNonNullValueFieldValidationError();
+                  return StringValueFormFieldNonNullValidationError();
                 }
               }
             ]),
-        withRemoteHashtagFieldBloc = FormStringFieldBloc(
+        withRemoteHashtagFieldBloc = StringValueFormFieldBloc(
             originValue: originalSettings?.withRemoteHashtag,
             maxLength: 50,
             validators: [
@@ -114,27 +114,27 @@ class TimelineSettingsFormBloc extends FormBloc
                     currentValue?.isNotEmpty == true) {
                   return null;
                 } else {
-                  return FormNonNullValueFieldValidationError();
+                  return StringValueFormFieldNonNullValidationError();
                 }
               },
             ]),
-        onlyInRemoteListFieldBloc = FormValueFieldBloc(
+        onlyInRemoteListFieldBloc = ValueFormFieldBloc(
             originValue: originalSettings?.onlyInRemoteList,
             validators: [
               (currentValue) {
                 if (type != TimelineType.customList || currentValue != null) {
                   return null;
                 } else {
-                  return FormNonNullValueFieldValidationError();
+                  return StringValueFormFieldNonNullValidationError();
                 }
               }
             ]),
-        replyVisibilityFilterFieldBloc = FormValueFieldBloc(
+        replyVisibilityFilterFieldBloc = ValueFormFieldBloc(
             originValue: originalSettings?.replyVisibilityFilter,
             validators: []),
-        excludeVisibilitiesFieldBloc = FormListValueFieldBloc(
+        excludeVisibilitiesFieldBloc = ListValueFormFieldBloc(
             originValue: originalSettings?.excludeVisibilities, validators: []),
-        webSocketsUpdatesFieldBloc = FormBoolFieldBloc(
+        webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
             originValue: originalSettings?.webSocketsUpdates ?? true) {
     addDisposable(subject: _timelineSettingsSubject);
 
@@ -279,7 +279,7 @@ class TimelineSettingsFormBloc extends FormBloc
         if (type != TimelineType.hashtag || currentValue?.isNotEmpty == true) {
           return null;
         } else {
-          return FormNonNullValueFieldValidationError();
+          return StringValueFormFieldNonNullValidationError();
         }
       }
     ]);
@@ -288,7 +288,7 @@ class TimelineSettingsFormBloc extends FormBloc
         if (type != TimelineType.customList || currentValue != null) {
           return null;
         } else {
-          return FormNonNullValueFieldValidationError();
+          return StringValueFormFieldNonNullValidationError();
         }
       }
     ]);
@@ -297,7 +297,7 @@ class TimelineSettingsFormBloc extends FormBloc
         if (type != TimelineType.account || currentValue != null) {
           return null;
         } else {
-          return FormNonNullValueFieldValidationError();
+          return StringValueFormFieldNonNullValidationError();
         }
       }
     ]);

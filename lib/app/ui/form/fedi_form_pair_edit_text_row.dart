@@ -2,15 +2,15 @@ import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormPairEditTextRow extends StatelessWidget {
   final String label;
   final String nameHint;
-  final FormStringFieldBloc nameStringFieldBloc;
-  final FormStringFieldBloc valueStringFieldBloc;
+  final StringValueFormFieldBloc nameStringFieldBloc;
+  final StringValueFormFieldBloc valueStringFieldBloc;
   final String valueHint;
   final Widget ending;
   final FocusNode nextFocusNode;

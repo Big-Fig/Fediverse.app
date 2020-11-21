@@ -7,15 +7,15 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
 import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/form/group/one_type/form_one_type_group_bloc_impl.dart';
-import 'package:fedi/form/group/pair/form_link_pair_field_group_bloc.dart';
-import 'package:fedi/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
+import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
+import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
@@ -23,16 +23,16 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IPleromaMyAccountService pleromaMyAccountService;
 
   @override
-  final FormStringFieldBloc displayNameField;
+  final StringValueFormFieldBloc displayNameField;
 
   @override
-  final FormStringFieldBloc noteField;
+  final StringValueFormFieldBloc noteField;
 
   @override
-  final FormBoolFieldBloc lockedField;
+  final BoolValueFormFieldBloc lockedField;
 
   @override
-  final IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>
+  final IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>
       customFieldsGroupBloc;
 
   @override
@@ -62,18 +62,18 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     @required int headerUploadSizeInBytes,
     @required int backgroundUploadSizeInBytes,
     @required PleromaInstancePleromaPartMetadataFieldLimits customFieldLimits,
-  })  : displayNameField = FormStringFieldBloc(
+  })  : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText.text,
-          validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+          validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
           maxLength: null,
         ),
-        noteField = FormStringFieldBloc(
+        noteField = StringValueFormFieldBloc(
           originValue: myAccountBloc.note,
           validators: [],
           maxLength: noteMaxLength,
         ),
         lockedField =
-            FormBoolFieldBloc(originValue: myAccountBloc.account.locked),
+            BoolValueFormFieldBloc(originValue: myAccountBloc.account.locked),
         avatarField = FormImageFilePickerOrUrlFieldBloc(
           originalUrl: myAccountBloc.account.avatar,
           maxFileSizeInBytes: avatarUploadSizeInBytes,
@@ -90,9 +90,9 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           isPossibleToDeleteOriginal: true,
         ),
         customFieldsGroupBloc =
-            FormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>(
+            OneTypeFormGroupBloc<ILinkPairFormGroupBloc>(
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
-          newEmptyFieldCreator: () => FormLinkPairFieldGroupBloc(
+          newEmptyFieldCreator: () => LinkPairFormGroupBloc(
             value: null,
             name: null,
             nameMaxLength: customFieldLimits?.nameLength,
@@ -100,7 +100,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           ),
           originalItems: myAccountBloc.fields
               .map(
-                (field) => FormLinkPairFieldGroupBloc(
+                (field) => LinkPairFormGroupBloc(
                   name: field.name,
                   value: field.valueAsRawUrl,
                   nameMaxLength: customFieldLimits?.nameLength,

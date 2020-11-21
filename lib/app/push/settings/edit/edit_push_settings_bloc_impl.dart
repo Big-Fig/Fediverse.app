@@ -2,8 +2,8 @@ import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,19 +12,19 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
   final IPushSettingsBloc pushSettingsBloc;
 
   @override
-  final IFormBoolFieldBloc favouriteFieldBloc;
+  final IBoolValueFormFieldBloc favouriteFieldBloc;
   @override
-  final IFormBoolFieldBloc followFieldBloc;
+  final IBoolValueFormFieldBloc followFieldBloc;
   @override
-  final IFormBoolFieldBloc mentionFieldBloc;
+  final IBoolValueFormFieldBloc mentionFieldBloc;
   @override
-  final IFormBoolFieldBloc reblogFieldBloc;
+  final IBoolValueFormFieldBloc reblogFieldBloc;
   @override
-  final IFormBoolFieldBloc pollFieldBloc;
+  final IBoolValueFormFieldBloc pollFieldBloc;
   @override
-  final IFormBoolFieldBloc pleromaChatMentionFieldBloc;
+  final IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
   @override
-  final IFormBoolFieldBloc pleromaEmojiReactionFieldBloc;
+  final IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -41,17 +41,17 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
     @required this.pushSettingsBloc,
     @required bool enabled,
   })  : favouriteFieldBloc =
-            FormBoolFieldBloc(originValue: pushSettingsBloc.favourite),
+            BoolValueFormFieldBloc(originValue: pushSettingsBloc.favourite),
         followFieldBloc =
-            FormBoolFieldBloc(originValue: pushSettingsBloc.follow),
+            BoolValueFormFieldBloc(originValue: pushSettingsBloc.follow),
         mentionFieldBloc =
-            FormBoolFieldBloc(originValue: pushSettingsBloc.mention),
+            BoolValueFormFieldBloc(originValue: pushSettingsBloc.mention),
         reblogFieldBloc =
-            FormBoolFieldBloc(originValue: pushSettingsBloc.reblog),
-        pollFieldBloc = FormBoolFieldBloc(originValue: pushSettingsBloc.poll),
+            BoolValueFormFieldBloc(originValue: pushSettingsBloc.reblog),
+        pollFieldBloc = BoolValueFormFieldBloc(originValue: pushSettingsBloc.poll),
         pleromaChatMentionFieldBloc =
-            FormBoolFieldBloc(originValue: pushSettingsBloc.pleromaChatMention),
-        pleromaEmojiReactionFieldBloc = FormBoolFieldBloc(
+            BoolValueFormFieldBloc(originValue: pushSettingsBloc.pleromaChatMention),
+        pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
             originValue: pushSettingsBloc.pleromaEmojiReaction),
         super(
           enabled,

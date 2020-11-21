@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ abstract class IEditMediaSettingsBloc
           {bool listen = true}) =>
       Provider.of<IEditMediaSettingsBloc>(context, listen: listen);
 
-  IFormBoolFieldBloc get autoPlayFieldBloc;
+  IBoolValueFormFieldBloc get autoPlayFieldBloc;
 
-  IFormBoolFieldBloc get autoInitFieldBloc;
+  IBoolValueFormFieldBloc get autoInitFieldBloc;
 }

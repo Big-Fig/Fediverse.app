@@ -9,7 +9,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -19,7 +19,7 @@ var _logger = Logger("form_pleroma_visibility_field_form_row_widget.dart");
 class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
-  final IFormValueFieldBloc<PleromaVisibility> field;
+  final IValueFormFieldBloc<PleromaVisibility> field;
   final bool displayIcon;
   final bool enabled;
 
@@ -112,7 +112,7 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
 
   SelectionDialogAction buildVisibilityDialogAction(
     BuildContext context,
-    IFormValueFieldBloc<PleromaVisibility> field,
+    IValueFormFieldBloc<PleromaVisibility> field,
     PleromaVisibility visibility,
     PleromaVisibility currentValue,
   ) {

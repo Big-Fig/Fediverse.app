@@ -3,12 +3,12 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget
     extends StatelessWidget {
-  final IFormValueFieldBloc<PleromaAccount> formValueFieldBloc;
+  final IValueFormFieldBloc<PleromaAccount> formValueFieldBloc;
   final bool enabled;
   final bool nullable;
   final String desc;

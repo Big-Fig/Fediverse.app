@@ -1,6 +1,6 @@
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/share_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,5 +10,5 @@ abstract class IExternalShareBloc extends IShareBloc {
 
   IShareMessageInputBloc get shareMessageInputBloc;
 
-  IFormBoolFieldBloc get asLinkBoolField;
+  IBoolValueFormFieldBloc get asLinkBoolField;
 }
