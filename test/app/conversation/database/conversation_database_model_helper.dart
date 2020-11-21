@@ -20,5 +20,5 @@ void expectDbConversation(IConversationChat actual, DbConversation expected) {
 
   expect(actual.localId != null, true);
   expect(actual.remoteId, expected.remoteId);
-  expect(actual.unread, expected.unread);
+  expect(actual.unread > 0, expected.unread);
 }

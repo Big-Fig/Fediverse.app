@@ -33,9 +33,9 @@ extension IConversationChatBlocExtension on IConversationChatBloc {
   IConversationChat get conversation => chat;
 
   Stream<IConversationChat> get conversationStream => chatStream;
-  IStatus get lastStatus => lastChatMessage.status;
+  IStatus get lastStatus => lastChatMessage?.status;
 
   Stream<IStatus> get lastStatusStream => lastChatMessageStream.map(
-        (lastChatMessage) => lastChatMessage.status,
+        (lastChatMessage) => lastChatMessage?.status,
       );
 }
