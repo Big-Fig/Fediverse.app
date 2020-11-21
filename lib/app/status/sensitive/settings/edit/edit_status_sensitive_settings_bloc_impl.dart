@@ -16,13 +16,13 @@ class EditStatusSensitiveSettingsBloc
   final IStatusSensitiveSettingsBloc statusSensitiveSettingsBloc;
 
   @override
-  final IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
+  IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
 
   @override
-  final IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
+  IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
 
   @override
-  final IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
+  IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -35,22 +35,23 @@ class EditStatusSensitiveSettingsBloc
     @required this.statusSensitiveSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool enabled,
-  })  : nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
-          originValue: statusSensitiveSettingsBloc.nsfwDisplayDelayDuration,
-          minDuration: Duration(minutes: 1),
-          maxDuration: Duration(days: 1),
-        ),
-        isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
-          originValue: statusSensitiveSettingsBloc.isAlwaysShowSpoiler,
-        ),
-        isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
-          originValue: statusSensitiveSettingsBloc.isAlwaysShowNsfw,
-        ),
-        super(
+  }) : super(
           globalOrInstanceSettingsBloc: statusSensitiveSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
         ) {
+    nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
+      originValue: currentSettings.nsfwDisplayDelayDuration,
+      minDuration: Duration(minutes: 1),
+      maxDuration: Duration(days: 1),
+    );
+    isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.isAlwaysShowSpoiler,
+    );
+    isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.isAlwaysShowNsfw,
+    );
+
     addDisposable(disposable: nsfwDisplayDelayDurationFieldBloc);
     addDisposable(disposable: isAlwaysShowSpoilerFieldBloc);
     addDisposable(disposable: isAlwaysShowNsfwFieldBloc);

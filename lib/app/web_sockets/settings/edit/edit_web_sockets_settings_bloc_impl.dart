@@ -14,7 +14,7 @@ class EditWebSocketsSettingsBloc
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override
-  final WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+  WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -25,15 +25,15 @@ class EditWebSocketsSettingsBloc
     @required this.webSocketsSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
-  })  : typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
-          originValue: webSocketsSettingsBloc.type,
-          isEnabled: isEnabled,
-        ),
-        super(
+  }) : super(
           globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: isEnabled,
         ) {
+    typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
+      originValue: currentSettings.type,
+      isEnabled: isEnabled,
+    );
     addDisposable(disposable: typeFieldBloc);
   }
 

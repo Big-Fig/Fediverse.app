@@ -5,10 +5,7 @@ import 'package:fedi/app/localization/settings/edit/edit_localization_settings_b
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditLocalizationSettingsBloc

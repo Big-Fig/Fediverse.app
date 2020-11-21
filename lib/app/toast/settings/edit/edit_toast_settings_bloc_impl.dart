@@ -14,10 +14,10 @@ class EditToastSettingsBloc
   final IToastSettingsBloc toastSettingsBloc;
 
   @override
-  final IBoolValueFormFieldBloc notificationForChatAndDmFieldBloc;
+  IBoolValueFormFieldBloc notificationForChatAndDmFieldBloc;
 
   @override
-  final IBoolValueFormFieldBloc notificationForMentionFieldBloc;
+  IBoolValueFormFieldBloc notificationForMentionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -29,17 +29,18 @@ class EditToastSettingsBloc
     @required this.toastSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool enabled,
-  })  : notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(
-          originValue: toastSettingsBloc.notificationForChatAndDm,
-        ),
-        notificationForMentionFieldBloc = BoolValueFormFieldBloc(
-          originValue: toastSettingsBloc.notificationForMention,
-        ),
-        super(
+  }) : super(
           globalOrInstanceSettingsBloc: toastSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
         ) {
+    notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.notificationForChatAndDm,
+    );
+
+    notificationForMentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.notificationForMention,
+    );
     addDisposable(disposable: notificationForChatAndDmFieldBloc);
     addDisposable(disposable: notificationForMentionFieldBloc);
   }
