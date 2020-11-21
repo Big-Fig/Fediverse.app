@@ -1,10 +1,10 @@
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
+import 'package:fedi/app/web_sockets/handling_type/form/web_sockets_handling_type_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,7 +14,7 @@ class EditWebSocketsSettingsBloc
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override
-  final IValueFormFieldBloc<WebSocketsSettingsType> typeFieldBloc;
+  final WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -24,15 +24,15 @@ class EditWebSocketsSettingsBloc
   EditWebSocketsSettingsBloc({
     @required this.webSocketsSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool enabled,
-  })  : typeFieldBloc = ValueFormFieldBloc<WebSocketsSettingsType>(
+    @required bool isEnabled,
+  })  : typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
           originValue: webSocketsSettingsBloc.type,
-          validators: [],
+          isEnabled: isEnabled,
         ),
         super(
           globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: enabled,
+          enabled: isEnabled,
         ) {
     addDisposable(disposable: typeFieldBloc);
   }

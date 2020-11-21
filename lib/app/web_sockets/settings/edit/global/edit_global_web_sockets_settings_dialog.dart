@@ -31,7 +31,7 @@ void showEditGlobalWebSocketsSettingsDialog({
         update: (context, value, previous) => EditWebSocketsSettingsBloc(
           webSocketsSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-          enabled: true,
+          isEnabled: true,
         ),
         child: const EditWebSocketsSettingsWidget(
           shrinkWrap: true,
