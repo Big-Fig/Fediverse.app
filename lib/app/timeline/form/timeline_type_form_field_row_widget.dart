@@ -1,11 +1,11 @@
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_from_list_field_row.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineTypeFormFieldRowWidget extends StatelessWidget {
-  final IFormValueFieldBloc<TimelineType> formValueFieldBloc;
+  final IValueFormFieldBloc<TimelineType> formValueFieldBloc;
   final bool enabled;
   final String desc;
 

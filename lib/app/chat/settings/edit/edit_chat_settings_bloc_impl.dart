@@ -3,8 +3,8 @@ import 'package:fedi/app/chat/settings/chat_settings_model.dart';
 import 'package:fedi/app/chat/settings/edit/edit_chat_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,10 +14,10 @@ class EditChatSettingsBloc
   final IChatSettingsBloc chatSettingsBloc;
 
   @override
-  IFormBoolFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
+  IBoolValueFormFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
 
   @override
-  IFormBoolFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
+  IBoolValueFormFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -34,10 +34,10 @@ class EditChatSettingsBloc
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
         ) {
-    countConversationsInChatsUnreadBadgesFieldBloc = FormBoolFieldBloc(
+    countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.countConversationsInChatsUnreadBadges,
     );
-    replaceConversationsWithPleromaChatsFieldBloc = FormBoolFieldBloc(
+    replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.replaceConversationsWithPleromaChats,
     );
 

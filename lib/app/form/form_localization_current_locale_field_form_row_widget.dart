@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -19,7 +19,7 @@ var _logger =
 class FormLocalizationCurrentLocaleFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
-  final IFormValueFieldBloc<LocalizationLocale> field;
+  final IValueFormFieldBloc<LocalizationLocale> field;
   FormLocalizationCurrentLocaleFieldFormRowWidget({
     @required this.label,
     this.desc,
@@ -89,7 +89,7 @@ class FormLocalizationCurrentLocaleFieldFormRowWidget extends StatelessWidget {
 
   SelectionDialogAction buildLocalizationLocaleDialogAction(
     BuildContext context,
-    IFormValueFieldBloc<LocalizationLocale> field,
+    IValueFormFieldBloc<LocalizationLocale> field,
     LocalizationLocale localizationLocale,
     LocalizationLocale currentValue,
   ) {

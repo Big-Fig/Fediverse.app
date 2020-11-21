@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/form/fedi_form_captcha_edit_text_row.dart';
-import 'package:fedi/form/field/value/string/form_captcha_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/captcha/captcha_string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -8,7 +8,7 @@ class FormCaptchaStringFieldFormRowWidget extends StatelessWidget {
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final IFormCaptchaStringFieldBloc formCaptchaStringFieldBloc;
+  final ICaptchaStringFormFieldBloc formCaptchaStringFieldBloc;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
 

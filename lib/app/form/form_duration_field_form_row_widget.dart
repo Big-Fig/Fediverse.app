@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/form/field/value/duration/form_duration_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +15,7 @@ var _logger = Logger("form_duration_field_form_row_widget.dart");
 class FormDurationFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
-  final IFormDurationFieldBloc field;
+  final IDurationValueFormFieldBloc field;
 
   final String popupTitle;
 

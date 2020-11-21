@@ -25,9 +25,9 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/form/group/pair/form_link_pair_field_group_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
+import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -429,9 +429,9 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildTextField(
-      {@required IFormStringFieldBloc formStringFieldBloc,
+      {@required IStringValueFormFieldBloc formStringFieldBloc,
       @required String label,
-      @required IFormStringFieldBloc nextFormStringFieldBloc}) {
+      @required IStringValueFormFieldBloc nextFormStringFieldBloc}) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
     return FormStringFieldFormRowWidget(
@@ -460,7 +460,7 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildCustomFields(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var customFieldsGroupBloc = editMyAccountBloc.customFieldsGroupBloc;
-    return StreamBuilder<List<IFormLinkPairFieldGroupBloc>>(
+    return StreamBuilder<List<ILinkPairFormGroupBloc>>(
         stream: customFieldsGroupBloc.itemsStream,
         initialData: customFieldsGroupBloc.items,
         builder: (context, snapshot) {
@@ -473,7 +473,7 @@ class EditMyAccountWidget extends StatelessWidget {
                   var index = entry.key;
                   var nextIndex = index + 1;
 
-                  IFormLinkPairFieldGroupBloc nextCustomField;
+                  ILinkPairFormGroupBloc nextCustomField;
                   if (nextIndex < fields.length) {
                     nextCustomField = fields[nextIndex];
                   }
@@ -518,11 +518,11 @@ class EditMyAccountWidget extends StatelessWidget {
       {@required
           BuildContext context,
       @required
-          IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc> fieldGroupBloc,
+          IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> fieldGroupBloc,
       @required
-          IFormLinkPairFieldGroupBloc customField,
+          ILinkPairFormGroupBloc customField,
       @required
-          IFormLinkPairFieldGroupBloc nextCustomField,
+          ILinkPairFormGroupBloc nextCustomField,
       @required
           int index}) {
     var number = index + 1;

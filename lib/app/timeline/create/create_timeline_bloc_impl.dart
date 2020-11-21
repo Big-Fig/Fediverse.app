@@ -5,11 +5,11 @@ import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -20,26 +20,26 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final TimelineSavedCallback timelineSavedCallback;
 
   @override
-  IFormStringFieldBloc idFieldBloc = FormStringFieldBloc(
+  IStringValueFormFieldBloc idFieldBloc = StringValueFormFieldBloc(
     originValue: TimelineSettings.generateUniqueTimelineId(),
     validators: [
-      FormNonEmptyStringFieldValidationError.createValidator(),
+      StringValueFormFieldNonEmptyValidationError.createValidator(),
     ],
     maxLength: 50,
   );
 
   @override
-  IFormStringFieldBloc nameFieldBloc = FormStringFieldBloc(
+  IStringValueFormFieldBloc nameFieldBloc = StringValueFormFieldBloc(
     originValue: "",
     validators: [
-      FormNonEmptyStringFieldValidationError.createValidator(),
+      StringValueFormFieldNonEmptyValidationError.createValidator(),
     ],
     maxLength: 50,
   );
 
   @override
-  IFormValueFieldBloc<TimelineType> typeFieldBloc =
-      FormValueFieldBloc(originValue: TimelineType.public, validators: []);
+  IValueFormFieldBloc<TimelineType> typeFieldBloc =
+      ValueFormFieldBloc(originValue: TimelineType.public, validators: []);
 
   @override
   ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(

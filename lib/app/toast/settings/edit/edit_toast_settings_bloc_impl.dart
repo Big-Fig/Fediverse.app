@@ -3,8 +3,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,10 +14,10 @@ class EditToastSettingsBloc
   final IToastSettingsBloc toastSettingsBloc;
 
   @override
-  final IFormBoolFieldBloc notificationForChatAndDmFieldBloc;
+  final IBoolValueFormFieldBloc notificationForChatAndDmFieldBloc;
 
   @override
-  final IFormBoolFieldBloc notificationForMentionFieldBloc;
+  final IBoolValueFormFieldBloc notificationForMentionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -29,10 +29,10 @@ class EditToastSettingsBloc
     @required this.toastSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool enabled,
-  })  : notificationForChatAndDmFieldBloc = FormBoolFieldBloc(
+  })  : notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(
           originValue: toastSettingsBloc.notificationForChatAndDm,
         ),
-        notificationForMentionFieldBloc = FormBoolFieldBloc(
+        notificationForMentionFieldBloc = BoolValueFormFieldBloc(
           originValue: toastSettingsBloc.notificationForMention,
         ),
         super(

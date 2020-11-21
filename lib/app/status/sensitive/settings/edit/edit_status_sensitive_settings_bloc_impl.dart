@@ -3,10 +3,10 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/duration/form_duration_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/form_duration_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,13 +16,13 @@ class EditStatusSensitiveSettingsBloc
   final IStatusSensitiveSettingsBloc statusSensitiveSettingsBloc;
 
   @override
-  final IFormDurationFieldBloc nsfwDisplayDelayDurationFieldBloc;
+  final IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
 
   @override
-  final IFormBoolFieldBloc isAlwaysShowSpoilerFieldBloc;
+  final IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
 
   @override
-  final IFormBoolFieldBloc isAlwaysShowNsfwFieldBloc;
+  final IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -35,15 +35,15 @@ class EditStatusSensitiveSettingsBloc
     @required this.statusSensitiveSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool enabled,
-  })  : nsfwDisplayDelayDurationFieldBloc = FormDurationFieldBloc(
+  })  : nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
           originValue: statusSensitiveSettingsBloc.nsfwDisplayDelayDuration,
           minDuration: Duration(minutes: 1),
           maxDuration: Duration(days: 1),
         ),
-        isAlwaysShowSpoilerFieldBloc = FormBoolFieldBloc(
+        isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
           originValue: statusSensitiveSettingsBloc.isAlwaysShowSpoiler,
         ),
-        isAlwaysShowNsfwFieldBloc = FormBoolFieldBloc(
+        isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
           originValue: statusSensitiveSettingsBloc.isAlwaysShowNsfw,
         ),
         super(

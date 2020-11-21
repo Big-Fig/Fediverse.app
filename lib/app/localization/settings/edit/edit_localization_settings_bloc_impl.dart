@@ -3,8 +3,8 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/form/field/value/form_value_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,7 +14,7 @@ class EditLocalizationSettingsBloc
   final ILocalizationSettingsBloc localizationSettingBloc;
 
   @override
-  final IFormValueFieldBloc<LocalizationLocale> localizationLocaleFieldBloc;
+  final IValueFormFieldBloc<LocalizationLocale> localizationLocaleFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -24,7 +24,7 @@ class EditLocalizationSettingsBloc
   EditLocalizationSettingsBloc({
     @required this.localizationSettingBloc,
     @required bool enabled,
-  })  : localizationLocaleFieldBloc = FormValueFieldBloc<LocalizationLocale>(
+  })  : localizationLocaleFieldBloc = ValueFormFieldBloc<LocalizationLocale>(
           originValue: localizationSettingBloc.localizationLocale,
           validators: [],
         ),
