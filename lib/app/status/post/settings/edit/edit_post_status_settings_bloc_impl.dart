@@ -17,11 +17,11 @@ class EditPostStatusSettingsBloc
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
   @override
-  final IStatusVisibilitySingleFromListValueFormFieldBloc
+  IStatusVisibilitySingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;
 
   @override
-  final IBoolValueFormFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
+  IBoolValueFormFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -33,20 +33,21 @@ class EditPostStatusSettingsBloc
     @required this.postStatusSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
-  })  : defaultVisibilityFormFieldBloc =
-            StatusVisibilitySingleFromListValueFormFieldBloc(
-          originValue: postStatusSettingsBloc.defaultVisibility,
-          isEnabled: isEnabled,
-        ),
-        markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
-          originValue: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-          isEnabled: isEnabled,
-        ),
-        super(
+  }) : super(
           globalOrInstanceSettingsBloc: postStatusSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: isEnabled,
         ) {
+    defaultVisibilityFormFieldBloc =
+        StatusVisibilitySingleFromListValueFormFieldBloc(
+      originValue: currentSettings.defaultVisibilityPleroma,
+      isEnabled: isEnabled,
+    );
+    markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.markMediaAsNsfwOnAttach,
+      isEnabled: isEnabled,
+    );
+
     addDisposable(disposable: defaultVisibilityFormFieldBloc);
     addDisposable(disposable: markMediaAsNsfwOnAttachFormFieldBloc);
   }

@@ -14,10 +14,10 @@ class EditMediaSettingsBloc
   final IMediaSettingsBloc mediaSettingsBloc;
 
   @override
-  final IBoolValueFormFieldBloc autoPlayFieldBloc;
+  IBoolValueFormFieldBloc autoPlayFieldBloc;
 
   @override
-  final IBoolValueFormFieldBloc autoInitFieldBloc;
+  IBoolValueFormFieldBloc autoInitFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -29,17 +29,19 @@ class EditMediaSettingsBloc
     @required this.mediaSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool enabled,
-  })  : autoPlayFieldBloc = BoolValueFormFieldBloc(
-          originValue: mediaSettingsBloc.autoPlay,
-        ),
-        autoInitFieldBloc = BoolValueFormFieldBloc(
-          originValue: mediaSettingsBloc.autoInit,
-        ),
-        super(
+  }) : super(
           globalOrInstanceSettingsBloc: mediaSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
         ) {
+    autoPlayFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.autoPlay,
+    );
+
+    autoInitFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.autoInit,
+    );
+
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();
   }
