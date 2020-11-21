@@ -199,8 +199,20 @@ void main() {
 
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: [
-      PleromaEmoji(shortcode: "emoji1", url: "https://fedi.app/emoji1.png"),
-      PleromaEmoji(shortcode: "emoji2", url: "https://fedi.app/emoji2.png")
+      PleromaEmoji(
+        shortcode: "emoji1",
+        url: "https://fedi.app/emoji1.png",
+        visibleInPicker: null,
+        category: null,
+        staticUrl: null,
+      ),
+      PleromaEmoji(
+        shortcode: "emoji2",
+        url: "https://fedi.app/emoji2.png",
+        visibleInPicker: null,
+        category: null,
+        staticUrl: null,
+      )
     ]));
     expect(
       statusBloc.contentWithEmojis,
