@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
@@ -84,9 +84,11 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
               S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
           field: editPushSettingsBloc.pleromaEmojiReactionFieldBloc,
           enabled: enabled && isPleromaInstance,
-          description: !supported ? S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc : null,
+          description: !supported
+              ? S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc
+              : null,
         );
       },
     );
@@ -115,9 +117,11 @@ class _EditPushSettingsPleromaMentionFieldWidget extends StatelessWidget {
           label: S.of(context).app_push_settings_field_pleroma_chat_label,
           field: editPushSettingsBloc.pleromaChatMentionFieldBloc,
           enabled: enabled && isPleromaInstance,
-          description: !supported ? S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc : null,
+          description: !supported
+              ? S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc
+              : null,
         );
       },
     );
@@ -146,9 +150,11 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
           label: S.of(context).app_push_settings_field_polls_label,
           field: editPushSettingsBloc.pollFieldBloc,
           enabled: enabled && supported,
-          description: !supported ? S
-              .of(context)
-              .app_settings_warning_notSupportedOnThisInstance_desc : null,
+          description: !supported
+              ? S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc
+              : null,
         );
       },
     );

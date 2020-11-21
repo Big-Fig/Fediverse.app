@@ -1,8 +1,8 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/form/field/file_picker_or_url/file_picker_or_url_form_field_bloc.dart';
-import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_validation.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,7 +51,10 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
     @required this.originalUrl,
     @required this.maximumFileSizeInBytes,
     @required this.isPossibleToDeleteOriginal,
-  }) {
+    bool isEnabled = true,
+  }) : super(
+          isEnabled: isEnabled,
+        ) {
     addDisposable(
       streamSubscription: currentFilePickerFileStream.listen(
         (_) {

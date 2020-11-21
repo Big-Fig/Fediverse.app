@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc.dart';
+import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc_impl.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
-import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
@@ -36,12 +36,12 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       customFieldsGroupBloc;
 
   @override
-  final IFormImageFilePickerOrUrlFieldBloc avatarField;
+  final IImageFilePickerOrUrlFormFieldBloc avatarField;
 
   @override
-  final IFormImageFilePickerOrUrlFieldBloc headerField;
+  final IImageFilePickerOrUrlFormFieldBloc headerField;
   @override
-  final IFormImageFilePickerOrUrlFieldBloc backgroundField;
+  final IImageFilePickerOrUrlFormFieldBloc backgroundField;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -74,17 +74,17 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         ),
         lockedField =
             BoolValueFormFieldBloc(originValue: myAccountBloc.account.locked),
-        avatarField = FormImageFilePickerOrUrlFieldBloc(
+        avatarField = ImageFilePickerOrUrlFormFieldBloc(
           originalUrl: myAccountBloc.account.avatar,
           maxFileSizeInBytes: avatarUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
-        headerField = FormImageFilePickerOrUrlFieldBloc(
+        headerField = ImageFilePickerOrUrlFormFieldBloc(
           originalUrl: myAccountBloc.account.header,
           maxFileSizeInBytes: headerUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
-        backgroundField = FormImageFilePickerOrUrlFieldBloc(
+        backgroundField = ImageFilePickerOrUrlFormFieldBloc(
           originalUrl: myAccountBloc.account.pleromaBackgroundImage,
           maxFileSizeInBytes: backgroundUploadSizeInBytes,
           isPossibleToDeleteOriginal: true,

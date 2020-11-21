@@ -25,28 +25,29 @@ class FormCaptchaStringFieldFormRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<FormItemValidationError>>(
-        stream: formCaptchaStringFieldBloc.errorsStream,
-        builder: (context, snapshot) {
-          var errors = snapshot.data ?? [];
+      stream: formCaptchaStringFieldBloc.errorsStream,
+      builder: (context, snapshot) {
+        var errors = snapshot.data ?? [];
 
-          var error = errors?.isNotEmpty == true ? errors.first : null;
+        var error = errors?.isNotEmpty == true ? errors.first : null;
 
-          return FediFormCaptchaEditTextRow(
-            hint: hint,
-            label: label,
-            autocorrect: autocorrect,
-            obscureText: obscureText,
-            textEditingController:
-                formCaptchaStringFieldBloc.textEditingController,
-            errorText: error?.createErrorDescription(context),
-            onSubmitted: onSubmitted,
-            textInputAction: textInputAction,
-            focusNode: formCaptchaStringFieldBloc.focusNode,
-            captchaImageStream: formCaptchaStringFieldBloc.captchaImageStream,
-            onNeedCaptchaReloadCallback: () {
-              formCaptchaStringFieldBloc.reloadCaptcha();
-            },
-          );
-        });
+        return FediFormCaptchaEditTextRow(
+          hint: hint,
+          label: label,
+          autocorrect: autocorrect,
+          obscureText: obscureText,
+          textEditingController:
+              formCaptchaStringFieldBloc.textEditingController,
+          errorText: error?.createErrorDescription(context),
+          onSubmitted: onSubmitted,
+          textInputAction: textInputAction,
+          focusNode: formCaptchaStringFieldBloc.focusNode,
+          captchaImageStream: formCaptchaStringFieldBloc.captchaImageStream,
+          onNeedCaptchaReloadCallback: () {
+            formCaptchaStringFieldBloc.reloadCaptcha();
+          },
+        );
+      },
+    );
   }
 }

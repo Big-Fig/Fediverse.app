@@ -1,19 +1,17 @@
-import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current/form/current_fedi_ui_theme_value_form_field_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 
-// todo: this shouldn't be form field bloc
-class CurrentFediUiThemeChooserBloc extends DisposableOwner
-    implements ICurrentFediUiThemeChooserBloc {
+class CurrentFediUiThemeValueFormFieldBloc extends ValueFormFieldBloc<IFediUiTheme>
+    implements ICurrentFediUiThemeValueFormFieldBloc {
   final ICurrentFediUiThemeBloc currentFediUiThemeBloc;
   final IFediUiTheme lightTheme;
   final IFediUiTheme darkTheme;
 
-  CurrentFediUiThemeChooserBloc({
+  CurrentFediUiThemeValueFormFieldBloc({
     @required this.currentFediUiThemeBloc,
     @required this.lightTheme,
     @required this.darkTheme,
@@ -35,13 +33,6 @@ class CurrentFediUiThemeChooserBloc extends DisposableOwner
   @override
   Stream<IFediUiTheme> get currentValueStream =>
       currentFediUiThemeBloc.currentThemeStream;
-
-  @override
-  List<FormItemValidationError> get errors => [];
-
-  @override
-  Stream<List<FormItemValidationError>> get errorsStream =>
-      Stream.value(errors);
 
   @override
   bool get isHaveAtLeastOneError => errors?.isNotEmpty == true;

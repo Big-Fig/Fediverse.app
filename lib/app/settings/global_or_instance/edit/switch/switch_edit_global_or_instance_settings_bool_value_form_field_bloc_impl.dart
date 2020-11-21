@@ -1,5 +1,6 @@
-import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
+import 'package:fedi/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
@@ -8,13 +9,15 @@ import 'package:logging/logging.dart';
 final _logger = Logger(
     "switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart");
 
-class IsUseGlobalSettingsFormBoolFieldBloc
-    implements IIsUseGlobalSettingsFormBoolFieldBloc {
+class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
+    extends FormFieldBloc
+    implements ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc {
   final IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc;
 
-  IsUseGlobalSettingsFormBoolFieldBloc({
+  SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc({
     @required this.globalOrInstanceSettingsBloc,
-  });
+    bool isEnabled = true,
+  }) : super(isEnabled: isEnabled);
 
   @override
   void changeCurrentValue(bool newValue) {
@@ -42,10 +45,6 @@ class IsUseGlobalSettingsFormBoolFieldBloc
   Stream<bool> get currentValueStream =>
       globalOrInstanceSettingsBloc.isGlobalStream;
 
-  @override
-  Future dispose() async {
-    // nothing
-  }
 
   @override
   List<FormItemValidationError> get errors => [];
@@ -78,4 +77,15 @@ class IsUseGlobalSettingsFormBoolFieldBloc
 
   @override
   List<FormValueFieldValidation<bool>> get validators => [];
+
+  @override
+  void changeIsEnabled(bool enabled) {
+    throw UnsupportedError("changeIsEnabled not supported");
+  }
+
+  @override
+  bool get isEnabled => true;
+
+  @override
+  Stream<bool> get isEnabledStream => Stream.value(isEnabled);
 }

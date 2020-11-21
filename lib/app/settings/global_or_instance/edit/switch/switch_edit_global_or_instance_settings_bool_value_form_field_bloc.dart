@@ -2,11 +2,11 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IIsUseGlobalSettingsFormBoolFieldBloc
+abstract class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
     implements IBoolValueFormFieldBloc {
-  static IIsUseGlobalSettingsFormBoolFieldBloc of(BuildContext context,
+  static ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IIsUseGlobalSettingsFormBoolFieldBloc>(context,
+      Provider.of<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(context,
           listen: listen);
 
 }

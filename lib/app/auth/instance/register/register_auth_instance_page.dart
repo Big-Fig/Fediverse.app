@@ -1,9 +1,9 @@
+import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_widget.dart';
-import 'package:fedi/app/form/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/connection/connection_service.dart';

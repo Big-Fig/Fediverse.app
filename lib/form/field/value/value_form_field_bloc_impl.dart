@@ -35,9 +35,13 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   ValueFormFieldBloc({
     @required this.originValue,
     @required this.validators,
+    bool isEnabled = true,
   })  : _currentValueSubject = BehaviorSubject.seeded(originValue),
         _currentErrorSubject =
-            BehaviorSubject.seeded(_validate(originValue, validators)) {
+            BehaviorSubject.seeded(_validate(originValue, validators)),
+        super(
+          isEnabled: isEnabled,
+        ) {
     addDisposable(subject: _currentValueSubject);
     addDisposable(subject: _currentErrorSubject);
 

@@ -32,7 +32,7 @@ void showEditGlobalPostStatusSettingsDialog({
         update: (context, value, previous) => EditPostStatusSettingsBloc(
           postStatusSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-          enabled: true,
+          isEnabled: true,
         ),
         child: const EditPostStatusSettingsWidget(
           shrinkWrap: true,

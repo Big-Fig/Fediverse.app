@@ -16,10 +16,12 @@ class ImageFilePickerOrUrlFormFieldBloc extends FilePickerOrUrlFormFieldBloc
     @required String originalUrl,
     @required int maxFileSizeInBytes,
     @required bool isPossibleToDeleteOriginal,
+    bool isEnabled = true,
   }) : super(
           originalUrl: originalUrl,
           maximumFileSizeInBytes: maxFileSizeInBytes,
           isPossibleToDeleteOriginal: isPossibleToDeleteOriginal,
+          isEnabled: isEnabled,
         ) {
     addDisposable(subject: imageSourceSubject);
     addDisposable(

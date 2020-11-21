@@ -20,7 +20,7 @@ void showEditGlobalLocalizationSettingsDialog({
           context,
           listen: false,
         ),
-        enabled: true,
+        isEnabled: true,
       ),
       child: const EditLocalizationSettingsWidget(
         shrinkWrap: true,

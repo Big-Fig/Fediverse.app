@@ -1,4 +1,4 @@
-import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/switch/fedi_switch.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -8,22 +8,25 @@ import 'package:flutter/material.dart';
 
 typedef ShowGlobalSettingsDialogCallback = void Function(BuildContext context);
 
-class IsUseGlobalSettingsFormBoolFormFieldRowWidget extends StatelessWidget {
+class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
+    extends StatelessWidget {
   final ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback;
 
-  const IsUseGlobalSettingsFormBoolFormFieldRowWidget({
+  const ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget({
     @required this.showGlobalSettingsDialogCallback,
   });
 
   @override
   Widget build(BuildContext context) {
-    var isUseGlobalSettingsFormBoolFieldBloc =
-        IIsUseGlobalSettingsFormBoolFieldBloc.of(context);
+    var switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc =
+        ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context);
 
     return StreamBuilder<bool>(
-      stream:
-          isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.distinct(),
-      initialData: isUseGlobalSettingsFormBoolFieldBloc.currentValue,
+      stream: switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
+          .currentValueStream
+          .distinct(),
+      initialData:
+          switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
 
@@ -46,7 +49,8 @@ class IsUseGlobalSettingsFormBoolFormFieldRowWidget extends StatelessWidget {
               ),
               FediSwitch(
                 onChanged:
-                    isUseGlobalSettingsFormBoolFieldBloc.changeCurrentValue,
+                    switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
+                        .changeCurrentValue,
                 value: currentValue == true,
                 enabled: true,
               ),
