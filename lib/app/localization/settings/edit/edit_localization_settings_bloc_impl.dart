@@ -1,3 +1,6 @@
+import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/localization/locale/supported_localization_locale_list.dart';
 import 'package:fedi/app/localization/settings/edit/edit_localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
@@ -14,7 +17,8 @@ class EditLocalizationSettingsBloc
   final ILocalizationSettingsBloc localizationSettingBloc;
 
   @override
-  final IValueFormFieldBloc<LocalizationLocale> localizationLocaleFieldBloc;
+  final ILocalizationLocaleSingleFromListValueFormFieldBloc
+      localizationLocaleFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -24,10 +28,11 @@ class EditLocalizationSettingsBloc
   EditLocalizationSettingsBloc({
     @required this.localizationSettingBloc,
     @required bool isEnabled,
-  })  : localizationLocaleFieldBloc = ValueFormFieldBloc<LocalizationLocale>(
+  })  : localizationLocaleFieldBloc =
+            LocalizationLocaleSingleFromListValueFormFieldBloc(
           originValue: localizationSettingBloc.localizationLocale,
-          validators: [],
           isEnabled: isEnabled,
+          possibleValues: supportedLocalizationLocaleList,
         ),
         super(isEnabled, localizationSettingBloc) {
     addDisposable(disposable: localizationLocaleFieldBloc);
