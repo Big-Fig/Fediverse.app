@@ -17,8 +17,8 @@ class SingleFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final String description;
   final String descriptionOnDisabled;
 
-  final SingleFromListValueIconMapper valueIconMapper;
-  final SingleFromListValueTitleMapper valueTitleMapper;
+  final SingleFromListValueIconMapper<T> valueIconMapper;
+  final SingleFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInRow;
   final bool displayIconInDialog;
 
@@ -57,8 +57,8 @@ class SingleFromListValueFormFieldRowWidget<T> extends StatelessWidget {
 class _SingleFromListValueFormFieldRowValueWidget<T> extends StatelessWidget {
   final String label;
   final bool displayIconInRow;
-  final SingleFromListValueIconMapper valueIconMapper;
-  final SingleFromListValueTitleMapper valueTitleMapper;
+  final SingleFromListValueIconMapper<T> valueIconMapper;
+  final SingleFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
   _SingleFromListValueFormFieldRowValueWidget({
@@ -111,7 +111,7 @@ class _SingleFromListValueFormFieldRowValueTitleWidget<T>
     @required this.valueTitleMapper,
   }) : super(key: key);
 
-  final SingleFromListValueTitleMapper valueTitleMapper;
+  final SingleFromListValueTitleMapper<T> valueTitleMapper;
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +152,8 @@ class _SingleFromListValueFormFieldRowValueIconWidget<T>
   }) : super(key: key);
 
   final String label;
-  final SingleFromListValueIconMapper valueIconMapper;
-  final SingleFromListValueTitleMapper valueTitleMapper;
+  final SingleFromListValueIconMapper<T> valueIconMapper;
+  final SingleFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
   @override
@@ -198,8 +198,8 @@ void _showDialog<T>({
   @required BuildContext context,
   @required String label,
   @required ISingleFromListValueFormFieldBloc<T> fieldBloc,
-  @required SingleFromListValueIconMapper valueIconMapper,
-  @required SingleFromListValueTitleMapper valueTitleMapper,
+  @required SingleFromListValueIconMapper<T> valueIconMapper,
+  @required SingleFromListValueTitleMapper<T> valueTitleMapper,
   @required bool displayIconInDialog,
 }) {
   var actions = <SelectionDialogAction>[
@@ -238,8 +238,8 @@ SelectionDialogAction _buildDialogAction<T>({
   @required ISingleFromListValueFormFieldBloc<T> fieldBloc,
   @required T value,
   @required T selectedValue,
-  @required SingleFromListValueIconMapper valueIconMapper,
-  @required SingleFromListValueTitleMapper valueTitleMapper,
+  @required SingleFromListValueIconMapper<T> valueIconMapper,
+  @required SingleFromListValueTitleMapper<T> valueTitleMapper,
   @required bool displayIconInDialog,
 }) {
   return SelectionDialogAction(
