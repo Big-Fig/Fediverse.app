@@ -1,0 +1,28 @@
+import 'package:fedi/app/web_sockets/handling_type/form/web_sockets_handling_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:fedi/form/field/value/single_from_list/single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/value_form_field_validation.dart';
+import 'package:flutter/material.dart';
+
+class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
+    extends SingleFromListValueFormFieldBloc<WebSocketsHandlingType>
+    implements IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc {
+  @override
+  final bool isNullValuePossible;
+
+  @override
+  final List<WebSocketsHandlingType> possibleValues;
+
+  WebSocketsHandlingTypeSingleFromListValueFormFieldBloc({
+    this.isNullValuePossible = false,
+    this.possibleValues = WebSocketsHandlingType.values,
+    @required WebSocketsHandlingType originValue,
+    bool isEnabled = true,
+    List<FormValueFieldValidation<WebSocketsHandlingType>> validators =
+        const [],
+  }) : super(
+          originValue: originValue,
+          isEnabled: isEnabled,
+          validators: validators,
+        );
+}

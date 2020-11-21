@@ -40,7 +40,7 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
             listen: false,
           ),
           globalOrInstanceSettingsType: globalOrInstanceType,
-          enabled: enabled,
+          isEnabled: enabled,
         );
 
         editWebSocketsSettingsBloc.addDisposable(

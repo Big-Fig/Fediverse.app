@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +12,9 @@ abstract class IWebSocketsSettingsBloc
           {bool listen = true}) =>
       Provider.of<IWebSocketsSettingsBloc>(context, listen: listen);
 
-  WebSocketsSettingsType get type;
+  WebSocketsHandlingType get type;
 
-  Stream<WebSocketsSettingsType> get typeStream;
+  Stream<WebSocketsHandlingType> get typeStream;
 
-  void changeType(WebSocketsSettingsType value);
+  void changeType(WebSocketsHandlingType value);
 }
