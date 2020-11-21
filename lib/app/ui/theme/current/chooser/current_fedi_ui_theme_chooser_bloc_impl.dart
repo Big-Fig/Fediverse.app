@@ -2,8 +2,8 @@ import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
-import 'package:fedi/ui/form/form_item_validation.dart';
+import 'package:fedi/form/field/value/form_value_field_validation.dart';
+import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 
 // todo: this shouldn't be form field bloc

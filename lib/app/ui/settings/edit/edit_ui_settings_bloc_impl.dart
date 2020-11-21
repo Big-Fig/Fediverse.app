@@ -2,9 +2,9 @@ import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dar
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>

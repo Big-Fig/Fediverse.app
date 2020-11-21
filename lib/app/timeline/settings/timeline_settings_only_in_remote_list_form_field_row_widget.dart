@@ -5,7 +5,7 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyInRemoteListFormFieldRowWidget

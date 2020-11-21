@@ -5,17 +5,17 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
-import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
-import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
-import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
+import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/form_non_empty_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/form/group/one_type/form_one_type_group_bloc.dart';
+import 'package:fedi/form/group/one_type/form_one_type_group_bloc_impl.dart';
+import 'package:fedi/form/group/pair/form_link_pair_field_group_bloc.dart';
+import 'package:fedi/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {

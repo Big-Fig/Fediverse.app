@@ -1,7 +1,7 @@
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
-import 'package:fedi/ui/form/form_item_validation.dart';
+import 'package:fedi/form/field/value/form_value_field_validation.dart';
+import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

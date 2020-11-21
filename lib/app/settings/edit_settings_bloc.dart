@@ -1,6 +1,6 @@
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/ui/form/form_bloc.dart';
+import 'package:fedi/form/form_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

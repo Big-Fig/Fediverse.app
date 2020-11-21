@@ -1,6 +1,6 @@
 import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/form_item_validation.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
 class FormStringFieldFormRowWidget extends StatelessWidget {

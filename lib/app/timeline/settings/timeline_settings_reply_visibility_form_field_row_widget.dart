@@ -1,7 +1,7 @@
 import 'package:fedi/app/ui/form/fedi_form_single_choose_from_list_field_row.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsReplyVisibilityFormFieldRowWidget

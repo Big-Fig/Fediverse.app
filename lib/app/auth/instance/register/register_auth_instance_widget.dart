@@ -11,7 +11,7 @@ import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/settings/global/global_settings_bloc.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

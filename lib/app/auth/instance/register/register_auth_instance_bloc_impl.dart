@@ -1,12 +1,12 @@
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_email_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_length_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_password_match_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/form_email_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_length_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_non_empty_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_password_match_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class JoinAuthInstanceRegisterBloc extends FormBloc

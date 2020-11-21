@@ -1,7 +1,7 @@
 import 'package:fedi/app/settings/edit_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
