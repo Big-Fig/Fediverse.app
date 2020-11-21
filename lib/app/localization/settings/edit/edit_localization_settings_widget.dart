@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/form_localization_current_locale_field_form_row_widget.dart';
+import 'package:fedi/app/localization/form_localization_current_locale_field_form_row_widget.dart';
 import 'package:fedi/app/localization/settings/edit/edit_localization_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';

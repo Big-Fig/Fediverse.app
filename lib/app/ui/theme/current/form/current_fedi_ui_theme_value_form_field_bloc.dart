@@ -3,9 +3,9 @@ import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICurrentFediUiThemeChooserBloc
+abstract class ICurrentFediUiThemeValueFormFieldBloc
     implements IValueFormFieldBloc<IFediUiTheme> {
-  static ICurrentFediUiThemeChooserBloc of(BuildContext context,
+  static ICurrentFediUiThemeValueFormFieldBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<ICurrentFediUiThemeChooserBloc>(context, listen: listen);
+      Provider.of<ICurrentFediUiThemeValueFormFieldBloc>(context, listen: listen);
 }

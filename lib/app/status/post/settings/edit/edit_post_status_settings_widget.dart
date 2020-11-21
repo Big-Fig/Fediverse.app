@@ -1,8 +1,10 @@
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_pleroma_visibility_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
+import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class EditPostStatusSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
@@ -17,13 +19,11 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
       children: [
-        FormPleromaVisibilityFieldFormRowWidget(
-          label: S
-              .of(context)
-              .app_status_post_settings_field_defaultVisibility_label,
-          field: editPostStatusSettingsBloc.defaultVisibilityFormFieldBloc,
-          displayIcon: false,
-          enabled: editPostStatusSettingsBloc.enabled,
+        ProxyProvider<IEditPostStatusSettingsBloc,
+            IStatusVisibilitySingleFromListValueFormFieldBloc>(
+          update: (context, value, previous) =>
+              value.defaultVisibilityFormFieldBloc,
+          child: const StatusVisibilitySingleFromListValueFormFieldRowWidget(),
         ),
         FormBoolFieldFormRowWidget(
           label: S

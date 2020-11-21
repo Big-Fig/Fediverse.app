@@ -1,6 +1,6 @@
+import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:flutter/cupertino.dart';
 
 class CustomListFormWidget extends StatelessWidget {

@@ -7,10 +7,10 @@ class BoolValueFormFieldBloc extends ValueFormFieldBloc<bool>
   BoolValueFormFieldBloc({
     @required bool originValue,
     bool isEnabled = true,
-    Stream<bool> isEnabledStream = const Stream.empty(),
   }) : super(
           originValue: originValue,
           validators: [],
+          isEnabled: isEnabled,
         );
 
   @override

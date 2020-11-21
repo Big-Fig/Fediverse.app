@@ -1,11 +1,11 @@
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/app/form/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
+import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
 import 'package:fedi/form/field/value/string/email/email_string_value_form_field_validation.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_length_validation.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
-import 'package:fedi/form/field/value/string/password/password_match_string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_length_validation.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
@@ -35,8 +35,8 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
       maxLength: null);
 
   @override
-  final FormPasswordMatchStringFieldBloc confirmPasswordFieldBloc =
-      FormPasswordMatchStringFieldBloc(
+  final PasswordMatchStringValueFormFieldBloc confirmPasswordFieldBloc =
+      PasswordMatchStringValueFormFieldBloc(
     maxLength: null,
   );
 
@@ -66,5 +66,4 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
       confirmPasswordFieldBloc.changePasswordValue(currentValue);
     }));
   }
-
 }

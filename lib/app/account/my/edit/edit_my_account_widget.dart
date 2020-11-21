@@ -5,8 +5,8 @@ import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.da
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/toast/toast_service.dart';

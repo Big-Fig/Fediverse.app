@@ -1,8 +1,7 @@
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,5 +13,6 @@ abstract class IEditPostStatusSettingsBloc
 
   IBoolValueFormFieldBloc get markMediaAsNsfwOnAttachFormFieldBloc;
 
-  IValueFormFieldBloc<PleromaVisibility> get defaultVisibilityFormFieldBloc;
+  IStatusVisibilitySingleFromListValueFormFieldBloc
+      get defaultVisibilityFormFieldBloc;
 }

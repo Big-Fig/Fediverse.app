@@ -1,5 +1,5 @@
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/form_duration_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';

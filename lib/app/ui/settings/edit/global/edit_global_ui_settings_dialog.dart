@@ -3,9 +3,9 @@ import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_widget.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
-import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_bloc.dart';
-import 'package:fedi/app/ui/theme/current/chooser/current_fedi_ui_theme_chooser_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
+import 'package:fedi/app/ui/theme/current/form/current_fedi_ui_theme_value_form_field_bloc.dart';
+import 'package:fedi/app/ui/theme/current/form/current_fedi_ui_theme_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -27,9 +27,9 @@ void showEditGlobalUiSettingsDialog({
         ),
         enabled: true,
       ),
-      child: DisposableProvider<ICurrentFediUiThemeChooserBloc>(
+      child: DisposableProvider<ICurrentFediUiThemeValueFormFieldBloc>(
         create: (context) {
-          return CurrentFediUiThemeChooserBloc(
+          return CurrentFediUiThemeValueFormFieldBloc(
             currentFediUiThemeBloc:
                 ICurrentFediUiThemeBloc.of(context, listen: false),
             lightTheme: lightFediUiTheme,

@@ -1,7 +1,7 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc.dart';
-import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart';
-import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_form_bool_field_row.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_row.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
@@ -41,14 +41,14 @@ void showEditGlobalOrInstanceSettingsDialog({
           currentInstance.userAtHost,
         ),
     subTitle: subTitle,
-    child: DisposableProvider<IIsUseGlobalSettingsFormBoolFieldBloc>(
-      create: (context) => IsUseGlobalSettingsFormBoolFieldBloc(
+    child: DisposableProvider<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(
+      create: (context) => SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc(
         globalOrInstanceSettingsBloc: globalOrInstanceSettingsBloc,
       ),
       child: Builder(
         builder: (context) {
           var isUseGlobalSettingsFormBoolFieldBloc =
-              IIsUseGlobalSettingsFormBoolFieldBloc.of(context);
+              ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context);
           return StreamBuilder<bool>(
             stream: isUseGlobalSettingsFormBoolFieldBloc.currentValueStream
                 .distinct(),
@@ -96,7 +96,7 @@ class _EditGlobalOrInstanceSettingsDialogBodyWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IsUseGlobalSettingsFormBoolFormFieldRowWidget(
+        ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget(
           showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
         ),
         const FediLightGreyDivider(),

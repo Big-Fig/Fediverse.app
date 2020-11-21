@@ -1,5 +1,5 @@
+import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/form/timeline_type_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';

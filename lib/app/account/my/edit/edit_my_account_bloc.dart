@@ -1,4 +1,4 @@
-import 'package:fedi/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
@@ -14,11 +14,11 @@ abstract class IEditMyAccountBloc implements IFormBloc {
   IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>
       get customFieldsGroupBloc;
 
-  IFormImageFilePickerOrUrlFieldBloc get avatarField;
+  IImageFilePickerOrUrlFormFieldBloc get avatarField;
 
-  IFormImageFilePickerOrUrlFieldBloc get headerField;
+  IImageFilePickerOrUrlFormFieldBloc get headerField;
 
-  IFormImageFilePickerOrUrlFieldBloc get backgroundField;
+  IImageFilePickerOrUrlFormFieldBloc get backgroundField;
 
   IStringValueFormFieldBloc get displayNameField;
 

@@ -1,0 +1,20 @@
+import 'package:fedi/app/ui/theme/current/form/current_fedi_ui_theme_value_form_field_bloc.dart';
+import 'package:fedi/app/ui/theme/form_fedi_theme_field_form_row_widget.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:flutter/widgets.dart';
+
+class ICurrentFediUiThemeValueFormFieldFormRowWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var currentFediUiThemeChooserBloc =
+        ICurrentFediUiThemeValueFormFieldBloc.of(context);
+
+    return FormFediThemeFieldFormRowWidget(
+      field: currentFediUiThemeChooserBloc,
+      label: S.of(context).app_theme_chooser_label,
+      displayIcon: false,
+    );
+  }
+
+  const ICurrentFediUiThemeValueFormFieldFormRowWidget();
+}
