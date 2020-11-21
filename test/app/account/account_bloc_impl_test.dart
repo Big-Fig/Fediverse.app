@@ -388,7 +388,7 @@ void main() {
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
-    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
+    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -458,8 +458,10 @@ void main() {
 
     when(pleromaAccountServiceMock.unFollowAccount(
             accountRemoteId: account.remoteId))
-        .thenAnswer((_) async =>
-            account.pleromaRelationship.copyWith(following: false));
+        .thenAnswer((_) async => account.pleromaRelationship.copyWith(
+              following: false,
+              requested: false,
+            ));
 
     var initialValue = account.pleromaRelationship.following;
 

@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -59,7 +60,8 @@ void main() {
         accountRepository: accountRepository,
         pleromaAccountService: pleromaAccountServiceMock,
         pleromaStatusEmojiReactionService:
-            pleromaStatusEmojiReactionServiceMock, pleromaPollService: null);
+            pleromaStatusEmojiReactionServiceMock,
+        pleromaPollService: null);
   });
 
   tearDown(() async {
@@ -180,28 +182,70 @@ void main() {
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: []));
 
-    expect(statusBloc.contentWithEmojis,
-        "<html><body><p>$newValue</p></body></html>");
-    expect(listenedValue, "<html><body><p>$newValue</p></body></html>");
+    expect(
+      statusBloc.contentWithEmojis,
+      EmojiText(
+        text: newValue,
+        emojis: null,
+      ),
+    );
+    expect(
+      listenedValue,
+      EmojiText(
+        text: newValue,
+        emojis: null,
+      ),
+    );
 
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: [
       PleromaEmoji(shortcode: "emoji1", url: "https://fedi.app/emoji1.png"),
       PleromaEmoji(shortcode: "emoji2", url: "https://fedi.app/emoji2.png")
     ]));
-
     expect(
-        statusBloc.contentWithEmojis,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</p></body></html>");
+      statusBloc.contentWithEmojis,
+      EmojiText(
+        text: "newContent :emoji: :emoji1: :emoji2:",
+        emojis: [
+          PleromaEmoji(
+            shortcode: "emoji1",
+            url: "https://fedi.app/emoji1.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+          PleromaEmoji(
+            shortcode: "emoji2",
+            url: "https://fedi.app/emoji2.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+        ],
+      ),
+    );
     expect(
-        listenedValue,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</p></body></html>");
+      listenedValue,
+      EmojiText(
+        text: "newContent :emoji: :emoji1: :emoji2:",
+        emojis: [
+          PleromaEmoji(
+            shortcode: "emoji1",
+            url: "https://fedi.app/emoji1.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+          PleromaEmoji(
+            shortcode: "emoji2",
+            url: "https://fedi.app/emoji2.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+        ],
+      ),
+    );
 
     await await subscription.cancel();
   });

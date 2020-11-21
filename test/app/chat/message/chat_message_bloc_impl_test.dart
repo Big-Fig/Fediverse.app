@@ -8,6 +8,7 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -129,29 +130,91 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     // same if emojis is empty or null
-    await _update(chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]));
+    await _update(
+        chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]));
 
-    expect(chatMessageBloc.contentWithEmojis, "<html><body><p>$newValue</p></body></html>");
-    expect(listenedValue, "<html><body><p>$newValue</p></body></html>");
+    expect(
+      chatMessageBloc.contentWithEmojis,
+      EmojiText(
+        text: newValue,
+        emojis: null,
+      ),
+    );
+    expect(
+      listenedValue,
+      EmojiText(
+        text: newValue,
+        emojis: null,
+      ),
+    );
 
     // same if emojis is empty or null
-    await _update(chatMessage.copyWith(content: newValue, emojis: [
-      PleromaEmoji(shortcode: "emoji1", url: "https://fedi.app/emoji1.png"),
-      PleromaEmoji(shortcode: "emoji2", url: "https://fedi.app/emoji2.png")
-    ]));
+    await _update(
+      chatMessage.copyWith(
+        content: newValue,
+        emojis: [
+          PleromaEmoji(
+            shortcode: "emoji1",
+            url: "https://fedi.app/emoji1.png",
+            category: null,
+            staticUrl: null,
+            visibleInPicker: null,
+          ),
+          PleromaEmoji(
+            shortcode: "emoji2",
+            url: "https://fedi.app/emoji2.png",
+            category: null,
+            staticUrl: null,
+            visibleInPicker: null,
+          ),
+        ],
+      ),
+    );
 
     expect(
-        chatMessageBloc.contentWithEmojis,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</p></body></html>");
+      chatMessageBloc.contentWithEmojis,
+      EmojiText(
+        text: "newContent :emoji: :emoji1: :emoji2:",
+        emojis: [
+          PleromaEmoji(
+            shortcode: "emoji1",
+            url: "https://fedi.app/emoji1.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+          PleromaEmoji(
+            shortcode: "emoji2",
+            url: "https://fedi.app/emoji2.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+        ],
+      ),
+    );
     expect(
-        listenedValue,
-        "<html><body><p>newContent :emoji: "
-        "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
-        "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</p></body></html>");
+      listenedValue,
+      EmojiText(
+        text: "newContent :emoji: :emoji1: :emoji2:",
+        emojis: [
+          PleromaEmoji(
+            shortcode: "emoji1",
+            url: "https://fedi.app/emoji1.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+          PleromaEmoji(
+            shortcode: "emoji2",
+            url: "https://fedi.app/emoji2.png",
+            staticUrl: null,
+            visibleInPicker: null,
+            category: null,
+          ),
+        ],
+      ),
+    );
 
     await await subscription.cancel();
   });

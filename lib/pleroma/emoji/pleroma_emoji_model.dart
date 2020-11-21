@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -42,11 +43,11 @@ class PleromaEmoji implements IPleromaEmoji {
   final String category;
 
   PleromaEmoji({
-    this.shortcode,
-    this.url,
-    this.staticUrl,
-    this.visibleInPicker,
-    this.category,
+    @required this.shortcode,
+    @required this.url,
+    @required this.staticUrl,
+    @required this.visibleInPicker,
+    @required this.category,
   });
 
   @override
