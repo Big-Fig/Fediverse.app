@@ -326,7 +326,15 @@ void main() {
         EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
     await subscription.cancel();
 
-    var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
+    var newEmojis = [
+      PleromaEmoji(
+        url: "url",
+        staticUrl: "staticUrl",
+        visibleInPicker: null,
+        shortcode: null,
+        category: null,
+      )
+    ];
 
     subscription = myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
       listenedValue = newValue;
