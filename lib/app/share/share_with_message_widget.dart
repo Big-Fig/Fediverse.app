@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -57,7 +57,7 @@ class _ShareWithMessageInputWidget extends StatelessWidget {
     var shareMessageInputBloc = IShareMessageInputBloc.of(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FormStringFieldFormRowWidget(
+      child: StringFormFieldRowWidget(
         formStringFieldBloc: shareMessageInputBloc.messageField,
         hint: S.of(context).app_share_with_message_field_message_hint,
         textInputAction: TextInputAction.done,

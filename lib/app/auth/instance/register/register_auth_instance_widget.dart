@@ -5,7 +5,7 @@ import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dar
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/captcha/form_captcha_string_field_row_widget.dart';
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -58,7 +58,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: FormStringFieldFormRowWidget(
+      child: StringFormFieldRowWidget(
         formStringFieldBloc: formStringFieldBloc,
         hint: hintText,
         label: labelText,

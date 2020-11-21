@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,11 +16,11 @@ class EditToastSettingsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
       children: [
-        FormBoolFieldFormRowWidget(
+        BoolValueFormFieldRowWidget(
           label: S.of(context).app_toast_settings_field_notificationForMention_label,
           field: editToastSettingsBloc.notificationForMentionFieldBloc,
         ),
-        FormBoolFieldFormRowWidget(
+        BoolValueFormFieldRowWidget(
           label: S.of(context).app_toast_settings_field_notificationForChatAndDm_label,
           field: editToastSettingsBloc.notificationForChatAndDmFieldBloc,
         ),

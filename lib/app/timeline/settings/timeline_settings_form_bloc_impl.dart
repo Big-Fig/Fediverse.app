@@ -10,7 +10,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart'
 import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_non_null_validation.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_null_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';

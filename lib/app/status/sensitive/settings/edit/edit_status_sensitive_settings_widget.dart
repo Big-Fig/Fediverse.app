@@ -1,5 +1,5 @@
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/field/value/duration/form_duration_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,19 +18,19 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
       children: [
-        FormBoolFieldFormRowWidget(
+        BoolValueFormFieldRowWidget(
           label: S
               .of(context)
               .app_status_sensitive_settings_field_isAlwaysShowSpoiler_label,
           field: editStatusSensitiveSettingsBloc.isAlwaysShowSpoilerFieldBloc,
         ),
-        FormBoolFieldFormRowWidget(
+        BoolValueFormFieldRowWidget(
           label: S
               .of(context)
               .app_status_sensitive_settings_field_isAlwaysShowNsfw_label,
           field: editStatusSensitiveSettingsBloc.isAlwaysShowNsfwFieldBloc,
         ),
-        FormDurationFieldFormRowWidget(
+        DurationFormFieldRowWidget(
           label: S
               .of(context)
               .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,

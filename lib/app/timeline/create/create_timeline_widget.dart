@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/form/timeline_type_form_field_row_widget.dart';
@@ -17,7 +17,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
 
     return Column(
       children: [
-        FormStringFieldFormRowWidget(
+        StringFormFieldRowWidget(
           enabled: false,
           label: S.of(context).app_timeline_create_field_id_label,
           autocorrect: true,
@@ -26,7 +26,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
           formStringFieldBloc: createTimelineBloc.idFieldBloc,
           hint: null,
         ),
-        FormStringFieldFormRowWidget(
+        StringFormFieldRowWidget(
           label: S.of(context).app_timeline_create_field_title_label,
           autocorrect: true,
           hint: S.of(context).app_timeline_create_field_title_hint,

@@ -13,7 +13,7 @@ import 'package:fedi/pleroma/captcha/pleroma_captcha_service_impl.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:fedi/form/field/value/string/captcha/captcha_string_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

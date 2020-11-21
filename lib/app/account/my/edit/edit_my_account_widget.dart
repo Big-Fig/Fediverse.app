@@ -5,8 +5,8 @@ import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.da
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/toast/toast_service.dart';
@@ -434,7 +434,7 @@ class EditMyAccountWidget extends StatelessWidget {
       @required IStringValueFormFieldBloc nextFormStringFieldBloc}) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
-    return FormStringFieldFormRowWidget(
+    return StringFormFieldRowWidget(
       autocorrect: true,
       label: label,
       formStringFieldBloc: formStringFieldBloc,
@@ -454,7 +454,7 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = S.of(context).app_account_my_edit_field_locked_label;
     var field = editMyAccountBloc.lockedField;
-    return FormBoolFieldFormRowWidget(label: label, field: field);
+    return BoolValueFormFieldRowWidget(label: label, field: field);
   }
 
   Widget buildCustomFields(

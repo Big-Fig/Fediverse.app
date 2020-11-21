@@ -3,7 +3,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
-class FormStringFieldFormRowWidget extends StatelessWidget {
+class StringFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String hint;
   final bool autocorrect;
@@ -13,7 +13,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
   final TextInputAction textInputAction;
   final bool enabled;
 
-  FormStringFieldFormRowWidget({
+  StringFormFieldRowWidget({
     @required this.label,
     @required this.autocorrect,
     this.obscureText = false,
