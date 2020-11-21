@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

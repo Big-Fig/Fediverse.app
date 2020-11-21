@@ -3,9 +3,9 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class EditToastSettingsBloc

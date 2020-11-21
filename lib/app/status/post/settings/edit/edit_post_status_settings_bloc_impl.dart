@@ -4,11 +4,11 @@ import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_blo
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/form/field/value/form_value_field_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class EditPostStatusSettingsBloc

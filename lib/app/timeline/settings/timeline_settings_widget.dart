@@ -8,7 +8,7 @@ import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_ac
 import 'package:fedi/app/timeline/settings/timeline_settings_only_in_remote_list_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

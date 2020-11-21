@@ -1,6 +1,6 @@
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

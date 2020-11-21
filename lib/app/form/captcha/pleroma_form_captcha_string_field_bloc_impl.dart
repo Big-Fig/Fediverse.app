@@ -4,8 +4,8 @@ import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc.dar
 import 'package:fedi/pleroma/captcha/native/pleroma_native_captcha_image_extension.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/form_value_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 

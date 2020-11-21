@@ -1,17 +1,17 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/form_duration_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/form_duration_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/form_non_empty_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/form/group/one_type/form_one_type_group_bloc.dart';
+import 'package:fedi/form/group/one_type/form_one_type_group_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
