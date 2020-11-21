@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';

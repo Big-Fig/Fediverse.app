@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
@@ -65,7 +65,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
 
   @override
   Widget buildContentWidget(BuildContext context) =>
-      FormStringFieldFormRowWidget(
+      StringFormFieldRowWidget(
         label: null,
         autocorrect: false,
         hint: S.of(context)

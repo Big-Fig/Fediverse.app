@@ -1,5 +1,5 @@
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/field/value/duration/form_duration_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -225,7 +225,7 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var multiplyFieldBloc = IBoolValueFormFieldBloc.of(context);
-    return FormBoolFieldFormRowWidget(
+    return BoolValueFormFieldRowWidget(
       field: multiplyFieldBloc,
       label: S.of(context).app_status_post_poll_field_multiply_label,
     );
@@ -240,7 +240,7 @@ class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var lengthBloc = IDurationValueFormFieldBloc.of(context);
-    return FormDurationFieldFormRowWidget(
+    return DurationFormFieldRowWidget(
       field: lengthBloc,
       label: S.of(context).app_status_post_poll_field_length_label,
       popupTitle: S.of(context).app_status_post_poll_field_length_picker_title,

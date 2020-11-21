@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
@@ -79,7 +79,7 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var enabled = snapshot.data;
         var supported = isPleromaInstance;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label:
               S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
           field: editPushSettingsBloc.pleromaEmojiReactionFieldBloc,
@@ -113,7 +113,7 @@ class _EditPushSettingsPleromaMentionFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var enabled = snapshot.data;
         var supported = isPleromaInstance;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_pleroma_chat_label,
           field: editPushSettingsBloc.pleromaChatMentionFieldBloc,
           enabled: enabled && isPleromaInstance,
@@ -146,7 +146,7 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var enabled = snapshot.data;
         var supported = !isPleromaInstance;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_polls_label,
           field: editPushSettingsBloc.pollFieldBloc,
           enabled: enabled && supported,
@@ -175,7 +175,7 @@ class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
       initialData: editPushSettingsBloc.enabled,
       builder: (context, snapshot) {
         var enabled = snapshot.data;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_reblogs_label,
           field: editPushSettingsBloc.reblogFieldBloc,
           enabled: enabled,
@@ -199,7 +199,7 @@ class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
       initialData: editPushSettingsBloc.enabled,
       builder: (context, snapshot) {
         var enabled = snapshot.data;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_mentions_label,
           field: editPushSettingsBloc.mentionFieldBloc,
           enabled: enabled,
@@ -223,7 +223,7 @@ class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
       initialData: editPushSettingsBloc.enabled,
       builder: (context, snapshot) {
         var enabled = snapshot.data;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_follows_label,
           field: editPushSettingsBloc.followFieldBloc,
           enabled: enabled,
@@ -247,7 +247,7 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
       initialData: editPushSettingsBloc.enabled,
       builder: (context, snapshot) {
         var enabled = snapshot.data;
-        return FormBoolFieldFormRowWidget(
+        return BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_favourites_label,
           field: editPushSettingsBloc.favouriteFieldBloc,
           enabled: enabled,

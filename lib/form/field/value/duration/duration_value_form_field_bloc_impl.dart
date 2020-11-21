@@ -1,4 +1,4 @@
-import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 

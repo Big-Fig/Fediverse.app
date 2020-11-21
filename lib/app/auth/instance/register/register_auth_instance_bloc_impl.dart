@@ -4,8 +4,8 @@ import 'package:fedi/form/field/value/string/email/email_string_value_form_field
 import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_length_validation.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_length_validation.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 

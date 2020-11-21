@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
@@ -22,7 +22,7 @@ class FediInputTextDialog extends FediDialog {
 
   @override
   Widget buildContentWidget(BuildContext context) {
-    return FormStringFieldFormRowWidget(
+    return StringFormFieldRowWidget(
       label: null,
       autocorrect: false,
       hint: null,

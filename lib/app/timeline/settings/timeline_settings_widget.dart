@@ -1,7 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/field/value/string/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_extension.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_account_form_field_row_widget.dart';
@@ -94,7 +94,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildWithMutedField(
+  BoolValueFormFieldRowWidget buildWithMutedField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -107,7 +107,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildOnlyMediaField(
+  BoolValueFormFieldRowWidget buildOnlyMediaField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -120,7 +120,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildOnlyLocalField(
+  BoolValueFormFieldRowWidget buildOnlyLocalField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -133,7 +133,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildOnlyRemoteField(
+  BoolValueFormFieldRowWidget buildOnlyRemoteField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -146,7 +146,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildOnlyPinnedField(
+  BoolValueFormFieldRowWidget buildOnlyPinnedField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -159,7 +159,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildExcludeReblogsField(
+  BoolValueFormFieldRowWidget buildExcludeReblogsField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -172,7 +172,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildExcludeRepliesField(
+  BoolValueFormFieldRowWidget buildExcludeRepliesField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -185,7 +185,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildWebSocketsUpdatesField(
+  BoolValueFormFieldRowWidget buildWebSocketsUpdatesField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -202,7 +202,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildExcludeNsfwField(
+  BoolValueFormFieldRowWidget buildExcludeNsfwField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
@@ -278,7 +278,7 @@ class TimelineSettingsWidget extends StatelessWidget {
   ) {
     var isSupported = type.isWithHashtagFilterSupportedOnInstance(authInstance);
 
-    return FormStringFieldFormRowWidget(
+    return StringFormFieldRowWidget(
       enabled: isSupported,
       label: S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
       autocorrect: false,
@@ -289,14 +289,14 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  FormBoolFieldFormRowWidget buildBoolField({
+  BoolValueFormFieldRowWidget buildBoolField({
     @required BuildContext context,
     @required String label,
     @required IBoolValueFormFieldBloc fieldBloc,
     @required bool isSupported,
     String errorDesc,
   }) {
-    return FormBoolFieldFormRowWidget(
+    return BoolValueFormFieldRowWidget(
       label: label,
       field: fieldBloc,
       enabled: isSupported,

@@ -5,8 +5,8 @@ import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_blo
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 

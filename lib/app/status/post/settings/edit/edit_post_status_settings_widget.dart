@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/bool/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
 import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_row_widget.dart';
@@ -25,7 +25,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
               value.defaultVisibilityFormFieldBloc,
           child: const StatusVisibilitySingleFromListValueFormFieldRowWidget(),
         ),
-        FormBoolFieldFormRowWidget(
+        BoolValueFormFieldRowWidget(
           label: S
               .of(context)
               .app_status_post_settings_field_markMediaAsNsfwOnAttach_label,

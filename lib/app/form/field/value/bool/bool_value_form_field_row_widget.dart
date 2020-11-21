@@ -3,13 +3,13 @@ import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-class FormBoolFieldFormRowWidget extends StatelessWidget {
+class BoolValueFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String description;
   final IBoolValueFormFieldBloc field;
   final bool enabled;
 
-  FormBoolFieldFormRowWidget({
+  BoolValueFormFieldRowWidget({
     @required this.label,
     this.description,
     @required this.field,
