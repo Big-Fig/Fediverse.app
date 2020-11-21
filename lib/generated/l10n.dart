@@ -2445,10 +2445,10 @@ class S {
   }
 
   /// `Not supported on this instance`
-  String get app_settings_field_notSupported_desc {
+  String get app_settings_warning_notSupportedOnThisInstance_desc {
     return Intl.message(
       'Not supported on this instance',
-      name: 'app_settings_field_notSupported_desc',
+      name: 'app_settings_warning_notSupportedOnThisInstance_desc',
       desc: '',
       args: [],
     );

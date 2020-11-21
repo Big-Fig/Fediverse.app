@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-11-19T14:43:46+00:00",
+    "@@last_modified": "2020-11-21T12:51:10+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -241,7 +241,7 @@
     "app_timeline_settings_onlyInRemoteList_field_label": "Только в списке",
     "app_timeline_settings_onlyInRemoteList_field_null": "Не выбрано",
     "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Выберите список",
-    "app_settings_field_notSupported_desc": "Не поддерживается на этом сервере",
+    "app_settings_warning_notSupportedOnThisInstance_desc": "Не поддерживается на этом сервере",
     "app_timeline_settings_field_onlyWithMedia_label": "Только с медиа",
     "app_timeline_settings_field_onlyRemote_label": "Только НЕ на этом сервере",
     "app_timeline_settings_field_onlyLocal_label": "Только на этом сервере",

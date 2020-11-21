@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-20T18:33:31+00:00",
+    "@@last_modified": "2020-11-21T12:51:10+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -241,7 +241,7 @@
     "app_timeline_settings_onlyInRemoteList_field_label": "Only in list",
     "app_timeline_settings_onlyInRemoteList_field_null": "Not selected",
     "app_timeline_settings_onlyInRemoteList_field_chooser_dialog_title": "Choose list",
-    "app_settings_field_notSupported_desc": "Not supported on this instance",
+    "app_settings_warning_notSupportedOnThisInstance_desc": "Not supported on this instance",
     "app_timeline_settings_field_onlyWithMedia_label": "Only with media",
     "app_timeline_settings_field_onlyRemote_label": "Only remote",
     "app_timeline_settings_field_onlyLocal_label": "Only local",
