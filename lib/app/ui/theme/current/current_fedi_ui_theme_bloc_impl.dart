@@ -1,8 +1,8 @@
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
-import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,11 +34,14 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   @override
   Stream<IFediUiTheme> get adaptiveBrightnessCurrentThemeStream {
     return Rx.combineLatest2(
-        currentThemeStream,
-        systemBrightnessHandlerBloc.systemBrightnessStream,
-        (currentTheme, systemBrightness) =>
-            _calculateAdaptiveBrightnessCurrentThemeStream(
-                currentTheme, systemBrightness)).distinct();
+      currentThemeStream,
+      systemBrightnessHandlerBloc.systemBrightnessStream,
+      (currentTheme, systemBrightness) =>
+          _calculateAdaptiveBrightnessCurrentThemeStream(
+        currentTheme,
+        systemBrightness,
+      ),
+    ).distinct();
   }
 
   IFediUiTheme _calculateAdaptiveBrightnessCurrentThemeStream(

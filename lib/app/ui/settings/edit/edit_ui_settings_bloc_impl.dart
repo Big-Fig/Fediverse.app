@@ -2,8 +2,9 @@ import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dar
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,34 +13,45 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
   final IUiSettingsBloc uiSettingBloc;
 
   @override
-  final IStringValueFormFieldBloc themeIdFieldBloc;
+  final IFediUiThemeSingleFromListValueFormFieldBloc fediThemeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
-        themeIdFieldBloc,
+        fediThemeFieldBloc,
       ];
+
+  final List<IFediUiTheme> availableThemes;
 
   EditUiSettingsBloc({
     @required this.uiSettingBloc,
     @required bool enabled,
-  })  : themeIdFieldBloc = StringValueFormFieldBloc(
-          originValue: uiSettingBloc.themeId,
-          validators: [],
-          maxLength: null,
+    @required this.availableThemes,
+  })  : fediThemeFieldBloc = FediUiThemeSingleFromListValueFormFieldBloc(
+          originValue: _findThemeById(availableThemes, uiSettingBloc.themeId),
+          possibleValues: availableThemes,
         ),
         super(enabled, uiSettingBloc) {
-    addDisposable(disposable: themeIdFieldBloc);
+    addDisposable(disposable: fediThemeFieldBloc);
   }
 
   @override
   UiSettings calculateCurrentFormFieldsSettings() => UiSettings(
-        themeId: themeIdFieldBloc.currentValue,
+        themeId: fediThemeFieldBloc.currentValue?.id,
       );
 
   @override
   Future fillSettingsToFormFields(UiSettings settings) async {
-    themeIdFieldBloc.changeCurrentValue(
-      settings.themeId,
-    );
+    fediThemeFieldBloc
+        .changeCurrentValue(_findThemeById(availableThemes, settings.themeId));
   }
+}
+
+IFediUiTheme _findThemeById(
+    List<IFediUiTheme> availableThemes, String themeId) {
+  if (themeId == null) {
+    return null;
+  }
+  return availableThemes.firstWhere(
+    (theme) => theme.id == themeId,
+  );
 }
