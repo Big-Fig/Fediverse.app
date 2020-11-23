@@ -31,7 +31,7 @@ void showEditGlobalMediaSettingsDialog({
         update: (context, value, previous) => EditMediaSettingsBloc(
           mediaSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-          enabled: true,
+          isEnabled: true,
         ),
         child: const EditMediaSettingsWidget(
           shrinkWrap: true,

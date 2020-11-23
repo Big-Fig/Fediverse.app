@@ -22,7 +22,10 @@ void showEditInstancePushSettingsDialog({
           listen: false,
         ),
         enabled: true,
-        currentInstance: ICurrentAuthInstanceBloc.of(context).currentInstance,
+        currentInstance: ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        ).currentInstance,
       ),
       child: Column(
         children: [

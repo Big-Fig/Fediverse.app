@@ -32,7 +32,7 @@ void showEditGlobalStatusSensitiveSettingsDialog({
         update: (context, value, previous) => EditStatusSensitiveSettingsBloc(
           statusSensitiveSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-          enabled: true,
+          isEnabled: true,
         ),
         child: const EditStatusSensitiveSettingsWidget(
           shrinkWrap: true,

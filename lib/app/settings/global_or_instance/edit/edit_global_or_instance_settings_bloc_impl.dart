@@ -17,10 +17,10 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
   EditGlobalOrInstanceSettingsBloc({
     @required this.globalOrInstanceSettingsBloc,
     @required this.globalOrInstanceSettingsType,
-    @required bool enabled,
+    @required bool isEnabled,
     @required bool isAllItemsInitialized,
   }) : super(
-          enabled,
+          isEnabled,
           globalOrInstanceSettingsBloc,
           isAllItemsInitialized,
         );

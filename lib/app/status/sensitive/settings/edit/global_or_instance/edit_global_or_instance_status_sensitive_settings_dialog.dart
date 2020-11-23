@@ -32,7 +32,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
             var isUseGlobalSettingsFormBoolFieldBloc =
             ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
 
-            var enabled =
+            var isEnabled =
                 globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
             var editStatusSensitiveSettingsBloc = EditStatusSensitiveSettingsBloc(
               statusSensitiveSettingsBloc: IStatusSensitiveSettingsBloc.of(
@@ -40,7 +40,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
                 listen: false,
               ),
               globalOrInstanceSettingsType: globalOrInstanceType,
-              enabled: enabled,
+              isEnabled: isEnabled,
             );
 
             editStatusSensitiveSettingsBloc.addDisposable(

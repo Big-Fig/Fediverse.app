@@ -28,7 +28,7 @@ class EditWebSocketsSettingsBloc
   }) : super(
             globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
             globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-            enabled: isEnabled,
+            isEnabled: isEnabled,
             isAllItemsInitialized: false) {
     typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
       originValue: currentSettings.type,

@@ -32,7 +32,7 @@ class EditToastSettingsBloc
   }) : super(
           globalOrInstanceSettingsBloc: toastSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: enabled,
+          isEnabled: enabled,
           isAllItemsInitialized: false,
         ) {
     notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(

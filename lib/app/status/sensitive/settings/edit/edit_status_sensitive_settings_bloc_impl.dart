@@ -34,11 +34,11 @@ class EditStatusSensitiveSettingsBloc
   EditStatusSensitiveSettingsBloc({
     @required this.statusSensitiveSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool enabled,
+    @required bool isEnabled,
   }) : super(
           globalOrInstanceSettingsBloc: statusSensitiveSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: enabled,
+          isEnabled: isEnabled,
           isAllItemsInitialized: false,
         ) {
     nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
@@ -46,12 +46,15 @@ class EditStatusSensitiveSettingsBloc
       minDuration: Duration(minutes: 1),
       maxDuration: Duration(days: 1),
       isNullValuePossible: true,
+      isEnabled: isEnabled,
     );
     isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.isAlwaysShowSpoiler,
+      isEnabled: isEnabled,
     );
     isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.isAlwaysShowNsfw,
+      isEnabled: isEnabled,
     );
 
     addDisposable(disposable: nsfwDisplayDelayDurationFieldBloc);

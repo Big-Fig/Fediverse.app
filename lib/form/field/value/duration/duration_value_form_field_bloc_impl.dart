@@ -14,9 +14,11 @@ class DurationValueFormFieldBloc extends ValueFormFieldBloc<Duration>
     @required this.minDuration,
     @required this.maxDuration,
     @required bool isNullValuePossible,
+    @required bool isEnabled,
   }) : super(
           originValue: originValue,
           validators: [],
           isNullValuePossible: isNullValuePossible,
+          isEnabled: isEnabled,
         );
 }

@@ -20,7 +20,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
       children: [
         const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
         const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
-        const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
+        // const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
       ],
     );
   }
