@@ -32,7 +32,7 @@ class EditChatSettingsBloc
   }) : super(
           globalOrInstanceSettingsBloc: chatSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: isEnabled,
+          isEnabled: isEnabled,
           isAllItemsInitialized: false,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(

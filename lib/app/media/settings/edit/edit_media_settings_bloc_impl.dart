@@ -28,19 +28,21 @@ class EditMediaSettingsBloc
   EditMediaSettingsBloc({
     @required this.mediaSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool enabled,
+    @required bool isEnabled,
   }) : super(
           globalOrInstanceSettingsBloc: mediaSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: enabled,
+          isEnabled: isEnabled,
           isAllItemsInitialized: false,
         ) {
     autoPlayFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.autoPlay,
+      isEnabled: isEnabled,
     );
 
     autoInitFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.autoInit,
+      isEnabled: isEnabled,
     );
 
 

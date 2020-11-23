@@ -36,7 +36,7 @@ class EditPostStatusSettingsBloc
   }) : super(
           globalOrInstanceSettingsBloc: postStatusSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: isEnabled,
+          isEnabled: isEnabled,
           isAllItemsInitialized: false,
         ) {
     defaultVisibilityFormFieldBloc =

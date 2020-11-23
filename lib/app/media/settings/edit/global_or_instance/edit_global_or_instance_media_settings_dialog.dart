@@ -40,7 +40,7 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
                 listen: false,
               ),
               globalOrInstanceSettingsType: globalOrInstanceType,
-              enabled: enabled,
+              isEnabled: enabled,
             );
 
             editMediaSettingsBloc.addDisposable(

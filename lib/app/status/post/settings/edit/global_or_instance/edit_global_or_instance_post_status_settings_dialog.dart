@@ -28,37 +28,39 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditPostStatusSettingsBloc>(
-          update: (context, globalOrInstanceType, previous) {
-            var isUseGlobalSettingsFormBoolFieldBloc =
-            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
-
-            var enabled =
-                globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
-            var editPostStatusSettingsBloc = EditPostStatusSettingsBloc(
-              postStatusSettingsBloc: IPostStatusSettingsBloc.of(
+      update: (context, globalOrInstanceType, previous) {
+        var isUseGlobalSettingsFormBoolFieldBloc =
+            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
                 context,
-                listen: false,
-              ),
-              globalOrInstanceSettingsType: globalOrInstanceType,
-              isEnabled: enabled,
-            );
+                listen: false);
 
-            editPostStatusSettingsBloc.addDisposable(
-              streamSubscription:
-              isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-                    (isUseGlobalSettings) {
-                  editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings);
-                },
-              ),
-            );
-            return editPostStatusSettingsBloc;
-          },
-          child: ProxyProvider<IEditPostStatusSettingsBloc,
-              IEditGlobalOrInstanceSettingsBloc>(
-            update: (context, value, update) => value,
-            child: child,
+        var isEnabled =
+            globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
+        var editPostStatusSettingsBloc = EditPostStatusSettingsBloc(
+          postStatusSettingsBloc: IPostStatusSettingsBloc.of(
+            context,
+            listen: false,
           ),
-        ),
+          globalOrInstanceSettingsType: globalOrInstanceType,
+          isEnabled: isEnabled,
+        );
+
+        editPostStatusSettingsBloc.addDisposable(
+          streamSubscription:
+              isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
+            (isUseGlobalSettings) {
+              editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings);
+            },
+          ),
+        );
+        return editPostStatusSettingsBloc;
+      },
+      child: ProxyProvider<IEditPostStatusSettingsBloc,
+          IEditGlobalOrInstanceSettingsBloc>(
+        update: (context, value, update) => value,
+        child: child,
+      ),
+    ),
     globalOrInstanceSettingsBloc: IPostStatusSettingsBloc.of(
       context,
       listen: false,
