@@ -3,52 +3,42 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/form_item_bloc_impl.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:fedi/form/group/form_group_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef NewFieldCreator<T> = T Function();
 
-var _logger = Logger("form_group_bloc_impl.dart");
 
 abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     implements IFormGroupBloc<T> {
+  BehaviorSubject<bool> isSomethingChangedSubject =
+      BehaviorSubject.seeded(false);
+
   FormGroupBloc() {
     addDisposable(subject: errorsSubject);
-    addDisposable(disposable: itemsErrorSubscription);
+    addDisposable(subject: isSomethingChangedSubject);
 
-    Future.delayed(Duration(microseconds: 1), () {
-      // delay to execute all code in child constructors
-      try {
-        addDisposable(
-          streamSubscription: itemsStream.listen(
-            (newItems) {
-              itemsErrorSubscription?.dispose();
-              if (newItems?.isNotEmpty == true) {
-                _resubscribeForErrors(newItems);
-              }
-            },
-          ),
-        );
-      } catch (e, stackTrace) {
-        _logger.warning(() => "failed to subscribe for items", e, stackTrace);
-      }
+    addDisposable(custom: () {
+      itemsErrorSubscription?.dispose();
     });
+    addDisposable(custom: () {
+      isSomethingChangedSubscription?.dispose();
+    });
+
+    addDisposable(
+      streamSubscription: itemsStream.listen(
+        (newItems) {
+          _subscribeForErrors(newItems);
+          _subscribeForIsSomethingChanged(newItems);
+        },
+      ),
+    );
   }
 
   @override
-  bool get isSomethingChanged => items
-          .map((field) => field.isSomethingChanged)
-          .fold(false, (previousValue, element) {
-        return previousValue || element;
-      });
+  bool get isSomethingChanged => isSomethingChangedSubject.value;
 
   @override
-  Stream<bool> get isSomethingChangedStream =>
-      Rx.combineLatestList(items.map((field) => field.isSomethingChangedStream))
-          .map((isChangedList) =>
-              isChangedList.fold(false, (previousValue, element) {
-                return previousValue || element;
-              }));
+  Stream<bool> get isSomethingChangedStream => isSomethingChangedSubject.stream;
 
   BehaviorSubject<List<FormItemValidationError>> errorsSubject =
       BehaviorSubject.seeded([]);
@@ -64,24 +54,55 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   bool get isHaveAtLeastOneError => errors?.isNotEmpty == true;
 
   DisposableOwner itemsErrorSubscription;
+  DisposableOwner isSomethingChangedSubscription;
 
   @override
   Stream<bool> get isHaveAtLeastOneErrorStream =>
       errorsStream.map((fieldsErrors) => fieldsErrors?.isNotEmpty == true);
 
-  void _resubscribeForErrors(List<T> newItems) {
+  void _subscribeForErrors(List<T> newItems) {
+    itemsErrorSubscription?.dispose();
     itemsErrorSubscription = DisposableOwner();
-    newItems.forEach(
-      (IFormItemBloc item) {
-        itemsErrorSubscription.addDisposable(
-          streamSubscription: item.errorsStream.listen(
-            (_) {
-              recalculateErrors();
-            },
-          ),
-        );
-      },
-    );
+
+    if (!errorsSubject.isClosed) {
+      errorsSubject.add(null);
+    }
+
+    if (newItems?.isNotEmpty == true) {
+      newItems.forEach(
+        (IFormItemBloc item) {
+          itemsErrorSubscription.addDisposable(
+            streamSubscription: item.errorsStream.listen(
+              (_) {
+                recalculateErrors();
+              },
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _subscribeForIsSomethingChanged(List<T> newItems) {
+    isSomethingChangedSubscription = DisposableOwner();
+
+    if (!isSomethingChangedSubject.isClosed) {
+      isSomethingChangedSubject.add(false);
+    }
+
+    if (newItems?.isNotEmpty == true) {
+      newItems.forEach(
+        (IFormItemBloc item) {
+          isSomethingChangedSubscription.addDisposable(
+            streamSubscription: item.isSomethingChangedStream.listen(
+              (_) {
+                recalculateIsSomethingChanged();
+              },
+            ),
+          );
+        },
+      );
+    }
   }
 
   void recalculateErrors() {
@@ -95,6 +116,19 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
 
     if (!errorsSubject.isClosed) {
       errorsSubject.add(errors);
+    }
+  }
+
+  void recalculateIsSomethingChanged() {
+    var isSomethingChanged = items.map((item) => item.isSomethingChanged).fold(
+      false,
+      (previousValue, element) {
+        return previousValue || element;
+      },
+    );
+
+    if (!isSomethingChangedSubject.isClosed) {
+      isSomethingChangedSubject.add(isSomethingChanged);
     }
   }
 }

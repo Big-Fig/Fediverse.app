@@ -37,6 +37,7 @@ class EditPostStatusSettingsBloc
           globalOrInstanceSettingsBloc: postStatusSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: isEnabled,
+          isAllItemsInitialized: false,
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySingleFromListValueFormFieldBloc(
@@ -50,6 +51,8 @@ class EditPostStatusSettingsBloc
 
     addDisposable(disposable: defaultVisibilityFormFieldBloc);
     addDisposable(disposable: markMediaAsNsfwOnAttachFormFieldBloc);
+
+    onItemsChanged();
   }
 
   @override
