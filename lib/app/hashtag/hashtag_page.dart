@@ -15,6 +15,7 @@ import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
@@ -86,6 +87,7 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
     return FediIconButton(
+      color: IFediUiColorTheme.of(context).darkGrey,
       icon: Icon(FediIcons.browser),
       onPressed: () {
         UrlHelper.handleUrlClick(context, hashtag.url);
