@@ -8,13 +8,10 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
     extends SingleFromListValueFormFieldBloc<WebSocketsHandlingType>
     implements IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc {
   @override
-  final bool isNullValuePossible;
-
-  @override
   final List<WebSocketsHandlingType> possibleValues;
 
   WebSocketsHandlingTypeSingleFromListValueFormFieldBloc({
-    this.isNullValuePossible = false,
+    bool isNullValuePossible = false,
     this.possibleValues = WebSocketsHandlingType.values,
     @required WebSocketsHandlingType originValue,
     bool isEnabled = true,
@@ -24,5 +21,6 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
           originValue: originValue,
           isEnabled: isEnabled,
           validators: validators,
+          isNullValuePossible: isNullValuePossible,
         );
 }

@@ -10,5 +10,4 @@ abstract class ISingleFromListValueFormFieldBloc<T>
           listen: listen);
 
   List<T> get possibleValues;
-  bool get isNullValuePossible;
 }

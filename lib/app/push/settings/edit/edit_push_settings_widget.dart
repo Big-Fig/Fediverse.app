@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditPushSettingsWidget extends StatefulWidget {
   final bool shrinkWrap;
@@ -68,29 +69,14 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    var isPleromaInstance =
-        ICurrentAuthInstanceBloc.of(context).currentInstance.isPleromaInstance;
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        var supported = isPleromaInstance;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label:
               S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
-          field: editPushSettingsBloc.pleromaEmojiReactionFieldBloc,
-          enabled: enabled && isPleromaInstance,
-          description: !supported
-              ? S
-                  .of(context)
-                  .app_settings_warning_notSupportedOnThisInstance_desc
-              : null,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -102,28 +88,13 @@ class _EditPushSettingsPleromaMentionFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    var isPleromaInstance =
-        ICurrentAuthInstanceBloc.of(context).currentInstance.isPleromaInstance;
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        var supported = isPleromaInstance;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_pleroma_chat_label,
-          field: editPushSettingsBloc.pleromaChatMentionFieldBloc,
-          enabled: enabled && isPleromaInstance,
-          description: !supported
-              ? S
-                  .of(context)
-                  .app_settings_warning_notSupportedOnThisInstance_desc
-              : null,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -135,28 +106,13 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    var isPleromaInstance =
-        ICurrentAuthInstanceBloc.of(context).currentInstance.isPleromaInstance;
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        var supported = !isPleromaInstance;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.pollFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_polls_label,
-          field: editPushSettingsBloc.pollFieldBloc,
-          enabled: enabled && supported,
-          description: !supported
-              ? S
-                  .of(context)
-                  .app_settings_warning_notSupportedOnThisInstance_desc
-              : null,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -168,19 +124,13 @@ class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.reblogFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_reblogs_label,
-          field: editPushSettingsBloc.reblogFieldBloc,
-          enabled: enabled,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -192,19 +142,13 @@ class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.mentionFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_mentions_label,
-          field: editPushSettingsBloc.mentionFieldBloc,
-          enabled: enabled,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -216,19 +160,13 @@ class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.followFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_follows_label,
-          field: editPushSettingsBloc.followFieldBloc,
-          enabled: enabled,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }
@@ -240,19 +178,13 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editPushSettingsBloc = IEditPushSettingsBloc.of(context);
-
-    return StreamBuilder<bool>(
-      stream: editPushSettingsBloc.enabledStream,
-      initialData: editPushSettingsBloc.enabled,
-      builder: (context, snapshot) {
-        var enabled = snapshot.data;
-        return BoolValueFormFieldRowWidget(
+    return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) => value.favouriteFieldBloc,
+      child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_push_settings_field_favourites_label,
-          field: editPushSettingsBloc.favouriteFieldBloc,
-          enabled: enabled,
-        );
-      },
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc),
     );
   }
 }

@@ -8,13 +8,10 @@ class LocalizationLocaleSingleFromListValueFormFieldBloc
     extends SingleFromListValueFormFieldBloc<LocalizationLocale>
     implements ILocalizationLocaleSingleFromListValueFormFieldBloc {
   @override
-  final bool isNullValuePossible;
-
-  @override
   final List<LocalizationLocale> possibleValues;
 
   LocalizationLocaleSingleFromListValueFormFieldBloc({
-    this.isNullValuePossible = true,
+    bool isNullValuePossible = true,
     @required this.possibleValues,
     @required LocalizationLocale originValue,
     bool isEnabled = true,
@@ -23,5 +20,6 @@ class LocalizationLocaleSingleFromListValueFormFieldBloc
           originValue: originValue,
           isEnabled: isEnabled,
           validators: validators,
+          isNullValuePossible: isNullValuePossible,
         );
 }

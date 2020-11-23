@@ -8,20 +8,18 @@ class FediUiThemeSingleFromListValueFormFieldBloc
     extends SingleFromListValueFormFieldBloc<IFediUiTheme>
     implements IFediUiThemeSingleFromListValueFormFieldBloc {
   @override
-  final bool isNullValuePossible;
-
-  @override
   final List<IFediUiTheme> possibleValues;
 
   FediUiThemeSingleFromListValueFormFieldBloc({
-    this.isNullValuePossible = true,
+    bool isNullValuePossible = true,
     @required this.possibleValues,
     @required IFediUiTheme originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<IFediUiTheme>> validators = const [],
   }) : super(
-    originValue: originValue,
-    isEnabled: isEnabled,
-    validators: validators,
-  );
+          originValue: originValue,
+          isEnabled: isEnabled,
+          validators: validators,
+          isNullValuePossible: isNullValuePossible,
+        );
 }

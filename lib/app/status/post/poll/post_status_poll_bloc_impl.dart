@@ -26,6 +26,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       originValue: originValue,
       minDuration: pollMinimumExpiration,
       maxDuration: pollMaximumExpiration,
+      isNullValuePossible: false,
     );
   }
 

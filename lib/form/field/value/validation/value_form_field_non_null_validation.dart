@@ -3,7 +3,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
-class StringValueFormFieldNonNullValidationError
+class ValueFormFieldNonNullValidationError
     extends StringValueFormFieldValidationError {
   @override
   String createErrorDescription(BuildContext context) =>
@@ -13,7 +13,7 @@ class StringValueFormFieldNonNullValidationError
         if (currentValue != null) {
           return null;
         } else {
-          return StringValueFormFieldNonNullValidationError();
+          return ValueFormFieldNonNullValidationError();
         }
       };
 }

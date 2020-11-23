@@ -1,7 +1,7 @@
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
@@ -19,10 +19,13 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
     @required String originValue,
     @required List<FormValueFieldValidation<String>> validators,
     @required this.maxLength,
+    bool isEnabled = true,
+    bool isNullValuePossible = true,
   })  : textEditingController = TextEditingController(text: originValue ?? ""),
         super(
           originValue: originValue,
           validators: validators,
+          isNullValuePossible: isNullValuePossible,
         ) {
     var listener = () {
       var currentValue = textEditingController.text;

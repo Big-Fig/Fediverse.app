@@ -34,6 +34,7 @@ class AuthInstance extends IJsonObject {
   @HiveField(5)
   @JsonKey(name: "is_pleroma_instance")
   final bool isPleromaInstance;
+  bool get isMastodonInstance => !isPleromaInstance;
 
   @HiveField(6)
   final PleromaClientApplication application;

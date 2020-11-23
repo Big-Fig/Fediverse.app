@@ -8,10 +8,12 @@ abstract class SingleFromListValueFormFieldBloc<T> extends ValueFormFieldBloc<T>
   SingleFromListValueFormFieldBloc({
     @required T originValue,
     @required bool isEnabled,
+    @required bool isNullValuePossible,
     @required List<FormValueFieldValidation<T>> validators,
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,
           validators: validators,
+          isNullValuePossible: isNullValuePossible,
         );
 }

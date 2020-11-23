@@ -8,9 +8,15 @@ class DateTimeValueFormFieldBloc extends ValueFormFieldBloc<DateTime>
   final DateTime minDateTime;
   @override
   final DateTime maxDateTime;
+
   DateTimeValueFormFieldBloc({
     @required DateTime originValue,
     @required this.minDateTime,
     @required this.maxDateTime,
-  }) : super(originValue: originValue, validators: []);
+    @required bool isNullValuePossible,
+  }) : super(
+          originValue: originValue,
+          validators: [],
+          isNullValuePossible: isNullValuePossible,
+        );
 }

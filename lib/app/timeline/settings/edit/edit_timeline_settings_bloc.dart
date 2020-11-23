@@ -1,25 +1,26 @@
+import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
+import 'package:fedi/app/timeline/settings/only_in_custom_list/timeline_settings_only_in_custom_list_form_field_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/pleroma/list/pleroma_list_model.dart';
-import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:fedi/form/form_bloc.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ITimelineSettingsFormBloc extends IFormBloc {
-  static ITimelineSettingsFormBloc of(BuildContext context,
+abstract class IEditTimelineSettingsBloc
+    extends IEditInstanceSettingsBloc<TimelineSettings> {
+  static IEditTimelineSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<ITimelineSettingsFormBloc>(context, listen: listen);
+      Provider.of<IEditTimelineSettingsBloc>(context, listen: listen);
 
-  TimelineSettings get timelineSettings;
+  TimelineType get timelineType;
 
-  Stream<TimelineSettings> get timelineSettingsStream;
+  bool get isNullableValuesPossible;
 
   IBoolValueFormFieldBloc get excludeRepliesFieldBloc;
 
@@ -37,11 +38,11 @@ abstract class ITimelineSettingsFormBloc extends IFormBloc {
 
   IBoolValueFormFieldBloc get excludeReblogsFieldBloc;
 
-  IValueFormFieldBloc<PleromaAccount> get onlyFromRemoteAccountFieldBloc;
+  ITimelineSettingsOnlyFromAccountFormFieldBloc get onlyFromAccountFieldBloc;
 
   IStringValueFormFieldBloc get withRemoteHashtagFieldBloc;
 
-  IValueFormFieldBloc<PleromaList> get onlyInRemoteListFieldBloc;
+  ITimelineSettingsOnlyInCustomListFormFieldBloc get onlyInCustomListFieldBloc;
 
   IValueFormFieldBloc<PleromaReplyVisibilityFilter>
       get replyVisibilityFilterFieldBloc;
@@ -49,9 +50,4 @@ abstract class ITimelineSettingsFormBloc extends IFormBloc {
   ListValueFormFieldBloc<PleromaVisibility> get excludeVisibilitiesFieldBloc;
 
   IBoolValueFormFieldBloc get webSocketsUpdatesFieldBloc;
-
-  void fill({
-    @required TimelineType type,
-    @required TimelineSettings newSettings,
-  });
 }

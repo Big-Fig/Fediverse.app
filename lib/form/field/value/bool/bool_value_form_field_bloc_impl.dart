@@ -7,10 +7,12 @@ class BoolValueFormFieldBloc extends ValueFormFieldBloc<bool>
   BoolValueFormFieldBloc({
     @required bool originValue,
     bool isEnabled = true,
+    bool isNullValuePossible = false,
   }) : super(
           originValue: originValue,
           validators: [],
           isEnabled: isEnabled,
+          isNullValuePossible: isNullValuePossible,
         );
 
   @override

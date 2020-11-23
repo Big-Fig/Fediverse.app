@@ -30,7 +30,7 @@ void showEditGlobalChatSettingsDialog({
         update: (context, value, previous) => EditChatSettingsBloc(
           chatSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-          enabled: true,
+          isEnabled: true,
         ),
         child: const EditChatSettingsWidget(
           shrinkWrap: true,

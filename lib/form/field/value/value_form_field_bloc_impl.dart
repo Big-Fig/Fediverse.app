@@ -32,9 +32,13 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   @override
   Stream<T> get currentValueStream => _currentValueSubject.stream.distinct();
 
+  @override
+  final bool isNullValuePossible;
+
   ValueFormFieldBloc({
     @required this.originValue,
     @required this.validators,
+    @required this.isNullValuePossible,
     bool isEnabled = true,
   })  : _currentValueSubject = BehaviorSubject.seeded(originValue),
         _currentErrorSubject =
@@ -47,11 +51,15 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
 
     revalidate();
 
-    addDisposable(streamSubscription: _currentValueSubject.listen((newValue) {
-      var changed = isValueChanged(newValue, originValue);
-      isChangedSubject.add(changed);
-      revalidate();
-    }));
+    addDisposable(
+      streamSubscription: _currentValueSubject.listen(
+        (newValue) {
+          var changed = isValueChanged(newValue, originValue);
+          isChangedSubject.add(changed);
+          revalidate();
+        },
+      ),
+    );
   }
 
   bool isValueChanged(T newValue, T originValue) => newValue != originValue;

@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_widget.dart';
@@ -21,6 +22,7 @@ void showEditInstancePushSettingsDialog({
           listen: false,
         ),
         enabled: true,
+        currentInstance: ICurrentAuthInstanceBloc.of(context).currentInstance,
       ),
       child: Column(
         children: [

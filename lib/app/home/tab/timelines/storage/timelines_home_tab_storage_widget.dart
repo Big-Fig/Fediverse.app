@@ -1,7 +1,7 @@
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_animations.dart';
@@ -183,7 +183,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
       onTap: () {
         var uiState = timelinesHomeTabStorageBloc.uiState;
         if (uiState == TimelinesHomeTabStorageUiState.view) {
-          showTimelineSettingsDialog(context: context, timeline: timeline);
+          showEditTimelineSettingsDialog(context: context, timeline: timeline);
         }
       },
       child: FediSelectionItemRowWidget(
@@ -210,7 +210,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
     var label = timeline.calculateLabel(context);
     return InkWell(
       onTap: () {
-        showTimelineSettingsDialog(
+        showEditTimelineSettingsDialog(
           context: context,
           timeline: timeline,
         );
@@ -258,7 +258,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
           case TimelinesHomeTabStorageUiState.view:
             child = FediSelectionItemIconWidget(
               onClick: () {
-                showTimelineSettingsDialog(
+                showEditTimelineSettingsDialog(
                   context: context,
                   timeline: Provider.of(context, listen: false),
                 );

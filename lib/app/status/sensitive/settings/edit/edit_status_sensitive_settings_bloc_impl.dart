@@ -44,6 +44,7 @@ class EditStatusSensitiveSettingsBloc
       originValue: currentSettings.nsfwDisplayDelayDuration,
       minDuration: Duration(minutes: 1),
       maxDuration: Duration(days: 1),
+      isNullValuePossible: true,
     );
     isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.isAlwaysShowSpoiler,
