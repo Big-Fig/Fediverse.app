@@ -28,17 +28,19 @@ class EditChatSettingsBloc
   EditChatSettingsBloc({
     @required this.chatSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool enabled,
+    @required bool isEnabled,
   }) : super(
           globalOrInstanceSettingsBloc: chatSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: enabled,
+          enabled: isEnabled,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.countConversationsInChatsUnreadBadges,
+      isEnabled: isEnabled,
     );
     replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.replaceConversationsWithPleromaChats,
+      isEnabled: isEnabled,
     );
 
     addDisposable(disposable: countConversationsInChatsUnreadBadgesFieldBloc);

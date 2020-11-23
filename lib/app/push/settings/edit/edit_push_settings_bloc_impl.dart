@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/widgets.dart';
 class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
     implements IEditPushSettingsBloc {
   final IPushSettingsBloc pushSettingsBloc;
+  final AuthInstance currentInstance;
 
   @override
   final IBoolValueFormFieldBloc favouriteFieldBloc;
@@ -39,20 +41,32 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
 
   EditPushSettingsBloc({
     @required this.pushSettingsBloc,
+    @required this.currentInstance,
     @required bool enabled,
-  })  : favouriteFieldBloc =
-            BoolValueFormFieldBloc(originValue: pushSettingsBloc.favourite),
-        followFieldBloc =
-            BoolValueFormFieldBloc(originValue: pushSettingsBloc.follow),
-        mentionFieldBloc =
-            BoolValueFormFieldBloc(originValue: pushSettingsBloc.mention),
-        reblogFieldBloc =
-            BoolValueFormFieldBloc(originValue: pushSettingsBloc.reblog),
-        pollFieldBloc = BoolValueFormFieldBloc(originValue: pushSettingsBloc.poll),
-        pleromaChatMentionFieldBloc =
-            BoolValueFormFieldBloc(originValue: pushSettingsBloc.pleromaChatMention),
+  })  : favouriteFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.favourite,
+        ),
+        followFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.follow,
+        ),
+        mentionFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.mention,
+        ),
+        reblogFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.reblog,
+        ),
+        pollFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.poll,
+          isEnabled: !currentInstance.isMastodonInstance, // only mastodon
+        ),
+        pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.pleromaChatMention,
+          isEnabled: currentInstance.isPleromaInstance,
+        ),
         pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
-            originValue: pushSettingsBloc.pleromaEmojiReaction),
+          originValue: pushSettingsBloc.pleromaEmojiReaction,
+          isEnabled: currentInstance.isPleromaInstance,
+        ),
         super(
           enabled,
           pushSettingsBloc,

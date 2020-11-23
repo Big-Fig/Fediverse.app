@@ -22,16 +22,18 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/media/media_image_source_model.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/media_image_source_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 const editAccountAvatarSize = 120.0;
 const editAccountProgressSize = 30.0;
@@ -451,11 +453,13 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildLockedField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = S.of(context).app_account_my_edit_field_locked_label;
-    var field = editMyAccountBloc.lockedField;
-    return BoolValueFormFieldRowWidget(label: label, field: field);
-  }
+          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+      ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.lockedField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_account_my_edit_field_locked_label,
+        ),
+      );
 
   Widget buildCustomFields(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
@@ -515,16 +519,11 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildCustomField(
-      {@required
-          BuildContext context,
-      @required
-          IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> fieldGroupBloc,
-      @required
-          ILinkPairFormGroupBloc customField,
-      @required
-          ILinkPairFormGroupBloc nextCustomField,
-      @required
-          int index}) {
+      {@required BuildContext context,
+      @required IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> fieldGroupBloc,
+      @required ILinkPairFormGroupBloc customField,
+      @required ILinkPairFormGroupBloc nextCustomField,
+      @required int index}) {
     var number = index + 1;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,

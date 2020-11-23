@@ -1,8 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
-import 'package:flutter/cupertino.dart';
-
 
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyWithMediaFilterSupportedOnInstance(AuthInstance authInstance) {
@@ -55,11 +52,11 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     // require additional pagination handling
     return false;
   }
-  bool isWebSocketsUpdatesFilterSupportedOnInstance(BuildContext context) {
 
-    var webSocketsSettingsBloc = IWebSocketsSettingsBloc.of(context, listen: false);
-
-    return webSocketsSettingsBloc.isRealtimeWebSocketsEnabled;
+  bool isWebSocketsUpdatesFilterSupportedOnInstance(AuthInstance authInstance) {
+    // actually we can filter on client-side but this will
+    // require additional pagination handling
+    return true;
   }
 
   bool isOnlyRemoteFilterSupportedOnInstance(AuthInstance authInstance) {
@@ -219,8 +216,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     throw Exception("Invalid TimelineType $this");
   }
 
-  bool isReplyVisibilityFilterSupportedOnInstance(
-      AuthInstance authInstance) {
+  bool isReplyVisibilityFilterSupportedOnInstance(AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:
         return authInstance.isPleromaInstance;

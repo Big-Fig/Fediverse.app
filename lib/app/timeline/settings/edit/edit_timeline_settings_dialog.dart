@@ -1,8 +1,10 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_widget.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_label_extension.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
@@ -15,7 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void showTimelineSettingsDialog({
+void showEditTimelineSettingsDialog({
   @required BuildContext context,
   @required Timeline timeline,
 }) {
@@ -35,26 +37,26 @@ void showTimelineSettingsDialog({
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc:
                 ITimelineLocalPreferencesBloc.of(context, listen: false),
-            loadingFinishedBuilder: (context) =>
-                DisposableProxyProvider<Timeline, ITimelineSettingsFormBloc>(
-              update: (context, timeline, _) {
-                var timelineLocalPreferencesBloc =
-                    ITimelineLocalPreferencesBloc.of(
-                  context,
-                  listen: false,
-                );
-                TimelineSettingsFormBloc timelineSettingsBloc =
-                    _createTimelineSettingsFormBloc(
-                        timelineLocalPreferencesBloc, timeline);
-
-                _setupTimelinePreferencesChangesListener(
-                    timelineSettingsBloc, timelineLocalPreferencesBloc);
-                return timelineSettingsBloc;
-              },
-              child: TimelineSettingsWidget(
-                type: timeline.type,
-                isNullablePossible: false,
-                shrinkWrap: true,
+            loadingFinishedBuilder: (context) => DisposableProxyProvider<
+                ITimelineLocalPreferencesBloc, ITimelineSettingsBloc>(
+              update: (context, timelineLocalPreferencesBloc, _) =>
+                  TimelineSettingsBloc(
+                      timelineLocalPreferencesBloc:
+                          timelineLocalPreferencesBloc),
+              child: DisposableProxyProvider<ITimelineSettingsBloc,
+                  IEditTimelineSettingsBloc>(
+                update: (context, timelineSettingsBloc, _) => EditTimelineSettingsBloc(
+                    timelineType: timeline.type,
+                    isEnabled: true,
+                    isNullableValuesPossible: false,
+                    authInstance:
+                        ICurrentAuthInstanceBloc.of(context, listen: false)
+                            .currentInstance,
+                    settingsBloc: timelineSettingsBloc,
+                  ),
+                child: const EditTimelineSettingsWidget(
+                  shrinkWrap: true,
+                ),
               ),
             ),
           ),
@@ -62,17 +64,6 @@ void showTimelineSettingsDialog({
       ),
     ),
   );
-}
-
-TimelineSettingsFormBloc _createTimelineSettingsFormBloc(
-    ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
-    Timeline timeline) {
-  var currentTimeline = timelineLocalPreferencesBloc.value ?? timeline;
-  var timelineSettingsBloc = TimelineSettingsFormBloc(
-    originalSettings: currentTimeline?.settings,
-    type: currentTimeline.type,
-  );
-  return timelineSettingsBloc;
 }
 
 TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
@@ -86,22 +77,5 @@ TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
     userAtHost: currentInstance.userAtHost,
     timelineId: timeline.id,
     defaultValue: timeline,
-  );
-}
-
-void _setupTimelinePreferencesChangesListener(
-    TimelineSettingsFormBloc timelineSettingsBloc,
-    ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc) {
-  timelineSettingsBloc.addDisposable(
-    streamSubscription: timelineSettingsBloc.timelineSettingsStream.listen(
-      (timelineSettings) {
-        var oldValue = timelineLocalPreferencesBloc.value;
-        timelineLocalPreferencesBloc.setValue(
-          oldValue.copyWith(
-            settings: timelineSettings,
-          ),
-        );
-      },
-    ),
   );
 }

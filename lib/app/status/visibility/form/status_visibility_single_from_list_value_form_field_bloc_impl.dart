@@ -8,20 +8,17 @@ class StatusVisibilitySingleFromListValueFormFieldBloc
     extends SingleFromListValueFormFieldBloc<PleromaVisibility>
     implements IStatusVisibilitySingleFromListValueFormFieldBloc {
   @override
-  final bool isNullValuePossible;
-
-  @override
   final List<PleromaVisibility> possibleValues;
 
   StatusVisibilitySingleFromListValueFormFieldBloc({
-    this.isNullValuePossible = false,
     this.possibleValues = PleromaVisibility.values,
     @required PleromaVisibility originValue,
     bool isEnabled = true,
+    bool isNullValuePossible = false,
     List<FormValueFieldValidation<PleromaVisibility>> validators = const [],
   }) : super(
-          originValue: originValue,
-          isEnabled: isEnabled,
-          validators: validators,
-        );
+            originValue: originValue,
+            isEnabled: isEnabled,
+            validators: validators,
+            isNullValuePossible: isNullValuePossible);
 }

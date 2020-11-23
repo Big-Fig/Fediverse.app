@@ -224,9 +224,7 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var multiplyFieldBloc = IBoolValueFormFieldBloc.of(context);
     return BoolValueFormFieldRowWidget(
-      field: multiplyFieldBloc,
       label: S.of(context).app_status_post_poll_field_multiply_label,
     );
   }

@@ -88,4 +88,7 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
 
   @override
   Stream<bool> get isEnabledStream => Stream.value(isEnabled);
+
+  @override
+  bool get isNullValuePossible => false;
 }

@@ -40,7 +40,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
             listen: false,
           ),
           globalOrInstanceSettingsType: globalOrInstanceType,
-          enabled: enabled,
+          isEnabled: enabled,
         );
 
         editChatSettingsBloc.addDisposable(
