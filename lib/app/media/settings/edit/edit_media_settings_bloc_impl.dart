@@ -43,53 +43,34 @@ class EditMediaSettingsBloc
       originValue: currentSettings.autoInit,
     );
 
-    _subscribeForAutoInitFieldBloc();
-    _subscribeForAutoPlay();
 
     onItemsChanged();
   }
 
-  void _subscribeForAutoInitFieldBloc() {
-    addDisposable(
-      streamSubscription: mediaSettingsBloc.autoInitStream.distinct().listen(
-        (newValue) {
-          autoInitFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription:
-          autoInitFieldBloc.currentValueStream.distinct().listen(
-        (value) {
-          mediaSettingsBloc.changeAutoInit(value);
-        },
-      ),
-    );
-  }
-
-  void _subscribeForAutoPlay() {
-    addDisposable(
-      streamSubscription: mediaSettingsBloc.autoPlayStream.distinct().listen(
-        (newValue) {
-          autoPlayFieldBloc.changeCurrentValue(newValue);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription:
-          autoPlayFieldBloc.currentValueStream.distinct().listen(
-        (value) {
-          mediaSettingsBloc.changeAutoPlay(value);
-        },
-      ),
-    );
-  }
-
   @override
-  MediaSettings calculateCurrentFormFieldsSettings() => MediaSettings(
-        autoInit: autoInitFieldBloc.currentValue,
-        autoPlay: autoPlayFieldBloc.currentValue,
+  MediaSettings calculateCurrentFormFieldsSettings() {
+
+    var oldPreferences = settingsBloc.settingsData;
+    var oldMediaAutoInit = oldPreferences?.autoInit ?? false;
+    var oldMediaAutoPlay = oldPreferences?.autoPlay ?? false;
+
+    var newMediaAutoInit = autoInitFieldBloc.currentValue;
+    var newMediaAutoPlay = autoPlayFieldBloc.currentValue;
+
+    if(newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+      newMediaAutoInit = true;
+      autoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
+    }
+    if(newMediaAutoInit == false && oldMediaAutoInit == true) {
+      newMediaAutoPlay = false;
+      autoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
+    }
+
+    return MediaSettings(
+        autoInit: newMediaAutoInit,
+        autoPlay: newMediaAutoPlay,
       );
+  }
 
   @override
   Future fillSettingsToFormFields(MediaSettings settings) async {
