@@ -17,9 +17,13 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
 
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 
-  FormBloc() {
+  FormBloc(bool isAllItemsInitialized) {
     addDisposable(subject: itemsSubject);
-    onItemsChanged();
+    if(isAllItemsInitialized) {
+      
+      onItemsChanged();
+    }
+    
   }
 
   @override

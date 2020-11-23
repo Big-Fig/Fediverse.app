@@ -170,7 +170,11 @@ class EditTimelineSettingsBloc
           isEnabled: timelineType
               .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance),
         ),
-        super(isEnabled, settingsBloc) {
+        super(
+          isEnabled,
+          settingsBloc,
+          true,
+        ) {
     addDisposable(disposable: excludeRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);
     addDisposable(disposable: excludeNsfwSensitiveFieldBloc);
@@ -225,7 +229,7 @@ class EditTimelineSettingsBloc
 
   @override
   Future fillSettingsToFormFields(TimelineSettings settings) async {
-    if(settings == null) {
+    if (settings == null) {
       return;
     }
     onlyWithMediaFieldBloc.changeCurrentValue(settings.onlyWithMedia);

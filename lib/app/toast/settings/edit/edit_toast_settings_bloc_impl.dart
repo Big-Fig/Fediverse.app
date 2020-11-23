@@ -33,6 +33,7 @@ class EditToastSettingsBloc
           globalOrInstanceSettingsBloc: toastSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
+          isAllItemsInitialized: false,
         ) {
     notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.notificationForChatAndDm,
@@ -43,6 +44,8 @@ class EditToastSettingsBloc
     );
     addDisposable(disposable: notificationForChatAndDmFieldBloc);
     addDisposable(disposable: notificationForMentionFieldBloc);
+
+    onItemsChanged();
   }
 
   @override

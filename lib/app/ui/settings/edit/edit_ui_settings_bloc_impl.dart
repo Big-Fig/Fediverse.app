@@ -30,7 +30,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
           originValue: _findThemeById(availableThemes, uiSettingBloc.themeId),
           possibleValues: availableThemes,
         ),
-        super(enabled, uiSettingBloc) {
+        super(enabled, uiSettingBloc, true) {
     addDisposable(disposable: fediThemeFieldBloc);
   }
 

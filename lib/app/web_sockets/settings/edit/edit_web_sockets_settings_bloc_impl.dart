@@ -26,15 +26,16 @@ class EditWebSocketsSettingsBloc
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
   }) : super(
-          globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
-          globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          enabled: isEnabled,
-        ) {
+            globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
+            globalOrInstanceSettingsType: globalOrInstanceSettingsType,
+            enabled: isEnabled,
+            isAllItemsInitialized: false) {
     typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
       originValue: currentSettings.type,
       isEnabled: isEnabled,
     );
     addDisposable(disposable: typeFieldBloc);
+    onItemsChanged();
   }
 
   @override

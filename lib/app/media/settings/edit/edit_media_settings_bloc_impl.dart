@@ -33,6 +33,7 @@ class EditMediaSettingsBloc
           globalOrInstanceSettingsBloc: mediaSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
+          isAllItemsInitialized: false,
         ) {
     autoPlayFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.autoPlay,
@@ -44,6 +45,8 @@ class EditMediaSettingsBloc
 
     _subscribeForAutoInitFieldBloc();
     _subscribeForAutoPlay();
+
+    onItemsChanged();
   }
 
   void _subscribeForAutoInitFieldBloc() {

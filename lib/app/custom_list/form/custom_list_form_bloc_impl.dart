@@ -16,7 +16,7 @@ class CustomListFormBloc extends FormBloc implements ICustomListFormBloc {
             StringValueFormFieldNonEmptyValidationError.createValidator()
           ],
           maxLength: null,
-        ) {
+        ), super(true) {
     addDisposable(disposable: titleField);
   }
 

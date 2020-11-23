@@ -18,8 +18,8 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
   final ISettingsBloc<T> settingsBloc;
 
 
-  EditSettingsBloc(bool enabled, this.settingsBloc)
-      : enabledSubject = BehaviorSubject.seeded(enabled) {
+  EditSettingsBloc(bool enabled, this.settingsBloc, bool isAllItemsInitialized)
+      : enabledSubject = BehaviorSubject.seeded(enabled), super(isAllItemsInitialized) {
     addDisposable(subject: enabledSubject);
 
     addDisposable(

@@ -70,6 +70,7 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
         super(
           enabled,
           pushSettingsBloc,
+        true,
         ) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);

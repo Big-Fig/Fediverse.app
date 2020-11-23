@@ -39,6 +39,7 @@ class EditStatusSensitiveSettingsBloc
           globalOrInstanceSettingsBloc: statusSensitiveSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: enabled,
+          isAllItemsInitialized: false,
         ) {
     nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
       originValue: currentSettings.nsfwDisplayDelayDuration,
@@ -56,6 +57,8 @@ class EditStatusSensitiveSettingsBloc
     addDisposable(disposable: nsfwDisplayDelayDurationFieldBloc);
     addDisposable(disposable: isAlwaysShowSpoilerFieldBloc);
     addDisposable(disposable: isAlwaysShowNsfwFieldBloc);
+
+    onItemsChanged();
   }
 
   @override

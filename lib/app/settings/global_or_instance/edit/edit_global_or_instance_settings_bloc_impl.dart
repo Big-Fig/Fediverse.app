@@ -18,7 +18,12 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
     @required this.globalOrInstanceSettingsBloc,
     @required this.globalOrInstanceSettingsType,
     @required bool enabled,
-  }) : super(enabled, globalOrInstanceSettingsBloc);
+    @required bool isAllItemsInitialized,
+  }) : super(
+          enabled,
+          globalOrInstanceSettingsBloc,
+          isAllItemsInitialized,
+        );
 
   @override
   T get currentSettings => _calculateCurrentSettings(

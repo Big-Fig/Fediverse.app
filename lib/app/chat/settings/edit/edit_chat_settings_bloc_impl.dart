@@ -33,6 +33,7 @@ class EditChatSettingsBloc
           globalOrInstanceSettingsBloc: chatSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           enabled: isEnabled,
+          isAllItemsInitialized: false,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.countConversationsInChatsUnreadBadges,
@@ -45,6 +46,8 @@ class EditChatSettingsBloc
 
     addDisposable(disposable: countConversationsInChatsUnreadBadgesFieldBloc);
     addDisposable(disposable: replaceConversationsWithPleromaChatsFieldBloc);
+
+    onItemsChanged();
   }
 
   @override

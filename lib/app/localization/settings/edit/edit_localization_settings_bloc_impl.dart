@@ -31,7 +31,11 @@ class EditLocalizationSettingsBloc
           isEnabled: isEnabled,
           possibleValues: supportedLocalizationLocaleList,
         ),
-        super(isEnabled, localizationSettingBloc) {
+        super(
+          isEnabled,
+          localizationSettingBloc,
+          true,
+        ) {
     addDisposable(disposable: localizationLocaleFieldBloc);
   }
 

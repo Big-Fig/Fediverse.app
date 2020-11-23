@@ -1,6 +1,5 @@
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc.dart';
@@ -21,6 +20,7 @@ abstract class ICreateTimelineBloc implements IFormBloc {
   ITimelineSettingsBloc get timelineSettingsBloc;
 
   IEditTimelineSettingsBloc get editTimelineSettingsBloc;
+
   Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream;
 
   Future save();

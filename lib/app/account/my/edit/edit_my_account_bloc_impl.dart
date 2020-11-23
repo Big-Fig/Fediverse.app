@@ -109,7 +109,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
               )
               .toList(),
           minimumFieldsCount: null,
-        ) {
+        ), super(true) {
     addDisposable(disposable: displayNameField);
     addDisposable(disposable: noteField);
     addDisposable(disposable: lockedField);

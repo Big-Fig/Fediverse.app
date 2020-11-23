@@ -1,17 +1,17 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
@@ -66,7 +66,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
           newEmptyFieldCreator: () =>
               createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
-        durationLengthFieldBloc = createDurationLengthBloc(pollLimits);
+        durationLengthFieldBloc = createDurationLengthBloc(pollLimits),
+        super(true);
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -78,7 +79,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   @override
   IDurationValueFormFieldBloc durationLengthFieldBloc;
   @override
-  IBoolValueFormFieldBloc multiplyFieldBloc = BoolValueFormFieldBloc(originValue: false);
+  IBoolValueFormFieldBloc multiplyFieldBloc =
+      BoolValueFormFieldBloc(originValue: false);
 
   @override
   IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
@@ -91,7 +93,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     ];
   }
 
-  static StringValueFormFieldBloc createPollOptionBloc(int maximumOptionLength) =>
+  static StringValueFormFieldBloc createPollOptionBloc(
+          int maximumOptionLength) =>
       createPollOptionFieldBloc(null, maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(
