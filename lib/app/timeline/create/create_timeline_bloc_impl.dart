@@ -9,11 +9,12 @@ import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -54,12 +55,13 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     var startType = TimelineType.public;
 
     idFieldBloc = StringValueFormFieldBloc(
+      isEnabled: false,
       originValue: timelineId,
       validators: [],
       maxLength: null,
     );
 
-    typeFieldBloc = ValueFormFieldBloc(
+    typeFieldBloc = TimelineTypeSingleFromListValueFormFieldBloc(
       originValue: startType,
       validators: [],
       isNullValuePossible: false,
@@ -88,7 +90,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     timelineSettingsBloc = TimelineSettingsBloc(
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
 
-    editTimelineSettingsBlocSubject  = BehaviorSubject.seeded(
+    editTimelineSettingsBlocSubject = BehaviorSubject.seeded(
       EditTimelineSettingsBloc(
         settingsBloc: timelineSettingsBloc,
         timelineType: startType,
@@ -117,9 +119,8 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   void _onTypeChanged(TimelineType timelineType) {
-    
     var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;
-    
+
     var newEditTimelineSettingsBloc = EditTimelineSettingsBloc(
         settingsBloc: timelineSettingsBloc,
         timelineType: timelineType,
@@ -137,12 +138,12 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
         isPossibleToDelete: true,
       ),
     );
-    
+
     editTimelineSettingsBlocSubject.add(newEditTimelineSettingsBloc);
     addDisposable(disposable: editTimelineSettingsBloc);
-    
+
     _onFieldsChanged();
-    
+
     oldEditTimelineSettingsBloc?.dispose();
   }
 
@@ -168,7 +169,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   IStringValueFormFieldBloc nameFieldBloc;
 
   @override
-  IValueFormFieldBloc<TimelineType> typeFieldBloc;
+  ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   bool get isSomethingChanged => true;

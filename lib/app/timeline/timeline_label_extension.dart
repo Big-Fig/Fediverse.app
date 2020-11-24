@@ -1,4 +1,5 @@
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 

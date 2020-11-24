@@ -1,9 +1,11 @@
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
-import 'package:fedi/app/timeline/form/timeline_type_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_widget.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_row_widget.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -15,30 +17,32 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var createTimelineBloc = ICreateTimelineBloc.of(context);
 
-    var timelineTypeFieldBloc = createTimelineBloc.typeFieldBloc;
-
     return Column(
       children: [
-        // StringFormFieldRowWidget(
-        //   enabled: false,
-        //   label: S.of(context).app_timeline_create_field_id_label,
-        //   autocorrect: true,
-        //   textInputAction: TextInputAction.done,
-        //   onSubmitted: null,
-        //   formStringFieldBloc: createTimelineBloc.idFieldBloc,
-        //   hint: null,
+        // ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc>(
+        //   update: (context, value, previous) => value.idFieldBloc,
+        //   child: StringFormFieldRowWidget(
+        //     label: S.of(context).app_timeline_create_field_id_label,
+        //     autocorrect: true,
+        //     textInputAction: TextInputAction.done,
+        //     onSubmitted: null,
+        //     hint: null,
+        //   ),
         // ),
-        StringFormFieldRowWidget(
-          label: S.of(context).app_timeline_create_field_title_label,
-          autocorrect: true,
-          hint: S.of(context).app_timeline_create_field_title_hint,
-          textInputAction: TextInputAction.done,
-          onSubmitted: null,
-          formStringFieldBloc: createTimelineBloc.nameFieldBloc,
+        ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc>(
+          update: (context, value, previous) => value.nameFieldBloc,
+          child: StringFormFieldRowWidget(
+            label: S.of(context).app_timeline_create_field_title_label,
+            autocorrect: true,
+            hint: S.of(context).app_timeline_create_field_title_hint,
+            textInputAction: TextInputAction.done,
+            onSubmitted: null,
+          ),
         ),
-        TimelineTypeFormFieldRowWidget(
-          formValueFieldBloc: timelineTypeFieldBloc,
-          desc: null,
+        ProxyProvider<ICreateTimelineBloc,
+            ITimelineTypeSingleFromListValueFormFieldBloc>(
+          update: (context, value, previous) => value.typeFieldBloc,
+          child: const TimelineTypeSingleFromListValueFormFieldRowWidget(),
         ),
         StreamBuilder<TimelineType>(
             stream: createTimelineBloc.typeFieldBloc.currentValueStream,

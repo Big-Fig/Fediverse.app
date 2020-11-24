@@ -86,15 +86,20 @@ class EditMyAccountWidget extends StatelessWidget {
             children: [
               if (currentAuthInstanceBloc.currentInstance.isPleromaInstance)
                 buildPleromaBackgroundFieldImage(context, editMyAccountBloc),
-              buildTextField(
-                  formStringFieldBloc: editMyAccountBloc.displayNameField,
-                  label:
-                      S.of(context).app_account_my_edit_field_displayName_label,
-                  nextFormStringFieldBloc: editMyAccountBloc.noteField),
-              buildTextField(
-                formStringFieldBloc: editMyAccountBloc.noteField,
-                label: S.of(context).app_account_my_edit_field_note_label,
-                nextFormStringFieldBloc: null,
+              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
+                update: (context, value, _) => value.displayNameField,
+                child: buildTextField(
+                    label: S
+                        .of(context)
+                        .app_account_my_edit_field_displayName_label,
+                    nextFormStringFieldBloc: editMyAccountBloc.noteField),
+              ),
+              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
+                update: (context, value, _) => value.noteField,
+                child: buildTextField(
+                  label: S.of(context).app_account_my_edit_field_note_label,
+                  nextFormStringFieldBloc: null,
+                ),
               ),
               buildLockedField(context, editMyAccountBloc),
               buildCustomFields(context, editMyAccountBloc)
@@ -430,20 +435,18 @@ class EditMyAccountWidget extends StatelessWidget {
     }
   }
 
-  Widget buildTextField(
-      {@required IStringValueFormFieldBloc formStringFieldBloc,
-      @required String label,
-      @required IStringValueFormFieldBloc nextFormStringFieldBloc}) {
+  Widget buildTextField({
+    @required String label,
+    @required IStringValueFormFieldBloc nextFormStringFieldBloc,
+  }) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
     return StringFormFieldRowWidget(
       autocorrect: true,
       label: label,
-      formStringFieldBloc: formStringFieldBloc,
       hint: label,
       onSubmitted: isHaveNextField
           ? (String value) {
-              formStringFieldBloc.focusNode.unfocus();
               nextFormStringFieldBloc.focusNode.requestFocus();
             }
           : null,

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';

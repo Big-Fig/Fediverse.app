@@ -7,8 +7,9 @@ import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_o
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/only_in_custom_list/timeline_settings_only_in_custom_list_form_field_bloc.dart';
 import 'package:fedi/app/timeline/settings/only_in_custom_list/timeline_settings_only_in_custom_list_form_field_row_widget.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -258,16 +259,16 @@ class EditTimelineSettingsWidget extends StatelessWidget {
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
     AuthInstance authInstance,
-  ) {
-    return StringFormFieldRowWidget(
-      label: S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
-      autocorrect: false,
-      hint: S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
-      formStringFieldBloc: settingsBloc.withRemoteHashtagFieldBloc,
-      onSubmitted: null,
-      textInputAction: TextInputAction.done,
+  ) => ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
+      update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
+      child: StringFormFieldRowWidget(
+        label: S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
+        autocorrect: false,
+        hint: S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
+        onSubmitted: null,
+        textInputAction: TextInputAction.done,
+      ),
     );
-  }
 
   Widget buildBoolField({
     @required BuildContext context,

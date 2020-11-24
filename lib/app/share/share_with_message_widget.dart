@@ -3,9 +3,11 @@ import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ShareWithMessageWidget extends StatelessWidget {
   final Widget footer;
@@ -53,18 +55,17 @@ class _ShareWithMessageInputWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var shareMessageInputBloc = IShareMessageInputBloc.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: StringFormFieldRowWidget(
-        formStringFieldBloc: shareMessageInputBloc.messageField,
-        hint: S.of(context).app_share_with_message_field_message_hint,
-        textInputAction: TextInputAction.done,
-        autocorrect: true,
-        label: S.of(context).app_share_with_message_field_message_label,
-        onSubmitted: null,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ProxyProvider<IShareMessageInputBloc, IStringValueFormFieldBloc>(
+          update: (context, value, previous) => value.messageField,
+          child: StringFormFieldRowWidget(
+            hint: S.of(context).app_share_with_message_field_message_hint,
+            textInputAction: TextInputAction.done,
+            autocorrect: true,
+            label: S.of(context).app_share_with_message_field_message_label,
+            onSubmitted: null,
+          ),
+        ),
+      );
 }
