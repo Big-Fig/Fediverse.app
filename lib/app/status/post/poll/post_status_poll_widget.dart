@@ -236,12 +236,7 @@ class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var lengthBloc = IDurationValueFormFieldBloc.of(context);
-    return DurationFormFieldRowWidget(
-      field: lengthBloc,
+  Widget build(BuildContext context) => DurationValueFormFieldRowWidget(
       label: S.of(context).app_status_post_poll_field_length_label,
-      popupTitle: S.of(context).app_status_post_poll_field_length_picker_title,
     );
-  }
 }
