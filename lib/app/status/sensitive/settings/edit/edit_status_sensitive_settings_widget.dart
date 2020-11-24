@@ -2,6 +2,7 @@ import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.
 import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -34,16 +35,14 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
 
   @override
   Widget build(BuildContext context) {
-    var editStatusSensitiveSettingsBloc =
-        IEditStatusSensitiveSettingsBloc.of(context);
-    return DurationFormFieldRowWidget(
-      label: S
-          .of(context)
-          .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-      popupTitle: S
-          .of(context)
-          .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-      field: editStatusSensitiveSettingsBloc.nsfwDisplayDelayDurationFieldBloc,
+    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
+        IDurationValueFormFieldBloc>(
+      update: (context, value, _) => value.nsfwDisplayDelayDurationFieldBloc,
+      child: DurationValueFormFieldRowWidget(
+        label: S
+            .of(context)
+            .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
+      ),
     );
   }
 }
