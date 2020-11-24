@@ -15,6 +15,7 @@ import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
   final Uri instanceBaseUrl;
@@ -58,20 +59,22 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: StringFormFieldRowWidget(
-        formStringFieldBloc: formStringFieldBloc,
-        hint: hintText,
-        label: labelText,
-        obscureText: obscureText,
-        autocorrect: autocorrect,
-        onSubmitted: isHaveNextField
-            ? (String value) {
-                formStringFieldBloc.focusNode.unfocus();
-                nextFormStringFieldBloc.focusNode.requestFocus();
-              }
-            : null,
-        textInputAction:
-            isHaveNextField ? TextInputAction.next : TextInputAction.done,
+      child: Provider<IStringValueFormFieldBloc>.value(
+        value: formStringFieldBloc,
+        child: StringFormFieldRowWidget(
+          hint: hintText,
+          label: labelText,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          onSubmitted: isHaveNextField
+              ? (String value) {
+                  formStringFieldBloc.focusNode.unfocus();
+                  nextFormStringFieldBloc.focusNode.requestFocus();
+                }
+              : null,
+          textInputAction:
+              isHaveNextField ? TextInputAction.next : TextInputAction.done,
+        ),
       ),
     );
   }

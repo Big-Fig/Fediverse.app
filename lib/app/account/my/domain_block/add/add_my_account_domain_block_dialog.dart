@@ -1,10 +1,11 @@
-import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
 import 'package:fedi/dialog/base_dialog.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,7 +19,6 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
     @required BuildContext context,
     @required VoidCallback successCallback,
   }) : super(
-
             title: S.of(context).app_account_my_domainBlock_add_dialog_title,
             actions: [
               BaseDialog.createDefaultOkAction(
@@ -65,15 +65,18 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
 
   @override
   Widget buildContentWidget(BuildContext context) =>
-      StringFormFieldRowWidget(
-        label: null,
-        autocorrect: false,
-        hint: S.of(context)
-            .app_account_my_domainBlock_add_dialog_field_domain_hint,
-        formStringFieldBloc: addMyAccountDomainBlockBloc.domainField,
-        onSubmitted: (_) {
-          // nothing
-        },
-        textInputAction: TextInputAction.done,
+      ProxyProvider<IAddMyAccountDomainBlockBloc, IStringValueFormFieldBloc>(
+        update: (context, value, _) => value.domainField,
+        child: StringFormFieldRowWidget(
+          label: null,
+          autocorrect: false,
+          hint: S
+              .of(context)
+              .app_account_my_domainBlock_add_dialog_field_domain_hint,
+          onSubmitted: (_) {
+            // nothing
+          },
+          textInputAction: TextInputAction.done,
+        ),
       );
 }

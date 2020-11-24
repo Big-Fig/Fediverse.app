@@ -4,7 +4,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/enum/enum_values.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
@@ -217,22 +217,6 @@ class Timeline implements IJsonObject {
       );
 }
 
-enum TimelineType {
-  public,
-  customList,
-  home,
-  hashtag,
-  account,
-}
-
-EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
-  "public": TimelineType.public,
-  "custom_list": TimelineType.customList,
-  "home": TimelineType.home,
-  "hashtag": TimelineType.hashtag,
-  "account": TimelineType.account,
-});
-
 extension TimelineIdPleromaListExtension on IPleromaList {
   String calculateTimelineId() => "list.$id";
 }
@@ -255,16 +239,4 @@ extension TimelineIdHashTagExtension on IHashtag {
 
 extension TimelineIdAccountExtension on IAccount {
   String calculateTimelineId() => "account.$remoteId";
-}
-
-extension TimelineTypeExtension on TimelineType {
-  String toJsonValue() {
-    var type = timelineTypeEnumValues.enumToValueMap[this];
-    assert(type != null, "invalid type $this");
-    return type;
-  }
-}
-
-extension TimelineTypeStringExtension on String {
-  TimelineType toTimelineType() => timelineTypeEnumValues.valueToEnumMap[this];
 }

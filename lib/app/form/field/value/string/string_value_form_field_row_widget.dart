@@ -8,45 +8,50 @@ class StringFormFieldRowWidget extends StatelessWidget {
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final IStringValueFormFieldBloc formStringFieldBloc;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
-  final bool enabled;
 
   StringFormFieldRowWidget({
     @required this.label,
     @required this.autocorrect,
     this.obscureText = false,
     @required this.hint,
-    @required this.formStringFieldBloc,
     @required this.onSubmitted,
     @required this.textInputAction,
-    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    var formFieldBloc = IStringValueFormFieldBloc.of(context);
     return StreamBuilder<List<FormItemValidationError>>(
-        stream: formStringFieldBloc.errorsStream,
-        initialData: formStringFieldBloc.errors,
-        builder: (context, snapshot) {
-          var errors = snapshot.data;
+      stream: formFieldBloc.errorsStream,
+      initialData: formFieldBloc.errors,
+      builder: (context, snapshot) {
+        var errors = snapshot.data;
 
-          var error = errors?.isNotEmpty == true ? errors.first : null;
+        var error = errors?.isNotEmpty == true ? errors.first : null;
 
-          return FediFormEditTextRow(
-            enabled: enabled,
-            maxLength: formStringFieldBloc.maxLength,
-            hint: hint,
-            label: label,
-            autocorrect: autocorrect,
-            obscureText: obscureText,
-            textEditingController: formStringFieldBloc.textEditingController,
-            errorText: error?.createErrorDescription(context),
-            onSubmitted: onSubmitted,
-            textInputAction: textInputAction,
-            focusNode: formStringFieldBloc.focusNode,
-          );
-        });
+        return StreamBuilder<bool>(
+          stream: formFieldBloc.isEnabledStream,
+          initialData: formFieldBloc.isEnabled,
+          builder: (context, snapshot) {
+            var isEnabled = snapshot.data;
+            return FediFormEditTextRow(
+              enabled: isEnabled,
+              maxLength: formFieldBloc.maxLength,
+              hint: hint,
+              label: label,
+              autocorrect: autocorrect,
+              obscureText: obscureText,
+              textEditingController: formFieldBloc.textEditingController,
+              errorText: error?.createErrorDescription(context),
+              onSubmitted: onSubmitted,
+              textInputAction: textInputAction,
+              focusNode: formFieldBloc.focusNode,
+            );
+          },
+        );
+      },
+    );
   }
 }

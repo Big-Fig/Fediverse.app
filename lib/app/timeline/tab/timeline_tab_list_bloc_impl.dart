@@ -10,7 +10,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -253,7 +253,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),
         listenWebSockets: IWebSocketsSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
+            .isRealtimeWebSocketsEnabled,
         timelinesHomeTabStorageLocalPreferences:
             ITimelinesHomeTabStorageLocalPreferencesBloc.of(
           context,
