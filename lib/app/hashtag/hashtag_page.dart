@@ -88,7 +88,7 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
     var hashtag = Provider.of<IHashtag>(context);
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
-      icon: Icon(FediIcons.browser),
+      icon: Icon(FediIcons.external_icon),
       onPressed: () {
         UrlHelper.handleUrlClick(context, hashtag.url);
       },
