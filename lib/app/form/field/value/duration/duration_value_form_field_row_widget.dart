@@ -1,5 +1,5 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -14,21 +14,25 @@ class DurationValueFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String description;
   final String descriptionOnDisabled;
+  final DurationPickerType pickerType;
 
   DurationValueFormFieldRowWidget({
     @required this.label,
     this.description,
     this.descriptionOnDisabled,
+    @required this.pickerType,
   });
 
   @override
-  Widget build(BuildContext context) => DurationValueFormFieldBlocProxyProvider(
+  Widget build(BuildContext context) =>
+      DurationValueFormFieldBlocProxyProvider(
         child: SimpleFediFormFieldRow(
           label: label,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
           valueChild: _DurationValueFormFieldRowValueWidget(
             popupTitle: label,
+            pickerType: pickerType,
           ),
         ),
       );
@@ -36,10 +40,12 @@ class DurationValueFormFieldRowWidget extends StatelessWidget {
 
 class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
   final String popupTitle;
+  final DurationPickerType pickerType;
 
   const _DurationValueFormFieldRowValueWidget({
     Key key,
     @required this.popupTitle,
+    @required this.pickerType,
   }) : super(key: key);
 
   @override
@@ -60,21 +66,26 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
             InkWell(
               onTap: () {
                 if (isEnabled) {
-                  showDatePicker(
+                  _showPicker(
                     context: context,
-                    popupTitle: popupTitle,
                   );
                 }
               },
-              child: Text(
-                formatDuration(
-                  context: context,
-                  duration: fieldBloc.currentValue,
-                ),
-                style: isEnabled
-                    ? fediUiTextTheme.bigTallBoldMediumGrey
-                    : fediUiTextTheme.bigTallBoldLightGrey,
-              ),
+              child: StreamBuilder<Duration>(
+                  stream: fieldBloc.currentValueStream,
+                  initialData: fieldBloc.currentValue,
+                  builder: (context, snapshot) {
+                    var currentValue = snapshot.data;
+                    return Text(
+                      formatDuration(
+                        context: context,
+                        duration: currentValue,
+                      ),
+                      style: isEnabled
+                          ? fediUiTextTheme.bigTallBoldMediumGrey
+                          : fediUiTextTheme.bigTallBoldLightGrey,
+                    );
+                  },),
             ),
             const FediSmallHorizontalSpacer(),
             FediIconButton(
@@ -84,11 +95,10 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
                   : fediUiColorTheme.lightGrey,
               onPressed: isEnabled
                   ? () {
-                      showDatePicker(
-                        context: context,
-                        popupTitle: popupTitle,
-                      );
-                    }
+                _showPicker(
+                  context: context,
+                );
+              }
                   : null,
             )
           ],
@@ -97,38 +107,18 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
     );
   }
 
-  Future showDatePicker({
-    @required BuildContext context,
-    @required String popupTitle,
-  }) async {
-    var fieldBloc = IDurationValueFormFieldBloc.of(context);
-    var minDuration = fieldBloc.minDuration;
-    var maxDuration = fieldBloc.maxDuration;
-
-    var now = DateTime.now();
-    var dateTime = await FediDatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      minDateTime: minDuration != null ? now.add(minDuration) : null,
-      maxDateTime: maxDuration != null ? now.add(maxDuration) : null,
-      currentDateTime: now.add(fieldBloc.currentValue ?? now),
-      theme: FediDatePickerTheme.byDefault(
-        context: context,
-        customTitle: popupTitle,
-      ),
-      onCancel: () {},
-      onConfirm: (date) {},
+  void _showPicker({@required BuildContext context}) async {
+    var fieldBloc = IDurationValueFormFieldBloc.of(context, listen: false);
+    var duration = await pickerType.showPicker(
+      context: context,
+      popupTitle: popupTitle,
+      minDuration: fieldBloc.minDuration,
+      currentDuration: fieldBloc.currentValue,
+      maxDuration: fieldBloc.maxDuration,
     );
 
-    if (dateTime != null) {
-      var diffDuration = dateTime.difference(now).abs();
-
-      if ((maxDuration == null || diffDuration < maxDuration) &&
-          (minDuration == null || diffDuration > minDuration)) {
-        fieldBloc.changeCurrentValue(diffDuration);
-      } else {
-        fieldBloc.changeCurrentValue(minDuration);
-      }
+    if (duration != null) {
+      fieldBloc.changeCurrentValue(duration);
     }
   }
 
@@ -144,14 +134,14 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
       var inHours = duration.inHours;
 
       if (inHours > 0) {
-        return S.of(context).duration_day(inHours);
+        return S.of(context).duration_hour(inHours);
       } else {
         var inMinutes = duration.inMinutes;
 
         if (inMinutes == 0) {
           inMinutes = 1;
         }
-        return S.of(context).duration_day(inMinutes);
+        return S.of(context).duration_minute(inMinutes);
       }
     }
   }

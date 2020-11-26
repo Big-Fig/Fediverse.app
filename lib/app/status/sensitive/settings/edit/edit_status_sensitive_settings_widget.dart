@@ -1,3 +1,4 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/edit_status_sensitive_settings_bloc.dart';
@@ -21,7 +22,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
       children: [
         const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
         const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
-        // const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
+        const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
       ],
     );
   }
@@ -42,6 +43,7 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
         label: S
             .of(context)
             .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
+        pickerType: DurationPickerType.duration,
       ),
     );
   }

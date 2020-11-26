@@ -15,6 +15,6 @@ class GlobalStatusSensitiveSettingsLocalPreferencesBloc
         isAlwaysShowNsfw: false,
         isAlwaysShowSpoiler: false,
         nsfwDisplayDelayDurationMicrosecondsTotal:
-            Duration(seconds: 60).inMicroseconds,
+            Duration(minutes: 5).inMicroseconds,
       );
 }
