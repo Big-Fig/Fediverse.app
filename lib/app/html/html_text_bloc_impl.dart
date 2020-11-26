@@ -21,6 +21,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
 
   @override
   final HtmlTextSettings settings;
+
   HtmlTextBloc({
     @required this.inputData,
     @required this.settings,
@@ -53,21 +54,22 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
           runtimeType == other.runtimeType &&
           inputData == other.inputData &&
           settings == other.settings;
+
   @override
   int get hashCode => inputData.hashCode ^ settings.hashCode;
 }
 
 final RegExp findHtmlFragmentsRegex = RegExp(r"</?\s*[a-z-][^>]*\s*>");
 final HtmlUnescape _unescape = HtmlUnescape();
+
 HtmlTextResultData _calculateHtmlData({
   @required HtmlTextInputData inputData,
   @required HtmlTextSettings settings,
 }) {
-
   HtmlTextResultData resultData;
   var input = inputData.input;
 
-  if(input != null) {
+  if (input != null) {
     var text = input?.trim() ?? "";
 
     var alreadyHaveHtmlInText = false;
@@ -82,8 +84,7 @@ HtmlTextResultData _calculateHtmlData({
             '<img src="$url" '
                 'width="${settings.customEmojiImageSize}"'
                 'height="${settings.customEmojiImageSize}"'
-                '>'
-        );
+                '>');
         alreadyHaveHtmlInText = true;
       }
     }
@@ -108,16 +109,12 @@ HtmlTextResultData _calculateHtmlData({
       text: text,
       isActuallyHaveHtmlInData: isActuallyHaveHtmlInData,
     );
-
   } else {
-
     resultData = HtmlTextResultData(
       text: null,
       isActuallyHaveHtmlInData: false,
     );
   }
-
-
 
   _logger.finest(() => "_calculateHtmlData \n"
       "inputData $inputData \n"
@@ -130,18 +127,7 @@ Map<String, Style> _calculateHtmlStyles({
   @required HtmlTextInputData inputData,
   @required HtmlTextSettings settings,
 }) {
-  var textScaleFactor = settings.textScaleFactor;
-
-// todo: remove hack
-// textScaleFactor used for font size accessibility feature on iOS/Android
-// html lib handle it in wrong way. I think it is use / instead of *
-// so to compensate this calculations font size divided by
-// textScaleFactor twice
-// Usually textScaleFactor is 1.0 and this don't have any effect
-  var fontSizeValue = settings.fontSize / textScaleFactor / textScaleFactor;
-// _logger.finest(() => "textScaleFactor $textScaleFactor "
-//     " fontSize $fontSize "
-//     " fontSizeValue $fontSizeValue");
+  var fontSizeValue = settings.fontSize;
 
   var fontSizeObject = FontSize(fontSizeValue);
   return {
