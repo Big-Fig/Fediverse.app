@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-11-21T12:51:10+00:00",
+    "@@last_modified": "2020-11-25T15:21:29+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -318,7 +318,6 @@
     "app_status_post_poll_field_option_hint": "Ответ {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Мульти-выбор",
     "app_status_post_poll_field_length_label": "Истекает",
-    "app_status_post_poll_field_length_picker_title": "Истекает",
     "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильное время",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Запланированная запись должна быть хотя бы через 5 минут в будущем",
     "app_status_post_dialog_async_content": "Публикация...",
@@ -450,5 +449,6 @@
     "app_web_sockets_settings_type_onlyForCurrentScreen": "Только для текущего окна",
     "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Для текущего окна и индикаторов",
     "app_push_settings_field_pleroma_emojiReaction_label": "Pleroma эмоджи реакции",
-    "app_push_settings_update_fail_dialog_title": "Не удалось изменить настройки"
+    "app_push_settings_update_fail_dialog_title": "Не удалось изменить настройки",
+    "app_account_my_action_edit": "Редактировать профиль"
 }

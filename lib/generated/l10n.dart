@@ -3216,16 +3216,6 @@ class S {
     );
   }
 
-  /// `Poll length`
-  String get app_status_post_poll_field_length_picker_title {
-    return Intl.message(
-      'Poll length',
-      name: 'app_status_post_poll_field_length_picker_title',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Invalid time`
   String get app_status_post_schedule_error_notInFuture_dialog_title {
     return Intl.message(
@@ -4347,6 +4337,16 @@ class S {
     return Intl.message(
       'Failed to change subscription settings',
       name: 'app_push_settings_update_fail_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit profile`
+  String get app_account_my_action_edit {
+    return Intl.message(
+      'Edit profile',
+      name: 'app_account_my_action_edit',
       desc: '',
       args: [],
     );

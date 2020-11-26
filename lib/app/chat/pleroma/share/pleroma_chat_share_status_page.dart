@@ -2,6 +2,8 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_bloc_impl.
 import 'package:fedi/app/share/select/share_select_account_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
 import 'package:fedi/app/share/to_account/share_to_account_icon_button_widget.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -57,7 +59,15 @@ MaterialPageRoute createPleromaChatShareStatusPageRoute({
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
             update: (context, value, previous) =>
                 StatusBloc.createFromContext(context, value),
-            child: const PleromaChatShareStatusPage(),
+            child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+              update: (context, statusBloc, _) =>
+                  StatusSensitiveBloc.createFromContext(
+                context: context,
+                statusBloc: statusBloc,
+                initialDisplayEnabled: true,
+              ),
+              child: const PleromaChatShareStatusPage(),
+            ),
           ),
         )),
   );

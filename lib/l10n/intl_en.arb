@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-21T12:51:10+00:00",
+    "@@last_modified": "2020-11-25T15:21:35+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -318,7 +318,6 @@
     "app_status_post_poll_field_option_hint": "Option {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Multiple selection",
     "app_status_post_poll_field_length_label": "Poll length",
-    "app_status_post_poll_field_length_picker_title": "Poll length",
     "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid time",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",
     "app_status_post_dialog_async_content": "Posting...",
@@ -450,5 +449,6 @@
     "app_web_sockets_settings_type_onlyForCurrentScreen": "Only for current screen",
     "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Current screen & all indicators",
     "app_push_settings_field_pleroma_emojiReaction_label": "Pleroma emoji reactions",
-    "app_push_settings_update_fail_dialog_title": "Failed to change subscription settings"
+    "app_push_settings_update_fail_dialog_title": "Failed to change subscription settings",
+    "app_account_my_action_edit": "Edit profile"
 }

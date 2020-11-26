@@ -1,25 +1,21 @@
-
-import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
-import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StatusNsfwWarningOverlayWidget extends StatelessWidget {
+class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
-  StatusNsfwWarningOverlayWidget({
+  StatusSensitiveNsfwWarningOverlayWidget({
     @required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    var myAccountSettingsBloc =
-        IStatusSensitiveSettingsBloc.of(context);
+    var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowNsfw =
-        myAccountSettingsBloc.isAlwaysShowNsfw;
+    var isAlwaysShowNsfw = statusSensitiveBloc.isAlwaysShowNsfw;
     if (isAlwaysShowNsfw) {
       return child;
     } else {
@@ -31,7 +27,7 @@ class StatusNsfwWarningOverlayWidget extends StatelessWidget {
           children: [
             child,
             Positioned.fill(
-              child: const _StatusNsfwWarningOverlayBodyWidget(),
+              child: const _StatusSensitiveNsfwWarningOverlayBodyWidget(),
             ),
           ],
         ),
@@ -40,8 +36,8 @@ class StatusNsfwWarningOverlayWidget extends StatelessWidget {
   }
 }
 
-class _StatusNsfwWarningOverlayBodyWidget extends StatelessWidget {
-  const _StatusNsfwWarningOverlayBodyWidget({
+class _StatusSensitiveNsfwWarningOverlayBodyWidget extends StatelessWidget {
+  const _StatusSensitiveNsfwWarningOverlayBodyWidget({
     Key key,
   }) : super(key: key);
 
@@ -49,9 +45,10 @@ class _StatusNsfwWarningOverlayBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
         buttonText: S.of(context).app_status_nsfw_action_view,
         buttonAction: () {
-          var statusBloc = IStatusBloc.of(context, listen: false);
+          var statusSensitiveBloc =
+              IStatusSensitiveBloc.of(context, listen: false);
 
-          statusBloc.changeDisplayNsfwSensitive(true);
+          statusSensitiveBloc.enableDisplay();
         },
       );
 }

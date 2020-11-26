@@ -69,6 +69,8 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc_impl.dart';
@@ -745,5 +747,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
     addDisposable(disposable: webSocketsSettingsBloc);
+
+    var statusSensitiveDisplayTimeStorageBloc =
+        StatusSensitiveDisplayTimeStorageBloc();
+
+    await globalProviderService
+        .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
+            statusSensitiveDisplayTimeStorageBloc);
+    addDisposable(disposable: statusSensitiveDisplayTimeStorageBloc);
   }
 }

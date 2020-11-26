@@ -1,28 +1,28 @@
 import 'dart:async';
 
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/collapsible/collapsible_model.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
+import 'package:fedi/collapsible/item/collapsible_item_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("collapsible_bloc_impl.dart");
+var _logger = Logger("collapsible_owner_bloc_impl.dart");
 
-class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
+class CollapsibleOwnerBloc extends DisposableOwner implements ICollapsibleOwnerBloc {
   // ignore: close_sinks
-  BehaviorSubject<List<ICollapsibleItem>> visibleItemsSubject =
+  BehaviorSubject<List<ICollapsibleItemBloc>> visibleItemsSubject =
       BehaviorSubject.seeded([]);
 
   @override
-  List<ICollapsibleItem> get visibleItems => visibleItemsSubject.value;
+  List<ICollapsibleItemBloc> get visibleItems => visibleItemsSubject.value;
 
   @override
-  Stream<List<ICollapsibleItem>> get visibleItemsStream =>
+  Stream<List<ICollapsibleItemBloc>> get visibleItemsStream =>
       visibleItemsSubject.stream;
 
-  Map<ICollapsibleItem, StreamSubscription> itemCollapsibleSubscriptionMap = {};
+  Map<ICollapsibleItemBloc, StreamSubscription> itemCollapsibleSubscriptionMap = {};
 
   // ignore: close_sinks
   BehaviorSubject<bool> isAtLeastOneVisibleItemExpandedSubject =
@@ -36,7 +36,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   Stream<bool> get isAtLeastOneVisibleItemExpandedStream =>
       isAtLeastOneVisibleItemExpandedSubject.stream;
 
-  CollapsibleBloc() {
+  CollapsibleOwnerBloc() {
     addDisposable(subject: visibleItemsSubject);
     addDisposable(subject: isAtLeastOneVisibleItemExpandedSubject);
     addDisposable(disposable: CustomDisposable(() async {
@@ -47,7 +47,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
 
   @override
   // ignore: always_declare_return_types
-  Future addVisibleItem(ICollapsibleItem item) async {
+  Future addVisibleItem(ICollapsibleItemBloc item) async {
     visibleItems.add(item);
     itemCollapsibleSubscriptionMap[item] = item.isCollapsedStream.listen((_) {
       checkIsAtLeastOneVisibleItemExpanded();
@@ -55,7 +55,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
     onVisibleItemsChanged(visibleItems);
   }
 
-  void onVisibleItemsChanged(List<ICollapsibleItem> newVisibleItems) {
+  void onVisibleItemsChanged(List<ICollapsibleItemBloc> newVisibleItems) {
     _logger.finest(() => "onVisibleItemsChanged ${newVisibleItems.length}");
     if (!visibleItemsSubject.isClosed) {
       visibleItemsSubject.add(newVisibleItems);
@@ -63,7 +63,7 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   }
 
   @override
-  Future removeVisibleItem(ICollapsibleItem item) async {
+  Future removeVisibleItem(ICollapsibleItemBloc item) async {
     await itemCollapsibleSubscriptionMap.remove(item)?.cancel();
     visibleItems.remove(item);
     onVisibleItemsChanged(visibleItems);
@@ -74,11 +74,11 @@ class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
     visibleItems.forEach((item) => item.collapse());
   }
 
-  static CollapsibleBloc createFromContext(BuildContext context) =>
-      CollapsibleBloc();
+  static CollapsibleOwnerBloc createFromContext(BuildContext context) =>
+      CollapsibleOwnerBloc();
 
   static bool calculateIsAtLeastOneVisibleItemExpanded(
-          List<ICollapsibleItem> visibleItems) =>
+          List<ICollapsibleItemBloc> visibleItems) =>
       visibleItems.fold(false,
           (previousValue, element) => previousValue || !element.isCollapsed);
 

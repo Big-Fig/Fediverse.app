@@ -30,7 +30,7 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';

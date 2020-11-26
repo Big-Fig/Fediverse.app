@@ -19,7 +19,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';

@@ -1,23 +1,21 @@
-import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
-import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
+class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
-  const StatusSpoilerWarningOverlayWidget({
+  const StatusSensitiveSpoilerWarningOverlayWidget({
     @required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    var statusSensitiveSettingsBloc =
-        IStatusSensitiveSettingsBloc.of(context, listen: false);
+    var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowSpoiler = statusSensitiveSettingsBloc.isAlwaysShowSpoiler;
+    var isAlwaysShowSpoiler = statusSensitiveBloc.isAlwaysShowSpoiler;
     if (isAlwaysShowSpoiler) {
       return child;
     } else {
@@ -29,7 +27,7 @@ class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
           children: [
             child,
             Positioned.fill(
-              child: const _StatusSpoilerWarningOverlayBodyWidget(),
+              child: const _StatusSensitiveSpoilerWarningOverlayBodyWidget(),
             ),
           ],
         ),
@@ -38,8 +36,8 @@ class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
   }
 }
 
-class _StatusSpoilerWarningOverlayBodyWidget extends StatelessWidget {
-  const _StatusSpoilerWarningOverlayBodyWidget({
+class _StatusSensitiveSpoilerWarningOverlayBodyWidget extends StatelessWidget {
+  const _StatusSensitiveSpoilerWarningOverlayBodyWidget({
     Key key,
   }) : super(key: key);
 
@@ -48,9 +46,10 @@ class _StatusSpoilerWarningOverlayBodyWidget extends StatelessWidget {
     return FediBlurredOverlayWarningWidget(
       buttonText: S.of(context).app_status_spoiler_action_view,
       buttonAction: () {
-        var statusBloc = IStatusBloc.of(context, listen: false);
+        var statusSensitiveBloc =
+            IStatusSensitiveBloc.of(context, listen: false);
 
-        statusBloc.changeDisplaySpoiler(true);
+        statusSensitiveBloc.enableDisplay();
       },
     );
   }
