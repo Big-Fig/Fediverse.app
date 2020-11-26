@@ -18,7 +18,7 @@ class EditChatSettingsWidget extends StatelessWidget {
       mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
       children: [
         const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
-        // const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
+        const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
       ],
     );
   }
