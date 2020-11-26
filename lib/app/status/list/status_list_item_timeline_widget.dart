@@ -4,6 +4,8 @@ import 'package:fedi/app/status/action/status_show_this_thread_action_widget.dar
 import 'package:fedi/app/status/body/status_body_bloc.dart';
 import 'package:fedi/app/status/body/status_body_bloc_impl.dart';
 import 'package:fedi/app/status/body/status_body_widget.dart';
+import 'package:fedi/app/status/collapsible_item/status_collapsible_item_bloc.dart';
+import 'package:fedi/app/status/collapsible_item/status_collapsible_item_bloc_impl.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
@@ -13,6 +15,8 @@ import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc_impl.dart';
 import 'package:fedi/app/status/reply/status_reply_sub_header_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_widget.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -20,8 +24,7 @@ import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -70,19 +73,46 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProxyProvider<IStatusListItemTimelineBloc, IStatusBloc>(
       update: (context, statusListItemTimelineBloc, oldValue) =>
-          _createStatusBloc(
-        context: context,
-        status: statusListItemTimelineBloc.status,
-        collapsible: statusListItemTimelineBloc.collapsible,
-      ),
-      child: Builder(
-        builder: (context) {
-          var statusBloc = IStatusBloc.of(context);
-          return buildDeletedStreamBuilderOverlay(
-            statusBloc: statusBloc,
-            child: _StatusListItemTimelineOriginalBodyWidget(),
-          );
-        },
+          StatusBloc.createFromContext(
+              context, statusListItemTimelineBloc.status),
+      child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+        update: (context, statusBloc, _) =>
+            StatusSensitiveBloc.createFromContext(
+          context: context,
+          statusBloc: statusBloc,
+        ),
+        child: DisposableProxyProvider2<IStatusBloc,
+            IStatusListItemTimelineBloc, IStatusCollapsibleItemBloc>(
+          update: (context, statusBloc, statusListItemTimelineBloc, _) {
+            var collapsible = statusListItemTimelineBloc.collapsible;
+            StatusCollapsibleItemBloc statusCollapsibleBloc;
+            if (collapsible) {
+              statusCollapsibleBloc = StatusCollapsibleItemBloc(
+                statusBloc: statusBloc,
+                collapsingEnabled: collapsible,
+                collapsibleBloc:
+                    ICollapsibleOwnerBloc.of(context, listen: false),
+              );
+            } else {
+              statusCollapsibleBloc = StatusCollapsibleItemBloc(
+                statusBloc: statusBloc,
+                collapsingEnabled: collapsible,
+                collapsibleBloc: null,
+              );
+            }
+
+            return statusCollapsibleBloc;
+          },
+          child: Builder(
+            builder: (context) {
+              var statusBloc = IStatusBloc.of(context);
+              return buildDeletedStreamBuilderOverlay(
+                statusBloc: statusBloc,
+                child: _StatusListItemTimelineOriginalBodyWidget(),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -238,24 +268,6 @@ class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-StatusBloc _createStatusBloc({
-  @required BuildContext context,
-  @required IStatus status,
-  @required bool collapsible,
-}) {
-  var statusBloc = StatusBloc.createFromContext(context, status);
-
-  if (collapsible) {
-    var collapsibleBloc = ICollapsibleBloc.of(context, listen: false);
-    collapsibleBloc.addVisibleItem(statusBloc);
-    statusBloc.addDisposable(disposable: CustomDisposable(() async {
-      await collapsibleBloc.removeVisibleItem(statusBloc);
-    }));
-  }
-
-  return statusBloc;
 }
 
 Widget buildBody(BuildContext context) {

@@ -11,11 +11,13 @@ import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
 import 'package:fedi/app/status/body/status_body_bloc.dart';
 import 'package:fedi/app/status/body/status_body_link_helper.dart';
-import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
-import 'package:fedi/app/status/spoiler/status_spoiler_warning_overlay_widget.dart';
+import 'package:fedi/app/status/collapsible_item/status_collapsible_item_bloc.dart';
+import 'package:fedi/app/status/sensitive/nsfw/status_sensitive_nsfw_warning_overlay_widget.dart';
+import 'package:fedi/app/status/sensitive/spoiler/status_sensitive_spoiler_warning_overlay_widget.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_model.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -56,9 +58,9 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IStatusBloc statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<StatusWarningState>(
-        stream: statusBloc.statusWarningStateStream.distinct(),
+    var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
+    return StreamBuilder<StatusSensitiveWarningState>(
+        stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
         builder: (context, snapshot) {
           var statusWarningState = snapshot.data;
 
@@ -70,10 +72,7 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
           }
 
           Widget child;
-          // todo: remove temp hack
-          var alreadyClickedShowContent = statusWarningState.nsfwSensitive;
-          if (statusWarningState.containsSpoilerAndDisplayEnabled ||
-              alreadyClickedShowContent) {
+          if (statusWarningState.containsSpoilerAndDisplayEnabled) {
             child = const _StatusBodyContentWidget(
               showSpoiler: true,
             );
@@ -81,10 +80,10 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
             child = const _StatusBodyWithoutContentWidget();
           }
 
-          if (statusWarningState.nsfwSensitiveAndDisplayNsfwContentEnabled) {
+          if (statusWarningState.nsfwSensitiveAndDisplayEnabled) {
             return child;
           } else {
-            return StatusNsfwWarningOverlayWidget(
+            return StatusSensitiveNsfwWarningOverlayWidget(
               child: child,
             );
           }
@@ -105,7 +104,7 @@ class _StatusBodyWithoutContentWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const StatusSpoilerWidget(),
-          const StatusSpoilerWarningOverlayWidget(
+          const StatusSensitiveSpoilerWarningOverlayWidget(
             child: _StatusBodyContentWidget(
               showSpoiler: false,
             ),
@@ -127,6 +126,7 @@ class _StatusBodyContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+    var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
 
     var statusBodyBloc = IStatusBodyBloc.of(context);
     return Column(
@@ -137,7 +137,8 @@ class _StatusBodyContentWidget extends StatelessWidget {
             children: [
               if (showSpoiler) const StatusSpoilerWidget(),
               const _StatusBodyContentWithEmojisWidget(),
-              if (statusBodyBloc.collapsible && statusBloc.isPossibleToCollapse)
+              if (statusBodyBloc.collapsible &&
+                  statusCollapsibleItemBloc.isPossibleToCollapse)
                 const _StatusBodyCollapsibleButtonWidget(),
               const _StatusBodyCardWidget(),
             ],
@@ -226,10 +227,10 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context);
+    var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
     return Center(
       child: StreamBuilder<bool>(
-        stream: statusBloc.isCollapsedStream,
+        stream: statusCollapsibleItemBloc.isCollapsedStream,
         builder: (context, snapshot) {
           var isCollapsed = snapshot.data ?? true;
           return FediPrimaryFilledTextButton(
@@ -237,7 +238,7 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
                 ? S.of(context).app_status_collapsible_action_expand
                 : S.of(context).app_status_collapsible_action_collapse,
             onPressed: () {
-              statusBloc.toggleCollapseExpand();
+              statusCollapsibleItemBloc.toggleCollapseExpand();
             },
           );
         },
@@ -351,6 +352,7 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
+    var statusCollapsibleItemBloc = IStatusCollapsibleItemBloc.of(context);
 
     var statusBodyBloc = IStatusBodyBloc.of(context);
     var collapsible = statusBodyBloc.collapsible;
@@ -358,21 +360,23 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     _logger.finest(() => "build collapsible $collapsible "
         "statusBloc ${statusBloc.remoteId}");
 
-    var isNeedCollapse = collapsible && statusBloc.isPossibleToCollapse;
+    var isNeedCollapse =
+        collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;
     const htmlTextWidget = _StatusBodyContentWithEmojisHtmlTextWidget();
     return StreamBuilder<bool>(
-        stream: statusBloc.isCollapsedStream.distinct(),
-        builder: (context, snapshot) {
-          var isCollapsed = snapshot.data ?? false;
-          if (isCollapsed && isNeedCollapse) {
-            return Container(
-              height: 200,
-              child: htmlTextWidget,
-            );
-          } else {
-            return htmlTextWidget;
-          }
-        });
+      stream: statusCollapsibleItemBloc.isCollapsedStream.distinct(),
+      builder: (context, snapshot) {
+        var isCollapsed = snapshot.data ?? false;
+        if (isCollapsed && isNeedCollapse) {
+          return Container(
+            height: 200,
+            child: htmlTextWidget,
+          );
+        } else {
+          return htmlTextWidget;
+        }
+      },
+    );
   }
 }
 
@@ -387,7 +391,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
     return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-      update : (context, contentWithEmojis, _) {
+      update: (context, contentWithEmojis, _) {
         var htmlTextBloc = HtmlTextBloc(
           inputData: HtmlTextInputData(
             input: contentWithEmojis?.text,

@@ -1,4 +1,4 @@
-abstract class ICollapsibleItem {
+abstract class ICollapsibleItemBloc {
   bool get isNeedShowFullContent;
 
   Stream<bool> get isNeedShowFullContentStream;

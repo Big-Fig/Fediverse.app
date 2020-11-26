@@ -25,9 +25,6 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("status_bloc_impl.dart");
 
-final int minimumCharactersLimitToCollapse = 400;
-
-// todo: extract nsfw, spoiler, collapsible logic in separate classes
 class StatusBloc extends DisposableOwner implements IStatusBloc {
   static StatusBloc createFromContext(
     BuildContext context,
@@ -51,60 +48,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         pleromaPollService: IPleromaPollService.of(context, listen: false),
       );
 
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _isCollapsedSubject =
-      BehaviorSubject.seeded(true);
-
   @override
   IPollBloc pollBloc;
 
-  @override
-  bool get isPossibleToCollapse => _isContentTooBig(status.content);
-
-  bool _isContentTooBig(String content) =>
-      (HtmlTextHelper.extractRawStringFromHtmlString(content)?.length ?? 0) >
-      minimumCharactersLimitToCollapse;
-
-  @override
-  Stream<bool> get isPossibleToCollapseStream =>
-      statusStream.map((status) => _isContentTooBig(
-          HtmlTextHelper.extractRawStringFromHtmlString(status.content)));
-
-  @override
-  bool get isCollapsed => _isCollapsedSubject.value;
-
-  @override
-  Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
-
-  @override
-  void toggleCollapseExpand() {
-    _isCollapsedSubject.add(!isCollapsed);
-  }
-
-  @override
-  void collapse() {
-    _isCollapsedSubject.add(true);
-  }
-
-  @override
-  bool get isNeedShowFullContent => !(isPossibleToCollapse && isCollapsed);
-
-  @override
-  Stream<bool> get isNeedShowFullContentStream => Rx.combineLatest2(
-      isPossibleToCollapseStream,
-      isCollapsedStream,
-      (isPossibleToCollapse, isCollapsed) =>
-          !(isPossibleToCollapse && isCollapsed));
-
   final BehaviorSubject<IStatus> _statusSubject;
-
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _displayNsfwSensitiveSubject =
-      BehaviorSubject.seeded(false);
-
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _displaySpoilerSubject =
-      BehaviorSubject.seeded(false);
 
   final IPleromaStatusService pleromaStatusService;
   final IPleromaAccountService pleromaAccountService;
@@ -162,9 +109,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     }
 
     addDisposable(subject: _statusSubject);
-    addDisposable(subject: _displayNsfwSensitiveSubject);
-    addDisposable(subject: _displaySpoilerSubject);
-    addDisposable(subject: _isCollapsedSubject);
 
     assert(needRefreshFromNetworkOnInit != null);
     assert(isNeedWatchLocalRepositoryForUpdates != null);
@@ -349,11 +293,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       EmojiText(text: status.content, emojis: status.emojis);
 
   @override
-  Stream<EmojiText> get contentWithEmojisStream => statusStream
-      .map(
+  Stream<EmojiText> get contentWithEmojisStream => statusStream.map(
         (status) => EmojiText(text: status.content, emojis: status.emojis),
-      )
-      ;
+      );
 
   @override
   bool get reblogged => status.reblogged;
@@ -366,8 +308,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   bool get muted => status.muted;
 
   @override
-  Stream<bool> get mutedStream =>
-      statusStream.map((status) => status.muted);
+  Stream<bool> get mutedStream => statusStream.map((status) => status.muted);
 
   @override
   bool get bookmarked => status.bookmarked;
@@ -380,8 +321,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   bool get pinned => status.pinned;
 
   @override
-  Stream<bool> get pinnedStream =>
-      statusStream.map((status) => status.pinned);
+  Stream<bool> get pinnedStream => statusStream.map((status) => status.pinned);
 
   @override
   Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
@@ -590,9 +530,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       reblog?.pleromaEmojiReactions;
 
   Stream<List<IPleromaStatusEmojiReaction>>
-      get reblogPleromaEmojiReactionsStream => reblogStream
-          .map((status) => status?.pleromaEmojiReactions)
-          ;
+      get reblogPleromaEmojiReactionsStream =>
+          reblogStream.map((status) => status?.pleromaEmojiReactions);
 
   @override
   int get reblogPlusOriginalEmojiReactionsCount =>
@@ -660,16 +599,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.reblog);
 
   @override
-  void changeDisplayNsfwSensitive(bool display) {
-    _displayNsfwSensitiveSubject.add(display);
-  }
-
-  @override
-  void changeDisplaySpoiler(bool display) {
-    _displaySpoilerSubject.add(display);
-  }
-
-  @override
   bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive == true;
 
   @override
@@ -688,8 +617,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       EmojiText(text: status.spoilerText, emojis: status.emojis);
 
   @override
-  Stream<EmojiText> get spoilerTextWithEmojisStream => statusStream
-      .map(
+  Stream<EmojiText> get spoilerTextWithEmojisStream => statusStream.map(
         (status) => EmojiText(text: status.spoilerText, emojis: status.emojis),
       );
 
@@ -699,76 +627,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<bool> get containsSpoilerStream =>
       spoilerTextStream.map((spoilerText) => spoilerText?.isNotEmpty == true);
-
-  @override
-  bool get containsSpoilerAndDisplaySpoilerContentEnabled {
-    if (containsSpoiler) {
-      return _displaySpoilerSubject.value;
-    } else {
-      return true;
-    }
-  }
-
-  @override
-  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream =>
-      Rx.combineLatest2(containsSpoilerStream, _displaySpoilerSubject.stream,
-          (containsSpoiler, displaySpoiler) {
-        if (containsSpoiler) {
-          return displaySpoiler;
-        } else {
-          return true;
-        }
-      });
-
-  @override
-  bool get nsfwSensitiveAndDisplayNsfwContentEnabled {
-    if (nsfwSensitive) {
-      return _displayNsfwSensitiveSubject.value;
-    } else {
-      return true;
-    }
-  }
-
-  @override
-  @override
-  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream =>
-      Rx.combineLatest2(
-          nsfwSensitiveStream, _displayNsfwSensitiveSubject.stream,
-          (nsfwSensitive, displaySpoiler) {
-        if (nsfwSensitive) {
-          return displaySpoiler;
-        } else {
-          return true;
-        }
-      });
-
-  @override
-  StatusWarningState get statusWarningState => StatusWarningState(
-        nsfwSensitive: nsfwSensitive,
-        containsSpoiler: containsSpoiler,
-        displayNsfwSensitive: _displayNsfwSensitiveSubject.value,
-        displayContainsSpoiler: _displaySpoilerSubject.value,
-      );
-
-  @override
-  Stream<StatusWarningState> get statusWarningStateStream => Rx.combineLatest4(
-        nsfwSensitiveStream,
-        containsSpoilerStream,
-        _displayNsfwSensitiveSubject.stream,
-        _displaySpoilerSubject.stream,
-        (
-          nsfwSensitive,
-          containsSpoiler,
-          displayNsfwSensitive,
-          displayContainsSpoiler,
-        ) =>
-            StatusWarningState(
-          nsfwSensitive: nsfwSensitive,
-          containsSpoiler: containsSpoiler,
-          displayNsfwSensitive: displayNsfwSensitive,
-          displayContainsSpoiler: displayContainsSpoiler,
-        ),
-      );
 
   // todo: rework with mixin
   @override

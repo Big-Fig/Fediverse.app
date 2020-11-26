@@ -35,3 +35,23 @@ class DisposableProxyProvider<T, R extends IDisposable>
             child: child,
             dispose: (_, disposable) => disposable.dispose());
 }
+
+class DisposableProxyProvider2<T, K, R extends IDisposable>
+    extends ProxyProvider2<T, K, R> {
+  DisposableProxyProvider2({
+    Key key,
+    Create<R> create,
+    @required ProxyProviderBuilder2<T, K, R> update,
+    UpdateShouldNotify<R> updateShouldNotify,
+    Dispose<R> dispose,
+    bool lazy,
+    Widget child,
+  }) : super(
+            key: key,
+            create: create,
+            update: update,
+            updateShouldNotify: updateShouldNotify,
+            lazy: lazy,
+            child: child,
+            dispose: (_, disposable) => disposable.dispose());
+}

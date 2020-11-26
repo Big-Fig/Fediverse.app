@@ -1,5 +1,7 @@
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -53,14 +55,22 @@ class StatusCachedPaginationListMediaWidget
 
     var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
 
-    items.forEach((status) {
-      var mediaAttachments = status.mediaAttachments
-          ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
-      mediaAttachments.forEach((mediaAttachment) {
-        statusesWithMediaAttachment.add(_StatusWithMediaAttachment(
-            status: status, mediaAttachment: mediaAttachment));
-      });
-    });
+    items.forEach(
+      (status) {
+        var mediaAttachments = status.mediaAttachments
+            ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        mediaAttachments.forEach(
+          (mediaAttachment) {
+            statusesWithMediaAttachment.add(
+              _StatusWithMediaAttachment(
+                status: status,
+                mediaAttachment: mediaAttachment,
+              ),
+            );
+          },
+        );
+      },
+    );
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {
@@ -95,8 +105,15 @@ class StatusCachedPaginationListMediaWidget
             child: Provider<IStatus>.value(
               value: statusWithMediaAttachment.status,
               child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                  update: (context, status, oldValue) =>
-                      StatusBloc.createFromContext(context, status),
+                update: (context, status, oldValue) =>
+                    StatusBloc.createFromContext(context, status),
+                child:
+                    DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                  update: (context, statusBloc, _) =>
+                      StatusSensitiveBloc.createFromContext(
+                    context: context,
+                    statusBloc: statusBloc,
+                  ),
                   child: InkWell(
                     onTap: () {
                       goToStatusThreadPage(
@@ -115,7 +132,9 @@ class StatusCachedPaginationListMediaWidget
                         ),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
         );
@@ -150,6 +169,8 @@ class _StatusWithMediaAttachment {
 
   @override
   String toString() {
-    return '_StatusWithMediaAttachment{status: $status, mediaAttachment: $mediaAttachment}';
+    return '_StatusWithMediaAttachment{'
+        'status: $status,'
+        ' mediaAttachment: $mediaAttachment}';
   }
 }
