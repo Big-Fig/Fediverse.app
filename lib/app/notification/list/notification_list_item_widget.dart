@@ -165,14 +165,15 @@ class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
 
     return StreamBuilder<bool>(
-        stream: notificationBloc.unreadStream,
-        builder: (context, snapshot) {
-          var unread = snapshot.data ?? true;
-          return Opacity(
-            opacity: unread ? 1.0 : 0.6,
-            child: const _NotificationListItemBodySlidableChildContentWidget(),
-          );
-        });
+      stream: notificationBloc.unreadStream,
+      builder: (context, snapshot) {
+        var unread = snapshot.data ?? true;
+        return Opacity(
+          opacity: unread ? 1.0 : 0.6,
+          child: const _NotificationListItemBodySlidableChildContentWidget(),
+        );
+      },
+    );
   }
 }
 
@@ -314,14 +315,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         rawText = S.of(context).app_notification_header_follow;
         break;
       case PleromaNotificationType.favourite:
-        rawText = S.of(context).app_notification_header_favourite(
-              _extractStatusRawContent(notificationBloc),
-            );
+        rawText = S.of(context).app_notification_header_favourite;
         break;
       case PleromaNotificationType.reblog:
-        rawText = S.of(context).app_notification_header_reblog(
-              _extractStatusRawContent(notificationBloc),
-            );
+        rawText = S.of(context).app_notification_header_reblog;
         break;
       case PleromaNotificationType.mention:
         rawText = S.of(context).app_notification_header_mention(
@@ -339,7 +336,6 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
         rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
-              _extractStatusRawContent(notificationBloc),
               notificationBloc.notification.emoji,
             );
         break;
@@ -383,10 +379,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               emojis: emojiText.emojis,
             ),
             settings: HtmlTextSettings(
-              textMaxLines: 1,
+              textMaxLines: 3,
               textOverflow: TextOverflow.ellipsis,
               color: fediUiColorTheme.mediumGrey,
-              fontSize: 16,
+              fontSize: 14,
               lineHeight: 1.5,
               fontWeight: FontWeight.w300,
               shrinkWrap: true,
