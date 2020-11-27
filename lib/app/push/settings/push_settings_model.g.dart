@@ -69,7 +69,7 @@ PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
     mention: json['mention'] as bool,
     reblog: json['reblog'] as bool,
     poll: json['poll'] as bool,
-    pleromaChatMention: json['pleromaChat'] as bool,
+    pleromaChatMention: json['pleromaChatMention'] as bool,
     pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool,
   );
 }
@@ -81,6 +81,6 @@ Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
       'mention': instance.mention,
       'reblog': instance.reblog,
       'poll': instance.poll,
-      'pleromaChat': instance.pleromaChatMention,
+      'pleromaChatMention': instance.pleromaChatMention,
       'pleromaEmojiReaction': instance.pleromaEmojiReaction,
     };

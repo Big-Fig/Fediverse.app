@@ -1,4 +1,3 @@
-import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_model.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/toast/toast_widget.dart';
@@ -7,11 +6,9 @@ import 'package:fedi/overlay_notification/overlay_notification_service.dart';
 import 'package:flutter/widgets.dart';
 
 class ToastService extends DisposableOwner implements IToastService {
-  final IToastSettingsBloc toastSettingsBloc;
   final IOverlayNotificationService overlayNotificationService;
 
   ToastService({
-    @required this.toastSettingsBloc,
     @required this.overlayNotificationService,
   });
 
@@ -19,6 +16,7 @@ class ToastService extends DisposableOwner implements IToastService {
   void showErrorToast({
     @required BuildContext context,
     @required String title,
+    bool titleAutoFontSize = true,
     String content,
   }) {
     assert(title != null);
@@ -27,6 +25,7 @@ class ToastService extends DisposableOwner implements IToastService {
         toastType: ToastType.error,
         title: title,
         content: content,
+        titleAutoFontSize: titleAutoFontSize,
       ),
       slideDismissible: true,
       key: ValueKey(title),
@@ -38,6 +37,7 @@ class ToastService extends DisposableOwner implements IToastService {
   void showInfoToast({
     @required BuildContext context,
     @required String title,
+    bool titleAutoFontSize = true,
     String content,
   }) {
     assert(title != null);
@@ -46,6 +46,7 @@ class ToastService extends DisposableOwner implements IToastService {
         toastType: ToastType.info,
         title: title,
         content: content,
+        titleAutoFontSize: titleAutoFontSize,
       ),
       slideDismissible: true,
       key: ValueKey(title),

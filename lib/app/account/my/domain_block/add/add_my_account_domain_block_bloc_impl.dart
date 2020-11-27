@@ -12,7 +12,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
   final IPleromaAccountService pleromaAccountService;
 
   AddMyAccountDomainBlockBloc({@required this.pleromaAccountService})
-      : super(true);
+      : super(isAllItemsInitialized: true);
 
   @override
   IStringValueFormFieldBloc domainField = StringValueFormFieldBloc(

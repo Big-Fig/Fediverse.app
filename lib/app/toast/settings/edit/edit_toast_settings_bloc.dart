@@ -10,7 +10,17 @@ abstract class IEditToastSettingsBloc
           {bool listen = true}) =>
       Provider.of<IEditToastSettingsBloc>(context, listen: listen);
 
-  IBoolValueFormFieldBloc get notificationForChatAndDmFieldBloc;
+  IBoolValueFormFieldBloc get favouriteFieldBloc;
 
-  IBoolValueFormFieldBloc get notificationForMentionFieldBloc;
+  IBoolValueFormFieldBloc get followFieldBloc;
+
+  IBoolValueFormFieldBloc get mentionFieldBloc;
+
+  IBoolValueFormFieldBloc get reblogFieldBloc;
+
+  IBoolValueFormFieldBloc get pollFieldBloc;
+
+  IBoolValueFormFieldBloc get pleromaChatMentionFieldBloc;
+
+  IBoolValueFormFieldBloc get pleromaEmojiReactionFieldBloc;
 }

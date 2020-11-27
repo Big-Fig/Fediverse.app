@@ -21,7 +21,7 @@ void showEditGlobalUiSettingsDialog({
           context,
           listen: false,
         ),
-        enabled: true,
+        isEnabled: true,
         availableThemes: availableThemes,
       ),
       child: const EditUiSettingsWidget(

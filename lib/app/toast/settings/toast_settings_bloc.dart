@@ -1,5 +1,6 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -8,15 +9,47 @@ abstract class IToastSettingsBloc
   static IToastSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IToastSettingsBloc>(context, listen: listen);
 
-  bool get notificationForMention;
+  bool get favourite;
 
-  Stream<bool> get notificationForMentionStream;
+  Stream<bool> get favouriteStream;
 
-  void changeNotificationForMention(bool value);
+  void changeFavourite(bool value);
 
-  bool get notificationForChatAndDm;
+  bool get follow;
 
-  Stream<bool> get notificationForChatAndDmStream;
+  Stream<bool> get followStream;
 
-  void changeNotificationForChatAndDm(bool value);
+  void changeFollow(bool value);
+
+  bool get mention;
+
+  Stream<bool> get mentionStream;
+
+  void changeMention(bool value);
+
+  bool get reblog;
+
+  Stream<bool> get reblogStream;
+
+  void changeReblog(bool value);
+
+  bool get poll;
+
+  Stream<bool> get pollStream;
+
+  void changePoll(bool value);
+
+  bool get pleromaChatMention;
+
+  Stream<bool> get pleromaChatMentionStream;
+
+  void changePleromaChatMention(bool value);
+
+  bool get pleromaEmojiReaction;
+
+  Stream<bool> get pleromaEmojiReactionStream;
+
+  void changePleromaEmojiReaction(bool value);
+
+  bool isNotificationTypeEnabled(PleromaNotificationType pleromaNotificationType);
 }

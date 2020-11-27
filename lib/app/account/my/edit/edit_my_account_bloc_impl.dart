@@ -3,19 +3,19 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc_impl.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
@@ -32,8 +32,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final BoolValueFormFieldBloc lockedField;
 
   @override
-  final IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>
-      customFieldsGroupBloc;
+  final IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> customFieldsGroupBloc;
 
   @override
   final IImageFilePickerOrUrlFormFieldBloc avatarField;
@@ -64,7 +63,9 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     @required PleromaInstancePleromaPartMetadataFieldLimits customFieldLimits,
   })  : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText.text,
-          validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
+          validators: [
+            StringValueFormFieldNonEmptyValidationError.createValidator()
+          ],
           maxLength: null,
         ),
         noteField = StringValueFormFieldBloc(
@@ -89,8 +90,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxFileSizeInBytes: backgroundUploadSizeInBytes,
           isPossibleToDeleteOriginal: true,
         ),
-        customFieldsGroupBloc =
-            OneTypeFormGroupBloc<ILinkPairFormGroupBloc>(
+        customFieldsGroupBloc = OneTypeFormGroupBloc<ILinkPairFormGroupBloc>(
           maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
           newEmptyFieldCreator: () => LinkPairFormGroupBloc(
             value: null,
@@ -109,7 +109,8 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
               )
               .toList(),
           minimumFieldsCount: null,
-        ), super(true) {
+        ),
+        super(isAllItemsInitialized: true) {
     addDisposable(disposable: displayNameField);
     addDisposable(disposable: noteField);
     addDisposable(disposable: lockedField);
@@ -208,5 +209,4 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       backgroundUploadSizeInBytes: info?.backgroundUploadLimit,
     );
   }
-
 }

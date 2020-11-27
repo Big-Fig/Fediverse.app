@@ -26,8 +26,13 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
+import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
+import 'package:fedi/app/toast/handler/toast_handler_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/toast/toast_service_provider.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
@@ -361,7 +366,23 @@ class FediApp extends StatelessWidget {
               child: ToastServiceProvider(
                 child: provideCurrentTheme(
                   currentTheme: currentTheme ?? lightFediUiTheme,
-                  child: StreamBuilder<LocalizationLocale>(
+                  child:
+                      DisposableProxyProvider<IToastService, IToastHandlerBloc>(
+                    lazy: false,
+                    update: (context, toastService, _) => ToastHandlerBloc(
+                      pushHandlerBloc: IPushHandlerBloc.of(
+                        context,
+                        listen: false,
+                      ),
+                      toastService: toastService,
+                      currentInstance:
+                          ICurrentAuthInstanceBloc.of(context, listen: false)
+                              .currentInstance,
+                      context: context,
+                      toastSettingsBloc:
+                          IToastSettingsBloc.of(context, listen: false),
+                    ),
+                    child: StreamBuilder<LocalizationLocale>(
                       stream: localizationSettingsBloc.localizationLocaleStream,
                       builder: (context, snapshot) {
                         var localizationLocale = snapshot.data;
@@ -400,7 +421,9 @@ class FediApp extends StatelessWidget {
                                         .firebaseAnalytics),
                           ],
                         );
-                      }),
+                      },
+                    ),
+                  ),
                 ),
               ),
             );

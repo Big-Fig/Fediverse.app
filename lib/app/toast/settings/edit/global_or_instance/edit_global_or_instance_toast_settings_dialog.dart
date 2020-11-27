@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_dialog.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
@@ -30,9 +31,13 @@ void showEditGlobalOrInstanceToastSettingsDialog({
             IEditToastSettingsBloc>(
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
-            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
+            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
+                context,
+                listen: false);
 
-        var enabled =
+
+
+        var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editToastSettingsBloc = EditToastSettingsBloc(
           toastSettingsBloc: IToastSettingsBloc.of(
@@ -40,14 +45,16 @@ void showEditGlobalOrInstanceToastSettingsDialog({
             listen: false,
           ),
           globalOrInstanceSettingsType: globalOrInstanceType,
-          enabled: enabled,
+          isEnabled: isEnabled,
+          currentInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
+              .currentInstance,
         );
 
         editToastSettingsBloc.addDisposable(
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editToastSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editToastSettingsBloc.changeEnabled(isUseGlobalSettings == true);
             },
           ),
         );

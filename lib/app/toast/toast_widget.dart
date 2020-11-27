@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/toast/toast_model.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -9,11 +10,13 @@ class ToastWidget extends StatelessWidget {
 
   final String title;
   final String content;
+  final bool titleAutoFontSize;
 
   ToastWidget({
     @required this.toastType,
     @required this.title,
     @required this.content,
+    @required this.titleAutoFontSize,
   });
 
   @override
@@ -48,10 +51,15 @@ class ToastWidget extends StatelessWidget {
             textColor: textColor,
             iconColor: iconColor,
             child: ListTile(
-              title: Text(
-                title,
-                style: fediUiTextTheme.bigShortBoldWhite,
-              ),
+              title: titleAutoFontSize
+                  ? AutoSizeText(
+                      title,
+                      style: fediUiTextTheme.bigShortBoldWhite,
+                    )
+                  : Text(
+                      title,
+                      style: fediUiTextTheme.bigShortBoldWhite,
+                    ),
               subtitle: Text(
                 content,
                 style: fediUiTextTheme.smallWhite,

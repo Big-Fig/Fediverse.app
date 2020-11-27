@@ -381,12 +381,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (onlyNotDismissed) {
       return dao
           .countUnreadByTypeNotDismissed(
-              pleromaNotificationTypeValues.enumToValueMap[type])
+            type.toJsonValue(),
+          )
           .getSingle();
     } else {
       return dao
           .countUnreadByType(
-              pleromaNotificationTypeValues.enumToValueMap[type])
+            type.toJsonValue(),
+          )
           .getSingle();
     }
   }
@@ -410,13 +412,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (onlyNotDismissed) {
       return dao
           .countUnreadByTypeNotDismissed(
-            pleromaNotificationTypeValues.enumToValueMap[type],
+            type.toJsonValue(),
           )
           .watchSingle();
     } else {
       return dao
           .countUnreadByType(
-              pleromaNotificationTypeValues.enumToValueMap[type])
+            type.toJsonValue(),
+          )
           .watchSingle();
     }
   }
@@ -429,8 +432,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       dao
           .countUnreadExcludeTypes(
             excludeTypes
-                .map((type) =>
-                    pleromaNotificationTypeValues.enumToValueMap[type])
+                .map(
+                  (type) => type.toJsonValue(),
+                )
                 .toList(),
             onlyNotDismissed: onlyNotDismissed,
           )
@@ -444,8 +448,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       dao
           .countUnreadExcludeTypes(
             excludeTypes
-                .map((type) =>
-                    pleromaNotificationTypeValues.enumToValueMap[type])
+                .map(
+                  (type) => type.toJsonValue(),
+                )
                 .toList(),
             onlyNotDismissed: onlyNotDismissed,
           )

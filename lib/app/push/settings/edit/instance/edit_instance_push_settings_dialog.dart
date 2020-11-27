@@ -21,18 +21,14 @@ void showEditInstancePushSettingsDialog({
           context,
           listen: false,
         ),
-        enabled: true,
+        isEnabled: true,
         currentInstance: ICurrentAuthInstanceBloc.of(
           context,
           listen: false,
         ).currentInstance,
       ),
-      child: Column(
-        children: [
-          const EditPushSettingsWidget(
-            shrinkWrap: true,
-          ),
-        ],
+      child: const EditPushSettingsWidget(
+        shrinkWrap: true,
       ),
     ),
   );

@@ -15,26 +15,32 @@ void showSettingsDialog({
 }) {
   showFediModalBottomSheetDialog(
     context: context,
+
     child: Padding(
       padding: const EdgeInsets.symmetric(
         vertical: FediSizes.smallPadding,
         horizontal: FediSizes.bigPadding,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _SettingsDialogTitle(
-            title: title,
-          ),
-          _SettingsDialogSubTitle(
-            subTitle: subTitle,
-          ),
-          const FediBigVerticalSpacer(),
-          const FediUltraLightGreyDivider(),
-          const FediSmallVerticalSpacer(),
-          child,
-        ],
-      ),
+      child:
+        ListView(
+          shrinkWrap: true,
+          children: [
+            Center(
+              child: _SettingsDialogTitle(
+                title: title,
+              ),
+            ),
+            Center(
+              child: _SettingsDialogSubTitle(
+                subTitle: subTitle,
+              ),
+            ),
+            const FediBigVerticalSpacer(),
+            const FediUltraLightGreyDivider(),
+            const FediSmallVerticalSpacer(),
+            child,
+          ],
+        )
     ),
   );
 }

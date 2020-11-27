@@ -3,6 +3,7 @@ import 'package:fedi/app/media/settings/edit/global_or_instance/edit_global_or_i
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/edit/global_or_instance/edit_global_or_instance_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global_or_instance/edit_global_or_instance_status_sensitive_settings_dialog.dart';
+import 'package:fedi/app/toast/settings/edit/global_or_instance/edit_global_or_instance_toast_settings_dialog.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/app/web_sockets/settings/edit/global_or_instance/edit_global_or_instance_web_sockets_settings_dialog.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -18,7 +19,7 @@ class InstanceSettingsListWidget extends StatelessWidget {
         children: [
           const _InstanceSettingsPushRowWidget(),
           const _InstanceSettingsMediaRowWidget(),
-          // const _InstanceSettingsToastRowWidget(),
+          const _InstanceSettingsToastRowWidget(),
           const _InstanceSettingsStatusSensitiveRowWidget(),
           const _InstanceStatusPostSensitiveRowWidget(),
           const _InstanceSettingsChatRowWidget(),
@@ -59,21 +60,21 @@ class _InstanceSettingsPushRowWidget extends StatelessWidget {
   }
 }
 
-// class _InstanceSettingsToastRowWidget extends StatelessWidget {
-//   const _InstanceSettingsToastRowWidget({
-//     Key key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SimpleFediSelectionItemRowWidget(
-//       title: S.of(context).app_toast_settings_title,
-//       onClick: () {
-//         showEditGlobalOrInstanceToastSettingsDialog(context: context);
-//       },
-//     );
-//   }
-// }
+class _InstanceSettingsToastRowWidget extends StatelessWidget {
+  const _InstanceSettingsToastRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_toast_settings_title,
+      onClick: () {
+        showEditGlobalOrInstanceToastSettingsDialog(context: context);
+      },
+    );
+  }
+}
 
 class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
   const _InstanceSettingsStatusSensitiveRowWidget({

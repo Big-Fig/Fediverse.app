@@ -1,4 +1,3 @@
-import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/toast/toast_service_impl.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service.dart';
@@ -16,10 +15,6 @@ class ToastServiceProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<IToastService>(
       create: (context) => ToastService(
-        toastSettingsBloc: IToastSettingsBloc.of(
-          context,
-          listen: false,
-        ),
         overlayNotificationService: IOverlayNotificationService.of(
           context,
           listen: false,

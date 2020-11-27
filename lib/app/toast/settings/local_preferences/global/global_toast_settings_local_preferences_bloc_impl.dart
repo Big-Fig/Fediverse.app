@@ -1,3 +1,4 @@
+import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
@@ -12,7 +13,6 @@ class GlobalToastSettingsLocalPreferencesBloc
 
   @override
   ToastSettings get defaultValue => ToastSettings(
-        notificationForChatAndDm: true,
-        notificationForMention: true,
+        pushSettings: PushSettings.defaultAllEnabled(),
       );
 }
