@@ -1964,93 +1964,93 @@ class S {
     );
   }
 
-  /// `Followed you`
+  /// `Followed you.`
   String get app_notification_header_follow {
     return Intl.message(
-      'Followed you',
+      'Followed you.',
       name: 'app_notification_header_follow',
       desc: '',
       args: [],
     );
   }
 
-  /// `Liked: {status}`
-  String app_notification_header_favourite(Object status) {
+  /// `Liked your post.`
+  String get app_notification_header_favourite {
     return Intl.message(
-      'Liked: $status',
+      'Liked your post.',
       name: 'app_notification_header_favourite',
       desc: '',
-      args: [status],
+      args: [],
     );
   }
 
-  /// `<b>Mentioned you:</b> {status}`
+  /// `<b>Mentioned you:</b> {status}.`
   String app_notification_header_mention(Object status) {
     return Intl.message(
-      '<b>Mentioned you:</b> $status',
+      '<b>Mentioned you:</b> $status.',
       name: 'app_notification_header_mention',
       desc: '',
       args: [status],
     );
   }
 
-  /// `Reblogged: {status}`
-  String app_notification_header_reblog(Object status) {
+  /// `Shared your post.`
+  String get app_notification_header_reblog {
     return Intl.message(
-      'Reblogged: $status',
+      'Shared your post.',
       name: 'app_notification_header_reblog',
       desc: '',
-      args: [status],
+      args: [],
     );
   }
 
-  /// `Voted poll ended`
+  /// `Voted poll ended.`
   String get app_notification_header_poll {
     return Intl.message(
-      'Voted poll ended',
+      'Voted poll ended.',
       name: 'app_notification_header_poll',
       desc: '',
       args: [],
     );
   }
 
-  /// `Move`
+  /// `Moved.`
   String get app_notification_header_move {
     return Intl.message(
-      'Move',
+      'Moved.',
       name: 'app_notification_header_move',
       desc: '',
       args: [],
     );
   }
 
-  /// `Follow request`
+  /// `Follow request.`
   String get app_notification_header_followRequest {
     return Intl.message(
-      'Follow request',
+      'Follow request.',
       name: 'app_notification_header_followRequest',
       desc: '',
       args: [],
     );
   }
 
-  /// `{emoji} for: "{status}`
-  String app_notification_header_pleromaEmojiReaction(Object emoji, Object status) {
+  /// `{emoji} for your post.`
+  String app_notification_header_pleromaEmojiReaction(Object emoji) {
     return Intl.message(
-      '$emoji for: "$status',
+      '$emoji for your post.',
       name: 'app_notification_header_pleromaEmojiReaction',
       desc: '',
-      args: [emoji, status],
+      args: [emoji],
     );
   }
 
-  /// `Chat mention in "{message}"`
-  String app_notification_header_pleromaChatMention(Object message) {
+  /// `<b>Chat:</b> {status}.`
+  String app_notification_header_pleromaChatMention(Object status) {
     return Intl.message(
-      'Chat mention in "$message"',
+      '<b>Chat:</b> $status.',
       name: 'app_notification_header_pleromaChatMention',
       desc: '',
-      args: [message],
+      args: [status],
     );
   }
 
@@ -4177,26 +4177,6 @@ class S {
     return Intl.message(
       'NSFW display duration',
       name: 'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mentions`
-  String get app_toast_settings_field_notificationForMention_label {
-    return Intl.message(
-      'Mentions',
-      name: 'app_toast_settings_field_notificationForMention_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Chats & Conversations`
-  String get app_toast_settings_field_notificationForChatAndDm_label {
-    return Intl.message(
-      'Chats & Conversations',
-      name: 'app_toast_settings_field_notificationForChatAndDm_label',
       desc: '',
       args: [],
     );
