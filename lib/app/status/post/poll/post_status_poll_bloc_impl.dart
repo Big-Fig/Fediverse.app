@@ -68,7 +68,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
               createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
         durationLengthFieldBloc = createDurationLengthBloc(pollLimits),
-        super(true);
+        super(isAllItemsInitialized: true);
 
   @override
   List<IFormItemBloc> get currentItems => [

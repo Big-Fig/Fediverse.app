@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
@@ -11,16 +12,12 @@ part 'toast_settings_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 86)
 class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
-  @HiveField(0)
-  @JsonKey(name: "notification_for_mention")
-  final bool notificationForMention;
-  @HiveField(1)
-  @JsonKey(name: "notification_for_chat_and_dm")
-  final bool notificationForChatAndDm;
+  @HiveField(3)
+  @JsonKey(name: "push_settings")
+  final PushSettings pushSettings;
 
   ToastSettings({
-    @required this.notificationForMention,
-    @required this.notificationForChatAndDm,
+    @required this.pushSettings,
   });
 
   factory ToastSettings.fromJson(Map<String, dynamic> json) =>
@@ -42,13 +39,23 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
   ToastSettings clone() => copyWith();
 
   ToastSettings copyWith({
-    bool notificationForMention,
-    bool notificationForChatAndDm,
-  }) =>
-      ToastSettings(
-        notificationForMention:
-            notificationForMention ?? this.notificationForMention,
-        notificationForChatAndDm:
-            notificationForChatAndDm ?? this.notificationForChatAndDm,
-      );
+    PushSettings pushSettings,
+  }) => ToastSettings(
+      pushSettings: pushSettings ?? this.pushSettings,
+    );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ToastSettings &&
+          runtimeType == other.runtimeType &&
+          pushSettings == other.pushSettings;
+
+  @override
+  int get hashCode => pushSettings.hashCode;
+
+  @override
+  String toString() {
+    return 'ToastSettings{pushSettings: $pushSettings}';
+  }
 }

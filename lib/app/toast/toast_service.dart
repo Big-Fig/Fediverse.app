@@ -9,12 +9,14 @@ abstract class IToastService implements IDisposable {
   void showErrorToast({
     @required BuildContext context,
     @required String title,
+    bool titleAutoFontSize = true,
     String content,
   });
 
   void showInfoToast({
     @required BuildContext context,
     @required String title,
+    bool titleAutoFontSize = true,
     String content,
   });
 }

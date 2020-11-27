@@ -20,6 +20,7 @@ class FediFormFieldRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FediFormRow(
@@ -95,13 +96,13 @@ class SimpleFediFormFieldRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediFormFieldRow(
-      label: FediFormRowLabel(label),
-      description: description?.isNotEmpty == true
-          ? FediFormColumnDesc(description)
-          : null,
-      descriptionOnDisabled: descriptionOnDisabled?.isNotEmpty == true
-          ? FediFormColumnDesc(descriptionOnDisabled)
-          : null,
-      valueChild: valueChild,
-    );
+        label: FediFormRowLabel(label),
+        description: description?.isNotEmpty == true
+            ? FediFormColumnDesc(description)
+            : null,
+        descriptionOnDisabled: descriptionOnDisabled?.isNotEmpty == true
+            ? FediFormColumnDesc(descriptionOnDisabled)
+            : null,
+        valueChild: valueChild,
+      );
 }

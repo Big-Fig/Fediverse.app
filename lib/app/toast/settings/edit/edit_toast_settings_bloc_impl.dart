@@ -1,3 +1,5 @@
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
@@ -13,55 +15,148 @@ class EditToastSettingsBloc
     implements IEditToastSettingsBloc {
   final IToastSettingsBloc toastSettingsBloc;
 
-  @override
-  IBoolValueFormFieldBloc notificationForChatAndDmFieldBloc;
+  final AuthInstance currentInstance;
 
   @override
-  IBoolValueFormFieldBloc notificationForMentionFieldBloc;
+  IBoolValueFormFieldBloc favouriteFieldBloc;
+  @override
+  IBoolValueFormFieldBloc followFieldBloc;
+  @override
+  IBoolValueFormFieldBloc mentionFieldBloc;
+  @override
+  IBoolValueFormFieldBloc reblogFieldBloc;
+  @override
+  IBoolValueFormFieldBloc pollFieldBloc;
+  @override
+  IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
+  @override
+  IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
-        notificationForChatAndDmFieldBloc,
-        notificationForMentionFieldBloc,
+        favouriteFieldBloc,
+        followFieldBloc,
+        mentionFieldBloc,
+        reblogFieldBloc,
+        pollFieldBloc,
+        pleromaChatMentionFieldBloc,
+        pleromaEmojiReactionFieldBloc,
       ];
+
+  PushSettings get currentPushSettings => currentSettings.pushSettings;
 
   EditToastSettingsBloc({
     @required this.toastSettingsBloc,
+    @required this.currentInstance,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool enabled,
+    @required bool isEnabled,
   }) : super(
-          globalOrInstanceSettingsBloc: toastSettingsBloc,
+          isEnabled: isEnabled,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-          isEnabled: enabled,
+          globalOrInstanceSettingsBloc: toastSettingsBloc,
           isAllItemsInitialized: false,
         ) {
-    notificationForChatAndDmFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.notificationForChatAndDm,
+    favouriteFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.favourite,
+      isEnabled: isEnabled,
     );
 
-    notificationForMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.notificationForMention,
+    followFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.follow,
+      isEnabled: isEnabled,
     );
-    addDisposable(disposable: notificationForChatAndDmFieldBloc);
-    addDisposable(disposable: notificationForMentionFieldBloc);
+    mentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.mention,
+      isEnabled: isEnabled,
+    );
+    reblogFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.reblog,
+      isEnabled: isEnabled,
+    );
+    pollFieldBloc = BoolValueFormFieldBloc(
+        originValue: currentPushSettings.poll &&
+            (currentInstance.isMastodonInstance ||
+                globalOrInstanceSettingsType ==
+                    GlobalOrInstanceSettingsType.global),
+        isEnabled: isEnabled &&
+            (currentInstance.isMastodonInstance ||
+                globalOrInstanceSettingsType ==
+                    GlobalOrInstanceSettingsType.global));
+    pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.pleromaChatMention &&
+          (currentInstance.isPleromaInstance ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+      isEnabled: isEnabled &&
+          (currentInstance.isPleromaInstance ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+    );
+    pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings.pleromaEmojiReaction &&
+          (currentInstance.isPleromaInstance ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+      isEnabled: isEnabled &&
+          (currentInstance.isPleromaInstance ||
+              globalOrInstanceSettingsType ==
+                  GlobalOrInstanceSettingsType.global),
+    );
 
     onItemsChanged();
+
+    addDisposable(disposable: favouriteFieldBloc);
+    addDisposable(disposable: followFieldBloc);
+    addDisposable(disposable: mentionFieldBloc);
+    addDisposable(disposable: reblogFieldBloc);
+    addDisposable(disposable: pollFieldBloc);
+    addDisposable(disposable: pleromaChatMentionFieldBloc);
+    addDisposable(disposable: pleromaEmojiReactionFieldBloc);
   }
 
   @override
-  ToastSettings calculateCurrentFormFieldsSettings() => ToastSettings(
-        notificationForMention: notificationForMentionFieldBloc.currentValue,
-        notificationForChatAndDm:
-            notificationForChatAndDmFieldBloc.currentValue,
-      );
+  ToastSettings calculateCurrentFormFieldsSettings() {
+    return ToastSettings(
+      pushSettings: PushSettings(
+        favourite: favouriteFieldBloc.currentValue,
+        follow: followFieldBloc.currentValue,
+        mention: mentionFieldBloc.currentValue,
+        reblog: reblogFieldBloc.currentValue,
+        poll: pollFieldBloc.currentValue,
+        pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
+        pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
+      ),
+    );
+  }
 
   @override
   Future fillSettingsToFormFields(ToastSettings settings) async {
-    notificationForMentionFieldBloc.changeCurrentValue(
-      settings.notificationForMention,
+    var pushSettings = settings.pushSettings;
+    var isNotGlobal =
+        globalOrInstanceSettingsType != GlobalOrInstanceSettingsType.global;
+
+    favouriteFieldBloc.changeCurrentValue(
+      pushSettings.favourite,
     );
-    notificationForChatAndDmFieldBloc.changeCurrentValue(
-      settings.notificationForChatAndDm,
+    followFieldBloc.changeCurrentValue(
+      pushSettings.follow,
+    );
+    mentionFieldBloc.changeCurrentValue(
+      pushSettings.mention,
+    );
+    reblogFieldBloc.changeCurrentValue(
+      pushSettings.reblog,
+    );
+    pollFieldBloc.changeCurrentValue(
+      pushSettings.poll && (currentInstance.isMastodonInstance || isNotGlobal),
+    );
+    pleromaChatMentionFieldBloc.changeCurrentValue(
+      pushSettings.pleromaChatMention &&
+          (currentInstance.isPleromaInstance || isNotGlobal),
+    );
+    pleromaEmojiReactionFieldBloc.changeCurrentValue(
+      pushSettings.pleromaEmojiReaction &&
+          (currentInstance.isPleromaInstance || isNotGlobal),
     );
   }
 }

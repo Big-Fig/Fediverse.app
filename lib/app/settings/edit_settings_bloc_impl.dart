@@ -2,6 +2,7 @@ import 'package:fedi/app/settings/edit_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
@@ -17,21 +18,28 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
   @override
   final ISettingsBloc<T> settingsBloc;
 
-
-  EditSettingsBloc(bool enabled, this.settingsBloc, bool isAllItemsInitialized)
-      : enabledSubject = BehaviorSubject.seeded(enabled), super(isAllItemsInitialized) {
+  EditSettingsBloc({
+    @required bool isEnabled,
+    @required this.settingsBloc,
+    @required bool isAllItemsInitialized,
+  })  : enabledSubject = BehaviorSubject.seeded(isEnabled),
+        super(
+          isAllItemsInitialized: isAllItemsInitialized,
+        ) {
     addDisposable(subject: enabledSubject);
 
     addDisposable(
-      streamSubscription: isSomethingChangedStream.skip(1).listen(
+      streamSubscription: isSomethingChangedStream.listen(
         (_) {
-          saveSettingsFromFormToSettingsBloc();
+          if(isEnabled) {
+            saveSettingsFromFormToSettingsBloc();
+          }
         },
       ),
     );
 
     addDisposable(
-      streamSubscription: settingsBloc.settingsDataStream.skip(1).listen(
+      streamSubscription: settingsBloc.settingsDataStream.listen(
         (newSettings) {
           saveSettingsFromSettingsBlocToForm(newSettings);
         },

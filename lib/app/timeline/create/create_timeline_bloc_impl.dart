@@ -49,7 +49,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     @required this.timelineSavedCallback,
     @required this.authInstance,
     @required ILocalPreferencesService localPreferencesService,
-  }) : super(false) {
+  }) : super(isAllItemsInitialized: false) {
     var timelineId = TimelineSettings.generateUniqueTimelineId();
 
     var startType = TimelineType.public;

@@ -171,9 +171,9 @@ class EditTimelineSettingsBloc
               .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance),
         ),
         super(
-          isEnabled,
-          settingsBloc,
-          true,
+        isEnabled: isEnabled,
+        settingsBloc: settingsBloc,
+        isAllItemsInitialized: true,
         ) {
     addDisposable(disposable: excludeRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);

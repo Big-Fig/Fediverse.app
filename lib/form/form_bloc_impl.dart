@@ -1,6 +1,7 @@
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
@@ -17,13 +18,13 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
 
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 
-  FormBloc(bool isAllItemsInitialized) {
+  FormBloc({
+    @required bool isAllItemsInitialized,
+  }) {
     addDisposable(subject: itemsSubject);
-    if(isAllItemsInitialized) {
-      
+    if (isAllItemsInitialized) {
       onItemsChanged();
     }
-    
   }
 
   @override

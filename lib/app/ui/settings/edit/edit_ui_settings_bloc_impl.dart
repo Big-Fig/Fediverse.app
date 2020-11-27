@@ -24,13 +24,17 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
 
   EditUiSettingsBloc({
     @required this.uiSettingBloc,
-    @required bool enabled,
+    @required bool isEnabled,
     @required this.availableThemes,
   })  : fediThemeFieldBloc = FediUiThemeSingleFromListValueFormFieldBloc(
           originValue: _findThemeById(availableThemes, uiSettingBloc.themeId),
           possibleValues: availableThemes,
         ),
-        super(enabled, uiSettingBloc, true) {
+        super(
+          isEnabled: isEnabled,
+          settingsBloc: uiSettingBloc,
+          isAllItemsInitialized: true,
+        ) {
     addDisposable(disposable: fediThemeFieldBloc);
   }
 

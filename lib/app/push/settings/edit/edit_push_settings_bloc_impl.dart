@@ -42,35 +42,40 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
   EditPushSettingsBloc({
     @required this.pushSettingsBloc,
     @required this.currentInstance,
-    @required bool enabled,
+    @required bool isEnabled,
   })  : favouriteFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.favourite,
+          isEnabled: isEnabled,
         ),
         followFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.follow,
+          isEnabled: isEnabled,
         ),
         mentionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.mention,
+          isEnabled: isEnabled,
         ),
         reblogFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.reblog,
+          isEnabled: isEnabled,
         ),
         pollFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.poll,
-          isEnabled: !currentInstance.isMastodonInstance, // only mastodon
+          isEnabled:
+              isEnabled && !currentInstance.isMastodonInstance, // only mastodon
         ),
         pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.pleromaChatMention,
-          isEnabled: currentInstance.isPleromaInstance,
+          isEnabled: isEnabled && currentInstance.isPleromaInstance,
         ),
         pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.pleromaEmojiReaction,
-          isEnabled: currentInstance.isPleromaInstance,
+          isEnabled: isEnabled && currentInstance.isPleromaInstance,
         ),
         super(
-          enabled,
-          pushSettingsBloc,
-        true,
+          isEnabled: isEnabled,
+          settingsBloc: pushSettingsBloc,
+          isAllItemsInitialized: true,
         ) {
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);

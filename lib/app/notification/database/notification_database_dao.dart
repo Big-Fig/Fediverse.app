@@ -35,7 +35,7 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 })
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable statusAlias;
   $DbAccountsTable statusAccountAlias;
@@ -123,14 +123,21 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     return localId;
   }
 
-  SimpleSelectStatement<$DbNotificationsTable,
-      DbNotification> addExcludeTypeWhere(
-          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-          List<PleromaNotificationType> excludeTypes) =>
-      query
-        ..where((notification) => (notification.type.isNotIn(excludeTypes
-            .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
-            .toList())));
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      addExcludeTypeWhere(
+              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+                  query,
+              List<PleromaNotificationType> excludeTypes) =>
+          query
+            ..where(
+              (notification) => notification.type.isNotIn(
+                excludeTypes
+                    .map(
+                      (type) => type.toJsonValue(),
+                    )
+                    .toList(),
+              ),
+            );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
@@ -246,8 +253,10 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes,
-  {@required bool onlyNotDismissed,}) {
+  Selectable<int> countUnreadExcludeTypes(
+    List<String> excludeTypes, {
+    @required bool onlyNotDismissed,
+  }) {
     // asd
     var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
         'type NOT IN '

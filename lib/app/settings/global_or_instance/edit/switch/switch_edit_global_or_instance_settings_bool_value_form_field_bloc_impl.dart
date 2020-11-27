@@ -5,6 +5,7 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger(
     "switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart");
@@ -14,10 +15,16 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
     implements ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc {
   final IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc;
 
+  final BehaviorSubject<bool> currentValueSubject;
+
   SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc({
     @required this.globalOrInstanceSettingsBloc,
     bool isEnabled = true,
-  }) : super(isEnabled: isEnabled);
+  })  : currentValueSubject =
+            BehaviorSubject.seeded(globalOrInstanceSettingsBloc.isGlobal),
+        super(isEnabled: isEnabled) {
+    addDisposable(subject: currentValueSubject);
+  }
 
   @override
   void changeCurrentValue(bool newValue) {
@@ -26,9 +33,17 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
 
     if (newValue != oldValue) {
       if (newValue) {
-        globalOrInstanceSettingsBloc.clearInstanceSettings();
+        currentValueSubject.add(null);
+        Future.delayed(Duration(microseconds: 1), () {
+          globalOrInstanceSettingsBloc.clearInstanceSettings();
+          currentValueSubject.add(true);
+        });
       } else {
-        globalOrInstanceSettingsBloc.cloneGlobalToInstanceSettings();
+        currentValueSubject.add(null);
+        Future.delayed(Duration(microseconds: 1), () {
+          globalOrInstanceSettingsBloc.cloneGlobalToInstanceSettings();
+          currentValueSubject.add(false);
+        });
       }
     }
   }
@@ -39,12 +54,10 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   }
 
   @override
-  bool get currentValue => globalOrInstanceSettingsBloc.isGlobal;
+  bool get currentValue => currentValueSubject.value;
 
   @override
-  Stream<bool> get currentValueStream =>
-      globalOrInstanceSettingsBloc.isGlobalStream;
-
+  Stream<bool> get currentValueStream => currentValueSubject.stream;
 
   @override
   List<FormItemValidationError> get errors => [];
@@ -90,5 +103,5 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   Stream<bool> get isEnabledStream => Stream.value(isEnabled);
 
   @override
-  bool get isNullValuePossible => false;
+  bool get isNullValuePossible => true;
 }

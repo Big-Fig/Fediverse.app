@@ -45,13 +45,14 @@ class EditMediaSettingsBloc
       isEnabled: isEnabled,
     );
 
-
     onItemsChanged();
+
+    addDisposable(disposable: autoPlayFieldBloc);
+    addDisposable(disposable: autoInitFieldBloc);
   }
 
   @override
   MediaSettings calculateCurrentFormFieldsSettings() {
-
     var oldPreferences = settingsBloc.settingsData;
     var oldMediaAutoInit = oldPreferences?.autoInit ?? false;
     var oldMediaAutoPlay = oldPreferences?.autoPlay ?? false;
@@ -59,19 +60,19 @@ class EditMediaSettingsBloc
     var newMediaAutoInit = autoInitFieldBloc.currentValue;
     var newMediaAutoPlay = autoPlayFieldBloc.currentValue;
 
-    if(newMediaAutoPlay == true && oldMediaAutoPlay == false) {
+    if (newMediaAutoPlay == true && oldMediaAutoPlay == false) {
       newMediaAutoInit = true;
       autoInitFieldBloc.changeCurrentValue(newMediaAutoInit);
     }
-    if(newMediaAutoInit == false && oldMediaAutoInit == true) {
+    if (newMediaAutoInit == false && oldMediaAutoInit == true) {
       newMediaAutoPlay = false;
       autoPlayFieldBloc.changeCurrentValue(newMediaAutoPlay);
     }
 
     return MediaSettings(
-        autoInit: newMediaAutoInit,
-        autoPlay: newMediaAutoPlay,
-      );
+      autoInit: newMediaAutoInit,
+      autoPlay: newMediaAutoPlay,
+    );
   }
 
   @override

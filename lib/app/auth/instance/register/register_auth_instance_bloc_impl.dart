@@ -55,7 +55,8 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
         if (isCaptchaRequired) captchaFieldBloc,
       ];
 
-  JoinAuthInstanceRegisterBloc({@required this.captchaFieldBloc}) : super(true) {
+  JoinAuthInstanceRegisterBloc({@required this.captchaFieldBloc})
+      : super(isAllItemsInitialized: true) {
     addDisposable(disposable: usernameFieldBloc);
     addDisposable(disposable: emailFieldBloc);
     addDisposable(disposable: passwordFieldBloc);

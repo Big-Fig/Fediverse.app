@@ -32,9 +32,9 @@ class EditLocalizationSettingsBloc
           possibleValues: supportedLocalizationLocaleList,
         ),
         super(
-          isEnabled,
-          localizationSettingBloc,
-          true,
+          isEnabled:isEnabled,
+          settingsBloc:localizationSettingBloc,
+        isAllItemsInitialized:true,
         ) {
     addDisposable(disposable: localizationLocaleFieldBloc);
   }

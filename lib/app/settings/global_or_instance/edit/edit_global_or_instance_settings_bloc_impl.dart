@@ -20,9 +20,9 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
     @required bool isEnabled,
     @required bool isAllItemsInitialized,
   }) : super(
-          isEnabled,
-          globalOrInstanceSettingsBloc,
-          isAllItemsInitialized,
+          isEnabled: isEnabled,
+          settingsBloc: globalOrInstanceSettingsBloc,
+          isAllItemsInitialized: isAllItemsInitialized,
         );
 
   @override

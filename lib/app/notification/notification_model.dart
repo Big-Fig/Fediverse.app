@@ -118,13 +118,7 @@ class DbNotificationPopulatedWrapper implements INotification {
       mastodonNotificationTypeValues.valueToEnumMap[type];
 
   @override
-  PleromaNotificationType get typePleroma {
-    if (pleromaNotificationTypeValues.valueToEnumMap.containsKey(type)) {
-      return pleromaNotificationTypeValues.valueToEnumMap[type];
-    } else {
-      return PleromaNotificationType.unknown;
-    }
-  }
+  PleromaNotificationType get typePleroma => type.toPleromaNotificationType();
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;

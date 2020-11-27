@@ -17,19 +17,16 @@ class ToastSettingsAdapter extends TypeAdapter<ToastSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ToastSettings(
-      notificationForMention: fields[0] as bool,
-      notificationForChatAndDm: fields[1] as bool,
+      pushSettings: fields[3] as PushSettings,
     );
   }
 
   @override
   void write(BinaryWriter writer, ToastSettings obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.notificationForMention)
       ..writeByte(1)
-      ..write(obj.notificationForChatAndDm);
+      ..writeByte(3)
+      ..write(obj.pushSettings);
   }
 
   @override
@@ -49,13 +46,13 @@ class ToastSettingsAdapter extends TypeAdapter<ToastSettings> {
 
 ToastSettings _$ToastSettingsFromJson(Map<String, dynamic> json) {
   return ToastSettings(
-    notificationForMention: json['notification_for_mention'] as bool,
-    notificationForChatAndDm: json['notification_for_chat_and_dm'] as bool,
+    pushSettings: json['push_settings'] == null
+        ? null
+        : PushSettings.fromJson(json['push_settings'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$ToastSettingsToJson(ToastSettings instance) =>
     <String, dynamic>{
-      'notification_for_mention': instance.notificationForMention,
-      'notification_for_chat_and_dm': instance.notificationForChatAndDm,
+      'push_settings': instance.pushSettings?.toJson(),
     };
