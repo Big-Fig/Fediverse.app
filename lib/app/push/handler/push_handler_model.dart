@@ -19,6 +19,7 @@ class PushHandlerMessage {
   @HiveField(1)
   @JsonKey(name: "push_message")
   final PushMessage pushMessage;
+
   PushHandlerMessage({
     this.body,
     this.pushMessage,
@@ -36,9 +37,18 @@ class PushHandlerMessage {
           runtimeType == other.runtimeType &&
           body == other.body &&
           pushMessage == other.pushMessage;
+
+  PushHandlerMessage copyWith({
+    PleromaPushMessageBody body,
+    PushMessage pushMessage,
+  }) =>
+      PushHandlerMessage(
+        body: body ?? this.body,
+        pushMessage: pushMessage ?? this.pushMessage,
+      );
+
   @override
   int get hashCode => body.hashCode ^ pushMessage.hashCode;
-
 
   factory PushHandlerMessage.fromJson(Map<String, dynamic> json) =>
       _$PushHandlerMessageFromJson(json);
@@ -49,8 +59,8 @@ class PushHandlerMessage {
   static List<PushHandlerMessage> listFromJsonString(String str) =>
       List<PushHandlerMessage>.from(
           json.decode(str).map((x) => PushHandlerMessage.fromJson(x)));
+
   Map<String, dynamic> toJson() => _$PushHandlerMessageToJson(this);
 
   String toJsonString() => jsonEncode(_$PushHandlerMessageToJson(this));
-
 }

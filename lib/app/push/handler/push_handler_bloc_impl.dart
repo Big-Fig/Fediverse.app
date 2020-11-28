@@ -6,6 +6,7 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
@@ -28,10 +29,13 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       @required this.currentInstanceBloc,
       @required this.instanceListBloc,
       @required this.fcmPushService}) {
-    addDisposable(streamSubscription:
-        fcmPushService.messageStream.listen((pushMessage) async {
-      await handlePushMessage(pushMessage);
-    }));
+    addDisposable(
+      streamSubscription: fcmPushService.messageStream.listen(
+        (pushMessage) async {
+          await handlePushMessage(pushMessage);
+        },
+      ),
+    );
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
@@ -80,8 +84,6 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
     }
   }
 
-
-
   @override
   void addRealTimeHandler(IPushRealTimeHandler pushHandler) {
     realTimeHandlers.add(pushHandler);
@@ -100,4 +102,25 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   @override
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) =>
       unhandledLocalPreferencesBloc.markAsHandled(messages);
+
+  @override
+  Future markAsLaunchMessage(PushHandlerMessage message) async {
+    var unhandledList = unhandledLocalPreferencesBloc.value;
+
+    unhandledList.messages.remove(message);
+
+    unhandledList.messages.add(
+      message.copyWith(
+        pushMessage: message.pushMessage.copyWith(
+          typeString: PushMessageType.launch.toJsonValue(),
+        ),
+      ),
+    );
+
+    await unhandledLocalPreferencesBloc.setValue(
+      PushHandlerUnhandledList(
+        messages: unhandledList.messages,
+      ),
+    );
+  }
 }
