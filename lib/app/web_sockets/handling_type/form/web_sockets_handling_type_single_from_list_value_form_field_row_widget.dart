@@ -1,6 +1,6 @@
 import 'package:fedi/app/form/field/value/single_from_list/single_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/web_sockets/handling_type/form/web_sockets_handling_type_single_from_list_value_form_field_bloc_proxy_provider.dart';
-import 'package:fedi/app/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 

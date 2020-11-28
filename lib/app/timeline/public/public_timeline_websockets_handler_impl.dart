@@ -4,7 +4,8 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dar
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
@@ -19,10 +20,12 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
             conversationChatNewMessagesHandlerBloc,
     @required bool local,
     @required bool onlyMedia,
+    @required WebSocketsListenType listenType,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
             local: local,
             onlyMedia: onlyMedia,
+            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -39,10 +42,12 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     BuildContext context, {
     @required bool local,
     @required bool onlyMedia,
+    @required WebSocketsListenType listenType,
   }) =>
       PublicTimelineWebSocketsHandler(
         local: local,
         onlyMedia: local,
+        listenType: listenType,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

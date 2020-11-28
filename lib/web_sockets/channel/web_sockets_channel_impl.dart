@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/websockets/websockets_channel.dart';
-import 'package:fedi/websockets/websockets_channel_model.dart';
-import 'package:fedi/websockets/websockets_channel_source.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("websockets_channel_impl.dart");
+var _logger = Logger("web_sockets_channel_impl.dart");
 
 class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannel<T> {

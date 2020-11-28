@@ -21,7 +21,8 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -91,6 +92,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: PleromaChatWebSocketsHandler(
+            listenType: WebSocketsListenType.foreground,
         notificationRepository: notificationRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,

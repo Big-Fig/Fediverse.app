@@ -4,7 +4,8 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dar
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
@@ -18,9 +19,11 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     @required
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
+    @required WebSocketsListenType listenType,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getListChannel(
             listId: customListRemoteId,
+            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -34,9 +37,12 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   static CustomListStatusListWebSocketsHandler createFromContext(
-          BuildContext context,
-          {@required String customListRemoteId}) =>
+    BuildContext context, {
+    @required String customListRemoteId,
+    @required WebSocketsListenType listenType,
+  }) =>
       CustomListStatusListWebSocketsHandler(
+        listenType: listenType,
         customListRemoteId: customListRemoteId,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
@@ -48,7 +54,7 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         conversationChatNewMessagesHandlerBloc:
-        IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
+            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

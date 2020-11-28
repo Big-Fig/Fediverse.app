@@ -71,8 +71,8 @@ import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
-import 'package:fedi/websockets/websockets_service.dart';
-import 'package:fedi/websockets/websockets_service_impl.dart';
+import 'package:fedi/web_sockets/web_sockets_service.dart';
+import 'package:fedi/web_sockets/web_sockets_service_impl.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");

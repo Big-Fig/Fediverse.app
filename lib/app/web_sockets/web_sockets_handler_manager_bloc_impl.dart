@@ -12,11 +12,10 @@ import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 
-// todo: handle listen to one endpoint from different place
-// we should have only one websockets connection to one endpoint
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
   final IPleromaWebSocketsService pleromaWebSocketsService;
@@ -38,10 +37,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenMyAccountChannel({
+    @required WebSocketsListenType listenType,
     @required bool notification,
     @required bool chat,
   }) =>
       MyAccountWebSocketsHandler(
+        listenType: listenType,
         notification: notification,
         chat: chat,
         pleromaWebSocketsService: pleromaWebSocketsService,
@@ -55,10 +56,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenAccountChannel({
+    @required WebSocketsListenType listenType,
     @required String accountId,
     @required bool notification,
   }) =>
       AccountWebSocketsHandler(
+        listenType: listenType,
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
@@ -71,7 +74,10 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  IDisposable listenDirectChannel() => ConversationChatWebSocketsHandler(
+  IDisposable listenDirectChannel({
+    @required WebSocketsListenType listenType,
+  }) =>
+      ConversationChatWebSocketsHandler(
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
@@ -80,14 +86,17 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
         accountId: null,
+        listenType: listenType,
       );
 
   @override
   IDisposable listenPublicChannel({
+    @required WebSocketsListenType listenType,
     @required bool local,
     @required bool onlyMedia,
   }) =>
       PublicTimelineWebSocketsHandler(
+        listenType: listenType,
         local: local,
         onlyMedia: local,
         pleromaWebSocketsService: pleromaWebSocketsService,
@@ -101,10 +110,12 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenHashtagChannel({
+    @required WebSocketsListenType listenType,
     @required String hashtag,
     @required bool local,
   }) =>
       HashtagStatusListWebSocketsHandler(
+        listenType: listenType,
         hashtag: hashtag,
         local: local,
         pleromaWebSocketsService: pleromaWebSocketsService,
@@ -118,9 +129,11 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenListChannel({
+    @required WebSocketsListenType listenType,
     @required String listId,
   }) =>
       CustomListStatusListWebSocketsHandler(
+        listenType: listenType,
         customListRemoteId: listId,
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,

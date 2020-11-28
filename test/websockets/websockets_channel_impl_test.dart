@@ -1,4 +1,4 @@
-import 'package:fedi/websockets/websockets_channel_impl.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

@@ -5,8 +5,8 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_model.dart';
-import 'package:fedi/websockets/websockets_channel.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -43,10 +43,13 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     _logger = Logger(logTag);
     _logger.finest(() =>
         "Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}");
-    addDisposable(streamSubscription:
-        webSocketsChannel.eventsStream.listen((event) async {
-      await handleEvent(event);
-    }));
+    addDisposable(
+      streamSubscription: webSocketsChannel.eventsStream.listen(
+        (event) async {
+          await handleEvent(event);
+        },
+      ),
+    );
   }
 
   Future handleEvent(PleromaWebSocketsEvent event) async {

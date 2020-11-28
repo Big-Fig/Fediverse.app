@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/websockets/websockets_channel_source.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 
 class WebSocketsChannelSourceMock<T extends WebSocketsEvent>

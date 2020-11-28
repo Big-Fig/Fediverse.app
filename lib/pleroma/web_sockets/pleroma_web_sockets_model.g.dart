@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pleroma_websockets_model.dart';
+part of 'pleroma_web_sockets_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

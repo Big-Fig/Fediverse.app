@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/websockets/websockets_channel_source.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:web_socket_channel/io.dart';
 
-var _logger = Logger("websockets_channel_source_impl.dart");
+var _logger = Logger("web_sockets_channel_source_impl.dart");
 
 class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannelSource<T> {
