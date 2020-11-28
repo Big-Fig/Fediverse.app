@@ -18,6 +18,8 @@ class ToastService extends DisposableOwner implements IToastService {
     @required String title,
     bool titleAutoFontSize = true,
     String content,
+    VoidCallback onClick,
+    Duration duration = const Duration(seconds: 2, milliseconds: 500),
   }) {
     assert(title != null);
     overlayNotificationService.showNotification(
@@ -26,10 +28,11 @@ class ToastService extends DisposableOwner implements IToastService {
         title: title,
         content: content,
         titleAutoFontSize: titleAutoFontSize,
+        onClick: onClick,
       ),
       slideDismissible: true,
       key: ValueKey(title),
-      duration: Duration(seconds: 1),
+      duration: duration,
     );
   }
 
@@ -39,6 +42,8 @@ class ToastService extends DisposableOwner implements IToastService {
     @required String title,
     bool titleAutoFontSize = true,
     String content,
+    VoidCallback onClick,
+    Duration duration = const Duration(seconds: 1, milliseconds: 500),
   }) {
     assert(title != null);
     overlayNotificationService.showNotification(
@@ -47,10 +52,11 @@ class ToastService extends DisposableOwner implements IToastService {
         title: title,
         content: content,
         titleAutoFontSize: titleAutoFontSize,
+        onClick: onClick,
       ),
       slideDismissible: true,
       key: ValueKey(title),
-      duration: Duration(seconds: 1),
+      duration: duration,
     );
   }
 }

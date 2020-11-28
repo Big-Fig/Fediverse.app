@@ -4331,6 +4331,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Always`
+  String get app_toast_handling_type_always {
+    return Intl.message(
+      'Always',
+      name: 'app_toast_handling_type_always',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When instance not selected`
+  String get app_toast_handling_type_onlyWhenInstanceNotSelected {
+    return Intl.message(
+      'When instance not selected',
+      name: 'app_toast_handling_type_onlyWhenInstanceNotSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When instance selected`
+  String get app_toast_handling_type_onlyWhenInstanceSelected {
+    return Intl.message(
+      'When instance selected',
+      name: 'app_toast_handling_type_onlyWhenInstanceSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When`
+  String get app_toast_settings_field_handling_type_label {
+    return Intl.message(
+      'When',
+      name: 'app_toast_settings_field_handling_type_label',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -26,12 +26,10 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc_impl.dart';
-import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/toast/toast_service_provider.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
@@ -154,6 +152,7 @@ void runInitializedSplashApp({
     appContextBloc.provideContextToChild(
       child: FediApp(
         appTitle: appTitle,
+        instanceInitialized: false,
         child: Provider<IAppContextBloc>.value(
           value: appContextBloc,
           child: const SplashPage(),
@@ -210,6 +209,7 @@ Future runInitializedCurrentInstanceApp({
             pushLoaderBloc: pushLoaderBloc,
           ),
           child: FediApp(
+            instanceInitialized: true,
             appTitle: appTitle,
             child: buildAuthInstanceContextInitWidget(
               pushLoaderBloc: pushLoaderBloc,
@@ -236,39 +236,47 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
 
   currentAuthInstanceContextLoadingBloc.addDisposable(
-      streamSubscription: currentAuthInstanceContextLoadingBloc.stateStream
-          .distinct()
-          .listen((state) {
-    if (state ==
-            CurrentAuthInstanceContextInitState
-                .cantFetchAndLocalCacheNotExist ||
-        state == CurrentAuthInstanceContextInitState.localCacheExist) {
-      currentInstanceContextBloc.addDisposable(streamSubscription:
-          pushLoaderBloc.launchOrResumePushLoaderNotificationStream
-              .listen((launchOrResumePushLoaderNotification) {
-        if (launchOrResumePushLoaderNotification != null) {
-          Future.delayed(Duration(milliseconds: 100), () async {
-            var notification =
-                launchOrResumePushLoaderNotification.notification;
-            if (notification.isContainsChat) {
-              await navigatorKey.currentState.push(createPleromaChatPageRoute(
-                  await currentInstanceContextBloc
-                      .get<IPleromaChatRepository>()
-                      .findByRemoteId(notification.chatRemoteId)));
-            } else if (notification.isContainsStatus) {
-              await navigatorKey.currentState.push(createStatusThreadPageRoute(
-                status: notification.status,
-                initialMediaAttachment: null,
-              ));
-            } else if (notification.isContainsAccount) {
-              await navigatorKey.currentState
-                  .push(createAccountDetailsPageRoute(notification.account));
-            }
-          });
+    streamSubscription:
+        currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
+      (state) {
+        if (state ==
+                CurrentAuthInstanceContextInitState
+                    .cantFetchAndLocalCacheNotExist ||
+            state == CurrentAuthInstanceContextInitState.localCacheExist) {
+          currentInstanceContextBloc.addDisposable(
+            streamSubscription: pushLoaderBloc
+                .launchOrResumePushLoaderNotificationStream
+                .listen(
+              (launchOrResumePushLoaderNotification) {
+                if (launchOrResumePushLoaderNotification != null) {
+                  Future.delayed(Duration(milliseconds: 100), () async {
+                    var notification =
+                        launchOrResumePushLoaderNotification.notification;
+                    if (notification.isContainsChat) {
+                      await navigatorKey.currentState.push(
+                          createPleromaChatPageRoute(
+                              await currentInstanceContextBloc
+                                  .get<IPleromaChatRepository>()
+                                  .findByRemoteId(notification.chatRemoteId)));
+                    } else if (notification.isContainsStatus) {
+                      await navigatorKey.currentState
+                          .push(createStatusThreadPageRoute(
+                        status: notification.status,
+                        initialMediaAttachment: null,
+                      ));
+                    } else if (notification.isContainsAccount) {
+                      await navigatorKey.currentState.push(
+                          createAccountDetailsPageRoute(notification.account));
+                    }
+                  });
+                }
+              },
+            ),
+          );
         }
-      }));
-    }
-  }));
+      },
+    ),
+  );
 
   return currentAuthInstanceContextLoadingBloc;
 }
@@ -303,6 +311,7 @@ void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
       child: DisposableProvider<IJoinAuthInstanceBloc>(
         create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
         child: FediApp(
+          instanceInitialized: false,
           appTitle: appTitle,
           child: const FromScratchJoinAuthInstancePage(),
         ),
@@ -331,10 +340,12 @@ HomeTab calculateHomeTabForNotification(
 
 class FediApp extends StatelessWidget {
   final Widget child;
+  final bool instanceInitialized;
   final String appTitle;
 
   FediApp({
     @required this.child,
+    @required this.instanceInitialized,
     @required this.appTitle,
   });
 
@@ -362,68 +373,63 @@ class FediApp extends StatelessWidget {
 
             _logger.finest(() => "currentTheme $currentTheme "
                 "themeMode $themeMode");
+            Widget child = StreamBuilder<LocalizationLocale>(
+              stream: localizationSettingsBloc.localizationLocaleStream,
+              builder: (context, snapshot) {
+                var localizationLocale = snapshot.data;
+
+                Locale locale;
+                if (localizationLocale != null) {
+                  locale = Locale.fromSubtags(
+                    languageCode: localizationLocale.languageCode,
+                    countryCode: localizationLocale.countryCode,
+                    scriptCode: localizationLocale.scriptCode,
+                  );
+                }
+                _logger.finest(() => "locale $locale");
+                return MaterialApp(
+                  // checkerboardRasterCacheImages: true,
+                  // checkerboardOffscreenLayers: true,
+                  debugShowCheckedModeBanner: false,
+                  title: appTitle,
+                  localizationsDelegates: [
+                    S.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                  ],
+                  supportedLocales: S.delegate.supportedLocales,
+                  locale: locale,
+                  theme: lightFediUiTheme.themeData,
+                  darkTheme: darkFediUiTheme.themeData,
+                  themeMode: themeMode,
+                  initialRoute: "/",
+                  home: this.child,
+                  navigatorKey: navigatorKey,
+                  navigatorObservers: [
+                    FirebaseAnalyticsObserver(
+                        analytics: IAnalyticsService.of(context, listen: false)
+                            .firebaseAnalytics),
+                  ],
+                );
+              },
+            );
+
+            if (instanceInitialized == true) {
+              child = DisposableProxyProvider<IToastService, IToastHandlerBloc>(
+                lazy: false,
+                update: (context, toastService, _) =>
+                    ToastHandlerBloc.createFromContext(
+                  context,
+                  toastService,
+                ),
+                child: child,
+              );
+            }
             return OverlayNotificationServiceProvider(
               child: ToastServiceProvider(
                 child: provideCurrentTheme(
                   currentTheme: currentTheme ?? lightFediUiTheme,
-                  child:
-                      DisposableProxyProvider<IToastService, IToastHandlerBloc>(
-                    lazy: false,
-                    update: (context, toastService, _) => ToastHandlerBloc(
-                      pushHandlerBloc: IPushHandlerBloc.of(
-                        context,
-                        listen: false,
-                      ),
-                      toastService: toastService,
-                      currentInstance:
-                          ICurrentAuthInstanceBloc.of(context, listen: false)
-                              .currentInstance,
-                      context: context,
-                      toastSettingsBloc:
-                          IToastSettingsBloc.of(context, listen: false),
-                    ),
-                    child: StreamBuilder<LocalizationLocale>(
-                      stream: localizationSettingsBloc.localizationLocaleStream,
-                      builder: (context, snapshot) {
-                        var localizationLocale = snapshot.data;
-
-                        Locale locale;
-                        if (localizationLocale != null) {
-                          locale = Locale.fromSubtags(
-                            languageCode: localizationLocale.languageCode,
-                            countryCode: localizationLocale.countryCode,
-                            scriptCode: localizationLocale.scriptCode,
-                          );
-                        }
-                        _logger.finest(() => "locale $locale");
-                        return MaterialApp(
-                          // checkerboardRasterCacheImages: true,
-                          // checkerboardOffscreenLayers: true,
-                          debugShowCheckedModeBanner: false,
-                          title: appTitle,
-                          localizationsDelegates: [
-                            S.delegate,
-                            GlobalMaterialLocalizations.delegate,
-                            GlobalWidgetsLocalizations.delegate,
-                          ],
-                          supportedLocales: S.delegate.supportedLocales,
-                          locale: locale,
-                          theme: lightFediUiTheme.themeData,
-                          darkTheme: darkFediUiTheme.themeData,
-                          themeMode: themeMode,
-                          initialRoute: "/",
-                          home: child,
-                          navigatorKey: navigatorKey,
-                          navigatorObservers: [
-                            FirebaseAnalyticsObserver(
-                                analytics:
-                                    IAnalyticsService.of(context, listen: false)
-                                        .firebaseAnalytics),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
+                  child: child,
                 ),
               ),
             );

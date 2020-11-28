@@ -2,6 +2,9 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
+import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
@@ -33,6 +36,10 @@ class EditToastSettingsBloc
   IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
 
   @override
+  IToastHandlingTypeSingleFromListValueFormFieldBloc
+      toastHandlingTypeSingleFromListValueFormFieldBloc;
+
+  @override
   List<IFormItemBloc> get currentItems => [
         favouriteFieldBloc,
         followFieldBloc,
@@ -41,6 +48,7 @@ class EditToastSettingsBloc
         pollFieldBloc,
         pleromaChatMentionFieldBloc,
         pleromaEmojiReactionFieldBloc,
+        toastHandlingTypeSingleFromListValueFormFieldBloc,
       ];
 
   PushSettings get currentPushSettings => currentSettings.pushSettings;
@@ -103,6 +111,12 @@ class EditToastSettingsBloc
                   GlobalOrInstanceSettingsType.global),
     );
 
+    toastHandlingTypeSingleFromListValueFormFieldBloc =
+        ToastHandlingTypeSingleFromListValueFormFieldBloc(
+      originValue: currentSettings.handlingType,
+      isEnabled: isEnabled,
+    );
+
     onItemsChanged();
 
     addDisposable(disposable: favouriteFieldBloc);
@@ -112,6 +126,8 @@ class EditToastSettingsBloc
     addDisposable(disposable: pollFieldBloc);
     addDisposable(disposable: pleromaChatMentionFieldBloc);
     addDisposable(disposable: pleromaEmojiReactionFieldBloc);
+    addDisposable(
+        disposable: toastHandlingTypeSingleFromListValueFormFieldBloc);
   }
 
   @override
@@ -126,6 +142,9 @@ class EditToastSettingsBloc
         pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
         pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
       ),
+      handlingTypeString: toastHandlingTypeSingleFromListValueFormFieldBloc
+          .currentValue
+          .toJsonValue(),
     );
   }
 
@@ -157,6 +176,10 @@ class EditToastSettingsBloc
     pleromaEmojiReactionFieldBloc.changeCurrentValue(
       pushSettings.pleromaEmojiReaction &&
           (currentInstance.isPleromaInstance || isNotGlobal),
+    );
+
+    toastHandlingTypeSingleFromListValueFormFieldBloc.changeCurrentValue(
+      settings.handlingType,
     );
   }
 }

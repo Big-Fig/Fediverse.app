@@ -43,15 +43,13 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   @override
   Future updateSettings(T settings) async {
-    if (enabled) {
-      switch (globalOrInstanceSettingsType) {
-        case GlobalOrInstanceSettingsType.instance:
-          await globalOrInstanceSettingsBloc.updateInstanceSettings(settings);
-          break;
-        case GlobalOrInstanceSettingsType.global:
-          await globalOrInstanceSettingsBloc.updateGlobalSettings(settings);
-          break;
-      }
+    switch (globalOrInstanceSettingsType) {
+      case GlobalOrInstanceSettingsType.instance:
+        await globalOrInstanceSettingsBloc.updateInstanceSettings(settings);
+        break;
+      case GlobalOrInstanceSettingsType.global:
+        await globalOrInstanceSettingsBloc.updateGlobalSettings(settings);
+        break;
     }
   }
 

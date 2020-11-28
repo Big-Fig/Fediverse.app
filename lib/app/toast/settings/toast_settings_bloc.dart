@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
+import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +15,12 @@ abstract class IToastSettingsBloc
   Stream<bool> get favouriteStream;
 
   void changeFavourite(bool value);
+
+  ToastHandlingType get handlingType;
+
+  Stream<ToastHandlingType> get handlingTypeStream;
+
+  void changeHandlingType(ToastHandlingType value);
 
   bool get follow;
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
+import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -16,8 +17,16 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
   @JsonKey(name: "push_settings")
   final PushSettings pushSettings;
 
+  @HiveField(4)
+  @JsonKey(name: "handling_type_string")
+  final String handlingTypeString;
+
+  ToastHandlingType get handlingType =>
+      handlingTypeString.toToastHandlingType();
+
   ToastSettings({
     @required this.pushSettings,
+    @required this.handlingTypeString,
   });
 
   factory ToastSettings.fromJson(Map<String, dynamic> json) =>
@@ -40,22 +49,26 @@ class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
 
   ToastSettings copyWith({
     PushSettings pushSettings,
-  }) => ToastSettings(
-      pushSettings: pushSettings ?? this.pushSettings,
-    );
+    String handlingTypeString,
+  }) =>
+      ToastSettings(
+        pushSettings: pushSettings ?? this.pushSettings,
+        handlingTypeString: handlingTypeString ?? this.handlingTypeString,
+      );
+
+  @override
+  String toString() {
+    return 'ToastSettings{pushSettings: $pushSettings, handlingType: $handlingType}';
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ToastSettings &&
           runtimeType == other.runtimeType &&
-          pushSettings == other.pushSettings;
+          pushSettings == other.pushSettings &&
+          handlingType == other.handlingType;
 
   @override
-  int get hashCode => pushSettings.hashCode;
-
-  @override
-  String toString() {
-    return 'ToastSettings{pushSettings: $pushSettings}';
-  }
+  int get hashCode => pushSettings.hashCode ^ handlingType.hashCode;
 }

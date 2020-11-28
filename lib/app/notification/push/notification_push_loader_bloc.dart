@@ -14,4 +14,6 @@ abstract class INotificationPushLoaderBloc extends IDisposable
 
   Stream<NotificationPushLoaderNotification>
       get launchOrResumePushLoaderNotificationStream;
+
+  Stream<NotificationPushLoaderNotification> get handledNotificationsStream;
 }

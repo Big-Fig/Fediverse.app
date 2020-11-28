@@ -11,12 +11,14 @@ class ToastWidget extends StatelessWidget {
   final String title;
   final String content;
   final bool titleAutoFontSize;
+  final VoidCallback onClick;
 
   ToastWidget({
     @required this.toastType,
     @required this.title,
     @required this.content,
     @required this.titleAutoFontSize,
+    @required this.onClick,
   });
 
   @override
@@ -47,22 +49,25 @@ class ToastWidget extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           top: true,
-          child: ListTileTheme(
-            textColor: textColor,
-            iconColor: iconColor,
-            child: ListTile(
-              title: titleAutoFontSize
-                  ? AutoSizeText(
-                      title,
-                      style: fediUiTextTheme.bigShortBoldWhite,
-                    )
-                  : Text(
-                      title,
-                      style: fediUiTextTheme.bigShortBoldWhite,
-                    ),
-              subtitle: Text(
-                content,
-                style: fediUiTextTheme.smallWhite,
+          child: InkWell(
+            onTap: onClick,
+            child: ListTileTheme(
+              textColor: textColor,
+              iconColor: iconColor,
+              child: ListTile(
+                title: titleAutoFontSize
+                    ? AutoSizeText(
+                        title,
+                        style: fediUiTextTheme.bigShortBoldWhite,
+                      )
+                    : Text(
+                        title,
+                        style: fediUiTextTheme.bigShortBoldWhite,
+                      ),
+                subtitle: Text(
+                  content,
+                  style: fediUiTextTheme.smallWhite,
+                ),
               ),
             ),
           ),
