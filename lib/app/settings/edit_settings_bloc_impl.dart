@@ -8,12 +8,12 @@ import 'package:rxdart/rxdart.dart';
 abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
     implements IEditSettingsBloc<T> {
   @override
-  bool get enabled => enabledSubject.value;
+  bool get isEnabled => isEnabledSubject.value;
 
   @override
-  Stream<bool> get enabledStream => enabledSubject.stream;
+  Stream<bool> get isEnabledStream => isEnabledSubject.stream;
 
-  final BehaviorSubject<bool> enabledSubject;
+  final BehaviorSubject<bool> isEnabledSubject;
 
   @override
   final ISettingsBloc<T> settingsBloc;
@@ -22,16 +22,16 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
     @required bool isEnabled,
     @required this.settingsBloc,
     @required bool isAllItemsInitialized,
-  })  : enabledSubject = BehaviorSubject.seeded(isEnabled),
+  })  : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
         super(
           isAllItemsInitialized: isAllItemsInitialized,
         ) {
-    addDisposable(subject: enabledSubject);
+    addDisposable(subject: isEnabledSubject);
 
     addDisposable(
       streamSubscription: isSomethingChangedStream.listen(
         (_) {
-          if(isEnabled) {
+          if (isEnabled) {
             saveSettingsFromFormToSettingsBloc();
           }
         },
@@ -39,8 +39,11 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
     );
 
     addDisposable(
-      streamSubscription: settingsBloc.settingsDataStream.listen(
+      streamSubscription: currentSettingsStream.listen(
         (newSettings) {
+          if (newSettings == null) {
+            return;
+          }
           saveSettingsFromSettingsBlocToForm(newSettings);
         },
       ),
@@ -53,13 +56,15 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
   @override
   Stream<T> get currentSettingsStream => settingsBloc.settingsDataStream;
 
+  bool get isPossibleToSaveSettingsToBloc => true;
+
   @override
   Future updateSettings(T settings) async =>
       settingsBloc.updateSettings(settings);
 
   @override
   Future changeEnabled(bool enabled) async {
-    enabledSubject.add(enabled);
+    isEnabledSubject.add(enabled);
   }
 
   T calculateCurrentFormFieldsSettings();
@@ -70,6 +75,13 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
 
   Future saveSettingsFromFormToSettingsBloc() async {
     if (updateInProgress) {
+      return;
+    }
+    if (!isEnabled) {
+      return;
+    }
+
+    if (!isPossibleToSaveSettingsToBloc) {
       return;
     }
     updateInProgress = true;

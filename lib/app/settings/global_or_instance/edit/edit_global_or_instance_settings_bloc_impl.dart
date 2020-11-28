@@ -39,7 +39,7 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
           instanceSettingsData: instanceSettingsData,
           globalSettingsData: globalSettingsData,
         ),
-      ).distinct();
+      );
 
   @override
   Future updateSettings(T settings) async {
@@ -49,6 +49,9 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
         break;
       case GlobalOrInstanceSettingsType.global:
         await globalOrInstanceSettingsBloc.updateGlobalSettings(settings);
+        break;
+      default:
+        // nothing
         break;
     }
   }
@@ -64,8 +67,8 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
       case GlobalOrInstanceSettingsType.global:
         return globalSettingsData;
         break;
+      default:
+        return globalSettingsData;
     }
-
-    throw "unsupported globalOrInstanceSettingsType $globalOrInstanceSettingsType";
   }
 }
