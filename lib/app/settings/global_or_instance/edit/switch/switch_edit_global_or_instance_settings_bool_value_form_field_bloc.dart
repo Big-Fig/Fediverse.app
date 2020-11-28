@@ -1,3 +1,4 @@
+import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,5 +9,8 @@ abstract class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
           {bool listen = true}) =>
       Provider.of<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(context,
           listen: listen);
+
+  GlobalOrInstanceSettingsType get globalOrInstanceSettingsType;
+  Stream<GlobalOrInstanceSettingsType> get globalOrInstanceSettingsTypeStream;
 
 }

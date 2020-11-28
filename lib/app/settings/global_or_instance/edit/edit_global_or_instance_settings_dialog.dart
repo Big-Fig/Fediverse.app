@@ -41,36 +41,33 @@ void showEditGlobalOrInstanceSettingsDialog({
           currentInstance.userAtHost,
         ),
     subTitle: subTitle,
-    child: DisposableProvider<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(
-      create: (context) => SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc(
+    child: DisposableProvider<
+        ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(
+      create: (context) =>
+          SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc(
         globalOrInstanceSettingsBloc: globalOrInstanceSettingsBloc,
       ),
       child: Builder(
         builder: (context) {
           var isUseGlobalSettingsFormBoolFieldBloc =
-              ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context);
-          return StreamBuilder<bool>(
-            stream: isUseGlobalSettingsFormBoolFieldBloc.currentValueStream
-                .distinct(),
+              ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
+                  context);
+          return StreamBuilder<GlobalOrInstanceSettingsType>(
+            stream: isUseGlobalSettingsFormBoolFieldBloc
+                .globalOrInstanceSettingsTypeStream,
+            initialData: isUseGlobalSettingsFormBoolFieldBloc
+                .globalOrInstanceSettingsType,
             builder: (context, snapshot) {
-              var isUseGlobalSettings = snapshot.data;
-              _logger.finest(() => "isUseGlobalSettings $isUseGlobalSettings");
-
-              if (isUseGlobalSettings == null) {
-                return const SizedBox.shrink();
-              }
+              var globalOrInstanceSettingsType = snapshot.data;
+              _logger.finest(() =>
+                  "globalOrInstanceSettingsType $globalOrInstanceSettingsType");
 
               return Provider<GlobalOrInstanceSettingsType>.value(
-                value: isUseGlobalSettings
-                    ? GlobalOrInstanceSettingsType.global
-                    : GlobalOrInstanceSettingsType.instance,
-                child: childContextBuilder(
-                  context: context,
-                  child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
-                    child: child,
-                    showGlobalSettingsDialogCallback:
-                        showGlobalSettingsDialogCallback,
-                  ),
+                value: globalOrInstanceSettingsType,
+                child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
+                  child: childContextBuilder(child: child),
+                  showGlobalSettingsDialogCallback:
+                      showGlobalSettingsDialogCallback,
                 ),
               );
             },

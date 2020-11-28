@@ -10,9 +10,9 @@ abstract class IEditSettingsBloc<T extends ISettings> extends IFormBloc {
 
   ISettingsBloc<T> get settingsBloc;
 
-  bool get enabled;
+  bool get isEnabled;
 
-  Stream<bool> get enabledStream;
+  Stream<bool> get isEnabledStream;
 
   T get currentSettings;
 
