@@ -14,6 +14,9 @@ import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger("fedi_video_player_widget.dart");
 
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
@@ -146,10 +149,14 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
     return StreamBuilder<bool>(
       stream: videoMediaPlayerBloc.isInitializedStream,
-      initialData: videoMediaPlayerBloc.isInitialized,
       builder: (context, snapshot) {
-        var isInitialized = snapshot.data;
-        if (isInitialized) {
+        var isInitialized = snapshot.data ?? false;
+        _logger.finest(() => "isInitialized $isInitialized, "
+            "playerState  ${videoMediaPlayerBloc.playerState}");
+        // todo: remove hack
+        // sometimes  videoMediaPlayerBloc.isInitialized already false
+        // but isInitialized contains old true value
+        if (isInitialized && videoMediaPlayerBloc.isInitialized) {
           return AspectRatio(
             aspectRatio: videoMediaPlayerBloc.actualAspectRatio,
             child: const _FediVideoPlayerInitializedWidget(),
