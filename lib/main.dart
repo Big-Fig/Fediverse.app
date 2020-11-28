@@ -291,12 +291,18 @@ Widget buildAuthInstanceContextInitWidget({
               startTab: calculateHomeTabForNotification(
                   pushLoaderBloc.launchOrResumePushLoaderNotification));
 
-          homeBloc.addDisposable(streamSubscription: pushLoaderBloc
-              .launchOrResumePushLoaderNotificationStream
-              .listen((launchOrResumePushLoaderNotification) {
-            homeBloc.selectTab(calculateHomeTabForNotification(
-                launchOrResumePushLoaderNotification));
-          }));
+          homeBloc.addDisposable(
+            streamSubscription: pushLoaderBloc
+                .launchOrResumePushLoaderNotificationStream
+                .listen(
+              (launchOrResumePushLoaderNotification) {
+                homeBloc.selectTab(
+                  calculateHomeTabForNotification(
+                      launchOrResumePushLoaderNotification),
+                );
+              },
+            ),
+          );
           return homeBloc;
         },
         child: FcmPushPermissionCheckerWidget(

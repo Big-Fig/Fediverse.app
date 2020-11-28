@@ -1,5 +1,6 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/notification/go_to_notification_extension.dart';
@@ -32,8 +33,9 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       ToastHandlerBloc(
         context: context,
         toastService: toastService,
-        currentInstance:
-            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
+        authInstanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
+        currentAuthInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
         pushHandlerBloc: IPushHandlerBloc.of(context, listen: false),
         localPreferencesService:
             ILocalPreferencesService.of(context, listen: false),
@@ -49,12 +51,15 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             IGlobalToastSettingsLocalPreferencesBloc.of(context, listen: false),
       );
 
+  AuthInstance get currentInstance => currentAuthInstanceBloc.currentInstance;
+
   // TODO: remote context field?
   final BuildContext context;
   final IToastService toastService;
+  final IAuthInstanceListBloc authInstanceListBloc;
+  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
-  final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
   final IConversationChatCurrentBloc currentInstanceConversationChatCurrentBloc;
   final IPleromaChatCurrentBloc currentInstancePleromaChatCurrentBloc;
@@ -65,7 +70,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   ToastHandlerBloc({
     @required this.context,
     @required this.toastService,
-    @required this.currentInstance,
+    @required this.currentAuthInstanceBloc,
+    @required this.authInstanceListBloc,
     @required this.pushHandlerBloc,
     @required this.localPreferencesService,
     @required this.currentInstanceToastSettingsBloc,
@@ -100,7 +106,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
 
     if (!isForCurrentInstance) {
-      _handleNonCurrentInstancePushMessage(pushHandlerMessage);
+      await _handleNonCurrentInstancePushMessage(pushHandlerMessage);
     } else {
       // current instance push messages handled
       // via currentInstanceNotificationPushLoaderBloc
@@ -182,7 +188,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     );
   }
 
-  void _handleNonCurrentInstancePushMessage(
+  Future _handleNonCurrentInstancePushMessage(
       PushHandlerMessage pushHandlerMessage) async {
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
@@ -216,6 +222,22 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     if (isEnabled && isEnabledWhenInstanceNotSelected) {
       _showToast(
         pushHandlerMessage: pushHandlerMessage,
+        onClick: () async {
+          var instanceByCredentials =
+              authInstanceListBloc.findInstanceByCredentials(
+            host: pleromaPushMessage.server,
+            acct: pleromaPushMessage.account,
+          );
+
+          _logger.finest(() => "_handleNonCurrentInstancePushMessage "
+              "instanceByCredentials $instanceByCredentials");
+
+          if (instanceByCredentials != null) {
+            await pushHandlerBloc.markAsLaunchMessage(pushHandlerMessage);
+            await currentAuthInstanceBloc
+                .changeCurrentInstance(instanceByCredentials);
+          }
+        },
       );
     }
   }

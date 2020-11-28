@@ -143,7 +143,7 @@ PushMessage _parsePushMessageOnIos(
     notification:
         data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
     data: data ?? {},
-    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],
+    typeString: pushMessageType.toJsonValue(),
   );
 }
 
@@ -162,6 +162,6 @@ PushMessage _parsePushMessageOnAndroid(
         ? PushNotification.fromJson(notificationJson)
         : null,
     data: dataJson,
-    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],
+    typeString: pushMessageType.toJsonValue(),
   );
 }

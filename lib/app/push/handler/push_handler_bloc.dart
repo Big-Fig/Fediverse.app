@@ -16,6 +16,8 @@ abstract class IPushHandlerBloc extends IDisposable {
 
   Future<bool> markAsHandled(List<PushHandlerMessage> messages);
 
+  Future markAsLaunchMessage(PushHandlerMessage message);
+
   void addRealTimeHandler(IPushRealTimeHandler pushHandler);
 
   void removeRealTimeHandler(IPushRealTimeHandler pushHandler);
