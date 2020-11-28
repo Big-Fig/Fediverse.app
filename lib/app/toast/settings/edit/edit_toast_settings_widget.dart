@@ -1,4 +1,6 @@
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/toast/handling_type/form/toast_handling_type_single_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -15,6 +17,13 @@ class EditToastSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: [
+          ProxyProvider<IEditToastSettingsBloc,
+              IToastHandlingTypeSingleFromListValueFormFieldBloc>(
+            update: (context, value, previous) =>
+                value.toastHandlingTypeSingleFromListValueFormFieldBloc,
+            child:
+                const ToastHandlingTypeSingleFromListValueFormFieldRowWidget(),
+          ),
           _EditToastSettingsFavouriteFieldWidget(),
           _EditToastSettingsFollowFieldWidget(),
           _EditToastSettingsMentionFieldWidget(),

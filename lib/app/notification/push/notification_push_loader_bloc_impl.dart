@@ -39,8 +39,12 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       get launchOrResumePushLoaderNotificationStream =>
           launchOrResumePushLoaderNotificationSubject.stream;
 
-  StreamController<NotificationPushLoaderNotification>
-      notificationStreamController = StreamController.broadcast();
+  final StreamController<NotificationPushLoaderNotification>
+      _handledNotificationsStreamController = StreamController.broadcast();
+
+  @override
+  Stream<NotificationPushLoaderNotification> get handledNotificationsStream =>
+      _handledNotificationsStreamController.stream;
 
   NotificationPushLoaderBloc({
     @required this.currentInstance,
@@ -58,6 +62,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         },
       ),
     );
+    addDisposable(streamController: _handledNotificationsStreamController);
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
@@ -111,6 +116,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         if (chatMessage != null) {
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
+
+        _handledNotificationsStreamController.add(
+          NotificationPushLoaderNotification(
+              notification: await notificationRepository
+                  .findByRemoteId(remoteNotification.id),
+              pushHandlerMessage: pushHandlerMessage),
+        );
       }
     } else {
       handled = false;

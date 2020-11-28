@@ -12,7 +12,7 @@ abstract class ToastSettingsLocalPreferencesBloc
   ) : super(
           preferencesService,
           key,
-          2,
+          3,
           (json) => ToastSettings.fromJson(json),
         );
 }
