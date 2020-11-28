@@ -6,12 +6,12 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/websockets/websockets_channel_model.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'pleroma_websockets_model.g.dart';
+part 'pleroma_web_sockets_model.g.dart';
 
 class PleromaWebSocketsChannelConfig
     extends WebSocketsChannelConfig<PleromaWebSocketsEvent> {

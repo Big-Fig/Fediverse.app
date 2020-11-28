@@ -7,7 +7,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';

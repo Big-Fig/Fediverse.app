@@ -1,7 +1,7 @@
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/websockets/websockets_channel_source.dart';
-import 'package:fedi/websockets/websockets_channel_source_impl.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_source_impl.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IWebSocketsChannelConfig<T extends WebSocketsEvent> {

@@ -11,7 +11,7 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';

@@ -136,14 +136,14 @@ import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.d
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service_impl.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service_impl.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:fedi/websockets/websockets_service.dart';
+import 'package:fedi/web_sockets/web_sockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';

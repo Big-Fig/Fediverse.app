@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/websockets/websockets_channel_model.dart';
-import 'package:fedi/websockets/websockets_model.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
+import 'package:fedi/web_sockets/web_sockets_model.dart';
 
 abstract class IWebSocketsChannel<T extends WebSocketsEvent>
     implements IDisposable {

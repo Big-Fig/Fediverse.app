@@ -13,6 +13,7 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -56,6 +57,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.public:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
+            listenType: WebSocketsListenType.foreground,
             local: timeline.onlyLocal,
             onlyMedia: timeline.onlyWithMedia,
           ));
@@ -64,6 +66,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.home:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
+            listenType: WebSocketsListenType.foreground,
             notification: false,
             chat: false,
           ));
@@ -71,6 +74,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.customList:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenListChannel(
+            listenType: WebSocketsListenType.foreground,
             listId: timeline.onlyInRemoteList.id,
           ));
           break;
@@ -78,6 +82,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.hashtag:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
+            listenType: WebSocketsListenType.foreground,
             hashtag: timeline.withRemoteHashtag,
             local: timeline.onlyLocal,
           ));
@@ -85,6 +90,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.account:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
+            listenType: WebSocketsListenType.foreground,
             accountId: timeline.onlyFromRemoteAccount.id,
             notification: false,
           ));
