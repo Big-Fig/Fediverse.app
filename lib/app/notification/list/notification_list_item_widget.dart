@@ -3,9 +3,6 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
-import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -13,9 +10,9 @@ import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
+import 'package:fedi/app/notification/go_to_notification_extension.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -31,7 +28,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger("notification_list_item_widget.dart");
@@ -243,27 +239,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    unawaited(notificationBloc.markAsRead());
-    var status = notificationBloc.status;
-    var account = notificationBloc.account;
-    var chatRemoteId = notificationBloc.chatRemoteId;
-    if (notificationBloc.typePleroma == PleromaNotificationType.followRequest) {
-      goToMyAccountFollowRequestListPage(context);
-    } else if (status != null) {
-      goToStatusThreadPage(
-        context,
-        status: status,
-        initialMediaAttachment: null,
-      );
-    } else if (chatRemoteId != null) {
-      var chatRepository = IPleromaChatRepository.of(context, listen: false);
-
-      var chat = await chatRepository.findByRemoteId(chatRemoteId);
-
-      goToPleromaChatPage(context, chat: chat);
-    } else if (account != null) {
-      goToAccountDetailsPage(context, account);
-    }
+    await notificationBloc.notification.goToRelatedPage(context);
   }
 
   void _onNotificationLongPress(BuildContext context) {

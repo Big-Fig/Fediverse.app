@@ -373,64 +373,71 @@ class FediApp extends StatelessWidget {
 
             _logger.finest(() => "currentTheme $currentTheme "
                 "themeMode $themeMode");
-            Widget child = StreamBuilder<LocalizationLocale>(
-              stream: localizationSettingsBloc.localizationLocaleStream,
-              builder: (context, snapshot) {
-                var localizationLocale = snapshot.data;
 
-                Locale locale;
-                if (localizationLocale != null) {
-                  locale = Locale.fromSubtags(
-                    languageCode: localizationLocale.languageCode,
-                    countryCode: localizationLocale.countryCode,
-                    scriptCode: localizationLocale.scriptCode,
+            return provideCurrentTheme(
+              currentTheme: currentTheme ?? lightFediUiTheme,
+              child: StreamBuilder<LocalizationLocale>(
+                stream: localizationSettingsBloc.localizationLocaleStream,
+                builder: (context, snapshot) {
+                  var localizationLocale = snapshot.data;
+
+                  Locale locale;
+                  if (localizationLocale != null) {
+                    locale = Locale.fromSubtags(
+                      languageCode: localizationLocale.languageCode,
+                      countryCode: localizationLocale.countryCode,
+                      scriptCode: localizationLocale.scriptCode,
+                    );
+                  }
+                  _logger.finest(() => "locale $locale");
+                  return OverlayNotificationServiceProvider(
+                    child: ToastServiceProvider(
+                      child: MaterialApp(
+                        // checkerboardRasterCacheImages: true,
+                        // checkerboardOffscreenLayers: true,
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        localizationsDelegates: [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: locale,
+                        theme: lightFediUiTheme.themeData,
+                        darkTheme: darkFediUiTheme.themeData,
+                        themeMode: themeMode,
+                        initialRoute: "/",
+                        home: Builder(builder: (context) {
+                          // it is important to init ToastHandlerBloc
+                          // as MaterialApp child
+                          // to have access to context suitable for Navigator
+                          if (instanceInitialized == true) {
+                            return DisposableProxyProvider<IToastService,
+                                IToastHandlerBloc>(
+                              lazy: false,
+                              update: (context, toastService, _) =>
+                                  ToastHandlerBloc.createFromContext(
+                                context,
+                                toastService,
+                              ),
+                              child: child,
+                            );
+                          } else {
+                            return child;
+                          }
+                        }),
+                        navigatorKey: navigatorKey,
+                        navigatorObservers: [
+                          FirebaseAnalyticsObserver(
+                              analytics:
+                                  IAnalyticsService.of(context, listen: false)
+                                      .firebaseAnalytics),
+                        ],
+                      ),
+                    ),
                   );
-                }
-                _logger.finest(() => "locale $locale");
-                return MaterialApp(
-                  // checkerboardRasterCacheImages: true,
-                  // checkerboardOffscreenLayers: true,
-                  debugShowCheckedModeBanner: false,
-                  title: appTitle,
-                  localizationsDelegates: [
-                    S.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                  supportedLocales: S.delegate.supportedLocales,
-                  locale: locale,
-                  theme: lightFediUiTheme.themeData,
-                  darkTheme: darkFediUiTheme.themeData,
-                  themeMode: themeMode,
-                  initialRoute: "/",
-                  home: this.child,
-                  navigatorKey: navigatorKey,
-                  navigatorObservers: [
-                    FirebaseAnalyticsObserver(
-                        analytics: IAnalyticsService.of(context, listen: false)
-                            .firebaseAnalytics),
-                  ],
-                );
-              },
-            );
-
-            if (instanceInitialized == true) {
-              child = DisposableProxyProvider<IToastService, IToastHandlerBloc>(
-                lazy: false,
-                update: (context, toastService, _) =>
-                    ToastHandlerBloc.createFromContext(
-                  context,
-                  toastService,
-                ),
-                child: child,
-              );
-            }
-            return OverlayNotificationServiceProvider(
-              child: ToastServiceProvider(
-                child: provideCurrentTheme(
-                  currentTheme: currentTheme ?? lightFediUiTheme,
-                  child: child,
-                ),
+                },
               ),
             );
           }),
