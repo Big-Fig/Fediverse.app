@@ -2,6 +2,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
+import 'package:fedi/app/notification/go_to_notification_extension.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
@@ -154,12 +155,20 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
           "isNeedShowToast $isNeedShowToast");
 
       if (isNeedShowToast) {
-        _showToast(pushHandlerMessage);
+        _showToast(
+          pushHandlerMessage: pushHandlerMessage,
+          onClick: () {
+            notification.goToRelatedPage(context);
+          },
+        );
       }
     }
   }
 
-  void _showToast(PushHandlerMessage pushHandlerMessage) {
+  void _showToast({
+    @required PushHandlerMessage pushHandlerMessage,
+    @required VoidCallback onClick,
+  }) {
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var title = "${pleromaPushMessage.account}@${pleromaPushMessage.server}"
@@ -169,6 +178,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       context: context,
       title: title,
       content: pushHandlerMessage.pushMessage.notification.body,
+      onClick: onClick,
     );
   }
 
@@ -204,7 +214,9 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         "isEnabled $isEnabled");
 
     if (isEnabled && isEnabledWhenInstanceNotSelected) {
-      _showToast(pushHandlerMessage);
+      _showToast(
+        pushHandlerMessage: pushHandlerMessage,
+      );
     }
   }
 }
