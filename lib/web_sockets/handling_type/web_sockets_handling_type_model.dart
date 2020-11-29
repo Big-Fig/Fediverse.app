@@ -6,6 +6,10 @@ enum WebSocketsHandlingType {
   foregroundAndBackground
 }
 
+extension WebSocketsHandlingTypeExtension on WebSocketsHandlingType {
+  bool get isEnabled => this != WebSocketsHandlingType.disabled;
+}
+
 extension WebSocketsHandlingTypeJsonValueExtension on WebSocketsHandlingType {
   String toJsonValue() =>
       _WebSocketsHandlingTypeEnumValues.enumToValueMap[this];
@@ -24,7 +28,6 @@ EnumValues<WebSocketsHandlingType> _WebSocketsHandlingTypeEnumValues =
   {
     "disabled": WebSocketsHandlingType.disabled,
     "onlyForeground": WebSocketsHandlingType.onlyForeground,
-    "foregroundAndBackground":
-        WebSocketsHandlingType.foregroundAndBackground,
+    "foregroundAndBackground": WebSocketsHandlingType.foregroundAndBackground,
   },
 );

@@ -4283,20 +4283,20 @@ class S {
   }
 
   /// `Only for current screen`
-  String get app_web_sockets_settings_type_onlyForCurrentScreen {
+  String get app_web_sockets_settings_type_onlyForeground {
     return Intl.message(
       'Only for current screen',
-      name: 'app_web_sockets_settings_type_onlyForCurrentScreen',
+      name: 'app_web_sockets_settings_type_onlyForeground',
       desc: '',
       args: [],
     );
   }
 
-  /// `Current screen & all indicators`
-  String get app_web_sockets_settings_type_currentScreenAndAllIndicators {
+  /// `Current screen & in background`
+  String get app_web_sockets_settings_type_foregroundAndBackground {
     return Intl.message(
-      'Current screen & all indicators',
-      name: 'app_web_sockets_settings_type_currentScreenAndAllIndicators',
+      'Current screen & in background',
+      name: 'app_web_sockets_settings_type_foregroundAndBackground',
       desc: '',
       args: [],
     );
@@ -4367,6 +4367,16 @@ class S {
     return Intl.message(
       'When',
       name: 'app_toast_settings_field_handling_type_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disabled in account settings`
+  String get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
+    return Intl.message(
+      'Disabled in account settings',
+      name: 'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
       desc: '',
       args: [],
     );

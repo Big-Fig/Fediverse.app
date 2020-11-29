@@ -10,6 +10,7 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -45,15 +46,20 @@ void showEditTimelineSettingsDialog({
                           timelineLocalPreferencesBloc),
               child: DisposableProxyProvider<ITimelineSettingsBloc,
                   IEditTimelineSettingsBloc>(
-                update: (context, timelineSettingsBloc, _) => EditTimelineSettingsBloc(
-                    timelineType: timeline.type,
-                    isEnabled: true,
-                    isNullableValuesPossible: false,
-                    authInstance:
-                        ICurrentAuthInstanceBloc.of(context, listen: false)
-                            .currentInstance,
-                    settingsBloc: timelineSettingsBloc,
+                update: (context, timelineSettingsBloc, _) =>
+                    EditTimelineSettingsBloc(
+                  timelineType: timeline.type,
+                  isEnabled: true,
+                  isNullableValuesPossible: false,
+                  authInstance:
+                      ICurrentAuthInstanceBloc.of(context, listen: false)
+                          .currentInstance,
+                  settingsBloc: timelineSettingsBloc,
+                  webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
+                    context,
+                    listen: false,
                   ),
+                ),
                 child: const EditTimelineSettingsWidget(
                   shrinkWrap: true,
                 ),

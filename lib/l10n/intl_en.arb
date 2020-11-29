@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-28T10:38:59+00:00",
+    "@@last_modified": "2020-11-29T15:31:52+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -444,13 +444,14 @@
     "app_media_settings_field_autoInit_label": "Auto-load",
     "app_media_settings_field_autoPlay_label": "Auto-play",
     "app_web_sockets_settings_type_disabled": "Disabled",
-    "app_web_sockets_settings_type_onlyForCurrentScreen": "Only for current screen",
-    "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Current screen & all indicators",
+    "app_web_sockets_settings_type_onlyForeground": "Only for current screen",
+    "app_web_sockets_settings_type_foregroundAndBackground": "Current screen & in background",
     "app_push_settings_field_pleroma_emojiReaction_label": "Pleroma emoji reactions",
     "app_push_settings_update_fail_dialog_title": "Failed to change subscription settings",
     "app_account_my_action_edit": "Edit profile",
     "app_toast_handling_type_always": "Always",
     "app_toast_handling_type_onlyWhenInstanceNotSelected": "When instance not selected",
     "app_toast_handling_type_onlyWhenInstanceSelected": "When instance selected",
-    "app_toast_settings_field_handling_type_label": "When"
+    "app_toast_settings_field_handling_type_label": "When",
+    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Disabled in account settings"
 }

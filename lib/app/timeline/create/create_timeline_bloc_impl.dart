@@ -12,6 +12,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
@@ -45,9 +46,12 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
   ITimelineSettingsBloc timelineSettingsBloc;
 
+  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
+
   CreateTimelineBloc({
     @required this.timelineSavedCallback,
     @required this.authInstance,
+    @required this.webSocketsSettingsBloc,
     @required ILocalPreferencesService localPreferencesService,
   }) : super(isAllItemsInitialized: false) {
     var timelineId = TimelineSettings.generateUniqueTimelineId();
@@ -97,6 +101,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
         authInstance: authInstance,
         isNullableValuesPossible: true,
         isEnabled: true,
+        webSocketsSettingsBloc: webSocketsSettingsBloc,
       ),
     );
 
@@ -122,11 +127,13 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;
 
     var newEditTimelineSettingsBloc = EditTimelineSettingsBloc(
-        settingsBloc: timelineSettingsBloc,
-        timelineType: timelineType,
-        authInstance: authInstance,
-        isNullableValuesPossible: true,
-        isEnabled: true);
+      settingsBloc: timelineSettingsBloc,
+      timelineType: timelineType,
+      authInstance: authInstance,
+      isNullableValuesPossible: true,
+      isEnabled: true,
+      webSocketsSettingsBloc: webSocketsSettingsBloc,
+    );
     timelineLocalPreferencesBloc.setValue(
       Timeline(
         id: idFieldBloc.currentValue,
