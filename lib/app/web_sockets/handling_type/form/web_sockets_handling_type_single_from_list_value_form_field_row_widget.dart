@@ -32,12 +32,12 @@ String mapWebSocketsHandlingTypeToLabel(
       return S.of(context).app_web_sockets_settings_type_disabled;
       break;
     case WebSocketsHandlingType.onlyForeground:
-      return S.of(context).app_web_sockets_settings_type_onlyForCurrentScreen;
+      return S.of(context).app_web_sockets_settings_type_onlyForeground;
       break;
     case WebSocketsHandlingType.foregroundAndBackground:
       return S
           .of(context)
-          .app_web_sockets_settings_type_currentScreenAndAllIndicators;
+          .app_web_sockets_settings_type_foregroundAndBackground;
       break;
   }
 

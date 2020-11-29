@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-11-28T10:38:59+00:00",
+    "@@last_modified": "2020-11-29T15:31:21+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -444,13 +444,14 @@
     "app_media_settings_field_autoInit_label": "Авто-загрузка",
     "app_media_settings_field_autoPlay_label": "Авто-старт",
     "app_web_sockets_settings_type_disabled": "Отключено",
-    "app_web_sockets_settings_type_onlyForCurrentScreen": "Только для текущего окна",
-    "app_web_sockets_settings_type_currentScreenAndAllIndicators": "Для текущего окна и индикаторов",
+    "app_web_sockets_settings_type_onlyForeground": "Только для текущего окна",
+    "app_web_sockets_settings_type_foregroundAndBackground": "Для текущего окна и в фоне",
     "app_push_settings_field_pleroma_emojiReaction_label": "Pleroma эмоджи реакции",
     "app_push_settings_update_fail_dialog_title": "Не удалось изменить настройки",
     "app_account_my_action_edit": "Редактировать профиль",
     "app_toast_handling_type_always": "Всегда",
     "app_toast_handling_type_onlyWhenInstanceNotSelected": "Когда аккаунт не активен",
     "app_toast_handling_type_onlyWhenInstanceSelected": "Когда аккаунт активен",
-    "app_toast_settings_field_handling_type_label": "Когда"
+    "app_toast_settings_field_handling_type_label": "Когда",
+    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Отключено в настройках аккаунта"
 }

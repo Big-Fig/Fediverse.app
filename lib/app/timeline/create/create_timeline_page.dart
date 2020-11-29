@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -120,6 +121,10 @@ MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
           authInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
               .currentInstance,
           localPreferencesService: ILocalPreferencesService.of(
+            context,
+            listen: false,
+          ),
+          webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
             context,
             listen: false,
           ),

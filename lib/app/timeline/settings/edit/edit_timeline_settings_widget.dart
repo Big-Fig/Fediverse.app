@@ -186,6 +186,9 @@ class EditTimelineSettingsWidget extends StatelessWidget {
       context: context,
       label: S.of(context).app_timeline_settings_field_enableWebSockets_label,
       fieldBloc: settingsBloc.webSocketsUpdatesFieldBloc,
+      descriptionOnDisabled: S
+          .of(context)
+          .app_timeline_settings_field_enableWebSockets_description_instance_disabled,
       description: S
           .of(context)
           .app_timeline_settings_field_enableWebSockets_description,
@@ -259,21 +262,25 @@ class EditTimelineSettingsWidget extends StatelessWidget {
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
     AuthInstance authInstance,
-  ) => ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
-      update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
-      child: StringFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
-        autocorrect: false,
-        hint: S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
-        onSubmitted: null,
-        textInputAction: TextInputAction.done,
-      ),
-    );
+  ) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
+        child: StringFormFieldRowWidget(
+          label:
+              S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
+          autocorrect: false,
+          hint:
+              S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
+          onSubmitted: null,
+          textInputAction: TextInputAction.done,
+        ),
+      );
 
   Widget buildBoolField({
     @required BuildContext context,
     @required String label,
     String description,
+    String descriptionOnDisabled,
     @required IBoolValueFormFieldBloc fieldBloc,
   }) {
     return Provider<IBoolValueFormFieldBloc>.value(
@@ -281,7 +288,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
       child: BoolValueFormFieldRowWidget(
         label: label,
         description: description,
-        descriptionOnDisabled:
+        descriptionOnDisabled: descriptionOnDisabled ??
             S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
       ),
     );

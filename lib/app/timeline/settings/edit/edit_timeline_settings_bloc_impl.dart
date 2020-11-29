@@ -9,6 +9,7 @@ import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_extension.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
@@ -20,6 +21,7 @@ import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditTimelineSettingsBloc
@@ -74,6 +76,7 @@ class EditTimelineSettingsBloc
 
   @override
   final ITimelineSettingsBloc settingsBloc;
+  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   EditTimelineSettingsBloc({
     @required this.settingsBloc,
@@ -81,6 +84,7 @@ class EditTimelineSettingsBloc
     @required this.authInstance,
     @required this.isNullableValuesPossible,
     @required bool isEnabled,
+    @required this.webSocketsSettingsBloc,
   })  : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeReplies ?? false,
           isEnabled: timelineType
@@ -123,6 +127,7 @@ class EditTimelineSettingsBloc
         ),
         onlyFromAccountFieldBloc = TimelineSettingsOnlyFromAccountFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromRemoteAccount,
+          isNullValuePossible: isNullableValuesPossible || timelineType != TimelineType.account,
           isEnabled: timelineType
               .isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
                   authInstance),
@@ -134,6 +139,7 @@ class EditTimelineSettingsBloc
         onlyInCustomListFieldBloc =
             TimelineSettingsOnlyInCustomListFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyInRemoteList,
+          isNullValuePossible: isNullableValuesPossible,
           isEnabled: timelineType
               .isOnlyInListWithRemoteIdFilterSupportedOnInstance(authInstance),
           validators: [
@@ -166,14 +172,16 @@ class EditTimelineSettingsBloc
           isNullValuePossible: true,
         ),
         webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
-          originValue: settingsBloc.settingsData?.webSocketsUpdates ?? true,
+          originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
+              webSocketsSettingsBloc.handlingType.isEnabled,
           isEnabled: timelineType
-              .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance),
+                  .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance) &&
+              webSocketsSettingsBloc.handlingType.isEnabled,
         ),
         super(
-        isEnabled: isEnabled,
-        settingsBloc: settingsBloc,
-        isAllItemsInitialized: true,
+          isEnabled: isEnabled,
+          settingsBloc: settingsBloc,
+          isAllItemsInitialized: true,
         ) {
     addDisposable(disposable: excludeRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);
@@ -211,8 +219,8 @@ class EditTimelineSettingsBloc
   TimelineSettings calculateCurrentFormFieldsSettings() {
     var oldPreferences = settingsBloc.settingsData;
 
-    var oldOnlyRemote = oldPreferences.onlyRemote;
-    var oldOnlyLocal = oldPreferences.onlyLocal;
+    var oldOnlyRemote = oldPreferences?.onlyRemote;
+    var oldOnlyLocal = oldPreferences?.onlyLocal;
 
     var newOnlyRemote = onlyRemoteFieldBloc.currentValue;
     var newOnlyLocal = onlyLocalFieldBloc.currentValue;
