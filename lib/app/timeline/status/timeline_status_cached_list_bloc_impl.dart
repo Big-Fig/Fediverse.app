@@ -28,7 +28,6 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
-  final bool listenWebSockets;
 
   Timeline get timeline => timelineLocalPreferencesBloc.value;
 
@@ -48,11 +47,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
-    @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
   }) {
-    // todo: rework listen, due to settings change
-    if (listenWebSockets && (timeline.webSocketsUpdates ?? true)) {
+    if ((timeline.webSocketsUpdates ?? true)) {
       switch (timelineType) {
         case TimelineType.public:
           addDisposable(
@@ -277,7 +274,6 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     BuildContext context, {
     @required TimelineType timelineType,
     @required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
-    @required bool listenWebSockets,
   }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaAccountService.of(
@@ -297,7 +293,6 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           listen: false,
         ),
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-        listenWebSockets: listenWebSockets,
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,
           listen: false,

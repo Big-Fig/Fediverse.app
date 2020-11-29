@@ -69,7 +69,6 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
-  final bool listenWebSockets;
   final ILocalPreferencesService preferencesService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final TickerProvider vsync;
@@ -91,7 +90,6 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     @required this.pleromaWebSocketsService,
     @required this.chatNewMessagesHandlerBloc,
     @required this.webSocketsHandlerManagerBloc,
-    @required this.listenWebSockets,
     @required this.vsync,
   }) {
     addDisposable(subject: timelineTabBlocsListSubject);
@@ -164,7 +162,6 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         timelineId: timelineId,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
-        listenWebSockets: listenWebSockets,
         pleromaAccountService: pleromaAccountService,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         currentAuthInstanceBloc: currentAuthInstanceBloc,
@@ -252,8 +249,6 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),
-        listenWebSockets: IWebSocketsSettingsBloc.of(context, listen: false)
-            .isRealtimeWebSocketsEnabled,
         timelinesHomeTabStorageLocalPreferences:
             ITimelinesHomeTabStorageLocalPreferencesBloc.of(
           context,

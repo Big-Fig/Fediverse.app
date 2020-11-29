@@ -143,7 +143,8 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:fedi/web_sockets/web_sockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -171,7 +172,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     IPushRelayService pushRelayService = appContextBloc.get();
     IFcmPushService fcmPushService = appContextBloc.get();
     IPushHandlerBloc pushHandlerBloc = appContextBloc.get();
-    IWebSocketsService webSocketsService = appContextBloc.get();
 
     var globalProviderService = this;
 
@@ -528,30 +528,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
-    var pleromaWebSocketsService = PleromaWebSocketsService(
-        webSocketsService: webSocketsService,
-        accessToken: currentInstance.token.accessToken,
-        baseUri: currentInstance.url,
-        connectionService: connectionService);
-
-    addDisposable(disposable: pleromaWebSocketsService);
-    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
-        pleromaWebSocketsService);
-
-    var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
-      pleromaWebSocketsService: pleromaWebSocketsService,
-      conversationRepository: conversationRepository,
-      notificationRepository: notificationRepository,
-      statusRepository: statusRepository,
-      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-      conversationChatNewMessagesHandlerBloc:
-          conversationChatNewMessagesHandlerBloc,
-    );
-
-    addDisposable(disposable: webSocketsHandlerManagerBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
-
     if (timelinesHomeTabStorageLocalPreferencesBloc
             .value?.timelineIds?.isNotEmpty !=
         true) {
@@ -755,5 +731,35 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
             statusSensitiveDisplayTimeStorageBloc);
     addDisposable(disposable: statusSensitiveDisplayTimeStorageBloc);
+
+    var webSocketsService =
+        WebSocketsService(configBloc: webSocketsSettingsBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
+    addDisposable(disposable: webSocketsService);
+
+    var pleromaWebSocketsService = PleromaWebSocketsService(
+        webSocketsService: webSocketsService,
+        accessToken: currentInstance.token.accessToken,
+        baseUri: currentInstance.url,
+        connectionService: connectionService);
+
+    addDisposable(disposable: pleromaWebSocketsService);
+    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
+        pleromaWebSocketsService);
+
+    var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      conversationRepository: conversationRepository,
+      notificationRepository: notificationRepository,
+      statusRepository: statusRepository,
+      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      conversationChatNewMessagesHandlerBloc:
+          conversationChatNewMessagesHandlerBloc,
+    );
+
+    addDisposable(disposable: webSocketsHandlerManagerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
   }
 }

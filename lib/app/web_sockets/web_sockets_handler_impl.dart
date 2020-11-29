@@ -7,6 +7,8 @@ import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
+import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -28,6 +30,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final String statusListRemoteId;
   final String statusConversationRemoteId;
   final bool isFromHomeTimeline;
+  final WebSocketsListenType listenType;
 
   WebSocketsChannelHandler({
     @required this.webSocketsChannel,
@@ -39,16 +42,20 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.statusListRemoteId,
     @required this.statusConversationRemoteId,
     @required this.isFromHomeTimeline,
+    @required this.listenType,
   }) {
     _logger = Logger(logTag);
     _logger.finest(() =>
         "Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}");
+
     addDisposable(
-      streamSubscription: webSocketsChannel.eventsStream.listen(
-        (event) async {
+      disposable: webSocketsChannel.listenForEvents(
+          listener: WebSocketChannelListener<PleromaWebSocketsEvent>(
+        listenType: listenType,
+        onEvent: (PleromaWebSocketsEvent event) async {
           await handleEvent(event);
         },
-      ),
+      )),
     );
   }
 

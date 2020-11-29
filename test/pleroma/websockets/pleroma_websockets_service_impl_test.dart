@@ -1,7 +1,8 @@
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:fedi/web_sockets/web_sockets_service.dart';
-import 'package:fedi/web_sockets/web_sockets_service_impl.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -13,7 +14,11 @@ void main() {
   PleromaWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
-    webSocketsService = WebSocketsService();
+    webSocketsService = WebSocketsService(
+      configBloc: WebSocketsServiceConfigBloc(
+        WebSocketsHandlingType.foregroundAndBackground,
+      ),
+    );
 
     pleromaWebSocketsService = PleromaWebSocketsService(
       webSocketsService: webSocketsService,
@@ -34,7 +39,6 @@ void main() {
             .getHashtagChannel(
               hashtag: "hashtag1",
               local: true,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -46,7 +50,6 @@ void main() {
             .getHashtagChannel(
               hashtag: "hashtag1",
               local: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -61,7 +64,6 @@ void main() {
             .getPublicChannel(
               local: true,
               onlyMedia: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -72,7 +74,6 @@ void main() {
             .getPublicChannel(
               local: false,
               onlyMedia: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -83,7 +84,6 @@ void main() {
             .getPublicChannel(
               local: true,
               onlyMedia: true,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -94,7 +94,6 @@ void main() {
             .getPublicChannel(
               local: false,
               onlyMedia: true,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -107,7 +106,6 @@ void main() {
         pleromaWebSocketsService
             .getListChannel(
               listId: "list1",
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -121,7 +119,6 @@ void main() {
             .getAccountChannel(
               accountId: "user1",
               notification: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -133,7 +130,6 @@ void main() {
             .getAccountChannel(
               accountId: "user1",
               notification: true,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -148,7 +144,6 @@ void main() {
             .getMyAccountChannel(
               notification: false,
               chat: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -159,7 +154,6 @@ void main() {
             .getMyAccountChannel(
               notification: true,
               chat: false,
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()
@@ -171,7 +165,6 @@ void main() {
         pleromaWebSocketsService
             .getDirectChannel(
               accountId: "direct1",
-              listenType: WebSocketsListenType.foreground,
             )
             .config
             .calculateWebSocketsUrl()

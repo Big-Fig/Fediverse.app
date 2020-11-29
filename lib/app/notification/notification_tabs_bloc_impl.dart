@@ -12,7 +12,6 @@ import 'package:fedi/app/notification/tab/notification_tab_bloc_impl.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/notification/websockets/my_notifications_websockets_handler_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -81,7 +80,6 @@ class NotificationsTabsBloc extends DisposableOwner
     @required this.myAccountBloc,
     @required this.currentInstanceBloc,
     @required this.pleromaWebSocketsService,
-    @required bool listenWebSocketsChanges,
     @required this.chatNewMessagesHandlerBloc,
     @required
         IConversationChatNewMessagesHandlerBloc
@@ -91,20 +89,18 @@ class NotificationsTabsBloc extends DisposableOwner
 
     addDisposable(subject: selectedTabSubject);
 
-    if (listenWebSocketsChanges) {
-      addDisposable(
-        disposable: MyNotificationsWebSocketsHandler(
-          listenType: WebSocketsListenType.foreground,
-          conversationRepository: conversationRepository,
-          statusRepository: statusRepository,
-          notificationRepository: notificationRepository,
-          pleromaWebSocketsService: pleromaWebSocketsService,
-          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-          conversationChatNewMessagesHandlerBloc:
-              conversationChatNewMessagesHandlerBloc,
-        ),
-      );
-    }
+    addDisposable(
+      disposable: MyNotificationsWebSocketsHandler(
+        listenType: WebSocketsListenType.foreground,
+        conversationRepository: conversationRepository,
+        statusRepository: statusRepository,
+        notificationRepository: notificationRepository,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
+      ),
+    );
 
     tabs.forEach((tab) {
       tabsMap[tab] = NotificationTabBloc(
@@ -139,9 +135,6 @@ class NotificationsTabsBloc extends DisposableOwner
             IConversationChatRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
-        listenWebSocketsChanges:
-            IWebSocketsSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         conversationChatNewMessagesHandlerBloc:

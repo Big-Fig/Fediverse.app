@@ -1,8 +1,11 @@
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source_impl.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:flutter/widgets.dart';
+
+typedef WebSocketsChannelEventCallback<T> = void Function(T event);
 
 abstract class IWebSocketsChannelConfig<T extends WebSocketsEvent> {
   IWebSocketsChannelSource<T> createChannelSource();
@@ -57,5 +60,32 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
   @override
   String toString() {
     return 'WebSocketsChannelConfig{baseUrl: $baseUrl, queryArgs: $queryArgs}';
+  }
+}
+
+class WebSocketChannelListener<T> {
+  final WebSocketsListenType listenType;
+  final WebSocketsChannelEventCallback<T> onEvent;
+
+  WebSocketChannelListener({
+    @required this.listenType,
+    @required this.onEvent,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WebSocketChannelListener &&
+          runtimeType == other.runtimeType &&
+          listenType == other.listenType &&
+          onEvent == other.onEvent;
+
+  @override
+  int get hashCode => listenType.hashCode ^ onEvent.hashCode;
+
+  @override
+  String toString() {
+    return 'WebSocketChannelListener{listenType: $listenType,'
+        ' onEvent: $onEvent}';
   }
 }

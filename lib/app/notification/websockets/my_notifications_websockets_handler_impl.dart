@@ -23,7 +23,6 @@ class MyNotificationsWebSocketsHandler extends WebSocketsChannelHandler {
           webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(
             notification: true,
             chat: false,
-            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -34,6 +33,7 @@ class MyNotificationsWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: true,
+          listenType: listenType,
         );
 
   static MyNotificationsWebSocketsHandler createFromContext(

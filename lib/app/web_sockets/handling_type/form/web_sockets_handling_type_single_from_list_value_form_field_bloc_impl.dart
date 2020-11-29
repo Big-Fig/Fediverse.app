@@ -12,11 +12,7 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldBloc
 
   WebSocketsHandlingTypeSingleFromListValueFormFieldBloc({
     bool isNullValuePossible = false,
-    // this.possibleValues = WebSocketsHandlingType.values,
-    this.possibleValues = const [
-      WebSocketsHandlingType.disabled,
-      WebSocketsHandlingType.currentScreenAndAllIndicators,
-    ],
+    this.possibleValues = WebSocketsHandlingType.values,
     @required WebSocketsHandlingType originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<WebSocketsHandlingType>> validators =

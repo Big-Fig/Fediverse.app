@@ -28,15 +28,13 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
     @required this.notificationRepository,
     @required this.conversationRepository,
     @required this.pleromaWebSocketsService,
-    @required bool listenWebSocketsChanges,
     @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
   }) : super() {
-    if (listenWebSocketsChanges) {
-      addDisposable(
-          disposable: AccountWebSocketsHandler(
+    addDisposable(
+      disposable: AccountWebSocketsHandler(
         listenType: WebSocketsListenType.foreground,
         statusRepository: statusRepository,
         accountId: account.remoteId,
@@ -47,8 +45,8 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
         notification: false,
-      ));
-    }
+      ),
+    );
   }
 
   @override

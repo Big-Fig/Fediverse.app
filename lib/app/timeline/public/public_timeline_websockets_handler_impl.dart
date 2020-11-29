@@ -25,8 +25,8 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
             local: local,
             onlyMedia: onlyMedia,
-            listenType: listenType,
           ),
+          listenType: listenType,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,

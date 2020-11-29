@@ -12,7 +12,7 @@ abstract class WebSocketsSettingsLocalPreferencesBloc
   ) : super(
           preferencesService,
           key,
-          1,
+          2,
           (json) => WebSocketsSettings.fromJson(json),
         );
 }

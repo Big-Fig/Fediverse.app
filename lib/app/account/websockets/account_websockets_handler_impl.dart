@@ -25,7 +25,6 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
           webSocketsChannel: pleromaWebSocketsService.getAccountChannel(
             accountId: accountId,
             notification: notification,
-            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -36,6 +35,7 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
+    listenType: listenType,
         );
 
   static AccountWebSocketsHandler createFromContext(
