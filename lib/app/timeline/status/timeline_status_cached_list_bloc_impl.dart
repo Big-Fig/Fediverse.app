@@ -49,7 +49,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.timelineLocalPreferencesBloc,
     @required this.webSocketsHandlerManagerBloc,
   }) {
-    if ((timeline.webSocketsUpdates ?? true)) {
+    if (timeline.webSocketsUpdates ?? true) {
       switch (timelineType) {
         case TimelineType.public:
           addDisposable(
