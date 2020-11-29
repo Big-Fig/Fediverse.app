@@ -23,7 +23,6 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getListChannel(
             listId: customListRemoteId,
-            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -34,6 +33,7 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: customListRemoteId,
           isFromHomeTimeline: false,
           statusConversationRemoteId: null,
+          listenType: listenType,
         );
 
   static CustomListStatusListWebSocketsHandler createFromContext(

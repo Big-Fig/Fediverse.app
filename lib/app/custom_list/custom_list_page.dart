@@ -13,7 +13,6 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -90,11 +89,6 @@ MaterialPageRoute createCustomListPageRoute({
   @required BuildContext context,
   @required ICustomList customList,
 }) {
-  var webSocketsSettingsBloc =
-      IWebSocketsSettingsBloc.of(context, listen: false);
-  var isRealtimeWebSocketsEnabled =
-      webSocketsSettingsBloc.isRealtimeWebSocketsEnabled;
-
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
@@ -139,7 +133,6 @@ MaterialPageRoute createCustomListPageRoute({
                       context,
                       listen: false,
                     ),
-                    listenWebSockets: isRealtimeWebSocketsEnabled,
                     webSocketsHandlerManagerBloc:
                         IWebSocketsHandlerManagerBloc.of(
                       context,

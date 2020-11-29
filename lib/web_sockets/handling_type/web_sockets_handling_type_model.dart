@@ -2,8 +2,8 @@ import 'package:fedi/enum/enum_values.dart';
 
 enum WebSocketsHandlingType {
   disabled,
-  onlyForCurrentScreen,
-  currentScreenAndAllIndicators
+  onlyForeground,
+  foregroundAndBackground
 }
 
 extension WebSocketsHandlingTypeJsonValueExtension on WebSocketsHandlingType {
@@ -23,8 +23,8 @@ EnumValues<WebSocketsHandlingType> _WebSocketsHandlingTypeEnumValues =
     EnumValues(
   {
     "disabled": WebSocketsHandlingType.disabled,
-    "onlyForCurrentScreen": WebSocketsHandlingType.onlyForCurrentScreen,
-    "currentScreenAndAllIndicators":
-        WebSocketsHandlingType.currentScreenAndAllIndicators,
+    "onlyForeground": WebSocketsHandlingType.onlyForeground,
+    "foregroundAndBackground":
+        WebSocketsHandlingType.foregroundAndBackground,
   },
 );

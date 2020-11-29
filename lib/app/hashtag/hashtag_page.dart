@@ -17,7 +17,6 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -113,10 +112,6 @@ MaterialPageRoute createHashtagPageRoute({
   @required BuildContext context,
   @required IHashtag hashtag,
 }) {
-  var isRealtimeWebSocketsEnabled =
-      IWebSocketsSettingsBloc.of(context, listen: false)
-          .isRealtimeWebSocketsEnabled;
-
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
@@ -167,7 +162,6 @@ MaterialPageRoute createHashtagPageRoute({
                       context,
                       listen: false,
                     ),
-                    listenWebSockets: isRealtimeWebSocketsEnabled,
                   );
                   return hashtagTimelineStatusCachedListBloc;
                 },

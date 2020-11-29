@@ -1,5 +1,6 @@
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:fedi/web_sockets/web_sockets_service_impl.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'websockets_model_helper.dart';
@@ -7,7 +8,11 @@ import 'websockets_model_helper.dart';
 void main() {
   WebSocketsService webSocketsService;
   setUp(() {
-    webSocketsService = WebSocketsService();
+    webSocketsService = WebSocketsService(
+      configBloc: WebSocketsServiceConfigBloc(
+        WebSocketsHandlingType.foregroundAndBackground,
+      ),
+    );
   });
 
   tearDown(() {
@@ -20,7 +25,6 @@ void main() {
         queryArgs: {"arg": "value"},
         baseUrl: Uri.parse("wss://fedi.app"),
       ),
-      listenType: WebSocketsListenType.foreground,
     );
     expect(webSocketsService.urlToChannel.length, 1);
 
@@ -32,7 +36,6 @@ void main() {
           "wss://fedi.app",
         ),
       ),
-      listenType: WebSocketsListenType.foreground,
     );
 
     expect(webSocketsService.urlToChannel.length, 1);
@@ -42,7 +45,6 @@ void main() {
         queryArgs: {"arg": "newValue"},
         baseUrl: Uri.parse("wss://fedi.app"),
       ),
-      listenType: WebSocketsListenType.foreground,
     );
 
     expect(webSocketsService.urlToChannel.length, 2);
@@ -53,7 +55,6 @@ void main() {
         queryArgs: {"arg": "newValue"},
         baseUrl: Uri.parse("wss://fedi_2.app"),
       ),
-      listenType: WebSocketsListenType.foreground,
     );
 
     expect(webSocketsService.urlToChannel.length, 3);

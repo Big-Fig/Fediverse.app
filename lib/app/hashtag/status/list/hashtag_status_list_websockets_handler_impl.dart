@@ -25,7 +25,6 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
             hashtag: hashtag,
             local: local,
-            listenType: listenType,
           ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -36,6 +35,7 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
+          listenType: listenType,
         );
 
   static HashtagStatusListWebSocketsHandler createFromContext(

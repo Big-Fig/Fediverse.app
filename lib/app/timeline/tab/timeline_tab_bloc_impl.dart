@@ -39,7 +39,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final bool listenWebSockets;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
   final IMyAccountBloc myAccountBloc;
@@ -54,7 +53,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.pleromaAccountService,
     @required this.statusRepository,
     @required this.currentAuthInstanceBloc,
-    @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
     @required this.myAccountBloc,
   }) {
@@ -76,7 +74,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-        listenWebSockets: listenWebSockets,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       );
 

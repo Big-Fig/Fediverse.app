@@ -14,6 +14,6 @@ class GlobalWebSocketsSettingsLocalPreferencesBloc
   @override
   WebSocketsSettings get defaultValue => WebSocketsSettings(
         typeString:
-            WebSocketsHandlingType.currentScreenAndAllIndicators.toJsonValue(),
+            WebSocketsHandlingType.foregroundAndBackground.toJsonValue(),
       );
 }

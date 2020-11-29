@@ -11,7 +11,6 @@ import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websocke
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -36,6 +35,7 @@ class ConversationChatListBloc extends DisposableOwner
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IConversationChat>,
       IConversationChat> conversationPaginationListWithNewItemsBloc;
+
   @override
   IPaginationListBloc<PaginationPage<IConversationChat>, IConversationChat>
       get conversationPaginationListBloc =>
@@ -53,7 +53,6 @@ class ConversationChatListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.conversationRepository,
     @required this.pleromaWebSocketsService,
-    @required bool listenWebSocketsChanges,
     @required this.chatNewMessagesHandlerBloc,
     @required
         IConversationChatNewMessagesHandlerBloc
@@ -77,10 +76,9 @@ class ConversationChatListBloc extends DisposableOwner
     );
     addDisposable(disposable: conversationPaginationListBloc);
 
-    if (listenWebSocketsChanges) {
-      addDisposable(
-          disposable: ConversationChatWebSocketsHandler(
-            listenType: WebSocketsListenType.foreground,
+    addDisposable(
+      disposable: ConversationChatWebSocketsHandler(
+        listenType: WebSocketsListenType.foreground,
         notificationRepository: notificationRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
@@ -89,8 +87,8 @@ class ConversationChatListBloc extends DisposableOwner
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
         accountId: null,
-      ));
-    }
+      ),
+    );
   }
 
   static ConversationChatListBloc createFromContext(BuildContext context) =>
@@ -104,9 +102,6 @@ class ConversationChatListBloc extends DisposableOwner
         statusRepository: IStatusRepository.of(context, listen: false),
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
-        listenWebSocketsChanges:
-            IWebSocketsSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         conversationChatNewMessagesHandlerBloc:
