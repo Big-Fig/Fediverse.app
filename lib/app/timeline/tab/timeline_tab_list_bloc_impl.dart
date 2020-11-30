@@ -31,6 +31,13 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   BehaviorSubject<TimelineTabBlocsList> timelineTabBlocsListSubject =
       BehaviorSubject();
 
+  ITimelineTabBloc get selectedTimelineTabBloc =>
+      timelineTabBlocsList.selectedTimelineTabBloc;
+
+  Stream<ITimelineTabBloc> get selectedTimelineTabBlocStream =>
+      timelineTabBlocsListStream.map((timelineTabBlocsList) =>
+          timelineTabBlocsList.selectedTimelineTabBloc);
+
   @override
   Stream<TimelineTabBlocsList> get timelineTabBlocsListStream =>
       timelineTabBlocsListSubject.stream;
@@ -155,6 +162,11 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     var oldSelectedIndex = oldTabController?.index;
 
+    ITimelineTabBloc oldSelectedBloc;
+    if (oldBlocs != null && oldSelectedIndex != null) {
+      oldSelectedBloc = oldBlocs[oldSelectedIndex];
+    }
+
     var newTabBlocs = <ITimelineTabBloc>[];
     for (var timelineId in newTimelineIds) {
       var timelineTabBloc = TimelineTabBloc(
@@ -173,13 +185,12 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     }
     int initialIndex;
 
-    if (oldBlocs != null && oldSelectedIndex != null) {
-      var oldSelectedBloc = oldBlocs[oldSelectedIndex];
 
-      initialIndex = newTabBlocs
-          .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
-
+    if (oldSelectedBloc != null) {
       if (initialIndex == -1) {
+        initialIndex = newTabBlocs.indexWhere(
+            (bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
+
         initialIndex = null;
       }
     }
