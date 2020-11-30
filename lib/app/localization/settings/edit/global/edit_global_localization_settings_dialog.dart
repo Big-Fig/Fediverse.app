@@ -13,7 +13,8 @@ void showEditGlobalLocalizationSettingsDialog({
 }) {
   showEditGlobalSettingsDialog(
     context: context,
-    subTitle: S.of(context).app_localization_settings_title,
+    subTitle: null,
+    subTitleBuilder: (context) => S.of(context).app_localization_settings_title,
     child: DisposableProvider<IEditLocalizationSettingsBloc>(
       create: (context) => EditLocalizationSettingsBloc(
         localizationSettingBloc: ILocalizationSettingsBloc.of(
