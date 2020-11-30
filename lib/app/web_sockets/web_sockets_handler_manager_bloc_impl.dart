@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handle
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/pleroma/websockets/pleroma_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -74,7 +75,22 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  IDisposable listenDirectChannel({
+  IDisposable listenPleromaChatChannel({
+    @required WebSocketsListenType listenType,
+  })  => PleromaChatWebSocketsHandler(
+      listenType: listenType,
+      notificationRepository: notificationRepository,
+      conversationRepository: conversationRepository,
+      statusRepository: statusRepository,
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      conversationChatNewMessagesHandlerBloc:
+      conversationChatNewMessagesHandlerBloc,
+    );
+
+
+  @override
+  IDisposable listenConversationChannel({
     @required WebSocketsListenType listenType,
   }) =>
       ConversationChatWebSocketsHandler(
@@ -88,7 +104,6 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         accountId: null,
         listenType: listenType,
       );
-
   @override
   IDisposable listenPublicChannel({
     @required WebSocketsListenType listenType,

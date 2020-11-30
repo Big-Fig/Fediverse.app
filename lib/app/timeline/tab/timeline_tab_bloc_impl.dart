@@ -84,6 +84,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         webSocketsListenType: webSocketsListenType,
       );
 
+  @override
   void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
     statusCachedListService.resubscribeWebSocketsUpdates(webSocketsListenType);
   }

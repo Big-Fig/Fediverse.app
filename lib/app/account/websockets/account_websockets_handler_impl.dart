@@ -38,29 +38,6 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
     listenType: listenType,
         );
 
-  static AccountWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required String accountId,
-    @required bool notification,
-    @required WebSocketsListenType listenType,
-  }) =>
-      AccountWebSocketsHandler(
-        accountId: accountId,
-        notification: notification,
-        listenType: listenType,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
-
   @override
   String get logTag => "account_websockets_handler_impl.dart";
 }

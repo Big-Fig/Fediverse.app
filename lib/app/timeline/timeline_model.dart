@@ -175,7 +175,7 @@ class Timeline implements IJsonObject {
 
   bool get onlyLocal => settings?.onlyLocal;
 
-  bool get webSocketsUpdates => settings?.webSocketsUpdates;
+  bool get isWebSocketsUpdatesEnabled => settings?.webSocketsUpdates;
 
   bool get withMuted => settings?.withMuted;
 

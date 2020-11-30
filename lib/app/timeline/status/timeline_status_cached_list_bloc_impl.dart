@@ -8,6 +8,7 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -51,55 +52,65 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required WebSocketsListenType webSocketsListenType,
   }) {
     resubscribeWebSocketsUpdates(webSocketsListenType);
+
+    addDisposable(custom: () {
+      webSocketsListenerDisposable?.dispose();
+    });
   }
 
+  IDisposable webSocketsListenerDisposable;
+
   void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
-    if (timeline.webSocketsUpdates ?? true) {
+    webSocketsListenerDisposable?.dispose();
+
+
+    var isWebSocketsUpdatesEnabled = timeline.isWebSocketsUpdatesEnabled ?? true;
+    _logger.finest(() => "resubscribeWebSocketsUpdates "
+        "isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled "
+        "webSocketsListenType $webSocketsListenType "
+        "timelineType $timelineType ");
+    if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
-          addDisposable(
-            disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
-              listenType: webSocketsListenType,
-              local: timeline.onlyLocal,
-              onlyMedia: timeline.onlyWithMedia,
-            ),
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenPublicChannel(
+            listenType: webSocketsListenType,
+            local: timeline.onlyLocal,
+            onlyMedia: timeline.onlyWithMedia,
           );
 
           break;
         case TimelineType.home:
-          addDisposable(
-            disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
-              listenType: webSocketsListenType,
-              notification: false,
-              chat: false,
-            ),
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenMyAccountChannel(
+            listenType: webSocketsListenType,
+            notification: false,
+            chat: false,
           );
+
           break;
         case TimelineType.customList:
-          addDisposable(
-            disposable: webSocketsHandlerManagerBloc.listenListChannel(
-              listenType: webSocketsListenType,
-              listId: timeline.onlyInRemoteList.id,
-            ),
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenListChannel(
+            listenType: webSocketsListenType,
+            listId: timeline.onlyInRemoteList.id,
           );
           break;
 
         case TimelineType.hashtag:
-          addDisposable(
-            disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
-              listenType: webSocketsListenType,
-              hashtag: timeline.withRemoteHashtag,
-              local: timeline.onlyLocal,
-            ),
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenHashtagChannel(
+            listenType: webSocketsListenType,
+            hashtag: timeline.withRemoteHashtag,
+            local: timeline.onlyLocal,
           );
           break;
         case TimelineType.account:
-          addDisposable(
-            disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
-              listenType: webSocketsListenType,
-              accountId: timeline.onlyFromRemoteAccount.id,
-              notification: false,
-            ),
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenAccountChannel(
+            listenType: webSocketsListenType,
+            accountId: timeline.onlyFromRemoteAccount.id,
+            notification: false,
           );
           break;
       }

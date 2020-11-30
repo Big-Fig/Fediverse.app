@@ -36,27 +36,6 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           listenType: listenType,
         );
 
-  static CustomListStatusListWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required String customListRemoteId,
-    @required WebSocketsListenType listenType,
-  }) =>
-      CustomListStatusListWebSocketsHandler(
-        listenType: listenType,
-        customListRemoteId: customListRemoteId,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
-
   @override
   String get logTag => "custom_list_timeline_websockets_handler_impl.dart";
 }

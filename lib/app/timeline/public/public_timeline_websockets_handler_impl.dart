@@ -38,29 +38,6 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
         );
 
-  static PublicTimelineWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required bool local,
-    @required bool onlyMedia,
-    @required WebSocketsListenType listenType,
-  }) =>
-      PublicTimelineWebSocketsHandler(
-        local: local,
-        onlyMedia: local,
-        listenType: listenType,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
-
   @override
   String get logTag => "public_timeline_websockets_handler_impl.dart";
 }

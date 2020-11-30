@@ -1,9 +1,5 @@
-import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/websockets/pleroma_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
@@ -12,15 +8,13 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
-import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -45,28 +39,17 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
       CachedPaginationPage<IPleromaChatWithLastMessage>,
       IPleromaChatWithLastMessage> chatPaginationListWithNewItemsBloc;
 
-  final INotificationRepository notificationRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
-  final IStatusRepository statusRepository;
-  final IConversationChatRepository conversationRepository;
-  final IPleromaWebSocketsService pleromaWebSocketsService;
-  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   PleromaChatWithLastMessageListBloc({
     @required IPleromaChatService pleromaChatService,
-    @required this.notificationRepository,
     @required this.chatMessageRepository,
     @required this.chatRepository,
     @required this.chatWithLastMessageRepository,
-    @required this.statusRepository,
-    @required this.conversationRepository,
-    @required this.pleromaWebSocketsService,
-    @required this.chatNewMessagesHandlerBloc,
-    @required
-        IConversationChatNewMessagesHandlerBloc
-            conversationChatNewMessagesHandlerBloc,
+    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+    @required WebSocketsListenType webSocketsListenType,
   }) {
     _logger.finest(() => "constructor");
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
@@ -88,38 +71,24 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     addDisposable(disposable: chatPaginationListWithNewItemsBloc);
 
     addDisposable(
-      disposable: PleromaChatWebSocketsHandler(
-        listenType: WebSocketsListenType.foreground,
-        notificationRepository: notificationRepository,
-        conversationRepository: conversationRepository,
-        statusRepository: statusRepository,
-        pleromaWebSocketsService: pleromaWebSocketsService,
-        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-        conversationChatNewMessagesHandlerBloc:
-            conversationChatNewMessagesHandlerBloc,
+      disposable: webSocketsHandlerManagerBloc.listenPleromaChatChannel(
+        listenType: webSocketsListenType,
       ),
     );
   }
 
   static PleromaChatWithLastMessageListBloc createFromContext(
-          BuildContext context) =>
+          BuildContext context, {@required  WebSocketsListenType webSocketsListenType}) =>
       PleromaChatWithLastMessageListBloc(
         pleromaChatService: IPleromaChatService.of(context, listen: false),
         chatWithLastMessageRepository:
             IPleromaChatWithLastMessageRepository.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         chatRepository: IPleromaChatRepository.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
+        webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
+          context,
+          listen: false,
+        ), webSocketsListenType: webSocketsListenType,
       );
 }

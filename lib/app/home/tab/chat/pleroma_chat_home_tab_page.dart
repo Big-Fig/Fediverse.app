@@ -20,6 +20,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -59,8 +60,10 @@ class PleromaChatHomeTabPage extends StatelessWidget {
   DisposableProvider<IPleromaChatWithLastMessageListBloc> provideContentContext(
       Widget child) {
     return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
-      create: (context) =>
-          PleromaChatWithLastMessageListBloc.createFromContext(context),
+      create: (context) => PleromaChatWithLastMessageListBloc.createFromContext(
+        context,
+        webSocketsListenType: WebSocketsListenType.foreground,
+      ),
       child: Builder(builder: (context) {
         var chatsListBloc =
             IPleromaChatWithLastMessageListBloc.of(context, listen: false);

@@ -39,28 +39,6 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
           listenType: listenType,
         );
 
-  static MyAccountWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required bool chat,
-    @required bool notification,
-    @required WebSocketsListenType listenType,
-  }) =>
-      MyAccountWebSocketsHandler(
-        chat: chat,
-        notification: notification,
-        listenType: listenType,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
 
   @override
   Future handleEvent(PleromaWebSocketsEvent event) async {
