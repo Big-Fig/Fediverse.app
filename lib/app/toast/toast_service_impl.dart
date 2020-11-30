@@ -43,7 +43,7 @@ class ToastService extends DisposableOwner implements IToastService {
     bool titleAutoFontSize = true,
     String content,
     VoidCallback onClick,
-    Duration duration = const Duration(seconds: 1, milliseconds: 500),
+    Duration duration = const Duration(seconds: 2, milliseconds: 500),
   }) {
     assert(title != null);
     overlayNotificationService.showNotification(
