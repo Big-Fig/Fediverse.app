@@ -20,7 +20,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
     @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required
         IConversationChatNewMessagesHandlerBloc
-            conversationChatNewMessagesHandlerBloc,
+    conversationChatNewMessagesHandlerBloc,
     @required String accountId,
     @required WebSocketsListenType listenType,
   }) : super(
@@ -38,25 +38,4 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
           listenType: listenType,
         );
-
-  static ConversationChatWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required String accountId,
-    @required WebSocketsListenType listenType,
-  }) =>
-      ConversationChatWebSocketsHandler(
-        accountId: accountId,
-        listenType: listenType,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
 }

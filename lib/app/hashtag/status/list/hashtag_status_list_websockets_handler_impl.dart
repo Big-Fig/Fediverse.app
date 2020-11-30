@@ -38,29 +38,6 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           listenType: listenType,
         );
 
-  static HashtagStatusListWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required String hashtag,
-    @required bool local,
-    @required WebSocketsListenType listenType,
-  }) =>
-      HashtagStatusListWebSocketsHandler(
-        listenType: listenType,
-        hashtag: hashtag,
-        local: local,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
-
   @override
   String get logTag => "hashtag_timeline_websockets_handler_impl.dart";
 }

@@ -69,7 +69,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     addDisposable(disposable: chatPaginationListWithNewItemsBloc);
 
     addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenDirectChannel(
+      disposable: webSocketsHandlerManagerBloc.listenConversationChannel(
         listenType: WebSocketsListenType.foreground,
       ),
     );

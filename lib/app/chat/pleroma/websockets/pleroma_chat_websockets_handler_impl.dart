@@ -38,23 +38,4 @@ class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
           listenType: listenType,
         );
-
-  static PleromaChatWebSocketsHandler createFromContext(
-    BuildContext context, {
-    @required WebSocketsListenType listenType,
-  }) =>
-      PleromaChatWebSocketsHandler(
-        listenType: listenType,
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc:
-            IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-        conversationChatNewMessagesHandlerBloc:
-            IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
-      );
 }

@@ -20,7 +20,11 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
     @required bool notification,
   });
 
-  IDisposable listenDirectChannel({
+  IDisposable listenConversationChannel({
+    @required WebSocketsListenType listenType,
+  });
+
+  IDisposable listenPleromaChatChannel({
     @required WebSocketsListenType listenType,
   });
 
