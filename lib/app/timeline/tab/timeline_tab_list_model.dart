@@ -5,11 +5,13 @@ class TimelineTabBlocsList {
   final TabController tabController;
   final List<ITimelineTabBloc> timelineTabBlocs;
 
+  ITimelineTabBloc get selectedTimelineTabBloc =>
+      timelineTabBlocs[tabController.index];
+
   TimelineTabBlocsList({
     @required this.tabController,
     @required this.timelineTabBlocs,
   });
-
 
   @override
   String toString() {

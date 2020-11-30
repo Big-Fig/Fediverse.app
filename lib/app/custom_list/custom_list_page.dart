@@ -22,6 +22,7 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -137,7 +138,7 @@ MaterialPageRoute createCustomListPageRoute({
                         IWebSocketsHandlerManagerBloc.of(
                       context,
                       listen: false,
-                    ),
+                    ), webSocketsListenType: WebSocketsListenType.foreground,
                   );
                   return customListTimelineStatusCachedListBloc;
                 },

@@ -18,6 +18,7 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -26,7 +27,7 @@ var _logger = Logger("timeline_tab_bloc_impl.dart");
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   Timeline get timeline => timelineLocalPreferencesBloc.value;
-  IStatusCachedListBloc statusCachedListService;
+  TimelineStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
   ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
@@ -46,6 +47,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   final String timelineId;
 
+  final WebSocketsListenType webSocketsListenType;
+
   TimelineTabBloc({
     @required this.timelineId,
     @required this.preferencesService,
@@ -55,6 +58,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.currentAuthInstanceBloc,
     @required this.webSocketsHandlerManagerBloc,
     @required this.myAccountBloc,
+    @required this.webSocketsListenType,
   }) {
     _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
 
@@ -68,20 +72,27 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 
-  IStatusCachedListBloc createListService() => TimelineStatusCachedListBloc(
+  IStatusCachedListBloc createListService(
+  {@required WebSocketsListenType webSocketsListenType}) =>
+      TimelineStatusCachedListBloc(
         pleromaAccountService: pleromaAccountService,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
+        webSocketsListenType: webSocketsListenType,
       );
+
+  void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
+    statusCachedListService.resubscribeWebSocketsUpdates(webSocketsListenType);
+  }
 
   @override
   Future internalAsyncInit() async {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
-    statusCachedListService = createListService();
+    statusCachedListService = createListService(webSocketsListenType:webSocketsListenType);
     addDisposable(disposable: statusCachedListService);
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
