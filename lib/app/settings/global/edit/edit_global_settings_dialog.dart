@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 void showEditGlobalSettingsDialog({
   @required BuildContext context,
   @required String subTitle,
+  StringBuilderFromContext subTitleBuilder,
   @required Widget child,
 }) {
   showSettingsDialog(
     context: context,
-    title: S.of(context).app_settings_global_title,
+    title: null,
+    titleBuilder: (context) => S.of(context).app_settings_global_title,
+    subTitleBuilder: subTitleBuilder,
     subTitle: subTitle,
     child: child,
   );

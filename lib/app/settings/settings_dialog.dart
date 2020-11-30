@@ -7,32 +7,42 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+typedef StringBuilderFromContext = String Function(BuildContext context);
+
 void showSettingsDialog({
   @required BuildContext context,
   @required String title,
+  StringBuilderFromContext titleBuilder,
   @required String subTitle,
+  StringBuilderFromContext subTitleBuilder,
   @required Widget child,
 }) {
   showFediModalBottomSheetDialog(
     context: context,
-
     child: Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: FediSizes.smallPadding,
-        horizontal: FediSizes.bigPadding,
-      ),
-      child:
-        ListView(
+        padding: const EdgeInsets.symmetric(
+          vertical: FediSizes.smallPadding,
+          horizontal: FediSizes.bigPadding,
+        ),
+        child: ListView(
           shrinkWrap: true,
           children: [
             Center(
-              child: _SettingsDialogTitle(
-                title: title,
+              child: Builder(
+                builder: (context) {
+                  return _SettingsDialogTitle(
+                    title: titleBuilder != null ? titleBuilder(context) : title,
+                  );
+                },
               ),
             ),
             Center(
-              child: _SettingsDialogSubTitle(
-                subTitle: subTitle,
+              child: Builder(
+                builder: (context) {
+                  return _SettingsDialogTitle(
+                    title: subTitleBuilder != null ? subTitleBuilder(context) : subTitle,
+                  );
+                },
               ),
             ),
             const FediBigVerticalSpacer(),
@@ -40,8 +50,7 @@ void showSettingsDialog({
             const FediSmallVerticalSpacer(),
             child,
           ],
-        )
-    ),
+        )),
   );
 }
 

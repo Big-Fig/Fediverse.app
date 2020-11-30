@@ -15,7 +15,25 @@ void showFediModalBottomSheetDialog({
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
     isScrollControlled: true,
-    builder: (BuildContext context) => Column(
+    builder: (BuildContext context) => _FediModalBottomSheetDialogBodyWidget(
+      child: child,
+    ),
+  );
+}
+
+class _FediModalBottomSheetDialogBodyWidget extends StatelessWidget {
+  const _FediModalBottomSheetDialogBodyWidget({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         const _FediModalBottomSheetHandlerBar(),
@@ -33,8 +51,8 @@ void showFediModalBottomSheetDialog({
           ),
         ),
       ],
-    ),
-  );
+    );
+  }
 }
 
 class _FediModalBottomSheetHandlerBar extends StatelessWidget {
