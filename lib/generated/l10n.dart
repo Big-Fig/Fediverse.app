@@ -4132,10 +4132,10 @@ class S {
     );
   }
 
-  /// `Mark media as NSFW on attach`
+  /// `Mark media as NSFW`
   String get app_status_post_settings_field_markMediaAsNsfwOnAttach_label {
     return Intl.message(
-      'Mark media as NSFW on attach',
+      'Mark media as NSFW',
       name: 'app_status_post_settings_field_markMediaAsNsfwOnAttach_label',
       desc: '',
       args: [],
@@ -4172,10 +4172,10 @@ class S {
     );
   }
 
-  /// `NSFW display duration`
+  /// `Remember "Tap to view"`
   String get app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label {
     return Intl.message(
-      'NSFW display duration',
+      'Remember "Tap to view"',
       name: 'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
       desc: '',
       args: [],
