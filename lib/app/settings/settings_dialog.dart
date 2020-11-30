@@ -39,8 +39,10 @@ void showSettingsDialog({
             Center(
               child: Builder(
                 builder: (context) {
-                  return _SettingsDialogTitle(
-                    title: subTitleBuilder != null ? subTitleBuilder(context) : subTitle,
+                  return _SettingsDialogSubTitle(
+                    subTitle: subTitleBuilder != null
+                        ? subTitleBuilder(context)
+                        : subTitle,
                   );
                 },
               ),
