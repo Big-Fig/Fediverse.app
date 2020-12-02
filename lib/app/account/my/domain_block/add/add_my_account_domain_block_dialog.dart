@@ -19,6 +19,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
     @required BuildContext context,
     @required VoidCallback successCallback,
   }) : super(
+            actionsBorderVisible: true,
             title: S.of(context).app_account_my_domainBlock_add_dialog_title,
             actions: [
               BaseDialog.createDefaultOkAction(

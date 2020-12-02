@@ -81,7 +81,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
                         padding: FediPadding.allMediumPadding,
                         child: Text(
                           action.label,
-                          style: isSelected
+                          style: action.customTextStyle ?? isSelected
                               ? fediUiTextTheme.bigTallPrimary
                               : actionExist && enabled
                                   ? fediUiTextTheme.bigTallDarkGrey

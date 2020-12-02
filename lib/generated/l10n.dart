@@ -3416,30 +3416,30 @@ class S {
     );
   }
 
-  /// `You have unsaved changes`
+  /// `Save this post as draft?`
   String get app_status_post_new_unsaved_dialog_title {
     return Intl.message(
-      'You have unsaved changes',
+      'Save this post as draft?',
       name: 'app_status_post_new_unsaved_dialog_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Save as draft`
+  /// `Save Draft`
   String get app_status_post_new_unsaved_dialog_action_saveAsDraft {
     return Intl.message(
-      'Save as draft',
+      'Save Draft',
       name: 'app_status_post_new_unsaved_dialog_action_saveAsDraft',
       desc: '',
       args: [],
     );
   }
 
-  /// `Discard`
+  /// `Discard Post`
   String get app_status_post_new_unsaved_dialog_action_discard {
     return Intl.message(
-      'Discard',
+      'Discard Post',
       name: 'app_status_post_new_unsaved_dialog_action_discard',
       desc: '',
       args: [],
@@ -4377,6 +4377,26 @@ class S {
     return Intl.message(
       'Disabled in account settings',
       name: 'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you discard now, you’ll lose this post.`
+  String get app_status_post_new_unsaved_dialog_content {
+    return Intl.message(
+      'If you discard now, you’ll lose this post.',
+      name: 'app_status_post_new_unsaved_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep editing`
+  String get app_status_post_new_unsaved_dialog_action_keep_editing {
+    return Intl.message(
+      'Keep editing',
+      name: 'app_status_post_new_unsaved_dialog_action_keep_editing',
       desc: '',
       args: [],
     );

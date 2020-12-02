@@ -14,11 +14,14 @@ class FediBaseAlertDialog extends FediDialog {
     List<DialogAction> actions,
     Axis actionsAxis = Axis.horizontal,
     bool cancelable = true,
+    bool actionsBorderVisible = true,
   }) : super(
-            title: title,
-            actions: actions,
-            actionsAxis: actionsAxis,
-            cancelable: cancelable);
+          title: title,
+          actions: actions,
+          actionsAxis: actionsAxis,
+          cancelable: cancelable,
+          actionsBorderVisible: actionsBorderVisible,
+        );
 
   @override
   Widget buildContentWidget(BuildContext context) {

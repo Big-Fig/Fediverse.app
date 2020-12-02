@@ -13,10 +13,12 @@ abstract class FediDialog extends BaseDialog {
   final String title;
   final List<DialogAction> actions;
   final Axis actionsAxis;
+  final bool actionsBorderVisible;
 
   FediDialog({
-    this.title,
-    this.actions,
+    @required this.title,
+    @required this.actions,
+    @required this.actionsBorderVisible,
     this.actionsAxis = Axis.horizontal,
     bool cancelable = true,
   }) : super(cancelable: cancelable);
@@ -39,12 +41,14 @@ abstract class FediDialog extends BaseDialog {
         var enabled = snapshot.data;
         return FediTransparentTextButton(
           action.label,
+          borderVisible: actionsBorderVisible,
+          textStyle: action.customTextStyle,
           onPressed: enabled
               ? () {
                   action.onAction(context);
                 }
               : null,
-          color: enabled ? color : disabledColor,
+          color: action.customColor ?? (enabled ? color : disabledColor),
         );
       },
     );

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-11-30T19:07:28+00:00",
+    "@@last_modified": "2020-12-02T14:32:51+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -338,9 +338,9 @@
     "app_status_post_field_subject": "Subject (optional)",
     "app_status_post_field_message_hint": "What’s going on today?",
     "app_status_post_new_title": "New status",
-    "app_status_post_new_unsaved_dialog_title": "You have unsaved changes",
-    "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Save as draft",
-    "app_status_post_new_unsaved_dialog_action_discard": "Discard",
+    "app_status_post_new_unsaved_dialog_title": "Save this post as draft?",
+    "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Save Draft",
+    "app_status_post_new_unsaved_dialog_action_discard": "Discard Post",
     "app_status_reblog_header": "reposted",
     "app_status_reply_header": "reply to",
     "app_status_reply_loading_progress": "Loading first status",
@@ -453,5 +453,7 @@
     "app_toast_handling_type_onlyWhenInstanceNotSelected": "When instance not selected",
     "app_toast_handling_type_onlyWhenInstanceSelected": "When instance selected",
     "app_toast_settings_field_handling_type_label": "When",
-    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Disabled in account settings"
+    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Disabled in account settings",
+    "app_status_post_new_unsaved_dialog_content": "If you discard now, you’ll lose this post.",
+    "app_status_post_new_unsaved_dialog_action_keep_editing": "Keep editing"
 }
