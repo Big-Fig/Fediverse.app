@@ -425,6 +425,8 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get dialogTitleBoldDarkGrey;
 
   TextStyle get dialogContentDarkGrey;
+
+  TextStyle get emptyTitleShortBoldDarkGrey;
 }
 
 class FediUiTextTheme implements IFediUiTextTheme {
@@ -1060,6 +1062,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
         height: _shortHeight,
         fontWeight: _normalWeight,
       );
+
   @override
   TextStyle get bigPrimary => TextStyle(
         color: _primaryColor,
@@ -2017,4 +2020,11 @@ class FediUiTextTheme implements IFediUiTextTheme {
         color: _darkGreyColor,
       );
 
+  @override
+  TextStyle get emptyTitleShortBoldDarkGrey => TextStyle(
+        fontSize: 20.0,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+        color: _darkGreyColor,
+      );
 }
