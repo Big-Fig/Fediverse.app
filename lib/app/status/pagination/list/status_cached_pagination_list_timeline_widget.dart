@@ -36,15 +36,20 @@ class StatusCachedPaginationListTimelineWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    Widget customLoadingWidget,
+    Widget customEmptyWidget,
     @required this.needWatchLocalRepositoryForUpdates,
     ScrollController scrollController,
   }) : super(
-            key: key,
-            scrollController: scrollController,
-            header: header,
-            footer: footer,
-            alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader);
+          key: key,
+          scrollController: scrollController,
+          header: header,
+          footer: footer,
+          alwaysShowFooter: alwaysShowFooter,
+          alwaysShowHeader: alwaysShowHeader,
+          customLoadingWidget: customLoadingWidget,
+          customEmptyWidget: customEmptyWidget,
+        );
 
   @override
   ScrollView buildItemsCollectionView(

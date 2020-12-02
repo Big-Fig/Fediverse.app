@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-02T14:33:49+00:00",
+    "@@last_modified": "2020-12-02T15:50:41+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -455,5 +455,10 @@
     "app_toast_settings_field_handling_type_label": "Когда",
     "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Отключено в настройках аккаунта",
     "app_status_post_new_unsaved_dialog_content": "Вы потеряете данные если откажетесь",
-    "app_status_post_new_unsaved_dialog_action_keep_editing": "Продолжить редактирование"
+    "app_status_post_new_unsaved_dialog_action_keep_editing": "Продолжить редактирование",
+    "app_account_my_statuses_bookmarked_empty_title": "У вас нет записей в закладках.",
+    "app_account_my_statuses_bookmarked_empty_subtitle": "Они появятся здесь, как только вы добавите.",
+    "app_account_my_followRequest_empty_title": "У вас нет текущих запросов",
+    "app_account_my_followRequest_action_add": "Добавить",
+    "app_account_my_followRequest_action_ignore": "Отказать"
 }

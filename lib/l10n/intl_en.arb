@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-02T14:32:51+00:00",
+    "@@last_modified": "2020-12-02T15:51:30+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -455,5 +455,11 @@
     "app_toast_settings_field_handling_type_label": "When",
     "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Disabled in account settings",
     "app_status_post_new_unsaved_dialog_content": "If you discard now, you’ll lose this post.",
-    "app_status_post_new_unsaved_dialog_action_keep_editing": "Keep editing"
+    "app_status_post_new_unsaved_dialog_action_keep_editing": "Keep editing",
+    "app_account_my_statuses_bookmarked_empty_title": "You haven’t bookmarked any posts yet.",
+    "app_account_my_statuses_bookmarked_empty_subtitle": "When you do, they will show up here.",
+    "app_account_my_followRequest_empty_title": "You don’t have any pending requests.",
+    "app_account_my_followRequest_action_add": "Add",
+    "app_account_my_followRequest_action_ignore": "Ignore",
+    "app_account_my_accountBlock_description": "Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you."
 }

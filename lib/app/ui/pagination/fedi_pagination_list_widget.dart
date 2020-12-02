@@ -18,6 +18,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 var _logger = Logger("fedi_pagination_list_widget.dart");
 
 abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
+  final Widget customLoadingWidget;
+  final Widget customEmptyWidget;
+
   const FediPaginationListWidget({
     Key key,
     ScrollController scrollController,
@@ -25,6 +28,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    this.customLoadingWidget,
+    this.customEmptyWidget,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -120,13 +125,14 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             switch (refreshState) {
               case PaginationListLoadingState.initialized:
               case PaginationListLoadingState.loading:
-                return const Center(
+
+                return customLoadingWidget ?? const Center(
                   child: FediCircularProgressIndicator(),
                 );
               case PaginationListLoadingState.failed:
               case PaginationListLoadingState.loaded:
               default:
-                return Center(
+                return customEmptyWidget ?? Center(
                   child: Text(
                     S.of(context).pagination_list_empty,
                   ),

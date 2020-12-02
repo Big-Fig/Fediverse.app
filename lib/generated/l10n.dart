@@ -4401,6 +4401,66 @@ class S {
       args: [],
     );
   }
+
+  /// `You haven’t bookmarked any posts yet.`
+  String get app_account_my_statuses_bookmarked_empty_title {
+    return Intl.message(
+      'You haven’t bookmarked any posts yet.',
+      name: 'app_account_my_statuses_bookmarked_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_bookmarked_empty_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_bookmarked_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have any pending requests.`
+  String get app_account_my_followRequest_empty_title {
+    return Intl.message(
+      'You don’t have any pending requests.',
+      name: 'app_account_my_followRequest_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get app_account_my_followRequest_action_add {
+    return Intl.message(
+      'Add',
+      name: 'app_account_my_followRequest_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ignore`
+  String get app_account_my_followRequest_action_ignore {
+    return Intl.message(
+      'Ignore',
+      name: 'app_account_my_followRequest_action_ignore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you.`
+  String get app_account_my_accountBlock_description {
+    return Intl.message(
+      'Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you.',
+      name: 'app_account_my_accountBlock_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

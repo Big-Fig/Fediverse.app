@@ -11,11 +11,16 @@ abstract class StatusCachedPaginationListBaseWidget
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     ScrollController scrollController,
+    Widget customLoadingWidget,
+    Widget customEmptyWidget,
   }) : super(
-            key: key,
-            scrollController: scrollController,
-            footer: footer,
-            header: header,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+          key: key,
+          customLoadingWidget: customLoadingWidget,
+          customEmptyWidget: customEmptyWidget,
+          scrollController: scrollController,
+          footer: footer,
+          header: header,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+        );
 }
