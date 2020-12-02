@@ -15,11 +15,17 @@ import 'package:provider/provider.dart';
 
 var _logger = Logger("account_pagination_list_widget.dart");
 
+typedef AccountPaginationListItemBuilder = Widget Function(
+  BuildContext context,
+  AccountCallback accountSelectedCallback,
+  List<Widget> accountActions,
+);
+
 class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
   final AccountCallback accountSelectedCallback;
-
   final bool needWatchLocalRepositoryForUpdates;
   final List<Widget> accountActions;
+  final AccountPaginationListItemBuilder customItemBodyBuilder;
 
   const AccountPaginationListWidget({
     @required Key key,
@@ -29,13 +35,19 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     bool alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
     this.accountActions,
+    this.customItemBodyBuilder,
     @required this.accountSelectedCallback,
+    Widget customLoadingWidget,
+    Widget customEmptyWidget,
   }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          customLoadingWidget: customLoadingWidget,
+          customEmptyWidget: customEmptyWidget,
+        );
 
   @override
   ScrollView buildItemsCollectionView(
@@ -44,35 +56,39 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) {
-            var item = items[index];
-            _logger.finest(() => "itemBuilder ${item.remoteId}");
-            return Provider<IAccount>.value(
-              value: item,
-              child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                  update: (context, account, oldValue) =>
-                      AccountBloc.createFromContext(context,
-                          isNeedWatchLocalRepositoryForUpdates:
-                              needWatchLocalRepositoryForUpdates,
-                          account: account,
-                          isNeedRefreshFromNetworkOnInit: false,
-                          isNeedWatchWebSocketsEvents: false,
-                          isNeedPreFetchRelationship: false),
-                  child: Column(
-                    children: [
-                      AccountListItemWidget(
-                        accountSelectedCallback: accountSelectedCallback,
-                        accountActions: accountActions,
-                      ),
-                      const FediUltraLightGreyDivider()
-                    ],
-                  )),
-            );
-          });
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
+          _logger.finest(() => "itemBuilder ${item.remoteId}");
+          return Provider<IAccount>.value(
+            value: item,
+            child: DisposableProxyProvider<IAccount, IAccountBloc>(
+              update: (context, account, oldValue) =>
+                  AccountBloc.createFromContext(
+                      context,
+                      isNeedWatchLocalRepositoryForUpdates:
+                          needWatchLocalRepositoryForUpdates,
+                      account: account,
+                      isNeedRefreshFromNetworkOnInit: false,
+                      isNeedWatchWebSocketsEvents: false,
+                      isNeedPreFetchRelationship: false),
+              child: customItemBodyBuilder != null
+                  ? customItemBodyBuilder(
+                      context,
+                      accountSelectedCallback,
+                      accountActions,
+                    )
+                  : _AccountPaginationListBodyWidget(
+                      accountSelectedCallback: accountSelectedCallback,
+                      accountActions: accountActions,
+                    ),
+            ),
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IAccount>, IAccount>
@@ -80,5 +96,29 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     var accountPaginationListBloc =
         IAccountPaginationListBloc.of(context, listen: listen);
     return accountPaginationListBloc;
+  }
+}
+
+class _AccountPaginationListBodyWidget extends StatelessWidget {
+  const _AccountPaginationListBodyWidget({
+    Key key,
+    @required this.accountSelectedCallback,
+    @required this.accountActions,
+  }) : super(key: key);
+
+  final AccountCallback accountSelectedCallback;
+  final List<Widget> accountActions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AccountListItemWidget(
+          accountSelectedCallback: accountSelectedCallback,
+          accountActions: accountActions,
+        ),
+        const FediUltraLightGreyDivider()
+      ],
+    );
   }
 }

@@ -3,6 +3,8 @@ class FediSizes {
   static const accountAvatarProgressDefaultSize = 20.0;
   static const accountAvatarBigSize = 48.0;
   static const accountAvatarProgressBigSize = 24.0;
+  static const accountAvatarGiantSize = 72.0;
+  static const accountAvatarProgressGiantSize = 40.0;
   static const accountAvatarSmallSize = 24.0;
   static const accountAvatarProgressSmallSize = 18.0;
   static const statusSubHeaderHeight = 16.0;

@@ -8,7 +8,7 @@ class FediEmptyWidget extends StatelessWidget {
 
   FediEmptyWidget({
     @required this.title,
-    @required this.subTitle,
+    this.subTitle,
   });
 
   @override
