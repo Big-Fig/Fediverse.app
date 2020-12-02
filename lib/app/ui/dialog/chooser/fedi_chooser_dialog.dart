@@ -124,7 +124,8 @@ class FediChooserDialogBody extends StatelessWidget {
                   padding: FediPadding.allMediumPadding,
                   child: Text(
                     action.label,
-                    style: IFediUiTextTheme.of(context).bigTallPrimary,
+                    style: action.customTextStyle ??
+                        IFediUiTextTheme.of(context).bigTallPrimary,
                   ),
                 ),
               ],

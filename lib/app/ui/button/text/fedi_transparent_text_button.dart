@@ -23,6 +23,7 @@ class FediTransparentTextButton extends StatelessWidget {
   final bool expanded;
 
   final bool limitMinWidth;
+  final bool borderVisible;
 
   FediTransparentTextButton(
     this.text, {
@@ -33,6 +34,7 @@ class FediTransparentTextButton extends StatelessWidget {
     this.borderWidth = 1,
     @required this.color,
     this.expanded = true,
+    this.borderVisible = true,
     this.limitMinWidth = false,
   });
 
@@ -51,20 +53,24 @@ class FediTransparentTextButton extends StatelessWidget {
         child: Container(
             width: width,
             height: calculatedHeight,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: borderRadius,
-              border: Border.all(
-                color: color,
-                width: borderWidth,
-              ),
-            ),
+            decoration: borderVisible
+                ? BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: borderRadius,
+                    border: Border.all(
+                      color: color,
+                      width: borderWidth,
+                    ),
+                  )
+                : null,
             child: Center(
               child: Padding(
                 padding: FediPadding.buttonHorizontalPadding,
                 child: Text(
                   text,
-                  style: textStyle.copyWith(color: color),
+                  style: textStyle.copyWith(
+                    color: color,
+                  ),
                 ),
               ),
             )),

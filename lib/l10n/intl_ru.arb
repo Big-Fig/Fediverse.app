@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-11-30T19:07:34+00:00",
+    "@@last_modified": "2020-12-02T14:33:49+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -338,9 +338,9 @@
     "app_status_post_field_subject": "Тема (опционально)",
     "app_status_post_field_message_hint": "Что произошло сегодня?",
     "app_status_post_new_title": "Новая запись",
-    "app_status_post_new_unsaved_dialog_title": "У вас есть не сохраненны данные",
+    "app_status_post_new_unsaved_dialog_title": "Сохранить как черновик?",
     "app_status_post_new_unsaved_dialog_action_saveAsDraft": "Сохранить как черновик",
-    "app_status_post_new_unsaved_dialog_action_discard": "Удалить",
+    "app_status_post_new_unsaved_dialog_action_discard": "Удалить и выйти",
     "app_status_reblog_header": "поделился",
     "app_status_reply_header": "в ответ к",
     "app_status_reply_loading_progress": "Загрузка стартовой записи",
@@ -453,5 +453,7 @@
     "app_toast_handling_type_onlyWhenInstanceNotSelected": "Когда аккаунт не активен",
     "app_toast_handling_type_onlyWhenInstanceSelected": "Когда аккаунт активен",
     "app_toast_settings_field_handling_type_label": "Когда",
-    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Отключено в настройках аккаунта"
+    "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Отключено в настройках аккаунта",
+    "app_status_post_new_unsaved_dialog_content": "Вы потеряете данные если откажетесь",
+    "app_status_post_new_unsaved_dialog_action_keep_editing": "Продолжить редактирование"
 }

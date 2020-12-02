@@ -8,6 +8,9 @@ typedef DialogActionEnabledStreamFetcher = Stream<bool> Function(
 class DialogAction {
   final String label;
   final IconData icon;
+
+  final TextStyle customTextStyle;
+  final Color customColor;
   final DialogActionCallback onAction;
 
   final DialogActionEnabledFetcher isActionEnabledFetcher;
@@ -17,14 +20,31 @@ class DialogAction {
     @required this.label,
     this.icon,
     @required this.onAction,
+    this.customTextStyle,
+    this.customColor,
     this.isActionEnabledFetcher,
     this.isActionEnabledStreamFetcher,
   });
 
   @override
   String toString() {
-    return 'DialogAction{label: $label, icon: $icon, onAction: $onAction}';
+    return 'DialogAction{'
+        'label: $label, icon: $icon, '
+        'customTextStyle: $customTextStyle, '
+        'onAction: $onAction, '
+        'isActionEnabledFetcher: $isActionEnabledFetcher, '
+        'isActionEnabledStreamFetcher: $isActionEnabledStreamFetcher}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DialogAction &&
+          runtimeType == other.runtimeType &&
+          label == other.label;
+
+  @override
+  int get hashCode => label.hashCode;
 }
 
 class SelectionDialogAction extends DialogAction {
@@ -34,12 +54,14 @@ class SelectionDialogAction extends DialogAction {
     @required this.isSelected,
     @required String label,
     IconData icon,
+    TextStyle customTextStyle,
     @required DialogActionCallback onAction,
     DialogActionEnabledFetcher isActionEnabledFetcher,
     DialogActionEnabledStreamFetcher isActionEnabledStreamFetcher,
   }) : super(
           label: label,
           icon: icon,
+          customTextStyle: customTextStyle,
           onAction: onAction,
           isActionEnabledFetcher: isActionEnabledFetcher,
           isActionEnabledStreamFetcher: isActionEnabledStreamFetcher,
