@@ -13,9 +13,16 @@ class DraftStatusPaginationListTimelineWidget
     extends DraftStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
 
-  const DraftStatusPaginationListTimelineWidget(
-      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
-      : super(key: key);
+  const DraftStatusPaginationListTimelineWidget({
+    @required Key key,
+    @required this.needWatchLocalRepositoryForUpdates,
+    Widget customEmptyWidget,
+    Widget customLoadingWidget,
+  }) : super(
+          key: key,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
+        );
 
   @override
   ScrollView buildItemsCollectionView(

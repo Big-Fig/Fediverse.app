@@ -2835,10 +2835,10 @@ class S {
   }
 
   /// `Drafts`
-  String get app_status_draft_title {
+  String get app_account_my_statuses_draft_title {
     return Intl.message(
       'Drafts',
-      name: 'app_status_draft_title',
+      name: 'app_account_my_statuses_draft_title',
       desc: '',
       args: [],
     );
@@ -2927,10 +2927,10 @@ class S {
   }
 
   /// `Queue`
-  String get app_status_scheduled_title {
+  String get app_account_my_statuses_scheduled_title {
     return Intl.message(
       'Queue',
-      name: 'app_status_scheduled_title',
+      name: 'app_account_my_statuses_scheduled_title',
       desc: '',
       args: [],
     );
@@ -4547,6 +4547,46 @@ class S {
     return Intl.message(
       'When you do, they will show up here.',
       name: 'app_account_my_statuses_favourited_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t scheduled any posts yet.`
+  String get app_account_my_statuses_scheduled_empty_title {
+    return Intl.message(
+      'You haven’t scheduled any posts yet.',
+      name: 'app_account_my_statuses_scheduled_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_scheduled_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_scheduled_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t drafted any posts yet.`
+  String get app_account_my_statuses_draft_empty_title {
+    return Intl.message(
+      'You haven’t drafted any posts yet.',
+      name: 'app_account_my_statuses_draft_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_draft_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_draft_subtitle',
       desc: '',
       args: [],
     );

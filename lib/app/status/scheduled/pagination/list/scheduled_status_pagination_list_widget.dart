@@ -18,7 +18,13 @@ class ScheduledStatusPaginationListTimelineWidget
     @required Key key,
     @required this.needWatchLocalRepositoryForUpdates,
     @required this.successCallback,
-  }) : super(key: key);
+    Widget customEmptyWidget,
+    Widget customLoadingWidget,
+  }) : super(
+          key: key,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
+        );
 
   @override
   ScrollView buildItemsCollectionView(
