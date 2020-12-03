@@ -44,8 +44,7 @@ class AccountBloc extends IAccountBloc {
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final bool isNeedPreFetchRelationship;
   final bool isNeedWatchLocalRepositoryForUpdates;
-  bool refreshInProgress = false;
-  bool refreshAccountRelationshipInProgress = false;
+  bool _refreshAccountRelationshipInProgress = false;
 
   AccountBloc({
     @required this.myAccount,
@@ -86,12 +85,6 @@ class AccountBloc extends IAccountBloc {
     }
   }
 
-  @override
-  Future dispose() {
-    // _logger.finest(() => "AccountBloc dispose");
-    return super.dispose();
-  }
-
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
     if (!disposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
@@ -121,13 +114,13 @@ class AccountBloc extends IAccountBloc {
   Future _refreshAccountRelationship(IAccount account) async {
     _logger.finest(() => "refreshAccountRelationship "
         "refreshAccountRelationshipInProgress="
-        "$refreshAccountRelationshipInProgress");
-    if (refreshAccountRelationshipInProgress != true) {
-      refreshAccountRelationshipInProgress = true;
+        "$_refreshAccountRelationshipInProgress");
+    if (_refreshAccountRelationshipInProgress != true) {
+      _refreshAccountRelationshipInProgress = true;
       var relationships = await pleromaAccountService
           .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]);
       await _updateRelationship(account, relationships.first);
-      refreshAccountRelationshipInProgress = false;
+      _refreshAccountRelationshipInProgress = false;
     }
   }
 

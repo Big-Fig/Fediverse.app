@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-02T19:35:49+00:00",
+    "@@last_modified": "2020-12-03T09:40:34+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -464,5 +464,9 @@
     "app_account_my_accountBlock_description": "Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can't follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.",
     "app_account_my_accountBlock_action_add": "Add to blocked list",
     "app_account_my_accountBlock_action_block": "Block",
-    "app_account_my_accountBlock_action_unblock": "Unblock"
+    "app_account_my_accountBlock_action_unblock": "Unblock",
+    "app_account_my_accountMute_action_add": "Add to muted list",
+    "app_account_my_accountMute_description": "Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.",
+    "app_account_my_accountMute_action_mute": "Mute",
+    "app_account_my_accountMute_action_unmute": "Unmute"
 }
