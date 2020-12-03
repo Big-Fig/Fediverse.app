@@ -4,7 +4,8 @@ import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +51,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
   Widget build(BuildContext context) => Column(
         mainAxisSize: widget.shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: [
-          const _EditPushSettingsDescWidget(),
+          const _EditPushSettingsDescriptionWidget(),
           const _EditPushSettingsFavouriteFieldWidget(),
           const _EditPushSettingsFollowFieldWidget(),
           const _EditPushSettingsMentionFieldWidget(),
@@ -189,16 +190,16 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
   }
 }
 
-class _EditPushSettingsDescWidget extends StatelessWidget {
-  const _EditPushSettingsDescWidget({
+class _EditPushSettingsDescriptionWidget extends StatelessWidget {
+  const _EditPushSettingsDescriptionWidget({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return FediNoteDescriptionWidget(
       S.of(context).app_push_settings_desc,
-      style: IFediUiTextTheme.of(context).smallShortBoldLightGrey,
+      padding: FediPadding.allSmallPadding,
     );
   }
 }

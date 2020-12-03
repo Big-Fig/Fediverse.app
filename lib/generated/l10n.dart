@@ -4491,6 +4491,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Add to muted list`
+  String get app_account_my_accountMute_action_add {
+    return Intl.message(
+      'Add to muted list',
+      name: 'app_account_my_accountMute_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
+  String get app_account_my_accountMute_description {
+    return Intl.message(
+      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
+      name: 'app_account_my_accountMute_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get app_account_my_accountMute_action_mute {
+    return Intl.message(
+      'Mute',
+      name: 'app_account_my_accountMute_action_mute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unmute`
+  String get app_account_my_accountMute_action_unmute {
+    return Intl.message(
+      'Unmute',
+      name: 'app_account_my_accountMute_action_unmute',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

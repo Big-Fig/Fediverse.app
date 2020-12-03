@@ -8,12 +8,11 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_vertical_spacer.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -99,13 +98,8 @@ class _MyAccountAccountBlockListPageWarningWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Text(
-        S.of(context).app_account_my_accountBlock_description,
-        textAlign: TextAlign.center,
-        style: IFediUiTextTheme.of(context).mediumTallMediumGrey,
-      ),
+    return FediNoteDescriptionWidget(
+      S.of(context).app_account_my_accountBlock_description,
     );
   }
 }

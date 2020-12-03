@@ -1,15 +1,18 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_account_pagination_list_widget.dart';
+import 'package:fedi/app/account/my/account_mute/my_account_account_mute_action_button_widget.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/single/single_select_account_page.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
+import 'package:fedi/app/ui/spacer/fedi_medium_vertical_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -26,12 +29,23 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_accountMute_title,
-        actions: [
-          const _MyAccountAccountMuteListPageAddButton(),
-        ],
       ),
-      body: const SafeArea(
-        child: MyAccountAccountMuteAccountPaginationListWidget(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const _MyAccountAccountMuteListPageWarningWidget(),
+            const FediMediumVerticalSpacer(),
+            const _MyAccountAccountBlockListPageAddButton(),
+            const FediMediumVerticalSpacer(),
+            const FediBigVerticalSpacer(),
+            const FediUltraLightGreyDivider(),
+            Expanded(
+              child: const MyAccountAccountMuteAccountPaginationListWidget(
+                customEmptyWidget: SizedBox.shrink(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -39,37 +53,53 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
   const MyAccountAccountMuteListPage();
 }
 
-class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
-  const _MyAccountAccountMuteListPageAddButton({
+class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
+  const _MyAccountAccountBlockListPageAddButton({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(
+      context,
+    );
     var paginationListBloc = IPaginationListBloc.of(context);
-    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
-
-    return FediIconButton(
-      icon: Icon(
-        FediIcons.plus,
-      ),
-      color: IFediUiColorTheme.of(context).darkGrey,
+    return FediPrimaryFilledTextButton(
+      S.of(context).app_account_my_accountMute_action_add,
+      expanded: false,
       onPressed: () {
         goToSingleSelectAccountPage(
           context,
+          isNeedPreFetchRelationship: true,
           accountSelectedCallback: (context, account) async {
-            await listBloc.addAccountMute(account: account);
-
-            Navigator.of(context).pop();
-
-            await paginationListBloc.refreshWithController();
+            // nothing
           },
+          accountActions: [
+            MyAccountAccountMuteActionButtonWidget(
+              listBloc: listBloc,
+              paginationListBloc: paginationListBloc,
+              defaultMuting: false,
+            ),
+          ],
           excludeMyAccount: true,
           followingsOnly: false,
           customRemoteAccountListLoader: null,
           customLocalAccountListLoader: null,
         );
       },
+    );
+  }
+}
+
+class _MyAccountAccountMuteListPageWarningWidget extends StatelessWidget {
+  const _MyAccountAccountMuteListPageWarningWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediNoteDescriptionWidget(
+      S.of(context).app_account_my_accountMute_description,
     );
   }
 }
