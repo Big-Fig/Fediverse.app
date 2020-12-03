@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -52,6 +53,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         lockedField,
         customFieldsGroupBloc
       ];
+
 
   EditMyAccountBloc({
     @required this.myAccountBloc,

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-02T15:51:30+00:00",
+    "@@last_modified": "2020-12-02T19:35:49+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -461,5 +461,8 @@
     "app_account_my_followRequest_empty_title": "You don’t have any pending requests.",
     "app_account_my_followRequest_action_add": "Add",
     "app_account_my_followRequest_action_ignore": "Ignore",
-    "app_account_my_accountBlock_description": "Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you."
+    "app_account_my_accountBlock_description": "Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can't follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.",
+    "app_account_my_accountBlock_action_add": "Add to blocked list",
+    "app_account_my_accountBlock_action_block": "Block",
+    "app_account_my_accountBlock_action_unblock": "Unblock"
 }

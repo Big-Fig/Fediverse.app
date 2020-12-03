@@ -30,7 +30,7 @@ class AccountActionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.accountRelationshipStream,
+      stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var relationship = snapshot.data;
 
@@ -154,10 +154,10 @@ class _AccountActionListFollowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.accountRelationshipStream,
-      initialData: accountBloc.accountRelationship,
+      stream: accountBloc.relationshipStream,
+      initialData: accountBloc.relationship,
       builder: (context, snapshot) {
-        var relationship = accountBloc.accountRelationship;
+        var relationship = accountBloc.relationship;
         if (relationship.requested && !relationship.following) {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,

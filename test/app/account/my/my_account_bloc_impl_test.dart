@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
@@ -355,9 +356,9 @@ void main() {
   });
 
   test('accountRelationship', () async {
-    expect(() => myAccountBloc.accountRelationship,
+    expect(() => myAccountBloc.relationship,
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-    expect(() => myAccountBloc.accountRelationshipStream,
+    expect(() => myAccountBloc.relationshipStream,
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
 

@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-02T15:50:41+00:00",
+    "@@last_modified": "2020-12-02T19:36:03+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -460,5 +460,9 @@
     "app_account_my_statuses_bookmarked_empty_subtitle": "Они появятся здесь, как только вы добавите.",
     "app_account_my_followRequest_empty_title": "У вас нет текущих запросов",
     "app_account_my_followRequest_action_add": "Добавить",
-    "app_account_my_followRequest_action_ignore": "Отказать"
+    "app_account_my_followRequest_action_ignore": "Отказать",
+    "app_account_my_accountBlock_description": "Заблокированные пользователи не будут показаны в домашней и публичных лентах, оповещениях, а также когда кто-то поделился или упоминул их. \n Заблокированные не смогут подписаться на вас, видеть ваши записи в лентах и если записями кто-то поделился. Если вы и заблокированный пользователь с одного сервера, то он не сможет видеть записи на странице вашего аккаунта.",
+    "app_account_my_accountBlock_action_add": "Добавить аккаунт",
+    "app_account_my_accountBlock_action_block": "Заблокировать",
+    "app_account_my_accountBlock_action_unblock": "Разблокировать"
 }

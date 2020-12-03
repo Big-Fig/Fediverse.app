@@ -45,7 +45,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.accountRelationshipStream,
+      stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;
         var loadingActions = accountRelationship == null;
@@ -106,10 +106,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.accountRelationship?.blocking == true
+      icon: accountBloc.relationship?.blocking == true
           ? FediIcons.unblock
           : FediIcons.block,
-      label: accountBloc.accountRelationship?.blocking == true
+      label: accountBloc.relationship?.blocking == true
           ? S.of(context).app_account_action_unblock
           : S.of(context).app_account_action_block,
       onAction: (context) async {
@@ -126,10 +126,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockDomainAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.accountRelationship.domainBlocking == true
+      icon: accountBloc.relationship.domainBlocking == true
           ? FediIcons.domain_block
           : FediIcons.domain_unblock,
-      label: accountBloc.accountRelationship.domainBlocking == true
+      label: accountBloc.relationship.domainBlocking == true
           ? S
               .of(context)
               .app_account_action_unblockDomain(accountBloc.remoteDomainOrNull)
@@ -146,10 +146,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountMuteAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.accountRelationship?.muting == true
+      icon: accountBloc.relationship?.muting == true
           ? FediIcons.unmute
           : FediIcons.mute,
-      label: accountBloc.accountRelationship?.muting == true
+      label: accountBloc.relationship?.muting == true
           ? S.of(context).app_account_action_unmute
           : S.of(context).app_account_action_mute,
       onAction: (context) async {
@@ -164,10 +164,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountFollowAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.accountRelationship?.following == true
+      icon: accountBloc.relationship?.following == true
           ? FediIcons.unfollow
           : FediIcons.follow,
-      label: accountBloc.accountRelationship?.following == true
+      label: accountBloc.relationship?.following == true
           ? S.of(context).app_account_action_unfollow
           : S.of(context).app_account_action_follow,
       onAction: (context) async {
