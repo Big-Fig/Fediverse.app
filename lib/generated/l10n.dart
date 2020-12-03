@@ -4591,6 +4591,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Block`
+  String get app_account_my_domainBlock_action_block {
+    return Intl.message(
+      'Block',
+      name: 'app_account_my_domainBlock_action_block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unblock`
+  String get app_account_my_domainBlock_action_unblock {
+    return Intl.message(
+      'Unblock',
+      name: 'app_account_my_domainBlock_action_unblock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.`
+  String get app_account_my_domainBlock_description {
+    return Intl.message(
+      'You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.',
+      name: 'app_account_my_domainBlock_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to blocked list`
+  String get app_account_my_domainBlock_action_add {
+    return Intl.message(
+      'Add to blocked list',
+      name: 'app_account_my_domainBlock_action_add',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-03T10:01:09+00:00",
+    "@@last_modified": "2020-12-03T10:35:17+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -86,7 +86,7 @@
     "app_account_my_action_lists": "Списки",
     "app_account_my_action_bookmarked": "Закладки",
     "app_account_my_action_favourited": "Избранное",
-    "app_account_my_action_followRequests": "Запросы подписчиков",
+    "app_account_my_action_followRequests": "Запросы подписки",
     "app_account_my_action_accountBlocks": "Заблокированные аккаунты",
     "app_account_my_action_accountMutes": "Скрытые аккаунты",
     "app_account_my_action_domainBlocks": "Заблокированные серверы",
@@ -474,5 +474,9 @@
     "app_account_my_statuses_scheduled_empty_title": "У вас нет записей в запланированных.",
     "app_account_my_statuses_scheduled_subtitle": "Они появятся здесь, как только вы их добавите.",
     "app_account_my_statuses_draft_empty_title": "У вас нет записей в черновиках.",
-    "app_account_my_statuses_draft_subtitle": "Они появятся здесь, как только вы их добавите."
+    "app_account_my_statuses_draft_subtitle": "Они появятся здесь, как только вы их добавите.",
+    "app_account_my_domainBlock_action_block": "Заблокировать",
+    "app_account_my_domainBlock_action_unblock": "Разблокировать",
+    "app_account_my_domainBlock_description": "Вы не будите видеть оповещения, записи с этого сервера в публичных и домашней лентах.\n Вы потеряете всех подписчиков с этого сервера.\n Обычно, удобнее сделать несколько блокировать или скрытий конкретных аккаунтов место блокирования всего сервера.",
+    "app_account_my_domainBlock_action_add": "Добавить домен"
 }

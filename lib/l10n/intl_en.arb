@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-03T10:01:25+00:00",
+    "@@last_modified": "2020-12-03T10:34:45+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -474,5 +474,9 @@
     "app_account_my_statuses_scheduled_empty_title": "You haven’t scheduled any posts yet.",
     "app_account_my_statuses_scheduled_subtitle": "When you do, they will show up here.",
     "app_account_my_statuses_draft_empty_title": "You haven’t drafted any posts yet.",
-    "app_account_my_statuses_draft_subtitle": "When you do, they will show up here."
+    "app_account_my_statuses_draft_subtitle": "When you do, they will show up here.",
+    "app_account_my_domainBlock_action_block": "Block",
+    "app_account_my_domainBlock_action_unblock": "Unblock",
+    "app_account_my_domainBlock_description": "You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.",
+    "app_account_my_domainBlock_action_add": "Add to blocked list"
 }

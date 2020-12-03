@@ -1,7 +1,6 @@
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_item_widget.dart';
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -48,26 +47,22 @@ class MyAccountDomainBlockPaginationListWidget
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) {
-            var item = items[index];
-            _logger.finest(() => "itemBuilder ${item.domain}");
-            return Provider<DomainBlock>.value(
-              value: item,
-              child: Column(
-                children: [
-                  MyAccountDomainBlockListItemWidget(
-                    domainBlockSelectedCallback: domainBlockSelectedCallback,
-                    domainBlockActions: domainBlockActions,
-                  ),
-                  const FediUltraLightGreyDivider()
-                ],
-              ),
-            );
-          });
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
+          _logger.finest(() => "itemBuilder ${item.domain}");
+          return Provider<DomainBlock>.value(
+            value: item,
+            child: MyAccountDomainBlockListItemWidget(
+              domainBlockSelectedCallback: domainBlockSelectedCallback,
+              domainBlockActions: domainBlockActions,
+            ),
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>
