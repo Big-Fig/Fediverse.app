@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-03T09:40:34+00:00",
+    "@@last_modified": "2020-12-03T09:48:29+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -468,5 +468,7 @@
     "app_account_my_accountMute_action_add": "Add to muted list",
     "app_account_my_accountMute_description": "Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.",
     "app_account_my_accountMute_action_mute": "Mute",
-    "app_account_my_accountMute_action_unmute": "Unmute"
+    "app_account_my_accountMute_action_unmute": "Unmute",
+    "app_account_my_statuses_favourited_empty_title": "You haven’t liked any posts yet.",
+    "app_account_my_statuses_favourited_empty_subtitle": "When you do, they will show up here."
 }

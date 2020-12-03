@@ -195,6 +195,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_my_statuses_bookmarked_empty_subtitle" : MessageLookupByLibrary.simpleMessage("When you do, they will show up here."),
     "app_account_my_statuses_bookmarked_empty_title" : MessageLookupByLibrary.simpleMessage("You haven’t bookmarked any posts yet."),
     "app_account_my_statuses_bookmarked_title" : MessageLookupByLibrary.simpleMessage("Bookmarks"),
+    "app_account_my_statuses_favourited_empty_subtitle" : MessageLookupByLibrary.simpleMessage("When you do, they will show up here."),
+    "app_account_my_statuses_favourited_empty_title" : MessageLookupByLibrary.simpleMessage("You haven’t liked any posts yet."),
     "app_account_my_statuses_favourited_title" : MessageLookupByLibrary.simpleMessage("Favourites"),
     "app_account_statuses_tab_media" : MessageLookupByLibrary.simpleMessage("Media"),
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Pinned"),

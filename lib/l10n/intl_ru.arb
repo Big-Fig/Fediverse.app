@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-03T09:39:28+00:00",
+    "@@last_modified": "2020-12-03T09:48:30+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -457,7 +457,7 @@
     "app_status_post_new_unsaved_dialog_content": "Вы потеряете данные если откажетесь",
     "app_status_post_new_unsaved_dialog_action_keep_editing": "Продолжить редактирование",
     "app_account_my_statuses_bookmarked_empty_title": "У вас нет записей в закладках.",
-    "app_account_my_statuses_bookmarked_empty_subtitle": "Они появятся здесь, как только вы добавите.",
+    "app_account_my_statuses_bookmarked_empty_subtitle": "Они появятся здесь, как только вы их добавите.",
     "app_account_my_followRequest_empty_title": "У вас нет текущих запросов",
     "app_account_my_followRequest_action_add": "Добавить",
     "app_account_my_followRequest_action_ignore": "Отказать",
@@ -468,5 +468,7 @@
     "app_account_my_accountMute_action_add": "Добавить аккаунт",
     "app_account_my_accountMute_description": "При скрытии пользователя будет скрыто: в публичных и домашней ленте, его упоминания и записи, которыми поделились.\n При скрытие, вы можите дополнительно скрыть оповещения.\n Пользователь не будет знать о том, что вы его скрыли.",
     "app_account_my_accountMute_action_mute": "Скрыть",
-    "app_account_my_accountMute_action_unmute": "Показывать"
+    "app_account_my_accountMute_action_unmute": "Показывать",
+    "app_account_my_statuses_favourited_empty_title": "У вас нет записей в избранном.",
+    "app_account_my_statuses_favourited_empty_subtitle": "Они появятся здесь, как только вы их добавите."
 }
