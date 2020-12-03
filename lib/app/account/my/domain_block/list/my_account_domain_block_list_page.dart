@@ -8,9 +8,13 @@ import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_doma
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
+import 'package:fedi/app/ui/spacer/fedi_medium_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -28,30 +32,86 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: S.of(context).app_account_my_domainBlock_title,
-        actions: [
-          const _MyAccountDomainBlockListPageAddAction(),
-        ],
       ),
-      body: const _MyAccountDomainBlockListPageBody(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const _MyAccountDomainBlockListPageWarningWidget(),
+            const FediMediumVerticalSpacer(),
+            const _MyAccountDomainBlockListPageAddButton(),
+            const FediMediumVerticalSpacer(),
+            const FediBigVerticalSpacer(),
+            const FediUltraLightGreyDivider(),
+            Expanded(
+              child: const _MyAccountDomainBlockListPageBody(
+                customEmptyWidget: SizedBox.shrink(),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
 class _MyAccountDomainBlockListPageBody extends StatelessWidget {
+  final Widget customEmptyWidget;
+  final Widget customLoadingWidget;
+
   const _MyAccountDomainBlockListPageBody({
+    Key key,
+    this.customEmptyWidget,
+    this.customLoadingWidget,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: MyAccountDomainBlockPaginationListWidget(
+        customEmptyWidget: customEmptyWidget,
+        customLoadingWidget: customLoadingWidget,
+        key: PageStorageKey("MyAccountDomainBlockListPage"),
+        domainBlockSelectedCallback: null,
+        domainBlockActions: <Widget>[
+          const _MyAccountDomainBlockListPageRemoveItemAction(),
+        ],
+      ),
+    );
+  }
+}
+
+class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
+  const _MyAccountDomainBlockListPageAddButton({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: MyAccountDomainBlockPaginationListWidget(
-        key: PageStorageKey("MyAccountDomainBlockListPage"),
-        domainBlockSelectedCallback: null,
-        domainBlockActions: <Widget>[
-          _MyAccountDomainBlockListPageRemoveItemAction(),
-        ],
-      ),
+    return FediPrimaryFilledTextButton(
+      S.of(context).app_account_my_domainBlock_action_add,
+      expanded: false,
+      onPressed: () {
+        AddMyAccountDomainBlockDialog.createFromContext(
+          context: context,
+          successCallback: () {
+            IPaginationListBloc.of(context, listen: false)
+                .refreshWithController();
+          },
+        ).show(context);
+      },
+    );
+  }
+}
+
+class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
+  const _MyAccountDomainBlockListPageWarningWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediNoteDescriptionWidget(
+      S.of(context).app_account_my_domainBlock_description,
     );
   }
 }
@@ -67,41 +127,26 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
         IMyAccountDomainBlockNetworkOnlyListBloc.of(context);
 
     var paginationListBloc = IPaginationListBloc.of(context);
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+    var blocking = true;
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         var domain = Provider.of<DomainBlock>(context, listen: false);
         await myAccountDomainBlockNetworkOnlyListBloc.removeDomainBlock(
-            domain: domain.domain);
+          domain: domain.domain,
+        );
+        blocking = false;
         paginationListBloc.refreshWithController();
       },
-      builder: (BuildContext context, void Function() onPressed) {
-        return FediIconButton(
-          icon: Icon(FediIcons.remove_circle),
-          onPressed: onPressed,
-        );
-      },
-    );
-  }
-}
-
-class _MyAccountDomainBlockListPageAddAction extends StatelessWidget {
-  const _MyAccountDomainBlockListPageAddAction({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(FediIcons.plus),
-      color: IFediUiColorTheme.of(context).darkGrey,
-      onPressed: () {
-        AddMyAccountDomainBlockDialog.createFromContext(
-            context: context,
-            successCallback: () {
-              IPaginationListBloc.of(context, listen: false)
-                  .refreshWithController();
-            }).show(context);
-      },
+      builder: (context, onPressed) => FediTransparentTextButton(
+        blocking
+            ? S.of(context).app_account_my_domainBlock_action_unblock
+            : S.of(context).app_account_my_domainBlock_action_block,
+        onPressed: onPressed,
+        color: blocking ? fediUiColorTheme.mediumGrey : fediUiColorTheme.error,
+      ),
     );
   }
 }

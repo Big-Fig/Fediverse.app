@@ -50,7 +50,7 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
                 : S.of(context).app_account_my_accountBlock_action_block,
             onPressed: onPressed,
             color: relationshipBlocking
-                ? fediUiColorTheme.primary
+                ? fediUiColorTheme.mediumGrey
                 : fediUiColorTheme.error,
           ),
         );

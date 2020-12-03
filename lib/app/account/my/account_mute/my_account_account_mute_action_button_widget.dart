@@ -50,7 +50,7 @@ class MyAccountAccountMuteActionButtonWidget extends StatelessWidget {
                 : S.of(context).app_account_my_accountMute_action_mute,
             onPressed: onPressed,
             color: relationshipMuting
-                ? fediUiColorTheme.primary
+                ? fediUiColorTheme.mediumGrey
                 : fediUiColorTheme.error,
           ),
         );
