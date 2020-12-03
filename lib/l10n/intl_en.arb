@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-03T09:48:29+00:00",
+    "@@last_modified": "2020-12-03T10:01:25+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -280,7 +280,7 @@
     "app_search_tab_statuses": "Posts",
     "app_search_tab_hashtags": "Hashtags",
     "app_search_field_input_hint": "Search",
-    "app_status_draft_title": "Drafts",
+    "app_account_my_statuses_draft_title": "Drafts",
     "app_status_draft_state_canceled": "Canceled",
     "app_status_draft_state_alreadyPosted": "Already posted",
     "app_status_draft_edit_title": "Edit Draft",
@@ -289,7 +289,7 @@
     "app_status_thread_start_loading": "Loading start status",
     "app_status_thread_post_hint": "Reply to @{accountAcct}",
     "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 new post. Tap to load.} other{{count} new posts. Tap to load.}}",
-    "app_status_scheduled_title": "Queue",
+    "app_account_my_statuses_scheduled_title": "Queue",
     "app_status_scheduled_state_canceled": "Canceled",
     "app_status_scheduled_state_alreadyPosted": "Already posted",
     "app_status_scheduled_datetime_picker_title": "Schedule",
@@ -470,5 +470,9 @@
     "app_account_my_accountMute_action_mute": "Mute",
     "app_account_my_accountMute_action_unmute": "Unmute",
     "app_account_my_statuses_favourited_empty_title": "You haven’t liked any posts yet.",
-    "app_account_my_statuses_favourited_empty_subtitle": "When you do, they will show up here."
+    "app_account_my_statuses_favourited_empty_subtitle": "When you do, they will show up here.",
+    "app_account_my_statuses_scheduled_empty_title": "You haven’t scheduled any posts yet.",
+    "app_account_my_statuses_scheduled_subtitle": "When you do, they will show up here.",
+    "app_account_my_statuses_draft_empty_title": "You haven’t drafted any posts yet.",
+    "app_account_my_statuses_draft_subtitle": "When you do, they will show up here."
 }

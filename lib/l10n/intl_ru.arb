@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-03T09:48:30+00:00",
+    "@@last_modified": "2020-12-03T10:01:09+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -280,7 +280,7 @@
     "app_search_tab_statuses": "Записи",
     "app_search_tab_hashtags": "Хэш-теги",
     "app_search_field_input_hint": "Поиск",
-    "app_status_draft_title": "Черновики",
+    "app_account_my_statuses_draft_title": "Черновики",
     "app_status_draft_state_canceled": "Отменен",
     "app_status_draft_state_alreadyPosted": "Уже опубликовано",
     "app_status_draft_edit_title": "Рекдактировать",
@@ -289,7 +289,7 @@
     "app_status_thread_start_loading": "Загрузка начального статуса",
     "app_status_thread_post_hint": "Ответ: @{accountAcct}",
     "app_status_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новая запись. Нажмите для загрузки.} other{{count} новых записей. Нажмите для загрузки.}}",
-    "app_status_scheduled_title": "Очередь",
+    "app_account_my_statuses_scheduled_title": "Очередь",
     "app_status_scheduled_state_canceled": "Отменен",
     "app_status_scheduled_state_alreadyPosted": "Уже опубликован",
     "app_status_scheduled_datetime_picker_title": "Запланировать",
@@ -470,5 +470,9 @@
     "app_account_my_accountMute_action_mute": "Скрыть",
     "app_account_my_accountMute_action_unmute": "Показывать",
     "app_account_my_statuses_favourited_empty_title": "У вас нет записей в избранном.",
-    "app_account_my_statuses_favourited_empty_subtitle": "Они появятся здесь, как только вы их добавите."
+    "app_account_my_statuses_favourited_empty_subtitle": "Они появятся здесь, как только вы их добавите.",
+    "app_account_my_statuses_scheduled_empty_title": "У вас нет записей в запланированных.",
+    "app_account_my_statuses_scheduled_subtitle": "Они появятся здесь, как только вы их добавите.",
+    "app_account_my_statuses_draft_empty_title": "У вас нет записей в черновиках.",
+    "app_account_my_statuses_draft_subtitle": "Они появятся здесь, как только вы их добавите."
 }

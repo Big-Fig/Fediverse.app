@@ -13,12 +13,16 @@ abstract class DraftStatusPaginationListBaseWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    Widget customEmptyWidget,
+    Widget customLoadingWidget,
   }) : super(
           key: key,
           footer: footer,
           header: header,
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
         );
 
   @override
@@ -26,8 +30,9 @@ abstract class DraftStatusPaginationListBaseWidget
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var paginationListBloc = Provider.of<
-        IPaginationListBloc<PaginationPage<IDraftStatus>,
-            IDraftStatus>>(context, listen: listen);
+            IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
+        context,
+        listen: listen);
     return paginationListBloc;
   }
 }
