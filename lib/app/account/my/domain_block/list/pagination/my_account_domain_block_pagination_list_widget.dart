@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_item_widget.dart';
-import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc.dart';
+import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -28,13 +28,18 @@ class MyAccountDomainBlockPaginationListWidget
     bool alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
     this.domainBlockActions,
+    Widget customLoadingWidget,
+    Widget customEmptyWidget,
     @required this.domainBlockSelectedCallback,
   }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
+        );
 
   @override
   ScrollView buildItemsCollectionView(

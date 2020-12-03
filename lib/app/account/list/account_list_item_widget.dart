@@ -66,20 +66,21 @@ class _AccountListItemBodyWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Flexible(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AccountDisplayNameWidget(
-              textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
-            AccountAcctWidget(
-              textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-            ),
-          ],
-        ))
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AccountDisplayNameWidget(
+                textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              AccountAcctWidget(
+                textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

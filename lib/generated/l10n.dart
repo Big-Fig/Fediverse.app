@@ -4452,11 +4452,41 @@ class S {
     );
   }
 
-  /// `Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you.`
+  /// `Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can't follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.`
   String get app_account_my_accountBlock_description {
     return Intl.message(
-      'Once you’ve blocked an account, they can no longer see things you post on your timeline, tag you, add you to a List, start a chat with you or follow you.',
+      'Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can\'t follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.',
       name: 'app_account_my_accountBlock_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to blocked list`
+  String get app_account_my_accountBlock_action_add {
+    return Intl.message(
+      'Add to blocked list',
+      name: 'app_account_my_accountBlock_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get app_account_my_accountBlock_action_block {
+    return Intl.message(
+      'Block',
+      name: 'app_account_my_accountBlock_action_block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unblock`
+  String get app_account_my_accountBlock_action_unblock {
+    return Intl.message(
+      'Unblock',
+      name: 'app_account_my_accountBlock_action_unblock',
       desc: '',
       args: [],
     );
