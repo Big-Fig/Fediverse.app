@@ -4531,6 +4531,26 @@ class S {
       args: [],
     );
   }
+
+  /// `You haven’t liked any posts yet.`
+  String get app_account_my_statuses_favourited_empty_title {
+    return Intl.message(
+      'You haven’t liked any posts yet.',
+      name: 'app_account_my_statuses_favourited_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_favourited_empty_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_favourited_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

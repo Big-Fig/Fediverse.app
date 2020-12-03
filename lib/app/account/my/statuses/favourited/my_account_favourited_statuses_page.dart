@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc_impl.dart';
@@ -26,6 +27,7 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
       body: const SafeArea(
         child: CollapsibleOwnerWidget(
           child: StatusCachedPaginationListTimelineWidget(
+            customEmptyWidget: _MyAccountFavouritedStatusesPageEmptyWidget(),
             needWatchLocalRepositoryForUpdates: true,
           ),
         ),
@@ -34,6 +36,20 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
   }
 
   const MyAccountFavouritedStatusesPage();
+}
+
+class _MyAccountFavouritedStatusesPageEmptyWidget extends StatelessWidget {
+  const _MyAccountFavouritedStatusesPageEmptyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    var s = S.of(context);
+
+    return FediEmptyWidget(
+      title: s.app_account_my_statuses_favourited_empty_title,
+      subTitle: s.app_account_my_statuses_favourited_empty_subtitle,
+    );
+  }
 }
 
 void goToMyAccountFavouritedStatusesPage(BuildContext context) {
