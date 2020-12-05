@@ -3,14 +3,10 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICustomListAccountNetworkOnlyListBloc
+abstract class ICustomListAccountListNetworkOnlyListBloc
     extends INetworkOnlyListBloc<IAccount> {
-  static ICustomListAccountNetworkOnlyListBloc of(BuildContext context,
+  static ICustomListAccountListNetworkOnlyListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<ICustomListAccountNetworkOnlyListBloc>(context,
+      Provider.of<ICustomListAccountListNetworkOnlyListBloc>(context,
           listen: listen);
-
-  Future addAccounts(List<IAccount> accounts);
-
-  Future removeAccounts(List<IAccount> accounts);
 }

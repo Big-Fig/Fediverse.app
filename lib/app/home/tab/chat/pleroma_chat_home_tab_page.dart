@@ -8,7 +8,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_l
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
@@ -167,12 +167,13 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       content: null,
       endingWidgets: [
         ConversationChatUnreadBadgeCountWidget(
-          child: FediBlurredTextButton(
+          child: FediBlurredTextButtonWithBorder(
             S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
             onPressed: () {
               IChatSettingsBloc.of(context, listen: false)
                   .changeReplaceConversationsWithPleromaChats(false);
             },
+            expanded: false,
           ),
         ),
         const FediBigHorizontalSpacer(),

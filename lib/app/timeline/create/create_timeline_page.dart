@@ -1,8 +1,6 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc_impl.dart';
 import 'package:fedi/app/timeline/create/create_timeline_widget.dart';
@@ -10,7 +8,7 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -30,7 +28,7 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
         return false;
       },
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
+        appBar: FediPageTitleAppBar(
           title: S.of(context).app_timeline_create_title,
           leading: FediDismissIconButton(
             customOnPressed: () {
@@ -97,40 +95,26 @@ void goToCreateItemTimelinesHomeTabStoragePage(
 MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
     BuildContext context) {
   return MaterialPageRoute(
-    builder: (context) => DisposableProvider<ITimelinesHomeTabStorageBloc>(
-      create: (context) => TimelinesHomeTabStorageBloc(
-        preferences: ITimelinesHomeTabStorageLocalPreferencesBloc.of(
-          context,
-          listen: false,
-        ),
+    builder: (context) => DisposableProvider<ICreateTimelineBloc>(
+      create: (context) => CreateTimelineBloc(
+        timelineSavedCallback: (Timeline timeline) {
+          var timelinesHomeTabStorageBloc =
+              ITimelinesHomeTabStorageBloc.of(context, listen: false);
+          timelinesHomeTabStorageBloc.add(timeline);
+          Navigator.of(context).pop();
+        },
         authInstance:
             ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
-        preferencesService: ILocalPreferencesService.of(
+        localPreferencesService: ILocalPreferencesService.of(
+          context,
+          listen: false,
+        ),
+        webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
           context,
           listen: false,
         ),
       ),
-      child: DisposableProvider<ICreateTimelineBloc>(
-        create: (context) => CreateTimelineBloc(
-          timelineSavedCallback: (Timeline timeline) {
-            var timelinesHomeTabStorageBloc =
-                ITimelinesHomeTabStorageBloc.of(context, listen: false);
-            timelinesHomeTabStorageBloc.add(timeline);
-            Navigator.of(context).pop();
-          },
-          authInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
-              .currentInstance,
-          localPreferencesService: ILocalPreferencesService.of(
-            context,
-            listen: false,
-          ),
-          webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
-            context,
-            listen: false,
-          ),
-        ),
-        child: const CreateItemTimelinesHomeTabStoragePage(),
-      ),
+      child: const CreateItemTimelinesHomeTabStoragePage(),
     ),
   );
 }

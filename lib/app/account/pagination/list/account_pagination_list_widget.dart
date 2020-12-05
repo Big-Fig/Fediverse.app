@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -26,9 +27,10 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
   final List<Widget> accountActions;
   final AccountPaginationListItemBuilder customItemBodyBuilder;
   final bool isNeedPreFetchRelationship;
+  final EdgeInsets itemPadding;
 
   const AccountPaginationListWidget({
-    @required Key key,
+    Key key,
     Widget header,
     Widget footer,
     bool alwaysShowHeader,
@@ -37,6 +39,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     this.isNeedPreFetchRelationship = false,
     this.accountActions,
     this.customItemBodyBuilder,
+    this.itemPadding = FediPadding.allMediumPadding,
     @required this.accountSelectedCallback,
     Widget customLoadingWidget,
     Widget customEmptyWidget,
@@ -85,6 +88,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
                   : _AccountPaginationListBodyWidget(
                       accountSelectedCallback: accountSelectedCallback,
                       accountActions: accountActions,
+                      itemPadding: itemPadding,
                     ),
             ),
           );
@@ -101,18 +105,21 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
 }
 
 class _AccountPaginationListBodyWidget extends StatelessWidget {
+  final EdgeInsets itemPadding;
+  final AccountCallback accountSelectedCallback;
+  final List<Widget> accountActions;
+
   const _AccountPaginationListBodyWidget({
     Key key,
     @required this.accountSelectedCallback,
     @required this.accountActions,
+    @required this.itemPadding,
   }) : super(key: key);
-
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
 
   @override
   Widget build(BuildContext context) {
     return AccountListItemWidget(
+      padding: itemPadding,
       accountSelectedCallback: accountSelectedCallback,
       accountActions: accountActions,
     );

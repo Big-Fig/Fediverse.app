@@ -35,6 +35,8 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
@@ -761,5 +763,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: webSocketsHandlerManagerBloc);
     await globalProviderService.asyncInitAndRegister<
         IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
+
+    var timelinesHomeTabStorageBloc = TimelinesHomeTabStorageBloc(
+      preferences: timelinesHomeTabStorageLocalPreferencesBloc,
+      authInstance: currentInstance,
+      preferencesService: preferencesService,
+    );
+
+    addDisposable(disposable: timelinesHomeTabStorageBloc);
+    await globalProviderService.asyncInitAndRegister<
+        ITimelinesHomeTabStorageBloc>(timelinesHomeTabStorageBloc);
   }
 }

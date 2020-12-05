@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -44,7 +44,7 @@ class MyAccountAccountMuteActionButtonWidget extends StatelessWidget {
             }
             await paginationListBloc.refreshWithController();
           },
-          builder: (context, onPressed) => FediTransparentTextButton(
+          builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
             relationshipMuting
                 ? S.of(context).app_account_my_accountMute_action_unmute
                 : S.of(context).app_account_my_accountMute_action_mute,
@@ -52,6 +52,7 @@ class MyAccountAccountMuteActionButtonWidget extends StatelessWidget {
             color: relationshipMuting
                 ? fediUiColorTheme.mediumGrey
                 : fediUiColorTheme.error,
+            expanded: false,
           ),
         );
       },

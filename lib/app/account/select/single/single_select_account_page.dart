@@ -5,7 +5,7 @@ import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart
 import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class SingleSelectAccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: FediSubPageCustomAppBar(
+        appBar: FediPageCustomAppBar(
           leading: const FediBackIconButton(),
           child: const SearchInputWidget(),
         ),

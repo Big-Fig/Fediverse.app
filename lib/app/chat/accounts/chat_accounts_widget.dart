@@ -16,32 +16,35 @@ class ChatAccountsWidget extends StatelessWidget {
     var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
-        stream: chatBloc.accountsStream,
-        builder: (context, snapshot) {
-          var items = snapshot.data;
+      stream: chatBloc.accountsStream,
+      builder: (context, snapshot) {
+        var items = snapshot.data;
 
-          if (items == null) {
-            return const _ChatAccountsLoadingWidget();
-          }
+        if (items == null) {
+          return const _ChatAccountsLoadingWidget();
+        }
 
-          return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) => DisposableProvider<IAccountBloc>(
-                  create: (context) => AccountBloc.createFromContext(context,
-                      isNeedWatchLocalRepositoryForUpdates: false,
-                      account: items[index],
-                      isNeedRefreshFromNetworkOnInit: false,
-                      isNeedWatchWebSocketsEvents: false,
-                      isNeedPreFetchRelationship: false),
-                  child: Column(
-                    children: [
-                      const AccountListItemWidget(
-                        accountSelectedCallback: _accountSelectedCallback,
-                      ),
-                      const FediUltraLightGreyDivider()
-                    ],
-                  )));
-        });
+        return ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) => DisposableProvider<IAccountBloc>(
+            create: (context) => AccountBloc.createFromContext(context,
+                isNeedWatchLocalRepositoryForUpdates: false,
+                account: items[index],
+                isNeedRefreshFromNetworkOnInit: false,
+                isNeedWatchWebSocketsEvents: false,
+                isNeedPreFetchRelationship: false),
+            child: Column(
+              children: [
+                const AccountListItemWidget(
+                  accountSelectedCallback: _accountSelectedCallback,
+                ),
+                const FediUltraLightGreyDivider()
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   const ChatAccountsWidget();

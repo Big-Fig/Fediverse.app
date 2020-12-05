@@ -11,7 +11,7 @@ import 'package:fedi/app/search/search_bloc_impl.dart';
 import 'package:fedi/app/search/search_model.dart';
 import 'package:fedi/app/search/search_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: FediSubPageCustomAppBar(
+        appBar: FediPageCustomAppBar(
           leading: const FediBackIconButton(),
           child: const SearchInputWidget(
             autofocus: true,

@@ -12,7 +12,7 @@ import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -394,7 +394,7 @@ class EditMyAccountWidget extends StatelessWidget {
               } else {
                 return Padding(
                   padding: FediPadding.allSmallPadding,
-                  child: FediPrimaryFilledTextButton(
+                  child: FediPrimaryFilledTextButtonWithBorder(
                     S
                         .of(context)
                         .app_account_my_edit_field_backgroundImage_action_add,
@@ -402,6 +402,7 @@ class EditMyAccountWidget extends StatelessWidget {
                       startChoosingFileToUploadBackground(
                           context, editMyAccountBloc);
                     },
+                    expanded: false,
                   ),
                 );
               }
@@ -503,17 +504,18 @@ class EditMyAccountWidget extends StatelessWidget {
                     if (isMaximumCustomFieldsCountReached != true) {
                       return Padding(
                         padding: FediPadding.allBigPadding,
-                        child: FediPrimaryFilledTextButton(
+                        child: FediPrimaryFilledTextButtonWithBorder(
                           S
                               .of(context)
                               .app_account_my_edit_field_customField_action_addNew,
                           onPressed: () {
                             customFieldsGroupBloc.addNewEmptyField();
                           },
+                          expanded: false,
                         ),
                       );
                     } else {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
                   }),
             ],

@@ -1,7 +1,7 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -85,7 +85,7 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
                     padding: FediPadding.allSmallPadding,
                     child: AsyncOperationButtonBuilderWidget(
                       builder: (context, onPressed) =>
-                          FediPrimaryFilledTextButton(
+                          FediPrimaryFilledTextButtonWithBorder(
                         S.of(context).app_poll_vote,
                         expanded: false,
                         limitMinWidth: true,

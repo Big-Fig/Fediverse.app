@@ -9,8 +9,8 @@ class CustomListFormWidget extends StatelessWidget {
   const CustomListFormWidget();
 
   @override
-  Widget build(BuildContext context) =>
-      ProxyProvider<ICustomListFormBloc, IStringValueFormFieldBloc>(
+  Widget build(BuildContext context) {
+    return ProxyProvider<ICustomListFormBloc, IStringValueFormFieldBloc>(
         update: (context, value, previous) => value.titleField,
         child: StringFormFieldRowWidget(
           autocorrect: true,
@@ -20,4 +20,5 @@ class CustomListFormWidget extends StatelessWidget {
           textInputAction: TextInputAction.done,
         ),
       );
+  }
 }

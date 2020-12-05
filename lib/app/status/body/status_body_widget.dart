@@ -18,7 +18,7 @@ import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_model.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -233,13 +233,14 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
         stream: statusCollapsibleItemBloc.isCollapsedStream,
         builder: (context, snapshot) {
           var isCollapsed = snapshot.data ?? true;
-          return FediPrimaryFilledTextButton(
+          return FediPrimaryFilledTextButtonWithBorder(
             isCollapsed
                 ? S.of(context).app_status_collapsible_action_expand
                 : S.of(context).app_status_collapsible_action_collapse,
             onPressed: () {
               statusCollapsibleItemBloc.toggleCollapseExpand();
             },
+            expanded: false,
           );
         },
       ),

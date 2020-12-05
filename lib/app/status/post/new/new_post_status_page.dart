@@ -3,7 +3,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +85,7 @@ class NewPostStatusPageAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context);
-    return FediSubPageTitleAppBar(
+    return FediPageTitleAppBar(
       title: S.of(context).app_status_post_new_title,
       leading: FediDismissIconButton(
         customOnPressed: () {
@@ -96,7 +96,7 @@ class NewPostStatusPageAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => FediSubPageTitleAppBar.calculatePreferredSize();
+  Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
 }
 
 void goToNewPostStatusPage(BuildContext context) {

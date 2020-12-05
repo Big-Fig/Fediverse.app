@@ -15,5 +15,7 @@ abstract class ICustomListBloc implements IDisposable {
 
   Stream<String> get titleStream;
 
-  Future delete();
+  Stream get deletedStream;
+
+  void updateList(ICustomList customList);
 }

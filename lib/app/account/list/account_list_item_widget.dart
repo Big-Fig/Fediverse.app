@@ -15,10 +15,13 @@ var _logger = Logger("account_list_item_widget.dart");
 class AccountListItemWidget extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
   final List<Widget> accountActions;
+  final EdgeInsets padding;
 
   const AccountListItemWidget({
     @required this.accountSelectedCallback,
     this.accountActions,
+    this.padding = FediPadding.allMediumPadding,
+
   });
 
   @override
@@ -34,7 +37,7 @@ class AccountListItemWidget extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: FediPadding.allBigPadding,
+        padding: padding,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

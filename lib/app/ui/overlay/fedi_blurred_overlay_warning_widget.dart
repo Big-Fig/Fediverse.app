@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/background/fedi_background_blur.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -41,7 +41,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
               if (buttonText != null && buttonAction != null)
                 Padding(
                   padding: FediPadding.allSmallPadding,
-                  child: FediPrimaryFilledTextButton(
+                  child: FediPrimaryFilledTextButtonWithBorder(
                     buttonText,
                     enabledBorderColor: fediUiColorTheme.transparent,
                     disabledBorderColor: fediUiColorTheme.transparent,

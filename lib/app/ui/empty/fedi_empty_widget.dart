@@ -23,7 +23,7 @@ class FediEmptyWidget extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: fediUiTextTheme.emptyTitleShortBoldDarkGrey,
+            style: fediUiTextTheme.giantTitleShortBoldDarkGrey,
           ),
           if (subTitle != null) const FediSmallVerticalSpacer(),
           if (subTitle != null)

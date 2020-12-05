@@ -5,7 +5,7 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:fedi/app/status/favourite/status_favourite_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +15,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
         title: S.of(context).app_status_favouritedBy_title,
       ),
       body: SafeArea(

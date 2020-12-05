@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -39,7 +39,7 @@ abstract class FediDialog extends BaseDialog {
           : Stream.value(true),
       builder: (context, snapshot) {
         var enabled = snapshot.data;
-        return FediTransparentTextButton(
+        return FediTransparentTextButtonWithBorder(
           action.label,
           borderVisible: actionsBorderVisible,
           textStyle: action.customTextStyle,
@@ -49,6 +49,7 @@ abstract class FediDialog extends BaseDialog {
                 }
               : null,
           color: action.customColor ?? (enabled ? color : disabledColor),
+          expanded: true,
         );
       },
     );

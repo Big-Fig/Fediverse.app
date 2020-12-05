@@ -1,5 +1,5 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:fedi/app/custom_list/list/custom_list_pagination_bloc.dart';
+import 'package:fedi/app/custom_list/list/pagination/custom_list_pagination_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
@@ -31,10 +31,13 @@ class CustomListNetworkOnlyPaginationBloc
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
       CustomListNetworkOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<INetworkOnlyListBloc<ICustomList>>(context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        itemsCountPerPage: itemsCountPerPage,
+        listService: Provider.of<INetworkOnlyListBloc<ICustomList>>(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future<List<ICustomList>> loadItemsFromRemoteForPage(
@@ -50,21 +53,22 @@ class CustomListNetworkOnlyPaginationBloc
       );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) => DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
-      create: (context) =>
-          CustomListNetworkOnlyPaginationBloc.createFromContext(context),
-      child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
-          INetworkOnlyPleromaPaginationBloc<ICustomList>>(
-        update: (context, value, previous) => value,
+          {@required Widget child}) =>
+      DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
+        create: (context) =>
+            CustomListNetworkOnlyPaginationBloc.createFromContext(context),
         child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
-            IPaginationBloc<PaginationPage<ICustomList>, ICustomList>>(
+            INetworkOnlyPleromaPaginationBloc<ICustomList>>(
           update: (context, value, previous) => value,
           child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
-              IPaginationBloc>(
+              IPaginationBloc<PaginationPage<ICustomList>, ICustomList>>(
             update: (context, value, previous) => value,
-            child: child,
+            child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
+                IPaginationBloc>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
+      );
 }

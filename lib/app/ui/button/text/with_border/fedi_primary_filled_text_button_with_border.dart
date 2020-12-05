@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediPrimaryFilledTextButton extends StatelessWidget {
+class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -22,7 +22,7 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
 
   final TextStyle textStyle;
 
-  FediPrimaryFilledTextButton(
+  FediPrimaryFilledTextButtonWithBorder(
     this.text, {
     @required this.onPressed,
     this.enabledBackgroundColor,
@@ -32,7 +32,7 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
-    this.expanded = true,
+    @required this.expanded,
     this.limitMinWidth = false,
   });
 

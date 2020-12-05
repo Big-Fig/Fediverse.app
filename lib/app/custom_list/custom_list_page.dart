@@ -1,5 +1,8 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/custom_list/custom_list_bloc.dart';
+import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
+import 'package:fedi/app/custom_list/edit/edit_custom_list_page.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
@@ -12,13 +15,17 @@ import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.d
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
@@ -45,16 +52,11 @@ class _CustomListPageState extends State<CustomListPage> {
 
   @override
   Widget build(BuildContext context) {
-    var customList = Provider.of<ICustomList>(context);
     return DisposableProvider<IScrollControllerBloc>(
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
-          centerTitle: false,
-          title: S.of(context).app_customList_title(customList.title),
-          actions: [],
-        ),
+        appBar: const _CustomListPageAppBar(),
         body: SafeArea(
           child: CollapsibleOwnerWidget(
             child: Stack(
@@ -73,15 +75,106 @@ class _CustomListPageState extends State<CustomListPage> {
   }
 }
 
+class _CustomListPageAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const _CustomListPageAppBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FediPageTitleAppBar(
+          centerTitle: false,
+          title: "",
+          actions: [
+            const _CustomListPageAppBarEditActionWidget(),
+          ],
+        ),
+        Expanded(
+          child: const Center(
+            child: _CustomListPageAppBarTitleWidget(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize =>
+      FediPageTitleAppBar.calculatePreferredSize() + Offset(0, 48.0);
+}
+
+class _CustomListPageAppBarTitleWidget extends StatelessWidget {
+  const _CustomListPageAppBarTitleWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
+    var customListBloc = ICustomListBloc.of(context);
+
+    return StreamBuilder<ICustomList>(
+      stream: customListBloc.customListStream,
+      initialData: customListBloc.customList,
+      builder: (context, snapshot) {
+        var customList = snapshot.data;
+        return Text(
+          customList.title,
+          style: fediUiTextTheme.giantTitleShortBoldDarkGrey,
+        );
+      },
+    );
+  }
+}
+
+class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
+  const _CustomListPageAppBarEditActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediPageAppBarTextActionWidget(
+      text: S.of(context).app_acccount_my_customList_list_action_edit,
+      onPressed: () {
+        goToEditCustomListPage(
+          context: context,
+          customList: Provider.of<ICustomList>(context, listen: false),
+          onSubmit: (customList) {
+            var paginationListBloc =
+                IPaginationListBloc.of(context, listen: false);
+            paginationListBloc.refreshWithController();
+
+            var customListBloc = ICustomListBloc.of(context, listen: false);
+            customListBloc.updateList(customList);
+          },
+          onDelete: () {
+            var customListBloc = ICustomListBloc.of(context, listen: false);
+            customListBloc.updateList(null);
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+}
+
 void goToCustomListPage({
   @required BuildContext context,
   @required ICustomList customList,
+  @required Function(ICustomList customList) onChanged,
+  @required VoidCallback onDeleted,
 }) {
   Navigator.push(
     context,
     createCustomListPageRoute(
       context: context,
       customList: customList,
+      onChanged: onChanged,
+      onDeleted: onDeleted,
     ),
   );
 }
@@ -89,81 +182,120 @@ void goToCustomListPage({
 MaterialPageRoute createCustomListPageRoute({
   @required BuildContext context,
   @required ICustomList customList,
+  @required Function(ICustomList customList) onChanged,
+  @required VoidCallback onDeleted,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
-  return MaterialPageRoute(builder: (context) {
-    return DisposableProvider<ITimelineLocalPreferencesBloc>(
-      create: (context) {
-        var bloc = TimelineLocalPreferencesBloc.customList(
-          ILocalPreferencesService.of(context, listen: false),
-          userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-          customList: customList,
-        );
+  return MaterialPageRoute(
+    builder: (context) {
+      return DisposableProvider<ITimelineLocalPreferencesBloc>(
+        create: (context) {
+          var bloc = TimelineLocalPreferencesBloc.customList(
+            ILocalPreferencesService.of(context, listen: false),
+            userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
+            customList: customList,
+          );
 
-        bloc.performAsyncInit();
-        return bloc;
-      },
-      child: Builder(
-        builder: (context) {
-          return FediAsyncInitLoadingWidget(
-            asyncInitLoadingBloc:
-                ITimelineLocalPreferencesBloc.of(context, listen: false),
-            loadingFinishedBuilder: (BuildContext context) {
-              return DisposableProvider<IStatusCachedListBloc>(
-                create: (BuildContext context) {
-                  var customListTimelineStatusCachedListBloc =
-                      TimelineStatusCachedListBloc(
-                    pleromaTimelineService: IPleromaTimelineService.of(
-                      context,
-                      listen: false,
-                    ),
-                    statusRepository: IStatusRepository.of(
-                      context,
-                      listen: false,
-                    ),
-                    timelineLocalPreferencesBloc:
-                        ITimelineLocalPreferencesBloc.of(context,
-                            listen: false),
-                    currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                      context,
-                      listen: false,
-                    ),
-                    pleromaAccountService: IPleromaAccountService.of(
-                      context,
-                      listen: false,
-                    ),
-                    webSocketsHandlerManagerBloc:
-                        IWebSocketsHandlerManagerBloc.of(
-                      context,
-                      listen: false,
-                    ), webSocketsListenType: WebSocketsListenType.foreground,
-                  );
-                  return customListTimelineStatusCachedListBloc;
-                },
-                child: ProxyProvider<IStatusCachedListBloc,
-                    IPleromaCachedListBloc<IStatus>>(
-                  update: (context, value, previous) => value,
-                  child: StatusCachedPaginationBloc.provideToContext(
-                    context,
-                    child: StatusCachedPaginationListWithNewItemsBloc
-                        .provideToContext(
-                      context,
-                      mergeNewItemsImmediately: false,
-                      child: Provider.value(
-                        value: customList,
-                        child: const CustomListPage(),
+          bloc.performAsyncInit();
+          return bloc;
+        },
+        child: Builder(
+          builder: (context) {
+            return FediAsyncInitLoadingWidget(
+              asyncInitLoadingBloc:
+                  ITimelineLocalPreferencesBloc.of(context, listen: false),
+              loadingFinishedBuilder: (BuildContext context) {
+                return DisposableProvider<IStatusCachedListBloc>(
+                  create: (BuildContext context) {
+                    var customListTimelineStatusCachedListBloc =
+                        TimelineStatusCachedListBloc(
+                      pleromaTimelineService: IPleromaTimelineService.of(
+                        context,
+                        listen: false,
                       ),
-                      mergeOwnStatusesImmediately: false,
+                      statusRepository: IStatusRepository.of(
+                        context,
+                        listen: false,
+                      ),
+                      timelineLocalPreferencesBloc:
+                          ITimelineLocalPreferencesBloc.of(context,
+                              listen: false),
+                      currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                        context,
+                        listen: false,
+                      ),
+                      pleromaAccountService: IPleromaAccountService.of(
+                        context,
+                        listen: false,
+                      ),
+                      webSocketsHandlerManagerBloc:
+                          IWebSocketsHandlerManagerBloc.of(
+                        context,
+                        listen: false,
+                      ),
+                      webSocketsListenType: WebSocketsListenType.foreground,
+                    );
+                    return customListTimelineStatusCachedListBloc;
+                  },
+                  child: ProxyProvider<IStatusCachedListBloc,
+                      IPleromaCachedListBloc<IStatus>>(
+                    update: (context, value, previous) => value,
+                    child: StatusCachedPaginationBloc.provideToContext(
+                      context,
+                      child: StatusCachedPaginationListWithNewItemsBloc
+                          .provideToContext(
+                        context,
+                        mergeNewItemsImmediately: false,
+                        child: Provider<ICustomList>.value(
+                          value: customList,
+                          child: DisposableProxyProvider<ICustomList,
+                              ICustomListBloc>(
+                            update: (context, customList, _) {
+                              var customListBloc = CustomListBloc(
+                                customList: customList,
+                                pleromaListService: IPleromaListService.of(
+                                  context,
+                                  listen: false,
+                                ),
+                              );
+
+                              if (onChanged != null) {
+                                customListBloc.addDisposable(
+                                  streamSubscription:
+                                      customListBloc.customListStream.listen(
+                                    (customList) {
+                                      onChanged(customList);
+                                    },
+                                  ),
+                                );
+                              }
+                              if (onDeleted != null) {
+                                customListBloc.addDisposable(
+                                  streamSubscription:
+                                      customListBloc.deletedStream.listen(
+                                    (_) {
+                                      onDeleted();
+                                    },
+                                  ),
+                                );
+                              }
+                              return customListBloc;
+                            },
+                            child: const CustomListPage(),
+                          ),
+                        ),
+                        mergeOwnStatusesImmediately: false,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  });
+                );
+              },
+            );
+          },
+        ),
+      );
+    },
+  );
 }

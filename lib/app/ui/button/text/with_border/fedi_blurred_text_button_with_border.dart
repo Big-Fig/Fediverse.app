@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediBlurredTextButton extends StatelessWidget {
+class FediBlurredTextButtonWithBorder extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -16,10 +16,12 @@ class FediBlurredTextButton extends StatelessWidget {
   final bool limitMinWidth;
 
   final TextStyle textStyle;
+  final bool expanded;
 
-  const FediBlurredTextButton(
+  const FediBlurredTextButtonWithBorder(
     this.text, {
     @required this.onPressed,
+    @required this.expanded,
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
@@ -32,7 +34,7 @@ class FediBlurredTextButton extends StatelessWidget {
         this.textStyle ?? IFediUiTextTheme.of(context).mediumShortBoldWhite;
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
-    return InkWell(
+    var button = InkWell(
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -70,5 +72,15 @@ class FediBlurredTextButton extends StatelessWidget {
         ),
       ),
     );
+
+
+    if (expanded) {
+      return button;
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [button],
+      );
+    }
   }
 }

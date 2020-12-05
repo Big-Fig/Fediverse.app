@@ -1,5 +1,5 @@
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/permission/permission_bloc.dart';
@@ -33,7 +33,7 @@ class FediGrantPermissionWidget extends StatelessWidget {
             return Center(
               child: Padding(
                 padding: FediPadding.allBigPadding,
-                child: FediPrimaryFilledTextButton(
+                child: FediPrimaryFilledTextButtonWithBorder(
                   S.of(context).permission_grant_action_grant,
                   expanded: false,
                   onPressed: () {

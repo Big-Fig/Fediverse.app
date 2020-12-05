@@ -1,0 +1,323 @@
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
+import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
+import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
+import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
+import 'package:fedi/app/account/select/select_account_list_bloc.dart';
+import 'package:fedi/app/account/select/select_account_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
+import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
+import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
+import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
+import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
+import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
+import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/search/input/search_input_bloc.dart';
+import 'package:fedi/app/search/input/search_input_widget.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
+import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/form/fedi_form_header_widget.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+
+import 'account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
+
+class EditCustomListWidget extends StatelessWidget {
+  const EditCustomListWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    var editCustomListBloc = IEditCustomListBloc.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const CustomListFormWidget(),
+        if (editCustomListBloc.isPossibleToDelete)
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: const _EditCustomListDeleteButton(),
+          ),
+        _EditCustomListAccountDescriptionWidget(),
+        Expanded(
+          child: const _EditCustomListBodyWidget(),
+        ),
+      ],
+    );
+  }
+}
+
+class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
+  const _EditCustomListAccountDescriptionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediNoteDescriptionWidget(
+        S.of(context).app_acccount_my_customList_edit_description,
+      );
+}
+
+class _EditCustomListDeleteButton extends StatelessWidget {
+  const _EditCustomListDeleteButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var editCustomListBloc = IEditCustomListBloc.of(context);
+    return PleromaAsyncOperationButtonBuilderWidget(
+      asyncButtonAction: () async {
+        await editCustomListBloc.deleteList();
+        Navigator.of(context).pop();
+      },
+      builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
+          S.of(context).app_acccount_my_customList_edit_action_delete_list,
+          expanded: false,
+          onPressed: onPressed,
+          color: IFediUiColorTheme.of(context).error),
+    );
+  }
+}
+
+class _EditCustomListBodyWidget extends StatelessWidget {
+  const _EditCustomListBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      const _EditCustomListBodySearchToAddAccountsWidget(
+        emptySearchChild: _EditCustomListEmptySearchChildWidget(),
+      );
+}
+
+class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
+  const _EditCustomListEmptySearchChildWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var editCustomListBloc = IEditCustomListBloc.of(context);
+
+    return StreamBuilder<bool>(
+      stream: editCustomListBloc.isListContainsAccountsStream,
+      initialData: editCustomListBloc.isListContainsAccounts,
+      builder: (context, snapshot) {
+        var isListContainsAccounts = snapshot.data;
+
+        if (isListContainsAccounts == null) {
+          return const SizedBox.shrink();
+        }
+
+        if (isListContainsAccounts) {
+          return const _EditCustomListBodyAlreadyAddedAccountsWidget();
+        } else {
+          return const _EditCustomListBodySuggestionAccountsWidget();
+        }
+      },
+    );
+  }
+}
+
+class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
+  const _EditCustomListBodyAlreadyAddedAccountsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditCustomListBloc,
+        ICustomListAccountListNetworkOnlyListBloc>(
+      update: (context, editCustomListBloc, previous) =>
+          editCustomListBloc.customListAccountListNetworkOnlyListBloc,
+      child:
+          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc>(
+        update: (context, editCustomListBloc, previous) =>
+            editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
+        child: ProxyProvider<IEditCustomListBloc,
+            IEditCustomListAccountListPaginationListBloc>(
+          update: (context, editCustomListBloc, previous) =>
+              editCustomListBloc.editCustomListAccountListPaginationListBloc,
+          child: EditCustomListAccountListPaginationListBlocProxyProvider(
+            child: CustomListAccountListNetworkOnlyListBlocProxyProvider(
+              child: Column(
+                children: [
+                  const _EditCustomListBodyAddedHeaderWidget(),
+                  Expanded(
+                    child: const CustomListAccountListWidget(
+                      itemActions: [
+                        CustomListAccountListItemAddRemoveActionWidget(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditCustomListBodySuggestionAccountsWidget extends StatelessWidget {
+  const _EditCustomListBodySuggestionAccountsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditCustomListBloc, IPleromaCachedListBloc<IAccount>>(
+      update: (context, editCustomListBloc, previous) =>
+          editCustomListBloc.selectAccountListBloc,
+      child: AccountCachedPaginationBloc.provideToContext(
+        context,
+        child: AccountPaginationListBloc.provideToContext(
+          context,
+          child: Column(
+            children: [
+              const _EditCustomListBodySuggestionHeaderWidget(),
+              Expanded(
+                child: AccountPaginationListWidget(
+                  itemPadding: FediPadding.verticalMediumPadding,
+                  accountActions: [
+                    CustomListAccountListItemAddRemoveActionWidget(),
+                  ],
+                  accountSelectedCallback:
+                      (BuildContext context, IAccount account) {
+                    goToAccountDetailsPage(context, account);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
+  const _EditCustomListBodyAddedHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediFormHeaderWidget(
+        text: S.of(context).app_acccount_my_customList_edit_added_header,
+        isNeedAddDivider: true,
+      );
+}
+
+class _EditCustomListBodySuggestionHeaderWidget extends StatelessWidget {
+  const _EditCustomListBodySuggestionHeaderWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediFormHeaderWidget(
+        text: S.of(context).app_acccount_my_customList_edit_search_suggestion,
+        isNeedAddDivider: true,
+      );
+}
+
+class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
+  final Widget emptySearchChild;
+
+  const _EditCustomListBodySearchToAddAccountsWidget({
+    Key key,
+    @required this.emptySearchChild,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
+      update: (context, editCustomListBloc, _) =>
+          editCustomListBloc.selectAccountListBloc,
+      child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
+        update: (context, selectAccountListBloc, _) =>
+            selectAccountListBloc.searchInputBloc,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _EditCustomListBodySearchHeader(),
+            const SearchInputWidget(
+              padding: EdgeInsets.zero,
+            ),
+            const FediBigVerticalSpacer(),
+            Expanded(
+              child: _EditCustomListBodySearchToAddAccountsBodyWidget(
+                emptySearchChild: emptySearchChild,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
+  const _EditCustomListBodySearchToAddAccountsBodyWidget({
+    Key key,
+    @required this.emptySearchChild,
+  }) : super(key: key);
+
+  final Widget emptySearchChild;
+
+  @override
+  Widget build(BuildContext context) {
+    var searchInputBloc = ISearchInputBloc.of(context);
+    return StreamBuilder<bool>(
+      stream: searchInputBloc.confirmedSearchTermIsNotEmptyStream,
+      builder: (context, snapshot) {
+        var confirmedSearchTermIsNotEmpty = snapshot.data ?? false;
+        if (confirmedSearchTermIsNotEmpty) {
+          return SelectAccountListBlocProxyProvider(
+            child: AccountCachedPaginationBloc.provideToContext(
+              context,
+              child: SelectAccountPaginationListBloc.provideToContext(
+                context,
+                child: const SingleSelectAccountWidget(
+                  accountSelectedCallback: _accountSelectedCallback,
+                  itemPadding: FediPadding.verticalMediumPadding,
+                  accountActions: [
+                    CustomListAccountListItemAddRemoveActionWidget(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          return emptySearchChild;
+        }
+      },
+    );
+  }
+}
+
+void _accountSelectedCallback(BuildContext context, IAccount account) {
+  // nothing
+}
+
+class _EditCustomListBodySearchHeader extends StatelessWidget {
+  const _EditCustomListBodySearchHeader({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediFormHeaderWidget(
+        text: S.of(context).app_acccount_my_customList_edit_search_header,
+        isNeedAddDivider: false,
+      );
+}
