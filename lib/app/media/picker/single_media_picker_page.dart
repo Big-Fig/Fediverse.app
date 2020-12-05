@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/permission/fedi_grant_permission_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -158,7 +158,7 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return FediSubPageCustomAppBar(
+    return FediPageCustomAppBar(
       centerTitle: true,
       child: const _SingleMediaPickerPageAppBarTitle(),
       leading: const FediBackIconButton(),
@@ -166,7 +166,7 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => FediSubPageCustomAppBar.calculatePreferredSize();
+  Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
 }
 
 class _SingleMediaPickerPageGalleryFolderWidget extends StatelessWidget {

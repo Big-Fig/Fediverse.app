@@ -16,7 +16,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
-import 'package:fedi/app/ui/button/fedi_transparent_icon_text_button.dart';
+import 'package:fedi/app/ui/button/icon_text/with_border/fedi_transparent_icon_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -253,7 +253,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: FediTransparentIconTextButton(
+                  child: FediTransparentIconTextButtonWithBorder(
                     S.of(context).app_search_title,
                     FediIcons.search,
                     onPressed: () {

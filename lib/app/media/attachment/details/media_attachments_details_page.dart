@@ -13,7 +13,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
 import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -90,7 +90,7 @@ class _MediaAttachmentDetailsPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
         title: S.of(context).app_media_attachment_details_title,
         actions: <Widget>[
           _MediaAttachmentDetailsPageAddToGalleryAction(

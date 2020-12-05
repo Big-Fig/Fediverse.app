@@ -83,40 +83,41 @@ class SearchResultItemPaginationListWidget
     });
 
     return PaginationListWidget.buildItemsListView<
-            _ItemOrSeparator<ISearchResultItem>>(
-        context: context,
-        items: itemWithSeparators,
-        header: header,
-        footer: footer,
-        itemBuilder: (context, index) {
-          var itemOrSeparator = itemWithSeparators[index];
+        _ItemOrSeparator<ISearchResultItem>>(
+      context: context,
+      items: itemWithSeparators,
+      header: header,
+      footer: footer,
+      itemBuilder: (context, index) {
+        var itemOrSeparator = itemWithSeparators[index];
 
-          if (itemOrSeparator.separator != null) {
-            return Padding(
-              padding: FediPadding.allMediumPadding,
-              child: Text(
-                itemOrSeparator.separator,
-                style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
-              ),
-            );
-          } else {
-            var item = itemOrSeparator.item;
+        if (itemOrSeparator.separator != null) {
+          return Padding(
+            padding: FediPadding.allMediumPadding,
+            child: Text(
+              itemOrSeparator.separator,
+              style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
+            ),
+          );
+        } else {
+          var item = itemOrSeparator.item;
 
-            switch (item.type) {
-              case SearchResultItemType.status:
-                return buildStatusListItem(item, index);
-                break;
-              case SearchResultItemType.account:
-                return buildAccountListItem(item.account);
-                break;
-              case SearchResultItemType.hashtag:
-                return buildHashtagListItem(item, index);
-                break;
-              default:
-                throw "Invalid item.type ${item.type}";
-            }
+          switch (item.type) {
+            case SearchResultItemType.status:
+              return buildStatusListItem(item, index);
+              break;
+            case SearchResultItemType.account:
+              return buildAccountListItem(item.account);
+              break;
+            case SearchResultItemType.hashtag:
+              return buildHashtagListItem(item, index);
+              break;
+            default:
+              throw "Invalid item.type ${item.type}";
           }
-        });
+        }
+      },
+    );
   }
 
   Widget buildHashtagListItem(ISearchResultItem item, int index) {

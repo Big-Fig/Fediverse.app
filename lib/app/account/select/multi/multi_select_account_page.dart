@@ -9,7 +9,7 @@ import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class MultiSelectAccountPage extends StatelessWidget {
     var multiSelectAccountBloc =
         IMultiSelectAccountBloc.of(context);
     return Scaffold(
-      appBar: FediSubPageCustomAppBar(
+      appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
         child: const SearchInputWidget(),
         actions: [

@@ -135,30 +135,10 @@ class S {
     );
   }
 
-  /// `Accounts in list`
-  String get app_customList_type_accounts_label {
-    return Intl.message(
-      'Accounts in list',
-      name: 'app_customList_type_accounts_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add account from followings`
-  String get app_customList_type_accounts_action_add {
-    return Intl.message(
-      'Add account from followings',
-      name: 'app_customList_type_accounts_action_add',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create list`
+  /// `Create a list`
   String get app_customList_create_title {
     return Intl.message(
-      'Create list',
+      'Create a list',
       name: 'app_customList_create_title',
       desc: '',
       args: [],
@@ -175,21 +155,11 @@ class S {
     );
   }
 
-  /// `List {listTitle}`
-  String app_customList_title(Object listTitle) {
-    return Intl.message(
-      'List $listTitle',
-      name: 'app_customList_title',
-      desc: '',
-      args: [listTitle],
-    );
-  }
-
   /// `Lists`
-  String get app_customList_list_title {
+  String get app_acccount_my_customList_list_title {
     return Intl.message(
       'Lists',
-      name: 'app_customList_list_title',
+      name: 'app_acccount_my_customList_list_title',
       desc: '',
       args: [],
     );
@@ -205,10 +175,10 @@ class S {
     );
   }
 
-  /// `List name`
+  /// `Give your list a title`
   String get app_customList_form_field_title_hint {
     return Intl.message(
-      'List name',
+      'Give your list a title',
       name: 'app_customList_form_field_title_hint',
       desc: '',
       args: [],
@@ -4627,6 +4597,176 @@ class S {
     return Intl.message(
       'Add to blocked list',
       name: 'app_account_my_domainBlock_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t created any Lists yet.`
+  String get app_acccount_my_customList_list_empty_title {
+    return Intl.message(
+      'You haven’t created any Lists yet.',
+      name: 'app_acccount_my_customList_list_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create one now.`
+  String get app_acccount_my_customList_list_empty_subtitle {
+    return Intl.message(
+      'Create one now.',
+      name: 'app_acccount_my_customList_list_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a list`
+  String get app_acccount_my_customList_list_action_add {
+    return Intl.message(
+      'Create a list',
+      name: 'app_acccount_my_customList_list_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit list`
+  String get app_acccount_my_customList_list_action_edit {
+    return Intl.message(
+      'Edit list',
+      name: 'app_acccount_my_customList_list_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to your List`
+  String get app_acccount_my_customList_edit_search_header {
+    return Intl.message(
+      'Add to your List',
+      name: 'app_acccount_my_customList_edit_search_header',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get app_acccount_my_customList_edit_account_action_add {
+    return Intl.message(
+      'Add',
+      name: 'app_acccount_my_customList_edit_account_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get app_acccount_my_customList_edit_account_action_remove {
+    return Intl.message(
+      'Remove',
+      name: 'app_acccount_my_customList_edit_account_action_remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for people you follow`
+  String get app_acccount_my_customList_edit_search_hint {
+    return Intl.message(
+      'Search for people you follow',
+      name: 'app_acccount_my_customList_edit_search_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestion`
+  String get app_acccount_my_customList_edit_search_suggestion {
+    return Intl.message(
+      'Suggestion',
+      name: 'app_acccount_my_customList_edit_search_suggestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added accounts`
+  String get app_acccount_my_customList_edit_added_header {
+    return Intl.message(
+      'Added accounts',
+      name: 'app_acccount_my_customList_edit_added_header',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get app_acccount_my_customList_edit_action_save {
+    return Intl.message(
+      'Save',
+      name: 'app_acccount_my_customList_edit_action_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_account_my_statuses_scheduled_status_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_account_my_statuses_scheduled_status_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_account_my_statuses_scheduled_status_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_account_my_statuses_scheduled_status_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_account_my_statuses_draft_status_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_account_my_statuses_draft_status_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_account_my_statuses_draft_status_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_account_my_statuses_draft_status_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete list`
+  String get app_acccount_my_customList_edit_action_delete_list {
+    return Intl.message(
+      'Delete list',
+      name: 'app_acccount_my_customList_edit_action_delete_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.`
+  String get app_acccount_my_customList_edit_description {
+    return Intl.message(
+      'Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.',
+      name: 'app_acccount_my_customList_edit_description',
       desc: '',
       args: [],
     );

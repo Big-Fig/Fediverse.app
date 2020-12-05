@@ -1,16 +1,11 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,23 +31,17 @@ class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return FediSubPageTitleAppBar(
+    return FediPageTitleAppBar(
       title: S.of(context).app_timeline_storage_title,
       leading: const FediBackIconButton(),
       actions: [
-        Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: FediPadding.allBigPadding,
-            child: const _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
-          ),
-        ),
+        const _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
       ],
     );
   }
 
   @override
-  Size get preferredSize => FediSubPageTitleAppBar.calculatePreferredSize();
+  Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
 }
 
 class _TimelinesHomeTabStoragePagePageAppBarActionWidget
@@ -75,36 +64,15 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
         var child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
-            child = _TimelinesHomeTabStoragePagePageAppBarActionEditWidget();
+            child = _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();
             break;
           case TimelinesHomeTabStorageUiState.view:
-            child = _TimelinesHomeTabStoragePagePageAppBarActionViewWidget();
+            child = _TimelinesHomeTabStoragePagePageAppBarActionEditWidget();
             break;
         }
 
         return child;
       },
-    );
-  }
-}
-
-class _TimelinesHomeTabStoragePagePageAppBarActionViewWidget
-    extends StatelessWidget {
-  const _TimelinesHomeTabStoragePagePageAppBarActionViewWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
-    return InkWell(
-      onTap: () {
-        timelinesHomeTabStorageBloc.switchToEditUiState();
-      },
-      child: Text(
-        S.of(context).app_timeline_storage_appBar_action_edit,
-        style: IFediUiTextTheme.of(context).bigPrimary,
-      ),
     );
   }
 }
@@ -118,14 +86,33 @@ class _TimelinesHomeTabStoragePagePageAppBarActionEditWidget
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
-    return InkWell(
-      onTap: () {
+
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return FediPageAppBarTextActionWidget(
+      text: S.of(context).app_timeline_storage_appBar_action_edit,
+      color: fediUiColorTheme.darkGrey,
+      onPressed: () {
+        timelinesHomeTabStorageBloc.switchToEditUiState();
+      },
+    );
+  }
+}
+
+class _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget
+    extends StatelessWidget {
+  const _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
+
+    return FediPageAppBarTextActionWidget(
+      text: S.of(context).app_timeline_storage_appBar_action_done,
+      onPressed: () {
         timelinesHomeTabStorageBloc.switchToViewUiState();
       },
-      child: Text(
-        S.of(context).app_timeline_storage_appBar_action_done,
-        style: IFediUiTextTheme.of(context).bigPrimary,
-      ),
     );
   }
 }
@@ -138,19 +125,5 @@ void goToTimelinesHomeTabStoragePage(BuildContext context) {
 }
 
 MaterialPageRoute createTimelinesHomeTabStoragePageRoute() => MaterialPageRoute(
-      builder: (context) => DisposableProvider<ITimelinesHomeTabStorageBloc>(
-        create: (context) => TimelinesHomeTabStorageBloc(
-          preferences: ITimelinesHomeTabStorageLocalPreferencesBloc.of(
-            context,
-            listen: false,
-          ),
-          authInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
-              .currentInstance,
-          preferencesService: ILocalPreferencesService.of(
-            context,
-            listen: false,
-          ),
-        ),
-        child: const TimelinesHomeTabStoragePage(),
-      ),
+      builder: (context) => const TimelinesHomeTabStoragePage(),
     );

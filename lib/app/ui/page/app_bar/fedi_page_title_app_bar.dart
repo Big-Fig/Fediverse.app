@@ -1,11 +1,13 @@
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FediSubPageCustomAppBar extends StatelessWidget
+class FediPageTitleAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final Widget child;
+  final String title;
   final Widget leading;
   final bool centerTitle;
   final List<Widget> actions;
@@ -16,11 +18,11 @@ class FediSubPageCustomAppBar extends StatelessWidget
 
   static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
 
-  FediSubPageCustomAppBar({
-    @required this.child,
-    @required this.leading,
-    this.centerTitle = false,
+  FediPageTitleAppBar({
+    @required this.title,
     this.actions,
+    this.centerTitle = true,
+    this.leading = const FediBackIconButton(),
   });
 
   @override
@@ -32,13 +34,12 @@ class FediSubPageCustomAppBar extends StatelessWidget
         AppBar(
           bottomOpacity: 0.0,
           elevation: 0.0,
-          leading: leading,
           centerTitle: centerTitle,
-          titleSpacing: 0.0,
+          actions: actions,
           brightness: fediUiColorTheme.brightness,
           backgroundColor: fediUiColorTheme.white,
-          title: child,
-          actions: actions,
+          title: title != null ? FediSubHeaderText(title) : null,
+          leading: leading,
         ),
         const FediUltraLightGreyDivider(),
       ],

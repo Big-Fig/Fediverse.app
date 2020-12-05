@@ -1,13 +1,11 @@
-import 'package:fedi/app/custom_list/create/create_custom_list_page.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:fedi/app/custom_list/list/custom_list_network_only_list_bloc_impl.dart';
-import 'package:fedi/app/custom_list/list/custom_list_network_only_pagination_bloc_impl.dart';
-import 'package:fedi/app/custom_list/list/custom_list_pagination_list_widget.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/custom_list/list/custom_list_list_create_button_widget.dart';
+import 'package:fedi/app/custom_list/list/network_only/custom_list_network_only_list_bloc_impl.dart';
+import 'package:fedi/app/custom_list/list/pagination/custom_list_pagination_list_widget.dart';
+import 'package:fedi/app/custom_list/list/pagination/network_only/custom_list_network_only_pagination_bloc_impl.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -22,16 +20,17 @@ class CustomListListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
-        title: S.of(context).app_customList_list_title,
-        actions: <Widget>[
-          const _CustomListListPageAddAction(),
-        ],
+      appBar: FediPageTitleAppBar(
+        title: S.of(context).app_acccount_my_customList_list_title,
       ),
       body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: CustomListPaginationListWidget(),
+        child: CustomListPaginationListWidget(
+          customEmptyWidget: _CustomListListPageEmptyWidget(),
+          footer: Padding(
+            padding: FediPadding.allBigPadding,
+            child: CustomListListCreateButtonWidget(),
+          ),
+          alwaysShowFooter: false,
         ),
       ),
     );
@@ -40,24 +39,23 @@ class CustomListListPage extends StatelessWidget {
   const CustomListListPage();
 }
 
-class _CustomListListPageAddAction extends StatelessWidget {
-  const _CustomListListPageAddAction({
-    Key key,
-  }) : super(key: key);
+class _CustomListListPageEmptyWidget extends StatelessWidget {
+  const _CustomListListPageEmptyWidget();
 
   @override
   Widget build(BuildContext context) {
-    var paginationListBloc = IPaginationListBloc.of(context);
-    return FediIconButton(
-      icon: Icon(FediIcons.plus),
-      color: IFediUiColorTheme.of(context).darkGrey,
-      onPressed: () {
-        goToCreateCustomListPage(
-            context: context,
-            successCallback: () {
-              paginationListBloc.refreshWithController();
-            });
-      },
+    var s = S.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FediEmptyWidget(
+          title: s.app_acccount_my_customList_list_empty_title,
+          subTitle: s.app_acccount_my_customList_list_empty_subtitle,
+        ),
+        const CustomListListCreateButtonWidget(),
+      ],
     );
   }
 }

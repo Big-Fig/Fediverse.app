@@ -7,7 +7,7 @@ import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart
 import 'package:fedi/app/captcha/form_captcha_string_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -164,9 +164,10 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
               submit(context, bloc);
             };
           }
-          return FediPrimaryFilledTextButton(
+          return FediPrimaryFilledTextButtonWithBorder(
             S.of(context).app_auth_instance_register_action_createAccount,
             onPressed: onPressed,
+            expanded: true,
           );
         },
       ),

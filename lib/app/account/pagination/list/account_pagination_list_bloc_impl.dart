@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 class AccountPaginationListBloc
     extends PaginationListBloc<PaginationPage<IAccount>, IAccount>
     implements IAccountPaginationListBloc {
-  AccountPaginationListBloc(
-      {@required
-          IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc})
-      : super(paginationBloc: paginationBloc);
+  AccountPaginationListBloc({
+    @required
+        IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
+  }) : super(paginationBloc: paginationBloc);
 
   static AccountPaginationListBloc createFromContext(BuildContext context) {
     return AccountPaginationListBloc(

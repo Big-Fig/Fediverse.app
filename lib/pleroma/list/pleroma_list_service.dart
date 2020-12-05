@@ -21,6 +21,7 @@ abstract class IPleromaListService implements IPleromaApi {
     @required String listRemoteId,
     @required List<String> accountIds,
   });
+
   Future removeAccountsFromList({
     @required String listRemoteId,
     @required List<String> accountIds,

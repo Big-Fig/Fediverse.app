@@ -426,7 +426,7 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get dialogContentDarkGrey;
 
-  TextStyle get emptyTitleShortBoldDarkGrey;
+  TextStyle get giantTitleShortBoldDarkGrey;
 }
 
 class FediUiTextTheme implements IFediUiTextTheme {
@@ -2021,7 +2021,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
       );
 
   @override
-  TextStyle get emptyTitleShortBoldDarkGrey => TextStyle(
+  TextStyle get giantTitleShortBoldDarkGrey => TextStyle(
         fontSize: 20.0,
         height: _shortHeight,
         fontWeight: _boldWeight,

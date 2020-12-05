@@ -3,7 +3,7 @@ import 'package:fedi/app/status/draft/pagination/list/draft_status_pagination_li
 import 'package:fedi/app/status/draft/pagination/list/draft_status_pagination_list_widget.dart';
 import 'package:fedi/app/status/draft/pagination/local_only/draft_status_local_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class DraftStatusListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_my_statuses_draft_title,
       ),
       body: SafeArea(

@@ -14,7 +14,7 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
@@ -53,7 +53,7 @@ class _HashtagPageState extends State<HashtagPage> {
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
+        appBar: FediPageTitleAppBar(
           centerTitle: false,
           title: "#${hashtag.name}",
           actions: <Widget>[

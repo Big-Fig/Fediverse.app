@@ -8,11 +8,11 @@ import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_doma
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -30,7 +30,7 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_my_domainBlock_title,
       ),
       body: SafeArea(
@@ -87,7 +87,7 @@ class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediPrimaryFilledTextButton(
+    return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_domainBlock_action_add,
       expanded: false,
       onPressed: () {
@@ -140,12 +140,13 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
         blocking = false;
         paginationListBloc.refreshWithController();
       },
-      builder: (context, onPressed) => FediTransparentTextButton(
+      builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
         blocking
             ? S.of(context).app_account_my_domainBlock_action_unblock
             : S.of(context).app_account_my_domainBlock_action_block,
         onPressed: onPressed,
         color: blocking ? fediUiColorTheme.mediumGrey : fediUiColorTheme.error,
+        expanded: false,
       ),
     );
   }

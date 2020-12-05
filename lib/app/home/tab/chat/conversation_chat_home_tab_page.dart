@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_count_wid
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
@@ -128,12 +128,14 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   Widget buildSwitchToChatsActionButton(BuildContext context) {
     return PleromaChatUnreadBadgeCountWidget(
-      child: FediBlurredTextButton(
-          S.of(context).app_home_tab_chat_conversation_action_switchToChats,
-          onPressed: () {
-        IChatSettingsBloc.of(context, listen: false)
-            .changeReplaceConversationsWithPleromaChats(true);
-      }),
+      child: FediBlurredTextButtonWithBorder(
+        S.of(context).app_home_tab_chat_conversation_action_switchToChats,
+        onPressed: () {
+          IChatSettingsBloc.of(context, listen: false)
+              .changeReplaceConversationsWithPleromaChats(true);
+        },
+        expanded: false,
+      ),
     );
   }
 

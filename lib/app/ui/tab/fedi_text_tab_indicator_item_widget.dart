@@ -1,6 +1,6 @@
-import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
@@ -35,7 +35,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
 
 
           if (isSelected) {
-            return FediPrimaryFilledTextButton(
+            return FediPrimaryFilledTextButtonWithBorder(
               label,
               onPressed: () {
                 onSelect(fediTabIndicatorItemBloc);
@@ -45,12 +45,13 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 height: lineHeight,
               ),
+              expanded: false,
               enabledBackgroundColor: IFediUiColorTheme.of(context).primary.withOpacity(0.8),
             );
           } else {
             var fontWeight = FontWeight.normal;
             if (isTransparent) {
-              text = FediBlurredTextButton(
+              text = FediBlurredTextButtonWithBorder(
                 label,
                 onPressed: () {
                   onSelect(fediTabIndicatorItemBloc);
@@ -60,9 +61,10 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                   fontWeight: fontWeight,
                   height: lineHeight,
                 ),
+                expanded: false,
               );
             } else {
-              text = FediTransparentTextButton(
+              text = FediTransparentTextButtonWithBorder(
                 label,
                 onPressed: () {
                   onSelect(fediTabIndicatorItemBloc);
@@ -73,6 +75,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                   height: lineHeight,
                 ),
                 color: IFediUiColorTheme.of(context).mediumGrey,
+                expanded: false,
               );
             }
           }

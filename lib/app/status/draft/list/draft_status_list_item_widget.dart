@@ -7,10 +7,9 @@ import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/button/fedi_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -165,14 +164,13 @@ class _DraftStatusListItemCancelButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
+
     return PleromaAsyncOperationButtonBuilderWidget(
-      builder: (context, onPressed) => IconButton(
-          icon: Icon(
-            FediIcons.delete,
-            color: IFediUiColorTheme.of(context).darkGrey,
-          ),
-          iconSize: FediSizes.bigIconSize,
-          onPressed: onPressed),
+      builder: (context, onPressed) => FediTextButton(
+        text: S.of(context).app_account_my_statuses_draft_status_action_delete,
+        color: IFediUiColorTheme.of(context).darkGrey,
+        onPressed: onPressed,
+      ),
       asyncButtonAction: () => draftStatusBloc.cancelDraft(),
     );
   }
@@ -186,12 +184,10 @@ class _DraftStatusListItemEditButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
-    return IconButton(
-      icon: Icon(
-        FediIcons.pen,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-      iconSize: FediSizes.bigIconSize,
+
+    return FediTextButton(
+      text: S.of(context).app_account_my_statuses_draft_status_action_edit,
+      color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {
         var postStatusData = draftStatusBloc.calculatePostStatusData();
         goToDraftEditPostStatusPage(

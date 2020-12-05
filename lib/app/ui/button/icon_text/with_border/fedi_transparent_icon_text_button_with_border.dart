@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediTransparentIconTextButton extends StatelessWidget {
+class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -17,7 +17,7 @@ class FediTransparentIconTextButton extends StatelessWidget {
 
   final TextStyle textStyle;
 
-  const FediTransparentIconTextButton(
+  const FediTransparentIconTextButtonWithBorder(
     this.text,
     this.icon, {
     @required this.onPressed,

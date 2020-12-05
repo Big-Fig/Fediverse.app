@@ -1,6 +1,6 @@
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
@@ -88,7 +88,7 @@ class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediTransparentTextButton(
+    return FediTransparentTextButtonWithBorder(
       S.of(context).app_media_player_error_action_moreDetails,
       expanded: false,
       color: IFediUiColorTheme.of(context).white,
@@ -127,7 +127,7 @@ class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediTransparentTextButton(
+  Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
         S.of(context).app_media_player_error_action_reload,
         expanded: false,
         color: IFediUiColorTheme.of(context).white,
