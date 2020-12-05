@@ -57,7 +57,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
           const _EditPushSettingsMentionFieldWidget(),
           const _EditPushSettingsReblogFieldWidget(),
           const _EditPushSettingsPollFieldWidget(),
-          const _EditPushSettingsPleromaMentionFieldWidget(),
+          const _EditPushSettingsPleromaChatMentionFieldWidget(),
           const _EditPushSettingsPleromaEmojiReactionFieldWidget(),
         ],
       );
@@ -82,8 +82,8 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
   }
 }
 
-class _EditPushSettingsPleromaMentionFieldWidget extends StatelessWidget {
-  const _EditPushSettingsPleromaMentionFieldWidget({
+class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
+  const _EditPushSettingsPleromaChatMentionFieldWidget({
     Key key,
   }) : super(key: key);
 
