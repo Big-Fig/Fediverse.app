@@ -1924,10 +1924,10 @@ class S {
     );
   }
 
-  /// `Pleroma Chats`
+  /// `Chats`
   String get app_push_settings_field_pleroma_chat_label {
     return Intl.message(
-      'Pleroma Chats',
+      'Chats',
       name: 'app_push_settings_field_pleroma_chat_label',
       desc: '',
       args: [],
@@ -4272,10 +4272,10 @@ class S {
     );
   }
 
-  /// `Pleroma emoji reactions`
+  /// `Emoji reactions`
   String get app_push_settings_field_pleroma_emojiReaction_label {
     return Intl.message(
-      'Pleroma emoji reactions',
+      'Emoji reactions',
       name: 'app_push_settings_field_pleroma_emojiReaction_label',
       desc: '',
       args: [],
