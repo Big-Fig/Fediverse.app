@@ -24,7 +24,7 @@ class TimelineSettingsBloc extends DisposableOwner
   Future updateSettings(TimelineSettings newSettings) async {
     var currentTimeline = timelineLocalPreferencesBloc.value;
     var currentTimelineSettings = currentTimeline?.settings;
-    if (currentTimelineSettings != newSettings) {
+    if (currentTimelineSettings != newSettings && currentTimeline != null) {
       await timelineLocalPreferencesBloc.setValue(
         currentTimeline.copyWith(settings: newSettings),
       );
