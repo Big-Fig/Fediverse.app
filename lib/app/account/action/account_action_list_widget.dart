@@ -110,8 +110,8 @@ class _AccountActionListMessageWidget extends StatelessWidget {
     return FediBlurredTextButtonWithBorder(
       S.of(context).app_account_action_message,
       onPressed: () async {
-        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-        var accountBloc = IAccountBloc.of(context);
+        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
+        var accountBloc = IAccountBloc.of(context, listen: false);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
