@@ -5,7 +5,6 @@ import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,9 +49,7 @@ class _NewPostStatusPageBodyWidget extends StatelessWidget {
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,
-              child: UnfocusOnScrollAreaWidget(
-                child: _NewPostStatusPageComposeWidget(),
-              ),
+              child: _NewPostStatusPageComposeWidget(),
             ),
           ],
         ),
