@@ -4683,10 +4683,10 @@ class S {
   }
 
   /// `Suggestion`
-  String get app_acccount_my_customList_edit_search_suggestion {
+  String get app_acccount_select_suggestion_header {
     return Intl.message(
       'Suggestion',
-      name: 'app_acccount_my_customList_edit_search_suggestion',
+      name: 'app_acccount_select_suggestion_header',
       desc: '',
       args: [],
     );
@@ -4767,6 +4767,46 @@ class S {
     return Intl.message(
       'Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.',
       name: 'app_acccount_my_customList_edit_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recent`
+  String get app_account_select_recent_header {
+    return Intl.message(
+      'Recent',
+      name: 'app_account_select_recent_header',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get app_share_action_send {
+    return Intl.message(
+      'Send',
+      name: 'app_share_action_send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have recent accounts selection`
+  String get app_account_select_recent_empty {
+    return Intl.message(
+      'You don’t have recent accounts selection',
+      name: 'app_account_select_recent_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sent`
+  String get app_share_action_sent {
+    return Intl.message(
+      'Sent',
+      name: 'app_share_action_sent',
       desc: '',
       args: [],
     );

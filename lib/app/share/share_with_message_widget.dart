@@ -2,7 +2,6 @@ import 'package:fedi/app/form/field/value/string/string_value_form_field_row_wid
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,17 +26,10 @@ class ShareWithMessageWidget extends StatelessWidget {
           children: <Widget>[
             if (child != null)
               Padding(
-                padding: FediPadding.allSmallPadding,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: IFediUiColorTheme.of(context).offWhite,
-                    borderRadius: FediBorderRadius.allBigBorderRadius,
-                    border: Border.all(
-                        color: IFediUiColorTheme.of(context).ultraLightGrey),
-                  ),
-                  child: ClipRRect(
-                      borderRadius: FediBorderRadius.allBigBorderRadius,
-                      child: child),
+                padding: FediPadding.allBigPadding,
+                child: ClipRRect(
+                  borderRadius: FediBorderRadius.allBigBorderRadius,
+                  child: child,
                 ),
               ),
             const _ShareWithMessageInputWidget(),

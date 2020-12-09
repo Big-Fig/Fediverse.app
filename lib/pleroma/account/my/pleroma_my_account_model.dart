@@ -318,136 +318,6 @@ class PleromaMyAccountFilesRequest {
   }
 }
 
-// -32 is hack for hive 0.x backward ids compatibility
-// see reservedIds in Hive,
-// which not exist in Hive 0.x
-//@HiveType()
-@HiveType(typeId: -32 + 75)
-@JsonSerializable(explicitToJson: true)
-class PleromaAccountPleromaPart {
-  // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  @HiveField(1)
-  @JsonKey(name: "background_image")
-  final dynamic backgroundImage;
-
-  @HiveField(2)
-  // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
-  // for example at accounts/verify_credentials endpoint
-//  List<PleromaTag> tags;
-  final List<dynamic> tags;
-
-  @HiveField(3)
-  final PleromaAccountRelationship relationship;
-  @HiveField(4)
-  @JsonKey(name: "is_admin")
-  final bool isAdmin;
-  @HiveField(5)
-  @JsonKey(name: "is_moderator")
-  @HiveField(6)
-  final bool isModerator;
-
-  @HiveField(7)
-  @JsonKey(name: "confirmation_pending")
-  final bool confirmationPending;
-
-  @HiveField(8)
-  // TODO: CHECK, was in previous implementation, but not exist at
-  @JsonKey(name: "hide_favorites")
-  final bool hideFavorites;
-
-  @HiveField(9)
-  @JsonKey(name: "hide_followers")
-  final bool hideFollowers;
-  @HiveField(11)
-  @JsonKey(name: "hide_follows")
-  final bool hideFollows;
-  @HiveField(12)
-  @JsonKey(name: "hide_followers_count")
-  final bool hideFollowersCount;
-  @HiveField(13)
-  @JsonKey(name: "hide_follows_count")
-  final bool hideFollowsCount;
-
-  ///  A generic map of settings for frontends.
-  ///  Opaque to the backend.
-  ///  Only returned in verify_credentials and update_credentials
-  @HiveField(14)
-  @JsonKey(name: "settings_store")
-  final dynamic settingsStore;
-
-  /// The token needed for Pleroma chat. Only returned in verify_credentials
-  @HiveField(15)
-  @JsonKey(name: "chat_token")
-  final String chatToken;
-  @HiveField(16)
-  final bool deactivated;
-
-  ///  boolean, true when the user allows automatically follow moved
-  ///  following accounts
-  @HiveField(17)
-  @JsonKey(name: "allow_following_move")
-  final bool allowFollowingMove;
-
-  /// The count of unread conversations. Only returned to the account owner.
-  @HiveField(18)
-  @JsonKey(name: "unread_conversation_count")
-  final int unreadConversationCount;
-
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  @JsonKey(name: "skip_thread_containment")
-  final bool skipThreadContainment;
-
-  @HiveField(19)
-  @JsonKey(name: "notifications_settings")
-  final PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
-
-  PleromaAccountPleromaPart(
-      {this.backgroundImage,
-      this.tags,
-      this.relationship,
-      this.isAdmin,
-      this.isModerator,
-      this.confirmationPending,
-      this.hideFavorites,
-      this.hideFollowers,
-      this.hideFollows,
-      this.hideFollowersCount,
-      this.hideFollowsCount,
-      this.settingsStore,
-      this.chatToken,
-      this.deactivated,
-      this.allowFollowingMove,
-      this.unreadConversationCount,
-      this.skipThreadContainment,
-      this.notificationSettings});
-
-  factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
-      _$PleromaAccountPleromaPartFromJson(json);
-
-  factory PleromaAccountPleromaPart.fromJsonString(String jsonString) =>
-      _$PleromaAccountPleromaPartFromJson(jsonDecode(jsonString));
-
-  Map<String, dynamic> toJson() => _$PleromaAccountPleromaPartToJson(this);
-
-  String toJsonString() => jsonEncode(_$PleromaAccountPleromaPartToJson(this));
-
-  @override
-  String toString() {
-    return 'PleromaAccountPleromaPart{backgroundImage: $backgroundImage,'
-        ' tags: $tags, relationship: $relationship, isAdmin: $isAdmin,'
-        ' isModerator: $isModerator, confirmationPending: $confirmationPending,'
-        ' hideFavorites: $hideFavorites, hideFollowers: $hideFollowers,'
-        ' hideFollows: $hideFollows, hideFollowersCount: $hideFollowersCount,'
-        ' hideFollowsCount: $hideFollowsCount, settingsStore: $settingsStore,'
-        ' chatToken: $chatToken, deactivated: $deactivated,'
-        ' allowFollowingMove: $allowFollowingMove,'
-        ' unreadConversationCount: $unreadConversationCount,'
-        ' skipThreadContainment: $skipThreadContainment,'
-        ' notificationSettings: $notificationSettings}';
-  }
-}
-
 abstract class IPleromaMyAccountPleromaPart
     implements IPleromaAccountPleromaPart {
   dynamic get settingsStore;
@@ -769,11 +639,11 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @JsonKey(name: "unread_conversation_count")
   final int unreadConversationCount;
 
-
   @override
   @HiveField(19)
   @JsonKey(name: "notifications_settings")
   final PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
+
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override

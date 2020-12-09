@@ -1,13 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc_impl.dart';
+import 'package:fedi/app/account/select/suggestion/suggestion_select_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
@@ -16,7 +17,6 @@ import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
@@ -25,8 +25,10 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/form/fedi_form_header_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
@@ -122,7 +124,22 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
         if (isListContainsAccounts) {
           return const _EditCustomListBodyAlreadyAddedAccountsWidget();
         } else {
-          return const _EditCustomListBodySuggestionAccountsWidget();
+          return DisposableProvider<ISuggestionSelectAccountBloc>(
+            create: (context) => SuggestionSelectAccountBloc(
+              accountCachedListBloc: editCustomListBloc.selectAccountListBloc,
+            ),
+            child: SuggestionSelectAccountWidget(
+              itemActions: [
+                const CustomListAccountListItemAddRemoveActionWidget(),
+              ],
+              accountSelectedCallback:
+                  (BuildContext context, IAccount account) {
+                goToAccountDetailsPage(context, account);
+              },
+              itemPadding: FediPadding.verticalSmallPadding,
+              headerPadding: EdgeInsets.zero,
+            ),
+          );
         }
       },
     );
@@ -170,43 +187,6 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   }
 }
 
-class _EditCustomListBodySuggestionAccountsWidget extends StatelessWidget {
-  const _EditCustomListBodySuggestionAccountsWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, IPleromaCachedListBloc<IAccount>>(
-      update: (context, editCustomListBloc, previous) =>
-          editCustomListBloc.selectAccountListBloc,
-      child: AccountCachedPaginationBloc.provideToContext(
-        context,
-        child: AccountPaginationListBloc.provideToContext(
-          context,
-          child: Column(
-            children: [
-              const _EditCustomListBodySuggestionHeaderWidget(),
-              Expanded(
-                child: AccountPaginationListWidget(
-                  itemPadding: FediPadding.verticalMediumPadding,
-                  accountActions: [
-                    CustomListAccountListItemAddRemoveActionWidget(),
-                  ],
-                  accountSelectedCallback:
-                      (BuildContext context, IAccount account) {
-                    goToAccountDetailsPage(context, account);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
   const _EditCustomListBodyAddedHeaderWidget({
     Key key,
@@ -215,18 +195,6 @@ class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FediFormHeaderWidget(
         text: S.of(context).app_acccount_my_customList_edit_added_header,
-        isNeedAddDivider: true,
-      );
-}
-
-class _EditCustomListBodySuggestionHeaderWidget extends StatelessWidget {
-  const _EditCustomListBodySuggestionHeaderWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_my_customList_edit_search_suggestion,
         isNeedAddDivider: true,
       );
 }

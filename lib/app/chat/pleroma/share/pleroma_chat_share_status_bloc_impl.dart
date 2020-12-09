@@ -90,10 +90,4 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
             IPleromaAccountService.of(context, listen: false),
       );
 
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
-
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

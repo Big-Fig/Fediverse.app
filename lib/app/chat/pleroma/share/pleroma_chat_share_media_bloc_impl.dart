@@ -37,6 +37,8 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           pleromaAccountService: pleromaAccountService,
         );
 
+
+
   @override
   PleromaChatMessageSendData createSendData() {
     var messageSendData = PleromaChatMessageSendData(
@@ -90,10 +92,5 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
         ),
       );
 
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
 
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

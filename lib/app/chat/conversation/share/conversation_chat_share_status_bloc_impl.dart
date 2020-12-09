@@ -59,12 +59,13 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
       {@required IStatus status, @required Widget child}) {
     return DisposableProvider<ConversationChatShareStatusBloc>(
       create: (context) => createFromContext(context, status),
-      child: ProxyProvider<ConversationChatShareStatusBloc, IConversationChatShareBloc>(
+      child: ProxyProvider<ConversationChatShareStatusBloc,
+          IConversationChatShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ConversationChatShareStatusBloc, IShareStatusBloc>(
           update: (context, value, previous) => value,
-          child:
-              ProxyProvider<ConversationChatShareStatusBloc, IShareToAccountBloc>(
+          child: ProxyProvider<ConversationChatShareStatusBloc,
+              IShareToAccountBloc>(
             update: (context, value, previous) => value,
             child: ConversationChatShareBlocProxyProvider(
               child: child,
@@ -94,11 +95,4 @@ class ConversationChatShareStatusBloc extends ConversationChatShareBloc
           listen: false,
         ),
       );
-
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
-
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

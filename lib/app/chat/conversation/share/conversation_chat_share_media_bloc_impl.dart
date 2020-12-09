@@ -58,11 +58,13 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
       @required Widget child}) {
     return DisposableProvider<ConversationChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
-      child: ProxyProvider<ConversationChatShareMediaBloc, IConversationChatShareBloc>(
+      child: ProxyProvider<ConversationChatShareMediaBloc,
+          IConversationChatShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ConversationChatShareMediaBloc, IShareMediaBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<ConversationChatShareMediaBloc, IShareToAccountBloc>(
+          child: ProxyProvider<ConversationChatShareMediaBloc,
+              IShareToAccountBloc>(
             update: (context, value, previous) => value,
             child: ConversationChatShareBlocProxyProvider(
               child: child,
@@ -92,11 +94,4 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
           listen: false,
         ),
       );
-
-  @override
-  bool get isPossibleToShare => shareSelectAccountBloc.isTargetAccountsNotEmpty;
-
-  @override
-  Stream<bool> get isPossibleToShareStream =>
-      shareSelectAccountBloc.isTargetAccountsNotEmptyStream;
 }

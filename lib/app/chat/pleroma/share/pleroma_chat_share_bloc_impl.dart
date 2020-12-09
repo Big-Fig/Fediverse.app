@@ -50,10 +50,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future share() async {
+  Future<bool> actuallyShareToAccount(IAccount account) async {
     var messageSendData = createSendData();
 
-    var targetAccounts = shareSelectAccountBloc.targetAccounts;
+    var targetAccounts = [account];
     List<IPleromaChat> pleromaChatsByAccounts;
     if (targetAccounts?.isNotEmpty == true) {
       var chatsByAccountsFuture = targetAccounts.map((account) =>
@@ -77,6 +77,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     var pleromaChatMessages = await Future.wait(pleromaChatMessagesFuture);
 
     await chatMessageRepository.upsertRemoteChatMessages(pleromaChatMessages);
+    return true;
   }
 
   PleromaChatMessageSendData createSendData();

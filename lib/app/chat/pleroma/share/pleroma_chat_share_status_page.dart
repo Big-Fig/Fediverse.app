@@ -1,7 +1,6 @@
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_bloc_impl.dart';
-import 'package:fedi/app/share/select/share_select_account_widget.dart';
+import 'package:fedi/app/share/select_account/share_select_account_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
-import 'package:fedi/app/share/to_account/share_to_account_icon_button_widget.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -22,9 +21,6 @@ class PleromaChatShareStatusPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_chat_pleroma_share_title,
-        actions: [
-          const ShareToAccountIconButtonWidget(),
-        ],
       ),
       body: const ShareSelectAccountWidget(
         header: ShareStatusWithMessageWidget(

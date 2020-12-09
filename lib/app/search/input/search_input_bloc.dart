@@ -11,6 +11,7 @@ abstract class ISearchInputBloc extends IDisposable {
   String get confirmedSearchTerm;
 
   Stream<String> get confirmedSearchTermStream;
+
   String get currentInput;
 
   Stream<String> get currentInputStream;
@@ -18,9 +19,14 @@ abstract class ISearchInputBloc extends IDisposable {
   bool get currentInputIsNotEmpty;
 
   Stream<bool> get currentInputIsNotEmptyStream;
+
   bool get confirmedSearchTermIsNotEmpty;
 
   Stream<bool> get confirmedSearchTermIsNotEmptyStream;
+
+  bool get confirmedSearchTermIsEmpty;
+
+  Stream<bool> get confirmedSearchTermIsEmptyStream;
 
   void clearSearch();
 

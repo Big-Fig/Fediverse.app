@@ -6,7 +6,6 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
-import 'package:fedi/app/share/select/share_select_account_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -40,9 +39,6 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   @override
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
-  @override
-  IShareSelectAccountBloc shareSelectAccountBloc;
-
   ConversationChatShareBloc({
     @required this.conversationRepository,
     @required this.statusRepository,
@@ -60,17 +56,23 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future share() async {
+  Future<bool> actuallyShareToAccount(IAccount account) async {
     final pleromaVisibility = PleromaVisibility.direct;
 
+    var targetAccounts = [account];
     var accountsPleromaStatus = await pleromaStatusService.postStatus(
         data: createSendData(
-      to: "${shareSelectAccountBloc.targetAccounts.map((account) => "@${account.acct}").join(", ")}",
+      to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
       visibility: pleromaVisibility,
     ));
 
-    await statusRepository.upsertRemoteStatus(accountsPleromaStatus,
-        listRemoteId: null, conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(
+      accountsPleromaStatus,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
+
+    return true;
   }
 
   IPleromaPostStatus createSendData({
