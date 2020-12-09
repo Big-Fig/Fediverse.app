@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -37,6 +39,13 @@ class SelectAccountListBloc extends DisposableOwner
   final bool excludeMyAccount;
   final bool followingsOnly;
 
+  final StreamController<IAccount> accountSelectedStreamController =
+      StreamController<IAccount>.broadcast();
+
+  @override
+  Stream<IAccount> get accountSelectedStream =>
+      accountSelectedStreamController.stream;
+
   final PleromaAccountListLoader customEmptySearchRemoteAccountListLoader;
   final AccountListLoader customEmptySearchLocalAccountListLoader;
   @override
@@ -54,6 +63,7 @@ class SelectAccountListBloc extends DisposableOwner
     @required this.followingsOnly,
   }) : searchInputBloc = SearchInputBloc() {
     addDisposable(disposable: searchInputBloc);
+    addDisposable(streamController: accountSelectedStreamController);
   }
 
   @override
@@ -104,7 +114,6 @@ class SelectAccountListBloc extends DisposableOwner
     if (remoteAccounts != null) {
       await accountRepository.upsertRemoteAccounts(remoteAccounts,
           conversationRemoteId: null, chatRemoteId: null);
-
 
       return true;
     } else {
@@ -252,5 +261,10 @@ class SelectAccountListBloc extends DisposableOwner
       ),
       child: SelectAccountListBlocProxyProvider(child: child),
     );
+  }
+
+  @override
+  void onAccountSelected(IAccount account) {
+    accountSelectedStreamController.add(account);
   }
 }

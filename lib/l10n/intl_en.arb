@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-05T19:57:35+00:00",
+    "@@last_modified": "2020-12-09T08:48:58+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -484,7 +484,7 @@
     "app_acccount_my_customList_edit_account_action_add": "Add",
     "app_acccount_my_customList_edit_account_action_remove": "Remove",
     "app_acccount_my_customList_edit_search_hint": "Search for people you follow",
-    "app_acccount_my_customList_edit_search_suggestion": "Suggestion",
+    "app_acccount_select_suggestion_header": "Suggestion",
     "app_acccount_my_customList_edit_added_header": "Added accounts",
     "app_acccount_my_customList_edit_action_save": "Save",
     "app_account_my_statuses_scheduled_status_action_edit": "Edit",
@@ -492,5 +492,9 @@
     "app_account_my_statuses_draft_status_action_edit": "Edit",
     "app_account_my_statuses_draft_status_action_delete": "Delete",
     "app_acccount_my_customList_edit_action_delete_list": "Delete list",
-    "app_acccount_my_customList_edit_description": "Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever."
+    "app_acccount_my_customList_edit_description": "Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.",
+    "app_account_select_recent_header": "Recent",
+    "app_share_action_send": "Send",
+    "app_account_select_recent_empty": "You don’t have recent accounts selection",
+    "app_share_action_sent": "Sent"
 }

@@ -1,6 +1,7 @@
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
@@ -138,9 +139,8 @@ class _RecentSearchEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        S.of(context).app_search_recent_empty,
-        style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+      child: FediEmptyWidget(
+        title: S.of(context).app_search_recent_empty,
       ),
     );
   }

@@ -1,9 +1,8 @@
 import 'package:fedi/app/share/external/external_share_as_link_field_widget.dart';
 import 'package:fedi/app/share/external/external_share_media_bloc_impl.dart';
 import 'package:fedi/app/share/media/share_media_with_message_widget.dart';
-import 'package:fedi/app/share/share_icon_button_widget.dart';
+import 'package:fedi/app/share/page/share_page_app_bar_send_text_action_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -19,9 +18,7 @@ class ExternalShareMediaPage extends StatelessWidget {
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_share_external_title,
           actions: [
-            const ShareIconButtonWidget(
-              iconSize: FediSizes.appBarIconSize,
-            ),
+            const SharePageAppBarSendTextActionWidget(),
           ],
         ),
         body: const ShareMediaWithMessageWidget(

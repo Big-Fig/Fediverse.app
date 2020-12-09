@@ -97,6 +97,80 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
           typeId == other.typeId;
 }
 
+class PleromaAccountPleromaPartAdapter
+    extends TypeAdapter<PleromaAccountPleromaPart> {
+  @override
+  final int typeId = 43;
+
+  @override
+  PleromaAccountPleromaPart read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaAccountPleromaPart(
+      backgroundImage: fields[1] as dynamic,
+      tags: (fields[2] as List)?.cast<dynamic>(),
+      relationship: fields[3] as PleromaAccountRelationship,
+      isAdmin: fields[4] as bool,
+      isModerator: fields[5] as bool,
+      confirmationPending: fields[7] as bool,
+      hideFavorites: fields[8] as bool,
+      hideFollowers: fields[9] as bool,
+      hideFollows: fields[11] as bool,
+      hideFollowersCount: fields[12] as bool,
+      hideFollowsCount: fields[13] as bool,
+      settingsStore: fields[14] as dynamic,
+      deactivated: fields[16] as bool,
+      allowFollowingMove: fields[17] as bool,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PleromaAccountPleromaPart obj) {
+    writer
+      ..writeByte(14)
+      ..writeByte(1)
+      ..write(obj.backgroundImage)
+      ..writeByte(2)
+      ..write(obj.tags)
+      ..writeByte(3)
+      ..write(obj.relationship)
+      ..writeByte(4)
+      ..write(obj.isAdmin)
+      ..writeByte(5)
+      ..write(obj.isModerator)
+      ..writeByte(7)
+      ..write(obj.confirmationPending)
+      ..writeByte(8)
+      ..write(obj.hideFavorites)
+      ..writeByte(9)
+      ..write(obj.hideFollowers)
+      ..writeByte(11)
+      ..write(obj.hideFollows)
+      ..writeByte(12)
+      ..write(obj.hideFollowersCount)
+      ..writeByte(13)
+      ..write(obj.hideFollowsCount)
+      ..writeByte(14)
+      ..write(obj.settingsStore)
+      ..writeByte(16)
+      ..write(obj.deactivated)
+      ..writeByte(17)
+      ..write(obj.allowFollowingMove);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountPleromaPartAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class PleromaAccountRelationshipAdapter
     extends TypeAdapter<PleromaAccountRelationship> {
   @override
@@ -251,7 +325,7 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     hideFollows: json['hide_follows'] as bool,
     hideFollowersCount: json['hide_followers_count'] as bool,
     hideFollowsCount: json['hide_follows_count'] as bool,
-    chatToken: json['chat_token'] as String,
+    settingsStore: json['settings_store'],
     deactivated: json['deactivated'] as bool,
     allowFollowingMove: json['allow_following_move'] as bool,
     skipThreadContainment: json['skip_thread_containment'] as bool,
@@ -272,7 +346,7 @@ Map<String, dynamic> _$PleromaAccountPleromaPartToJson(
       'hide_follows': instance.hideFollows,
       'hide_followers_count': instance.hideFollowersCount,
       'hide_follows_count': instance.hideFollowsCount,
-      'chat_token': instance.chatToken,
+      'settings_store': instance.settingsStore,
       'deactivated': instance.deactivated,
       'allow_following_move': instance.allowFollowingMove,
       'skip_thread_containment': instance.skipThreadContainment,

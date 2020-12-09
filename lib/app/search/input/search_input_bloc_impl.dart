@@ -5,15 +5,16 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
-  final TextEditingController searchTextEditingController = TextEditingController();
+  final TextEditingController searchTextEditingController =
+      TextEditingController();
 
   // ignore: close_sinks
-  final BehaviorSubject<String> confirmedSearchTermSubject = BehaviorSubject
-      .seeded("");
+  final BehaviorSubject<String> confirmedSearchTermSubject =
+      BehaviorSubject.seeded("");
 
   // ignore: close_sinks
-  final BehaviorSubject<String> currentInputSubject = BehaviorSubject.seeded(
-      "");
+  final BehaviorSubject<String> currentInputSubject =
+      BehaviorSubject.seeded("");
 
   @override
   String get currentInput => currentInputSubject.value;
@@ -25,9 +26,8 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   bool get currentInputIsNotEmpty => currentInput?.isNotEmpty == true;
 
   @override
-  Stream<bool> get currentInputIsNotEmptyStream =>
-      currentInputStream.map((currentInput) =>
-      currentInput?.isNotEmpty == true);
+  Stream<bool> get currentInputIsNotEmptyStream => currentInputStream
+      .map((currentInput) => currentInput?.isNotEmpty == true);
 
   @override
   bool get confirmedSearchTermIsNotEmpty =>
@@ -35,9 +35,16 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   Stream<bool> get confirmedSearchTermIsNotEmptyStream =>
-      confirmedSearchTermStream.map((confirmedSearchTerm) =>
-      confirmedSearchTerm?.isNotEmpty == true);
+      confirmedSearchTermStream.map(
+          (confirmedSearchTerm) => confirmedSearchTerm?.isNotEmpty == true);
 
+  @override
+  bool get confirmedSearchTermIsEmpty => !confirmedSearchTermIsNotEmpty;
+
+  @override
+  Stream<bool> get confirmedSearchTermIsEmptyStream =>
+      confirmedSearchTermIsNotEmptyStream.map(
+          (confirmedSearchTermIsNotEmpty) => !confirmedSearchTermIsNotEmpty);
 
   @override
   void customSearch(String search) {

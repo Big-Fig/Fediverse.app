@@ -1,6 +1,6 @@
 import 'package:fedi/app/share/external/external_share_as_link_field_widget.dart';
 import 'package:fedi/app/share/external/external_share_status_bloc_impl.dart';
-import 'package:fedi/app/share/share_icon_button_widget.dart';
+import 'package:fedi/app/share/page/share_page_app_bar_send_text_action_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
@@ -8,7 +8,6 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -24,9 +23,7 @@ class ExternalShareStatusPage extends StatelessWidget {
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_share_external_title,
           actions: [
-            ShareIconButtonWidget(
-              iconSize: FediSizes.appBarIconSize,
-            ),
+            const SharePageAppBarSendTextActionWidget(),
           ],
         ),
         body: const ShareStatusWithMessageWidget(

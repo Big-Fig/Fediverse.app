@@ -224,93 +224,106 @@ abstract class IPleromaAccountPleromaPart {
   bool get skipThreadContainment;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
+//@HiveType()
+@HiveType(typeId: -32 + 75)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
+  @override
+  @HiveField(1)
+  @JsonKey(name: "background_image")
+  final dynamic backgroundImage;
 
   @override
-  @JsonKey(name: "background_image")
-  dynamic backgroundImage;
-
+  @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
-  @override
-  List<dynamic> tags;
+  final List<dynamic> tags;
 
   @override
-  PleromaAccountRelationship relationship;
-
+  @HiveField(3)
+  final PleromaAccountRelationship relationship;
   @override
+  @HiveField(4)
   @JsonKey(name: "is_admin")
-  bool isAdmin;
-
+  final bool isAdmin;
   @override
+  @HiveField(5)
   @JsonKey(name: "is_moderator")
-  bool isModerator;
+  final bool isModerator;
 
   @override
+  @HiveField(7)
   @JsonKey(name: "confirmation_pending")
-  bool confirmationPending;
+  final bool confirmationPending;
 
+  @override
+  @HiveField(8)
   // TODO: CHECK, was in previous implementation, but not exist at
-  @override
   @JsonKey(name: "hide_favorites")
-  bool hideFavorites;
-
+  final bool hideFavorites;
   @override
+  @HiveField(9)
   @JsonKey(name: "hide_followers")
-  bool hideFollowers;
-
+  final bool hideFollowers;
   @override
+  @HiveField(11)
   @JsonKey(name: "hide_follows")
-  bool hideFollows;
-
+  final bool hideFollows;
   @override
+  @HiveField(12)
   @JsonKey(name: "hide_followers_count")
-  bool hideFollowersCount;
-
+  final bool hideFollowersCount;
   @override
+  @HiveField(13)
   @JsonKey(name: "hide_follows_count")
-  bool hideFollowsCount;
+  final bool hideFollowsCount;
 
-  /// The token needed for Pleroma chat. Only returned in verify_credentials
-
-  @JsonKey(name: "chat_token")
-  String chatToken;
+  ///  A generic map of settings for frontends.
+  ///  Opaque to the backend.
+  ///  Only returned in verify_credentials and update_credentials
+  @HiveField(14)
+  @JsonKey(name: "settings_store")
+  final dynamic settingsStore;
 
   @override
-  bool deactivated;
+  @HiveField(16)
+  final bool deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
-
   @override
+  @HiveField(17)
   @JsonKey(name: "allow_following_move")
-  bool allowFollowingMove;
+  final bool allowFollowingMove;
 
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @JsonKey(name: "skip_thread_containment")
-  bool skipThreadContainment;
+  final bool skipThreadContainment;
 
-  PleromaAccountPleromaPart(
-      {this.backgroundImage,
-      this.tags,
-      this.relationship,
-      this.isAdmin,
-      this.isModerator,
-      this.confirmationPending,
-      this.hideFavorites,
-      this.hideFollowers,
-      this.hideFollows,
-      this.hideFollowersCount,
-      this.hideFollowsCount,
-      this.chatToken,
-      this.deactivated,
-      this.allowFollowingMove,
-      this.skipThreadContainment});
+  PleromaAccountPleromaPart({
+    this.backgroundImage,
+    this.tags,
+    this.relationship,
+    this.isAdmin,
+    this.isModerator,
+    this.confirmationPending,
+    this.hideFavorites,
+    this.hideFollowers,
+    this.hideFollows,
+    this.hideFollowersCount,
+    this.hideFollowsCount,
+    this.settingsStore,
+    this.deactivated,
+    this.allowFollowingMove,
+    this.skipThreadContainment,
+  });
 
   factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountPleromaPartFromJson(json);
@@ -329,49 +342,11 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
         ' isModerator: $isModerator, confirmationPending: $confirmationPending,'
         ' hideFavorites: $hideFavorites, hideFollowers: $hideFollowers,'
         ' hideFollows: $hideFollows, hideFollowersCount: $hideFollowersCount,'
-        ' hideFollowsCount: $hideFollowsCount, chatToken: $chatToken,'
-        ' deactivated: $deactivated, allowFollowingMove: $allowFollowingMove,'
+        ' hideFollowsCount: $hideFollowsCount, settingsStore: $settingsStore,'
+        ' deactivated: $deactivated,'
+        ' allowFollowingMove: $allowFollowingMove,'
         ' skipThreadContainment: $skipThreadContainment}';
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaAccountPleromaPart &&
-          runtimeType == other.runtimeType &&
-          backgroundImage == other.backgroundImage &&
-          tags == other.tags &&
-          relationship == other.relationship &&
-          isAdmin == other.isAdmin &&
-          isModerator == other.isModerator &&
-          confirmationPending == other.confirmationPending &&
-          hideFavorites == other.hideFavorites &&
-          hideFollowers == other.hideFollowers &&
-          hideFollows == other.hideFollows &&
-          hideFollowersCount == other.hideFollowersCount &&
-          hideFollowsCount == other.hideFollowsCount &&
-          chatToken == other.chatToken &&
-          deactivated == other.deactivated &&
-          allowFollowingMove == other.allowFollowingMove &&
-          skipThreadContainment == other.skipThreadContainment;
-
-  @override
-  int get hashCode =>
-      backgroundImage.hashCode ^
-      tags.hashCode ^
-      relationship.hashCode ^
-      isAdmin.hashCode ^
-      isModerator.hashCode ^
-      confirmationPending.hashCode ^
-      hideFavorites.hashCode ^
-      hideFollowers.hashCode ^
-      hideFollows.hashCode ^
-      hideFollowersCount.hashCode ^
-      hideFollowsCount.hashCode ^
-      chatToken.hashCode ^
-      deactivated.hashCode ^
-      allowFollowingMove.hashCode ^
-      skipThreadContainment.hashCode;
 }
 
 abstract class IPleromaAccountRelationship

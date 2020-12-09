@@ -1,11 +1,18 @@
-import 'package:fedi/app/share/select/share_select_account_bloc.dart';
-import 'package:fedi/app/share/share_bloc.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IShareToAccountBloc extends IShareBloc {
+abstract class IShareToAccountBloc {
   static IShareToAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IShareToAccountBloc>(context, listen: listen);
 
-  IShareSelectAccountBloc get shareSelectAccountBloc;
+  Future<bool> shareToAccount(IAccount account);
+
+  List<IAccount> get alreadySharedToAccounts;
+
+  Stream<List<IAccount>> get alreadySharedToAccountsStream;
+
+  bool isAlreadySharedToAccount(IAccount account);
+
+  Stream<bool> isAlreadySharedToAccountStream(IAccount account);
 }

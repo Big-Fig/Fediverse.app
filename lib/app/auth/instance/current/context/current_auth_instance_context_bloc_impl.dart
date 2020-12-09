@@ -60,6 +60,8 @@ import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
+import 'package:fedi/app/share/select_account/recent/local_preferences/recent_share_select_account_local_preference_bloc.dart';
+import 'package:fedi/app/share/select_account/recent/local_preferences/recent_share_select_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc.dart';
@@ -773,5 +775,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: timelinesHomeTabStorageBloc);
     await globalProviderService.asyncInitAndRegister<
         ITimelinesHomeTabStorageBloc>(timelinesHomeTabStorageBloc);
+
+    var recentShareSelectAccountLocalPreferenceBloc =
+        RecentShareSelectAccountLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    addDisposable(disposable: recentShareSelectAccountLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IRecentShareSelectAccountLocalPreferenceBloc>(
+            recentShareSelectAccountLocalPreferenceBloc);
   }
 }
