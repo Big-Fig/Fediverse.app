@@ -2,12 +2,12 @@ import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   final String hint;
-  final IFormStringFieldBloc formStringFieldBloc;
+  final IStringValueFormFieldBloc formStringFieldBloc;
 
   final TextInputAction textInputAction;
   final ValueChanged<String> onSubmitted;
@@ -83,7 +83,7 @@ class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
     @required this.formStringFieldBloc,
   }) : super(key: key);
 
-  final IFormStringFieldBloc formStringFieldBloc;
+  final IStringValueFormFieldBloc formStringFieldBloc;
 
   @override
   Widget build(BuildContext context) {

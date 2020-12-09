@@ -17,11 +17,14 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
     @required
         IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(streamSubscription:
-        searchInputBloc.confirmedSearchTermStream.listen((newText) {
-      // refresh controller if it attached
-      refreshWithController();
-    }));
+    addDisposable(
+      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
+        (newText) {
+          // refresh controller if it attached
+          refreshWithController();
+        },
+      ),
+    );
   }
 
   static SelectAccountPaginationListBloc createFromContext(

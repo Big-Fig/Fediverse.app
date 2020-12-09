@@ -51,6 +51,21 @@ final pleromaNotificationTypeValues = EnumValues({
   "pleroma:chat_mention": PleromaNotificationType.pleromaChatMention,
 });
 
+extension PleromaNotificationTypeJsonValueExtension on PleromaNotificationType {
+  String toJsonValue() => pleromaNotificationTypeValues.enumToValueMap[this];
+}
+
+extension PleromaNotificationTypeStringExtension on String {
+  PleromaNotificationType toPleromaNotificationType() {
+    var pleromaNotificationType = pleromaNotificationTypeValues.valueToEnumMap[this];
+    if(pleromaNotificationType == null) {
+      return PleromaNotificationType.unknown;
+    }
+    return pleromaNotificationType;
+  }
+}
+
+
 @JsonSerializable()
 class PleromaNotificationPleromaPart {
   @JsonKey(name: "is_seen")

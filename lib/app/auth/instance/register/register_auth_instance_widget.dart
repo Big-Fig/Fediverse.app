@@ -4,17 +4,18 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/app/form/captcha/form_captcha_string_field_row_widget.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/captcha/form_captcha_string_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
+import 'package:fedi/app/toast/toast_service.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
   final Uri instanceBaseUrl;
@@ -27,8 +28,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceRegisterBloc =
-        IRegisterAuthInstanceBloc.of(context);
+    var joinInstanceRegisterBloc = IRegisterAuthInstanceBloc.of(context);
 
     return UnfocusOnScrollAreaWidget(
       child: ListView(
@@ -48,31 +48,33 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   Widget buildTextField({
     @required BuildContext context,
-    @required IFormStringFieldBloc formStringFieldBloc,
+    @required IStringValueFormFieldBloc formStringFieldBloc,
     @required String hintText,
     @required String labelText,
     @required bool autocorrect,
     @required bool obscureText,
-    @required IFormStringFieldBloc nextFormStringFieldBloc,
+    @required IStringValueFormFieldBloc nextFormStringFieldBloc,
   }) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: FormStringFieldFormRowWidget(
-        formStringFieldBloc: formStringFieldBloc,
-        hint: hintText,
-        label: labelText,
-        obscureText: obscureText,
-        autocorrect: autocorrect,
-        onSubmitted: isHaveNextField
-            ? (String value) {
-                formStringFieldBloc.focusNode.unfocus();
-                nextFormStringFieldBloc.focusNode.requestFocus();
-              }
-            : null,
-        textInputAction:
-            isHaveNextField ? TextInputAction.next : TextInputAction.done,
+      child: Provider<IStringValueFormFieldBloc>.value(
+        value: formStringFieldBloc,
+        child: StringFormFieldRowWidget(
+          hint: hintText,
+          label: labelText,
+          obscureText: obscureText,
+          autocorrect: autocorrect,
+          onSubmitted: isHaveNextField
+              ? (String value) {
+                  formStringFieldBloc.focusNode.unfocus();
+                  nextFormStringFieldBloc.focusNode.requestFocus();
+                }
+              : null,
+          textInputAction:
+              isHaveNextField ? TextInputAction.next : TextInputAction.done,
+        ),
       ),
     );
   }
@@ -137,11 +139,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       padding: FediPadding.horizontalBigPadding,
       child: FormCaptchaStringFieldFormRowWidget(
         formCaptchaStringFieldBloc: bloc.captchaFieldBloc,
-        label: S
-            .of(context)
-            .app_auth_instance_register_field_captcha_label,
-        hint:
-            S.of(context).app_auth_instance_register_field_captcha_hint,
+        label: S.of(context).app_auth_instance_register_field_captcha_label,
+        hint: S.of(context).app_auth_instance_register_field_captcha_hint,
         obscureText: false,
         autocorrect: false,
         onSubmitted: null,
@@ -165,9 +164,10 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
               submit(context, bloc);
             };
           }
-          return FediPrimaryFilledTextButton(
+          return FediPrimaryFilledTextButtonWithBorder(
             S.of(context).app_auth_instance_register_action_createAccount,
             onPressed: onPressed,
+            expanded: true,
           );
         },
       ),
@@ -225,12 +225,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var authInstance = dialogResult.result;
     if (authInstance != null) {
       if (authInstance.info.approvalRequired == true) {
-        showInfoFediNotificationOverlay(
+        IToastService.of(context, listen: false).showInfoToast(
           context: context,
-          titleText: S
+          title: S
               .of(context)
               .app_auth_instance_register_approvalRequired_notification_title,
-          contentText: S
+          content: S
               .of(context)
               .app_auth_instance_register_approvalRequired_notification_content,
         );

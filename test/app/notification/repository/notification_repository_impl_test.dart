@@ -135,9 +135,11 @@ void main() {
   });
 
   test('updateLocalNotificationByRemoteNotification', () async {
-    var id = await notificationRepository.insert(dbNotification.copyWith(
-        type: pleromaNotificationTypeValues
-            .enumToValueMap[PleromaNotificationType.follow]));
+    var id = await notificationRepository.insert(
+      dbNotification.copyWith(
+        type: PleromaNotificationType.follow.toJsonValue(),
+      ),
+    );
     assert(id != null, true);
 
     var oldLocalNotification = DbNotificationPopulatedWrapper(
@@ -170,8 +172,10 @@ void main() {
 
     expect(
         (await notificationRepository.findById(id)).status.content, newContent);
-    expect((await notificationRepository.findById(id)).type,
-        pleromaNotificationTypeValues.enumToValueMap[newType]);
+    expect(
+      (await notificationRepository.findById(id)).type,
+      newType.toJsonValue(),
+    );
     expect((await notificationRepository.findById(id)).account.acct, newAcct);
   });
 
@@ -295,20 +299,22 @@ void main() {
     );
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(
-                type: pleromaNotificationTypeValues
-                    .enumToValueMap[PleromaNotificationType.follow]));
+      notificationRepository,
+      (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
+          .copyWith(
+        type: PleromaNotificationType.follow.toJsonValue(),
+      ),
+    );
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(
-                type: pleromaNotificationTypeValues
-                    .enumToValueMap[PleromaNotificationType.reblog]));
+      notificationRepository,
+      (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
+          .copyWith(
+        type: PleromaNotificationType.reblog.toJsonValue(),
+      ),
+    );
     expect((await query.get()).length, 1);
   });
   test('countUnread', () async {
@@ -317,8 +323,7 @@ void main() {
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
             .copyWith(
-                type: pleromaNotificationTypeValues
-                    .enumToValueMap[PleromaNotificationType.follow],
+                type: PleromaNotificationType.follow.toJsonValue(),
                 unread: true));
 
     expect(
@@ -335,8 +340,7 @@ void main() {
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
             .copyWith(
-                type: pleromaNotificationTypeValues
-                    .enumToValueMap[PleromaNotificationType.follow],
+                type: PleromaNotificationType.follow.toJsonValue(),
                 unread: false));
 
     expect(
@@ -353,8 +357,7 @@ void main() {
         notificationRepository,
         (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
             .copyWith(
-                type: pleromaNotificationTypeValues
-                    .enumToValueMap[PleromaNotificationType.reblog],
+                type: PleromaNotificationType.reblog.toJsonValue(),
                 unread: true));
 
     expect(

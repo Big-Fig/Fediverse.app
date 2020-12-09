@@ -9,10 +9,13 @@ part of 'emoji_picker_custom_image_url_category_model.dart';
 class EmojiPickerCustomImageUrlCategoryItemsAdapter
     extends TypeAdapter<EmojiPickerCustomImageUrlCategoryItems> {
   @override
+  final int typeId = 36;
+
+  @override
   EmojiPickerCustomImageUrlCategoryItems read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return EmojiPickerCustomImageUrlCategoryItems(
       items: (fields[0] as List)?.cast<CustomEmojiPickerImageUrlItem>(),
@@ -26,6 +29,16 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
       ..writeByte(0)
       ..write(obj.items);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EmojiPickerCustomImageUrlCategoryItemsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

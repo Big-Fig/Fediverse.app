@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,10 +10,10 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 68)
+//@HiveType()
+@HiveType(typeId: -32 + 68)
 @JsonSerializable(explicitToJson: true)
-class EmojiPickerCustomImageUrlCategoryItems implements IPreferencesObject {
+class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
   @HiveField(0)
   final List<CustomEmojiPickerImageUrlItem> items;
 

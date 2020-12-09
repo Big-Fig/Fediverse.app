@@ -20,7 +20,6 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
 
   @override
   Future handleChatUpdate(IPleromaConversation conversation) async {
-    // increase only if chat closed now
     var conversationRemoteId = conversation.id;
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;

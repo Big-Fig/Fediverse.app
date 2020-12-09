@@ -1,0 +1,4 @@
+enum ToastType {
+  error,
+  info,
+}

@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
@@ -80,7 +80,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
           ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
       @required
           int updateItemsCount}) {
-    return FediPrimaryFilledTextButton(
+    return FediPrimaryFilledTextButtonWithBorder(
       textBuilder(context, updateItemsCount),
       onPressed: () {
         paginationWithUpdatesListBloc.mergeNewItems();

@@ -14,9 +14,29 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<IAccount> get accountStream;
 
-  bool get isOnRemoteDomain => remoteDomainOrNull != null;
-
   String get remoteDomainOrNull;
+
+  IPleromaAccountRelationship get relationship;
+
+  Stream<IPleromaAccountRelationship> get relationshipStream;
+
+  Future<IPleromaAccountRelationship> toggleFollow();
+
+  Future<IPleromaAccountRelationship> toggleMute();
+
+  Future<IPleromaAccountRelationship> togglePin();
+
+  Future<IPleromaAccountRelationship> toggleBlock();
+
+  Future<IPleromaAccountRelationship> toggleBlockDomain();
+
+  Future report();
+
+  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship});
+}
+
+extension IAccountBlocExtension on IAccountBloc {
+  bool get isOnRemoteDomain => remoteDomainOrNull != null;
 
   String get acct => account.acct;
 
@@ -84,21 +104,68 @@ abstract class IAccountBloc extends DisposableOwner {
   Stream<String> get displayNameStream =>
       accountStream.map((account) => account.displayName);
 
-  IPleromaAccountRelationship get accountRelationship;
+  bool get relationshipBlocking => relationship?.blocking;
 
-  Stream<IPleromaAccountRelationship> get accountRelationshipStream;
+  Stream<bool> get relationshipBlockingStream =>
+      relationshipStream.map((relationship) => relationship?.blocking);
 
-  Future<IPleromaAccountRelationship> toggleFollow();
+  bool get relationshipBlockedBy => relationship?.blockedBy;
 
-  Future<IPleromaAccountRelationship> toggleMute();
+  Stream<bool> get relationshipBlockedByStream =>
+      relationshipStream.map((relationship) => relationship?.blockedBy);
 
-  Future<IPleromaAccountRelationship> togglePin();
+  bool get relationshipDomainBlocking => relationship?.domainBlocking;
 
-  Future<IPleromaAccountRelationship> toggleBlock();
+  Stream<bool> get relationshipDomainBlockingStream =>
+      relationshipStream.map((relationship) => relationship?.domainBlocking);
 
-  Future<IPleromaAccountRelationship> toggleBlockDomain();
+  bool get relationshipEndorsed => relationship?.endorsed;
 
-  Future report();
+  Stream<bool> get relationshipEndorsedStream =>
+      relationshipStream.map((relationship) => relationship?.endorsed);
 
-  Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship});
+  bool get relationshipFollowedBy => relationship?.followedBy;
+
+  Stream<bool> get relationshipFollowedByStream =>
+      relationshipStream.map((relationship) => relationship?.followedBy);
+
+  bool get relationshipFollowing => relationship?.following;
+
+  Stream<bool> get relationshipFollowingStream =>
+      relationshipStream.map((relationship) => relationship?.following);
+
+  String get relationshipId => relationship?.id;
+
+  Stream<String> get relationshipIdStream =>
+      relationshipStream.map((relationship) => relationship?.id);
+
+  bool get relationshipMuting => relationship?.muting;
+
+  Stream<bool> get relationshipMutingStream =>
+      relationshipStream.map((relationship) => relationship?.muting);
+
+  bool get relationshipMutingNotifications => relationship?.mutingNotifications;
+
+  Stream<bool> get relationshipMutingNotificationsStream => relationshipStream
+      .map((relationship) => relationship?.mutingNotifications);
+
+  bool get relationshipRequested => relationship?.requested;
+
+  Stream<bool> get relationshipRequestedStream =>
+      relationshipStream.map((relationship) => relationship?.requested);
+
+  bool get relationshipShowingReblogs => relationship?.showingReblogs;
+
+  Stream<bool> get relationshipShowingReblogsStream =>
+      relationshipStream.map((relationship) => relationship?.showingReblogs);
+
+  bool get relationshipSubscribing => relationship?.subscribing;
+
+  Stream<bool> get relationshipSubscribingStream =>
+      relationshipStream.map((relationship) => relationship?.subscribing);
+
+  String get relationshipNote => relationship?.note;
+
+  Stream<String> get relationshipNoteStream =>
+      relationshipStream.map((relationship) => relationship?.note);
 }

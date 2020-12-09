@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,9 +11,9 @@ part 'pleroma_oauth_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 51)
-class PleromaOAuthToken implements IPreferencesObject {
+//@HiveType()
+@HiveType(typeId: -32 + 51)
+class PleromaOAuthToken implements IJsonObject {
   @HiveField(0)
   @JsonKey(name: "access_token")
   final String accessToken;

@@ -8,10 +8,13 @@ part of 'pleroma_emoji_model.dart';
 
 class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
   @override
+  final int typeId = 6;
+
+  @override
   PleromaEmoji read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaEmoji(
       shortcode: fields[0] as String,
@@ -37,14 +40,27 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
       ..writeByte(4)
       ..write(obj.category);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaEmojiAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
   @override
+  final int typeId = 44;
+
+  @override
   PleromaCustomEmoji read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaCustomEmoji(
       tags: (fields[0] as List)?.cast<String>(),
@@ -64,6 +80,16 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
       ..writeByte(2)
       ..write(obj.name);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaCustomEmojiAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

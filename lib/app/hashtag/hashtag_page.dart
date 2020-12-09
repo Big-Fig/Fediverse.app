@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -15,16 +14,18 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _HashtagPageState extends State<HashtagPage> {
       create: (context) =>
           ScrollControllerBloc(scrollController: scrollController),
       child: Scaffold(
-        appBar: FediSubPageTitleAppBar(
+        appBar: FediPageTitleAppBar(
           centerTitle: false,
           title: "#${hashtag.name}",
           actions: <Widget>[
@@ -86,7 +87,8 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   Widget build(BuildContext context) {
     var hashtag = Provider.of<IHashtag>(context);
     return FediIconButton(
-      icon: Icon(FediIcons.browser),
+      color: IFediUiColorTheme.of(context).darkGrey,
+      icon: Icon(FediIcons.external_icon),
       onPressed: () {
         UrlHelper.handleUrlClick(context, hashtag.url);
       },
@@ -111,10 +113,6 @@ MaterialPageRoute createHashtagPageRoute({
   @required BuildContext context,
   @required IHashtag hashtag,
 }) {
-  var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context, listen: false);
-  var isRealtimeWebSocketsEnabled =
-      myAccountSettingsBloc.isRealtimeWebSocketsEnabledFieldBloc.currentValue;
-
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
@@ -141,6 +139,7 @@ MaterialPageRoute createHashtagPageRoute({
                 create: (BuildContext context) {
                   var hashtagTimelineStatusCachedListBloc =
                       TimelineStatusCachedListBloc(
+                    webSocketsListenType: WebSocketsListenType.foreground,
                     pleromaTimelineService: IPleromaTimelineService.of(
                       context,
                       listen: false,
@@ -165,7 +164,6 @@ MaterialPageRoute createHashtagPageRoute({
                       context,
                       listen: false,
                     ),
-                    listenWebSockets: isRealtimeWebSocketsEnabled,
                   );
                   return hashtagTimelineStatusCachedListBloc;
                 },

@@ -18,7 +18,16 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
   final ILocalPreferencesService preferencesService;
   final AuthInstance authInstance;
-  final ITimelinesHomeTabStorageLocalPreferences preferences;
+  final ITimelinesHomeTabStorageLocalPreferencesBloc preferences;
+
+  final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
+      BehaviorSubject.seeded(TimelinesHomeTabStorageUiState.view);
+
+  @override
+  TimelinesHomeTabStorageUiState get uiState => uiStateSubject.value;
+  @override
+  Stream<TimelinesHomeTabStorageUiState> get uiStateStream =>
+      uiStateSubject.stream;
 
   TimelinesHomeTabStorageBloc({
     @required this.preferencesService,
@@ -34,6 +43,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     );
 
     addDisposable(subject: timelinesSubject);
+    addDisposable(subject: uiStateSubject);
   }
 
   Future updateTimelines() async {
@@ -74,6 +84,27 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Stream<List<Timeline>> get timelinesDistinctStream =>
       timelinesStream.distinct(
         (a, b) => _listEqual(a, b),
+      );
+
+  @override
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems =>
+      timelines.map(
+        (timeline) => TimelinesHomeTabStorageListItem(timeline),
+      )?.toList();
+
+  @override
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsStream => timelinesStream.map(
+            (timelines) => timelines?.map(
+              (timeline) => TimelinesHomeTabStorageListItem(timeline),
+            )?.toList(),
+          );
+
+  @override
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsDistinctStream =>
+      timelineStorageItemsStream.distinct(
+            (a, b) => _listEqual(a, b),
       );
 
   @override
@@ -129,4 +160,31 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     await updateTimelines();
   }
+
+  @override
+  void switchToEditUiState() {
+    uiStateSubject.add(TimelinesHomeTabStorageUiState.edit);
+  }
+
+  @override
+  void switchToViewUiState() {
+    uiStateSubject.add(TimelinesHomeTabStorageUiState.view);
+  }
+
+  @override
+  void swapItemsAt(int oldIndex, int newIndex) {
+
+    final oldValue = timelines.removeAt(oldIndex);
+    timelines.insert(newIndex, oldValue);
+
+    _logger.finest(() => "swapItemsAt afterItems $timelines");
+
+    onItemsUpdated(timelines);
+  }
+
+  @override
+  int indexOfKey(Key key) => timelineStorageItems.indexWhere((item) => item.key == key);
+
+  @override
+  Timeline timelineOfKey(Key key) => timelines[indexOfKey(key)];
 }

@@ -3,7 +3,6 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/collapsible/collapsible_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -13,7 +12,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
+abstract class IStatusBloc implements IDisposable {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
@@ -154,25 +153,11 @@ abstract class IStatusBloc implements IDisposable, ICollapsibleItem {
 
   Stream<bool> get nsfwSensitiveStream;
 
-  bool get nsfwSensitiveAndDisplayNsfwContentEnabled;
-
-  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream;
 
   bool get containsSpoiler;
 
   Stream<bool> get containsSpoilerStream;
 
-  bool get containsSpoilerAndDisplaySpoilerContentEnabled;
-
-  StatusWarningState get statusWarningState;
-
-  Stream<StatusWarningState> get statusWarningStateStream;
-
-  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream;
-
-  void changeDisplayNsfwSensitive(bool display);
-
-  void changeDisplaySpoiler(bool display);
 
   Future refreshFromNetwork();
 

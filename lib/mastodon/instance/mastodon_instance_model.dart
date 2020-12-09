@@ -50,8 +50,8 @@ abstract class IMastodonInstance {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 61)
+//@HiveType()
+@HiveType(typeId: -32 + 61)
 class MastodonInstanceStats {
   @JsonKey(name: "user_count")
   @HiveField(0)
@@ -103,8 +103,8 @@ class MastodonInstanceStats {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 62)
+//@HiveType()
+@HiveType(typeId: -32 + 62)
 class MastodonUrls {
   @JsonKey(name: "streaming_api")
   @HiveField(0)

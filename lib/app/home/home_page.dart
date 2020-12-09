@@ -1,26 +1,26 @@
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_providier.dart';
+import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_background_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
         _logger.finest(() => "selectedTab $selectedTab");
 
         if (selectedTab == null) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         return Scaffold(
@@ -242,12 +242,10 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var myAccountSettingsBloc = IMyAccountSettingsBloc.of(context);
+    var chatSettingsBloc = IChatSettingsBloc.of(context);
     return StreamBuilder<bool>(
-      stream:
-          myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
-      initialData:
-          myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
+      stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
+      initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
       builder: (context, snapshot) {
         var isNewChatsEnabled = snapshot.data;
 

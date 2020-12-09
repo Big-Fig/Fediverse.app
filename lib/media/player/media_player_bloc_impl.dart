@@ -157,7 +157,8 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
       playerStateSubject.add(MediaPlayerState.initialized);
 
-      if (autoPlay == true) {
+      var initAfterUserClick = autoInit == false;
+      if (autoPlay == true || initAfterUserClick) {
         await play();
       }
     } catch (error, stackTrace) {

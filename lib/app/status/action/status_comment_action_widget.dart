@@ -5,7 +5,6 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +68,6 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).darkGrey,
         iconSize: FediSizes.bigIconSize,
         icon: Icon(FediIcons.message),
-        tooltip: S.of(context).app_status_action_comment,
         onPressed: () {
           _onActionClick(context);
         },

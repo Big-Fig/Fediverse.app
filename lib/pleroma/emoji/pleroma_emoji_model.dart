@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,8 +20,8 @@ abstract class IPleromaCustomEmoji {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 38)
+//@HiveType()
+@HiveType(typeId: -32 + 38)
 @JsonSerializable()
 class PleromaEmoji implements IPleromaEmoji {
   @override
@@ -42,11 +43,11 @@ class PleromaEmoji implements IPleromaEmoji {
   final String category;
 
   PleromaEmoji({
-    this.shortcode,
-    this.url,
-    this.staticUrl,
-    this.visibleInPicker,
-    this.category,
+    @required this.shortcode,
+    @required this.url,
+    @required this.staticUrl,
+    @required this.visibleInPicker,
+    @required this.category,
   });
 
   @override
@@ -84,8 +85,8 @@ class PleromaEmoji implements IPleromaEmoji {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 76)
+//@HiveType()
+@HiveType(typeId: -32 + 76)
 @JsonSerializable()
 class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @override

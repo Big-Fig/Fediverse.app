@@ -1,91 +1,314 @@
-import 'package:fedi/app/custom_list/accounts/custom_list_account_network_only_list_bloc.dart';
-import 'package:fedi/app/custom_list/accounts/custom_list_account_network_only_list_bloc_impl.dart';
+import 'dart:async';
+
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
+import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
+import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/account/select/select_account_list_bloc.dart';
+import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
+import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
+import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model_adapter.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger("edit_custom_list_bloc_impl.dart");
 
 class EditCustomListBloc extends DisposableOwner
     implements IEditCustomListBloc {
-
-  final VoidCallback successCallback;
-
   static EditCustomListBloc createFromContext(
     BuildContext context, {
     @required ICustomList initialValue,
-        @required VoidCallback successCallback,
-  }) =>
-      EditCustomListBloc(
-        initialValue: initialValue,
-        statusRepository: IStatusRepository.of(context, listen: false),
-        pleromaListService: IPleromaListService.of(
-          context,
-          listen: false,
-        ),
-          successCallback:successCallback,
+    @required Function(ICustomList customList) onSubmit,
+    @required VoidCallback onDelete,
+  }) {
+    var editCustomListBloc = EditCustomListBloc(
+      customList: initialValue,
+      statusRepository: IStatusRepository.of(context, listen: false),
+      pleromaListService: IPleromaListService.of(
+        context,
+        listen: false,
+      ),
+      myAccountBloc: IMyAccountBloc.of(
+        context,
+        listen: false,
+      ),
+      pleromaAccountService: IPleromaAccountService.of(
+        context,
+        listen: false,
+      ),
+      accountRepository: IAccountRepository.of(
+        context,
+        listen: false,
+      ),
+      isPossibleToDelete: true,
+      timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
+        context,
+        listen: false,
+      ),
+    );
+
+    if (onSubmit != null) {
+      editCustomListBloc.addDisposable(
+        streamSubscription: editCustomListBloc.submittedStream.listen(onSubmit),
       );
+    }
+    if (onDelete != null) {
+      editCustomListBloc.addDisposable(
+        streamSubscription:
+            editCustomListBloc.deletedStream.listen((_) => onDelete()),
+      );
+    }
+    return editCustomListBloc;
+  }
 
   static Widget provideToContext(
     BuildContext context, {
     @required Widget child,
     @required ICustomList initialValue,
-    @required VoidCallback successCallback,
+    @required Function(ICustomList customList) onSubmit,
+    @required VoidCallback onDelete,
   }) {
     return DisposableProvider<IEditCustomListBloc>(
       create: (context) => EditCustomListBloc.createFromContext(
         context,
         initialValue: initialValue,
-        successCallback:successCallback,
+        onSubmit: onSubmit,
+        onDelete: onDelete,
       ),
       child: EditCustomListBlocProxyProvider(child: child),
     );
   }
 
-  final ICustomList initialValue;
+  final ICustomList customList;
 
   final IPleromaListService pleromaListService;
 
   @override
-  final ICustomListAccountNetworkOnlyListBloc customListAccountListBloc;
+  ICustomListAccountListNetworkOnlyListBloc
+      customListAccountListNetworkOnlyListBloc;
+
+  @override
+  IAccountNetworkOnlyPaginationBloc
+      customListAccountListNetworkOnlyPaginationBloc;
+
+  IAccountPaginationListBloc accountPaginationListBloc;
+
+  @override
+  IEditCustomListAccountListPaginationListBloc
+      editCustomListAccountListPaginationListBloc;
 
   @override
   final ICustomListFormBloc customListFormBloc;
 
+  final IStatusRepository statusRepository;
+  final ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc;
+
+  @override
+  final ISelectAccountListBloc selectAccountListBloc;
+
+  @override
+  final bool isPossibleToDelete;
+
   EditCustomListBloc({
-    @required this.initialValue,
+    @required this.customList,
     @required this.pleromaListService,
-    @required this.successCallback,
-    @required IStatusRepository statusRepository,
-  })  : customListAccountListBloc = CustomListAccountNetworkOnlyListBloc(
-          pleromaListService: pleromaListService,
-          customList: initialValue,
-          statusRepository: statusRepository,
-        ),
+    @required this.statusRepository,
+    @required this.isPossibleToDelete,
+    @required this.timelinesHomeTabStorageBloc,
+    @required IMyAccountBloc myAccountBloc,
+    @required IAccountRepository accountRepository,
+    @required IPleromaAccountService pleromaAccountService,
+  })  : selectAccountListBloc = SelectAccountListBloc(
+            pleromaAccountService: pleromaAccountService,
+            accountRepository: accountRepository,
+            myAccountBloc: myAccountBloc,
+            excludeMyAccount: true,
+            customEmptySearchRemoteAccountListLoader: null,
+            customEmptySearchLocalAccountListLoader: null,
+            followingsOnly: false),
         customListFormBloc =
-            CustomListFormBloc(initialTitleValue: initialValue?.title);
+            CustomListFormBloc(initialTitleValue: customList?.title) {
+    customListAccountListNetworkOnlyListBloc =
+        CustomListAccountListNetworkOnlyListBloc(
+      pleromaListService: pleromaListService,
+      customList: customList,
+    );
+
+    customListAccountListNetworkOnlyPaginationBloc =
+        AccountNetworkOnlyPaginationBloc(
+            listBloc: customListAccountListNetworkOnlyListBloc,
+            itemsCountPerPage: 20,
+            maximumCachedPagesCount: null);
+    accountPaginationListBloc = AccountPaginationListBloc(
+      paginationBloc: customListAccountListNetworkOnlyPaginationBloc,
+    );
+
+    accountPaginationListBloc.refreshWithoutController();
+
+    editCustomListAccountListPaginationListBloc =
+        EditCustomListAccountListPaginationListBloc(
+      paginationListBloc: accountPaginationListBloc,
+    );
+
+    addDisposable(disposable: selectAccountListBloc);
+    addDisposable(disposable: customListFormBloc);
+    addDisposable(disposable: customListAccountListNetworkOnlyListBloc);
+    addDisposable(disposable: customListAccountListNetworkOnlyPaginationBloc);
+    addDisposable(disposable: accountPaginationListBloc);
+    addDisposable(disposable: editCustomListAccountListPaginationListBloc);
+
+    addDisposable(streamController: submittedStreamController);
+    addDisposable(streamController: deletedStreamController);
+  }
 
   @override
-  bool get isReadyToSubmit => customListFormBloc.isReadyToSubmit;
+  bool get isReadyToSubmit => _calculateIsReadyToSubmit(
+      customListFormBlocIsHaveAtLeastOneError:
+          customListFormBloc.isHaveAtLeastOneError,
+      customListFormBlocIsSomethingChanged:
+          customListFormBloc.isSomethingChanged,
+      editCustomListAccountListPaginationListBlocIsSomethingChanged:
+          editCustomListAccountListPaginationListBloc.isSomethingChanged);
 
   @override
-  Stream<bool> get isReadyToSubmitStream =>
-      customListFormBloc.isReadyToSubmitStream;
+  Stream<bool> get isReadyToSubmitStream => Rx.combineLatest3(
+        customListFormBloc.isHaveAtLeastOneErrorStream,
+        customListFormBloc.isSomethingChangedStream,
+        editCustomListAccountListPaginationListBloc.isSomethingChangedStream,
+        (
+          customListFormBlocIsHaveAtLeastOneError,
+          customListFormBlocIsSomethingChanged,
+          editCustomListAccountListPaginationListBlocIsSomethingChanged,
+        ) =>
+            _calculateIsReadyToSubmit(
+          customListFormBlocIsHaveAtLeastOneError:
+              customListFormBlocIsHaveAtLeastOneError,
+          customListFormBlocIsSomethingChanged:
+              customListFormBlocIsSomethingChanged,
+          editCustomListAccountListPaginationListBlocIsSomethingChanged:
+              editCustomListAccountListPaginationListBlocIsSomethingChanged,
+        ),
+      );
+
+  bool _calculateIsReadyToSubmit({
+    @required bool customListFormBlocIsHaveAtLeastOneError,
+    @required bool customListFormBlocIsSomethingChanged,
+    @required
+        bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
+  }) {
+    return !customListFormBlocIsHaveAtLeastOneError &&
+        (customListFormBlocIsSomethingChanged ||
+            editCustomListAccountListPaginationListBlocIsSomethingChanged);
+  }
 
   @override
   Future<ICustomList> submit() async {
+    var listRemoteId = customList.remoteId;
     var remoteList = await pleromaListService.updateList(
-        listRemoteId: initialValue.remoteId,
+        listRemoteId: listRemoteId,
         title: customListFormBloc.titleField.currentValue);
 
+    if (editCustomListAccountListPaginationListBloc.isSomethingChanged) {
+      var addedAccounts =
+          editCustomListAccountListPaginationListBloc.addedItems;
+
+      if (addedAccounts.isNotEmpty) {
+        await pleromaListService.addAccountsToList(
+          listRemoteId: listRemoteId,
+          accountIds: addedAccounts.map((account) => account.remoteId).toList(),
+        );
+      }
+
+      var removedAccounts =
+          editCustomListAccountListPaginationListBloc.removedItems;
+
+      if (removedAccounts.isNotEmpty) {
+        await pleromaListService.removeAccountsFromList(
+          listRemoteId: listRemoteId,
+          accountIds:
+              removedAccounts.map((account) => account.remoteId).toList(),
+        );
+      }
+
+      await editCustomListAccountListPaginationListBloc
+          .clearChangesAndRefresh();
+    }
+
     var localCustomList = mapRemoteListToLocalCustomList(remoteList);
-    successCallback();
+
+    submittedStreamController.add(localCustomList);
+
     return localCustomList;
   }
+
+  @override
+  Future deleteList() async {
+    await pleromaListService.deleteList(listRemoteId: customList.remoteId);
+
+    deletedStreamController.add(null);
+
+    var timelinesToRemove = <Timeline>[];
+
+    for (var timelineStorageItem
+        in timelinesHomeTabStorageBloc.timelineStorageItems) {
+      var timeline = timelineStorageItem.timeline;
+      var onlyInRemoteList = timeline.onlyInRemoteList;
+      if (onlyInRemoteList != null &&
+          onlyInRemoteList.id == customList.remoteId) {
+        timelinesToRemove.add(timeline);
+      }
+    }
+
+    for (var timeline in timelinesToRemove) {
+      await timelinesHomeTabStorageBloc.remove(timeline);
+    }
+  }
+
+  final StreamController deletedStreamController = StreamController.broadcast();
+
+  @override
+  Stream get deletedStream => deletedStreamController.stream;
+
+  final StreamController<ICustomList> submittedStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<ICustomList> get submittedStream => submittedStreamController.stream;
+
+  @override
+  bool get isListContainsAccounts => _calculateIsListContainsAccounts(
+        editCustomListAccountListPaginationListBloc.items,
+      );
+
+  bool _calculateIsListContainsAccounts(List<IAccount> items) {
+    _logger.finest(
+        () => "_calculateIsListContainsAccounts items size ${items?.length}");
+
+    return items?.isNotEmpty == true;
+  }
+
+  @override
+  Stream<bool> get isListContainsAccountsStream =>
+      editCustomListAccountListPaginationListBloc.itemsStream.map(
+        (items) => _calculateIsListContainsAccounts(items),
+      );
 }

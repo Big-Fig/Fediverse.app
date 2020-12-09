@@ -6,7 +6,7 @@ import 'package:fedi/app/account/select/single/single_select_account_widget.dart
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class StartConversationChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageCustomAppBar(
+      appBar: FediPageCustomAppBar(
         leading: FediBackIconButton(),
         child: SearchInputWidget(
           autofocus: true,

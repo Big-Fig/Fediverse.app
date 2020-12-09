@@ -1,10 +1,10 @@
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_error.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +13,11 @@ typedef ValueToIconMapper<T> = IconData Function(T value);
 typedef ValueChangedCallback<T> = Function(T oldValue, T newValue);
 
 class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
-  final bool enabled;
-  final bool nullable;
+  final bool isEnabled;
+  final bool isNullValuePossible;
   final String label;
-  final String desc;
+  final String description;
+  final String descriptionOnDisabled;
   final String error;
   final T value;
   final ValueToTextMapper<T> valueToTextMapper;
@@ -25,10 +26,11 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   final VoidCallback clearCallback;
 
   FediFormSingleChooseCustomFromListFieldRow({
-    @required this.enabled,
-    @required this.nullable,
+    @required this.isEnabled,
+    @required this.isNullValuePossible,
     @required this.label,
-    @required this.desc,
+    @required this.description,
+    @required this.descriptionOnDisabled,
     @required this.error,
     @required this.value,
     @required this.valueToTextMapper,
@@ -42,6 +44,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
     return FediFormRow(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.max,
@@ -52,7 +55,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InkWell(
-                    onTap: enabled ? startCustomSelectCallback : null,
+                    onTap: isEnabled ? startCustomSelectCallback : null,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -61,7 +64,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                             padding: FediPadding.horizontalSmallPadding,
                             child: Icon(
                               valueToIconMapper(value),
-                              color: enabled
+                              color: isEnabled
                                   ? IFediUiColorTheme.of(context).darkGrey
                                   : IFediUiColorTheme.of(context).lightGrey,
                             ),
@@ -71,16 +74,18 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                             padding: FediPadding.horizontalSmallPadding,
                             child: Text(
                               valueToTextMapper(value),
-                              style: enabled
-                                  ? IFediUiTextTheme.of(context).mediumShortDarkGrey
-                                  : IFediUiTextTheme.of(context).mediumShortLightGrey,
+                              style: isEnabled
+                                  ? IFediUiTextTheme.of(context)
+                                      .mediumShortDarkGrey
+                                  : IFediUiTextTheme.of(context)
+                                      .mediumShortLightGrey,
                             ),
                           ),
                         Padding(
                           padding: FediPadding.horizontalSmallPadding,
                           child: Icon(
                             FediIcons.pen,
-                            color: enabled
+                            color: isEnabled
                                 ? IFediUiColorTheme.of(context).darkGrey
                                 : IFediUiColorTheme.of(context).lightGrey,
                           ),
@@ -88,7 +93,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (nullable && value != null)
+                  if (isNullValuePossible && value != null)
                     InkWell(
                       onTap: () {
                         clearCallback();
@@ -97,8 +102,9 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                         padding: FediPadding.horizontalSmallPadding,
                         child: Icon(
                           FediIcons.delete,
-                          color:
-                          enabled ? IFediUiColorTheme.of(context).darkGrey : IFediUiColorTheme.of(context).lightGrey,
+                          color: isEnabled
+                              ? IFediUiColorTheme.of(context).darkGrey
+                              : IFediUiColorTheme.of(context).lightGrey,
                         ),
                       ),
                     ),
@@ -106,10 +112,30 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
               ),
             ],
           ),
-          if (desc != null) FediFormColumnDesc(desc),
+          _buildDescription(),
           if (error != null) FediFormColumnError(error),
         ],
       ),
     );
+  }
+
+  Widget _buildDescription() {
+    if (isEnabled) {
+      if (description != null) {
+        return FediFormColumnDesc(description);
+      } else {
+        return const SizedBox.shrink();
+      }
+    } else {
+      if (descriptionOnDisabled != null) {
+        return FediFormColumnDesc(descriptionOnDisabled);
+      } else {
+        if (description != null) {
+          return FediFormColumnDesc(description);
+        } else {
+          return const SizedBox.shrink();
+        }
+      }
+    }
   }
 }

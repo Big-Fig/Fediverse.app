@@ -5,8 +5,8 @@ import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -15,10 +15,13 @@ var _logger = Logger("account_list_item_widget.dart");
 class AccountListItemWidget extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
   final List<Widget> accountActions;
+  final EdgeInsets padding;
 
   const AccountListItemWidget({
     @required this.accountSelectedCallback,
     this.accountActions,
+    this.padding = FediPadding.allMediumPadding,
+
   });
 
   @override
@@ -34,7 +37,7 @@ class AccountListItemWidget extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: FediPadding.allBigPadding,
+        padding: padding,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -66,22 +69,21 @@ class _AccountListItemBodyWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AccountDisplayNameWidget(
-                  textStyle: IFediUiTextTheme
-                      .of(context)
-                      .bigShortBoldDarkGrey
-                      .copyWith(height: 1),
-                ),
-                AccountAcctWidget(
-                  textStyle: IFediUiTextTheme
-                      .of(context)
-                      .mediumShortDarkGrey,
-                ),
-              ],
-            ))
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AccountDisplayNameWidget(
+                textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              AccountAcctWidget(
+                textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

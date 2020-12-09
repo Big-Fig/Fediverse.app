@@ -4,10 +4,10 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 
- class TimelinesHomeTabStorageLocalPreferences
+class TimelinesHomeTabStorageLocalPreferencesBloc
     extends ObjectLocalPreferenceBloc<TimelinesHomeTabStorage>
-    implements ITimelinesHomeTabStorageLocalPreferences {
-  TimelinesHomeTabStorageLocalPreferences(
+    implements ITimelinesHomeTabStorageLocalPreferencesBloc {
+  TimelinesHomeTabStorageLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
     @required String userAtHost,
   }) : super(

@@ -8,10 +8,13 @@ part of 'timeline_settings_model.dart';
 
 class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
   @override
+  final int typeId = 47;
+
+  @override
   TimelineSettings read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimelineSettings(
       onlyWithMedia: fields[1] as bool,
@@ -64,6 +67,16 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..writeByte(16)
       ..write(obj.webSocketsUpdates);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimelineSettingsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

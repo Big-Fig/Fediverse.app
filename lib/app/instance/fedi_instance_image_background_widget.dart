@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -15,7 +16,6 @@ var _logger = Logger("fedi_instance_image_background_widget.dart");
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
   const FediInstanceImageBackgroundWidget();
-
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);

@@ -8,10 +8,13 @@ part of 'pleroma_list_model.dart';
 
 class PleromaListAdapter extends TypeAdapter<PleromaList> {
   @override
+  final int typeId = 48;
+
+  @override
   PleromaList read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaList(
       id: fields[0] as String,
@@ -28,6 +31,16 @@ class PleromaListAdapter extends TypeAdapter<PleromaList> {
       ..writeByte(1)
       ..write(obj.title);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

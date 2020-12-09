@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,10 +10,10 @@ part 'push_handler_unhandled_local_preferences_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 55)
+//@HiveType()
+@HiveType(typeId: -32 + 55)
 @JsonSerializable(explicitToJson: true)
-class PushHandlerUnhandledList implements IPreferencesObject {
+class PushHandlerUnhandledList implements IJsonObject {
   @HiveField(0)
   final List<PushHandlerMessage> messages;
 

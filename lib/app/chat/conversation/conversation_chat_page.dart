@@ -9,7 +9,7 @@ import 'package:fedi/app/chat/conversation/current/conversation_chat_current_blo
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/post/conversation_chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -46,7 +46,7 @@ class _ConversationChatPageAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediSubPageCustomAppBar(
+    return FediPageCustomAppBar(
       leading: FediBackIconButton(),
       child: InkWell(
         onTap: () {

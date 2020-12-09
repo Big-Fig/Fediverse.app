@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -31,34 +31,38 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
 
     var paginationListBloc = IPaginationListBloc.of(context, listen: false);
 
-    disposable.addDisposable(streamSubscription: paginationListBloc
-        .refreshErrorStream
-        .listen((paginationListLoadingError) {
-      var now = DateTime.now();
-      var difference = now.difference(_lastRefreshErrorShowedDateTime);
-      if (difference > _throttleDuration) {
-        _lastRefreshErrorShowedDateTime = now;
-        showErrorFediNotificationOverlay(
-          context: context,
-          contentText: "${_errorToString(paginationListLoadingError)}",
-          titleText: S.of(context).app_list_refresh_unableToFetch,
-        );
-      }
-    }));
-    disposable.addDisposable(streamSubscription: paginationListBloc
-        .loadMoreErrorStream
-        .listen((paginationListLoadingError) {
-      var now = DateTime.now();
-      var difference = now.difference(_lastLoadMoreErrorShowedDateTime);
-      if (difference > _throttleDuration) {
-        _lastLoadMoreErrorShowedDateTime = now;
-        showErrorFediNotificationOverlay(
-          context: context,
-          contentText: "${_errorToString(paginationListLoadingError)}",
-          titleText: S.of(context).app_list_loading_state_failed,
-        );
-      }
-    }));
+    disposable.addDisposable(
+      streamSubscription: paginationListBloc.refreshErrorStream.listen(
+        (paginationListLoadingError) {
+          var now = DateTime.now();
+          var difference = now.difference(_lastRefreshErrorShowedDateTime);
+          if (difference > _throttleDuration) {
+            _lastRefreshErrorShowedDateTime = now;
+            IToastService.of(context, listen: false).showErrorToast(
+              context: context,
+              content: "${_errorToString(paginationListLoadingError)}",
+              title: S.of(context).app_list_refresh_unableToFetch,
+            );
+          }
+        },
+      ),
+    );
+    disposable.addDisposable(
+      streamSubscription: paginationListBloc.loadMoreErrorStream.listen(
+        (paginationListLoadingError) {
+          var now = DateTime.now();
+          var difference = now.difference(_lastLoadMoreErrorShowedDateTime);
+          if (difference > _throttleDuration) {
+            _lastLoadMoreErrorShowedDateTime = now;
+            IToastService.of(context, listen: false).showErrorToast(
+              context: context,
+              content: "${_errorToString(paginationListLoadingError)}",
+              title: S.of(context).app_list_loading_state_failed,
+            );
+          }
+        },
+      ),
+    );
   }
 
   String _errorToString(PaginationListLoadingError paginationListLoadingError) {

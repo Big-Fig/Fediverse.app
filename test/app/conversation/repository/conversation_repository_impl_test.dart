@@ -298,52 +298,62 @@ void main() {
 //    expect((await query.get()).length, 1);
 //  });
 
-  test('createQuery newerThan', () async {
-    var query = conversationRepository.createQuery(
-      newerThan: await createTestConversation(
-          seed: "remoteId5", remoteId: "remoteId5"),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThan: null,
-    );
+  test(
+    'createQuery newerThan',
+    () async {
+      var query = conversationRepository.createQuery(
+        newerThan: await createTestConversation(
+            seed: "remoteId5", remoteId: "remoteId5"),
+        limit: null,
+        offset: null,
+        orderingTermData: ConversationChatOrderingTermData(
+          orderByType: ConversationPleromaChatOrderByType.updatedAt,
+          orderingMode: OrderingMode.desc,
+        ),
+        olderThan: null,
+      );
 
-    await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId4"));
+      await insertDbConversation(
+          conversationRepository,
+          (await createTestDbConversation(seed: "seed2"))
+              .copyWith(remoteId: "remoteId4"));
 
-    expect((await query.get()).length, 0);
+      expect((await query.get()).length, 0);
 
-    await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed2"))
-            .copyWith(remoteId: "remoteId5"));
+      await insertDbConversation(
+          conversationRepository,
+          (await createTestDbConversation(seed: "seed2"))
+              .copyWith(remoteId: "remoteId5"));
 
-    expect((await query.get()).length, 0);
+      expect((await query.get()).length, 0);
 
-    await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId6"));
+      await insertDbConversation(
+          conversationRepository,
+          (await createTestDbConversation(seed: "seed1"))
+              .copyWith(remoteId: "remoteId6"));
 
-    expect((await query.get()).length, 1);
-    await insertDbConversation(
-        conversationRepository,
-        (await createTestDbConversation(seed: "seed1"))
-            .copyWith(remoteId: "remoteId7"));
+      expect((await query.get()).length, 1);
+      await insertDbConversation(
+          conversationRepository,
+          (await createTestDbConversation(seed: "seed1"))
+              .copyWith(remoteId: "remoteId7"));
 
-    expect((await query.get()).length, 2);
-  });
+      expect((await query.get()).length, 2);
+    },
+  );
 
   test('createQuery notNewerThan', () async {
     var query = conversationRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestConversation(
-            seed: "remoteId5", remoteId: "remoteId5"));
+      newerThan: null,
+      limit: null,
+      offset: null,
+      orderingTermData: ConversationChatOrderingTermData(
+        orderByType: ConversationPleromaChatOrderByType.updatedAt,
+        orderingMode: OrderingMode.desc,
+      ),
+      olderThan: await createTestConversation(
+          seed: "remoteId5", remoteId: "remoteId5"),
+    );
 
     await insertDbConversation(
         conversationRepository,
@@ -375,13 +385,17 @@ void main() {
 
   test('createQuery notNewerThan & newerThan', () async {
     var query = conversationRepository.createQuery(
-        newerThan: await createTestConversation(
-            seed: "remoteId2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestConversation(
-            seed: "remoteId5", remoteId: "remoteId5"));
+      newerThan: await createTestConversation(
+          seed: "remoteId2", remoteId: "remoteId2"),
+      limit: null,
+      offset: null,
+      orderingTermData: ConversationChatOrderingTermData(
+        orderByType: ConversationPleromaChatOrderByType.updatedAt,
+        orderingMode: OrderingMode.desc,
+      ),
+      olderThan: await createTestConversation(
+          seed: "remoteId5", remoteId: "remoteId5"),
+    );
 
     await insertDbConversation(
         conversationRepository,

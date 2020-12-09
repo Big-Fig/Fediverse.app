@@ -1,4 +1,6 @@
+import 'package:fedi/app/media/picker/single_media_picker_bloc.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/media/device/file/media_device_file_bloc.dart';
@@ -7,24 +9,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MediaPickerFileGridItemWidget extends StatelessWidget {
-  final MediaDeviceFileCallback onFileSelectedCallback;
-  final Widget loadingWidget;
-
-  MediaPickerFileGridItemWidget({
-    @required this.onFileSelectedCallback,
-    @required this.loadingWidget,
-  });
+  const MediaPickerFileGridItemWidget();
 
   @override
   Widget build(BuildContext context) {
     var fileBloc = IMediaDeviceFileBloc.of(context);
 
-    return AsyncInitLoadingWidget(
-      loadingFinishedBuilder: (context) => _MediaPickerFileGridItemBodyWidget(
-          onFileSelectedCallback: onFileSelectedCallback,
-          loadingWidget: loadingWidget),
-      asyncInitLoadingBloc: fileBloc,
-      loadingWidget: loadingWidget,
+    var singleMediaPickerBloc = ISingleMediaPickerBloc.of(context);
+
+    return Container(
+      color: IFediUiColorTheme.of(context).darkGrey,
+      child: AsyncInitLoadingWidget(
+        loadingFinishedBuilder: (context) => _MediaPickerFileGridItemBodyWidget(
+          onFileSelectedCallback: singleMediaPickerBloc.onFileSelectedCallback,
+          loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
+        ),
+        asyncInitLoadingBloc: fileBloc,
+        loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
+      ),
     );
   }
 }
@@ -47,14 +49,7 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
         onFileSelectedCallback(
             context, await mediaDeviceFileBloc.retrieveFile());
       },
-      child: Stack(
-        children: <Widget>[
-          _MediaPickerFileGridItemPreviewWidget(
-            loadingWidget: loadingWidget,
-          ),
-          const _MediaPickerFileGridItemIconWidget(),
-        ],
-      ),
+      child: const _MediaPickerFileGridItemPreviewWidget(),
     );
   }
 }
@@ -82,10 +77,7 @@ class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
 class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
   const _MediaPickerFileGridItemPreviewWidget({
     Key key,
-    @required this.loadingWidget,
   }) : super(key: key);
-
-  final Widget loadingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +86,34 @@ class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
     var thumbImageData = mediaDeviceFileBloc.thumbImageData;
 
     if (thumbImageData == null) {
-      return Center(child: loadingWidget);
+      return const _MediaPickerFileGridItemLoadingWidget();
     }
 
-    return Image.memory(
-      thumbImageData,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: double.infinity,
+    return Stack(
+      children: [
+        Image.memory(
+          thumbImageData,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+        const _MediaPickerFileGridItemIconWidget(),
+      ],
+    );
+  }
+}
+
+class _MediaPickerFileGridItemLoadingWidget extends StatelessWidget {
+  const _MediaPickerFileGridItemLoadingWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+      ),
     );
   }
 }

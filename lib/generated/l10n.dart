@@ -35,6 +35,56 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `English`
+  String get localization_locale_en {
+    return Intl.message(
+      'English',
+      name: 'localization_locale_en',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Русский`
+  String get localization_locale_ru {
+    return Intl.message(
+      'Русский',
+      name: 'localization_locale_ru',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get localization_locale_system {
+    return Intl.message(
+      'System',
+      name: 'localization_locale_system',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get app_localization_dialog_title {
+    return Intl.message(
+      'Language',
+      name: 'app_localization_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get app_localization_form_field_label {
+    return Intl.message(
+      'Language',
+      name: 'app_localization_form_field_label',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Failed to start app.\nTry restart or re-install app.`
   String get app_init_fail {
     return Intl.message(
@@ -85,30 +135,10 @@ class S {
     );
   }
 
-  /// `Accounts in list`
-  String get app_customList_type_accounts_label {
-    return Intl.message(
-      'Accounts in list',
-      name: 'app_customList_type_accounts_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add account from followings`
-  String get app_customList_type_accounts_action_add {
-    return Intl.message(
-      'Add account from followings',
-      name: 'app_customList_type_accounts_action_add',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create list`
+  /// `Create a list`
   String get app_customList_create_title {
     return Intl.message(
-      'Create list',
+      'Create a list',
       name: 'app_customList_create_title',
       desc: '',
       args: [],
@@ -125,21 +155,11 @@ class S {
     );
   }
 
-  /// `List {listTitle}`
-  String app_customList_title(Object listTitle) {
-    return Intl.message(
-      'List $listTitle',
-      name: 'app_customList_title',
-      desc: '',
-      args: [listTitle],
-    );
-  }
-
   /// `Lists`
-  String get app_customList_list_title {
+  String get app_acccount_my_customList_list_title {
     return Intl.message(
       'Lists',
-      name: 'app_customList_list_title',
+      name: 'app_acccount_my_customList_list_title',
       desc: '',
       args: [],
     );
@@ -155,10 +175,10 @@ class S {
     );
   }
 
-  /// `List name`
+  /// `Give your list a title`
   String get app_customList_form_field_title_hint {
     return Intl.message(
-      'List name',
+      'Give your list a title',
       name: 'app_customList_form_field_title_hint',
       desc: '',
       args: [],
@@ -728,181 +748,151 @@ class S {
     );
   }
 
-  /// `Settings`
-  String get app_account_my_settings_title {
+  /// `Account`
+  String get app_account_home_tab_menu_action_account {
     return Intl.message(
-      'Settings',
-      name: 'app_account_my_settings_title',
+      'Account',
+      name: 'app_account_home_tab_menu_action_account',
       desc: '',
       args: [],
     );
   }
 
-  /// `WebSockets real-time updates`
-  String get app_account_my_settings_field_websocketsEnabled_label {
+  /// `Settings: global`
+  String get app_account_home_tab_menu_action_global_settings {
     return Intl.message(
-      'WebSockets real-time updates',
-      name: 'app_account_my_settings_field_websocketsEnabled_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Disable to reduce battery usage`
-  String get app_account_my_settings_field_websocketsEnabled_description {
-    return Intl.message(
-      'Disable to reduce battery usage',
-      name: 'app_account_my_settings_field_websocketsEnabled_description',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show spoilers by default`
-  String get app_account_my_settings_field_alwaysShowSpoiler_label {
-    return Intl.message(
-      'Show spoilers by default',
-      name: 'app_account_my_settings_field_alwaysShowSpoiler_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show NSFW by default`
-  String get app_account_my_settings_field_alwaysShowNsfw_label {
-    return Intl.message(
-      'Show NSFW by default',
-      name: 'app_account_my_settings_field_alwaysShowNsfw_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Default visibility`
-  String get app_account_my_settings_field_defaultVisibility_label {
-    return Intl.message(
-      'Default visibility',
-      name: 'app_account_my_settings_field_defaultVisibility_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mark media as NSFW on uploading`
-  String get app_account_my_settings_field_mediaNsfwByDefault_label {
-    return Intl.message(
-      'Mark media as NSFW on uploading',
-      name: 'app_account_my_settings_field_mediaNsfwByDefault_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio/Video auto-init`
-  String get app_account_my_settings_field_mediaAutoInit_label {
-    return Intl.message(
-      'Audio/Video auto-init',
-      name: 'app_account_my_settings_field_mediaAutoInit_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio/Video auto-play`
-  String get app_account_my_settings_field_mediaAutoPlay_label {
-    return Intl.message(
-      'Audio/Video auto-play',
-      name: 'app_account_my_settings_field_mediaAutoPlay_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Scheduled posts`
-  String get app_account_my_settings_action_scheduledPosts {
-    return Intl.message(
-      'Scheduled posts',
-      name: 'app_account_my_settings_action_scheduledPosts',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Draft posts`
-  String get app_account_my_settings_action_draftPosts {
-    return Intl.message(
-      'Draft posts',
-      name: 'app_account_my_settings_action_draftPosts',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Lists`
-  String get app_account_my_settings_action_lists {
-    return Intl.message(
-      'Lists',
-      name: 'app_account_my_settings_action_lists',
+      'Settings: global',
+      name: 'app_account_home_tab_menu_action_global_settings',
       desc: '',
       args: [],
     );
   }
 
   /// `Bookmarks`
-  String get app_account_my_settings_action_bookmarked {
+  String get app_account_home_tab_menu_action_bookmarks {
     return Intl.message(
       'Bookmarks',
-      name: 'app_account_my_settings_action_bookmarked',
+      name: 'app_account_home_tab_menu_action_bookmarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lists`
+  String get app_account_home_tab_menu_action_lists {
+    return Intl.message(
+      'Lists',
+      name: 'app_account_home_tab_menu_action_lists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get app_account_my_menu_account_subpage_title {
+    return Intl.message(
+      'Account',
+      name: 'app_account_my_menu_account_subpage_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings: global`
+  String get app_settings_global_title {
+    return Intl.message(
+      'Settings: global',
+      name: 'app_settings_global_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scheduled posts`
+  String get app_account_my_action_scheduledPosts {
+    return Intl.message(
+      'Scheduled posts',
+      name: 'app_account_my_action_scheduledPosts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Draft posts`
+  String get app_account_my_action_draftPosts {
+    return Intl.message(
+      'Draft posts',
+      name: 'app_account_my_action_draftPosts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lists`
+  String get app_account_my_action_lists {
+    return Intl.message(
+      'Lists',
+      name: 'app_account_my_action_lists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmarks`
+  String get app_account_my_action_bookmarked {
+    return Intl.message(
+      'Bookmarks',
+      name: 'app_account_my_action_bookmarked',
       desc: '',
       args: [],
     );
   }
 
   /// `Favourites`
-  String get app_account_my_settings_action_favourited {
+  String get app_account_my_action_favourited {
     return Intl.message(
       'Favourites',
-      name: 'app_account_my_settings_action_favourited',
+      name: 'app_account_my_action_favourited',
       desc: '',
       args: [],
     );
   }
 
   /// `Follow requests`
-  String get app_account_my_settings_action_followRequests {
+  String get app_account_my_action_followRequests {
     return Intl.message(
       'Follow requests',
-      name: 'app_account_my_settings_action_followRequests',
+      name: 'app_account_my_action_followRequests',
       desc: '',
       args: [],
     );
   }
 
   /// `Account blocks`
-  String get app_account_my_settings_action_accountBlocks {
+  String get app_account_my_action_accountBlocks {
     return Intl.message(
       'Account blocks',
-      name: 'app_account_my_settings_action_accountBlocks',
+      name: 'app_account_my_action_accountBlocks',
       desc: '',
       args: [],
     );
   }
 
   /// `Account mutes`
-  String get app_account_my_settings_action_accountMutes {
+  String get app_account_my_action_accountMutes {
     return Intl.message(
       'Account mutes',
-      name: 'app_account_my_settings_action_accountMutes',
+      name: 'app_account_my_action_accountMutes',
       desc: '',
       args: [],
     );
   }
 
   /// `Domain blocks`
-  String get app_account_my_settings_action_domainBlocks {
+  String get app_account_my_action_domainBlocks {
     return Intl.message(
       'Domain blocks',
-      name: 'app_account_my_settings_action_domainBlocks',
+      name: 'app_account_my_action_domainBlocks',
       desc: '',
       args: [],
     );
@@ -1488,10 +1478,10 @@ class S {
     );
   }
 
-  /// `You can once moderators will approve your account`
+  /// `You can login once moderators will approve your account`
   String get app_auth_instance_register_approvalRequired_notification_content {
     return Intl.message(
-      'You can once moderators will approve your account',
+      'You can login once moderators will approve your account',
       name: 'app_auth_instance_register_approvalRequired_notification_content',
       desc: '',
       args: [],
@@ -1508,10 +1498,10 @@ class S {
     );
   }
 
-  /// `e.g. lain`
+  /// `lain`
   String get app_auth_instance_register_field_username_hint {
     return Intl.message(
-      'e.g. lain',
+      'lain',
       name: 'app_auth_instance_register_field_username_hint',
       desc: '',
       args: [],
@@ -1640,16 +1630,6 @@ class S {
     );
   }
 
-  /// `More`
-  String get app_chat_action_more {
-    return Intl.message(
-      'More',
-      name: 'app_chat_action_more',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `You: {message}`
   String app_chat_preview_you(Object message) {
     return Intl.message(
@@ -1732,36 +1712,6 @@ class S {
     );
   }
 
-  /// `All`
-  String get app_home_tab_timelines_tab_public {
-    return Intl.message(
-      'All',
-      name: 'app_home_tab_timelines_tab_public',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Home`
-  String get app_home_tab_timelines_tab_home {
-    return Intl.message(
-      'Home',
-      name: 'app_home_tab_timelines_tab_home',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Local`
-  String get app_home_tab_timelines_tab_local {
-    return Intl.message(
-      'Local',
-      name: 'app_home_tab_timelines_tab_local',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Conversations`
   String get app_home_tab_chat_conversation_title {
     return Intl.message(
@@ -1802,10 +1752,10 @@ class S {
     );
   }
 
-  /// `This instance don't support chats yet`
+  /// `This instance don't support chats`
   String get app_home_tab_chat_pleroma_notSupported_pleroma {
     return Intl.message(
-      'This instance don\'t support chats yet',
+      'This instance don\'t support chats',
       name: 'app_home_tab_chat_pleroma_notSupported_pleroma',
       desc: '',
       args: [],
@@ -1865,209 +1815,209 @@ class S {
   }
 
   /// `Push notifications`
-  String get app_notification_push_permission_ask_dialog_title {
+  String get app_push_permission_ask_dialog_title {
     return Intl.message(
       'Push notifications',
-      name: 'app_notification_push_permission_ask_dialog_title',
+      name: 'app_push_permission_ask_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server`
-  String get app_notification_push_permission_ask_dialog_content {
+  String get app_push_permission_ask_dialog_content {
     return Intl.message(
       'Do you want to enable push notifications?\nThey will be forwarded through Fedi push proxy server',
-      name: 'app_notification_push_permission_ask_dialog_content',
+      name: 'app_push_permission_ask_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Permission required`
-  String get app_notification_push_permission_declined_dialog_title {
+  String get app_push_permission_declined_dialog_title {
     return Intl.message(
       'Permission required',
-      name: 'app_notification_push_permission_declined_dialog_title',
+      name: 'app_push_permission_declined_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Please enable push notification in app settings to receive updates`
-  String get app_notification_push_permission_declined_dialog_content {
+  String get app_push_permission_declined_dialog_content {
     return Intl.message(
       'Please enable push notification in app settings to receive updates',
-      name: 'app_notification_push_permission_declined_dialog_content',
+      name: 'app_push_permission_declined_dialog_content',
       desc: '',
       args: [],
     );
   }
 
-  /// `Push notifications settings`
-  String get app_notification_push_settings_title {
+  /// `Push notifications`
+  String get app_push_settings_title {
     return Intl.message(
-      'Push notifications settings',
-      name: 'app_notification_push_settings_title',
+      'Push notifications',
+      name: 'app_push_settings_title',
       desc: '',
       args: [],
     );
   }
 
   /// `All messages will be forwarded through Fedi proxy server`
-  String get app_notification_push_settings_desc {
+  String get app_push_settings_desc {
     return Intl.message(
       'All messages will be forwarded through Fedi proxy server',
-      name: 'app_notification_push_settings_desc',
+      name: 'app_push_settings_desc',
       desc: '',
       args: [],
     );
   }
 
   /// `Favourites`
-  String get app_notification_push_settings_field_favourites_label {
+  String get app_push_settings_field_favourites_label {
     return Intl.message(
       'Favourites',
-      name: 'app_notification_push_settings_field_favourites_label',
+      name: 'app_push_settings_field_favourites_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Follows`
-  String get app_notification_push_settings_field_follows_label {
+  String get app_push_settings_field_follows_label {
     return Intl.message(
       'Follows',
-      name: 'app_notification_push_settings_field_follows_label',
+      name: 'app_push_settings_field_follows_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Mentions`
-  String get app_notification_push_settings_field_mentions_label {
+  String get app_push_settings_field_mentions_label {
     return Intl.message(
       'Mentions',
-      name: 'app_notification_push_settings_field_mentions_label',
+      name: 'app_push_settings_field_mentions_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Reblogs`
-  String get app_notification_push_settings_field_reblogs_label {
+  String get app_push_settings_field_reblogs_label {
     return Intl.message(
       'Reblogs',
-      name: 'app_notification_push_settings_field_reblogs_label',
+      name: 'app_push_settings_field_reblogs_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Voted Poll ended`
-  String get app_notification_push_settings_field_polls_label {
+  /// `Polls`
+  String get app_push_settings_field_polls_label {
     return Intl.message(
-      'Voted Poll ended',
-      name: 'app_notification_push_settings_field_polls_label',
+      'Polls',
+      name: 'app_push_settings_field_polls_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Chat`
-  String get app_notification_push_settings_field_chat_label {
+  /// `Chats`
+  String get app_push_settings_field_pleroma_chat_label {
     return Intl.message(
-      'Chat',
-      name: 'app_notification_push_settings_field_chat_label',
+      'Chats',
+      name: 'app_push_settings_field_pleroma_chat_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Followed you`
+  /// `Followed you.`
   String get app_notification_header_follow {
     return Intl.message(
-      'Followed you',
+      'Followed you.',
       name: 'app_notification_header_follow',
       desc: '',
       args: [],
     );
   }
 
-  /// `Liked: {status}`
-  String app_notification_header_favourite(Object status) {
+  /// `Liked your post.`
+  String get app_notification_header_favourite {
     return Intl.message(
-      'Liked: $status',
+      'Liked your post.',
       name: 'app_notification_header_favourite',
       desc: '',
-      args: [status],
+      args: [],
     );
   }
 
-  /// `<b>Mentioned you:</b> {status}`
+  /// `<b>Mentioned you:</b> {status}.`
   String app_notification_header_mention(Object status) {
     return Intl.message(
-      '<b>Mentioned you:</b> $status',
+      '<b>Mentioned you:</b> $status.',
       name: 'app_notification_header_mention',
       desc: '',
       args: [status],
     );
   }
 
-  /// `Reblogged: {status}`
-  String app_notification_header_reblog(Object status) {
+  /// `Shared your post.`
+  String get app_notification_header_reblog {
     return Intl.message(
-      'Reblogged: $status',
+      'Shared your post.',
       name: 'app_notification_header_reblog',
       desc: '',
-      args: [status],
+      args: [],
     );
   }
 
-  /// `Voted poll ended`
+  /// `Voted poll ended.`
   String get app_notification_header_poll {
     return Intl.message(
-      'Voted poll ended',
+      'Voted poll ended.',
       name: 'app_notification_header_poll',
       desc: '',
       args: [],
     );
   }
 
-  /// `Move`
+  /// `Moved.`
   String get app_notification_header_move {
     return Intl.message(
-      'Move',
+      'Moved.',
       name: 'app_notification_header_move',
       desc: '',
       args: [],
     );
   }
 
-  /// `Follow request`
+  /// `Follow request.`
   String get app_notification_header_followRequest {
     return Intl.message(
-      'Follow request',
+      'Follow request.',
       name: 'app_notification_header_followRequest',
       desc: '',
       args: [],
     );
   }
 
-  /// `{emoji} for: "{status}`
-  String app_notification_header_pleromaEmojiReaction(Object status, Object emoji) {
+  /// `{emoji} for your post.`
+  String app_notification_header_pleromaEmojiReaction(Object emoji) {
     return Intl.message(
-      '$emoji for: "$status',
+      '$emoji for your post.',
       name: 'app_notification_header_pleromaEmojiReaction',
       desc: '',
-      args: [status, emoji],
+      args: [emoji],
     );
   }
 
-  /// `Chat mention in "{status}"`
+  /// `<b>Chat:</b> {status}.`
   String app_notification_header_pleromaChatMention(Object status) {
     return Intl.message(
-      'Chat mention in "$status"',
+      '<b>Chat:</b> $status.',
       name: 'app_notification_header_pleromaChatMention',
       desc: '',
       args: [status],
@@ -2164,6 +2114,26 @@ class S {
     );
   }
 
+  /// `All`
+  String get app_timeline_type_public_all {
+    return Intl.message(
+      'All',
+      name: 'app_timeline_type_public_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Local`
+  String get app_timeline_type_public_local {
+    return Intl.message(
+      'Local',
+      name: 'app_timeline_type_public_local',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `List`
   String get app_timeline_type_customList {
     return Intl.message(
@@ -2239,6 +2209,36 @@ class S {
     return Intl.message(
       'Nothing found',
       name: 'app_timeline_storage_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_timeline_storage_appBar_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_timeline_storage_appBar_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get app_timeline_storage_appBar_action_done {
+    return Intl.message(
+      'Done',
+      name: 'app_timeline_storage_appBar_action_done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Timelines..`
+  String get app_timeline_storage_action_add {
+    return Intl.message(
+      'Add Timelines..',
+      name: 'app_timeline_storage_action_add',
       desc: '',
       args: [],
     );
@@ -2415,10 +2415,10 @@ class S {
   }
 
   /// `Not supported on this instance`
-  String get app_timeline_settings_field_notSupported_desc {
+  String get app_settings_warning_notSupportedOnThisInstance_desc {
     return Intl.message(
       'Not supported on this instance',
-      name: 'app_timeline_settings_field_notSupported_desc',
+      name: 'app_settings_warning_notSupportedOnThisInstance_desc',
       desc: '',
       args: [],
     );
@@ -2805,10 +2805,10 @@ class S {
   }
 
   /// `Drafts`
-  String get app_status_draft_title {
+  String get app_account_my_statuses_draft_title {
     return Intl.message(
       'Drafts',
-      name: 'app_status_draft_title',
+      name: 'app_account_my_statuses_draft_title',
       desc: '',
       args: [],
     );
@@ -2897,10 +2897,10 @@ class S {
   }
 
   /// `Queue`
-  String get app_status_scheduled_title {
+  String get app_account_my_statuses_scheduled_title {
     return Intl.message(
       'Queue',
-      name: 'app_status_scheduled_title',
+      name: 'app_account_my_statuses_scheduled_title',
       desc: '',
       args: [],
     );
@@ -2971,16 +2971,6 @@ class S {
     return Intl.message(
       'Delete',
       name: 'app_status_action_delete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Comment`
-  String get app_status_action_comment {
-    return Intl.message(
-      'Comment',
-      name: 'app_status_action_comment',
       desc: '',
       args: [],
     );
@@ -3196,16 +3186,6 @@ class S {
     );
   }
 
-  /// `Poll length`
-  String get app_status_post_poll_field_length_picker_title {
-    return Intl.message(
-      'Poll length',
-      name: 'app_status_post_poll_field_length_picker_title',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Invalid time`
   String get app_status_post_schedule_error_notInFuture_dialog_title {
     return Intl.message(
@@ -3406,30 +3386,30 @@ class S {
     );
   }
 
-  /// `You have unsaved changes`
+  /// `Save this post as draft?`
   String get app_status_post_new_unsaved_dialog_title {
     return Intl.message(
-      'You have unsaved changes',
+      'Save this post as draft?',
       name: 'app_status_post_new_unsaved_dialog_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Save as draft`
+  /// `Save Draft`
   String get app_status_post_new_unsaved_dialog_action_saveAsDraft {
     return Intl.message(
-      'Save as draft',
+      'Save Draft',
       name: 'app_status_post_new_unsaved_dialog_action_saveAsDraft',
       desc: '',
       args: [],
     );
   }
 
-  /// `Discard`
+  /// `Discard Post`
   String get app_status_post_new_unsaved_dialog_action_discard {
     return Intl.message(
-      'Discard',
+      'Discard Post',
       name: 'app_status_post_new_unsaved_dialog_action_discard',
       desc: '',
       args: [],
@@ -3456,20 +3436,20 @@ class S {
     );
   }
 
-  /// `Loading original status`
+  /// `Loading first status`
   String get app_status_reply_loading_progress {
     return Intl.message(
-      'Loading original status',
+      'Loading first status',
       name: 'app_status_reply_loading_progress',
       desc: '',
       args: [],
     );
   }
 
-  /// `Failed to load original status`
+  /// `Failed to load first status`
   String get app_status_reply_loading_failed {
     return Intl.message(
-      'Failed to load original status',
+      'Failed to load first status',
       name: 'app_status_reply_loading_failed',
       desc: '',
       args: [],
@@ -3586,10 +3566,10 @@ class S {
     );
   }
 
-  /// `An error has occurred. Please retry your action again. \n{errorMessage}`
+  /// `An error has occurred. \n{errorMessage}`
   String dialog_error_content(Object errorMessage) {
     return Intl.message(
-      'An error has occurred. Please retry your action again. \n$errorMessage',
+      'An error has occurred. \n$errorMessage',
       name: 'dialog_error_content',
       desc: '',
       args: [errorMessage],
@@ -3813,22 +3793,22 @@ class S {
   }
 
   /// `now`
-  String timeago_lessThanOneMinute(Object seconds) {
+  String get timeago_lessThanOneMinute {
     return Intl.message(
       'now',
       name: 'timeago_lessThanOneMinute',
       desc: '',
-      args: [seconds],
+      args: [],
     );
   }
 
   /// `1 min`
-  String timeago_aboutAMinute(Object seconds) {
+  String get timeago_aboutAMinute {
     return Intl.message(
       '1 min',
       name: 'timeago_aboutAMinute',
       desc: '',
-      args: [seconds],
+      args: [],
     );
   }
 
@@ -3845,12 +3825,12 @@ class S {
   }
 
   /// `~1 h`
-  String timeago_aboutAnHour(Object minutes) {
+  String get timeago_aboutAnHour {
     return Intl.message(
       '~1 h',
       name: 'timeago_aboutAnHour',
       desc: '',
-      args: [minutes],
+      args: [],
     );
   }
 
@@ -3867,12 +3847,12 @@ class S {
   }
 
   /// `~1 d`
-  String timeago_aDay(Object hours) {
+  String get timeago_aDay {
     return Intl.message(
       '~1 d',
       name: 'timeago_aDay',
       desc: '',
-      args: [hours],
+      args: [],
     );
   }
 
@@ -3889,12 +3869,12 @@ class S {
   }
 
   /// `~1 mo`
-  String timeago_aboutAMonth(Object days) {
+  String get timeago_aboutAMonth {
     return Intl.message(
       '~1 mo',
       name: 'timeago_aboutAMonth',
       desc: '',
-      args: [days],
+      args: [],
     );
   }
 
@@ -3911,12 +3891,12 @@ class S {
   }
 
   /// `~1 y`
-  String timeago_aboutAYear(Object year) {
+  String get timeago_aboutAYear {
     return Intl.message(
       '~1 y',
       name: 'timeago_aboutAYear',
       desc: '',
-      args: [year],
+      args: [],
     );
   }
 
@@ -3941,6 +3921,856 @@ class S {
       args: [],
     );
   }
+
+  /// `Fedi for Pleroma and Mastodon`
+  String get app_googlePlay_appName {
+    return Intl.message(
+      'Fedi for Pleroma and Mastodon',
+      name: 'app_googlePlay_appName',
+      desc: 'GooglePlay title',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_googlePlay_shortDescription {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_googlePlay_shortDescription',
+      desc: 'GooglePlay short description',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_googlePlay_fullDescription {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_googlePlay_fullDescription',
+      desc: 'GooglePlay full description',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_appStore_promotionalText {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_appStore_promotionalText',
+      desc: 'AppStore short description',
+      args: [],
+    );
+  }
+
+  /// `A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.`
+  String get app_appStore_description {
+    return Intl.message(
+      'A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.  You can connect any Pleroma or Mastodon instance or create account on fedi.app.',
+      name: 'app_appStore_description',
+      desc: 'AppStore full description',
+      args: [],
+    );
+  }
+
+  /// `Fedi for Pleroma and Mastodon`
+  String get app_appStore_title {
+    return Intl.message(
+      'Fedi for Pleroma and Mastodon',
+      name: 'app_appStore_title',
+      desc: 'AppStore title',
+      args: [],
+    );
+  }
+
+  /// `A client for Pleroma and Mastodon social network instances`
+  String get app_appStore_subtitle {
+    return Intl.message(
+      'A client for Pleroma and Mastodon social network instances',
+      name: 'app_appStore_subtitle',
+      desc: 'AppStore subtitle',
+      args: [],
+    );
+  }
+
+  /// `Settings: {userAtHost}`
+  String app_account_home_tab_menu_action_instance_settings(Object userAtHost) {
+    return Intl.message(
+      'Settings: $userAtHost',
+      name: 'app_account_home_tab_menu_action_instance_settings',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Настройки: {userAtHost}`
+  String app_settings_instance_title(Object userAtHost) {
+    return Intl.message(
+      'Настройки: $userAtHost',
+      name: 'app_settings_instance_title',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Localization`
+  String get app_localization_settings_title {
+    return Intl.message(
+      'Localization',
+      name: 'app_localization_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UI`
+  String get app_ui_settings_title {
+    return Intl.message(
+      'UI',
+      name: 'app_ui_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Posting`
+  String get app_status_post_settings_title {
+    return Intl.message(
+      'Posting',
+      name: 'app_status_post_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NSFW & Spoilers`
+  String get app_status_sensitive_settings_title {
+    return Intl.message(
+      'NSFW & Spoilers',
+      name: 'app_status_sensitive_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In-app notifications`
+  String get app_toast_settings_title {
+    return Intl.message(
+      'In-app notifications',
+      name: 'app_toast_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get app_chat_settings_title {
+    return Intl.message(
+      'Chat',
+      name: 'app_chat_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data update (WebSockets)`
+  String get app_web_sockets_settings_title {
+    return Intl.message(
+      'Data update (WebSockets)',
+      name: 'app_web_sockets_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Global settings`
+  String get app_settings_global_or_instance_use_global_label {
+    return Intl.message(
+      'Global settings',
+      name: 'app_settings_global_or_instance_use_global_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get app_localization_settings_field_localizationLocale_label {
+    return Intl.message(
+      'Language',
+      name: 'app_localization_settings_field_localizationLocale_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark media as NSFW`
+  String get app_status_post_settings_field_markMediaAsNsfwOnAttach_label {
+    return Intl.message(
+      'Mark media as NSFW',
+      name: 'app_status_post_settings_field_markMediaAsNsfwOnAttach_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Default visibility`
+  String get app_status_post_settings_field_defaultVisibility_label {
+    return Intl.message(
+      'Default visibility',
+      name: 'app_status_post_settings_field_defaultVisibility_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always show spoilers`
+  String get app_status_sensitive_settings_field_isAlwaysShowSpoiler_label {
+    return Intl.message(
+      'Always show spoilers',
+      name: 'app_status_sensitive_settings_field_isAlwaysShowSpoiler_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always show NSFW`
+  String get app_status_sensitive_settings_field_isAlwaysShowNsfw_label {
+    return Intl.message(
+      'Always show NSFW',
+      name: 'app_status_sensitive_settings_field_isAlwaysShowNsfw_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remember "Tap to view"`
+  String get app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label {
+    return Intl.message(
+      'Remember "Tap to view"',
+      name: 'app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count conversations in unread badges`
+  String get app_chat_settings_field_countConversationsInChatsUnreadBadges_label {
+    return Intl.message(
+      'Count conversations in unread badges',
+      name: 'app_chat_settings_field_countConversationsInChatsUnreadBadges_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Replace "Conversations" with "Chats"`
+  String get app_chat_settings_field_replaceConversationsWithPleromaChats_label {
+    return Intl.message(
+      'Replace "Conversations" with "Chats"',
+      name: 'app_chat_settings_field_replaceConversationsWithPleromaChats_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real-time updates`
+  String get app_web_sockets_settings_field_type_label {
+    return Intl.message(
+      'Real-time updates',
+      name: 'app_web_sockets_settings_field_type_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable to reduce battery usage`
+  String get app_web_sockets_settings_field_type_description {
+    return Intl.message(
+      'Disable to reduce battery usage',
+      name: 'app_web_sockets_settings_field_type_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WebSockets updates`
+  String get app_timeline_settings_field_enableWebSockets_label {
+    return Intl.message(
+      'WebSockets updates',
+      name: 'app_timeline_settings_field_enableWebSockets_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable to reduce battery usage`
+  String get app_timeline_settings_field_enableWebSockets_description {
+    return Intl.message(
+      'Disable to reduce battery usage',
+      name: 'app_timeline_settings_field_enableWebSockets_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Media`
+  String get app_media_settings_title {
+    return Intl.message(
+      'Media',
+      name: 'app_media_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto-load`
+  String get app_media_settings_field_autoInit_label {
+    return Intl.message(
+      'Auto-load',
+      name: 'app_media_settings_field_autoInit_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto-play`
+  String get app_media_settings_field_autoPlay_label {
+    return Intl.message(
+      'Auto-play',
+      name: 'app_media_settings_field_autoPlay_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disabled`
+  String get app_web_sockets_settings_type_disabled {
+    return Intl.message(
+      'Disabled',
+      name: 'app_web_sockets_settings_type_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only for current screen`
+  String get app_web_sockets_settings_type_onlyForeground {
+    return Intl.message(
+      'Only for current screen',
+      name: 'app_web_sockets_settings_type_onlyForeground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current screen & in background`
+  String get app_web_sockets_settings_type_foregroundAndBackground {
+    return Intl.message(
+      'Current screen & in background',
+      name: 'app_web_sockets_settings_type_foregroundAndBackground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Emoji reactions`
+  String get app_push_settings_field_pleroma_emojiReaction_label {
+    return Intl.message(
+      'Emoji reactions',
+      name: 'app_push_settings_field_pleroma_emojiReaction_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to change subscription settings`
+  String get app_push_settings_update_fail_dialog_title {
+    return Intl.message(
+      'Failed to change subscription settings',
+      name: 'app_push_settings_update_fail_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit profile`
+  String get app_account_my_action_edit {
+    return Intl.message(
+      'Edit profile',
+      name: 'app_account_my_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always`
+  String get app_toast_handling_type_always {
+    return Intl.message(
+      'Always',
+      name: 'app_toast_handling_type_always',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When instance not selected`
+  String get app_toast_handling_type_onlyWhenInstanceNotSelected {
+    return Intl.message(
+      'When instance not selected',
+      name: 'app_toast_handling_type_onlyWhenInstanceNotSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When instance selected`
+  String get app_toast_handling_type_onlyWhenInstanceSelected {
+    return Intl.message(
+      'When instance selected',
+      name: 'app_toast_handling_type_onlyWhenInstanceSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When`
+  String get app_toast_settings_field_handling_type_label {
+    return Intl.message(
+      'When',
+      name: 'app_toast_settings_field_handling_type_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disabled in account settings`
+  String get app_timeline_settings_field_enableWebSockets_description_instance_disabled {
+    return Intl.message(
+      'Disabled in account settings',
+      name: 'app_timeline_settings_field_enableWebSockets_description_instance_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you discard now, you’ll lose this post.`
+  String get app_status_post_new_unsaved_dialog_content {
+    return Intl.message(
+      'If you discard now, you’ll lose this post.',
+      name: 'app_status_post_new_unsaved_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep editing`
+  String get app_status_post_new_unsaved_dialog_action_keep_editing {
+    return Intl.message(
+      'Keep editing',
+      name: 'app_status_post_new_unsaved_dialog_action_keep_editing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t bookmarked any posts yet.`
+  String get app_account_my_statuses_bookmarked_empty_title {
+    return Intl.message(
+      'You haven’t bookmarked any posts yet.',
+      name: 'app_account_my_statuses_bookmarked_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_bookmarked_empty_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_bookmarked_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have any pending requests.`
+  String get app_account_my_followRequest_empty_title {
+    return Intl.message(
+      'You don’t have any pending requests.',
+      name: 'app_account_my_followRequest_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get app_account_my_followRequest_action_add {
+    return Intl.message(
+      'Add',
+      name: 'app_account_my_followRequest_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ignore`
+  String get app_account_my_followRequest_action_ignore {
+    return Intl.message(
+      'Ignore',
+      name: 'app_account_my_followRequest_action_ignore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can't follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.`
+  String get app_account_my_accountBlock_description {
+    return Intl.message(
+      'Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can\'t follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.',
+      name: 'app_account_my_accountBlock_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to blocked list`
+  String get app_account_my_accountBlock_action_add {
+    return Intl.message(
+      'Add to blocked list',
+      name: 'app_account_my_accountBlock_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get app_account_my_accountBlock_action_block {
+    return Intl.message(
+      'Block',
+      name: 'app_account_my_accountBlock_action_block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unblock`
+  String get app_account_my_accountBlock_action_unblock {
+    return Intl.message(
+      'Unblock',
+      name: 'app_account_my_accountBlock_action_unblock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to muted list`
+  String get app_account_my_accountMute_action_add {
+    return Intl.message(
+      'Add to muted list',
+      name: 'app_account_my_accountMute_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
+  String get app_account_my_accountMute_description {
+    return Intl.message(
+      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
+      name: 'app_account_my_accountMute_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get app_account_my_accountMute_action_mute {
+    return Intl.message(
+      'Mute',
+      name: 'app_account_my_accountMute_action_mute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unmute`
+  String get app_account_my_accountMute_action_unmute {
+    return Intl.message(
+      'Unmute',
+      name: 'app_account_my_accountMute_action_unmute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t liked any posts yet.`
+  String get app_account_my_statuses_favourited_empty_title {
+    return Intl.message(
+      'You haven’t liked any posts yet.',
+      name: 'app_account_my_statuses_favourited_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_favourited_empty_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_favourited_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t scheduled any posts yet.`
+  String get app_account_my_statuses_scheduled_empty_title {
+    return Intl.message(
+      'You haven’t scheduled any posts yet.',
+      name: 'app_account_my_statuses_scheduled_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_scheduled_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_scheduled_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t drafted any posts yet.`
+  String get app_account_my_statuses_draft_empty_title {
+    return Intl.message(
+      'You haven’t drafted any posts yet.',
+      name: 'app_account_my_statuses_draft_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you do, they will show up here.`
+  String get app_account_my_statuses_draft_subtitle {
+    return Intl.message(
+      'When you do, they will show up here.',
+      name: 'app_account_my_statuses_draft_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get app_account_my_domainBlock_action_block {
+    return Intl.message(
+      'Block',
+      name: 'app_account_my_domainBlock_action_block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unblock`
+  String get app_account_my_domainBlock_action_unblock {
+    return Intl.message(
+      'Unblock',
+      name: 'app_account_my_domainBlock_action_unblock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.`
+  String get app_account_my_domainBlock_description {
+    return Intl.message(
+      'You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.',
+      name: 'app_account_my_domainBlock_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to blocked list`
+  String get app_account_my_domainBlock_action_add {
+    return Intl.message(
+      'Add to blocked list',
+      name: 'app_account_my_domainBlock_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t created any Lists yet.`
+  String get app_acccount_my_customList_list_empty_title {
+    return Intl.message(
+      'You haven’t created any Lists yet.',
+      name: 'app_acccount_my_customList_list_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create one now.`
+  String get app_acccount_my_customList_list_empty_subtitle {
+    return Intl.message(
+      'Create one now.',
+      name: 'app_acccount_my_customList_list_empty_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a list`
+  String get app_acccount_my_customList_list_action_add {
+    return Intl.message(
+      'Create a list',
+      name: 'app_acccount_my_customList_list_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit list`
+  String get app_acccount_my_customList_list_action_edit {
+    return Intl.message(
+      'Edit list',
+      name: 'app_acccount_my_customList_list_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to your List`
+  String get app_acccount_my_customList_edit_search_header {
+    return Intl.message(
+      'Add to your List',
+      name: 'app_acccount_my_customList_edit_search_header',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get app_acccount_my_customList_edit_account_action_add {
+    return Intl.message(
+      'Add',
+      name: 'app_acccount_my_customList_edit_account_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get app_acccount_my_customList_edit_account_action_remove {
+    return Intl.message(
+      'Remove',
+      name: 'app_acccount_my_customList_edit_account_action_remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for people you follow`
+  String get app_acccount_my_customList_edit_search_hint {
+    return Intl.message(
+      'Search for people you follow',
+      name: 'app_acccount_my_customList_edit_search_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suggestion`
+  String get app_acccount_my_customList_edit_search_suggestion {
+    return Intl.message(
+      'Suggestion',
+      name: 'app_acccount_my_customList_edit_search_suggestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added accounts`
+  String get app_acccount_my_customList_edit_added_header {
+    return Intl.message(
+      'Added accounts',
+      name: 'app_acccount_my_customList_edit_added_header',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get app_acccount_my_customList_edit_action_save {
+    return Intl.message(
+      'Save',
+      name: 'app_acccount_my_customList_edit_action_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_account_my_statuses_scheduled_status_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_account_my_statuses_scheduled_status_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_account_my_statuses_scheduled_status_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_account_my_statuses_scheduled_status_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get app_account_my_statuses_draft_status_action_edit {
+    return Intl.message(
+      'Edit',
+      name: 'app_account_my_statuses_draft_status_action_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_account_my_statuses_draft_status_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_account_my_statuses_draft_status_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete list`
+  String get app_acccount_my_customList_edit_action_delete_list {
+    return Intl.message(
+      'Delete list',
+      name: 'app_acccount_my_customList_edit_action_delete_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.`
+  String get app_acccount_my_customList_edit_description {
+    return Intl.message(
+      'Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.',
+      name: 'app_acccount_my_customList_edit_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -3949,6 +4779,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 

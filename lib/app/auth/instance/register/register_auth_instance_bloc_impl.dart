@@ -1,42 +1,42 @@
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_email_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_length_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_password_match_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
+import 'package:fedi/form/field/value/string/email/email_string_value_form_field_validation.dart';
+import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_length_validation.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class JoinAuthInstanceRegisterBloc extends FormBloc
     implements IRegisterAuthInstanceBloc {
   @override
-  final FormStringFieldBloc usernameFieldBloc = FormStringFieldBloc(
+  final StringValueFormFieldBloc usernameFieldBloc = StringValueFormFieldBloc(
     originValue: "",
-    validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+    validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
     maxLength: null,
   );
 
   @override
-  final FormStringFieldBloc emailFieldBloc = FormStringFieldBloc(
+  final StringValueFormFieldBloc emailFieldBloc = StringValueFormFieldBloc(
     originValue: "",
-    validators: [FormEmailStringFieldValidationError.createValidator()],
+    validators: [EmailStringValueFormFieldValidationError.createValidator()],
     maxLength: null,
   );
 
   @override
-  final FormStringFieldBloc passwordFieldBloc = FormStringFieldBloc(
+  final StringValueFormFieldBloc passwordFieldBloc = StringValueFormFieldBloc(
       originValue: "",
       validators: [
-        FormLengthStringFieldValidationError.createValidator(
+        StringValueFormFieldLengthValidationError.createValidator(
             minLength: 4, maxLength: null)
       ],
       maxLength: null);
 
   @override
-  final FormPasswordMatchStringFieldBloc confirmPasswordFieldBloc =
-      FormPasswordMatchStringFieldBloc(
+  final PasswordMatchStringValueFormFieldBloc confirmPasswordFieldBloc =
+      PasswordMatchStringValueFormFieldBloc(
     maxLength: null,
   );
 
@@ -47,7 +47,7 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
   final IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
   @override
-  List<IFormStringFieldBloc> get currentItems => [
+  List<IStringValueFormFieldBloc> get currentItems => [
         usernameFieldBloc,
         emailFieldBloc,
         passwordFieldBloc,
@@ -55,7 +55,8 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
         if (isCaptchaRequired) captchaFieldBloc,
       ];
 
-  JoinAuthInstanceRegisterBloc({@required this.captchaFieldBloc}) {
+  JoinAuthInstanceRegisterBloc({@required this.captchaFieldBloc})
+      : super(isAllItemsInitialized: true) {
     addDisposable(disposable: usernameFieldBloc);
     addDisposable(disposable: emailFieldBloc);
     addDisposable(disposable: passwordFieldBloc);
@@ -66,5 +67,4 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
       confirmPasswordFieldBloc.changePasswordValue(currentValue);
     }));
   }
-
 }

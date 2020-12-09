@@ -11,13 +11,14 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -26,7 +27,7 @@ var _logger = Logger("timeline_tab_bloc_impl.dart");
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   Timeline get timeline => timelineLocalPreferencesBloc.value;
-  IStatusCachedListBloc statusCachedListService;
+  TimelineStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
   ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
@@ -39,13 +40,14 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final bool listenWebSockets;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
   final IMyAccountBloc myAccountBloc;
 
   @override
   final String timelineId;
+
+  final WebSocketsListenType webSocketsListenType;
 
   TimelineTabBloc({
     @required this.timelineId,
@@ -54,9 +56,9 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.pleromaAccountService,
     @required this.statusRepository,
     @required this.currentAuthInstanceBloc,
-    @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
     @required this.myAccountBloc,
+    @required this.webSocketsListenType,
   }) {
     _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
 
@@ -70,21 +72,28 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 
-  IStatusCachedListBloc createListService() => TimelineStatusCachedListBloc(
+  IStatusCachedListBloc createListService(
+  {@required WebSocketsListenType webSocketsListenType}) =>
+      TimelineStatusCachedListBloc(
         pleromaAccountService: pleromaAccountService,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-        listenWebSockets: listenWebSockets,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
+        webSocketsListenType: webSocketsListenType,
       );
+
+  @override
+  void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
+    statusCachedListService.resubscribeWebSocketsUpdates(webSocketsListenType);
+  }
 
   @override
   Future internalAsyncInit() async {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
-    statusCachedListService = createListService();
+    statusCachedListService = createListService(webSocketsListenType:webSocketsListenType);
     addDisposable(disposable: statusCachedListService);
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(

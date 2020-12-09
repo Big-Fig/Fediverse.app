@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
-import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
+import 'package:fedi/app/status/sensitive/nsfw/status_sensitive_nsfw_warning_overlay_widget.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -38,7 +39,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: true);
+    var statusBloc = IStatusBloc.of(context);
+    var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
     _logger.finest(() =>
         "build ${statusBloc.remoteId} media ${statusBloc.mediaAttachments?.length}");
@@ -50,6 +52,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var body = buildBody(
       child: child,
       statusBloc: statusBloc,
+      statusSensitiveBloc: statusSensitiveBloc,
     );
     return StreamBuilder<bool>(
         stream: statusBloc.deletedStream.distinct(),
@@ -74,28 +77,30 @@ class StatusListItemMediaWidget extends StatelessWidget {
   Widget buildBody({
     @required Widget child,
     @required IStatusBloc statusBloc,
+    @required IStatusSensitiveBloc statusSensitiveBloc,
   }) {
-    return StreamBuilder<StatusWarningState>(
-        stream: statusBloc.statusWarningStateStream.distinct(),
-        builder: (context, snapshot) {
-          var statusWarningState = snapshot.data;
+    return StreamBuilder<StatusSensitiveWarningState>(
+      stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
+      builder: (context, snapshot) {
+        var statusWarningState = snapshot.data;
 
-          if (statusWarningState == null) {
-            return child;
-          }
+        if (statusWarningState == null) {
+          return child;
+        }
 
-          var nsfwSensitiveAndDisplayNsfwContentEnabled =
-              statusWarningState.nsfwSensitive != true ||
-                  statusWarningState.displayNsfwSensitive == true;
+        var nsfwSensitiveAndDisplayNsfwContentEnabled =
+            statusWarningState.nsfwSensitive != true ||
+                statusWarningState.displayEnabled == true;
 
-          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-            // todo: display all medias in list
-            return child;
-          } else {
-            return StatusNsfwWarningOverlayWidget(
-              child: child,
-            );
-          }
-        });
+        if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
+          // todo: display all medias in list
+          return child;
+        } else {
+          return StatusSensitiveNsfwWarningOverlayWidget(
+            child: child,
+          );
+        }
+      },
+    );
   }
 }

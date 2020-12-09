@@ -11,5 +11,5 @@ abstract class IAsyncInitLoadingBloc extends IAsyncLoadingService {
   AsyncInitLoadingState get initLoadingState;
 
   // catched Error or Exception
-  dynamic initLoadingException;
+  dynamic get initLoadingException;
 }

@@ -11,6 +11,10 @@ abstract class ITimelinesHomeTabStorageBloc
           {bool listen = true}) =>
       Provider.of<ITimelinesHomeTabStorageBloc>(context, listen: listen);
 
+  TimelinesHomeTabStorageUiState get uiState;
+
+  Stream<TimelinesHomeTabStorageUiState> get uiStateStream;
+
   TimelinesHomeTabStorage get storage;
 
   Stream<TimelinesHomeTabStorage> get storageStream;
@@ -22,10 +26,28 @@ abstract class ITimelinesHomeTabStorageBloc
   List<Timeline> get timelines;
 
   Stream<List<Timeline>> get timelinesStream;
+
   Stream<List<Timeline>> get timelinesDistinctStream;
+
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems;
+
+  Stream<List<TimelinesHomeTabStorageListItem>> get timelineStorageItemsStream;
+
+  Stream<List<TimelinesHomeTabStorageListItem>>
+      get timelineStorageItemsDistinctStream;
 
   Future onItemsUpdated(List<Timeline> timelines);
 
   Future add(Timeline timeline);
+
   Future remove(Timeline timeline);
+
+  void switchToEditUiState();
+
+  void switchToViewUiState();
+
+  void swapItemsAt(int oldIndex, int newIndex);
+
+  int indexOfKey(Key key);
+  Timeline timelineOfKey(Key key);
 }

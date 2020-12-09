@@ -2,10 +2,6 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc_impl.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -28,14 +24,27 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository_impl.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc_impl.dart';
+import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/media/settings/media_settings_bloc.dart';
+import 'package:fedi/app/media/settings/media_settings_bloc_impl.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -45,25 +54,46 @@ import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bl
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
-import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_impl.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/local_preferences/instance/instance_status_sensitive_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
+import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
@@ -108,14 +138,15 @@ import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.d
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service_impl.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service_impl.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:fedi/websockets/websockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -125,28 +156,24 @@ var _logger = Logger("current_auth_instance_context_bloc_imp.dart");
 class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     implements ICurrentAuthInstanceContextBloc {
   final AuthInstance currentInstance;
-  final ILocalPreferencesService preferencesService;
-  final IConnectionService connectionService;
-  final IPushRelayService pushRelayService;
-  final IFcmPushService fcmPushService;
-  final IPushHandlerBloc pushHandlerBloc;
-  final IWebSocketsService webSocketsService;
+  final AppContextBloc appContextBloc;
 
   bool get isPleromaInstance => currentInstance.isPleromaInstance;
 
   CurrentAuthInstanceContextBloc({
-    @required this.webSocketsService,
     @required this.currentInstance,
-    @required this.preferencesService,
-    @required this.connectionService,
-    @required this.pushRelayService,
-    @required this.fcmPushService,
-    @required this.pushHandlerBloc,
+    @required this.appContextBloc,
   });
 
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
+
+    ILocalPreferencesService preferencesService = appContextBloc.get();
+    IConnectionService connectionService = appContextBloc.get();
+    IPushRelayService pushRelayService = appContextBloc.get();
+    IFcmPushService fcmPushService = appContextBloc.get();
+    IPushHandlerBloc pushHandlerBloc = appContextBloc.get();
 
     var globalProviderService = this;
 
@@ -155,7 +182,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var fcmPushPermissionAskedLocalPreferencesBloc =
         FcmPushPermissionAskedLocalPreferencesBloc(
       preferencesService,
-      userAtHost,
+      userAtHost: userAtHost,
     );
 
     addDisposable(disposable: fcmPushPermissionAskedLocalPreferencesBloc);
@@ -164,7 +191,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             fcmPushPermissionAskedLocalPreferencesBloc);
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
-        preferencesService, currentInstance.userAtHost);
+      preferencesService,
+      userAtHost: currentInstance.userAtHost,
+    );
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -386,15 +415,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaPushService>(pleromaPushService);
     addDisposable(disposable: pleromaPushService);
 
-    var myAccountLocalPreferenceBloc =
-        MyAccountLocalPreferenceBloc(preferencesService, userAtHost);
+    var myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(disposable: myAccountLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
 
     var emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc =
         EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
-            preferencesService, userAtHost);
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(
         disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -403,30 +436,34 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var customEmojiPickerRecentCategoryLocalPreferenceBloc =
         EmojiPickerRecentCategoryLocalPreferenceBloc(
-            preferencesService, userAtHost);
+      preferencesService,
+      userAtHost: userAtHost,
+    );
     addDisposable(
         disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
             customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
-    var timelinesHomeTabStorageLocalPreferences =
-        TimelinesHomeTabStorageLocalPreferences(
+    var timelinesHomeTabStorageLocalPreferencesBloc =
+        TimelinesHomeTabStorageLocalPreferencesBloc(
       preferencesService,
       userAtHost: userAtHost,
     );
-    addDisposable(disposable: timelinesHomeTabStorageLocalPreferences);
+    addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
     await globalProviderService
-        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferences>(
-            timelinesHomeTabStorageLocalPreferences);
+        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferencesBloc>(
+            timelinesHomeTabStorageLocalPreferencesBloc);
 
-    var pushSubscriptionLocalPreferenceBloc =
-        PushSubscriptionSettingsLocalPreferencesBloc(
-            preferencesService, userAtHost);
-    addDisposable(disposable: pushSubscriptionLocalPreferenceBloc);
+    var instancePushSettingsLocalPreferenceBloc =
+        InstancePushSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: instancePushSettingsLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionSettingsLocalPreferencesBloc>(
-            pushSubscriptionLocalPreferenceBloc);
+        .asyncInitAndRegister<IPushSettingsLocalPreferencesBloc>(
+            instancePushSettingsLocalPreferenceBloc);
 
     var myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountService,
@@ -438,18 +475,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSubscriptionSettingsBloc = PushSubscriptionSettingsBloc(
+    var pushSettingsBloc = PushSettingsBloc(
       pushRelayService: pushRelayService,
-      pushSubscriptionSettingsLocalPreferencesBloc:
-          pushSubscriptionLocalPreferenceBloc,
+      instanceLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
       pleromaPushService: pleromaPushService,
       currentInstance: currentInstance,
       fcmPushService: fcmPushService,
     );
 
-    addDisposable(disposable: pushSubscriptionSettingsBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IPushSubscriptionSettingsBloc>(pushSubscriptionSettingsBloc);
+    addDisposable(disposable: pushSettingsBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
 
     var currentPleromaChatBloc = PleromaChatCurrentBloc();
 
@@ -494,69 +530,27 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
-    var pleromaWebSocketsService = PleromaWebSocketsService(
-        webSocketsService: webSocketsService,
-        accessToken: currentInstance.token.accessToken,
-        baseUri: currentInstance.url,
-        connectionService: connectionService);
-
-    addDisposable(disposable: pleromaWebSocketsService);
-    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
-        pleromaWebSocketsService);
-
-    var myAccountSettingsLocalPreferenceBloc =
-        MyAccountSettingsLocalPreferenceBloc(
-            preferencesService, currentInstance.userAtHost);
-
-    addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IMyAccountSettingsLocalPreferenceBloc>(
-            myAccountSettingsLocalPreferenceBloc);
-
-    var myAccountSettingsBloc = MyAccountSettingsBloc(
-        localPreferencesBloc: myAccountSettingsLocalPreferenceBloc);
-
-    addDisposable(disposable: myAccountSettingsBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
-
-    var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
-      pleromaWebSocketsService: pleromaWebSocketsService,
-      conversationRepository: conversationRepository,
-      notificationRepository: notificationRepository,
-      statusRepository: statusRepository,
-      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-      conversationChatNewMessagesHandlerBloc:
-          conversationChatNewMessagesHandlerBloc,
-    );
-
-    addDisposable(disposable: webSocketsHandlerManagerBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
-
-    if (timelinesHomeTabStorageLocalPreferences
+    if (timelinesHomeTabStorageLocalPreferencesBloc
             .value?.timelineIds?.isNotEmpty !=
         true) {
       var remoteLists = await pleromaListService.getLists();
 
-// todo: rework with enums and move localization outside of this bloc
-      var localizationDelegate = S.current;
       var timelines = [
         Timeline.home(
-          label: localizationDelegate.app_home_tab_timelines_tab_home,
+          label: null,
           id: "home",
           isPossibleToDelete: false,
           settings: TimelineSettings.createDefaultHomeSettings(),
         ),
         Timeline.public(
-          label: localizationDelegate.app_home_tab_timelines_tab_local,
+          label: null,
           id: "local",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: true,
           ),
         ),
         Timeline.public(
-          label: localizationDelegate.app_home_tab_timelines_tab_public,
+          label: null,
           id: "public",
           settings: TimelineSettings.createDefaultPublicSettings().copyWith(
             onlyLocal: false,
@@ -590,18 +584,194 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         await timelineLocalPreferencesBloc.dispose();
       }
 
-      await timelinesHomeTabStorageLocalPreferences.setValue(storage);
+      await timelinesHomeTabStorageLocalPreferencesBloc.setValue(storage);
     }
 
     var fcmPushPermissionCheckerBloc = FcmPushPermissionCheckerBloc(
       fcmPushService: fcmPushService,
       fcmPushPermissionAskedLocalPreferencesBloc:
           fcmPushPermissionAskedLocalPreferencesBloc,
-      pushSubscriptionSettingsBloc: pushSubscriptionSettingsBloc,
+      pushSettingsBloc: pushSettingsBloc,
     );
 
     addDisposable(disposable: fcmPushPermissionCheckerBloc);
     await globalProviderService.asyncInitAndRegister<
         IFcmPushPermissionCheckerBloc>(fcmPushPermissionCheckerBloc);
+
+    var instanceChatSettingsLocalPreferencesBloc =
+        InstanceChatSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceChatSettingsLocalPreferencesBloc>(
+            instanceChatSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instanceChatSettingsLocalPreferencesBloc);
+
+    var instanceMediaSettingsLocalPreferencesBloc =
+        InstanceMediaSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceMediaSettingsLocalPreferencesBloc>(
+            instanceMediaSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instanceMediaSettingsLocalPreferencesBloc);
+
+    var instanceToastSettingsLocalPreferencesBloc =
+        InstanceToastSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceToastSettingsLocalPreferencesBloc>(
+            instanceToastSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instanceToastSettingsLocalPreferencesBloc);
+
+    var instancePostStatusSettingsLocalPreferencesBloc =
+        InstancePostStatusSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferencesBloc>(
+            instancePostStatusSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instancePostStatusSettingsLocalPreferencesBloc);
+
+    var instanceStatusSensitiveSettingsLocalPreferencesBloc =
+        InstanceStatusSensitiveSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+            IInstanceStatusSensitiveSettingsLocalPreferencesBloc>(
+        instanceStatusSensitiveSettingsLocalPreferencesBloc);
+    addDisposable(
+        disposable: instanceStatusSensitiveSettingsLocalPreferencesBloc);
+
+    var instanceWebSocketsSettingsLocalPreferencesBloc =
+        InstanceWebSocketsSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferencesBloc>(
+            instanceWebSocketsSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instanceWebSocketsSettingsLocalPreferencesBloc);
+
+    var chatSettingsBloc = ChatSettingsBloc(
+      instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalChatSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IChatSettingsBloc>(chatSettingsBloc);
+    addDisposable(disposable: chatSettingsBloc);
+
+    var mediaSettingsBloc = MediaSettingsBloc(
+      instanceLocalPreferencesBloc: instanceMediaSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalMediaSettingsLocalPreferencesBloc>(),
+    );
+    await globalProviderService
+        .asyncInitAndRegister<IMediaSettingsBloc>(mediaSettingsBloc);
+    addDisposable(disposable: mediaSettingsBloc);
+
+    var toastSettingsBloc = ToastSettingsBloc(
+      instanceLocalPreferencesBloc: instanceToastSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalToastSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IToastSettingsBloc>(toastSettingsBloc);
+    addDisposable(disposable: toastSettingsBloc);
+
+    var postStatusSettingsBloc = PostStatusSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instancePostStatusSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalPostStatusSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IPostStatusSettingsBloc>(postStatusSettingsBloc);
+    addDisposable(disposable: postStatusSettingsBloc);
+
+    var statusSensitiveSettingsBloc = StatusSensitiveSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instanceStatusSensitiveSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc: appContextBloc
+          .get<IGlobalStatusSensitiveSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+        IStatusSensitiveSettingsBloc>(statusSensitiveSettingsBloc);
+    addDisposable(disposable: statusSensitiveSettingsBloc);
+
+    var webSocketsSettingsBloc = WebSocketsSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instanceWebSocketsSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
+    addDisposable(disposable: webSocketsSettingsBloc);
+
+    var statusSensitiveDisplayTimeStorageBloc =
+        StatusSensitiveDisplayTimeStorageBloc();
+
+    await globalProviderService
+        .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
+            statusSensitiveDisplayTimeStorageBloc);
+    addDisposable(disposable: statusSensitiveDisplayTimeStorageBloc);
+
+    var webSocketsService =
+        WebSocketsService(configBloc: webSocketsSettingsBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
+    addDisposable(disposable: webSocketsService);
+
+    var pleromaWebSocketsService = PleromaWebSocketsService(
+        webSocketsService: webSocketsService,
+        accessToken: currentInstance.token.accessToken,
+        baseUri: currentInstance.url,
+        connectionService: connectionService);
+
+    addDisposable(disposable: pleromaWebSocketsService);
+    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
+        pleromaWebSocketsService);
+
+    var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      conversationRepository: conversationRepository,
+      notificationRepository: notificationRepository,
+      statusRepository: statusRepository,
+      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      conversationChatNewMessagesHandlerBloc:
+          conversationChatNewMessagesHandlerBloc,
+    );
+
+    addDisposable(disposable: webSocketsHandlerManagerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
+
+    var timelinesHomeTabStorageBloc = TimelinesHomeTabStorageBloc(
+      preferences: timelinesHomeTabStorageLocalPreferencesBloc,
+      authInstance: currentInstance,
+      preferencesService: preferencesService,
+    );
+
+    addDisposable(disposable: timelinesHomeTabStorageBloc);
+    await globalProviderService.asyncInitAndRegister<
+        ITimelinesHomeTabStorageBloc>(timelinesHomeTabStorageBloc);
   }
 }

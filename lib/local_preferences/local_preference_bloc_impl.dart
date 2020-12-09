@@ -1,7 +1,7 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -70,7 +70,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   Future<bool> setValueInternal(T newValue);
 }
 
-abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
+abstract class ObjectLocalPreferenceBloc<T extends IJsonObject>
     extends LocalPreferenceBloc<T> {
   final T Function(Map<String, dynamic> jsonData) jsonConverter;
   final int schemaVersion;

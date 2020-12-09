@@ -99,10 +99,10 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  IPleromaAccountRelationship get accountRelationship => throw selfActionError;
+  IPleromaAccountRelationship get relationship => throw selfActionError;
 
   @override
-  Stream<IPleromaAccountRelationship> get accountRelationshipStream =>
+  Stream<IPleromaAccountRelationship> get relationshipStream =>
       throw selfActionError;
 
   @override

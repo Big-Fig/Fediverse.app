@@ -3,17 +3,17 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
-import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -90,21 +90,22 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           });
 
   static DialogAction buildCopyAction(BuildContext context) => DialogAction(
-      icon: FediIcons.link,
-      label: S.of(context).app_status_action_copyLink,
-      onAction: (context) async {
-        var statusBloc = IStatusBloc.of(context, listen: false);
-        var status = statusBloc.status;
-        await Clipboard.setData(
-          ClipboardData(text: status.uri),
-        );
-        Navigator.of(context).pop();
-        showInfoFediNotificationOverlay(
-          context: context,
-          contentText: S.of(context).app_status_copyLink_toast,
-          titleText: null,
-        );
-      });
+        icon: FediIcons.link,
+        label: S.of(context).app_status_action_copyLink,
+        onAction: (context) async {
+          var statusBloc = IStatusBloc.of(context, listen: false);
+          var status = statusBloc.status;
+          await Clipboard.setData(
+            ClipboardData(text: status.uri),
+          );
+          Navigator.of(context).pop();
+          IToastService.of(context, listen: false).showInfoToast(
+            context: context,
+            title: S.of(context).app_status_copyLink_toast,
+            content: null,
+          );
+        },
+      );
 
   static DialogAction buildDeleteAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
@@ -141,8 +142,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
-      icon:  statusBloc.muted == true ? FediIcons.unmute
-          : FediIcons.mute,
+      icon: statusBloc.muted == true ? FediIcons.unmute : FediIcons.mute,
       label: statusBloc.muted == true
           ? S.of(context).app_status_action_unmute
           : S.of(context).app_status_action_mute,

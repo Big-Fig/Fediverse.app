@@ -6,7 +6,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -30,7 +30,7 @@ class AccountActionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.accountRelationshipStream,
+      stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var relationship = snapshot.data;
 
@@ -107,11 +107,11 @@ class _AccountActionListMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediBlurredTextButton(
+    return FediBlurredTextButtonWithBorder(
       S.of(context).app_account_action_message,
       onPressed: () async {
-        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-        var accountBloc = IAccountBloc.of(context);
+        var authInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
+        var accountBloc = IAccountBloc.of(context, listen: false);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
@@ -121,6 +121,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
               conversationAccountsWithoutMe: <IAccount>[account]);
         }
       },
+      expanded: false,
     );
   }
 }
@@ -154,18 +155,19 @@ class _AccountActionListFollowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     return StreamBuilder<IPleromaAccountRelationship>(
-      stream: accountBloc.accountRelationshipStream,
-      initialData: accountBloc.accountRelationship,
+      stream: accountBloc.relationshipStream,
+      initialData: accountBloc.relationship,
       builder: (context, snapshot) {
-        var relationship = accountBloc.accountRelationship;
+        var relationship = accountBloc.relationship;
         if (relationship.requested && !relationship.following) {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
             builder: (BuildContext context, VoidCallback onPressed) {
-              return FediBlurredTextButton(
+              return FediBlurredTextButtonWithBorder(
                 S.of(context).app_account_action_followRequested,
                 onPressed: onPressed,
+                expanded: false,
               );
             },
           );
@@ -174,13 +176,14 @@ class _AccountActionListFollowWidget extends StatelessWidget {
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
             builder: (BuildContext context, VoidCallback onPressed) {
-              return FediBlurredTextButton(
+              return FediBlurredTextButtonWithBorder(
                 relationship?.requested == true
                     ? S.of(context).app_account_action_followRequested
                     : relationship?.following == true
                         ? S.of(context).app_account_action_unfollow
                         : S.of(context).app_account_action_follow,
                 onPressed: onPressed,
+                expanded: false,
               );
             },
           );

@@ -11,7 +11,7 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
@@ -323,7 +323,15 @@ void main() {
         EmojiText(text: newDisplayNameValue, emojis: account.emojis));
     await subscription.cancel();
 
-    var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
+    var newEmojis = [
+      PleromaEmoji(
+        url: "url",
+        staticUrl: "staticUrl",
+        visibleInPicker: null,
+        shortcode: null,
+        category: null,
+      )
+    ];
 
     subscription = accountBloc.displayNameEmojiTextStream.listen((newValue) {
       listenedValue = newValue;
@@ -344,22 +352,22 @@ void main() {
   });
 
   test('accountRelationship', () async {
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     var newValue = createTestAccountRelationship(seed: "seed0");
 
     var listenedValue;
 
-    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+    var subscription = accountBloc.relationshipStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     await _update(account.copyWith(pleromaRelationship: newValue));
 
-    expect(accountBloc.accountRelationship, newValue);
+    expect(accountBloc.relationship, newValue);
     expect(listenedValue, newValue);
     await subscription.cancel();
   });
@@ -388,7 +396,7 @@ void main() {
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
-    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
+    await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -400,16 +408,16 @@ void main() {
   });
 
   test('toggleBlock', () async {
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     IPleromaAccountRelationship listenedValue;
 
-    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+    var subscription = accountBloc.relationshipStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAccountServiceMock.blockAccount(
             accountRemoteId: account.remoteId))
@@ -427,29 +435,29 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.blocking, !initialValue);
+    expect(accountBloc.relationship.blocking, !initialValue);
     expect(listenedValue.blocking, !initialValue);
 
     await accountBloc.toggleBlock();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.blocking, initialValue);
+    expect(accountBloc.relationship.blocking, initialValue);
     expect(listenedValue.blocking, initialValue);
 
     await subscription.cancel();
   });
   test('toggleFollow', () async {
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     IPleromaAccountRelationship listenedValue;
 
-    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+    var subscription = accountBloc.relationshipStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAccountServiceMock.followAccount(
             accountRemoteId: account.remoteId))
@@ -458,8 +466,10 @@ void main() {
 
     when(pleromaAccountServiceMock.unFollowAccount(
             accountRemoteId: account.remoteId))
-        .thenAnswer((_) async =>
-            account.pleromaRelationship.copyWith(following: false));
+        .thenAnswer((_) async => account.pleromaRelationship.copyWith(
+              following: false,
+              requested: false,
+            ));
 
     var initialValue = account.pleromaRelationship.following;
 
@@ -467,29 +477,29 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.following, !initialValue);
+    expect(accountBloc.relationship.following, !initialValue);
     expect(listenedValue.following, !initialValue);
 
     await accountBloc.toggleFollow();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.following, initialValue);
+    expect(accountBloc.relationship.following, initialValue);
     expect(listenedValue.following, initialValue);
 
     await subscription.cancel();
   });
   test('toggleMute', () async {
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     IPleromaAccountRelationship listenedValue;
 
-    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+    var subscription = accountBloc.relationshipStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAccountServiceMock.muteAccount(
             accountRemoteId: account.remoteId))
@@ -507,29 +517,29 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.muting, !initialValue);
+    expect(accountBloc.relationship.muting, !initialValue);
     expect(listenedValue.muting, !initialValue);
 
     await accountBloc.toggleMute();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.muting, initialValue);
+    expect(accountBloc.relationship.muting, initialValue);
     expect(listenedValue.muting, initialValue);
 
     await subscription.cancel();
   });
   test('togglePin', () async {
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     IPleromaAccountRelationship listenedValue;
 
-    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+    var subscription = accountBloc.relationshipStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAccountServiceMock.pinAccount(
             accountRemoteId: account.remoteId))
@@ -547,14 +557,14 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.muting, !initialValue);
+    expect(accountBloc.relationship.muting, !initialValue);
     expect(listenedValue.muting, !initialValue);
 
     await accountBloc.togglePin();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(accountBloc.accountRelationship.muting, initialValue);
+    expect(accountBloc.relationship.muting, initialValue);
     expect(listenedValue.muting, initialValue);
 
     await subscription.cancel();

@@ -19,38 +19,21 @@ class ChatTitleWidget extends StatelessWidget {
     var chatBloc = IChatBloc.of(context);
 
     return StreamBuilder<List<IAccount>>(
-        stream: chatBloc.accountsStream,
-        builder: (context, snapshot) {
-          var accounts = snapshot.data;
+      stream: chatBloc.accountsStream,
+      builder: (context, snapshot) {
+        var accounts = snapshot.data;
 
-          if (accounts?.isNotEmpty != true) {
-            return const SizedBox.shrink();
-          }
-          var accountsText = accounts.map((account) => account.acct).join(", ");
-          return StreamBuilder<int>(
-              stream: chatBloc.unreadCountStream,
-              initialData: chatBloc.unreadCount,
-              builder: (context, snapshot) {
-                var unreadCount = snapshot.data;
+        if (accounts?.isNotEmpty != true) {
+          return const SizedBox.shrink();
+        }
+        var accountsText = accounts.map((account) => account.acct).join(", ");
 
-                var finalText;
-
-                if (unreadCount > 0) {
-                  if (chatBloc.isCountInUnreadSupported) {
-                    finalText = "($unreadCount) $accountsText";
-                  } else {
-                    finalText = "(*) $accountsText";
-                  }
-                } else {
-                  finalText = accountsText;
-                }
-
-                return Text(
-                  finalText,
-                  overflow: TextOverflow.ellipsis,
-                  style: textStyle,
-                );
-              });
-        });
+        return Text(
+          accountsText,
+          overflow: TextOverflow.ellipsis,
+          style: textStyle,
+        );
+      },
+    );
   }
 }

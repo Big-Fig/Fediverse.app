@@ -28,14 +28,12 @@ abstract class IFediUiTheme extends IUiTheme {
 }
 
 abstract class IFediUiColorTheme implements IUiColorTheme {
-  static IFediUiColorTheme of(BuildContext context,
-      {bool listen = true}) =>
+  static IFediUiColorTheme of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFediUiColorTheme>(context, listen: listen);
 }
 
 abstract class IFediUiTextTheme implements IUiTextTheme {
-  static IFediUiTextTheme of(BuildContext context,
-      {bool listen = true}) =>
+  static IFediUiTextTheme of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFediUiTextTheme>(context, listen: listen);
 
   TextStyle get smallShortWhite;
@@ -45,6 +43,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortWhite;
 
   TextStyle get subHeaderShortWhite;
+
+  TextStyle get smallWhite;
+
+  TextStyle get mediumWhite;
+
+  TextStyle get bigWhite;
+
+  TextStyle get subHeaderWhite;
 
   TextStyle get smallTallWhite;
 
@@ -62,6 +68,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldWhite;
 
+  TextStyle get smallBoldWhite;
+
+  TextStyle get mediumBoldWhite;
+
+  TextStyle get bigBoldWhite;
+
+  TextStyle get subHeaderBoldWhite;
+
   TextStyle get smallTallBoldWhite;
 
   TextStyle get mediumTallBoldWhite;
@@ -77,6 +91,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortGrey;
 
   TextStyle get subHeaderShortGrey;
+
+  TextStyle get smallGrey;
+
+  TextStyle get mediumGrey;
+
+  TextStyle get bigGrey;
+
+  TextStyle get subHeaderGrey;
 
   TextStyle get smallTallGrey;
 
@@ -94,6 +116,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldGrey;
 
+  TextStyle get smallBoldGrey;
+
+  TextStyle get mediumBoldGrey;
+
+  TextStyle get bigBoldGrey;
+
+  TextStyle get subHeaderBoldGrey;
+
   TextStyle get smallTallBoldGrey;
 
   TextStyle get mediumTallBoldGrey;
@@ -109,6 +139,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortDarkGrey;
 
   TextStyle get subHeaderShortDarkGrey;
+
+  TextStyle get smallDarkGrey;
+
+  TextStyle get mediumDarkGrey;
+
+  TextStyle get bigDarkGrey;
+
+  TextStyle get subHeaderDarkGrey;
 
   TextStyle get smallTallDarkGrey;
 
@@ -126,6 +164,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldDarkGrey;
 
+  TextStyle get smallBoldDarkGrey;
+
+  TextStyle get mediumBoldDarkGrey;
+
+  TextStyle get bigBoldDarkGrey;
+
+  TextStyle get subHeaderBoldDarkGrey;
+
   TextStyle get smallTallBoldDarkGrey;
 
   TextStyle get mediumTallBoldDarkGrey;
@@ -141,6 +187,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortPrimary;
 
   TextStyle get subHeaderShortPrimary;
+
+  TextStyle get smallPrimary;
+
+  TextStyle get mediumPrimary;
+
+  TextStyle get bigPrimary;
+
+  TextStyle get subHeaderPrimary;
 
   TextStyle get smallTallPrimary;
 
@@ -158,6 +212,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldPrimary;
 
+  TextStyle get smallBoldPrimary;
+
+  TextStyle get mediumBoldPrimary;
+
+  TextStyle get bigBoldPrimary;
+
+  TextStyle get subHeaderBoldPrimary;
+
   TextStyle get smallTallBoldPrimary;
 
   TextStyle get mediumTallBoldPrimary;
@@ -173,6 +235,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortPrimaryDark;
 
   TextStyle get subHeaderShortPrimaryDark;
+
+  TextStyle get smallPrimaryDark;
+
+  TextStyle get mediumPrimaryDark;
+
+  TextStyle get bigPrimaryDark;
+
+  TextStyle get subHeaderPrimaryDark;
 
   TextStyle get smallTallPrimaryDark;
 
@@ -190,6 +260,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldPrimaryDark;
 
+  TextStyle get smallBoldPrimaryDark;
+
+  TextStyle get mediumBoldPrimaryDark;
+
+  TextStyle get bigBoldPrimaryDark;
+
+  TextStyle get subHeaderBoldPrimaryDark;
+
   TextStyle get smallTallBoldPrimaryDark;
 
   TextStyle get mediumTallBoldPrimaryDark;
@@ -205,6 +283,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortError;
 
   TextStyle get subHeaderShortError;
+
+  TextStyle get smallError;
+
+  TextStyle get mediumError;
+
+  TextStyle get bigError;
+
+  TextStyle get subHeaderError;
 
   TextStyle get smallTallError;
 
@@ -222,6 +308,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldError;
 
+  TextStyle get smallBoldError;
+
+  TextStyle get mediumBoldError;
+
+  TextStyle get bigBoldError;
+
+  TextStyle get subHeaderBoldError;
+
   TextStyle get smallTallBoldError;
 
   TextStyle get mediumTallBoldError;
@@ -237,6 +331,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortLightGrey;
 
   TextStyle get subHeaderShortLightGrey;
+
+  TextStyle get smallLightGrey;
+
+  TextStyle get mediumLightGrey;
+
+  TextStyle get bigLightGrey;
+
+  TextStyle get subHeaderLightGrey;
 
   TextStyle get smallTallLightGrey;
 
@@ -254,6 +356,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldLightGrey;
 
+  TextStyle get smallBoldLightGrey;
+
+  TextStyle get mediumBoldLightGrey;
+
+  TextStyle get bigBoldLightGrey;
+
+  TextStyle get subHeaderBoldLightGrey;
+
   TextStyle get smallTallBoldLightGrey;
 
   TextStyle get mediumTallBoldLightGrey;
@@ -269,6 +379,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get bigShortMediumGrey;
 
   TextStyle get subHeaderShortMediumGrey;
+
+  TextStyle get smallMediumGrey;
+
+  TextStyle get mediumMediumGrey;
+
+  TextStyle get bigMediumGrey;
+
+  TextStyle get subHeaderMediumGrey;
 
   TextStyle get smallTallMediumGrey;
 
@@ -286,6 +404,14 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderShortBoldMediumGrey;
 
+  TextStyle get smallBoldMediumGrey;
+
+  TextStyle get mediumBoldMediumGrey;
+
+  TextStyle get bigBoldMediumGrey;
+
+  TextStyle get subHeaderBoldMediumGrey;
+
   TextStyle get smallTallBoldMediumGrey;
 
   TextStyle get mediumTallBoldMediumGrey;
@@ -299,6 +425,8 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
   TextStyle get dialogTitleBoldDarkGrey;
 
   TextStyle get dialogContentDarkGrey;
+
+  TextStyle get giantTitleShortBoldDarkGrey;
 }
 
 class FediUiTextTheme implements IFediUiTextTheme {
@@ -309,7 +437,8 @@ class FediUiTextTheme implements IFediUiTextTheme {
   static const _bigSize = 16.0;
   static const _subHeaderSize = 18.0;
   static const _headerSize = 24.0;
-  static const _smallHeight = 1.5;
+  static const _shortHeight = 1.15;
+  static const _defaultHeight = 1.0;
   static const _tallHeight = 1.5;
   static const _boldWeight = FontWeight.w500;
   static const _normalWeight = FontWeight.normal;
@@ -338,7 +467,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortWhite => TextStyle(
         color: _whiteColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -346,7 +475,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortWhite => TextStyle(
         color: _whiteColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -354,7 +483,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortWhite => TextStyle(
         color: _whiteColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -362,7 +491,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortWhite => TextStyle(
         color: _whiteColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -402,7 +563,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldWhite => TextStyle(
         color: _whiteColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -410,7 +571,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldWhite => TextStyle(
         color: _whiteColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -418,7 +579,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldWhite => TextStyle(
         color: _whiteColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -426,7 +587,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldWhite => TextStyle(
         color: _whiteColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldWhite => TextStyle(
+        color: _whiteColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -466,7 +659,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortGrey => TextStyle(
         color: _greyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -474,7 +667,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortGrey => TextStyle(
         color: _greyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -482,7 +675,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortGrey => TextStyle(
         color: _greyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -490,7 +683,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortGrey => TextStyle(
         color: _greyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -530,7 +755,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldGrey => TextStyle(
         color: _greyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -538,7 +763,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldGrey => TextStyle(
         color: _greyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -546,7 +771,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldGrey => TextStyle(
         color: _greyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -554,7 +779,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldGrey => TextStyle(
         color: _greyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldGrey => TextStyle(
+        color: _greyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -594,7 +851,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -602,7 +859,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -610,7 +867,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -618,7 +875,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -658,7 +947,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -666,7 +955,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -674,7 +963,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -682,7 +971,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldDarkGrey => TextStyle(
         color: _darkGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldDarkGrey => TextStyle(
+        color: _darkGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -722,7 +1043,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -730,7 +1051,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -738,7 +1059,15 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -746,7 +1075,31 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -786,7 +1139,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -794,7 +1147,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -802,7 +1155,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -810,7 +1163,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldPrimary => TextStyle(
         color: _primaryColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldPrimary => TextStyle(
+        color: _primaryColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -850,7 +1235,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -858,7 +1243,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -866,7 +1251,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -874,7 +1259,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -914,7 +1331,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -922,7 +1339,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -930,7 +1347,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -938,7 +1355,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldPrimaryDark => TextStyle(
         color: _primaryDarkColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldPrimaryDark => TextStyle(
+        color: _primaryDarkColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -978,7 +1427,15 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortError => TextStyle(
         color: _errorColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallError => TextStyle(
+        color: _errorColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -986,7 +1443,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortError => TextStyle(
         color: _errorColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -994,7 +1451,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortError => TextStyle(
         color: _errorColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1002,7 +1459,31 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortError => TextStyle(
         color: _errorColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumError => TextStyle(
+        color: _errorColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigError => TextStyle(
+        color: _errorColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderError => TextStyle(
+        color: _errorColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1042,7 +1523,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldError => TextStyle(
         color: _errorColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1050,7 +1531,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldError => TextStyle(
         color: _errorColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1058,7 +1539,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldError => TextStyle(
         color: _errorColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1066,7 +1547,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldError => TextStyle(
         color: _errorColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldError => TextStyle(
+        color: _errorColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldError => TextStyle(
+        color: _errorColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldError => TextStyle(
+        color: _errorColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldError => TextStyle(
+        color: _errorColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1106,7 +1619,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1114,7 +1627,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1122,7 +1635,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1130,7 +1643,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1170,7 +1715,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1178,7 +1723,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1186,7 +1731,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1194,7 +1739,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldLightGrey => TextStyle(
         color: _lightGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldLightGrey => TextStyle(
+        color: _lightGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1234,7 +1811,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1242,7 +1819,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1250,7 +1827,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1258,7 +1835,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get smallMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get mediumMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get bigMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _normalWeight,
+      );
+
+  @override
+  TextStyle get subHeaderMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _normalWeight,
       );
 
@@ -1298,7 +1907,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get smallShortBoldMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _smallSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1306,7 +1915,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get mediumShortBoldMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _mediumSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1314,7 +1923,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get bigShortBoldMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _bigSize,
-        height: _smallHeight,
+        height: _shortHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1322,7 +1931,39 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get subHeaderShortBoldMediumGrey => TextStyle(
         color: _mediumGreyColor,
         fontSize: _subHeaderSize,
-        height: _smallHeight,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get smallBoldMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _smallSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get mediumBoldMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _mediumSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get bigBoldMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _bigSize,
+        height: _defaultHeight,
+        fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get subHeaderBoldMediumGrey => TextStyle(
+        color: _mediumGreyColor,
+        fontSize: _subHeaderSize,
+        height: _defaultHeight,
         fontWeight: _boldWeight,
       );
 
@@ -1376,6 +2017,14 @@ class FediUiTextTheme implements IFediUiTextTheme {
   TextStyle get dialogContentDarkGrey => TextStyle(
         fontSize: 16.0,
         fontWeight: _normalWeight,
+        color: _darkGreyColor,
+      );
+
+  @override
+  TextStyle get giantTitleShortBoldDarkGrey => TextStyle(
+        fontSize: 20.0,
+        height: _shortHeight,
+        fontWeight: _boldWeight,
         color: _darkGreyColor,
       );
 }

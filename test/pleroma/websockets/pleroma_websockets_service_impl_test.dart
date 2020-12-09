@@ -1,6 +1,8 @@
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service_impl.dart';
-import 'package:fedi/websockets/websockets_service.dart';
-import 'package:fedi/websockets/websockets_service_impl.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service_impl.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:fedi/web_sockets/service/config/web_sockets_service_config_bloc_impl.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service.dart';
+import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -12,7 +14,11 @@ void main() {
   PleromaWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
-    webSocketsService = WebSocketsService();
+    webSocketsService = WebSocketsService(
+      configBloc: WebSocketsServiceConfigBloc(
+        WebSocketsHandlingType.foregroundAndBackground,
+      ),
+    );
 
     pleromaWebSocketsService = PleromaWebSocketsService(
       webSocketsService: webSocketsService,
@@ -30,7 +36,10 @@ void main() {
   test('getHashtagChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getHashtagChannel(hashtag: "hashtag1", local: true)
+            .getHashtagChannel(
+              hashtag: "hashtag1",
+              local: true,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -38,7 +47,10 @@ void main() {
         "&tag=hashtag1");
     expect(
         pleromaWebSocketsService
-            .getHashtagChannel(hashtag: "hashtag1", local: false)
+            .getHashtagChannel(
+              hashtag: "hashtag1",
+              local: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -49,28 +61,40 @@ void main() {
   test('getPublicChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getPublicChannel(local: true, onlyMedia: false)
+            .getPublicChannel(
+              local: true,
+              onlyMedia: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:local");
     expect(
         pleromaWebSocketsService
-            .getPublicChannel(local: false, onlyMedia: false)
+            .getPublicChannel(
+              local: false,
+              onlyMedia: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public");
     expect(
         pleromaWebSocketsService
-            .getPublicChannel(local: true, onlyMedia: true)
+            .getPublicChannel(
+              local: true,
+              onlyMedia: true,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:local:media");
     expect(
         pleromaWebSocketsService
-            .getPublicChannel(local: false, onlyMedia: true)
+            .getPublicChannel(
+              local: false,
+              onlyMedia: true,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -80,7 +104,9 @@ void main() {
   test('getListChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getListChannel(listId: "list1")
+            .getListChannel(
+              listId: "list1",
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -90,7 +116,10 @@ void main() {
   test('getAccountChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getAccountChannel(accountId: "user1", notification: false)
+            .getAccountChannel(
+              accountId: "user1",
+              notification: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -98,7 +127,10 @@ void main() {
         "&accountId=user1");
     expect(
         pleromaWebSocketsService
-            .getAccountChannel(accountId: "user1", notification: true)
+            .getAccountChannel(
+              accountId: "user1",
+              notification: true,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -109,14 +141,20 @@ void main() {
   test('getAccountChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel(notification: false, chat: false)
+            .getMyAccountChannel(
+              notification: false,
+              chat: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=user");
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel(notification: true, chat: false)
+            .getMyAccountChannel(
+              notification: true,
+              chat: false,
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),
@@ -125,7 +163,9 @@ void main() {
   test('getDirectChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getDirectChannel(accountId: "direct1")
+            .getDirectChannel(
+              accountId: "direct1",
+            )
             .config
             .calculateWebSocketsUrl()
             .toString(),

@@ -1,5 +1,6 @@
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/media/player/control/fedi_player_control_panel_widget.dart';
@@ -7,13 +8,15 @@ import 'package:fedi/app/ui/media/player/video/fedi_video_player_buffering_widge
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_content_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_control_toggle_fullscreen_button_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_play_pause_button_widget.dart';
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger("fedi_video_player_widget.dart");
 
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
@@ -85,16 +88,16 @@ class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FediTransparentTextButton(
+    return FediTransparentTextButtonWithBorder(
       S.of(context).app_media_player_error_action_moreDetails,
       expanded: false,
       color: IFediUiColorTheme.of(context).white,
       onPressed: () {
         var mediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
-        showErrorFediNotificationOverlay(
+        IToastService.of(context, listen: false).showErrorToast(
           context: context,
-          contentText: mediaPlayerBloc.error.toString(),
-          titleText: null,
+          title: mediaPlayerBloc.error.toString(),
+          content: null,
         );
       },
     );
@@ -124,7 +127,7 @@ class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediTransparentTextButton(
+  Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
         S.of(context).app_media_player_error_action_reload,
         expanded: false,
         color: IFediUiColorTheme.of(context).white,
@@ -146,10 +149,14 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
     return StreamBuilder<bool>(
       stream: videoMediaPlayerBloc.isInitializedStream,
-      initialData: videoMediaPlayerBloc.isInitialized,
       builder: (context, snapshot) {
-        var isInitialized = snapshot.data;
-        if (isInitialized) {
+        var isInitialized = snapshot.data ?? false;
+        _logger.finest(() => "isInitialized $isInitialized, "
+            "playerState  ${videoMediaPlayerBloc.playerState}");
+        // todo: remove hack
+        // sometimes  videoMediaPlayerBloc.isInitialized already false
+        // but isInitialized contains old true value
+        if (isInitialized && videoMediaPlayerBloc.isInitialized) {
           return AspectRatio(
             aspectRatio: videoMediaPlayerBloc.actualAspectRatio,
             child: const _FediVideoPlayerInitializedWidget(),

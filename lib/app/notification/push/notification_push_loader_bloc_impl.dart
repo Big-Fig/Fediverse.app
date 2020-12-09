@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
@@ -37,6 +39,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       get launchOrResumePushLoaderNotificationStream =>
           launchOrResumePushLoaderNotificationSubject.stream;
 
+  final StreamController<NotificationPushLoaderNotification>
+      _handledNotificationsStreamController = StreamController.broadcast();
+
+  @override
+  Stream<NotificationPushLoaderNotification> get handledNotificationsStream =>
+      _handledNotificationsStreamController.stream;
+
   NotificationPushLoaderBloc({
     @required this.currentInstance,
     @required this.pushHandlerBloc,
@@ -46,9 +55,14 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
-    addDisposable(disposable: CustomDisposable(() async {
-      pushHandlerBloc.removeRealTimeHandler(handlePush);
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          pushHandlerBloc.removeRealTimeHandler(handlePush);
+        },
+      ),
+    );
+    addDisposable(streamController: _handledNotificationsStreamController);
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
@@ -87,12 +101,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
             .upsertRemoteNotification(remoteNotification, unread: unread);
 
         if (pushHandlerMessage.pushMessage.isLaunchOrResume) {
-          launchOrResumePushLoaderNotificationSubject
-              .add(NotificationPushLoaderNotification(
-            notification: await notificationRepository
-                .findByRemoteId(remoteNotification.id),
-            pushHandlerMessage: pushHandlerMessage,
-          ));
+          launchOrResumePushLoaderNotificationSubject.add(
+            NotificationPushLoaderNotification(
+              notification: await notificationRepository
+                  .findByRemoteId(remoteNotification.id),
+              pushHandlerMessage: pushHandlerMessage,
+            ),
+          );
         }
 
         // todo: remove temp hack unread should be redesigned
@@ -101,6 +116,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         if (chatMessage != null) {
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
+
+        _handledNotificationsStreamController.add(
+          NotificationPushLoaderNotification(
+              notification: await notificationRepository
+                  .findByRemoteId(remoteNotification.id),
+              pushHandlerMessage: pushHandlerMessage),
+        );
       }
     } else {
       handled = false;

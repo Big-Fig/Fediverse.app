@@ -11,7 +11,7 @@ import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_li
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_widget.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -100,7 +100,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
               IMyAccountLocalPreferenceBloc>(
             update: (context, value, previous) => MyAccountLocalPreferenceBloc(
                 ILocalPreferencesService.of(context, listen: false),
-                value.userAtHost),
+                userAtHost: value.userAtHost),
             child: Builder(
               builder: (context) => FediAsyncInitLoadingWidget(
                 asyncInitLoadingBloc:
@@ -194,7 +194,7 @@ class _AuthInstanceChooserInstanceListItemAddAccountRowWidget
 
   @override
   Widget build(BuildContext context) {
-    return FediPrimaryFilledTextButton(
+    return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_auth_instance_chooser_action_addInstance,
       expanded: false,
       onPressed: () {

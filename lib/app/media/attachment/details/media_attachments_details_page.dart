@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_media_page.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
+import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/share/external/external_share_media_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -13,7 +13,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
 import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -90,7 +90,7 @@ class _MediaAttachmentDetailsPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
         title: S.of(context).app_media_attachment_details_title,
         actions: <Widget>[
           _MediaAttachmentDetailsPageAddToGalleryAction(
@@ -125,12 +125,12 @@ class _MediaAttachmentDetailsPageState
         );
         break;
       case MastodonMediaAttachmentType.video:
-        var settingsLocalPreferenceBloc =
-            IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
+        var mediaSettingsBloc =
+        IMediaSettingsBloc.of(context, listen: false);
         return VideoMediaPlayerBloc.provideToContext(
           context,
-          autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
-          autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
+          autoInit: mediaSettingsBloc.autoInit,
+          autoPlay: mediaSettingsBloc.autoPlay,
           mediaPlayerSource:
               MediaPlayerSource.network(networkUrl: mediaAttachment.url),
           child: FediVideoPlayerWidget(),
@@ -141,12 +141,12 @@ class _MediaAttachmentDetailsPageState
 
         break;
       case MastodonMediaAttachmentType.audio:
-        var settingsLocalPreferenceBloc =
-            IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
+        var mediaSettingsBloc =
+            IMediaSettingsBloc.of(context, listen: false);
         return AudioMediaPlayerBloc.provideToContext(
           context,
-          autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
-          autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
+          autoInit: mediaSettingsBloc.autoInit,
+          autoPlay: mediaSettingsBloc.autoPlay,
           mediaPlayerSource:
               MediaPlayerSource.network(networkUrl: mediaAttachment.url),
           child: const FediAudioPlayerWidget(),

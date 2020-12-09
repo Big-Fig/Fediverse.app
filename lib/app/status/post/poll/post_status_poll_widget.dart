@@ -1,22 +1,24 @@
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-final _logger = Logger("post_status_poll_widget.dartpost_status_poll_widget.dart");
+final _logger =
+    Logger("post_status_poll_widget.dartpost_status_poll_widget.dart");
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -26,15 +28,15 @@ class PostStatusPollWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         ProxyProvider<IPostStatusPollBloc,
-            IFormOneTypeGroupBloc<IFormStringFieldBloc>>(
+            IOneTypeFormGroupBloc<IStringValueFormFieldBloc>>(
           update: (context, pollBloc, _) => pollBloc.pollOptionsGroupBloc,
           child: const _PostStatusPollOptionsFieldWidget(),
         ),
-        ProxyProvider<IPostStatusPollBloc, IFormBoolFieldBloc>(
+        ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
           update: (context, pollBloc, _) => pollBloc.multiplyFieldBloc,
           child: const _PostStatusPollMultiplyFieldWidget(),
         ),
-        ProxyProvider<IPostStatusPollBloc, IFormDurationFieldBloc>(
+        ProxyProvider<IPostStatusPollBloc, IDurationValueFormFieldBloc>(
           update: (context, pollBloc, _) => pollBloc.durationLengthFieldBloc,
           child: const _PostStatusPollLengthFieldWidget(),
         ),
@@ -51,8 +53,8 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
-        IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(context);
-    return StreamBuilder<List<IFormStringFieldBloc>>(
+        IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
+    return StreamBuilder<List<IStringValueFormFieldBloc>>(
       stream: pollOptionsGroupBloc.itemsStream,
       builder: (context, snapshot) {
         var items = snapshot.data;
@@ -60,7 +62,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<List<IFormStringFieldBloc>>.value(
+        return Provider<List<IStringValueFormFieldBloc>>.value(
           value: items,
           child: _PostStatusPollOptionsFieldItemsWidget(),
         );
@@ -76,11 +78,11 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var items = Provider.of<List<IFormStringFieldBloc>>(context);
+    var items = Provider.of<List<IStringValueFormFieldBloc>>(context);
     return Column(
       children: [
         ...items
-            .map((pollItemBloc) => Provider<IFormStringFieldBloc>.value(
+            .map((pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
                   value: pollItemBloc,
                   child: _PostStatusPollOptionsFieldItemWidget(),
                 ))
@@ -98,9 +100,9 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
-        IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(context);
+        IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
 
-    var pollItemBloc = IFormStringFieldBloc.of(context);
+    var pollItemBloc = IStringValueFormFieldBloc.of(context);
 
     var isLast = pollOptionsGroupBloc.isLast(pollItemBloc);
 
@@ -138,8 +140,8 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
-        IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(context);
-    var pollItemBloc = IFormStringFieldBloc.of(context);
+        IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
+    var pollItemBloc = IStringValueFormFieldBloc.of(context);
 
     var number = pollOptionsGroupBloc.indexOf(pollItemBloc) + 1;
 
@@ -169,7 +171,7 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
-        IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(context);
+        IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
     return StreamBuilder<bool>(
         stream: pollOptionsGroupBloc.isPossibleToRemoveFieldsStream,
         builder: (context, snapshot) {
@@ -181,7 +183,7 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
                 : IFediUiColorTheme.of(context).lightGrey,
             onPressed: isPossibleToRemoveFields
                 ? () {
-                    var pollItemBloc = IFormStringFieldBloc.of(
+                    var pollItemBloc = IStringValueFormFieldBloc.of(
                       context,
                       listen: false,
                     );
@@ -206,7 +208,7 @@ class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).primary,
       onPressed: () {
         var pollOptionsGroupBloc =
-            IFormOneTypeGroupBloc.of<IFormStringFieldBloc>(
+            IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(
           context,
           listen: false,
         );
@@ -224,9 +226,7 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var multiplyFieldBloc = IFormBoolFieldBloc.of(context);
-    return FormBoolFieldFormRowWidget(
-      field: multiplyFieldBloc,
+    return BoolValueFormFieldRowWidget(
       label: S.of(context).app_status_post_poll_field_multiply_label,
     );
   }
@@ -238,12 +238,8 @@ class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var lengthBloc = IFormDurationFieldBloc.of(context);
-    return FormDurationFieldFormRowWidget(
-      field: lengthBloc,
-      label: S.of(context).app_status_post_poll_field_length_label,
-      popupTitle: S.of(context).app_status_post_poll_field_length_picker_title,
-    );
-  }
+  Widget build(BuildContext context) => DurationValueFormFieldRowWidget(
+        label: S.of(context).app_status_post_poll_field_length_label,
+        pickerType: DurationPickerType.dateTime,
+      );
 }

@@ -16,11 +16,13 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
   final Widget onLongScrollUpTopOverlayWidget;
   final List<Widget> topSliverWidgets;
   final double topSliverScrollOffsetToShowWhiteStatusBar;
+  final bool unfocusOnScroll;
 
   FediNestedScrollViewWidget({
     @required this.onLongScrollUpTopOverlayWidget,
     @required this.topSliverWidgets,
     @required this.topSliverScrollOffsetToShowWhiteStatusBar,
+    this.unfocusOnScroll = true,
   });
 
   @override
@@ -30,13 +32,18 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
       listen: false,
     );
 
+    var child = buildNestedScrollView(
+      context,
+    );
+
+    if (unfocusOnScroll) {
+      child = UnfocusOnScrollAreaWidget(
+        child: child,
+      );
+    }
     return Stack(
       children: [
-        UnfocusOnScrollAreaWidget(
-          child: buildNestedScrollView(
-            context,
-          ),
-        ),
+        child,
         buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc)
       ],
     );

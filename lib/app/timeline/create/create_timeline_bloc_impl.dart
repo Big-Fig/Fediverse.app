@@ -1,101 +1,188 @@
 import 'dart:developer';
 
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 typedef TimelineSavedCallback = Function(Timeline timeline);
 
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final TimelineSavedCallback timelineSavedCallback;
+  final AuthInstance authInstance;
 
   @override
-  IFormStringFieldBloc idFieldBloc = FormStringFieldBloc(
-    originValue: TimelineSettings.generateUniqueTimelineId(),
-    validators: [
-      FormNonEmptyStringFieldValidationError.createValidator(),
-    ],
-    maxLength: 50,
-  );
+  IEditTimelineSettingsBloc get editTimelineSettingsBloc =>
+      editTimelineSettingsBlocSubject.value;
 
   @override
-  IFormStringFieldBloc nameFieldBloc = FormStringFieldBloc(
-    originValue: "",
-    validators: [
-      FormNonEmptyStringFieldValidationError.createValidator(),
-    ],
-    maxLength: 50,
-  );
+  Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream =>
+      editTimelineSettingsBlocSubject.stream;
+
+  BehaviorSubject<IEditTimelineSettingsBloc> editTimelineSettingsBlocSubject;
 
   @override
-  IFormValueFieldBloc<TimelineType> typeFieldBloc =
-      FormValueFieldBloc(originValue: TimelineType.public, validators: []);
+  List<IFormItemBloc> currentItems = [];
+
+  TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
   @override
-  ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(
-    type: TimelineType.public,
-    originalSettings: TimelineSettings.createDefaultPublicSettings(),
-  );
+  ITimelineSettingsBloc timelineSettingsBloc;
 
-  CreateTimelineBloc({@required this.timelineSavedCallback}) {
+  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
+
+  CreateTimelineBloc({
+    @required this.timelineSavedCallback,
+    @required this.authInstance,
+    @required this.webSocketsSettingsBloc,
+    @required ILocalPreferencesService localPreferencesService,
+  }) : super(isAllItemsInitialized: false) {
+    var timelineId = TimelineSettings.generateUniqueTimelineId();
+
+    var startType = TimelineType.public;
+
+    idFieldBloc = StringValueFormFieldBloc(
+      isEnabled: false,
+      originValue: timelineId,
+      validators: [],
+      maxLength: null,
+    );
+
+    typeFieldBloc = TimelineTypeSingleFromListValueFormFieldBloc(
+      originValue: startType,
+      validators: [],
+      isNullValuePossible: false,
+    );
+    nameFieldBloc = StringValueFormFieldBloc(
+      originValue: "",
+      validators: [
+        StringValueFormFieldNonEmptyValidationError.createValidator(),
+      ],
+      maxLength: 50,
+    );
+
+    timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+      localPreferencesService,
+      userAtHost: authInstance.userAtHost,
+      timelineId: timelineId,
+      defaultValue: Timeline.byType(
+        id: timelineId,
+        type: startType,
+        settings: TimelineSettings.createDefaultSettings(startType),
+        label: null,
+        isPossibleToDelete: true,
+      ),
+    );
+
+    timelineSettingsBloc = TimelineSettingsBloc(
+        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
+
+    editTimelineSettingsBlocSubject = BehaviorSubject.seeded(
+      EditTimelineSettingsBloc(
+        settingsBloc: timelineSettingsBloc,
+        timelineType: startType,
+        authInstance: authInstance,
+        isNullableValuesPossible: true,
+        isEnabled: true,
+        webSocketsSettingsBloc: webSocketsSettingsBloc,
+      ),
+    );
+
+    _onFieldsChanged();
+
+    addDisposable(
+      streamSubscription: typeFieldBloc.currentValueStream.listen(
+        (timelineType) {
+          _onTypeChanged(timelineType);
+        },
+      ),
+    );
+
+    addDisposable(disposable: idFieldBloc);
     addDisposable(disposable: nameFieldBloc);
     addDisposable(disposable: typeFieldBloc);
-    addDisposable(disposable: settingsFormBloc);
+    addDisposable(disposable: timelineLocalPreferencesBloc);
+    addDisposable(disposable: timelineSettingsBloc);
+    addDisposable(disposable: editTimelineSettingsBloc);
+  }
 
-    typeFieldBloc.currentValueStream.listen((type) {
-      switch (type) {
-        case TimelineType.home:
-          settingsFormBloc.fill(
-              type: type,
-              newSettings: TimelineSettings.createDefaultHomeSettings());
-          break;
-        case TimelineType.public:
-          settingsFormBloc.fill(
-              type: type,
-              newSettings: TimelineSettings.createDefaultPublicSettings());
-          break;
-        case TimelineType.customList:
-          settingsFormBloc.fill(
-            type: type,
-            newSettings: TimelineSettings.createDefaultCustomListSettings(
-                onlyInRemoteList: null),
-          );
-          break;
+  void _onTypeChanged(TimelineType timelineType) {
+    var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;
 
-        case TimelineType.hashtag:
-          settingsFormBloc.fill(
-            type: type,
-            newSettings: TimelineSettings.createDefaultHashtagSettings(
-                withRemoteHashtag: null),
-          );
-          break;
-        case TimelineType.account:
-          settingsFormBloc.fill(
-            type: type,
-            newSettings: TimelineSettings.createDefaultAccountSettings(
-                onlyFromRemoteAccount: null),
-          );
-          break;
-      }
-    });
+    var newEditTimelineSettingsBloc = EditTimelineSettingsBloc(
+      settingsBloc: timelineSettingsBloc,
+      timelineType: timelineType,
+      authInstance: authInstance,
+      isNullableValuesPossible: true,
+      isEnabled: true,
+      webSocketsSettingsBloc: webSocketsSettingsBloc,
+    );
+    timelineLocalPreferencesBloc.setValue(
+      Timeline(
+        id: idFieldBloc.currentValue,
+        typeString: timelineType?.toJsonValue(),
+        settings: TimelineSettings.createDefaultSettings(
+          timelineType,
+        ),
+        label: nameFieldBloc.currentValue,
+        isPossibleToDelete: true,
+      ),
+    );
+
+    editTimelineSettingsBlocSubject.add(newEditTimelineSettingsBloc);
+    addDisposable(disposable: editTimelineSettingsBloc);
+
+    _onFieldsChanged();
+
+    oldEditTimelineSettingsBloc?.dispose();
+  }
+
+  void _onFieldsChanged() {
+    currentItems = [
+      idFieldBloc,
+      nameFieldBloc,
+      typeFieldBloc,
+      editTimelineSettingsBloc,
+    ];
+    onItemsChanged();
   }
 
   @override
-  List<IFormItemBloc> get currentItems => [
-        nameFieldBloc,
-        typeFieldBloc,
-        settingsFormBloc,
-      ];
+  void handleBackPressed() {
+    timelineLocalPreferencesBloc.clearValue();
+  }
+
+  @override
+  IStringValueFormFieldBloc idFieldBloc;
+
+  @override
+  IStringValueFormFieldBloc nameFieldBloc;
+
+  @override
+  ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+
+  @override
+  bool get isSomethingChanged => true;
+
+  @override
+  Stream<bool> get isSomethingChangedStream => Stream.value(isSomethingChanged);
 
   @override
   Future save() async {
@@ -104,7 +191,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       label: nameFieldBloc.currentValue,
       typeString: typeFieldBloc.currentValue.toJsonValue(),
       isPossibleToDelete: true,
-      settings: settingsFormBloc.timelineSettings,
+      settings: editTimelineSettingsBloc.currentSettings,
     );
     timelineSavedCallback(timeline);
   }

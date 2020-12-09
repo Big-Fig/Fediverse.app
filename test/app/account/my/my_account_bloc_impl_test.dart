@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
@@ -47,7 +48,9 @@ void main() {
     authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-        preferencesService, authInstance.userAtHost);
+      preferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
 
     await myAccountLocalPreferenceBloc.setValue(myAccount);
     await Future.delayed(Duration(milliseconds: 1));
@@ -324,7 +327,15 @@ void main() {
         EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
     await subscription.cancel();
 
-    var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
+    var newEmojis = [
+      PleromaEmoji(
+        url: "url",
+        staticUrl: "staticUrl",
+        visibleInPicker: null,
+        shortcode: null,
+        category: null,
+      )
+    ];
 
     subscription = myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
       listenedValue = newValue;
@@ -345,9 +356,9 @@ void main() {
   });
 
   test('accountRelationship', () async {
-    expect(() => myAccountBloc.accountRelationship,
+    expect(() => myAccountBloc.relationship,
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-    expect(() => myAccountBloc.accountRelationshipStream,
+    expect(() => myAccountBloc.relationshipStream,
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
 

@@ -1,48 +1,47 @@
+import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
-import 'package:fedi/app/ui/theme/dark_fedi_ui_theme_model.dart';
+import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/app/ui/theme/light_fedi_ui_theme_model.dart';
-import 'package:fedi/ui/theme/current/current_ui_theme_bloc_impl.dart';
-import 'package:fedi/ui/theme/current/current_ui_theme_id_local_preference_bloc.dart';
+import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CurrentFediUiThemeBloc extends CurrentUiThemeBloc<IFediUiTheme>
+class CurrentFediUiThemeBloc extends DisposableOwner
     implements ICurrentFediUiThemeBloc {
   final IUiThemeSystemBrightnessBloc systemBrightnessHandlerBloc;
 
+  final List<IFediUiTheme> availableThemes;
+  final IUiSettingsBloc uiSettingsBloc;
+
   CurrentFediUiThemeBloc({
-    @required
-        ICurrentUiThemeIdLocalPreferenceBloc
-            currentUiThemeIdLocalPreferenceBloc,
+    @required this.uiSettingsBloc,
     @required IFediUiTheme lightTheme,
     @required IFediUiTheme darkTheme,
     @required this.systemBrightnessHandlerBloc,
-  }) : super(
-          currentUiThemeIdLocalPreferenceBloc:
-              currentUiThemeIdLocalPreferenceBloc,
-          availableThemes: [
-            lightTheme,
-            darkTheme,
-          ],
-        );
+    @required this.availableThemes,
+  });
 
   @override
-  IFediUiTheme get adaptiveBrightnessCurrentTheme {
-    return _calculateAdaptiveBrightnessCurrentThemeStream(
-        super.currentTheme, systemBrightnessHandlerBloc.systemBrightness);
-  }
+  IFediUiTheme get adaptiveBrightnessCurrentTheme =>
+      _calculateAdaptiveBrightnessCurrentThemeStream(
+        currentTheme,
+        systemBrightnessHandlerBloc.systemBrightness,
+      );
 
   @override
   Stream<IFediUiTheme> get adaptiveBrightnessCurrentThemeStream {
     return Rx.combineLatest2(
-        currentThemeStream,
-        systemBrightnessHandlerBloc.systemBrightnessStream,
-        (currentTheme, systemBrightness) =>
-            _calculateAdaptiveBrightnessCurrentThemeStream(
-                currentTheme, systemBrightness)).distinct();
+      currentThemeStream,
+      systemBrightnessHandlerBloc.systemBrightnessStream,
+      (currentTheme, systemBrightness) =>
+          _calculateAdaptiveBrightnessCurrentThemeStream(
+        currentTheme,
+        systemBrightness,
+      ),
+    ).distinct();
   }
 
   IFediUiTheme _calculateAdaptiveBrightnessCurrentThemeStream(
@@ -58,6 +57,33 @@ class CurrentFediUiThemeBloc extends CurrentUiThemeBloc<IFediUiTheme>
       } else {
         return lightFediUiTheme;
       }
+    }
+  }
+
+  @override
+  IFediUiTheme get currentTheme => mapIdToTheme(uiSettingsBloc.themeId);
+
+  @override
+  Stream<IFediUiTheme> get currentThemeStream =>
+      uiSettingsBloc.themeIdStream.map(
+        (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
+      );
+
+  IFediUiTheme mapIdToTheme(String id) {
+    if (id == null) {
+      return null;
+    }
+
+    return availableThemes.firstWhere(
+      (theme) => theme.id == id,
+    );
+  }
+
+  @override
+  Future changeTheme(IFediUiTheme theme) async {
+    var newThemeId = theme?.id;
+    if (uiSettingsBloc.themeId != newThemeId) {
+      await uiSettingsBloc.changeThemeId(newThemeId);
     }
   }
 }

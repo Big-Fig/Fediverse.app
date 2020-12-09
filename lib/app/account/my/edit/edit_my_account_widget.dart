@@ -5,34 +5,35 @@ import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.da
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
-import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
+import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 
 const editAccountAvatarSize = 120.0;
 const editAccountProgressSize = 30.0;
@@ -85,15 +86,20 @@ class EditMyAccountWidget extends StatelessWidget {
             children: [
               if (currentAuthInstanceBloc.currentInstance.isPleromaInstance)
                 buildPleromaBackgroundFieldImage(context, editMyAccountBloc),
-              buildTextField(
-                  formStringFieldBloc: editMyAccountBloc.displayNameField,
-                  label:
-                      S.of(context).app_account_my_edit_field_displayName_label,
-                  nextFormStringFieldBloc: editMyAccountBloc.noteField),
-              buildTextField(
-                formStringFieldBloc: editMyAccountBloc.noteField,
-                label: S.of(context).app_account_my_edit_field_note_label,
-                nextFormStringFieldBloc: null,
+              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
+                update: (context, value, _) => value.displayNameField,
+                child: buildTextField(
+                    label: S
+                        .of(context)
+                        .app_account_my_edit_field_displayName_label,
+                    nextFormStringFieldBloc: editMyAccountBloc.noteField),
+              ),
+              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
+                update: (context, value, _) => value.noteField,
+                child: buildTextField(
+                  label: S.of(context).app_account_my_edit_field_note_label,
+                  nextFormStringFieldBloc: null,
+                ),
               ),
               buildLockedField(context, editMyAccountBloc),
               buildCustomFields(context, editMyAccountBloc)
@@ -199,9 +205,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleMediaPickerPage(context, typesToPick: [
       MediaDeviceFileType.image,
-    ], onFileSelectedCallback: (context,IMediaDeviceFile mediaDeviceFile) async {
+    ], onFileSelectedCallback:
+        (context, IMediaDeviceFile mediaDeviceFile) async {
       showEditMyAccountAvatarDialog(context, mediaDeviceFile,
-          (context,filePickerFile) async {
+          (context, filePickerFile) async {
         try {
           await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
         } catch (e, stackTrace) {
@@ -387,7 +394,7 @@ class EditMyAccountWidget extends StatelessWidget {
               } else {
                 return Padding(
                   padding: FediPadding.allSmallPadding,
-                  child: FediPrimaryFilledTextButton(
+                  child: FediPrimaryFilledTextButtonWithBorder(
                     S
                         .of(context)
                         .app_account_my_edit_field_backgroundImage_action_add,
@@ -395,6 +402,7 @@ class EditMyAccountWidget extends StatelessWidget {
                       startChoosingFileToUploadBackground(
                           context, editMyAccountBloc);
                     },
+                    expanded: false,
                   ),
                 );
               }
@@ -428,20 +436,18 @@ class EditMyAccountWidget extends StatelessWidget {
     }
   }
 
-  Widget buildTextField(
-      {@required IFormStringFieldBloc formStringFieldBloc,
-      @required String label,
-      @required IFormStringFieldBloc nextFormStringFieldBloc}) {
+  Widget buildTextField({
+    @required String label,
+    @required IStringValueFormFieldBloc nextFormStringFieldBloc,
+  }) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
-    return FormStringFieldFormRowWidget(
+    return StringFormFieldRowWidget(
       autocorrect: true,
       label: label,
-      formStringFieldBloc: formStringFieldBloc,
       hint: label,
       onSubmitted: isHaveNextField
           ? (String value) {
-              formStringFieldBloc.focusNode.unfocus();
               nextFormStringFieldBloc.focusNode.requestFocus();
             }
           : null,
@@ -451,16 +457,18 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildLockedField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = S.of(context).app_account_my_edit_field_locked_label;
-    var field = editMyAccountBloc.lockedField;
-    return FormBoolFieldFormRowWidget(label: label, field: field);
-  }
+          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+      ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.lockedField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_account_my_edit_field_locked_label,
+        ),
+      );
 
   Widget buildCustomFields(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var customFieldsGroupBloc = editMyAccountBloc.customFieldsGroupBloc;
-    return StreamBuilder<List<IFormLinkPairFieldGroupBloc>>(
+    return StreamBuilder<List<ILinkPairFormGroupBloc>>(
         stream: customFieldsGroupBloc.itemsStream,
         initialData: customFieldsGroupBloc.items,
         builder: (context, snapshot) {
@@ -473,7 +481,7 @@ class EditMyAccountWidget extends StatelessWidget {
                   var index = entry.key;
                   var nextIndex = index + 1;
 
-                  IFormLinkPairFieldGroupBloc nextCustomField;
+                  ILinkPairFormGroupBloc nextCustomField;
                   if (nextIndex < fields.length) {
                     nextCustomField = fields[nextIndex];
                   }
@@ -496,17 +504,18 @@ class EditMyAccountWidget extends StatelessWidget {
                     if (isMaximumCustomFieldsCountReached != true) {
                       return Padding(
                         padding: FediPadding.allBigPadding,
-                        child: FediPrimaryFilledTextButton(
+                        child: FediPrimaryFilledTextButtonWithBorder(
                           S
                               .of(context)
                               .app_account_my_edit_field_customField_action_addNew,
                           onPressed: () {
                             customFieldsGroupBloc.addNewEmptyField();
                           },
+                          expanded: false,
                         ),
                       );
                     } else {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
                   }),
             ],
@@ -515,16 +524,11 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildCustomField(
-      {@required
-          BuildContext context,
-      @required
-          IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc> fieldGroupBloc,
-      @required
-          IFormLinkPairFieldGroupBloc customField,
-      @required
-          IFormLinkPairFieldGroupBloc nextCustomField,
-      @required
-          int index}) {
+      {@required BuildContext context,
+      @required IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> fieldGroupBloc,
+      @required ILinkPairFormGroupBloc customField,
+      @required ILinkPairFormGroupBloc nextCustomField,
+      @required int index}) {
     var number = index + 1;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -557,7 +561,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   static final _numberFormat = NumberFormat("#.#");
 
-  OverlaySupportEntry showMediaAttachmentFailedNotificationOverlay(
+  void showMediaAttachmentFailedNotificationOverlay(
       BuildContext context, dynamic e) {
     String contentText;
     if (e is UploadMediaExceedFileSizeLimitException) {
@@ -574,10 +578,11 @@ class EditMyAccountWidget extends StatelessWidget {
     } else {
       contentText = e.toString();
     }
-    return showErrorFediNotificationOverlay(
+
+    IToastService.of(context, listen: false).showErrorToast(
       context: context,
-      contentText: contentText,
-      titleText: S.of(context).app_media_upload_failed_notification_title,
+      content: contentText,
+      title: S.of(context).app_media_upload_failed_notification_title,
     );
   }
 }

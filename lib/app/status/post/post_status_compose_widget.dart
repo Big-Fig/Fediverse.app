@@ -169,6 +169,7 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const Padding(
           padding: FediPadding.allSmallPadding,

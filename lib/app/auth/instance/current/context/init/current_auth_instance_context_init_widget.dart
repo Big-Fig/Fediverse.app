@@ -6,9 +6,10 @@ import 'package:fedi/app/auth/instance/current/context/init/current_auth_instanc
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
-import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_indeterminate_progress_dialog.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -134,22 +135,16 @@ class _CurrentAuthInstanceContextInitWidgetState
           }
         });
   }
-
-
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredWidget extends StatelessWidget {
+class _CurrentAuthInstanceContextInitSessionExpiredWidget
+    extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredWidget({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc =
-    ICurrentAuthInstanceBloc.of(context);
-    var currentInstanceContextLoadingBloc =
-    ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
-
     return FediLightStatusBarStyleArea(
       child: Scaffold(
         backgroundColor: IFediUiColorTheme.of(context).primaryDark,
@@ -161,53 +156,105 @@ class _CurrentAuthInstanceContextInitSessionExpiredWidget extends StatelessWidge
               children: <Widget>[
                 Padding(
                   padding: FediPadding.allBigPadding,
-                  child: Text(
-                    S
-                        .of(context)
-                        .app_auth_instance_current_context_loading_cantLoad_content(
-                            currentAuthInstanceBloc.currentInstance.userAtHost),
-                    textAlign: TextAlign.center,
-                    style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
-                  ),
+                  child:
+                      const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget(),
                 ),
-                Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: FediGreyFilledTextButton(
-                    S
-                        .of(context)
-                        .app_auth_instance_current_context_loading_cantLoad_action_refresh,
-                    onPressed: () {
-                      currentInstanceContextLoadingBloc.refreshFromNetwork();
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: FediGreyFilledTextButton(
-                    S
-                        .of(context)
-                        .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
-                    onPressed: () {
-                      showMyAccountActionListBottomSheetDialog(context);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: FediGreyFilledTextButton(
-                    S.of(context)
-                        .app_auth_instance_current_context_loading_cantLoad_action_logout,
-                    onPressed: () {
-                      ICurrentAuthInstanceBloc.of(context, listen: false)
-                          .logoutCurrentInstance();
-                    },
-                  ),
-                ),
+                const FediSmallVerticalSpacer(),
+                const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget(),
+                const FediSmallVerticalSpacer(),
+                const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget(),
+                const FediSmallVerticalSpacer(),
+                const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
+    extends StatelessWidget {
+  const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediTransparentTextButtonWithBorder(
+      S
+          .of(context)
+          .app_auth_instance_current_context_loading_cantLoad_action_logout,
+      onPressed: () {
+        ICurrentAuthInstanceBloc.of(context, listen: false)
+            .logoutCurrentInstance();
+      },
+      color: IFediUiColorTheme.of(context).white,
+      expanded: false,
+    );
+  }
+}
+
+class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
+    extends StatelessWidget {
+  const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediTransparentTextButtonWithBorder(
+      S
+          .of(context)
+          .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
+      onPressed: () {
+        showMyAccountActionListBottomSheetDialog(context);
+      },
+      color: IFediUiColorTheme.of(context).white,
+      expanded: false,
+    );
+  }
+}
+
+class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
+    extends StatelessWidget {
+  const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentInstanceContextLoadingBloc =
+        ICurrentAuthInstanceContextInitBloc.of(context);
+
+    return FediTransparentTextButtonWithBorder(
+      S
+          .of(context)
+          .app_auth_instance_current_context_loading_cantLoad_action_refresh,
+      onPressed: () {
+        currentInstanceContextLoadingBloc.refreshFromNetwork();
+      },
+      color: IFediUiColorTheme.of(context).white,
+      expanded: false,
+    );
+  }
+}
+
+class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
+    extends StatelessWidget {
+  const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    return Text(
+      S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
+          currentAuthInstanceBloc.currentInstance.userAtHost),
+      textAlign: TextAlign.center,
+      style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
     );
   }
 }

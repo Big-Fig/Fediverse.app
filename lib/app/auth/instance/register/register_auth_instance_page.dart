@@ -1,19 +1,19 @@
+import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_widget.dart';
-import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_service_impl.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_captcha_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
+import 'package:fedi/form/field/value/string/captcha/captcha_string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -32,7 +32,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageTitleAppBar(
+      appBar: FediPageTitleAppBar(
           title:
           S.of(context).app_auth_instance_register_title,
           leading: FediDismissIconButton()),
@@ -50,7 +50,7 @@ void goToRegisterAuthInstancePage(
   @required Uri instanceBaseUrl,
   @required VoidCallback successRegistrationCallback,
 }) async {
-  IFormCaptchaStringFieldBloc captchaFieldBloc;
+  ICaptchaStringFormFieldBloc captchaFieldBloc;
   await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
     context: context,
     asyncCode: () async {
@@ -70,7 +70,7 @@ void goToRegisterAuthInstancePage(
             initialCaptcha: captcha,
             pleromaCaptchaService: pleromaCaptchaService,
             originValue: null,
-            validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+            validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
           );
         }
       } catch (stackTrace, e) {
@@ -85,7 +85,7 @@ void goToRegisterAuthInstancePage(
       context, captchaFieldBloc, instanceBaseUrl, successRegistrationCallback);
 }
 
-void goToPage(BuildContext context, IFormCaptchaStringFieldBloc captchaBloc,
+void goToPage(BuildContext context, ICaptchaStringFormFieldBloc captchaBloc,
     Uri instanceBaseUrl, VoidCallback successRegistrationCallback) {
   Navigator.push(
     context,

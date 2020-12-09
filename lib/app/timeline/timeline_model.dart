@@ -4,8 +4,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/enum/enum_values.dart';
-import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
@@ -20,10 +20,10 @@ part 'timeline_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 78)
+//@HiveType()
+@HiveType(typeId: -32 + 78)
 @JsonSerializable(explicitToJson: true)
-class Timeline implements IPreferencesObject {
+class Timeline implements IJsonObject {
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -109,7 +109,7 @@ class Timeline implements IPreferencesObject {
           id: remoteList.calculateTimelineId(),
           type: TimelineType.customList,
           settings: settings,
-          label: remoteList.id,
+          label: remoteList.title,
           isPossibleToDelete: isPossibleToDelete,
         );
 
@@ -175,7 +175,7 @@ class Timeline implements IPreferencesObject {
 
   bool get onlyLocal => settings?.onlyLocal;
 
-  bool get webSocketsUpdates => settings?.webSocketsUpdates;
+  bool get isWebSocketsUpdatesEnabled => settings?.webSocketsUpdates;
 
   bool get withMuted => settings?.withMuted;
 
@@ -217,22 +217,6 @@ class Timeline implements IPreferencesObject {
       );
 }
 
-enum TimelineType {
-  public,
-  customList,
-  home,
-  hashtag,
-  account,
-}
-
-EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
-  "public": TimelineType.public,
-  "custom_list": TimelineType.customList,
-  "home": TimelineType.home,
-  "hashtag": TimelineType.hashtag,
-  "account": TimelineType.account,
-});
-
 extension TimelineIdPleromaListExtension on IPleromaList {
   String calculateTimelineId() => "list.$id";
 }
@@ -255,16 +239,4 @@ extension TimelineIdHashTagExtension on IHashtag {
 
 extension TimelineIdAccountExtension on IAccount {
   String calculateTimelineId() => "account.$remoteId";
-}
-
-extension TimelineTypeExtension on TimelineType {
-  String toJsonValue() {
-    var type = timelineTypeEnumValues.enumToValueMap[this];
-    assert(type != null, "invalid type $this");
-    return type;
-  }
-}
-
-extension TimelineTypeStringExtension on String {
-  TimelineType toTimelineType() => timelineTypeEnumValues.valueToEnumMap[this];
 }

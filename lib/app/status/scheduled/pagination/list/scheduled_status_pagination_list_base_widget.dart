@@ -13,12 +13,16 @@ abstract class ScheduledStatusPaginationListBaseWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    Widget customEmptyWidget,
+    Widget customLoadingWidget,
   }) : super(
           key: key,
           footer: footer,
           header: header,
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
         );
 
   @override

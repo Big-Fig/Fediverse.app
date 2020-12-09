@@ -6,12 +6,15 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -26,7 +29,6 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
-  final bool listenWebSockets;
 
   Timeline get timeline => timelineLocalPreferencesBloc.value;
 
@@ -46,47 +48,70 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
-    @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
+    @required WebSocketsListenType webSocketsListenType,
   }) {
-    // todo: rework listen, due to settings change
-    if (listenWebSockets && (timeline.webSocketsUpdates ?? true)) {
+    resubscribeWebSocketsUpdates(webSocketsListenType);
+
+    addDisposable(custom: () {
+      webSocketsListenerDisposable?.dispose();
+    });
+  }
+
+  IDisposable webSocketsListenerDisposable;
+
+  void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
+    webSocketsListenerDisposable?.dispose();
+
+
+    var isWebSocketsUpdatesEnabled = timeline.isWebSocketsUpdatesEnabled ?? true;
+    _logger.finest(() => "resubscribeWebSocketsUpdates "
+        "isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled "
+        "webSocketsListenType $webSocketsListenType "
+        "timelineType $timelineType ");
+    if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
-          addDisposable(
-              disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenPublicChannel(
+            listenType: webSocketsListenType,
             local: timeline.onlyLocal,
             onlyMedia: timeline.onlyWithMedia,
-          ));
+          );
 
           break;
         case TimelineType.home:
-          addDisposable(
-              disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenMyAccountChannel(
+            listenType: webSocketsListenType,
             notification: false,
             chat: false,
-          ));
+          );
+
           break;
         case TimelineType.customList:
-          addDisposable(
-              disposable: webSocketsHandlerManagerBloc.listenListChannel(
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenListChannel(
+            listenType: webSocketsListenType,
             listId: timeline.onlyInRemoteList.id,
-          ));
+          );
           break;
 
         case TimelineType.hashtag:
-          addDisposable(
-              disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenHashtagChannel(
+            listenType: webSocketsListenType,
             hashtag: timeline.withRemoteHashtag,
             local: timeline.onlyLocal,
-          ));
+          );
           break;
         case TimelineType.account:
-          addDisposable(
-              disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
+          webSocketsListenerDisposable =
+              webSocketsHandlerManagerBloc.listenAccountChannel(
+            listenType: webSocketsListenType,
             accountId: timeline.onlyFromRemoteAccount.id,
             notification: false,
-          ));
+          );
           break;
       }
     }
@@ -270,7 +295,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     BuildContext context, {
     @required TimelineType timelineType,
     @required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
-    @required bool listenWebSockets,
+    @required WebSocketsListenType webSocketsListenType,
   }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaAccountService.of(
@@ -290,10 +315,10 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           listen: false,
         ),
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-        listenWebSockets: listenWebSockets,
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,
           listen: false,
         ),
+        webSocketsListenType: webSocketsListenType,
       );
 }

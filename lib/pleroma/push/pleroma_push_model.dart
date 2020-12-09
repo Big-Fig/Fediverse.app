@@ -127,7 +127,10 @@ class PleromaPushSubscribeData {
   String toJsonString() => jsonEncode(_$PleromaPushSubscribeDataToJson(this));
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class PleromaPushSettingsDataAlerts {
   final bool favourite;
 
@@ -141,6 +144,8 @@ class PleromaPushSettingsDataAlerts {
 
   @JsonKey(name: "pleroma:chat_mention")
   final bool pleromaChatMention;
+  @JsonKey(name: "pleroma:emoji_reaction")
+  final bool pleromaEmojiReaction;
 
   PleromaPushSettingsDataAlerts({
     @required this.favourite,
@@ -149,6 +154,7 @@ class PleromaPushSettingsDataAlerts {
     @required this.reblog,
     @required this.poll,
     @required this.pleromaChatMention,
+    @required this.pleromaEmojiReaction,
   });
 
   PleromaPushSettingsDataAlerts.defaultAllEnabled()
@@ -159,8 +165,8 @@ class PleromaPushSettingsDataAlerts {
           reblog: true,
           poll: true,
           pleromaChatMention: true,
+          pleromaEmojiReaction: true,
         );
-
 
   @override
   bool operator ==(Object other) =>
@@ -172,7 +178,9 @@ class PleromaPushSettingsDataAlerts {
           mention == other.mention &&
           reblog == other.reblog &&
           poll == other.poll &&
-          pleromaChatMention == other.pleromaChatMention;
+          pleromaChatMention == other.pleromaChatMention &&
+          pleromaEmojiReaction == other.pleromaEmojiReaction;
+
   @override
   int get hashCode =>
       favourite.hashCode ^
@@ -180,14 +188,15 @@ class PleromaPushSettingsDataAlerts {
       mention.hashCode ^
       reblog.hashCode ^
       poll.hashCode ^
-      pleromaChatMention.hashCode;
-
+      pleromaChatMention.hashCode ^
+      pleromaEmojiReaction.hashCode;
 
   @override
   String toString() {
     return 'PleromaPushSettingsDataAlerts{favourite: $favourite,'
         ' follow: $follow, mention: $mention, reblog: $reblog,'
-        ' poll: $poll, pleromaChatMention: $pleromaChatMention}';
+        ' poll: $poll, pleromaChatMention: $pleromaChatMention,'
+        ' pleromaEmojiReaction: $pleromaEmojiReaction}';
   }
 
   factory PleromaPushSettingsDataAlerts.fromJson(Map<String, dynamic> json) =>
@@ -286,8 +295,8 @@ class PleromaPushSubscriptionKeys {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType()
-// @HiveType(typeId: -32 + 56)
+//@HiveType()
+@HiveType(typeId: -32 + 56)
 @JsonSerializable()
 class PleromaPushMessageBody {
   @HiveField(0)

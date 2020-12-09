@@ -8,6 +8,8 @@ import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
+import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -17,7 +19,7 @@ import 'package:fedi/app/status/thread/status_thread_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -31,7 +33,7 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FediSubPageCustomAppBar(
+      appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
         child: const _StatusThreadStarterAccountWidget(),
       ),
@@ -72,23 +74,30 @@ class _StatusThreadStarterAccountWidget extends StatelessWidget {
               update: (context, value, previous) =>
                   StatusBloc.createFromContext(context, status,
                       isNeedWatchLocalRepositoryForUpdates: false),
-              child: Provider.value(
-                value: account,
-                child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                  update: (context, value, previous) =>
-                      AccountBloc.createFromContext(
-                    context,
-                    account: account,
-                    isNeedWatchWebSocketsEvents: false,
-                    isNeedRefreshFromNetworkOnInit: false,
-                    isNeedWatchLocalRepositoryForUpdates: false,
-                    isNeedPreFetchRelationship: false,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      goToAccountDetailsPage(context, account);
-                    },
-                    child: const _StatusThreadStarterAccountBodyWidget(),
+              child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                update: (context, statusBloc, _) =>
+                    StatusSensitiveBloc.createFromContext(
+                  context: context,
+                  statusBloc: statusBloc,
+                ),
+                child: Provider.value(
+                  value: account,
+                  child: DisposableProxyProvider<IAccount, IAccountBloc>(
+                    update: (context, value, previous) =>
+                        AccountBloc.createFromContext(
+                      context,
+                      account: account,
+                      isNeedWatchWebSocketsEvents: false,
+                      isNeedRefreshFromNetworkOnInit: false,
+                      isNeedWatchLocalRepositoryForUpdates: false,
+                      isNeedPreFetchRelationship: false,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        goToAccountDetailsPage(context, account);
+                      },
+                      child: const _StatusThreadStarterAccountBodyWidget(),
+                    ),
                   ),
                 ),
               ),

@@ -1,31 +1,33 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/form/form_bloc_impl.dart';
+import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
+import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_item_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
-import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
-  static FormDurationFieldBloc createDurationLengthBloc(
+  static DurationValueFormFieldBloc createDurationLengthBloc(
       PleromaInstancePollLimits pollLimits) {
     Duration pollMinimumExpiration = calculatePollMinimumExpiration(pollLimits);
 
     Duration pollMaximumExpiration = calculatePollMaximumExpiration(pollLimits);
 
     var originValue = IPostStatusPollBloc.defaultPollExpiration;
-    return FormDurationFieldBloc(
+    return DurationValueFormFieldBloc(
       originValue: originValue,
       minDuration: pollMinimumExpiration,
       maxDuration: pollMaximumExpiration,
+      isNullValuePossible: false,
+      isEnabled: true,
     );
   }
 
@@ -58,14 +60,15 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   PostStatusPollBloc({
     @required this.pollLimits,
-  })  : pollOptionsGroupBloc = FormOneTypeGroupBloc<IFormStringFieldBloc>(
+  })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
           originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
           minimumFieldsCount: 2,
           maximumFieldsCount: pollLimits?.maxOptions ?? 20,
           newEmptyFieldCreator: () =>
               createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
-        durationLengthFieldBloc = createDurationLengthBloc(pollLimits);
+        durationLengthFieldBloc = createDurationLengthBloc(pollLimits),
+        super(isAllItemsInitialized: true);
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -75,32 +78,34 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       ];
 
   @override
-  IFormDurationFieldBloc durationLengthFieldBloc;
+  IDurationValueFormFieldBloc durationLengthFieldBloc;
   @override
-  IFormBoolFieldBloc multiplyFieldBloc = FormBoolFieldBloc(originValue: false);
+  IBoolValueFormFieldBloc multiplyFieldBloc =
+      BoolValueFormFieldBloc(originValue: false);
 
   @override
-  IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc;
+  IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
 
-  static List<IFormStringFieldBloc> createDefaultPollOptions(
+  static List<IStringValueFormFieldBloc> createDefaultPollOptions(
       int maximumOptionLength) {
-    return <IFormStringFieldBloc>[
+    return <IStringValueFormFieldBloc>[
       createPollOptionBloc(maximumOptionLength),
       createPollOptionBloc(maximumOptionLength),
     ];
   }
 
-  static FormStringFieldBloc createPollOptionBloc(int maximumOptionLength) =>
+  static StringValueFormFieldBloc createPollOptionBloc(
+          int maximumOptionLength) =>
       createPollOptionFieldBloc(null, maximumOptionLength);
 
-  static FormStringFieldBloc createPollOptionFieldBloc(
+  static StringValueFormFieldBloc createPollOptionFieldBloc(
     String originValue,
     int maximumOptionLength,
   ) {
-    return FormStringFieldBloc(
+    return StringValueFormFieldBloc(
       originValue: originValue,
       validators: [
-        FormNonEmptyStringFieldValidationError.createValidator(),
+        StringValueFormFieldNonEmptyValidationError.createValidator(),
       ],
       maxLength: maximumOptionLength,
     );
@@ -133,7 +138,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     var oldBloc = pollOptionsGroupBloc;
 
-    pollOptionsGroupBloc = FormOneTypeGroupBloc<IFormStringFieldBloc>(
+    pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
       originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
       minimumFieldsCount: 2,
       maximumFieldsCount: pollLimits?.maxOptions ?? 20,

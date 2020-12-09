@@ -6,7 +6,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/tos/tos_page.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -102,12 +102,13 @@ class __JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           left: FediSizes.smallPadding, right: FediSizes.smallPadding),
-      child: FediTransparentTextButton(
+      child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_login,
         onPressed: () {
           logInToInstance(context);
         },
         color: IFediUiColorTheme.of(context).white,
+        expanded: true,
       ),
     );
   }
@@ -123,12 +124,13 @@ class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           left: FediSizes.smallPadding, right: FediSizes.smallPadding),
-      child: FediTransparentTextButton(
+      child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_signUp,
         onPressed: () {
           signUpToInstance(context);
         },
         color: IFediUiColorTheme.of(context).white,
+        expanded: true,
       ),
     );
   }

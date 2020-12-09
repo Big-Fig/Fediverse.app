@@ -5,7 +5,6 @@ import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_d
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_widget.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_page.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
@@ -16,6 +15,7 @@ import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_rep
 import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
@@ -35,7 +35,7 @@ import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/collapsible/collapsible_owner_widget.dart';
+import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -395,7 +395,6 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: [
-
                 Expanded(
                   child: InkWell(
                     onTap: () {
@@ -421,16 +420,17 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                 ),
                 const FediBigHorizontalSpacer(),
                 FediIconInCircleBlurredButton(
-                  FediIcons.settings,
+                  FediIcons.pen,
                   onPressed: () {
-                    goMyAccountSettingsPage(context);
+                    goToEditMyAccountPage(context);
                   },
                 ),
                 const FediBigHorizontalSpacer(),
                 FediIconInCircleBlurredButton(
-                  FediIcons.pen,
+                  FediIcons.menu_list,
+                  iconSize: 15.0,
                   onPressed: () {
-                    goToEditMyAccountPage(context);
+                    showAccountHomeTabMenuDialog(context);
                   },
                 ),
               ],

@@ -1,7 +1,7 @@
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,9 +61,10 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
               }
             ],
             builder: (BuildContext context, onPressed) {
-              return FediPrimaryFilledTextButton(
+              return FediPrimaryFilledTextButtonWithBorder(
                 S.of(context).app_status_post_action_post,
                 onPressed: isReadyToPost ? onPressed : null,
+                expanded: false,
               );
             },
           );

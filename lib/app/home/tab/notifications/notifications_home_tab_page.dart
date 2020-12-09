@@ -7,7 +7,7 @@ import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/app/push/subscription_settings/push_subscription_settings_page.dart';
+import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -132,13 +132,14 @@ class _NotificationsHomeTabPageBodyState
           ),
           tabBodyOverlayBuilder: (BuildContext context, int index) =>
               const NotificationListTapToLoadOverlayWidget(),
-          tabBarViewContainerBuilder: (BuildContext context, Widget child) => ClipRRect(
-              borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-              child: Container(
-                color: IFediUiColorTheme.of(context).white,
-                child: child,
-              ),
+          tabBarViewContainerBuilder: (BuildContext context, Widget child) =>
+              ClipRRect(
+            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+            child: Container(
+              color: IFediUiColorTheme.of(context).white,
+              child: child,
             ),
+          ),
         ),
       ),
     );
@@ -186,7 +187,9 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
         FediIconInCircleBlurredButton(
           FediIcons.filter,
           onPressed: () {
-            goPushSubscriptionSettingsPage(context);
+            showEditInstancePushSettingsDialog(
+              context: context,
+            );
           },
         )
       ],

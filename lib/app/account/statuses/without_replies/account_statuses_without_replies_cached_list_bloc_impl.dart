@@ -1,18 +1,13 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
-import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -22,29 +17,17 @@ var _logger =
 
 class AccountStatusesWithoutRepliesListBloc
     extends AccountStatusesCachedListBloc {
+  final IStatusRepository statusRepository;
+
   AccountStatusesWithoutRepliesListBloc({
     @required IAccount account,
     @required IPleromaAccountService pleromaAccountService,
-    @required IStatusRepository statusRepository,
-    @required INotificationRepository notificationRepository,
-    @required IConversationChatRepository conversationRepository,
-    @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required bool listenWebSocketsChanges,
-    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
-    @required
-    IConversationChatNewMessagesHandlerBloc
-    conversationChatNewMessagesHandlerBloc,
+    @required this.statusRepository,
+    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
-          statusRepository: statusRepository,
-          notificationRepository: notificationRepository,
-          conversationRepository: conversationRepository,
-          pleromaWebSocketsService: pleromaWebSocketsService,
-          listenWebSocketsChanges: listenWebSocketsChanges,
-          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-          conversationChatNewMessagesHandlerBloc:
-              conversationChatNewMessagesHandlerBloc,
+          webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         );
 
   @override
@@ -57,19 +40,10 @@ class AccountStatusesWithoutRepliesListBloc
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
-      conversationRepository:
-          IConversationChatRepository.of(context, listen: false),
-      listenWebSocketsChanges: IMyAccountSettingsBloc.of(context, listen: false)
-          .isRealtimeWebSocketsEnabledFieldBloc
-          .currentValue,
-      notificationRepository:
-          INotificationRepository.of(context, listen: false),
-      pleromaWebSocketsService:
-          IPleromaWebSocketsService.of(context, listen: false),
-      chatNewMessagesHandlerBloc:
-          IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
-      conversationChatNewMessagesHandlerBloc:
-      IConversationChatNewMessagesHandlerBloc.of(context, listen: false),
+      webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
+        context,
+        listen: false,
+      ),
     );
   }
 

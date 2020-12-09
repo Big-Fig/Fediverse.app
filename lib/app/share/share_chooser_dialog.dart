@@ -18,7 +18,7 @@ void showShareChooserDialog(
       title: S.of(context).app_share_title,
       actions: [
         DialogAction(
-            icon: FediIcons.share,
+            icon: FediIcons.share_native,
             label: S.of(context).app_share_action_shareToExternal,
             onAction: (context) {
               externalShareAction();

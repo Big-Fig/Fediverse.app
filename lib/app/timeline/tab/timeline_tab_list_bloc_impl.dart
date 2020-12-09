@@ -1,23 +1,21 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
-import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/timeline/type/timeline_type_model.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
+import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -55,21 +53,17 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         return mainTimelineTabBloc;
       });
 
-  final ITimelinesHomeTabStorageLocalPreferences
+  final ITimelinesHomeTabStorageLocalPreferencesBloc
       timelinesHomeTabStorageLocalPreferences;
   final IPleromaTimelineService pleromaTimelineService;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
-  final IConversationChatRepository conversationRepository;
-  final INotificationRepository notificationRepository;
-  final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
-  final IMyAccountSettingsBloc myAccountSettingsBloc;
+  final IWebSocketsSettingsBloc webSocketsSettingsBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
-  final bool listenWebSockets;
   final ILocalPreferencesService preferencesService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final TickerProvider vsync;
@@ -81,17 +75,13 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     @required this.pleromaTimelineService,
     @required this.pleromaAccountService,
     @required this.statusRepository,
-    @required this.accountRepository,
-    @required this.conversationRepository,
-    @required this.notificationRepository,
     @required this.myAccountBloc,
-    @required this.myAccountSettingsBloc,
+    @required this.webSocketsSettingsBloc,
     @required this.currentInstanceBloc,
     @required this.timelinesHomeTabStorageLocalPreferences,
     @required this.pleromaWebSocketsService,
     @required this.chatNewMessagesHandlerBloc,
     @required this.webSocketsHandlerManagerBloc,
-    @required this.listenWebSockets,
     @required this.vsync,
   }) {
     addDisposable(subject: timelineTabBlocsListSubject);
@@ -157,18 +147,27 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     var oldSelectedIndex = oldTabController?.index;
 
+    ITimelineTabBloc oldSelectedBloc;
+    if (oldBlocs != null && oldSelectedIndex != null) {
+      oldSelectedBloc = oldBlocs[oldSelectedIndex];
+    }
+
     var newTabBlocs = <ITimelineTabBloc>[];
+    var selectedTimelineId = oldSelectedBloc?.timelineId ?? newTimelineIds.first;
+
     for (var timelineId in newTimelineIds) {
       var timelineTabBloc = TimelineTabBloc(
         preferencesService: preferencesService,
         timelineId: timelineId,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
-        listenWebSockets: listenWebSockets,
         pleromaAccountService: pleromaAccountService,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         currentAuthInstanceBloc: currentAuthInstanceBloc,
         myAccountBloc: myAccountBloc,
+        webSocketsListenType: selectedTimelineId == timelineId
+            ? WebSocketsListenType.foreground
+            : WebSocketsListenType.background,
       );
 
       await timelineTabBloc.performAsyncInit();
@@ -176,9 +175,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     }
     int initialIndex;
 
-    if (oldBlocs != null && oldSelectedIndex != null) {
-      var oldSelectedBloc = oldBlocs[oldSelectedIndex];
-
+    if (oldSelectedBloc != null) {
       initialIndex = newTabBlocs
           .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
 
@@ -188,8 +185,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     }
 
     var tabController = TabController(
-      length: newTabBlocs.length,
-      vsync: vsync,
+      length: newTabBlocs.length, vsync: vsync,
       // initialIndex: initialIndex ?? 0,
     );
 
@@ -203,6 +199,13 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       var paginationListBloc = tabBloc.paginationListWithNewItemsBloc;
       if (paginationListBloc.unmergedNewItemsCount > 0) {
         paginationListBloc.mergeNewItems();
+      }
+      for (var bloc in newTabBlocs) {
+        bloc.resubscribeWebSocketsUpdates(
+          bloc == tabBloc
+              ? WebSocketsListenType.foreground
+              : WebSocketsListenType.background,
+        );
       }
     };
     tabController.addListener(tabControllerListener);
@@ -238,13 +241,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
             IPleromaWebSocketsService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        accountRepository: IAccountRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        myAccountSettingsBloc:
-            IMyAccountSettingsBloc.of(context, listen: false),
+        webSocketsSettingsBloc:
+            IWebSocketsSettingsBloc.of(context, listen: false),
         chatNewMessagesHandlerBloc:
             IPleromaChatNewMessagesHandlerBloc.of(context, listen: false),
         currentAuthInstanceBloc:
@@ -252,12 +250,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),
-        listenWebSockets: IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabledFieldBloc
-                .currentValue ==
-            true,
         timelinesHomeTabStorageLocalPreferences:
-            ITimelinesHomeTabStorageLocalPreferences.of(
+            ITimelinesHomeTabStorageLocalPreferencesBloc.of(
           context,
           listen: false,
         ),

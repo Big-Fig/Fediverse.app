@@ -26,6 +26,7 @@ import 'package:provider/provider.dart';
 
 class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
+
   const ChatListItemWidget({
     @required this.onClick,
   });
@@ -69,19 +70,33 @@ class ChatListItemWidget extends StatelessWidget {
 
 class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
+
   const _ChatListItemGoToChatButtonWidget({
     @required this.onClick,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FediIconButton(
-      tooltip: S.of(context).app_chat_action_more,
-      color: IFediUiColorTheme.of(context).darkGrey,
-      iconSize: FediSizes.mediumIconSize,
-      icon: Icon(FediIcons.arrow_right),
-      onPressed: () {
-        onClick(context);
+    var chatBloc = IChatBloc.of(context);
+
+    return StreamBuilder<bool>(
+      stream: chatBloc.isHaveUnreadStream,
+      initialData: chatBloc.isHaveUnread,
+      builder: (context, snapshot) {
+        var isHaveUnread = snapshot.data;
+
+        return FediIconButton(
+          color: isHaveUnread
+              ? IFediUiColorTheme.of(context).primary
+              : IFediUiColorTheme.of(context).darkGrey,
+          iconSize: FediSizes.mediumIconSize,
+          icon: Icon(isHaveUnread
+              ? FediIcons.chevron_light_highlight
+              : FediIcons.arrow_right),
+          onPressed: () {
+            onClick(context);
+          },
+        );
       },
     );
   }

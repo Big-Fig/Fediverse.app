@@ -2,12 +2,12 @@ library flutter_datetime_picker;
 
 import 'dart:async';
 
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
+import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -219,7 +219,7 @@ class _FediDatePickerComponent extends StatefulWidget {
     @required this.onChanged,
     @required this.onConfirm,
     @required this.onCancel,
-  }):super(key:key);
+  }) : super(key: key);
 
   final DateChangedCallback onChanged;
   final DateChangedCallback onConfirm;
@@ -416,7 +416,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          FediPrimaryFilledTextButton(
+          FediPrimaryFilledTextButtonWithBorder(
             '$done',
             onPressed: () {
               Navigator.pop(context, widget.pickerModel.finalTime());
@@ -424,8 +424,9 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
                 widget.onConfirm(widget.pickerModel.finalTime());
               }
             },
+            expanded: false,
           ),
-          FediTransparentTextButton(
+          FediTransparentTextButtonWithBorder(
             '$cancel',
             color: IFediUiColorTheme.of(context).darkGrey,
             onPressed: () {
@@ -434,6 +435,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
                 widget.onCancel();
               }
             },
+            expanded: false,
           ),
         ],
       ),
@@ -484,8 +486,10 @@ class FediDatePickerTheme {
   }) : this(
           headerColor: IFediUiColorTheme.of(context, listen: false).white,
           backgroundColor: IFediUiColorTheme.of(context, listen: false).white,
-          itemStyle: IFediUiTextTheme.of(context, listen: false).mediumShortBoldDarkGrey,
-          doneStyle: IFediUiTextTheme.of(context, listen: false).mediumShortBoldPrimary,
+          itemStyle: IFediUiTextTheme.of(context, listen: false)
+              .mediumShortBoldDarkGrey,
+          doneStyle: IFediUiTextTheme.of(context, listen: false)
+              .mediumShortBoldPrimary,
           customTitle: customTitle ?? S.of(context).app_datetime_title,
           customDone: S.of(context).app_datetime_picker_action_ok,
           customCancel: S.of(context).app_datetime_picker_action_cancel,
