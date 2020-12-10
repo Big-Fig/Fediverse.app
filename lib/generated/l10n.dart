@@ -4811,6 +4811,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Muting`
+  String get app_account_mute_dialog_title {
+    return Intl.message(
+      'Muting',
+      name: 'app_account_mute_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
+  String get app_account_mute_dialog_content {
+    return Intl.message(
+      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
+      name: 'app_account_mute_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute without notifications`
+  String get app_account_mute_dialog_action_mute_without_notifications {
+    return Intl.message(
+      'Mute without notifications',
+      name: 'app_account_mute_dialog_action_mute_without_notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute with notifications`
+  String get app_account_mute_dialog_action_mute_with_notifications {
+    return Intl.message(
+      'Mute with notifications',
+      name: 'app_account_mute_dialog_action_mute_with_notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications muted`
+  String get app_account_mute_toast_mute_with_notifications {
+    return Intl.message(
+      'Notifications muted',
+      name: 'app_account_mute_toast_mute_with_notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications unmuted`
+  String get app_account_mute_toast_mute_without_notifications {
+    return Intl.message(
+      'Notifications unmuted',
+      name: 'app_account_mute_toast_mute_without_notifications',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

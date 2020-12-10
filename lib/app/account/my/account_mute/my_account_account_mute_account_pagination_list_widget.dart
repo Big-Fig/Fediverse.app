@@ -1,7 +1,5 @@
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_action_button_widget.dart';
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
+import 'package:fedi/app/account/my/account_mute/action/my_account_account_mute_action_list_widget.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
@@ -16,8 +14,10 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
+      refreshOnFirstLoad: false,
       customEmptyWidget: customEmptyWidget,
       customLoadingWidget: customLoadingWidget,
+      isNeedPreFetchRelationship: true,
       accountActions: <Widget>[
         _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
       ],
@@ -35,14 +35,7 @@ class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
 
   @override
   Widget build(BuildContext context) {
-    var myAccountAccountMuteNetworkOnlyAccountListBloc =
-        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
-
-    var paginationListBloc = IPaginationListBloc.of(context);
-
-    return MyAccountAccountMuteActionButtonWidget(
-      listBloc: myAccountAccountMuteNetworkOnlyAccountListBloc,
-      paginationListBloc: paginationListBloc,
+    return const MyAccountAccountMuteActionListWidget(
       defaultMuting: true,
     );
   }

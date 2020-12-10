@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class FediIconButton extends StatelessWidget {
     @required this.icon,
     @required this.onPressed,
     this.color,
-    this.padding = const EdgeInsets.all(8.0),
+    this.padding = FediPadding.allSmallPadding,
     this.iconSize = 24.0,
     this.tooltip,
   });

@@ -22,18 +22,22 @@ var _daySeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 class ChatMessageListWidget<T extends IChatMessage>
     extends FediPaginationListWidget<T> {
   final WidgetBuilder itemBuilder;
+
   const ChatMessageListWidget({
     Key key,
     @required this.itemBuilder,
-  }) : super(key: key);
+    bool refreshOnFirstLoad = true,
+  }) : super(
+          key: key,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
       BuildContext context,
       {@required bool listen}) {
     var timelinePaginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(
-            context,
+        Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(context,
             listen: listen);
     return timelinePaginationListBloc;
   }
@@ -124,6 +128,7 @@ class ChatMessageListWidget<T extends IChatMessage>
 class _ChatMessageListItemWidget<T extends IChatMessage>
     extends StatelessWidget {
   final WidgetBuilder itemBuilder;
+
   const _ChatMessageListItemWidget({
     Key key,
     @required this.itemBuilder,

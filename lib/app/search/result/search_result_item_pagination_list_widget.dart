@@ -32,12 +32,15 @@ class SearchResultItemPaginationListWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    bool refreshOnFirstLoad = true,
   }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader);
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowFooter: alwaysShowFooter,
+          alwaysShowHeader: alwaysShowHeader,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
   ScrollView buildItemsCollectionView(

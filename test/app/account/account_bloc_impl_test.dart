@@ -489,7 +489,7 @@ void main() {
 
     await subscription.cancel();
   });
-  test('toggleMute', () async {
+  test('mute & unmute', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     IPleromaAccountRelationship listenedValue;
@@ -502,25 +502,28 @@ void main() {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAccountServiceMock.muteAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship.copyWith(muting: true));
+      accountRemoteId: account.remoteId,
+      notifications: true,
+    )).thenAnswer(
+        (_) async => account.pleromaRelationship.copyWith(muting: true));
 
     when(pleromaAccountServiceMock.unMuteAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: false));
 
+    await accountBloc.unMute();
+
     var initialValue = account.pleromaRelationship.muting;
 
-    await accountBloc.toggleMute();
+    await accountBloc.mute(notifications: false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
     expect(accountBloc.relationship.muting, !initialValue);
     expect(listenedValue.muting, !initialValue);
 
-    await accountBloc.toggleMute();
+    await accountBloc.unMute();
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 

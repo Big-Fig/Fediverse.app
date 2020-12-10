@@ -15,6 +15,7 @@ abstract class ScheduledStatusPaginationListBaseWidget
     bool alwaysShowFooter,
     Widget customEmptyWidget,
     Widget customLoadingWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -23,6 +24,7 @@ abstract class ScheduledStatusPaginationListBaseWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

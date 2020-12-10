@@ -75,8 +75,10 @@ abstract class IPleromaAccountService implements IPleromaApi {
     @required String accountRemoteId,
   });
 
-  Future<IPleromaAccountRelationship> muteAccount(
-      {@required String accountRemoteId, bool notifications});
+  Future<IPleromaAccountRelationship> muteAccount({
+    @required String accountRemoteId,
+    @required bool notifications,
+  });
 
   Future<IPleromaAccountRelationship> unMuteAccount({
     @required String accountRemoteId,
@@ -93,7 +95,6 @@ abstract class IPleromaAccountService implements IPleromaApi {
   Future blockDomain({@required String domain});
 
   Future unBlockDomain({@required String domain});
-
 
   Future<bool> reportAccount({
     @required IPleromaAccountReportRequest reportRequest,

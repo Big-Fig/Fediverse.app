@@ -22,9 +22,11 @@ class MediaPickerFileGridWidget
     Key key,
     ScrollController scrollController,
     @required this.headerItemBuilder,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           scrollController: scrollController,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

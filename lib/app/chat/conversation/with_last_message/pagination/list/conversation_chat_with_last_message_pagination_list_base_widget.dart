@@ -7,18 +7,21 @@ import 'package:provider/provider.dart';
 
 abstract class ConversationChatPaginationListBaseWidget
     extends FediPaginationListWidget<IConversationChatWithLastMessage> {
-  ConversationChatPaginationListBaseWidget(
-      {@required Key key,
-      Widget header,
-      Widget footer,
-      bool alwaysShowHeader,
-      bool alwaysShowFooter})
-      : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+  ConversationChatPaginationListBaseWidget({
+    @required Key key,
+    Widget header,
+    Widget footer,
+    bool alwaysShowHeader,
+    bool alwaysShowFooter,
+    bool refreshOnFirstLoad = true,
+  }) : super(
+          key: key,
+          header: header,
+          footer: footer,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,

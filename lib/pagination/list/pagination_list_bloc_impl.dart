@@ -58,14 +58,17 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       RefreshController(initialRefresh: false);
 
   PaginationListBloc({@required this.paginationBloc}) {
-    addDisposable(streamSubscription: paginationBloc
-        .isLoadedPagesInSequenceStream
-        .listen((isLoadedInSequence) {
-      if (!isLoadedInSequence) {
-        throw "PaginationListBloc don't work with direct access "
-            "pagination blocs";
-      }
-    }));
+    _logger.finest(() => "PaginationListBloc constructor");
+    addDisposable(
+      streamSubscription: paginationBloc.isLoadedPagesInSequenceStream.listen(
+        (isLoadedInSequence) {
+          if (!isLoadedInSequence) {
+            throw "PaginationListBloc don't work with direct access "
+                "pagination blocs";
+          }
+        },
+      ),
+    );
     addDisposable(subject: refreshStateSubject);
     addDisposable(subject: loadMoreStateSubject);
     addDisposable(streamController: refreshErrorStreamController);
@@ -88,6 +91,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Future internalAsyncInit() async {
     _logger.finest(() => "internalAsyncInit");
+
     try {
       var page = await paginationBloc.requestPage(
           pageIndex: 0, forceToSkipCache: false);

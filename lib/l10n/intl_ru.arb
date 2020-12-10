@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-09T08:48:58+00:00",
+    "@@last_modified": "2020-12-09T19:53:48+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -496,5 +496,11 @@
     "app_account_select_recent_header": "Недавние",
     "app_share_action_send": "Отправить",
     "app_account_select_recent_empty": "Вы еще не выбирали аккаунты",
-    "app_share_action_sent": "Отправлено"
+    "app_share_action_sent": "Отправлено",
+    "app_account_mute_dialog_title": "Скрытие пользователя",
+    "app_account_mute_dialog_content": "При скрытии пользователя будет скрыто: в публичных и домашней ленте, его упоминания и записи, которыми поделились.\n При скрытие, вы можите дополнительно скрыть оповещения.\n Пользователь не будет знать о том, что вы его скрыли.",
+    "app_account_mute_dialog_action_mute_without_notifications": "Скрыть (и в оповещениях)",
+    "app_account_mute_dialog_action_mute_with_notifications": "Скрыть (не влияя на оповещения)",
+    "app_account_mute_toast_mute_with_notifications": "Скрытия оповещений включено",
+    "app_account_mute_toast_mute_without_notifications": "Скрытия оповещений выключено"
 }

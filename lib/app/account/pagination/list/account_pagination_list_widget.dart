@@ -43,6 +43,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     @required this.accountSelectedCallback,
     Widget customLoadingWidget,
     Widget customEmptyWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           header: header,
@@ -51,6 +52,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
           alwaysShowFooter: alwaysShowFooter,
           customLoadingWidget: customLoadingWidget,
           customEmptyWidget: customEmptyWidget,
+    refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

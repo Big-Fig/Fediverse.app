@@ -22,7 +22,9 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Future<IPleromaAccountRelationship> toggleFollow();
 
-  Future<IPleromaAccountRelationship> toggleMute();
+  Future<IPleromaAccountRelationship> mute({@required bool notifications});
+
+  Future<IPleromaAccountRelationship> unMute();
 
   Future<IPleromaAccountRelationship> togglePin();
 

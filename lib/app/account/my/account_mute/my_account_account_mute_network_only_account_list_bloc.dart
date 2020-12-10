@@ -12,6 +12,11 @@ abstract class IMyAccountAccountMuteNetworkOnlyAccountListBloc
       Provider.of<IMyAccountAccountMuteNetworkOnlyAccountListBloc>(context,
           listen: listen);
 
+  Future changeAccountMute({
+    @required IAccount account,
+    @required bool notifications,
+  });
+
   Future removeAccountMute({@required IAccount account});
 
   Future addAccountMute({@required IAccount account});

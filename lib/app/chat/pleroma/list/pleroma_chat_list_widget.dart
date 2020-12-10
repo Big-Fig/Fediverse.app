@@ -19,12 +19,15 @@ class PleromaChatListWidget extends FediPaginationListWidget<IPleromaChat> {
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    bool refreshOnFirstLoad = true,
   }) : super(
-            key: key,
-            footer: footer,
-            header: header,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+          key: key,
+          footer: footer,
+          header: header,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          refreshOnFirstLoad: refreshOnFirstLoad,
+        );
 
   @override
   ScrollView buildItemsCollectionView(

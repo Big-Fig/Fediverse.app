@@ -22,6 +22,7 @@ class CustomListPaginationListWidget
     bool alwaysShowFooter,
     Widget customEmptyWidget,
     Widget customLoadingWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -31,6 +32,7 @@ class CustomListPaginationListWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

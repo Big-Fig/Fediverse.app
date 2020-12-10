@@ -396,8 +396,12 @@ void main() {
     expect(() => myAccountBloc.toggleFollow(),
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
-  test('toggleMute', () async {
-    expect(() => myAccountBloc.toggleMute(),
+  test('mute', () async {
+    expect(() => myAccountBloc.mute(notifications: false),
+        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
+  });
+  test('unMute', () async {
+    expect(() => myAccountBloc.unMute(),
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
   test('togglePin', () async {

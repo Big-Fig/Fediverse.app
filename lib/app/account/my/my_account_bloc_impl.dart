@@ -68,11 +68,6 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleMute() {
-    throw selfActionError;
-  }
-
-  @override
   Future<bool> refreshFromNetwork(
       {@required bool isNeedPreFetchRelationship}) async {
     if (pleromaMyAccountService.isApiReadyToUse) {
@@ -125,4 +120,11 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   String get remoteDomainOrNull => null;
+
+  @override
+  Future<IPleromaAccountRelationship> mute({@required bool notifications}) =>
+      throw selfActionError;
+
+  @override
+  Future<IPleromaAccountRelationship> unMute() => throw selfActionError;
 }
