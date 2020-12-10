@@ -6,11 +6,11 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   @override
-  bool get isReadyToSubmit => !isHaveAtLeastOneError && isSomethingChanged;
+  bool get isHaveChangesAndNoErrors => !isHaveAtLeastOneError && isSomethingChanged;
 
   @override
 //  Stream<bool> get isReadyToSubmitStream => isSomethingChangedStream;
-  Stream<bool> get isReadyToSubmitStream => Rx.combineLatest2(
+  Stream<bool> get isHaveChangesAndNoErrorsStream => Rx.combineLatest2(
       isHaveAtLeastOneErrorStream,
       isSomethingChangedStream,
       (isHaveAtLeastOneError, isSomethingChanged) =>

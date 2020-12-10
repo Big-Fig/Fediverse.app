@@ -32,8 +32,6 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Future<IPleromaAccountRelationship> toggleBlockDomain();
 
-  Future report();
-
   Future<bool> refreshFromNetwork({@required bool isNeedPreFetchRelationship});
 }
 

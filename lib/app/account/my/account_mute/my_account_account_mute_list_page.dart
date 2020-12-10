@@ -103,7 +103,7 @@ class _MyAccountAccountMuteListPageWarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-      S.of(context).app_account_my_accountMute_description,
+      S.of(context).app_account_mute_description,
     );
   }
 }

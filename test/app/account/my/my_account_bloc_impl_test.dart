@@ -409,10 +409,7 @@ void main() {
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
 
-  test('report', () async {
-    expect(() => myAccountBloc.report(),
-        throwsA(isInstanceOf<SelfActionNotPossibleException>()));
-  });
+
 
   test('isLocalCacheExist', () async {
     expect(myAccountBloc.isLocalCacheExist, true);

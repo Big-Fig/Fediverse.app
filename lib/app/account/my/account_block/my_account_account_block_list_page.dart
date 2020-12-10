@@ -99,7 +99,7 @@ class _MyAccountAccountBlockListPageWarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediNoteDescriptionWidget(
-      S.of(context).app_account_my_accountBlock_description,
+      S.of(context).app_account_block_description,
     );
   }
 }

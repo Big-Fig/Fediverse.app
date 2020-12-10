@@ -3,18 +3,20 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
-class StringFormFieldRowWidget extends StatelessWidget {
+class StringValueFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String hint;
   final bool autocorrect;
   final bool obscureText;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
+  final int maxLines;
 
-  StringFormFieldRowWidget({
+  StringValueFormFieldRowWidget({
     @required this.label,
     @required this.autocorrect,
     this.obscureText = false,
+    this.maxLines = 1,
     @required this.hint,
     @required this.onSubmitted,
     @required this.textInputAction,
@@ -41,6 +43,7 @@ class StringFormFieldRowWidget extends StatelessWidget {
               maxLength: formFieldBloc.maxLength,
               hint: hint,
               label: label,
+              maxLines: maxLines,
               autocorrect: autocorrect,
               obscureText: obscureText,
               textEditingController: formFieldBloc.textEditingController,

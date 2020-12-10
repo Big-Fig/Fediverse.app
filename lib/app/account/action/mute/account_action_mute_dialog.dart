@@ -10,7 +10,7 @@ void showAccountActionMuteDialog(
   FediBaseAlertDialog(
     actionsBorderVisible: false,
     title: S.of(context).app_account_mute_dialog_title,
-    contentText: S.of(context).app_account_mute_dialog_content,
+    contentText: S.of(context).app_account_mute_description,
     actionsAxis: Axis.vertical,
     cancelable: true,
     actions: [

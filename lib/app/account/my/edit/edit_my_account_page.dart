@@ -72,8 +72,8 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
     return StreamBuilder<bool>(
-      stream: editMyAccountBloc.isReadyToSubmitStream,
-      initialData: editMyAccountBloc.isReadyToSubmit,
+      stream: editMyAccountBloc.isHaveChangesAndNoErrorsStream,
+      initialData: editMyAccountBloc.isHaveChangesAndNoErrors,
       builder: (context, snapshot) {
         var isReadyToSubmit = snapshot.data;
 

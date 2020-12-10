@@ -589,7 +589,10 @@ abstract class IPleromaAccountReportRequest
   Map<String, dynamic> toJson();
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
   @JsonKey(name: "account_id")
   @override
@@ -622,8 +625,12 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
       forward.hashCode ^
       statusIds.hashCode;
 
-  PleromaAccountReportRequest(
-      {@required this.accountId, this.comment, this.forward, this.statusIds});
+  PleromaAccountReportRequest({
+    @required this.accountId,
+    this.comment,
+    this.forward,
+    this.statusIds,
+  });
 
   factory PleromaAccountReportRequest.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountReportRequestFromJson(json);

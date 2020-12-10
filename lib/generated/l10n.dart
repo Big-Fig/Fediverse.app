@@ -599,30 +599,20 @@ class S {
   }
 
   /// `Successfully reported`
-  String get app_account_action_report_success_toast {
+  String get app_account_report_toast_success {
     return Intl.message(
       'Successfully reported',
-      name: 'app_account_action_report_success_toast',
+      name: 'app_account_report_toast_success',
       desc: '',
       args: [],
     );
   }
 
   /// `Failed to report`
-  String get app_account_action_report_fail_dialog_title {
+  String get app_account_report_toast_fail {
     return Intl.message(
       'Failed to report',
-      name: 'app_account_action_report_fail_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Something wrong`
-  String get app_account_action_report_fail_dialog_content {
-    return Intl.message(
-      'Something wrong',
-      name: 'app_account_action_report_fail_dialog_content',
+      name: 'app_account_report_toast_fail',
       desc: '',
       args: [],
     );
@@ -4423,10 +4413,10 @@ class S {
   }
 
   /// `Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can't follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.`
-  String get app_account_my_accountBlock_description {
+  String get app_account_block_description {
     return Intl.message(
       'Blocking hides a user from your view: notifications, home and public feeds, boosting or mentioning the user. \n User can\'t follow you, user won’t see your posts in public timelines and boosts. \n If you and the blocked user are on the same server, the blocked user will not be able to view your posts on your profile while logged in.',
-      name: 'app_account_my_accountBlock_description',
+      name: 'app_account_block_description',
       desc: '',
       args: [],
     );
@@ -4473,10 +4463,10 @@ class S {
   }
 
   /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
-  String get app_account_my_accountMute_description {
+  String get app_account_mute_description {
     return Intl.message(
       'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
-      name: 'app_account_my_accountMute_description',
+      name: 'app_account_mute_description',
       desc: '',
       args: [],
     );
@@ -4583,10 +4573,10 @@ class S {
   }
 
   /// `You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.`
-  String get app_account_my_domainBlock_description {
+  String get app_account_domainBlock_description {
     return Intl.message(
       'You won’t see notifications, boosts, posts, from that server on the public and home feeds.\n You will lose any followers that you might have had on that server.\n Usually, it is better to setup few account blocks or mutes instead of global instance block.',
-      name: 'app_account_my_domainBlock_description',
+      name: 'app_account_domainBlock_description',
       desc: '',
       args: [],
     );
@@ -4822,16 +4812,6 @@ class S {
     );
   }
 
-  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
-  String get app_account_mute_dialog_content {
-    return Intl.message(
-      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
-      name: 'app_account_mute_dialog_content',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Mute without notifications`
   String get app_account_mute_dialog_action_mute_without_notifications {
     return Intl.message(
@@ -4869,6 +4849,66 @@ class S {
       name: 'app_account_mute_toast_mute_without_notifications',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Report will be send to server moderators`
+  String get app_account_report_description {
+    return Intl.message(
+      'Report will be send to server moderators',
+      name: 'app_account_report_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Additional comments`
+  String get app_account_report_message_hint {
+    return Intl.message(
+      'Additional comments',
+      name: 'app_account_report_message_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get app_account_report_message_label {
+    return Intl.message(
+      'Message',
+      name: 'app_account_report_message_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forward to {host}`
+  String app_account_report_forward_label(Object host) {
+    return Intl.message(
+      'Forward to $host',
+      name: 'app_account_report_forward_label',
+      desc: '',
+      args: [host],
+    );
+  }
+
+  /// `Send`
+  String get app_account_report_action_send {
+    return Intl.message(
+      'Send',
+      name: 'app_account_report_action_send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report {userAtHost}`
+  String app_account_report_title(Object userAtHost) {
+    return Intl.message(
+      'Report $userAtHost',
+      name: 'app_account_report_title',
+      desc: '',
+      args: [userAtHost],
     );
   }
 }

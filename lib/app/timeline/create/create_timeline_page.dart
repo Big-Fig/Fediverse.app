@@ -67,8 +67,8 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: createTimelineBloc.isReadyToSubmitStream,
-        initialData: createTimelineBloc.isReadyToSubmit,
+        stream: createTimelineBloc.isHaveChangesAndNoErrorsStream,
+        initialData: createTimelineBloc.isHaveChangesAndNoErrors,
         builder: (context, snapshot) {
           var isReadyToSubmit = snapshot.data;
           return AsyncOperationButtonBuilderWidget(

@@ -367,3 +367,16 @@ DbAccount dbAccountFromAccount(IAccount account) {
     pleromaBackgroundImage: account?.pleromaBackgroundImage,
   );
 }
+
+extension IAccountExtension on IAccount {
+  bool get isOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
+
+  String get acctRemoteHost {
+    var separatorIndex = acct.lastIndexOf("@");
+    if (separatorIndex > 0) {
+      return acct.substring(separatorIndex + 1);
+    } else {
+      return null;
+    }
+  }
+}

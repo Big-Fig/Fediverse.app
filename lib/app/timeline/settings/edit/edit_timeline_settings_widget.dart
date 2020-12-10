@@ -265,7 +265,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   ) =>
       ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
         update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
-        child: StringFormFieldRowWidget(
+        child: StringValueFormFieldRowWidget(
           label:
               S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
           autocorrect: false,

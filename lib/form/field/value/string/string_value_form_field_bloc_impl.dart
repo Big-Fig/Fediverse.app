@@ -36,9 +36,13 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
 
     addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() async {
-      textEditingController.removeListener(listener);
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          textEditingController.removeListener(listener);
+        },
+      ),
+    );
   }
 
   @override
