@@ -52,10 +52,6 @@ class MyAccountBloc extends IMyAccountBloc {
   @override
   IAccount get account => myAccount;
 
-  @override
-  Future report() {
-    throw selfActionError;
-  }
 
   @override
   Future<IPleromaAccountRelationship> toggleBlock() {

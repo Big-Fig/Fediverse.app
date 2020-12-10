@@ -38,10 +38,10 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
                 },
                 isActionEnabledFetcher: (context) =>
                     IAddMyAccountDomainBlockBloc.of(context, listen: false)
-                        .isReadyToSubmit,
+                        .isHaveChangesAndNoErrors,
                 isActionEnabledStreamFetcher: (context) =>
                     IAddMyAccountDomainBlockBloc.of(context, listen: false)
-                        .isReadyToSubmitStream,
+                        .isHaveChangesAndNoErrorsStream,
               ),
             ],
             actionsAxis: Axis.horizontal,
@@ -68,7 +68,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
   Widget buildContentWidget(BuildContext context) =>
       ProxyProvider<IAddMyAccountDomainBlockBloc, IStringValueFormFieldBloc>(
         update: (context, value, _) => value.domainField,
-        child: StringFormFieldRowWidget(
+        child: StringValueFormFieldRowWidget(
           label: null,
           autocorrect: false,
           hint: S

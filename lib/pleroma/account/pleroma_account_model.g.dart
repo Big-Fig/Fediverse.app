@@ -423,10 +423,18 @@ PleromaAccountReportRequest _$PleromaAccountReportRequestFromJson(
 }
 
 Map<String, dynamic> _$PleromaAccountReportRequestToJson(
-        PleromaAccountReportRequest instance) =>
-    <String, dynamic>{
-      'account_id': instance.accountId,
-      'comment': instance.comment,
-      'forward': instance.forward,
-      'status_ids': instance.statusIds,
-    };
+    PleromaAccountReportRequest instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('account_id', instance.accountId);
+  writeNotNull('comment', instance.comment);
+  writeNotNull('forward', instance.forward);
+  writeNotNull('status_ids', instance.statusIds);
+  return val;
+}

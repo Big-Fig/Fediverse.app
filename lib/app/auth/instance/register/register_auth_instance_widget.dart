@@ -61,7 +61,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       padding: FediPadding.horizontalBigPadding,
       child: Provider<IStringValueFormFieldBloc>.value(
         value: formStringFieldBloc,
-        child: StringFormFieldRowWidget(
+        child: StringValueFormFieldRowWidget(
           hint: hintText,
           label: labelText,
           obscureText: obscureText,
@@ -154,8 +154,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: StreamBuilder<bool>(
-        stream: bloc.isReadyToSubmitStream,
-        initialData: bloc.isReadyToSubmit,
+        stream: bloc.isHaveChangesAndNoErrorsStream,
+        initialData: bloc.isHaveChangesAndNoErrors,
         builder: (context, snapshot) {
           var readyToSubmit = snapshot.data;
           Null Function() onPressed;

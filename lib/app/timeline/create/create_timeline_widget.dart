@@ -31,7 +31,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
         // ),
         ProxyProvider<ICreateTimelineBloc, IStringValueFormFieldBloc>(
           update: (context, value, previous) => value.nameFieldBloc,
-          child: StringFormFieldRowWidget(
+          child: StringValueFormFieldRowWidget(
             label: S.of(context).app_timeline_create_field_title_label,
             autocorrect: true,
             hint: S.of(context).app_timeline_create_field_title_hint,

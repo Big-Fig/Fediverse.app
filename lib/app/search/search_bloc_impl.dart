@@ -15,9 +15,11 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   ISearchInputBloc searchInputBloc;
 
   IPleromaSearchService pleromaSearchService;
-  SearchBloc(
-      {@required this.pleromaSearchService, @required SearchTab startTab})
-      : searchInputBloc = SearchInputBloc(),
+
+  SearchBloc({
+    @required this.pleromaSearchService,
+    @required SearchTab startTab,
+  })  : searchInputBloc = SearchInputBloc(),
         _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     addDisposable(disposable: searchInputBloc);
     _logger.finest(() => "constructor");

@@ -131,10 +131,6 @@ class AccountBloc extends IAccountBloc {
   Stream<IAccount> get accountStream => _accountSubject.stream.distinct();
 
   @override
-  Future report() => pleromaAccountService.reportAccount(
-      reportRequest: PleromaAccountReportRequest(accountId: account.remoteId));
-
-  @override
   Future<IPleromaAccountRelationship> toggleBlock() async {
     assert(relationship != null);
     var newRelationship;
@@ -152,8 +148,7 @@ class AccountBloc extends IAccountBloc {
 
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
-
-    if(newRelationship == null) {
+    if (newRelationship == null) {
       return null;
     }
     if (!_accountRelationshipSubject.isClosed) {

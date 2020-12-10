@@ -4,10 +4,10 @@ import 'package:fedi/form/field/value/value_form_field_bloc_proxy_provider.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class StringFormFieldBlocProxyProvider extends StatelessWidget {
+class StringValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StringFormFieldBlocProxyProvider({
+  StringValueFormFieldBlocProxyProvider({
     @required this.child,
   });
 

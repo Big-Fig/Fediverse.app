@@ -573,21 +573,4 @@ void main() {
     await subscription.cancel();
   });
 
-  test('report', () async {
-    var handled = false;
-
-    when(pleromaAccountServiceMock.reportAccount(
-            reportRequest:
-                PleromaAccountReportRequest(accountId: account.remoteId)))
-        .thenAnswer((_) async {
-      handled = true;
-      return true;
-    });
-
-    await accountBloc.report();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    expect(handled, true);
-  });
 }

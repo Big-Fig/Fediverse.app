@@ -51,7 +51,7 @@ class _ShareWithMessageInputWidget extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ProxyProvider<IShareMessageInputBloc, IStringValueFormFieldBloc>(
           update: (context, value, previous) => value.messageField,
-          child: StringFormFieldRowWidget(
+          child: StringValueFormFieldRowWidget(
             hint: S.of(context).app_share_with_message_field_message_hint,
             textInputAction: TextInputAction.done,
             autocorrect: true,

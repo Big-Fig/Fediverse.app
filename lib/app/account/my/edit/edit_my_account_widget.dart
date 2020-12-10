@@ -442,7 +442,7 @@ class EditMyAccountWidget extends StatelessWidget {
   }) {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
-    return StringFormFieldRowWidget(
+    return StringValueFormFieldRowWidget(
       autocorrect: true,
       label: label,
       hint: label,

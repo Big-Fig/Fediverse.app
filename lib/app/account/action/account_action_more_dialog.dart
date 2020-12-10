@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
+import 'package:fedi/app/account/report/account_report_page.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
-import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
@@ -74,32 +74,18 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountReportAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+    var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.report,
       label: S.of(context).app_account_action_report_label,
       onAction: (context) async {
-        var dialogResult =
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                context: context, asyncCode: () => accountBloc.report());
-
-        var success = dialogResult.success;
-        if (success) {
-          IToastService.of(context, listen: false).showInfoToast(
-            context: context,
-            title: S.of(context).app_account_action_report_success_toast,
-          );
-        } else {
-          await FediSimpleAlertDialog(
-            context: context,
-            title: S.of(context).app_account_action_report_fail_dialog_title,
-            contentText:
-                S.of(context).app_account_action_report_fail_dialog_content,
-          ).show(context);
-        }
-
-        if (success) {
-          Navigator.of(context).pop();
-        }
+        goToAccountReportPage(
+          context,
+          account: accountBloc.account,
+          statuses: [
+            statusBloc.status,
+          ],
+        );
       },
     );
   }
