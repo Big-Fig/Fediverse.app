@@ -130,6 +130,7 @@ MaterialPageRoute createMyAccountAccountMuteListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountAccountMuteListPage(),
             ),
           ),

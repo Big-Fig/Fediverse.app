@@ -126,6 +126,7 @@ MaterialPageRoute createMyAccountAccountBlockListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountAccountBlockListPage(),
             ),
           ),

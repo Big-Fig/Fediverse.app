@@ -14,7 +14,6 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
-      refreshOnFirstLoad: false,
       customEmptyWidget: customEmptyWidget,
       customLoadingWidget: customLoadingWidget,
       isNeedPreFetchRelationship: true,

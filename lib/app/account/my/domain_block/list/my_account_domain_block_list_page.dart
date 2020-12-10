@@ -180,6 +180,7 @@ MaterialPageRoute createMyAccountDomainBlockListPage() {
                 PaginationPage<DomainBlock>, DomainBlock>(
               child: MyAccountDomainBlockPaginationListBloc.provideToContext(
                 context,
+                loadFromCacheDuringInit: false,
                 child: MyAccountDomainBlockListPage(),
               ),
             ),

@@ -57,7 +57,12 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
-  PaginationListBloc({@required this.paginationBloc}) {
+  final bool loadFromCacheDuringInit;
+
+  PaginationListBloc({
+    @required this.paginationBloc,
+    this.loadFromCacheDuringInit = true,
+  }) {
     _logger.finest(() => "PaginationListBloc constructor");
     addDisposable(
       streamSubscription: paginationBloc.isLoadedPagesInSequenceStream.listen(
@@ -90,21 +95,24 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    _logger.finest(() => "internalAsyncInit");
+    _logger.finest(() =>
+        "internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit");
 
-    try {
-      var page = await paginationBloc.requestPage(
-          pageIndex: 0, forceToSkipCache: false);
-      if (page == null) {
+    if (loadFromCacheDuringInit) {
+      try {
+        var page = await paginationBloc.requestPage(
+            pageIndex: 0, forceToSkipCache: false);
+        if (page == null) {
+          _logger.severe(
+              () => "failed to internalAsyncInit: fail to request first page");
+        }
+      } catch (e, stackTrace) {
         _logger.severe(
-            () => "failed to internalAsyncInit: fail to request first page");
+          () => "failed to internalAsyncInit",
+          e,
+          stackTrace,
+        );
       }
-    } catch (e, stackTrace) {
-      _logger.severe(
-        () => "failed to internalAsyncInit",
-        e,
-        stackTrace,
-      );
     }
   }
 

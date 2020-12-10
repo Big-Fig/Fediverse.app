@@ -64,6 +64,7 @@ MaterialPageRoute createMyAccountFollowRequestListPage() {
               PaginationPage<IAccount>, IAccount>(
             child: AccountPaginationListBloc.provideToContext(
               context,
+              loadFromCacheDuringInit: false,
               child: const MyAccountFollowRequestListPage(),
             ),
           ),
