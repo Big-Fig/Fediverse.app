@@ -152,6 +152,10 @@ class AccountBloc extends IAccountBloc {
 
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
+
+    if(newRelationship == null) {
+      return null;
+    }
     if (!_accountRelationshipSubject.isClosed) {
       _accountRelationshipSubject.add(newRelationship);
     }
@@ -212,16 +216,29 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> toggleMute() async {
+  Future<IPleromaAccountRelationship> mute(
+      {@required bool notifications}) async {
     assert(relationship != null);
-    var newRelationship;
-    if (relationship.muting == true) {
-      newRelationship = await pleromaAccountService.unMuteAccount(
-          accountRemoteId: account.remoteId);
-    } else {
-      newRelationship = await pleromaAccountService.muteAccount(
-          accountRemoteId: account.remoteId);
-    }
+    assert(relationship.muting != true);
+
+    var newRelationship = await pleromaAccountService.muteAccount(
+      accountRemoteId: account.remoteId,
+      notifications: notifications,
+    );
+
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> unMute() async {
+    assert(relationship != null);
+    assert(relationship.muting == true);
+
+    var newRelationship = await pleromaAccountService.unMuteAccount(
+        accountRemoteId: account.remoteId);
+
     await _updateRelationship(account, newRelationship);
 
     return newRelationship;

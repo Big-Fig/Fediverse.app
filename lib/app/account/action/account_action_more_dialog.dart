@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
@@ -145,18 +146,22 @@ class AccountActionMoreDialog extends StatelessWidget {
 
   static DialogAction buildAccountMuteAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
+    var muting = accountBloc.relationship?.muting == true;
     return DialogAction(
-      icon: accountBloc.relationship?.muting == true
-          ? FediIcons.unmute
-          : FediIcons.mute,
-      label: accountBloc.relationship?.muting == true
+      icon: muting ? FediIcons.unmute : FediIcons.mute,
+      label: muting
           ? S.of(context).app_account_action_unmute
           : S.of(context).app_account_action_mute,
       onAction: (context) async {
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => accountBloc.toggleMute());
-
-        Navigator.of(context).pop();
+        if (muting) {
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () => accountBloc.unMute(),
+          );
+          Navigator.of(context).pop();
+        } else {
+          showAccountActionMuteDialog(context, accountBloc);
+        }
       },
     );
   }

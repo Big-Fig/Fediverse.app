@@ -14,6 +14,7 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     ScrollController scrollController,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -21,12 +22,13 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           scrollController: scrollController,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
   Future<bool> additionalPreRefreshAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    return accountBloc.refreshFromNetwork(isNeedPreFetchRelationship:true);
+    return accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
   }
 
   @override

@@ -40,7 +40,9 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   @override
   Future addAccountMute({@required IAccount account}) async {
     var accountRelationship = await pleromaAccountService.muteAccount(
-        accountRemoteId: account.remoteId);
+      accountRemoteId: account.remoteId,
+      notifications: false,
+    );
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
       account.copyWith(pleromaRelationship: accountRelationship),
@@ -107,5 +109,28 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
             update: (context, value, previous) => value, child: child),
       ),
     );
+  }
+
+  @override
+  Future changeAccountMute({
+    @required IAccount account,
+    @required bool notifications,
+  }) async {
+
+    await pleromaAccountService.unMuteAccount(
+      accountRemoteId: account.remoteId,
+    );
+
+    var accountRelationship = await pleromaAccountService.muteAccount(
+      accountRemoteId: account.remoteId,
+      notifications: notifications,
+    );
+
+    var remoteAccount = mapLocalAccountToRemoteAccount(
+      account.copyWith(pleromaRelationship: accountRelationship),
+    );
+
+    await accountRepository.upsertRemoteAccount(remoteAccount,
+        conversationRemoteId: null, chatRemoteId: null);
   }
 }

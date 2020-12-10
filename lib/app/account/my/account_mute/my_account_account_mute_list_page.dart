@@ -1,6 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_account_pagination_list_widget.dart';
-import 'package:fedi/app/account/my/account_mute/my_account_account_mute_action_button_widget.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
@@ -22,6 +21,8 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'action/my_account_account_mute_action_list_widget.dart';
 
 class MyAccountAccountMuteListPage extends StatelessWidget {
   @override
@@ -60,9 +61,8 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(
-      context,
-    );
+    var myAccountAccountMuteNetworkOnlyAccountListBloc =
+        IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
     var paginationListBloc = IPaginationListBloc.of(context);
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_accountMute_action_add,
@@ -75,10 +75,14 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
             // nothing
           },
           accountActions: [
-            MyAccountAccountMuteActionButtonWidget(
-              listBloc: listBloc,
-              paginationListBloc: paginationListBloc,
-              defaultMuting: false,
+            Provider<IMyAccountAccountMuteNetworkOnlyAccountListBloc>.value(
+              value: myAccountAccountMuteNetworkOnlyAccountListBloc,
+              child: Provider<IPaginationListBloc>.value(
+                value: paginationListBloc,
+                child: const MyAccountAccountMuteActionListWidget(
+                  defaultMuting: false,
+                ),
+              ),
             ),
           ],
           excludeMyAccount: true,

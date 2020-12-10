@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-09T08:48:58+00:00",
+    "@@last_modified": "2020-12-09T20:10:48+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -496,5 +496,11 @@
     "app_account_select_recent_header": "Recent",
     "app_share_action_send": "Send",
     "app_account_select_recent_empty": "You don’t have recent accounts selection",
-    "app_share_action_sent": "Sent"
+    "app_share_action_sent": "Sent",
+    "app_account_mute_dialog_title": "Muting",
+    "app_account_mute_dialog_content": "Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.",
+    "app_account_mute_dialog_action_mute_without_notifications": "Mute without notifications",
+    "app_account_mute_dialog_action_mute_with_notifications": "Mute with notifications",
+    "app_account_mute_toast_mute_with_notifications": "Notifications muted",
+    "app_account_mute_toast_mute_without_notifications": "Notifications unmuted"
 }

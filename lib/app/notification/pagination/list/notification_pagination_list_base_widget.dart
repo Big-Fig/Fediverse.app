@@ -15,6 +15,7 @@ abstract class NotificationPaginationListBaseWidget
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     ScrollController scrollController,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           footer: footer,
@@ -22,6 +23,7 @@ abstract class NotificationPaginationListBaseWidget
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           scrollController: scrollController,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

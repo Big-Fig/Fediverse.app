@@ -30,6 +30,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     bool alwaysShowFooter,
     this.customLoadingWidget,
     this.customEmptyWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -37,6 +38,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
           footer: footer,
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
@@ -125,18 +127,19 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             switch (refreshState) {
               case PaginationListLoadingState.initialized:
               case PaginationListLoadingState.loading:
-
-                return customLoadingWidget ?? const Center(
-                  child: FediCircularProgressIndicator(),
-                );
+                return customLoadingWidget ??
+                    const Center(
+                      child: FediCircularProgressIndicator(),
+                    );
               case PaginationListLoadingState.failed:
               case PaginationListLoadingState.loaded:
               default:
-                return customEmptyWidget ?? Center(
-                  child: Text(
-                    S.of(context).pagination_list_empty,
-                  ),
-                );
+                return customEmptyWidget ??
+                    Center(
+                      child: Text(
+                        S.of(context).pagination_list_empty,
+                      ),
+                    );
                 break;
             }
           },

@@ -13,6 +13,7 @@ abstract class StatusCachedPaginationListBaseWidget
     ScrollController scrollController,
     Widget customLoadingWidget,
     Widget customEmptyWidget,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           customLoadingWidget: customLoadingWidget,
@@ -22,5 +23,6 @@ abstract class StatusCachedPaginationListBaseWidget
           header: header,
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 }

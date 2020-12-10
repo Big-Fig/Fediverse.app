@@ -30,6 +30,7 @@ class MyAccountDomainBlockPaginationListWidget
     Widget customLoadingWidget,
     Widget customEmptyWidget,
     @required this.domainBlockSelectedCallback,
+    bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
           header: header,
@@ -38,6 +39,7 @@ class MyAccountDomainBlockPaginationListWidget
           alwaysShowFooter: alwaysShowFooter,
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override

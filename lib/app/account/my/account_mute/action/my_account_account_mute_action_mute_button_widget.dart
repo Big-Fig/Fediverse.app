@@ -7,29 +7,29 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-class MyAccountAccountMuteActionButtonWidget extends StatelessWidget {
-  final IMyAccountAccountMuteNetworkOnlyAccountListBloc listBloc;
-  final IPaginationListBloc paginationListBloc;
+class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
   final bool defaultMuting;
 
-  const MyAccountAccountMuteActionButtonWidget({
+  const MyAccountAccountMuteActionMuteButtonWidget({
     Key key,
-    @required this.listBloc,
-    @required this.paginationListBloc,
     @required this.defaultMuting,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
+    var paginationListBloc = IPaginationListBloc.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var accountBloc = IAccountBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: accountBloc.relationshipMutingStream,
-      initialData: accountBloc.relationshipMuting,
       builder: (context, snapshot) {
         var relationshipMuting = snapshot.data ?? defaultMuting;
+        if (relationshipMuting == null) {
+          return const SizedBox.shrink();
+        }
 
         return PleromaAsyncOperationButtonBuilderWidget(
           asyncButtonAction: () async {

@@ -164,13 +164,20 @@ class PleromaAccountService implements IPleromaAccountService {
   }
 
   @override
-  Future<IPleromaAccountRelationship> muteAccount(
-      {@required String accountRemoteId, bool notifications}) async {
+  Future<IPleromaAccountRelationship> muteAccount({
+    @required String accountRemoteId,
+    @required bool notifications,
+  }) async {
     assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "mute"),
-        bodyJson: {"notifications": notifications.toString()}));
+        bodyJson: {
+          "notifications": notifications.toString(),
+        },
+      ),
+    );
 
     return parseAccountRelationshipResponse(httpResponse);
   }
@@ -385,7 +392,6 @@ class PleromaAccountService implements IPleromaAccountService {
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
-
 
   @override
   Future dispose() async {

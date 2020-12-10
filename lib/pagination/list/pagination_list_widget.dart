@@ -17,6 +17,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final bool alwaysShowFooter;
   final Widget footer;
   final ScrollController scrollController;
+  final bool refreshOnFirstLoad;
 
   // nothing by default
   Future<bool> additionalPreRefreshAction(BuildContext context) async => true;
@@ -28,6 +29,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
+    this.refreshOnFirstLoad = true,
   }) : super(key: key);
 
   ScrollView buildItemsCollectionView(
@@ -78,7 +80,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     _logger.finest(() => "build "
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}");
 
-    if (paginationListBloc.refreshState != PaginationListLoadingState.loaded) {
+    if (paginationListBloc.refreshState != PaginationListLoadingState.loaded &&
+        refreshOnFirstLoad) {
       askToRefresh(context);
     }
 
@@ -138,13 +141,13 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // delay required to be sure that widget will be built during initial
     // refresh
     Future.delayed(Duration(milliseconds: 1000), () {
-      _logger.finest(() => "initState delayed");
+      _logger.finest(() => "askToRefresh delayed");
 
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
           retrievePaginationListBloc(context, listen: false);
 
-      _logger.finest(() => "initState");
       final refreshState = paginationListBloc.refreshState;
+      _logger.finest(() => "askToRefresh refreshState $refreshState");
       if (refreshState != PaginationListLoadingState.loading &&
           refreshState != PaginationListLoadingState.loaded) {
         paginationListBloc.refreshWithController();
