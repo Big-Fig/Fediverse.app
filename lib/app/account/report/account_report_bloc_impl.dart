@@ -10,22 +10,15 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger("account_report_bloc_impl.dart");
 
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IAccount account;
 
   final IPleromaAccountService pleromaAccountService;
-
-  @override
-  List<IStatus> get selectedStatuses => selectedStatusesSubject.value;
-
-  @override
-  Stream<List<IStatus>> get selectedStatusesStream =>
-      selectedStatusesSubject.stream;
-
-  BehaviorSubject<List<IStatus>> selectedStatusesSubject;
 
   @override
   final IBoolValueFormFieldBloc forwardBoolValueFormFieldBloc =
@@ -39,18 +32,18 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
     maxLength: null,
   );
 
+  @override
+  final List<IStatus> statuses;
+
   AccountReportBloc({
     @required this.account,
     @required this.pleromaAccountService,
-    @required List<IStatus> statuses,
-  })  : selectedStatusesSubject =
-            BehaviorSubject<List<IStatus>>.seeded(statuses ?? []),
-        super(
+    @required this.statuses,
+  }) : super(
           isAllItemsInitialized: true,
         ) {
     addDisposable(disposable: forwardBoolValueFormFieldBloc);
     addDisposable(disposable: messageStringValueFormFieldBloc);
-    addDisposable(subject: selectedStatusesSubject);
   }
 
   @override
@@ -64,17 +57,21 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
 
   @override
   Future<bool> send() async {
-    var success = await pleromaAccountService.reportAccount(
-      reportRequest: PleromaAccountReportRequest(
+    var accountReportRequest = PleromaAccountReportRequest(
         accountId: account.remoteId,
-        statusIds: selectedStatuses?.isNotEmpty == true
-            ? selectedStatuses?.map((status) => status.remoteId)?.toList()
+        statusIds: statuses?.isNotEmpty == true
+            ? statuses?.map((status) => status.remoteId)?.toList()
             : null,
         comment: messageStringValueFormFieldBloc.currentValue,
         forward: isAccountOnRemoteHost
             ? forwardBoolValueFormFieldBloc.currentValue
             : null,
-      ),
+      );
+
+    _logger.finest(() => "send accountReportRequest $accountReportRequest");
+
+    var success = await pleromaAccountService.reportAccount(
+      reportRequest: accountReportRequest,
     );
 
     return success;

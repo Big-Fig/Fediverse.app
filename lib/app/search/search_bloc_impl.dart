@@ -43,7 +43,10 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   static SearchBloc createFromContext(BuildContext context,
           {@required SearchTab startTab}) =>
       SearchBloc(
-          startTab: startTab,
-          pleromaSearchService:
-              IPleromaSearchService.of(context, listen: false));
+        startTab: startTab,
+        pleromaSearchService: IPleromaSearchService.of(
+          context,
+          listen: false,
+        ),
+      );
 }

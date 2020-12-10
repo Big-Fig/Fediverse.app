@@ -58,32 +58,32 @@ class StatusCachedPaginationListTimelineWidget
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) {
-            var status = items[index];
-            return Provider<IStatus>.value(
-              value: status,
-              child: FediListTile(
-                isFirstInList:
-                    index == 0 && header == null && !forceFirstItemPadding,
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var status = items[index];
+          return Provider<IStatus>.value(
+            value: status,
+            child: FediListTile(
+              isFirstInList:
+                  index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
-                child: DisposableProxyProvider<IStatus,
-                    IStatusListItemTimelineBloc>(
-                  update: (context, status, _) =>
-                      StatusListItemTimelineBloc.list(
-                    status: status,
-                    collapsible: true,
-                    statusCallback: _onStatusClick,
-                    initialMediaAttachment: null,
-                  ),
-                  child: const StatusListItemTimelineWidget(),
+              child:
+                  DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+                update: (context, status, _) => StatusListItemTimelineBloc.list(
+                  status: status,
+                  collapsible: true,
+                  statusCallback: _onStatusClick,
+                  initialMediaAttachment: null,
                 ),
+                child: const StatusListItemTimelineWidget(),
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {
