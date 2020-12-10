@@ -82,14 +82,15 @@ class _SearchBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TabBarView(
-          children: List<Widget>.generate(
-        tabs.length,
-        (int index) {
-          var tab = tabs[index];
+        children: List<Widget>.generate(
+          tabs.length,
+          (int index) {
+            var tab = tabs[index];
 
-          return _SearchTabBodyWidget(tab: tab);
-        },
-      ));
+            return _SearchTabBodyWidget(tab: tab);
+          },
+        ),
+      );
 }
 
 class _SearchTabBodyWidget extends StatelessWidget {
@@ -112,7 +113,6 @@ class _SearchTabBodyWidget extends StatelessWidget {
       ),
     );
   }
-
 
   Widget buildStatusesTab(BuildContext context) {
     return SearchStatusPaginationBloc.provideToContext(

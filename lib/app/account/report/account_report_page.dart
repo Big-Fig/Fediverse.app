@@ -6,7 +6,6 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/fedi_text_button.dart';
-import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -22,10 +21,7 @@ class AccountReportPage extends StatelessWidget {
     return Scaffold(
       appBar: const _AccountReportPageAppBar(),
       body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: AccountReportWidget(),
-        ),
+        child: AccountReportWidget(),
       ),
     );
   }

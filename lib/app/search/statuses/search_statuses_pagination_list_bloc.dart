@@ -9,14 +9,18 @@ import 'package:provider/provider.dart';
 class SearchStatusesPaginationListBloc
     extends PaginationListBloc<PaginationPage<IStatus>, IStatus> {
   final ISearchInputBloc searchInputBloc;
+
   SearchStatusesPaginationListBloc({
     @required this.searchInputBloc,
     @required IPaginationBloc<PaginationPage<IStatus>, IStatus> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(streamSubscription:
-        searchInputBloc.confirmedSearchTermStream.listen((newText) {
-      refreshWithController();
-    }));
+    addDisposable(
+      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
+        (newText) {
+          refreshWithController();
+        },
+      ),
+    );
   }
 
   static SearchStatusesPaginationListBloc createFromContext(

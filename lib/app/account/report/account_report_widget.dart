@@ -2,7 +2,16 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/report/account_report_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
+import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/status_bloc_impl.dart';
+import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
@@ -16,8 +25,28 @@ class AccountReportWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: FediPadding.allBigPadding,
+          child: const _AccountReportFormWidget(),
+        ),
+        const _AccountReportStatusesWidget(),
+      ],
+    );
+  }
+}
+
+class _AccountReportFormWidget extends StatelessWidget {
+  const _AccountReportFormWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const _AccountReportDescriptionWidget(),
         const FediSmallVerticalSpacer(),
@@ -26,6 +55,45 @@ class AccountReportWidget extends StatelessWidget {
           const FediSmallVerticalSpacer(),
         if (accountReportBloc.isAccountOnRemoteHost)
           const _AccountReportForwardWidget(),
+      ],
+    );
+  }
+}
+
+class _AccountReportStatusesWidget extends StatelessWidget {
+  const _AccountReportStatusesWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var accountReportBloc = IAccountReportBloc.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ...accountReportBloc.statuses.map(
+          (status) => Provider<IStatus>.value(
+            value: status,
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+              update: (context, status, _) => StatusBloc.createFromContext(
+                context,
+                status,
+              ),
+              child:
+                  DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+                update: (context, status, _) => StatusListItemTimelineBloc.list(
+                  status: status,
+                  collapsible: false,
+                  statusCallback: null,
+                  initialMediaAttachment: null,
+                ),
+                child: const FediListTile(
+                  child: StatusListItemTimelineWidget(),
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

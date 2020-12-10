@@ -356,9 +356,12 @@ class PleromaAccountService implements IPleromaAccountService {
   Future<bool> reportAccount(
       {IPleromaAccountReportRequest reportRequest}) async {
     assert(reportRequest?.accountId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
         relativePath: urlPath.join(accountReportRelativeUrlPath),
-        bodyJson: reportRequest.toJson()));
+        bodyJson: reportRequest.toJson(),
+      ),
+    );
 
     return httpResponse.statusCode == 200;
   }

@@ -12,10 +12,10 @@ import 'package:provider/provider.dart';
 class SearchResultItemNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<ISearchResultItem>
     implements ISearchResultItemNetworkOnlyPaginationBloc {
-  final ISearchResultItemNetworkOnlyListBloc listService;
+  final ISearchResultItemNetworkOnlyListBloc listBloc;
 
   SearchResultItemNetworkOnlyPaginationBloc(
-      {@required this.listService,
+      {@required this.listBloc,
       @required int itemsCountPerPage,
       @required int maximumCachedPagesCount})
       : super(
@@ -23,7 +23,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
             itemsCountPerPage: itemsCountPerPage);
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IPleromaApi get pleromaApi => listBloc.pleromaApi;
 
   static SearchResultItemNetworkOnlyPaginationBloc createFromContext(
           BuildContext context,
@@ -32,7 +32,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
       SearchResultItemNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: ISearchResultItemNetworkOnlyListBloc.of(context,
+          listBloc: ISearchResultItemNetworkOnlyListBloc.of(context,
               listen: false));
 
   static Widget provideToContext(BuildContext context,
@@ -60,7 +60,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
           @required int itemsCountPerPage,
           @required PaginationPage<ISearchResultItem> olderPage,
           @required PaginationPage<ISearchResultItem> newerPage}) =>
-      listService.loadItemsFromRemoteForPage(
+      listBloc.loadItemsFromRemoteForPage(
           itemsCountPerPage: itemsCountPerPage,
           // not used
           maxId: null,

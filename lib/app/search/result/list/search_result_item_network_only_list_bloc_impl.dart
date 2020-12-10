@@ -10,13 +10,13 @@ import 'package:fedi/pleroma/search/pleroma_search_model.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:flutter/widgets.dart';
 
-class SearchResultItemsNetworkOnlyListBloc
+class SearchResultItemNetworkOnlyListBloc
     extends ISearchResultItemNetworkOnlyListBloc {
   final IPleromaSearchService pleromaSearchService;
 
   final ISearchInputBloc searchInputBloc;
 
-  SearchResultItemsNetworkOnlyListBloc({
+  SearchResultItemNetworkOnlyListBloc({
     @required this.pleromaSearchService,
     @required this.searchInputBloc,
   });
@@ -68,9 +68,9 @@ class SearchResultItemsNetworkOnlyListBloc
   @override
   IPleromaApi get pleromaApi => pleromaSearchService;
 
-  static SearchResultItemsNetworkOnlyListBloc createFromContext(
+  static SearchResultItemNetworkOnlyListBloc createFromContext(
           BuildContext context) =>
-      SearchResultItemsNetworkOnlyListBloc(
+      SearchResultItemNetworkOnlyListBloc(
           searchInputBloc: ISearchInputBloc.of(context, listen: false),
           pleromaSearchService:
               IPleromaSearchService.of(context, listen: false));
@@ -79,7 +79,7 @@ class SearchResultItemsNetworkOnlyListBloc
       {@required Widget child}) {
     return DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
       create: (context) =>
-          SearchResultItemsNetworkOnlyListBloc.createFromContext(context),
+          SearchResultItemNetworkOnlyListBloc.createFromContext(context),
       child: child,
     );
   }
