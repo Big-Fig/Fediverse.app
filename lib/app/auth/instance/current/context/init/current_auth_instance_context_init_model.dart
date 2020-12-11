@@ -1,5 +1,6 @@
 enum CurrentAuthInstanceContextInitState {
   loading,
   localCacheExist,
-  cantFetchAndLocalCacheNotExist
+  cantFetchAndLocalCacheNotExist,
+  invalidCredentials,
 }

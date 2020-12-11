@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -7,8 +9,11 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger("pleroma_rest_service_impl.dart");
 
 var urlPath = path.Context(style: path.Style.url);
 
@@ -21,14 +26,15 @@ class PleromaRestService extends DisposableOwner
 
   // TODO: rework seed state
   // ignore: close_sinks
-  final BehaviorSubject<PleromaApiState> _stateSubject =
+  final BehaviorSubject<PleromaApiState> _pleromaApiStateSubject =
       BehaviorSubject.seeded(PleromaApiState.validAuth);
 
   @override
-  PleromaApiState get pleromaState => _stateSubject.value;
+  PleromaApiState get pleromaApiState => _pleromaApiStateSubject.value;
 
   @override
-  Stream<PleromaApiState> get pleromaStateStream => _stateSubject.stream;
+  Stream<PleromaApiState> get pleromaApiStateStream =>
+      _pleromaApiStateSubject.stream;
 
   @override
   bool get isConnected => connectionService.isConnected;
@@ -38,11 +44,11 @@ class PleromaRestService extends DisposableOwner
 
   @override
   Stream<bool> get isApiReadyToUseStream =>
-      Rx.combineLatest2(pleromaStateStream, isConnectedStream, mapIsReady)
+      Rx.combineLatest2(pleromaApiStateStream, isConnectedStream, mapIsReady)
           .distinct();
 
   @override
-  bool get isApiReadyToUse => mapIsReady(pleromaState, isConnected);
+  bool get isApiReadyToUse => mapIsReady(pleromaApiState, isConnected);
 
   @override
   final IRestService restService;
@@ -55,22 +61,59 @@ class PleromaRestService extends DisposableOwner
     @required this.connectionService,
     @required this.isPleromaInstance,
   }) {
-    addDisposable(subject: _stateSubject);
+    addDisposable(subject: _pleromaApiStateSubject);
   }
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) async {
     var response = await restService.sendHttpRequest(request);
 
+    var statusCode = response.statusCode;
     // todo: refactor pleroma errors handling
     if (response.statusCode == 429) {
       throw PleromaThrottledRestException(
-          statusCode: response.statusCode, body: response.body);
+        statusCode: statusCode,
+        body: response.body,
+      );
     }
 
-    if (response.statusCode == 403) {
-      throw PleromaForbiddenRestException(
-          statusCode: response.statusCode, body: response.body);
+    if (statusCode >= 400 && statusCode < 500) {
+      var body = response.body;
+      var isInvalidCredentials;
+      try {
+        Map<String, dynamic> jsonBody = jsonDecode(body);
+
+        var error = jsonBody[PleromaRestException.jsonBodyErrorKey];
+        var isPleromaInvalidCredentials = error ==
+                PleromaInvalidCredentialsForbiddenRestException
+                    .pleromaInvalidCredentialsErrorValue ||
+            statusCode ==
+                PleromaInvalidCredentialsForbiddenRestException
+                    .pleromaInvalidCredentialsStatusCode;
+        var isMastodonInvalidCredentials = error ==
+                PleromaInvalidCredentialsForbiddenRestException
+                    .mastodonInvalidCredentialsErrorValue ||
+            statusCode ==
+                PleromaInvalidCredentialsForbiddenRestException
+                    .mastodonInvalidCredentialsStatusCode;
+        isInvalidCredentials =
+            isPleromaInvalidCredentials || isMastodonInvalidCredentials;
+      } catch (e) {
+        isInvalidCredentials = false;
+      }
+      if (isInvalidCredentials) {
+        _pleromaApiStateSubject.add(PleromaApiState.brokenAuth);
+        _logger.finest(() => "pleromaApiState $pleromaApiState");
+        throw PleromaInvalidCredentialsForbiddenRestException(
+          statusCode: response.statusCode,
+          body: body,
+        );
+      } else {
+        throw PleromaForbiddenRestException(
+          statusCode: response.statusCode,
+          body: body,
+        );
+      }
     }
     return response;
   }

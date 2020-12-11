@@ -6,6 +6,8 @@ import 'package:logging/logging.dart';
 var _logger = Logger("pleroma_rest_exception.dart");
 
 class PleromaRestException implements Exception {
+  static const jsonBodyErrorKey = "error";
+
   final int statusCode;
   final String body;
 
@@ -14,7 +16,7 @@ class PleromaRestException implements Exception {
   PleromaRestException({@required this.statusCode, @required this.body}) {
     try {
       var jsonBody = jsonDecode(body);
-      decodedErrorDescription = jsonBody["error"];
+      decodedErrorDescription = jsonBody[jsonBodyErrorKey];
     } catch (e) {
       _logger.warning(() => "error during parse 'error' from API response");
     }
@@ -27,10 +29,41 @@ class PleromaRestException implements Exception {
 }
 
 class PleromaThrottledRestException extends PleromaRestException {
-  PleromaThrottledRestException({@required int statusCode, @required String body})
+  PleromaThrottledRestException(
+      {@required int statusCode, @required String body})
       : super(statusCode: statusCode, body: body);
+
+  @override
+  String toString() {
+    return 'PleromaThrottledRestException{}';
+  }
 }
+
 class PleromaForbiddenRestException extends PleromaRestException {
-  PleromaForbiddenRestException({@required int statusCode, @required String body})
+  PleromaForbiddenRestException(
+      {@required int statusCode, @required String body})
       : super(statusCode: statusCode, body: body);
+
+  @override
+  String toString() {
+    return 'PleromaForbiddenRestException{}';
+  }
+}
+
+class PleromaInvalidCredentialsForbiddenRestException
+    extends PleromaRestException {
+  static const pleromaInvalidCredentialsErrorValue = "Invalid credentials.";
+  static const pleromaInvalidCredentialsStatusCode = 403;
+
+  static const mastodonInvalidCredentialsStatusCode = 401;
+  static const mastodonInvalidCredentialsErrorValue = "The access token was revoked";
+
+  PleromaInvalidCredentialsForbiddenRestException(
+      {@required int statusCode, @required String body})
+      : super(statusCode: statusCode, body: body);
+
+  @override
+  String toString() {
+    return 'PleromaInvalidCredentialsForbiddenRestException{}';
+  }
 }

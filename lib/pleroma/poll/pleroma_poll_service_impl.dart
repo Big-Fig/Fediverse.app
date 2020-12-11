@@ -18,11 +18,11 @@ class PleromaPollService implements IPleromaPollService {
   bool get isPleromaInstance => restService.isPleromaInstance;
 
   @override
-  Stream<PleromaApiState> get pleromaStateStream =>
-      restService.pleromaStateStream;
+  Stream<PleromaApiState> get pleromaApiStateStream =>
+      restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaState => restService.pleromaState;
+  PleromaApiState get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;

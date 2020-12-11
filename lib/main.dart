@@ -42,6 +42,8 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -204,6 +206,7 @@ Future runInitializedCurrentInstanceApp({
     appContextBloc.provideContextToChild(
       child: currentInstanceContextBloc.provideContextToChild(
         child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
+          lazy: false,
           create: (context) => createCurrentInstanceContextBloc(
             context: context,
             pushLoaderBloc: pushLoaderBloc,
@@ -232,6 +235,10 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
     pleromaInstanceService: IPleromaInstanceService.of(context, listen: false),
     currentAuthInstanceBloc:
         ICurrentAuthInstanceBloc.of(context, listen: false),
+    pleromaAuthRestService: IPleromaAuthRestService.of(
+      context,
+      listen: false,
+    ),
   );
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
 

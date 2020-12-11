@@ -52,7 +52,6 @@ class MyAccountBloc extends IMyAccountBloc {
   @override
   IAccount get account => myAccount;
 
-
   @override
   Future<IPleromaAccountRelationship> toggleBlock() {
     throw selfActionError;
@@ -64,19 +63,16 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork(
-      {@required bool isNeedPreFetchRelationship}) async {
-    if (pleromaMyAccountService.isApiReadyToUse) {
-      var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
+  Future<bool> refreshFromNetwork({
+    @required bool isNeedPreFetchRelationship,
+  }) async {
+    var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 
-      var success = remoteMyAccount != null;
-      if (success) {
-        updateMyAccountByRemote(remoteMyAccount);
-      }
-      return success;
-    } else {
-      return false;
+    var success = remoteMyAccount != null;
+    if (success) {
+      updateMyAccountByRemote(remoteMyAccount);
     }
+    return success;
   }
 
   @override

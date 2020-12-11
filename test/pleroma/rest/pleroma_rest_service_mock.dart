@@ -64,10 +64,10 @@ class PleromaRestServiceMock extends IPleromaRestService {
   Stream<bool> get isApiReadyToUseStream => throw UnimplementedError();
 
   @override
-  PleromaApiState get pleromaState => throw UnimplementedError();
+  PleromaApiState get pleromaApiState => throw UnimplementedError();
 
   @override
-  Stream<PleromaApiState> get pleromaStateStream => throw UnimplementedError();
+  Stream<PleromaApiState> get pleromaApiStateStream => throw UnimplementedError();
 
   @override
   IRestService get restService => this;
