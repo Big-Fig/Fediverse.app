@@ -3,7 +3,11 @@ import 'package:fedi/app/auth/instance/current/context/init/current_auth_instanc
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,51 +19,65 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   final IMyAccountBloc myAccountBloc;
   final IPleromaInstanceService pleromaInstanceService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final IPleromaAuthRestService pleromaAuthRestService;
 
   CurrentAuthInstanceContextInitBloc({
     @required this.myAccountBloc,
     @required this.pleromaInstanceService,
     @required this.currentAuthInstanceBloc,
+    @required this.pleromaAuthRestService,
   }) {
     addDisposable(subject: stateSubject);
+
+    addDisposable(
+      streamSubscription: pleromaAuthRestService.pleromaApiStateStream.listen(
+        (pleromaApiState) {
+          _logger.finest(() => "pleromaApiState $pleromaApiState");
+          if (pleromaApiState == PleromaApiState.brokenAuth) {
+          _logger.finest(() => " stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)");
+            stateSubject
+                .add(CurrentAuthInstanceContextInitState.invalidCredentials);
+          }
+        },
+      ),
+    );
   }
 
   @override
   Future refreshFromNetwork() async {
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
-    var isApiReadyToUse = pleromaInstanceService.isApiReadyToUse;
-    _logger.finest(() => "refresh isApiReadyToUse $isApiReadyToUse");
+    var isConnected = pleromaInstanceService.isConnected;
+    _logger.finest(() => "refresh isApiReadyToUse $isConnected");
 
-    if (isApiReadyToUse) {
-      try {
-        var info = await pleromaInstanceService.getInstance();
-        var currentInstance = currentAuthInstanceBloc.currentInstance;
-        currentInstance = currentInstance.copyWith(info: info);
-        await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
-      } catch (e, stackTrace) {
-        _logger.warning(() => "failed to update instance info", e, stackTrace);
+    try {
+      await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
+
+      var info = await pleromaInstanceService.getInstance();
+      var currentInstance = currentAuthInstanceBloc.currentInstance;
+      currentInstance = currentInstance.copyWith(info: info);
+      await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
+
+      if (myAccountBloc.isLocalCacheExist) {
+        stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
+      } else {
+        stateSubject.add(
+            CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist);
+      }
+    } catch (e, stackTrace) {
+      _logger.warning(() => "failed to update instance info", e, stackTrace);
+      if (e is PleromaInvalidCredentialsForbiddenRestException) {
+        stateSubject
+            .add(CurrentAuthInstanceContextInitState.invalidCredentials);
+        rethrow;
+      } else {
+        if (myAccountBloc.isLocalCacheExist) {
+          stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
+        } else {
+          stateSubject.add(CurrentAuthInstanceContextInitState
+              .cantFetchAndLocalCacheNotExist);
+        }
       }
     }
-
-    await myAccountBloc
-        .refreshFromNetwork(isNeedPreFetchRelationship: false)
-        .then((_) {
-      if (myAccountBloc.isLocalCacheExist) {
-        stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
-      } else {
-        stateSubject.add(
-            CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist);
-      }
-    }).catchError((error, stackTrace) {
-      _logger.warning(
-          () => "can't myAccountBloc.refreshFromNetwork()", error, stackTrace);
-      if (myAccountBloc.isLocalCacheExist) {
-        stateSubject.add(CurrentAuthInstanceContextInitState.localCacheExist);
-      } else {
-        stateSubject.add(
-            CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist);
-      }
-    });
   }
 
   // ignore: close_sinks

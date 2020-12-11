@@ -115,25 +115,28 @@ class _CurrentAuthInstanceContextInitWidgetState
     _logger.finest(() => "build");
 
     return StreamBuilder<CurrentAuthInstanceContextInitState>(
-        stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
-        initialData: currentInstanceContextLoadingBloc.state,
-        builder: (context, snapshot) {
-          var state = snapshot.data;
-          _logger.finest(() => "state $state");
+      stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
+      initialData: currentInstanceContextLoadingBloc.state,
+      builder: (context, snapshot) {
+        var state = snapshot.data;
+        _logger.finest(() => "state $state");
 
-          switch (state) {
-            case CurrentAuthInstanceContextInitState.localCacheExist:
-              return widget.child;
-            case CurrentAuthInstanceContextInitState
-                .cantFetchAndLocalCacheNotExist:
-              return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
-              break;
-            case CurrentAuthInstanceContextInitState.loading:
-            default:
-              return const SplashPage();
-              break;
-          }
-        });
+        switch (state) {
+          case CurrentAuthInstanceContextInitState.localCacheExist:
+            return widget.child;
+          case CurrentAuthInstanceContextInitState
+              .cantFetchAndLocalCacheNotExist:
+          case CurrentAuthInstanceContextInitState.invalidCredentials:
+            return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
+            break;
+          case CurrentAuthInstanceContextInitState.loading:
+            return const SplashPage();
+            break;
+        }
+
+        throw "invalid state $state";
+      },
+    );
   }
 }
 

@@ -4,20 +4,20 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class IPleromaApi implements IDisposable {
   IRestService get restService;
-  Stream<PleromaApiState> get pleromaStateStream;
+  Stream<PleromaApiState> get pleromaApiStateStream;
 
   bool get isPleromaInstance;
-  PleromaApiState get pleromaState;
+  PleromaApiState get pleromaApiState;
 
   Stream<bool> get isConnectedStream;
 
   bool get isConnected;
 
   Stream<bool> get isApiReadyToUseStream =>
-      Rx.combineLatest2(pleromaStateStream, isConnectedStream, mapIsReady)
+      Rx.combineLatest2(pleromaApiStateStream, isConnectedStream, mapIsReady)
           .distinct();
 
-  bool get isApiReadyToUse => mapIsReady(pleromaState, isConnected);
+  bool get isApiReadyToUse => mapIsReady(pleromaApiState, isConnected);
 }
 
 bool mapIsReady(PleromaApiState pleromaState, bool isConnected) =>
