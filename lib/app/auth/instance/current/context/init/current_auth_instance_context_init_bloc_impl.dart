@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
-import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -34,7 +33,8 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         (pleromaApiState) {
           _logger.finest(() => "pleromaApiState $pleromaApiState");
           if (pleromaApiState == PleromaApiState.brokenAuth) {
-          _logger.finest(() => " stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)");
+            _logger.finest(() =>
+                " stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)");
             stateSubject
                 .add(CurrentAuthInstanceContextInitState.invalidCredentials);
           }

@@ -1,7 +1,9 @@
+import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
 import 'package:fedi/app/settings/instance/list/instance_settings_list_page.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -10,6 +12,7 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +36,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
         const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
+        const _RateAppHomeTabMenuDialogBodyListsItemWidget(),
       ],
     );
   }
@@ -136,6 +140,43 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
         text: S.of(context).app_account_home_tab_menu_action_lists,
       ),
     );
+  }
+}
+
+class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
+  const _RateAppHomeTabMenuDialogBodyListsItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var appAnalyticsBloc = IAppAnalyticsBloc.of(context);
+
+    if (appAnalyticsBloc.isAppRated) {
+      return const SizedBox.shrink();
+    } else {
+      return FutureBuilder(
+        future: FediPackageInfoHelper.isProdPackageId(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          var isProdPackageId = snapshot.data;
+
+          if (isProdPackageId == true) {
+            return InkWell(
+              onTap: () {
+                var inAppReviewBloc = IInAppReviewBloc.of(context, listen: false);
+                inAppReviewBloc.openStoreListing();
+              },
+              child: _AccountHomeTabMenuDialogBodyItem(
+                iconData: FediIcons.instance,
+                text: S.of(context).app_account_home_tab_menu_action_rateApp,
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      );
+    }
   }
 }
 

@@ -7,6 +7,9 @@ class FediPackageInfoHelper {
   static const prodAppName = "Fedi";
   static const devAppName = "Fedi2(dev)";
 
+  static const prodAppAppleId = "1478806281";
+  static const devAppAppleId = "1514926758";
+
   static PackageInfo _packageInfo;
 
   static Future<String> getAppName() async {
@@ -23,6 +26,17 @@ class FediPackageInfoHelper {
   static Future<String> getPackageId() async {
     await _calculatePackageInfo();
     return _packageInfo.packageName;
+  }
+
+  static Future<String> getAppAppleId() async {
+    if (await isProdPackageId()) {
+      return prodAppAppleId;
+    } else if (await isDevPackageId()) {
+      return devAppAppleId;
+    } else {
+      var packageName = await getPackageId();
+      throw "Invalid package name ${packageName}";
+    }
   }
 
   static Future<bool> isProdPackageId() async {

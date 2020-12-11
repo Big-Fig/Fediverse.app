@@ -1,3 +1,4 @@
+import 'package:fedi/analytics/app/app_analytics_model.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -101,5 +102,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(UiSettingsAdapter());
     Hive.registerAdapter(ChatSettingsAdapter());
     Hive.registerAdapter(RecentSelectAccountListAdapter());
+    Hive.registerAdapter(AppAnalyticsDataAdapter());
   }
 }

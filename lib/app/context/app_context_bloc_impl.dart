@@ -1,3 +1,7 @@
+import 'package:fedi/analytics/app/app_analytics_bloc.dart';
+import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
+import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
+import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
 import 'package:fedi/app/analytics/analytics_service.dart';
 import 'package:fedi/app/analytics/analytics_service_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -51,6 +55,8 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_we
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/in_app_review/in_app_review_bloc.dart';
+import 'package:fedi/in_app_review/in_app_review_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
@@ -72,6 +78,7 @@ import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
 
@@ -345,5 +352,57 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
             globalWebSocketsSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);
+
+    var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+        IAppAnalyticsLocalPreferenceBloc>(appAnalyticsLocalPreferenceBloc);
+    addDisposable(disposable: appAnalyticsLocalPreferenceBloc);
+
+    var inAppReviewBloc = InAppReviewBloc(
+      appStoreId: await FediPackageInfoHelper.getAppAppleId(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInAppReviewBloc>(inAppReviewBloc);
+    addDisposable(disposable: inAppReviewBloc);
+
+    var appAnalyticsBloc = AppAnalyticsBloc(
+      appAnalyticsLocalPreferenceBloc: appAnalyticsLocalPreferenceBloc,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IAppAnalyticsBloc>(appAnalyticsBloc);
+    addDisposable(disposable: appAnalyticsBloc);
+
+    await appAnalyticsBloc.onAppOpened();
+
+    final appOpenedCountToShowAppReview = 5;
+    var isAppRated = appAnalyticsBloc.isAppRated;
+    var appOpenedCount = appAnalyticsBloc.appOpenedCount;
+    var isProdPackageId = await FediPackageInfoHelper.isProdPackageId();
+    var isNeedRequestReview =
+        (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
+            isProdPackageId;
+    _logger.finest(
+        () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"
+            " isAppRated $isAppRated \n"
+            " appOpenedCount $appOpenedCount \n"
+            " isProdPackageId $isProdPackageId \n"
+            " isNeedRequestReview $isNeedRequestReview");
+    if (isNeedRequestReview) {
+      var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
+      if (inAppReviewBlocAvailable) {
+        Future.delayed(Duration(seconds: 5), () {
+          unawaited(
+            inAppReviewBloc.requestReview().then(
+                  (_) => appAnalyticsBloc.onAppRated(),
+                ),
+          );
+        });
+      }
+    }
   }
 }

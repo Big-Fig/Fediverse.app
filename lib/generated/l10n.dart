@@ -4911,6 +4911,16 @@ class S {
       args: [userAtHost],
     );
   }
+
+  /// `Rate app`
+  String get app_account_home_tab_menu_action_rateApp {
+    return Intl.message(
+      'Rate app',
+      name: 'app_account_home_tab_menu_action_rateApp',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-10T14:46:35+00:00",
+    "@@last_modified": "2020-12-11T18:34:10+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -506,5 +506,6 @@
     "app_account_report_message_label": "Message",
     "app_account_report_forward_label": "Forward to {host}",
     "app_account_report_action_send": "Send",
-    "app_account_report_title": "Report {userAtHost}"
+    "app_account_report_title": "Report {userAtHost}",
+    "app_account_home_tab_menu_action_rateApp": "Rate app"
 }
