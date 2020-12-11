@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_home_tab_menu_action_global_settings" : MessageLookupByLibrary.simpleMessage("Settings: global"),
     "app_account_home_tab_menu_action_instance_settings" : m4,
     "app_account_home_tab_menu_action_lists" : MessageLookupByLibrary.simpleMessage("Lists"),
+    "app_account_home_tab_menu_action_rateApp" : MessageLookupByLibrary.simpleMessage("Rate app"),
     "app_account_info_followers" : MessageLookupByLibrary.simpleMessage("Followers"),
     "app_account_info_following" : MessageLookupByLibrary.simpleMessage("Following"),
     "app_account_info_statuses" : MessageLookupByLibrary.simpleMessage("Statuses"),
