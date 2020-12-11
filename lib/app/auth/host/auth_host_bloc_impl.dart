@@ -123,11 +123,13 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     String redirectUri = await _calculateRedirectUri();
 
     var application = await pleromaApplicationService.registerApp(
-        registrationRequest: MastodonApplicationRegistrationRequest(
-            clientName: "Fediverse",
-            redirectUris: redirectUri,
-            scopes: scopes,
-            website: "https://fediverse.app"));
+      registrationRequest: MastodonApplicationRegistrationRequest(
+        clientName: "Fedi",
+        redirectUris: redirectUri,
+        scopes: scopes,
+        website: "https://fediverse.app",
+      ),
+    );
 
     _logger.finest(() => "registerApplication application =$application");
     if (application != null) {
