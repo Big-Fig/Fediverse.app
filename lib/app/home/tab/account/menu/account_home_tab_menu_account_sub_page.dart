@@ -4,6 +4,7 @@ import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_li
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
+import 'package:fedi/app/filter/list/filter_list_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -41,6 +42,7 @@ class _AccountHomeTabMenuAccountSubPageBody extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: [
         const _MyAccountSettingsEditButton(),
+        const _MyAccountSettingsFiltersButton(),
         const _MyAccountSettingsScheduledButton(),
         const _MyAccountSettingsDraftsButton(),
         const _MyAccountSettingsFavouritedButton(),
@@ -176,6 +178,21 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
       title: S.of(context).app_account_my_action_domainBlocks,
       onClick: () {
         goToMyAccountDomainBlockListPage(context);
+      },
+    );
+  }
+}
+class _MyAccountSettingsFiltersButton extends StatelessWidget {
+  const _MyAccountSettingsFiltersButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_account_my_action_filters,
+      onClick: () {
+        goToFilterListPage(context);
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -8,7 +9,8 @@ import 'package:logging/logging.dart';
 var _logger = Logger("cached_pagination_list_bloc_impl.dart");
 
 class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
-    extends PaginationListBloc<TPage, TItem> {
+    extends PaginationListBloc<TPage, TItem>
+    implements ICachedPaginationListBloc<TPage, TItem> {
   CachedPaginationListBloc(
       {@required ICachedPaginationBloc<TPage, TItem> cachedPaginationBloc})
       : super(paginationBloc: cachedPaginationBloc);

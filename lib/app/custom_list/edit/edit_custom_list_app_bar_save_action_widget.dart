@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var editCustomListBloc = IEditCustomListBloc.of(context, listen: false);
+    var editCustomListBloc = IEditCustomListBloc.of(context);
     return StreamBuilder<bool>(
       stream: editCustomListBloc.isReadyToSubmitStream,
       builder: (context, snapshot) {

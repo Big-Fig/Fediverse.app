@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
+import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -59,7 +59,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                   InkWell(
                     onTap: enabled
                         ? () {
-                            showFediSelectionChooserDialog(
+                            showFediSingleSelectionChooserDialog(
                               context: context,
                               title: chooserTitle,
                               actions: possibleValues

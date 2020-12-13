@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/single_from_list/single_from_list_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/select_from_list/single/single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -11,7 +11,7 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       FediUiThemeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleFromListValueFormFieldRowWidget<IFediUiTheme>(
+        child: SingleSelectFromListValueFormFieldRowWidget<IFediUiTheme>(
           label: S.of(context).app_theme_chooser_label,
           valueTitleMapper: (context, IFediUiTheme value) =>
               _mapThemeToTitle(context, value),

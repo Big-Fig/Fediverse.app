@@ -4921,6 +4921,256 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit filter`
+  String get app_filter_edit_title {
+    return Intl.message(
+      'Edit filter',
+      name: 'app_filter_edit_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filters`
+  String get app_filter_list_title {
+    return Intl.message(
+      'Filters',
+      name: 'app_filter_list_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create filter`
+  String get app_filter_create_title {
+    return Intl.message(
+      'Create filter',
+      name: 'app_filter_create_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filters`
+  String get app_account_my_action_filters {
+    return Intl.message(
+      'Filters',
+      name: 'app_account_my_action_filters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phrase`
+  String get app_filter_edit_field_phrase_label {
+    return Intl.message(
+      'Phrase',
+      name: 'app_filter_edit_field_phrase_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not sensitive to case`
+  String get app_filter_edit_field_phrase_hint {
+    return Intl.message(
+      'Not sensitive to case',
+      name: 'app_filter_edit_field_phrase_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whole word`
+  String get app_filter_edit_field_wholeWord_label {
+    return Intl.message(
+      'Whole word',
+      name: 'app_filter_edit_field_wholeWord_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply only if phrase exactly matched`
+  String get app_filter_edit_field_wholeWord_description {
+    return Intl.message(
+      'Apply only if phrase exactly matched',
+      name: 'app_filter_edit_field_wholeWord_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expires at`
+  String get app_filter_edit_field_expiresAt_label {
+    return Intl.message(
+      'Expires at',
+      name: 'app_filter_edit_field_expiresAt_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drop instead of hide`
+  String get app_filter_edit_field_irreversible_label {
+    return Intl.message(
+      'Drop instead of hide',
+      name: 'app_filter_edit_field_irreversible_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contexts`
+  String get app_filter_edit_field_context_label {
+    return Intl.message(
+      'Contexts',
+      name: 'app_filter_edit_field_context_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One or multiply contexts where the filter should apply`
+  String get app_filter_edit_field_context_description {
+    return Intl.message(
+      'One or multiply contexts where the filter should apply',
+      name: 'app_filter_edit_field_context_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get app_filter_context_type_home {
+    return Intl.message(
+      'Home',
+      name: 'app_filter_context_type_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public`
+  String get app_filter_context_type_public {
+    return Intl.message(
+      'Public',
+      name: 'app_filter_context_type_public',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get app_filter_context_type_notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'app_filter_context_type_notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conversations`
+  String get app_filter_context_type_threads {
+    return Intl.message(
+      'Conversations',
+      name: 'app_filter_context_type_threads',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter toots will disappear irreversibly, even if filter is later removed`
+  String get app_filter_edit_field_irreversible_description {
+    return Intl.message(
+      'Filter toots will disappear irreversibly, even if filter is later removed',
+      name: 'app_filter_edit_field_irreversible_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remore statuses which contains phrase in text or content warning`
+  String get app_filter_edit_description {
+    return Intl.message(
+      'Remore statuses which contains phrase in text or content warning',
+      name: 'app_filter_edit_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven’t created any Filters yet.`
+  String get app_filter_list_empty {
+    return Intl.message(
+      'You haven’t created any Filters yet.',
+      name: 'app_filter_list_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Filter`
+  String get app_filter_list_action_add {
+    return Intl.message(
+      'Add Filter',
+      name: 'app_filter_list_action_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never`
+  String get app_filter_edit_field_expiresAt_value_null {
+    return Intl.message(
+      'Never',
+      name: 'app_filter_edit_field_expiresAt_value_null',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phrase should be alphanumeric only`
+  String get app_filter_edit_field_wholeWord_error_invalid_phrase {
+    return Intl.message(
+      'Phrase should be alphanumeric only',
+      name: 'app_filter_edit_field_wholeWord_error_invalid_phrase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get app_filter_edit_action_save {
+    return Intl.message(
+      'Save',
+      name: 'app_filter_edit_action_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_filter_edit_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_filter_edit_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nothing selected`
+  String get app_filter_context_empty {
+    return Intl.message(
+      'Nothing selected',
+      name: 'app_filter_context_empty',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
