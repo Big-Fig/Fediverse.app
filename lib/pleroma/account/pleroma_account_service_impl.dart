@@ -127,14 +127,17 @@ class PleromaAccountService implements IPleromaAccountService {
       String maxId,
       int limit = 20}) async {
     assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "following"),
         queryArgs: [
           RestRequestQueryArg("since_id", sinceId),
           RestRequestQueryArg("max_id", maxId),
           RestRequestQueryArg("limit", limit?.toString()),
-        ]));
+        ],
+      ),
+    );
 
     return parseAccountListResponse(httpResponse);
   }

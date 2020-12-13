@@ -16,6 +16,8 @@ import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
 import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_dao.dart';
 import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
+import 'package:fedi/app/filter/database/filter_database_dao.dart';
+import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
@@ -36,6 +38,7 @@ import 'package:fedi/app/status/draft/database/draft_status_database_model.dart'
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -94,6 +97,7 @@ part 'app_database.g.dart';
   ChatMessageDao,
   HomeTimelineStatusesDao,
   DraftStatusDao,
+  FilterDao,
 
 //  AccountRelationshipsDao
 ], include: {
@@ -103,7 +107,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -131,12 +135,19 @@ class AppDatabase extends _$AppDatabase {
             case 6:
               await _migrate6to7(m);
               break;
+            case 7:
+              await _migrate7to8(m);
+              break;
             default:
               throw "invalid currentVersion $currentVersion";
           }
           currentVersion++;
         }
       });
+
+  Future<void> _migrate7to8(Migrator m) async {
+    await m.createTable(dbFilters);
+  }
 
   Future<void> _migrate6to7(Migrator m) async =>
       await m.addColumn(dbConversations, dbConversations.updatedAt);

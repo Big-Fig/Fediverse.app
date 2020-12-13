@@ -1,11 +1,11 @@
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/web_sockets/handling_type/form/web_sockets_handling_type_single_from_list_value_form_field_bloc_impl.dart';
-import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditWebSocketsSettingsBloc

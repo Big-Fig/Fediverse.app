@@ -8,12 +8,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class INotificationBloc implements IDisposable {
+  static INotificationBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<INotificationBloc>(context, listen: listen);
+
   Stream<bool> get dismissedStream;
 
   bool get dismissed;
-
-  static INotificationBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<INotificationBloc>(context, listen: listen);
 
   INotification get notification;
 

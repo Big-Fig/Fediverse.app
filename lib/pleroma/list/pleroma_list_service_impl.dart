@@ -143,6 +143,11 @@ class PleromaListService implements IPleromaListService {
       RestRequest.get(
         relativePath:
             urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ],
       ),
     );
 

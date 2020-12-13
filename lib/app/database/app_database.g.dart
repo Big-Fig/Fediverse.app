@@ -8406,6 +8406,464 @@ class $DbChatAccountsTable extends DbChatAccounts
   }
 }
 
+class DbFilter extends DataClass implements Insertable<DbFilter> {
+  final int id;
+  final String remoteId;
+  final String phrase;
+  final List<MastodonFilterContextType> contextAsMastodonFilterContextType;
+  final bool irreversible;
+  final bool wholeWord;
+  final DateTime expiresAt;
+  DbFilter(
+      {@required this.id,
+      @required this.remoteId,
+      @required this.phrase,
+      this.contextAsMastodonFilterContextType,
+      this.irreversible,
+      this.wholeWord,
+      this.expiresAt});
+  factory DbFilter.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DbFilter(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
+      phrase:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}phrase']),
+      contextAsMastodonFilterContextType: $DbFiltersTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data[
+              '${effectivePrefix}context_as_mastodon_filter_context_type'])),
+      irreversible: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}irreversible']),
+      wholeWord: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}whole_word']),
+      expiresAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}expires_at']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || remoteId != null) {
+      map['remote_id'] = Variable<String>(remoteId);
+    }
+    if (!nullToAbsent || phrase != null) {
+      map['phrase'] = Variable<String>(phrase);
+    }
+    if (!nullToAbsent || contextAsMastodonFilterContextType != null) {
+      final converter = $DbFiltersTable.$converter0;
+      map['context_as_mastodon_filter_context_type'] = Variable<String>(
+          converter.mapToSql(contextAsMastodonFilterContextType));
+    }
+    if (!nullToAbsent || irreversible != null) {
+      map['irreversible'] = Variable<bool>(irreversible);
+    }
+    if (!nullToAbsent || wholeWord != null) {
+      map['whole_word'] = Variable<bool>(wholeWord);
+    }
+    if (!nullToAbsent || expiresAt != null) {
+      map['expires_at'] = Variable<DateTime>(expiresAt);
+    }
+    return map;
+  }
+
+  DbFiltersCompanion toCompanion(bool nullToAbsent) {
+    return DbFiltersCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      phrase:
+          phrase == null && nullToAbsent ? const Value.absent() : Value(phrase),
+      contextAsMastodonFilterContextType:
+          contextAsMastodonFilterContextType == null && nullToAbsent
+              ? const Value.absent()
+              : Value(contextAsMastodonFilterContextType),
+      irreversible: irreversible == null && nullToAbsent
+          ? const Value.absent()
+          : Value(irreversible),
+      wholeWord: wholeWord == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wholeWord),
+      expiresAt: expiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiresAt),
+    );
+  }
+
+  factory DbFilter.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbFilter(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      phrase: serializer.fromJson<String>(json['phrase']),
+      contextAsMastodonFilterContextType:
+          serializer.fromJson<List<MastodonFilterContextType>>(
+              json['contextAsMastodonFilterContextType']),
+      irreversible: serializer.fromJson<bool>(json['irreversible']),
+      wholeWord: serializer.fromJson<bool>(json['wholeWord']),
+      expiresAt: serializer.fromJson<DateTime>(json['expiresAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'phrase': serializer.toJson<String>(phrase),
+      'contextAsMastodonFilterContextType':
+          serializer.toJson<List<MastodonFilterContextType>>(
+              contextAsMastodonFilterContextType),
+      'irreversible': serializer.toJson<bool>(irreversible),
+      'wholeWord': serializer.toJson<bool>(wholeWord),
+      'expiresAt': serializer.toJson<DateTime>(expiresAt),
+    };
+  }
+
+  DbFilter copyWith(
+          {int id,
+          String remoteId,
+          String phrase,
+          List<MastodonFilterContextType> contextAsMastodonFilterContextType,
+          bool irreversible,
+          bool wholeWord,
+          DateTime expiresAt}) =>
+      DbFilter(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        phrase: phrase ?? this.phrase,
+        contextAsMastodonFilterContextType:
+            contextAsMastodonFilterContextType ??
+                this.contextAsMastodonFilterContextType,
+        irreversible: irreversible ?? this.irreversible,
+        wholeWord: wholeWord ?? this.wholeWord,
+        expiresAt: expiresAt ?? this.expiresAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbFilter(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('phrase: $phrase, ')
+          ..write(
+              'contextAsMastodonFilterContextType: $contextAsMastodonFilterContextType, ')
+          ..write('irreversible: $irreversible, ')
+          ..write('wholeWord: $wholeWord, ')
+          ..write('expiresAt: $expiresAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(
+              phrase.hashCode,
+              $mrjc(
+                  contextAsMastodonFilterContextType.hashCode,
+                  $mrjc(irreversible.hashCode,
+                      $mrjc(wholeWord.hashCode, expiresAt.hashCode)))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbFilter &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.phrase == this.phrase &&
+          other.contextAsMastodonFilterContextType ==
+              this.contextAsMastodonFilterContextType &&
+          other.irreversible == this.irreversible &&
+          other.wholeWord == this.wholeWord &&
+          other.expiresAt == this.expiresAt);
+}
+
+class DbFiltersCompanion extends UpdateCompanion<DbFilter> {
+  final Value<int> id;
+  final Value<String> remoteId;
+  final Value<String> phrase;
+  final Value<List<MastodonFilterContextType>>
+      contextAsMastodonFilterContextType;
+  final Value<bool> irreversible;
+  final Value<bool> wholeWord;
+  final Value<DateTime> expiresAt;
+  const DbFiltersCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.phrase = const Value.absent(),
+    this.contextAsMastodonFilterContextType = const Value.absent(),
+    this.irreversible = const Value.absent(),
+    this.wholeWord = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+  });
+  DbFiltersCompanion.insert({
+    this.id = const Value.absent(),
+    @required String remoteId,
+    @required String phrase,
+    this.contextAsMastodonFilterContextType = const Value.absent(),
+    this.irreversible = const Value.absent(),
+    this.wholeWord = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+  })  : remoteId = Value(remoteId),
+        phrase = Value(phrase);
+  static Insertable<DbFilter> custom({
+    Expression<int> id,
+    Expression<String> remoteId,
+    Expression<String> phrase,
+    Expression<String> contextAsMastodonFilterContextType,
+    Expression<bool> irreversible,
+    Expression<bool> wholeWord,
+    Expression<DateTime> expiresAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (remoteId != null) 'remote_id': remoteId,
+      if (phrase != null) 'phrase': phrase,
+      if (contextAsMastodonFilterContextType != null)
+        'context_as_mastodon_filter_context_type':
+            contextAsMastodonFilterContextType,
+      if (irreversible != null) 'irreversible': irreversible,
+      if (wholeWord != null) 'whole_word': wholeWord,
+      if (expiresAt != null) 'expires_at': expiresAt,
+    });
+  }
+
+  DbFiltersCompanion copyWith(
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<String> phrase,
+      Value<List<MastodonFilterContextType>> contextAsMastodonFilterContextType,
+      Value<bool> irreversible,
+      Value<bool> wholeWord,
+      Value<DateTime> expiresAt}) {
+    return DbFiltersCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      phrase: phrase ?? this.phrase,
+      contextAsMastodonFilterContextType: contextAsMastodonFilterContextType ??
+          this.contextAsMastodonFilterContextType,
+      irreversible: irreversible ?? this.irreversible,
+      wholeWord: wholeWord ?? this.wholeWord,
+      expiresAt: expiresAt ?? this.expiresAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (remoteId.present) {
+      map['remote_id'] = Variable<String>(remoteId.value);
+    }
+    if (phrase.present) {
+      map['phrase'] = Variable<String>(phrase.value);
+    }
+    if (contextAsMastodonFilterContextType.present) {
+      final converter = $DbFiltersTable.$converter0;
+      map['context_as_mastodon_filter_context_type'] = Variable<String>(
+          converter.mapToSql(contextAsMastodonFilterContextType.value));
+    }
+    if (irreversible.present) {
+      map['irreversible'] = Variable<bool>(irreversible.value);
+    }
+    if (wholeWord.present) {
+      map['whole_word'] = Variable<bool>(wholeWord.value);
+    }
+    if (expiresAt.present) {
+      map['expires_at'] = Variable<DateTime>(expiresAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbFiltersCompanion(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('phrase: $phrase, ')
+          ..write(
+              'contextAsMastodonFilterContextType: $contextAsMastodonFilterContextType, ')
+          ..write('irreversible: $irreversible, ')
+          ..write('wholeWord: $wholeWord, ')
+          ..write('expiresAt: $expiresAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbFiltersTable extends DbFilters
+    with TableInfo<$DbFiltersTable, DbFilter> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbFiltersTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  GeneratedTextColumn _remoteId;
+  @override
+  GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _phraseMeta = const VerificationMeta('phrase');
+  GeneratedTextColumn _phrase;
+  @override
+  GeneratedTextColumn get phrase => _phrase ??= _constructPhrase();
+  GeneratedTextColumn _constructPhrase() {
+    return GeneratedTextColumn(
+      'phrase',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contextAsMastodonFilterContextTypeMeta =
+      const VerificationMeta('contextAsMastodonFilterContextType');
+  GeneratedTextColumn _contextAsMastodonFilterContextType;
+  @override
+  GeneratedTextColumn get contextAsMastodonFilterContextType =>
+      _contextAsMastodonFilterContextType ??=
+          _constructContextAsMastodonFilterContextType();
+  GeneratedTextColumn _constructContextAsMastodonFilterContextType() {
+    return GeneratedTextColumn(
+      'context_as_mastodon_filter_context_type',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _irreversibleMeta =
+      const VerificationMeta('irreversible');
+  GeneratedBoolColumn _irreversible;
+  @override
+  GeneratedBoolColumn get irreversible =>
+      _irreversible ??= _constructIrreversible();
+  GeneratedBoolColumn _constructIrreversible() {
+    return GeneratedBoolColumn(
+      'irreversible',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _wholeWordMeta = const VerificationMeta('wholeWord');
+  GeneratedBoolColumn _wholeWord;
+  @override
+  GeneratedBoolColumn get wholeWord => _wholeWord ??= _constructWholeWord();
+  GeneratedBoolColumn _constructWholeWord() {
+    return GeneratedBoolColumn(
+      'whole_word',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _expiresAtMeta = const VerificationMeta('expiresAt');
+  GeneratedDateTimeColumn _expiresAt;
+  @override
+  GeneratedDateTimeColumn get expiresAt => _expiresAt ??= _constructExpiresAt();
+  GeneratedDateTimeColumn _constructExpiresAt() {
+    return GeneratedDateTimeColumn(
+      'expires_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        phrase,
+        contextAsMastodonFilterContextType,
+        irreversible,
+        wholeWord,
+        expiresAt
+      ];
+  @override
+  $DbFiltersTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_filters';
+  @override
+  final String actualTableName = 'db_filters';
+  @override
+  VerificationContext validateIntegrity(Insertable<DbFilter> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('remote_id')) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableOrUnknown(data['remote_id'], _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (data.containsKey('phrase')) {
+      context.handle(_phraseMeta,
+          phrase.isAcceptableOrUnknown(data['phrase'], _phraseMeta));
+    } else if (isInserting) {
+      context.missing(_phraseMeta);
+    }
+    context.handle(_contextAsMastodonFilterContextTypeMeta,
+        const VerificationResult.success());
+    if (data.containsKey('irreversible')) {
+      context.handle(
+          _irreversibleMeta,
+          irreversible.isAcceptableOrUnknown(
+              data['irreversible'], _irreversibleMeta));
+    }
+    if (data.containsKey('whole_word')) {
+      context.handle(_wholeWordMeta,
+          wholeWord.isAcceptableOrUnknown(data['whole_word'], _wholeWordMeta));
+    }
+    if (data.containsKey('expires_at')) {
+      context.handle(_expiresAtMeta,
+          expiresAt.isAcceptableOrUnknown(data['expires_at'], _expiresAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbFilter map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbFilter.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $DbFiltersTable createAlias(String alias) {
+    return $DbFiltersTable(_db, alias);
+  }
+
+  static TypeConverter<List<MastodonFilterContextType>, String> $converter0 =
+      MastodonFilterContextTypeListTypeConverter();
+}
+
 class DbHomeTimelineStatus extends DataClass
     implements Insertable<DbHomeTimelineStatus> {
   final int id;
@@ -9012,6 +9470,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   Index get dbChatAccountsIndex => _dbChatAccountsIndex ??= Index(
       'db_chat_accounts_index',
       'CREATE UNIQUE INDEX db_chat_accounts_index ON db_chat_accounts(chat_remote_id, account_remote_id);');
+  $DbFiltersTable _dbFilters;
+  $DbFiltersTable get dbFilters => _dbFilters ??= $DbFiltersTable(this);
+  Index _dbFilterRemoteIdIndex;
+  Index get dbFilterRemoteIdIndex => _dbFilterRemoteIdIndex ??= Index(
+      'db_filter_remote_id_index',
+      'CREATE UNIQUE INDEX db_filter_remote_id_index ON db_filters (remote_id);');
   $DbHomeTimelineStatusesTable _dbHomeTimelineStatuses;
   $DbHomeTimelineStatusesTable get dbHomeTimelineStatuses =>
       _dbHomeTimelineStatuses ??= $DbHomeTimelineStatusesTable(this);
@@ -9071,6 +9535,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   DraftStatusDao _draftStatusDao;
   DraftStatusDao get draftStatusDao =>
       _draftStatusDao ??= DraftStatusDao(this as AppDatabase);
+  FilterDao _filterDao;
+  FilterDao get filterDao => _filterDao ??= FilterDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -9108,6 +9574,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbChatMessagesChatRemoteIdIndex,
         dbChatAccounts,
         dbChatAccountsIndex,
+        dbFilters,
+        dbFilterRemoteIdIndex,
         dbHomeTimelineStatuses,
         dbDraftStatuses
       ];

@@ -1,6 +1,6 @@
 import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/single_from_list/single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/single_from_list/single_from_list_value_form_field_bloc_proxy_provider.dart';
+import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +16,10 @@ class LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ILocalizationLocaleSingleFromListValueFormFieldBloc,
-          ISingleFromListValueFormFieldBloc<LocalizationLocale>>(
+          ISingleSelectFromListValueFormFieldBloc<LocalizationLocale>>(
         update: (context, value, previous) => value,
         child:
-            SingleFromListValueFormFieldBlocProxyProvider<LocalizationLocale>(
+            SingleSelectFromListValueFormFieldBlocProxyProvider<LocalizationLocale>(
           child: child,
         ),
       );

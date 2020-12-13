@@ -35,6 +35,8 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
@@ -113,6 +115,8 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service_impl.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service_impl.dart';
+import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/filter/pleroma_filter_service_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
@@ -786,5 +790,21 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IRecentShareSelectAccountLocalPreferenceBloc>(
             recentShareSelectAccountLocalPreferenceBloc);
+
+    var pleromaFilterService = PleromaFilterService(
+      restService: pleromaAuthRestService,
+    );
+
+    addDisposable(disposable: pleromaFilterService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaFilterService>(pleromaFilterService);
+
+    var filterRepository = FilterRepository(
+      appDatabase: moorDatabaseService.appDatabase,
+    );
+
+    addDisposable(disposable: filterRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IFilterRepository>(filterRepository);
   }
 }

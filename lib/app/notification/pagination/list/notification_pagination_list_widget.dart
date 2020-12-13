@@ -2,18 +2,22 @@ import 'package:fedi/app/notification/list/notification_list_item_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_bloc_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
-import 'package:fedi/app/notification/pagination/list/notification_pagination_list_base_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NotificationPaginationListWidget
-    extends NotificationPaginationListBaseWidget {
+    extends FediPaginationListWidget<INotification> {
   final bool needWatchLocalRepositoryForUpdates;
+
   const NotificationPaginationListWidget({
-     Key key,
+    Key key,
     @required this.needWatchLocalRepositoryForUpdates,
     ScrollController scrollController,
   }) : super(
@@ -28,24 +32,35 @@ class NotificationPaginationListWidget
           @required Widget header,
           @required Widget footer}) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) {
-            return Provider<INotification>.value(
-              value: items[index],
-              child: DisposableProxyProvider<INotification, INotificationBloc>(
-                  update: (context, notification, oldValue) =>
-                      NotificationBloc.createFromContext(context, notification,
-                          isNeedWatchLocalRepositoryForUpdates:
-                              needWatchLocalRepositoryForUpdates),
-                  child: Column(
-                    children: <Widget>[
-                      const NotificationListItemWidget(),
-                      const FediUltraLightGreyDivider()
-                    ],
-                  )),
-            );
-          });
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          return Provider<INotification>.value(
+            value: items[index],
+            child: DisposableProxyProvider<INotification, INotificationBloc>(
+                update: (context, notification, oldValue) =>
+                    NotificationBloc.createFromContext(context, notification,
+                        isNeedWatchLocalRepositoryForUpdates:
+                            needWatchLocalRepositoryForUpdates),
+                child: Column(
+                  children: <Widget>[
+                    const NotificationListItemWidget(),
+                    const FediUltraLightGreyDivider()
+                  ],
+                )),
+          );
+        },
+      );
+
+  @override
+  IPaginationListBloc<PaginationPage<INotification>, INotification>
+      retrievePaginationListBloc(BuildContext context,
+          {@required bool listen}) {
+    var paginationListBloc = Provider.of<
+        IPaginationListBloc<CachedPaginationPage<INotification>,
+            INotification>>(context, listen: listen);
+    return paginationListBloc;
+  }
 }

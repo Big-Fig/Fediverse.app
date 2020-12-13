@@ -1,4 +1,4 @@
-import 'package:fedi/app/form/field/value/single_from_list/single_from_list_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/select_from_list/single/single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/type/form/timeline_type_single_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -9,7 +9,7 @@ class TimelineTypeSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       TimelineTypeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleFromListValueFormFieldRowWidget<TimelineType>(
+        child: SingleSelectFromListValueFormFieldRowWidget<TimelineType>(
           label: S.of(context).app_timeline_type_field_label,
           valueTitleMapper: (context, value) =>
               mapTimelineTypeToLabel(context, value),
