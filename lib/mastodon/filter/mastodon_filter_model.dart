@@ -79,11 +79,11 @@ class MastodonFilterContextTypeListTypeConverter
   @override
   List<MastodonFilterContextType> mapToDart(String fromDb) {
     if (fromDb?.isNotEmpty == true) {
-      var jsonList = jsonDecode(fromDb) as List<String>;
+      var jsonList = jsonDecode(fromDb) as List<dynamic>;
 
       return jsonList
           .map(
-            (item) => item.toMastodonFilterContextType(),
+            (item) => item.toString().toMastodonFilterContextType(),
           )
           .toList();
     } else {

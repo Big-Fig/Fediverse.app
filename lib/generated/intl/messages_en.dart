@@ -330,7 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_filter_create_title" : MessageLookupByLibrary.simpleMessage("Create filter"),
     "app_filter_edit_action_delete" : MessageLookupByLibrary.simpleMessage("Delete"),
     "app_filter_edit_action_save" : MessageLookupByLibrary.simpleMessage("Save"),
-    "app_filter_edit_description" : MessageLookupByLibrary.simpleMessage("Remore statuses which contains phrase in text or content warning"),
+    "app_filter_edit_description" : MessageLookupByLibrary.simpleMessage("Remove statuses which contains phrase in text or content warning"),
     "app_filter_edit_field_context_description" : MessageLookupByLibrary.simpleMessage("One or multiply contexts where the filter should apply"),
     "app_filter_edit_field_context_label" : MessageLookupByLibrary.simpleMessage("Contexts"),
     "app_filter_edit_field_expiresAt_label" : MessageLookupByLibrary.simpleMessage("Expires at"),

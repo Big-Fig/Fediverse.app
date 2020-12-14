@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
+import 'package:fedi/app/ui/dialog/chooser/selection/multi/fedi_multi_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -222,34 +222,36 @@ void _showDialog<T>({
   @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
   @required bool displayIconInDialog,
 }) {
-  var actions = <SelectionDialogAction>[
-    if (fieldBloc.isNullValuePossible)
-      _buildDialogAction(
-        context: context,
-        fieldBloc: fieldBloc,
-        value: null,
-        selectedValues: fieldBloc.currentValue,
-        valueIconMapper: valueIconMapper,
-        valueTitleMapper: valueTitleMapper,
-        displayIconInDialog: displayIconInDialog,
+  var actionsStream = fieldBloc.currentValueStream.map((event) {
+    return <SelectionDialogAction>[
+      if (fieldBloc.isNullValuePossible)
+        _buildDialogAction(
+          context: context,
+          fieldBloc: fieldBloc,
+          value: null,
+          selectedValues: fieldBloc.currentValue,
+          valueIconMapper: valueIconMapper,
+          valueTitleMapper: valueTitleMapper,
+          displayIconInDialog: displayIconInDialog,
+        ),
+      ...fieldBloc.possibleValues.map(
+        (value) => _buildDialogAction(
+          context: context,
+          fieldBloc: fieldBloc,
+          value: value,
+          selectedValues: fieldBloc.currentValue,
+          valueIconMapper: valueIconMapper,
+          valueTitleMapper: valueTitleMapper,
+          displayIconInDialog: displayIconInDialog,
+        ),
       ),
-    ...fieldBloc.possibleValues.map(
-      (value) => _buildDialogAction(
-        context: context,
-        fieldBloc: fieldBloc,
-        value: value,
-        selectedValues: fieldBloc.currentValue,
-        valueIconMapper: valueIconMapper,
-        valueTitleMapper: valueTitleMapper,
-        displayIconInDialog: displayIconInDialog,
-      ),
-    ),
-  ];
+    ].toList();
+  });
 
-  showFediSingleSelectionChooserDialog(
+  showFediMultiSelectionChooserDialog(
     context: context,
     title: label,
-    actions: actions,
+    rebuildActionsStream: actionsStream,
   );
 }
 
