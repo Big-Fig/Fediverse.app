@@ -134,7 +134,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   @override
   Future<IFilter> submit() async {
-    var listRemoteId = filter.remoteId;
+    var listRemoteId = filter?.remoteId;
     var filterToSubmit = mapLocalFilterToRemoteFilter(
       filterFormBloc.calculateFormValue(),
     );

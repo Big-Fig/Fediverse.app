@@ -5092,10 +5092,10 @@ class S {
     );
   }
 
-  /// `Remore statuses which contains phrase in text or content warning`
+  /// `Remove statuses which contains phrase in text or content warning`
   String get app_filter_edit_description {
     return Intl.message(
-      'Remore statuses which contains phrase in text or content warning',
+      'Remove statuses which contains phrase in text or content warning',
       name: 'app_filter_edit_description',
       desc: '',
       args: [],

@@ -54,7 +54,8 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   }
 }
 
-class _SingleSelectFromListValueFormFieldRowValueWidget<T> extends StatelessWidget {
+class _SingleSelectFromListValueFormFieldRowValueWidget<T>
+    extends StatelessWidget {
   final String label;
   final bool displayIconInRow;
   final SingleSelectFromListValueIconMapper<T> valueIconMapper;
@@ -73,8 +74,8 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T> extends StatelessWidg
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        var fieldBloc =
-            ISingleSelectFromListValueFormFieldBloc.of<T>(context, listen: false);
+        var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context,
+            listen: false);
         if (fieldBloc.isEnabled) {
           _showDialog(
             context: context,

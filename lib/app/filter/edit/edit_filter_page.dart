@@ -21,10 +21,7 @@ class EditFilterPage extends StatelessWidget {
       body: const SafeArea(
         child: Padding(
           padding: FediPadding.allBigPadding,
-          child: Padding(
-            padding: FediPadding.allBigPadding,
-            child: EditFilterWidget(),
-          ),
+          child: EditFilterWidget(),
         ),
       ),
     );

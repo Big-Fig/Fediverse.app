@@ -7,11 +7,11 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void showFediMultiSelectChooserDialog(
+void showFediMultiSelectionChooserDialog(
     {@required BuildContext context,
     @required String title,
     String content,
-    @required List<SelectionDialogAction> actions,
+    @required Stream<List<SelectionDialogAction>> rebuildActionsStream,
     bool cancelable = true}) {
   return showFediModalBottomSheetDialog(
     context: context,
@@ -19,7 +19,7 @@ void showFediMultiSelectChooserDialog(
       title: title,
       cancelable: cancelable,
       content: content,
-      actions: actions,
+      rebuildActionsStream: rebuildActionsStream,
     ),
   );
 }
@@ -27,14 +27,15 @@ void showFediMultiSelectChooserDialog(
 class FediMultiSelectChooserDialogBody extends StatelessWidget {
   final String title;
   final String content;
-  final List<SelectionDialogAction> actions;
   final bool cancelable;
+
+  final Stream<List<SelectionDialogAction>> rebuildActionsStream;
 
   FediMultiSelectChooserDialogBody({
     @required this.title,
     @required this.content,
-    @required this.actions,
     @required this.cancelable,
+    @required this.rebuildActionsStream,
   });
 
   Widget _buildAction({
@@ -121,19 +122,28 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
           ),
         Align(
           alignment: Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              ...actions
-                  .map((action) => _buildAction(
-                        context: context,
-                        action: action,
-                        isSelected: action.isSelected,
-                      ))
-                  .toList()
-            ],
-          ),
+          child: StreamBuilder(
+              stream: rebuildActionsStream,
+              builder: (context, snapshot) {
+                var actions = snapshot.data;
+                if (actions == null) {
+                  return SizedBox.shrink();
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ...actions
+                        .map((action) => _buildAction(
+                              context: context,
+                              action: action,
+                              isSelected: action.isSelected,
+                            ))
+                        .toList()
+                  ],
+                );
+              }),
         ),
         if (cancelable)
           _buildAction(

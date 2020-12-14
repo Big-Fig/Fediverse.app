@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-13T14:08:23+00:00",
+    "@@last_modified": "2020-12-14T19:28:24+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -525,7 +525,7 @@
     "app_filter_context_type_notifications": "Notifications",
     "app_filter_context_type_threads": "Conversations",
     "app_filter_edit_field_irreversible_description": "Filter toots will disappear irreversibly, even if filter is later removed",
-    "app_filter_edit_description": "Remore statuses which contains phrase in text or content warning",
+    "app_filter_edit_description": "Remove statuses which contains phrase in text or content warning",
     "app_filter_list_empty": "You haven’t created any Filters yet.",
     "app_filter_list_action_add": "Add Filter",
     "app_filter_edit_field_expiresAt_value_null": "Never",

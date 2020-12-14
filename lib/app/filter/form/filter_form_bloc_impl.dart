@@ -8,6 +8,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:flutter/widgets.dart';
 
@@ -86,7 +87,9 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         irreversible: irreversibleField.currentValue,
         wholeWord: wholeWordField.currentValue,
         expiresAt: expiresAtField.currentValue,
-        context: [],
+        context: contextField.currentValue
+            ?.map((contextType) => contextType.toJsonValue())
+            ?.toList(),
       ),
     );
   }

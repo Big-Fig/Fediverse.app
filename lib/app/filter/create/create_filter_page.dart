@@ -1,7 +1,7 @@
 import 'package:fedi/app/filter/create/create_filter_bloc_impl.dart';
 import 'package:fedi/app/filter/edit/edit_filter_app_bar_save_action_widget.dart';
+import 'package:fedi/app/filter/edit/edit_filter_widget.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:fedi/app/filter/form/filter_form_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -21,7 +21,7 @@ class CreateFilterPage extends StatelessWidget {
       body: const SafeArea(
         child: Padding(
           padding: FediPadding.allBigPadding,
-          child: FilterFormWidget(),
+          child: EditFilterWidget(),
         ),
       ),
     );
