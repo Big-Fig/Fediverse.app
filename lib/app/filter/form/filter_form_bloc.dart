@@ -1,9 +1,9 @@
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc.dart';
-import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/date_time/date_time_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
+import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +17,9 @@ abstract class IFilterFormBloc extends IFormBloc {
 
   IBoolValueFormFieldBloc get wholeWordField;
 
-  IDateTimeValueFormFieldBloc get expiresAtField;
+  IDurationDateTimeValueFormFieldBloc get expiresInField;
 
   IFilterContextMultiSelectFromListValueFormFieldBloc get contextField;
 
-  IFilter calculateFormValue();
+  IPostPleromaFilter calculateFormValue();
 }

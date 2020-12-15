@@ -5003,10 +5003,10 @@ class S {
   }
 
   /// `Expires at`
-  String get app_filter_edit_field_expiresAt_label {
+  String get app_filter_edit_field_expiresIn_label {
     return Intl.message(
       'Expires at',
-      name: 'app_filter_edit_field_expiresAt_label',
+      name: 'app_filter_edit_field_expiresIn_label',
       desc: '',
       args: [],
     );
@@ -5122,16 +5122,6 @@ class S {
     );
   }
 
-  /// `Never`
-  String get app_filter_edit_field_expiresAt_value_null {
-    return Intl.message(
-      'Never',
-      name: 'app_filter_edit_field_expiresAt_value_null',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Phrase should be alphanumeric only`
   String get app_filter_edit_field_wholeWord_error_invalid_phrase {
     return Intl.message(
@@ -5167,6 +5157,26 @@ class S {
     return Intl.message(
       'Nothing selected',
       name: 'app_filter_context_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expired filters are not automatically deleted, but can be reactivated`
+  String get app_filter_edit_field_expiresIn_description {
+    return Intl.message(
+      'Expired filters are not automatically deleted, but can be reactivated',
+      name: 'app_filter_edit_field_expiresIn_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never`
+  String get app_duration_value_null {
+    return Intl.message(
+      'Never',
+      name: 'app_duration_value_null',
       desc: '',
       args: [],
     );

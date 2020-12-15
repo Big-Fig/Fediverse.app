@@ -135,10 +135,9 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   @override
   Future<IFilter> submit() async {
     var listRemoteId = filter?.remoteId;
-    var filterToSubmit = mapLocalFilterToRemoteFilter(
-      filterFormBloc.calculateFormValue(),
-    );
-    var remoteFilter = await actuallySubmitFilter(listRemoteId, filterToSubmit);
+    var postPleromaFilter = filterFormBloc.calculateFormValue();
+    var remoteFilter =
+        await actuallySubmitFilter(listRemoteId, postPleromaFilter);
 
     var localFilter = mapRemoteFilterToLocalFilter(remoteFilter);
 
@@ -148,10 +147,12 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   }
 
   Future<IPleromaFilter> actuallySubmitFilter(
-      String listRemoteId, PleromaFilter filterToSubmit) async {
+    String listRemoteId,
+    IPostPleromaFilter postPleromaFilter,
+  ) async {
     var remoteFilter = await pleromaFilterService.updateFilter(
       filterRemoteId: listRemoteId,
-      filter: filterToSubmit,
+      postPleromaFilter: postPleromaFilter,
     );
 
     return remoteFilter;

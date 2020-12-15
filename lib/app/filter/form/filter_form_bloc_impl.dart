@@ -1,9 +1,8 @@
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/date_time/date_time_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
@@ -23,7 +22,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final BoolValueFormFieldBloc wholeWordField;
   @override
-  final DateTimeValueFormFieldBloc expiresAtField;
+  DurationDateTimeValueFormFieldBloc expiresInField;
 
   @override
   final FilterContextMultiSelectFromListValueFormFieldBloc contextField;
@@ -42,21 +41,24 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         wholeWordField = BoolValueFormFieldBloc(
           originValue: initialValue?.wholeWord ?? false,
         ),
-        expiresAtField = DateTimeValueFormFieldBloc(
-          originValue: initialValue?.expiresAt,
-          minDateTime: DateTime.now(),
-          maxDateTime: null,
-          isNullValuePossible: true,
-        ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
           originValue: initialValue?.contextAsMastodonFilterContextType,
           validators: [],
         ),
-        super(isAllItemsInitialized: true) {
+        super(isAllItemsInitialized: false) {
+    expiresInField = DurationDateTimeValueFormFieldBloc(
+      isEnabled: true,
+      isNullValuePossible: true,
+      minDuration: Duration(minutes: 30),
+      maxDuration: Duration(days: 365),
+      originValue: null,
+      originalDateTime: initialValue.expiresAt,
+    );
+
     addDisposable(disposable: phraseField);
     addDisposable(disposable: irreversibleField);
     addDisposable(disposable: wholeWordField);
-    addDisposable(disposable: expiresAtField);
+    addDisposable(disposable: expiresInField);
     addDisposable(disposable: contextField);
 
     addDisposable(
@@ -67,6 +69,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         },
       ),
     );
+    onItemsChanged();
   }
 
   @override
@@ -74,23 +77,18 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         phraseField,
         irreversibleField,
         wholeWordField,
-        expiresAtField,
+        expiresInField,
         contextField,
       ];
 
   @override
-  IFilter calculateFormValue() {
-    return mapRemoteFilterToLocalFilter(
-      PleromaFilter(
-        id: null,
+  IPostPleromaFilter calculateFormValue() => PostPleromaFilter(
         phrase: phraseField.currentValue,
         irreversible: irreversibleField.currentValue,
         wholeWord: wholeWordField.currentValue,
-        expiresAt: expiresAtField.currentValue,
+        expiresInSeconds: expiresInField.currentValueInTotalSeconds,
         context: contextField.currentValue
             ?.map((contextType) => contextType.toJsonValue())
             ?.toList(),
-      ),
-    );
-  }
+      );
 }

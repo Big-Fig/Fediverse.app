@@ -1,9 +1,12 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_widget.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +24,28 @@ class FilterFormWidget extends StatelessWidget {
         const _FilterFormContextFieldWidget(),
         const _FilterFormIrreversibleFieldWidget(),
         const _FilterFormWholeWordFieldWidget(),
-        // todo: expires at support
+        const _FilterFormExpiresInFieldWidget(),
       ],
+    );
+  }
+}
+
+class _FilterFormExpiresInFieldWidget extends StatelessWidget {
+  const _FilterFormExpiresInFieldWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IFilterFormBloc,
+        IDurationValueFormFieldBloc>(
+      update: (context, value, previous) => value.expiresInField,
+      child: DurationValueFormFieldRowWidget(
+        label: S.of(context).app_filter_edit_field_expiresIn_label,
+        description:
+            S.of(context).app_filter_edit_field_expiresIn_description,
+        pickerType: DurationPickerType.dateTime,
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-13T14:08:23+00:00",
+    "@@last_modified": "2020-12-15T15:19:11+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -516,7 +516,7 @@
     "app_filter_edit_field_phrase_hint": "Не учитывает регистр",
     "app_filter_edit_field_wholeWord_label": "Целиком",
     "app_filter_edit_field_wholeWord_description": "Применять только есть фраза найдена полностью",
-    "app_filter_edit_field_expiresAt_label": "Истекает",
+    "app_filter_edit_field_expiresIn_label": "Истекает",
     "app_filter_edit_field_irreversible_label": "Фильтровать навсегда",
     "app_filter_edit_field_context_label": "Контекст",
     "app_filter_edit_field_context_description": "Одно или несколько направлений",
@@ -528,9 +528,10 @@
     "app_filter_edit_description": "Убрать статусы которые содержат фразу в тексте или в описании контента",
     "app_filter_list_empty": "У вас нет еще не одного Фильтра",
     "app_filter_list_action_add": "Добавить фильтр",
-    "app_filter_edit_field_expiresAt_value_null": "Никогда",
     "app_filter_edit_field_wholeWord_error_invalid_phrase": "Фраза должна содержать только цифры и буквы",
     "app_filter_edit_action_save": "Сохранить",
     "app_filter_edit_action_delete": "Удалить",
-    "app_filter_context_empty": "Ничего не выбрано"
+    "app_filter_context_empty": "Ничего не выбрано",
+    "app_filter_edit_field_expiresIn_description": "После истечения времени фильтр будет выключен, но не удален",
+    "app_duration_value_null": "Никогда"
 }

@@ -15,10 +15,9 @@ class EditFilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editFilterBloc = IEditFilterBloc.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: <Widget>[
-        _EditFilterDescriptionWidget(),
+        const _EditFilterDescriptionWidget(),
         const FilterFormWidget(),
         if (editFilterBloc.isPossibleToDelete)
           Padding(
