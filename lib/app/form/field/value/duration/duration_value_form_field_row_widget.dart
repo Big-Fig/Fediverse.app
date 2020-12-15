@@ -24,8 +24,7 @@ class DurationValueFormFieldRowWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) =>
-      DurationValueFormFieldBlocProxyProvider(
+  Widget build(BuildContext context) => DurationValueFormFieldBlocProxyProvider(
         child: SimpleFediFormFieldRow(
           label: label,
           description: description,
@@ -72,20 +71,23 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
                 }
               },
               child: StreamBuilder<Duration>(
-                  stream: fieldBloc.currentValueStream,
-                  initialData: fieldBloc.currentValue,
-                  builder: (context, snapshot) {
-                    var currentValue = snapshot.data;
-                    return Text(
-                      formatDuration(
-                        context: context,
-                        duration: currentValue,
-                      ),
-                      style: isEnabled
-                          ? fediUiTextTheme.bigTallBoldMediumGrey
-                          : fediUiTextTheme.bigTallBoldLightGrey,
-                    );
-                  },),
+                stream: fieldBloc.currentValueStream,
+                initialData: fieldBloc.currentValue,
+                builder: (context, snapshot) {
+                  var currentValue = snapshot.data;
+                  return Text(
+                    currentValue != null
+                        ? formatDuration(
+                            context: context,
+                            duration: currentValue,
+                          )
+                        : S.of(context).app_duration_value_null,
+                    style: isEnabled
+                        ? fediUiTextTheme.bigTallBoldMediumGrey
+                        : fediUiTextTheme.bigTallBoldLightGrey,
+                  );
+                },
+              ),
             ),
             const FediSmallHorizontalSpacer(),
             FediIconButton(
@@ -95,10 +97,10 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
                   : fediUiColorTheme.lightGrey,
               onPressed: isEnabled
                   ? () {
-                _showPicker(
-                  context: context,
-                );
-              }
+                      _showPicker(
+                        context: context,
+                      );
+                    }
                   : null,
             )
           ],

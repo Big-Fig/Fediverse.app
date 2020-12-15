@@ -89,3 +89,30 @@ Map<String, dynamic> _$PleromaFilterToJson(PleromaFilter instance) {
   writeNotNull('whole_word', instance.wholeWord);
   return val;
 }
+
+PostPleromaFilter _$PostPleromaFilterFromJson(Map<String, dynamic> json) {
+  return PostPleromaFilter(
+    context: (json['context'] as List)?.map((e) => e as String)?.toList(),
+    phrase: json['phrase'] as String,
+    expiresInSeconds: json['expires_in'] as int,
+    irreversible: json['irreversible'] as bool,
+    wholeWord: json['wholeWord'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PostPleromaFilterToJson(PostPleromaFilter instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('context', instance.context);
+  writeNotNull('expires_in', instance.expiresInSeconds);
+  writeNotNull('irreversible', instance.irreversible);
+  writeNotNull('phrase', instance.phrase);
+  writeNotNull('wholeWord', instance.wholeWord);
+  return val;
+}

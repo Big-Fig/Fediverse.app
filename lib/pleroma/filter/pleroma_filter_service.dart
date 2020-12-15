@@ -18,11 +18,11 @@ abstract class IPleromaFilterService implements IPleromaApi {
   Future deleteFilter({@required String filterRemoteId});
 
   Future<IPleromaFilter> createFilter({
-    @required IPleromaFilter filter,
+    @required IPostPleromaFilter postPleromaFilter,
   });
 
   Future<IPleromaFilter> updateFilter({
     @required String filterRemoteId,
-    @required IPleromaFilter filter,
+    @required IPostPleromaFilter postPleromaFilter,
   });
 }

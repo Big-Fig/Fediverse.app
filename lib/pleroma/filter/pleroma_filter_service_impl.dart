@@ -99,12 +99,12 @@ class PleromaFilterService implements IPleromaFilterService {
 
   @override
   Future<IPleromaFilter> createFilter({
-    @required IPleromaFilter filter,
+    @required IPostPleromaFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: urlPath.join(filterRelativeUrlPath),
-        bodyJson: _mapFilterToFromBody(filter),
+        bodyJson: _mapFilterToFromBody(postPleromaFilter),
       ),
     );
 
@@ -114,27 +114,21 @@ class PleromaFilterService implements IPleromaFilterService {
   @override
   Future<IPleromaFilter> updateFilter({
     @required String filterRemoteId,
-    @required IPleromaFilter filter,
+    @required IPostPleromaFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
         relativePath: urlPath.join(filterRelativeUrlPath, filterRemoteId),
-        bodyJson: _mapFilterToFromBody(filter),
+        bodyJson: _mapFilterToFromBody(postPleromaFilter),
       ),
     );
 
     return parseFilterResponse(httpResponse);
   }
 
-  Map<String, dynamic> _mapFilterToFromBody(IPleromaFilter filter) {
-    return {
-      "phrase": filter.phrase,
-      "context": filter.context,
-      // it is not a bug expiresAt = expires_in
-      if (filter.expiresAt != null) "expires_in": filter.expiresAt,
-      if (filter.wholeWord != null) "whole_word": filter.wholeWord,
-      if (filter.irreversible != null) "irreversible": filter.irreversible,
-    };
+  Map<String, dynamic> _mapFilterToFromBody(
+      IPostPleromaFilter postPleromaFilter) {
+    return postPleromaFilter.toJson();
   }
 
   @override

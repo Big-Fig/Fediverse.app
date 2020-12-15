@@ -4,10 +4,7 @@ import 'package:fedi/enum/enum_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:moor/moor.dart';
 
-abstract class IMastodonFilter {
-  /// The ID of the filter in the database.
-  String get id;
-
+abstract class IBaseMastodonFilter {
   ///  The text to be filtered.
   String get phrase;
 
@@ -16,14 +13,25 @@ abstract class IMastodonFilter {
 
   List<MastodonFilterContextType> get contextMastodonType;
 
-  /// When the filter should no longer be applied
-  DateTime get expiresAt;
-
   /// Should matching entities in home and notifications be dropped by the server?
   bool get irreversible;
 
   /// Should the filter consider word boundaries?
   bool get wholeWord;
+}
+
+abstract class IMastodonFilter implements IBaseMastodonFilter {
+  /// The ID of the filter in the database.
+  String get id;
+
+  /// When the filter should no longer be applied
+  DateTime get expiresAt;
+}
+
+abstract class IPostMastodonFilter implements IBaseMastodonFilter {
+
+  /// When the filter should no longer be applied
+  int get expiresInSeconds;
 }
 
 enum MastodonFilterContextType {

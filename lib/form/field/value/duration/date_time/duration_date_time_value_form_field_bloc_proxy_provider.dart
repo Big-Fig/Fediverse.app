@@ -1,0 +1,22 @@
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_proxy_provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+
+class DurationDateTimeValueFormFieldBlocProxyProvider extends StatelessWidget {
+  final Widget child;
+
+  DurationDateTimeValueFormFieldBlocProxyProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) => ProxyProvider<
+          IDurationDateTimeValueFormFieldBloc, IDurationValueFormFieldBloc>(
+        update: (context, value, previous) => value,
+        child: DurationValueFormFieldBlocProxyProvider(
+          child: child,
+        ),
+      );
+}
