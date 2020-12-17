@@ -20,22 +20,27 @@ abstract class IStatusRepository
 
   Future<IStatus> findByRemoteId(String remoteId);
 
-  Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
-      {@required String listRemoteId,
-      @required String conversationRemoteId,
-      bool isFromHomeTimeline = false});
+  Future upsertRemoteStatuses(
+    List<IPleromaStatus> remoteStatuses, {
+    @required String listRemoteId,
+    @required String conversationRemoteId,
+    bool isFromHomeTimeline = false,
+  });
 
   Stream<IStatus> watchByRemoteId(String remoteId);
 
-  Future updateLocalStatusByRemoteStatus(
-      {@required IStatus oldLocalStatus,
-      @required IPleromaStatus newRemoteStatus,
-      bool isFromHomeTimeline = false});
+  Future updateLocalStatusByRemoteStatus({
+    @required IStatus oldLocalStatus,
+    @required IPleromaStatus newRemoteStatus,
+    bool isFromHomeTimeline = false,
+  });
 
-  Future upsertRemoteStatus(IPleromaStatus remoteStatus,
-      {@required String listRemoteId,
-      @required String conversationRemoteId,
-      bool isFromHomeTimeline = false});
+  Future upsertRemoteStatus(
+    IPleromaStatus remoteStatus, {
+    @required String listRemoteId,
+    @required String conversationRemoteId,
+    bool isFromHomeTimeline = false,
+  });
 
   Future<List<IStatus>> getStatuses({
     @required String onlyInListWithRemoteId,
@@ -125,15 +130,21 @@ abstract class IStatusRepository
     bool onlyNotDeleted = true,
   });
 
-  Future incrementRepliesCount({@required String remoteId});
+  Future incrementRepliesCount({
+    @required String remoteId,
+  });
 
   Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
   });
 
-  Future markStatusAsDeleted({@required String statusRemoteId});
+  Future markStatusAsDeleted({
+    @required String statusRemoteId,
+  });
 
-  Future clearListStatusesConnection({@required String listRemoteId});
+  Future clearListStatusesConnection({
+    @required String listRemoteId,
+  });
 
   Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
     @required List<IConversationChat> conversations,

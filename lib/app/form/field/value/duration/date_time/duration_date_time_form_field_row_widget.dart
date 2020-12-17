@@ -1,5 +1,4 @@
 import 'package:fedi/app/duration/picker/date_time_duration_picker.dart';
-import 'package:fedi/app/duration/picker/duration_picker.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
