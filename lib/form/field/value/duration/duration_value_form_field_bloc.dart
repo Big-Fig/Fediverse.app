@@ -8,7 +8,9 @@ abstract class IDurationValueFormFieldBloc
           {bool listen = true}) =>
       Provider.of<IDurationValueFormFieldBloc>(context, listen: listen);
 
+  Duration get maxDuration;
+
   Duration get minDuration;
 
-  Duration get maxDuration;
+  void deleteValue();
 }

@@ -35,6 +35,8 @@ PleromaFilter mapLocalFilterToRemoteFilter(IFilter localFilter) {
     id: localFilter.remoteId,
     phrase: localFilter.phrase,
     context: localFilter.contextAsMastodonFilterContextType
+        ?.where(
+            (contextType) => contextType != MastodonFilterContextType.unknown)
         ?.map(
           (mastodonFilterContextType) =>
               mastodonFilterContextType.toJsonValue(),

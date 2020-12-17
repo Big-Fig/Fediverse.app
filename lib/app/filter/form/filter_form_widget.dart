@@ -1,12 +1,11 @@
-import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_widget.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
-import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/date_time/duration_date_time_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,14 +36,13 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc,
-        IDurationValueFormFieldBloc>(
+    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc>(
       update: (context, value, previous) => value.expiresInField,
-      child: DurationValueFormFieldRowWidget(
+      child: DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_filter_edit_field_expiresIn_label,
-        description:
-            S.of(context).app_filter_edit_field_expiresIn_description,
-        pickerType: DurationPickerType.dateTime,
+        description: S.of(context).app_filter_edit_field_expiresIn_description,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
       ),
     );
   }

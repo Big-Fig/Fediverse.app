@@ -1,5 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/create/create_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_impl.dart';
@@ -41,6 +43,10 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
         context,
         listen: false,
       ),
+      currentInstance: ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ).currentInstance,
     );
 
     if (onSubmit != null) {
@@ -88,6 +94,7 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     @required IAccountRepository accountRepository,
     @required IPleromaAccountService pleromaAccountService,
     @required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    @required AuthInstance currentInstance,
   }) : super(
           isPossibleToDelete: false,
           pleromaFilterService: pleromaFilterService,
@@ -97,5 +104,6 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
           accountRepository: accountRepository,
           pleromaAccountService: pleromaAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
+          currentInstance: currentInstance,
         );
 }

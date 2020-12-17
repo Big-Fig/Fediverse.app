@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-15T15:19:02+00:00",
+    "@@last_modified": "2020-12-17T12:47:49+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -516,7 +516,7 @@
     "app_filter_edit_field_phrase_hint": "Not sensitive to case",
     "app_filter_edit_field_wholeWord_label": "Whole word",
     "app_filter_edit_field_wholeWord_description": "Apply only if phrase exactly matched",
-    "app_filter_edit_field_expiresIn_label": "Expires at",
+    "app_filter_edit_field_expiresIn_label": "Expires in",
     "app_filter_edit_field_irreversible_label": "Drop instead of hide",
     "app_filter_edit_field_context_label": "Contexts",
     "app_filter_edit_field_context_description": "One or multiply contexts where the filter should apply",
@@ -524,7 +524,7 @@
     "app_filter_context_type_public": "Public",
     "app_filter_context_type_notifications": "Notifications",
     "app_filter_context_type_threads": "Conversations",
-    "app_filter_edit_field_irreversible_description": "Filter toots will disappear irreversibly, even if filter is later removed",
+    "app_filter_edit_field_irreversible_description": "Filter statuses on server-side (irreversible)",
     "app_filter_edit_description": "Remove statuses which contains phrase in text or content warning",
     "app_filter_list_empty": "You haven’t created any Filters yet.",
     "app_filter_list_action_add": "Add Filter",
@@ -533,5 +533,9 @@
     "app_filter_edit_action_delete": "Delete",
     "app_filter_context_empty": "Nothing selected",
     "app_filter_edit_field_expiresIn_description": "Expired filters are not automatically deleted, but can be reactivated",
-    "app_duration_value_null": "Never"
+    "app_duration_value_null": "Never",
+    "app_filter_context_type_account": "Account",
+    "app_duration_picker_action_delete": "Delete",
+    "app_filter_expired": "Expired",
+    "app_filter_context_type_unknown": "Unknown"
 }

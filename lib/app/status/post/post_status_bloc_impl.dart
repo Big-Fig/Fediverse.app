@@ -11,6 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -565,10 +566,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   IPostStatusPoll _calculatePostStatusPoll() {
+
     var poll;
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
-        durationLength: pollBloc.durationLengthFieldBloc.currentValue,
+        durationLength: pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
@@ -582,10 +584,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   PleromaPostStatusPoll _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
-      var expiresInSeconds =
-          (pollBloc.durationLengthFieldBloc.currentValue.inMicroseconds /
-                  Duration.microsecondsPerSecond)
-              .floor();
+      var expiresInSeconds = pollBloc
+          .durationDateTimeLengthFieldBloc.currentValueDuration.totalSeconds;
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,

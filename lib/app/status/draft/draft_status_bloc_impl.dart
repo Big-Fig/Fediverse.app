@@ -8,6 +8,7 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +26,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
 
   // ignore: close_sinks
   final BehaviorSubject<DraftStatusState> _stateSubject =
-      BehaviorSubject.seeded(DraftStatusState.draft);
+  BehaviorSubject.seeded(DraftStatusState.draft);
 
   @override
   DraftStatusState get state => _stateSubject.value;
@@ -64,10 +65,10 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
             streamSubscription: draftStatusRepository
                 .watchById(draftStatus.localId)
                 .listen((updatedStatus) {
-          if (updatedStatus != null) {
-            _draftStatusSubject.add(updatedStatus);
-          }
-        }));
+              if (updatedStatus != null) {
+                _draftStatusSubject.add(updatedStatus);
+              }
+            }));
       }
     }
   }
@@ -78,23 +79,22 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;
 
-  static DraftStatusBloc createFromContext(
-    BuildContext context,
-    IDraftStatus status, {
-    bool isNeedWatchLocalRepositoryForUpdates = true,
-    bool delayInit = true,
-  }) =>
+  static DraftStatusBloc createFromContext(BuildContext context,
+      IDraftStatus status, {
+        bool isNeedWatchLocalRepositoryForUpdates = true,
+        bool delayInit = true,
+      }) =>
       DraftStatusBloc(
         pleromaStatusService: IPleromaStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
-            IDraftStatusRepository.of(context, listen: false),
+        IDraftStatusRepository.of(context, listen: false),
         draftStatus: status,
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
+        isNeedWatchLocalRepositoryForUpdates,
         scheduledStatusRepository:
-            IScheduledStatusRepository.of(context, listen: false),
+        IScheduledStatusRepository.of(context, listen: false),
       );
 
   @override
@@ -131,13 +131,11 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
           scheduledAt: postStatusData.scheduledAt,
           poll: postStatusData.poll != null
               ? PleromaPostStatusPoll(
-                  options: postStatusData.poll.options,
-                  multiple: postStatusData.poll.multiple,
-                  expiresInSeconds:
-                      (postStatusData.poll.durationLength.inMicroseconds /
-                              Duration.microsecondsPerSecond)
-                          .floor(),
-                )
+            options: postStatusData.poll.options,
+            multiple: postStatusData.poll.multiple,
+            expiresInSeconds:
+            postStatusData.poll.durationLength.totalSeconds,
+          )
               : null,
         ),
       );
@@ -158,13 +156,11 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
           to: postStatusData.to,
           poll: postStatusData.poll != null
               ? PleromaPostStatusPoll(
-                  options: postStatusData.poll.options,
-                  multiple: postStatusData.poll.multiple,
-                  expiresInSeconds:
-                      (postStatusData.poll.durationLength.inMicroseconds /
-                              Duration.microsecondsPerSecond)
-                          .floor(),
-                )
+            options: postStatusData.poll.options,
+            multiple: postStatusData.poll.multiple,
+            expiresInSeconds:
+            postStatusData.poll.durationLength.totalSeconds,
+          )
               : null,
         ),
       );

@@ -5002,10 +5002,10 @@ class S {
     );
   }
 
-  /// `Expires at`
+  /// `Expires in`
   String get app_filter_edit_field_expiresIn_label {
     return Intl.message(
-      'Expires at',
+      'Expires in',
       name: 'app_filter_edit_field_expiresIn_label',
       desc: '',
       args: [],
@@ -5082,10 +5082,10 @@ class S {
     );
   }
 
-  /// `Filter toots will disappear irreversibly, even if filter is later removed`
+  /// `Filter statuses on server-side (irreversible)`
   String get app_filter_edit_field_irreversible_description {
     return Intl.message(
-      'Filter toots will disappear irreversibly, even if filter is later removed',
+      'Filter statuses on server-side (irreversible)',
       name: 'app_filter_edit_field_irreversible_description',
       desc: '',
       args: [],
@@ -5177,6 +5177,46 @@ class S {
     return Intl.message(
       'Never',
       name: 'app_duration_value_null',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get app_filter_context_type_account {
+    return Intl.message(
+      'Account',
+      name: 'app_filter_context_type_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_duration_picker_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_duration_picker_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expired`
+  String get app_filter_expired {
+    return Intl.message(
+      'Expired',
+      name: 'app_filter_expired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get app_filter_context_type_unknown {
+    return Intl.message(
+      'Unknown',
+      name: 'app_filter_context_type_unknown',
       desc: '',
       args: [],
     );

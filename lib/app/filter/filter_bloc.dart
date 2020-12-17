@@ -12,4 +12,8 @@ abstract class IFilterBloc implements IDisposable {
   IFilter get filter;
 
   Stream<IFilter> get filterStream;
+
+  bool get isExpired;
+
+  Stream<bool> get isExpiredStream;
 }

@@ -1,32 +1,45 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart'
     as flutter_duration_picker;
 
-Future<Duration> showDurationPicker({
+Future<DurationPickerResult> showDurationPicker({
   @required BuildContext context,
   @required String popupTitle,
   @required Duration minDuration,
   @required Duration currentDuration,
   @required Duration maxDuration,
+  @required bool isDeletePossible,
 }) async {
+  if (isDeletePossible) {
+    throw UnsupportedError("Deleting not implemented yet");
+  }
 
-  var resultDuration = await flutter_duration_picker.showDurationPicker(
+  var pickedDuration = await flutter_duration_picker.showDurationPicker(
     context: context,
     initialTime: currentDuration,
   );
 
-  if (resultDuration != null) {
-    if ((maxDuration == null || resultDuration < maxDuration) &&
-        (minDuration == null || resultDuration > minDuration)) {
-      return resultDuration;
+  Duration resultDuration;
+
+  if (pickedDuration != null) {
+    if ((maxDuration == null || pickedDuration < maxDuration) &&
+        (minDuration == null || pickedDuration > minDuration)) {
+      resultDuration = pickedDuration;
     } else {
-      if ((maxDuration == null || resultDuration > maxDuration)) {
-        return maxDuration;
+      if ((maxDuration == null || pickedDuration > maxDuration)) {
+        resultDuration = maxDuration;
       } else {
-        return minDuration;
+        resultDuration = minDuration;
       }
     }
   } else {
-    return null;
+    resultDuration = null;
   }
+
+  return DurationPickerResult(
+    deleted: false,
+    canceled: resultDuration == null,
+    duration: resultDuration,
+  );
 }

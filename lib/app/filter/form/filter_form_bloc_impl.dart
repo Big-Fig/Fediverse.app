@@ -1,8 +1,12 @@
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
+import 'package:fedi/form/field/value/select_from_list/multi/validation/multi_select_from_list_value_form_field_non_null_and_non_empty_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
@@ -27,8 +31,12 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final FilterContextMultiSelectFromListValueFormFieldBloc contextField;
 
-  FilterFormBloc({@required IFilter initialValue})
-      : phraseField = StringValueFormFieldBloc(
+  final AuthInstance currentInstance;
+
+  FilterFormBloc({
+    @required IFilter initialValue,
+    @required this.currentInstance,
+  })  : phraseField = StringValueFormFieldBloc(
           originValue: initialValue?.phrase,
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator()
@@ -43,16 +51,23 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
           originValue: initialValue?.contextAsMastodonFilterContextType,
-          validators: [],
+          validators: [
+            MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
+                .createValidator(),
+          ],
+          currentInstance: currentInstance,
         ),
         super(isAllItemsInitialized: false) {
     expiresInField = DurationDateTimeValueFormFieldBloc(
-      isEnabled: true,
+      isEnabled: currentInstance.isMastodonInstance,
       isNullValuePossible: true,
       minDuration: Duration(minutes: 30),
       maxDuration: Duration(days: 365),
-      originValue: null,
-      originalDateTime: initialValue.expiresAt,
+      originValue: DurationDateTime(
+        dateTime: initialValue?.expiresAt,
+        duration: null,
+      ),
+      validators: [],
     );
 
     addDisposable(disposable: phraseField);
@@ -82,13 +97,19 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       ];
 
   @override
-  IPostPleromaFilter calculateFormValue() => PostPleromaFilter(
-        phrase: phraseField.currentValue,
-        irreversible: irreversibleField.currentValue,
-        wholeWord: wholeWordField.currentValue,
-        expiresInSeconds: expiresInField.currentValueInTotalSeconds,
-        context: contextField.currentValue
-            ?.map((contextType) => contextType.toJsonValue())
-            ?.toList(),
-      );
+  IPostPleromaFilter calculateFormValue() {
+    return PostPleromaFilter(
+      phrase: phraseField.currentValue,
+      irreversible: irreversibleField.currentValue,
+      wholeWord: wholeWordField.currentValue,
+      expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
+      context: contextField.currentValue
+          ?.where(
+              (contextType) => contextType != MastodonFilterContextType.unknown)
+          ?.map(
+            (contextType) => contextType.toJsonValue(),
+          )
+          ?.toList(),
+    );
+  }
 }

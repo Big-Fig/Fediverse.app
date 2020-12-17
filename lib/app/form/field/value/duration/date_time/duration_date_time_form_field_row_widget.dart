@@ -1,50 +1,54 @@
+import 'package:fedi/app/duration/picker/date_time_duration_picker.dart';
 import 'package:fedi/app/duration/picker/duration_picker.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_proxy_provider.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DurationValueFormFieldRowWidget extends StatelessWidget {
+
+// todo: refactor to use common widgets with  DurationValueFormFieldRowWidget
+class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String description;
   final String descriptionOnDisabled;
 
-  DurationValueFormFieldRowWidget({
+  DurationDateTimeValueFormFieldRowWidget({
     @required this.label,
     this.description,
     this.descriptionOnDisabled,
   });
 
   @override
-  Widget build(BuildContext context) => DurationValueFormFieldBlocProxyProvider(
+  Widget build(BuildContext context) =>
+      DurationDateTimeValueFormFieldBlocProxyProvider(
         child: SimpleFediFormFieldRow(
           label: label,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
-          valueChild: _DurationValueFormFieldRowValueWidget(
+          valueChild: _DurationDateTimeValueFormFieldRowValueWidget(
             popupTitle: label,
           ),
         ),
       );
 }
 
-class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
+class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
   final String popupTitle;
 
-  const _DurationValueFormFieldRowValueWidget({
+  const _DurationDateTimeValueFormFieldRowValueWidget({
     Key key,
     @required this.popupTitle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var fieldBloc = IDurationValueFormFieldBloc.of(context);
+    var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: fieldBloc.isEnabledStream,
@@ -63,7 +67,7 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
                   );
                 }
               },
-              child: const DurationValueFormFieldRowValueTextWidget(),
+              child: const DurationDateTimeValueFormFieldRowValueTextWidget(),
             ),
             const FediSmallHorizontalSpacer(),
           ],
@@ -73,12 +77,12 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
   }
 }
 
-class DurationValueFormFieldRowValueTextWidget extends StatelessWidget {
-  const DurationValueFormFieldRowValueTextWidget();
+class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
+  const DurationDateTimeValueFormFieldRowValueTextWidget();
 
   @override
   Widget build(BuildContext context) {
-    var fieldBloc = IDurationValueFormFieldBloc.of(context);
+    var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     return StreamBuilder<bool>(
@@ -87,22 +91,23 @@ class DurationValueFormFieldRowValueTextWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
         return StreamBuilder<Duration>(
-            stream: fieldBloc.currentValueStream,
-            initialData: fieldBloc.currentValue,
-            builder: (context, snapshot) {
-              var currentValue = snapshot.data;
-              return Text(
-                currentValue != null
-                    ? formatDuration(
-                        context: context,
-                        duration: currentValue,
-                      )
-                    : S.of(context).app_duration_value_null,
-                style: isEnabled
-                    ? fediUiTextTheme.bigTallBoldMediumGrey
-                    : fediUiTextTheme.bigTallBoldLightGrey,
-              );
-            });
+          stream: fieldBloc.currentValueDurationStream,
+          initialData: fieldBloc.currentValueDuration,
+          builder: (context, snapshot) {
+            var currentValue = snapshot.data;
+            return Text(
+              currentValue != null
+                  ? formatDuration(
+                      context: context,
+                      duration: currentValue,
+                    )
+                  : S.of(context).app_duration_value_null,
+              style: isEnabled
+                  ? fediUiTextTheme.bigTallBoldMediumGrey
+                  : fediUiTextTheme.bigTallBoldLightGrey,
+            );
+          },
+        );
       },
     );
   }
@@ -132,16 +137,17 @@ String formatDuration({
   }
 }
 
-class DurationValueFormFieldRowIconButtonWidget extends StatelessWidget {
+class DurationDateTimeValueFormFieldRowIconButtonWidget
+    extends StatelessWidget {
   final String popupTitle;
 
-  const DurationValueFormFieldRowIconButtonWidget({
+  const DurationDateTimeValueFormFieldRowIconButtonWidget({
     @required this.popupTitle,
   });
 
   @override
   Widget build(BuildContext context) {
-    var fieldBloc = IDurationValueFormFieldBloc.of(context);
+    var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return StreamBuilder<bool>(
@@ -172,13 +178,14 @@ void _showDurationPicker({
   @required BuildContext context,
   @required String popupTitle,
 }) async {
-  var fieldBloc = IDurationValueFormFieldBloc.of(context, listen: false);
+  var fieldBloc =
+      IDurationDateTimeValueFormFieldBloc.of(context, listen: false);
 
-  var durationPickerResult = await showDurationPicker(
+  var durationPickerResult = await showDateTimeDurationPicker(
     context: context,
     popupTitle: popupTitle,
     minDuration: fieldBloc.minDuration,
-    currentDuration: fieldBloc.currentValue,
+    currentDuration: fieldBloc.currentValueDuration,
     maxDuration: fieldBloc.maxDuration,
     isDeletePossible: fieldBloc.isNullValuePossible,
   );
@@ -187,7 +194,7 @@ void _showDurationPicker({
     fieldBloc.deleteValue();
   } else {
     if (durationPickerResult.duration != null) {
-      fieldBloc.changeCurrentValue(durationPickerResult.duration);
+      fieldBloc.changeCurrentValueDuration(durationPickerResult.duration);
     }
   }
 }

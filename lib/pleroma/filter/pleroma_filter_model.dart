@@ -157,7 +157,7 @@ class PostPleromaFilter extends IPostPleromaFilter {
   final String phrase;
 
   @override
-  @HiveField(5)
+  @JsonKey(name: "whole_word")
   final bool wholeWord;
 
   PostPleromaFilter({

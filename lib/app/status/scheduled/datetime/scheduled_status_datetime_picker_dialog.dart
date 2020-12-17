@@ -1,6 +1,6 @@
-import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -32,6 +32,7 @@ Future<DateTime> showScheduledStatusDateTimePickerDialog(
     ),
     onCancel: () {},
     onConfirm: (date) {},
+    isDeletePossible: false,
   );
   _logger.finest(() => "showScheduledStatusDateTimePickerDialog result "
       "$dateTime ");
