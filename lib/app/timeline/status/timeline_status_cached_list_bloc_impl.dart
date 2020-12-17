@@ -217,7 +217,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     var onlyLocalFilter;
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
+      onlyLocalFilter = StatusRepositoryOnlyLocalCondition(localUrlHost);
     }
     return statusRepository.watchStatuses(
       onlyInConversation: null,
@@ -237,9 +237,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyNoReplies: timeline.excludeReplies,
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: null,
       onlyFavourited: null,
@@ -258,7 +258,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     var onlyLocalFilter;
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
+      onlyLocalFilter = StatusRepositoryOnlyLocalCondition(localUrlHost);
     }
     var statuses = await statusRepository.getStatuses(
       onlyInConversation: null,
@@ -278,9 +278,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyNoReplies: timeline.excludeReplies,
       limit: limit,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: null,
       onlyFavourited: null,

@@ -67,9 +67,9 @@ class AccountStatusesWithoutRepliesListBloc
       onlyFromAccount: account,
       limit: limit,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       onlyInConversation: null,
       isFromHomeTimeline: null,
       onlyBookmarked: null,
@@ -96,9 +96,9 @@ class AccountStatusesWithoutRepliesListBloc
       onlyFromAccount: account,
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       onlyInConversation: null,
       isFromHomeTimeline: null,
       onlyBookmarked: null,

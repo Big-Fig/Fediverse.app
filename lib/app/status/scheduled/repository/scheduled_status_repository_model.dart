@@ -1,12 +1,12 @@
 import 'package:moor/moor.dart';
 
 // todo : move to dao model
-enum ScheduledStatusOrderByType {
+enum ScheduledStatusRepositoryOrderType {
   remoteId,
 }
 
 class ScheduledStatusOrderingTermData {
-  final ScheduledStatusOrderByType orderByType;
+  final ScheduledStatusRepositoryOrderType orderByType;
   final OrderingMode orderingMode;
   ScheduledStatusOrderingTermData(
       {@required this.orderByType, @required this.orderingMode});

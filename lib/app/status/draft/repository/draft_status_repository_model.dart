@@ -1,12 +1,12 @@
 import 'package:moor/moor.dart';
 
 // todo : move to dao model
-enum DraftStatusOrderByType {
+enum DraftStatusRepositoryOrderType {
   updatedAt,
 }
 
 class DraftStatusOrderingTermData {
-  final DraftStatusOrderByType orderByType;
+  final DraftStatusRepositoryOrderType orderByType;
   final OrderingMode orderingMode;
   DraftStatusOrderingTermData(
       {@required this.orderByType, @required this.orderingMode});

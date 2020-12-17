@@ -55,7 +55,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         offset: null,
         orderingTermData: ScheduledStatusOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ScheduledStatusOrderByType.remoteId),
+            orderByType: ScheduledStatusRepositoryOrderType.remoteId),
         excludeCanceled: _excludeCanceled,
         excludeScheduleAtExpired: _excludeScheduleAtExpired);
 
@@ -72,7 +72,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
           offset: null,
           orderingTermData: ScheduledStatusOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ScheduledStatusOrderByType.remoteId),
+              orderByType: ScheduledStatusRepositoryOrderType.remoteId),
           excludeCanceled: _excludeCanceled,
           excludeScheduleAtExpired: _excludeScheduleAtExpired);
 

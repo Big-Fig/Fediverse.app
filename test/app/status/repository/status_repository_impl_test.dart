@@ -271,7 +271,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: OnlyLocalStatusFilter("pleroma.com"),
+      onlyLocal: StatusRepositoryOnlyLocalCondition("pleroma.com"),
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -672,8 +672,8 @@ void main() {
       newerThanStatus: null,
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
-          orderByType: StatusOrderByType.remoteId,
+      orderingTermData: StatusRepositoryOrderingTermData(
+          orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.asc),
       onlyNoNsfwSensitive: null,
       onlyLocal: null,
@@ -720,8 +720,8 @@ void main() {
       newerThanStatus: null,
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
-          orderByType: StatusOrderByType.remoteId,
+      orderingTermData: StatusRepositoryOrderingTermData(
+          orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.desc),
       onlyNoNsfwSensitive: null,
       onlyLocal: null,
@@ -768,8 +768,8 @@ void main() {
       newerThanStatus: null,
       limit: 1,
       offset: 1,
-      orderingTermData: StatusOrderingTermData(
-          orderByType: StatusOrderByType.remoteId,
+      orderingTermData: StatusRepositoryOrderingTermData(
+          orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.desc),
       onlyNoNsfwSensitive: null,
       onlyLocal: null,
@@ -1399,9 +1399,9 @@ void main() {
           await statusRepository.findByRemoteId(dbStatus1.remoteId),
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       onlyNoNsfwSensitive: null,
       onlyLocal: null,
       onlyNoReplies: null,

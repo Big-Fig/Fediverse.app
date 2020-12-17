@@ -45,9 +45,9 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       onlyNoReplies: null,
       limit: limit,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
@@ -76,9 +76,9 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       onlyNoReplies: null,
       limit: null,
       offset: null,
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,

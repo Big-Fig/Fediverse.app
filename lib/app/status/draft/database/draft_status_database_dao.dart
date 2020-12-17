@@ -48,7 +48,7 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
             .map((orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderByType) {
-                    case DraftStatusOrderByType.updatedAt:
+                    case DraftStatusRepositoryOrderType.updatedAt:
                       expression = item.updatedAt;
                       break;
                   }
