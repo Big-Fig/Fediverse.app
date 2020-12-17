@@ -250,7 +250,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required OnlyLocalStatusFilter onlyLocal,
+    @required StatusRepositoryOnlyLocalCondition onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -260,7 +260,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyNoReplies,
     @required int limit,
     @required int offset,
-    @required StatusOrderingTermData orderingTermData,
+    @required StatusRepositoryOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
@@ -302,7 +302,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required OnlyLocalStatusFilter onlyLocal,
+    @required StatusRepositoryOnlyLocalCondition onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -312,7 +312,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyNoReplies,
     @required int limit,
     @required int offset,
-    @required StatusOrderingTermData orderingTermData,
+    @required StatusRepositoryOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
@@ -355,7 +355,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required OnlyLocalStatusFilter onlyLocal,
+    @required StatusRepositoryOnlyLocalCondition onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -365,7 +365,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyNoReplies,
     @required int limit,
     @required int offset,
-    @required StatusOrderingTermData orderingTermData,
+    @required StatusRepositoryOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
@@ -620,7 +620,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required OnlyLocalStatusFilter onlyLocal,
+    @required StatusRepositoryOnlyLocalCondition onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -628,7 +628,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IStatus newerThanStatus,
     @required bool onlyNoNsfwSensitive,
     @required bool onlyNoReplies,
-    @required StatusOrderingTermData orderingTermData,
+    @required StatusRepositoryOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
@@ -668,7 +668,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required OnlyLocalStatusFilter onlyLocal,
+    @required StatusRepositoryOnlyLocalCondition onlyLocal,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -676,7 +676,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IStatus newerThanStatus,
     @required bool onlyNoNsfwSensitive,
     @required bool onlyNoReplies,
-    @required StatusOrderingTermData orderingTermData,
+    @required StatusRepositoryOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
@@ -752,9 +752,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         isFromHomeTimeline: null,
         onlyBookmarked: null,
         onlyFavourited: null,
-        orderingTermData: StatusOrderingTermData(
+        orderingTermData: StatusRepositoryOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
+            orderType: StatusRepositoryOrderType.remoteId),
         onlyNotDeleted: onlyNotDeleted,
       );
 
@@ -780,9 +780,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         isFromHomeTimeline: null,
         onlyBookmarked: null,
         onlyFavourited: null,
-        orderingTermData: StatusOrderingTermData(
+        orderingTermData: StatusRepositoryOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
+            orderType: StatusRepositoryOrderType.remoteId),
         onlyNotDeleted: onlyNotDeleted,
       );
 
@@ -792,9 +792,9 @@ class StatusRepository extends AsyncInitLoadingBloc
     bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
-      orderingTermData: StatusOrderingTermData(
+      orderingTermData: StatusRepositoryOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: StatusOrderByType.remoteId),
+          orderType: StatusRepositoryOrderType.remoteId),
       forceJoinConversation: true,
       onlyInListWithRemoteId: null,
       onlyWithHashtag: null,

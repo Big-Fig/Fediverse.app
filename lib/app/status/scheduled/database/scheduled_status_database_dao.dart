@@ -111,7 +111,7 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
             .map((orderTerm) => (item) {
                   var expression;
                   switch (orderTerm.orderByType) {
-                    case ScheduledStatusOrderByType.remoteId:
+                    case ScheduledStatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
                       break;
                   }

@@ -383,7 +383,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
+            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
             orderingMode: OrderingMode.asc),
         olderThan: null,
         excludeCanceled: null,
@@ -421,7 +421,7 @@ void main() {
         limit: null,
         offset: null,
         orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
+            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null,
         excludeCanceled: null,
@@ -459,7 +459,7 @@ void main() {
         limit: 1,
         offset: 1,
         orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusOrderByType.remoteId,
+            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThan: null,
         excludeCanceled: null,

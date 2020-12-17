@@ -1,27 +1,42 @@
 import 'package:moor/moor.dart';
 
-enum StatusOrderByType {
+enum StatusRepositoryOrderType {
   remoteId,
 }
 
-class StatusOrderingTermData {
-  final StatusOrderByType orderByType;
+class StatusRepositoryOrderingTermData {
+  final StatusRepositoryOrderType orderType;
   final OrderingMode orderingMode;
-  StatusOrderingTermData(
-      {@required this.orderByType, @required this.orderingMode});
+
+  StatusRepositoryOrderingTermData({
+    @required this.orderType,
+    @required this.orderingMode,
+  });
 
   @override
   String toString() {
-    return 'StatusOrderingTermData{orderByType: $orderByType, orderingMode: $orderingMode}';
+    return 'StatusRepositoryOrderingTermData{orderType: $orderType,'
+        ' orderingMode: $orderingMode}';
   }
 }
 
-class OnlyLocalStatusFilter {
+class StatusRepositoryOnlyLocalCondition {
   final String localUrlHost;
-  OnlyLocalStatusFilter(this.localUrlHost);
+
+  StatusRepositoryOnlyLocalCondition(this.localUrlHost);
 
   @override
   String toString() {
-    return 'OnlyLocalStatusFilter{localUrlHost: $localUrlHost}';
+    return 'StatusRepositoryOnlyLocalCondition{localUrlHost: $localUrlHost}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StatusRepositoryOnlyLocalCondition &&
+          runtimeType == other.runtimeType &&
+          localUrlHost == other.localUrlHost;
+
+  @override
+  int get hashCode => localUrlHost.hashCode;
 }

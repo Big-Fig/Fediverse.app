@@ -274,13 +274,13 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          List<StatusOrderingTermData> orderTerms) =>
+          List<StatusRepositoryOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case StatusOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
                       break;
                   }

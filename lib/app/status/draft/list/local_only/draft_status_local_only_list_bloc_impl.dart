@@ -41,7 +41,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
       offset: null,
       orderingTermData: DraftStatusOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: DraftStatusOrderByType.updatedAt),
+          orderByType: DraftStatusRepositoryOrderType.updatedAt),
     );
 
     return statuses;
