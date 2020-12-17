@@ -15,6 +15,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
 import 'package:fedi/app/home/home_model.dart';
@@ -41,6 +42,7 @@ import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
+import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
@@ -235,6 +237,14 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
     currentAuthInstanceBloc:
         ICurrentAuthInstanceBloc.of(context, listen: false),
     pleromaAuthRestService: IPleromaAuthRestService.of(
+      context,
+      listen: false,
+    ),
+    filterRepository: IFilterRepository.of(
+      context,
+      listen: false,
+    ),
+    pleromaFilterService: IPleromaFilterService.of(
       context,
       listen: false,
     ),
