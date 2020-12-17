@@ -4,6 +4,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,7 +20,6 @@ class FilterListItemWidget extends StatelessWidget {
     var filterBloc = IFilterBloc.of(context);
 
     _logger.finest(() => "build ${filterBloc.remoteId}");
-    var fediUiTextTheme = IFediUiTextTheme.of(context);
 
     return InkWell(
       onTap: () {
@@ -39,11 +39,10 @@ class FilterListItemWidget extends StatelessWidget {
       child: Padding(
         padding: FediPadding.allBigPadding,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              filterBloc.filter.phrase,
-              style: fediUiTextTheme.bigTallBoldDarkGrey,
-            )
+            const _FilterListItemPhraseWidget(),
+            const _FilterListItemExpiredWidget(),
           ],
         ),
       ),
@@ -55,5 +54,51 @@ class FilterListItemWidget extends StatelessWidget {
       context,
       listen: false,
     ).refreshWithController();
+  }
+}
+
+class _FilterListItemExpiredWidget extends StatelessWidget {
+  const _FilterListItemExpiredWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var filterBloc = IFilterBloc.of(context);
+
+    return StreamBuilder<bool>(
+      stream: filterBloc.isExpiredStream,
+      initialData: filterBloc.isExpired,
+      builder: (context, snapshot) {
+        var isExpired = snapshot.data;
+        if (isExpired) {
+          return Text(
+            S.of(context).app_filter_expired,
+            style: IFediUiTextTheme.of(context).bigTallError,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+}
+
+class _FilterListItemPhraseWidget extends StatelessWidget {
+  const _FilterListItemPhraseWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var filterBloc = IFilterBloc.of(context);
+
+    _logger.finest(() => "build ${filterBloc.remoteId}");
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
+
+    return Text(
+      filterBloc.filter.phrase,
+      style: fediUiTextTheme.bigTallBoldDarkGrey,
+    );
   }
 }

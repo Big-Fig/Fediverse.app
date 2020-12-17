@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-15T15:19:11+00:00",
+    "@@last_modified": "2020-12-17T12:47:57+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -524,7 +524,7 @@
     "app_filter_context_type_public": "Публичные ленты",
     "app_filter_context_type_notifications": "Оповещения",
     "app_filter_context_type_threads": "Беседы",
-    "app_filter_edit_field_irreversible_description": "Фильтровать навсегда, даже если фильтр будет удален",
+    "app_filter_edit_field_irreversible_description": "Фильтровать навсегда на сервере",
     "app_filter_edit_description": "Убрать статусы которые содержат фразу в тексте или в описании контента",
     "app_filter_list_empty": "У вас нет еще не одного Фильтра",
     "app_filter_list_action_add": "Добавить фильтр",
@@ -533,5 +533,9 @@
     "app_filter_edit_action_delete": "Удалить",
     "app_filter_context_empty": "Ничего не выбрано",
     "app_filter_edit_field_expiresIn_description": "После истечения времени фильтр будет выключен, но не удален",
-    "app_duration_value_null": "Никогда"
+    "app_duration_value_null": "Никогда",
+    "app_filter_context_type_account": "Аккаунт",
+    "app_duration_picker_action_delete": "Удалить",
+    "app_filter_expired": "Время истекло",
+    "app_filter_context_type_unknown": "Неизвестно"
 }

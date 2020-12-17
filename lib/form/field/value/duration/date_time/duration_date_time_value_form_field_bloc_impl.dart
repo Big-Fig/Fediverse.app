@@ -1,26 +1,55 @@
+import 'package:fedi/date_time/date_time_extension.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
+import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:flutter/widgets.dart';
 
-class DurationDateTimeValueFormFieldBloc extends DurationValueFormFieldBloc
+class DurationDateTimeValueFormFieldBloc
+    extends ValueFormFieldBloc<DurationDateTime>
     implements IDurationDateTimeValueFormFieldBloc {
-  final DateTime originalDateTime;
+  @override
+  final Duration minDuration;
+  @override
+  final Duration maxDuration;
+
+  @override
+  Duration get currentValueDuration => _calculateDuration(currentValue);
+
+  @override
+  Stream<Duration> get currentValueDurationStream => currentValueStream.map(
+        (currentValue) => _calculateDuration(currentValue),
+      );
+
   DurationDateTimeValueFormFieldBloc({
-    @required Duration originValue,
-    @required Duration minDuration,
-    @required Duration maxDuration,
+    @required DurationDateTime originValue,
+    @required this.minDuration,
+    @required this.maxDuration,
     @required bool isNullValuePossible,
     @required bool isEnabled,
-    @required this.originalDateTime,
+    List<FormValueFieldValidation<DurationDateTime>> validators = const [],
   }) : super(
           originValue: originValue,
           isNullValuePossible: isNullValuePossible,
           isEnabled: isEnabled,
-          minDuration: minDuration,
-          maxDuration: maxDuration,
+          validators: validators,
         );
 
-  int get currentValueInTotalSeconds => currentValue != null ? currentValue.inMilliseconds *
-      Duration.microsecondsPerMillisecond *
-      Duration.millisecondsPerSecond : null;
+  @override
+  void deleteValue() {
+    changeCurrentValue(null);
+  }
+
+  @override
+  void changeCurrentValueDuration(Duration newValue) {
+    changeCurrentValue(
+      DurationDateTime(
+        duration: newValue,
+        dateTime: currentValue.dateTime,
+      ),
+    );
+  }
+
+  Duration _calculateDuration(DurationDateTime currentValue) =>
+      currentValue?.duration ?? currentValue?.dateTime?.durationFromNow;
 }

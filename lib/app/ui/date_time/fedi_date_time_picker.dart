@@ -20,6 +20,7 @@ export 'package:flutter_datetime_picker/src/i18n_model.dart';
 
 typedef void DateChangedCallback(DateTime time);
 typedef void DateCancelledCallback();
+typedef void DateDeletedCallback();
 typedef String StringAtIndexCallBack(int index);
 
 class FediDatePicker {
@@ -37,8 +38,12 @@ class FediDatePicker {
     locale = LocaleType.en,
     DateTime currentTime,
     FediDatePickerTheme theme,
+    @required DateDeletedCallback onDelete,
+    @required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
+      onDelete: onDelete,
+      isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
       onChanged: onChanged,
       onConfirm: onConfirm,
@@ -68,8 +73,12 @@ class FediDatePicker {
     locale = LocaleType.en,
     DateTime currentTime,
     FediDatePickerTheme theme,
+    @required DateDeletedCallback onDelete,
+    @required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
+      onDelete: onDelete,
+      isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
       onChanged: onChanged,
       onConfirm: onConfirm,
@@ -97,8 +106,12 @@ class FediDatePicker {
     locale = LocaleType.en,
     DateTime currentTime,
     FediDatePickerTheme theme,
+    @required DateDeletedCallback onDelete,
+    @required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
+      onDelete: onDelete,
+      isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
       onChanged: onChanged,
       onConfirm: onConfirm,
@@ -121,16 +134,20 @@ class FediDatePicker {
     DateTime maxDateTime,
     DateChangedCallback onChanged,
     DateChangedCallback onConfirm,
+    DateDeletedCallback onDelete,
     DateCancelledCallback onCancel,
     locale = LocaleType.en,
     DateTime currentDateTime,
     FediDatePickerTheme theme,
+    @required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
+      isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
       onChanged: onChanged,
       onConfirm: onConfirm,
       onCancel: onCancel,
+      onDelete: onDelete,
       locale: locale,
       theme: theme,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -155,8 +172,12 @@ class FediDatePicker {
     locale = LocaleType.en,
     BasePickerModel pickerModel,
     FediDatePickerTheme theme,
+    @required DateDeletedCallback onDelete,
+    @required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
+      onDelete: onDelete,
+      isDeletePossible: isDeletePossible,
       showTitleActions: showTitleActions,
       onChanged: onChanged,
       onConfirm: onConfirm,
@@ -169,16 +190,19 @@ class FediDatePicker {
     );
   }
 
-  static Future<DateTime> _showDatePickerPopup(
-      {@required BuildContext context,
-      @required bool showTitleActions,
-      @required DateChangedCallback onChanged,
-      @required DateChangedCallback onConfirm,
-      @required DateCancelledCallback onCancel,
-      @required LocaleType locale,
-      @required FediDatePickerTheme theme,
-      @required String barrierLabel,
-      @required BasePickerModel pickerModel}) {
+  static Future<DateTime> _showDatePickerPopup({
+    @required BuildContext context,
+    @required bool showTitleActions,
+    @required DateChangedCallback onChanged,
+    @required DateChangedCallback onConfirm,
+    @required DateCancelledCallback onCancel,
+    @required DateDeletedCallback onDelete,
+    @required LocaleType locale,
+    @required FediDatePickerTheme theme,
+    @required String barrierLabel,
+    @required BasePickerModel pickerModel,
+    @required bool isDeletePossible,
+  }) {
     var completer = Completer<DateTime>();
     Widget widget = _FediDatePickerComponent(
       onChanged: onChanged,
@@ -187,17 +211,24 @@ class FediDatePicker {
       showTitleActions: showTitleActions,
       theme: theme,
       onConfirm: (time) {
-        completer.complete(time);
         if (onConfirm != null) {
           onConfirm(time);
         }
+        completer.complete(time);
       },
       onCancel: () {
-        completer.complete(null);
         if (onCancel != null) {
           onCancel();
         }
+        completer.complete(null);
       },
+      onDelete: () {
+        if (onDelete != null) {
+          onDelete();
+        }
+        completer.complete(null);
+      },
+      isDeletePossible: isDeletePossible,
     );
     ThemeData inheritTheme = Theme.of(context, shadowThemeOnly: true);
     if (inheritTheme != null) {
@@ -217,6 +248,8 @@ class _FediDatePickerComponent extends StatefulWidget {
     @required this.pickerModel,
     @required this.showTitleActions,
     @required this.onChanged,
+    @required this.isDeletePossible,
+    @required this.onDelete,
     @required this.onConfirm,
     @required this.onCancel,
   }) : super(key: key);
@@ -224,6 +257,8 @@ class _FediDatePickerComponent extends StatefulWidget {
   final DateChangedCallback onChanged;
   final DateChangedCallback onConfirm;
   final DateCancelledCallback onCancel;
+  final DateDeletedCallback onDelete;
+  final bool isDeletePossible;
   final FediDatePickerTheme theme;
 
   final LocaleType locale;
@@ -410,6 +445,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   Widget _renderTitleActionsView(FediDatePickerTheme theme) {
     String done = _localeDone();
     String cancel = _localeCancel();
+    String delete = _localeDelete();
 
     return Container(
       height: theme.titleHeight,
@@ -426,6 +462,18 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
             },
             expanded: false,
           ),
+          if(widget.isDeletePossible)
+            FediTransparentTextButtonWithBorder(
+              '$delete',
+              color: IFediUiColorTheme.of(context).darkGrey,
+              onPressed: () {
+                if (widget.onDelete != null) {
+                  widget.onDelete();
+                }
+                Navigator.pop(context);
+              },
+              expanded: false,
+            ),
           FediTransparentTextButtonWithBorder(
             '$cancel',
             color: IFediUiColorTheme.of(context).darkGrey,
@@ -449,6 +497,9 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   String _localeCancel() {
     return widget.theme.customCancel ??
         i18nObjInLocale(widget.locale)['cancel'];
+  }
+  String _localeDelete() {
+    return S.of(context).app_duration_picker_action_delete;
   }
 }
 

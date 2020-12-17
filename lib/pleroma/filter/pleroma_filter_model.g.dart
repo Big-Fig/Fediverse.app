@@ -96,7 +96,7 @@ PostPleromaFilter _$PostPleromaFilterFromJson(Map<String, dynamic> json) {
     phrase: json['phrase'] as String,
     expiresInSeconds: json['expires_in'] as int,
     irreversible: json['irreversible'] as bool,
-    wholeWord: json['wholeWord'] as bool,
+    wholeWord: json['whole_word'] as bool,
   );
 }
 
@@ -113,6 +113,6 @@ Map<String, dynamic> _$PostPleromaFilterToJson(PostPleromaFilter instance) {
   writeNotNull('expires_in', instance.expiresInSeconds);
   writeNotNull('irreversible', instance.irreversible);
   writeNotNull('phrase', instance.phrase);
-  writeNotNull('wholeWord', instance.wholeWord);
+  writeNotNull('whole_word', instance.wholeWord);
   return val;
 }

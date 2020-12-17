@@ -1,7 +1,9 @@
 import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/form/field/form_field_bloc.dart';
+import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -37,8 +39,39 @@ class FediFormFieldRow extends StatelessWidget {
             description: description,
             descriptionOnDisabled: descriptionOnDisabled,
           ),
+          const _FediFormFieldRowErrorWidget(),
         ],
       );
+}
+
+class _FediFormFieldRowErrorWidget extends StatelessWidget {
+  const _FediFormFieldRowErrorWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var formFieldBloc = IFormFieldBloc.of(context);
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
+    return StreamBuilder<List<FormItemValidationError>>(
+      stream: formFieldBloc.errorsStream,
+      initialData: formFieldBloc.errors,
+      builder: (context, snapshot) {
+        var errors = snapshot.data;
+
+        var error = errors?.isNotEmpty == true ? errors.first : null;
+
+        if (error != null) {
+          return Text(
+            error.createErrorDescription(context),
+            style: fediUiTextTheme.bigTallError,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
 }
 
 class _FediFormFieldRowDescriptionWidget extends StatelessWidget {

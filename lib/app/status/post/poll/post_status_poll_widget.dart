@@ -1,6 +1,5 @@
-import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
-import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
+import 'package:fedi/app/form/field/value/duration/date_time/duration_date_time_form_field_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -8,7 +7,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -18,7 +17,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 final _logger =
-    Logger("post_status_poll_widget.dartpost_status_poll_widget.dart");
+    Logger("post_status_poll_widget.dart");
 
 class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
@@ -36,8 +35,9 @@ class PostStatusPollWidget extends StatelessWidget {
           update: (context, pollBloc, _) => pollBloc.multiplyFieldBloc,
           child: const _PostStatusPollMultiplyFieldWidget(),
         ),
-        ProxyProvider<IPostStatusPollBloc, IDurationValueFormFieldBloc>(
-          update: (context, pollBloc, _) => pollBloc.durationLengthFieldBloc,
+        ProxyProvider<IPostStatusPollBloc, IDurationDateTimeValueFormFieldBloc>(
+          update: (context, pollBloc, _) =>
+              pollBloc.durationDateTimeLengthFieldBloc,
           child: const _PostStatusPollLengthFieldWidget(),
         ),
       ],
@@ -238,8 +238,7 @@ class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => DurationValueFormFieldRowWidget(
+  Widget build(BuildContext context) => DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_status_post_poll_field_length_label,
-        pickerType: DurationPickerType.dateTime,
       );
 }

@@ -7,6 +7,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -209,31 +210,30 @@ class ScheduledStatusBloc extends DisposableOwner
     await cancelSchedule();
 
     var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
-        data: PleromaScheduleStatus(
-      mediaIds: postStatusData.mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.id)
-          ?.toList(),
-      status: postStatusData.text,
-      sensitive: postStatusData.isNsfwSensitiveEnabled,
-      visibility: postStatusData.visibility,
-      inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-      inReplyToConversationId: postStatusData.inReplyToConversationId,
-      idempotencyKey: null,
-      scheduledAt: postStatusData.scheduledAt,
-      to: postStatusData.to,
-      poll: postStatusData.poll != null
-          ? PleromaPostStatusPoll(
-              expiresInSeconds:
-                  (postStatusData.poll.durationLength.inMicroseconds /
-                          Duration.microsecondsPerSecond)
-                      .floor(),
-              multiple: postStatusData.poll.multiple,
-              options: postStatusData.poll.options,
-              hideTotals: postStatusData.poll.hideTotals,
-            )
-          : null,
-      spoilerText: postStatusData.subject,
-    ));
+      data: PleromaScheduleStatus(
+        mediaIds: postStatusData.mediaAttachments
+            ?.map((mediaAttachment) => mediaAttachment.id)
+            ?.toList(),
+        status: postStatusData.text,
+        sensitive: postStatusData.isNsfwSensitiveEnabled,
+        visibility: postStatusData.visibility,
+        inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
+        inReplyToConversationId: postStatusData.inReplyToConversationId,
+        idempotencyKey: null,
+        scheduledAt: postStatusData.scheduledAt,
+        to: postStatusData.to,
+        poll: postStatusData.poll != null
+            ? PleromaPostStatusPoll(
+                expiresInSeconds:
+                    postStatusData.poll.durationLength.totalSeconds,
+                multiple: postStatusData.poll.multiple,
+                options: postStatusData.poll.options,
+                hideTotals: postStatusData.poll.hideTotals,
+              )
+            : null,
+        spoilerText: postStatusData.subject,
+      ),
+    );
 
     await scheduledStatusRepository
         .upsertRemoteScheduledStatus(pleromaScheduledStatus);
@@ -270,5 +270,4 @@ class ScheduledStatusBloc extends DisposableOwner
       to: null,
     );
   }
-
 }

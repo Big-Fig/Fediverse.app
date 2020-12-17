@@ -55,6 +55,12 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
       case MastodonFilterContextType.thread:
         return S.of(context).app_filter_context_type_threads;
         break;
+      case MastodonFilterContextType.account:
+        return S.of(context).app_filter_context_type_account;
+        break;
+      case MastodonFilterContextType.unknown:
+        return S.of(context).app_filter_context_type_unknown;
+        break;
     }
 
     throw "Unsupported contextType $contextType";

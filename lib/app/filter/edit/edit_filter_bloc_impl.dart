@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_proxy_provider.dart';
 import 'package:fedi/app/filter/filter_model.dart';
@@ -49,6 +51,10 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
+      currentInstance: ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ).currentInstance,
     );
 
     if (onSubmit != null) {
@@ -87,19 +93,6 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   final IPleromaFilterService pleromaFilterService;
 
-  //
-  // @override
-  // IFilterAccountListNetworkOnlyListBloc filterAccountListNetworkOnlyListBloc;
-  //
-  // @override
-  // IAccountNetworkOnlyPaginationBloc filterAccountListNetworkOnlyPaginationBloc;
-  //
-  // IAccountPaginationListBloc accountPaginationListBloc;
-  //
-  // @override
-  // IEditFilterAccountListPaginationListBloc
-  //     editFilterAccountListPaginationListBloc;
-
   @override
   final IFilterFormBloc filterFormBloc;
 
@@ -108,6 +101,8 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   @override
   final bool isPossibleToDelete;
+
+  final AuthInstance currentInstance;
 
   EditFilterBloc({
     @required this.filter,
@@ -118,7 +113,11 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     @required IMyAccountBloc myAccountBloc,
     @required IAccountRepository accountRepository,
     @required IPleromaAccountService pleromaAccountService,
-  }) : filterFormBloc = FilterFormBloc(initialValue: filter) {
+    @required this.currentInstance,
+  }) : filterFormBloc = FilterFormBloc(
+          initialValue: filter,
+          currentInstance: currentInstance,
+        ) {
     addDisposable(disposable: filterFormBloc);
 
     addDisposable(streamController: submittedStreamController);

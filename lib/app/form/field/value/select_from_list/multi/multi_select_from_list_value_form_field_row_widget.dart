@@ -130,7 +130,7 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
-            var currentValueList = snapshot.data;
+            var currentValueList = snapshot.data ?? [];
             return Text(
               currentValueList?.isNotEmpty == true
                   ? currentValueList

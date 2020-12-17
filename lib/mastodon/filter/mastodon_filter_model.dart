@@ -46,6 +46,11 @@ enum MastodonFilterContextType {
 
   /// expanded thread of a detailed status
   thread,
+  /// account page
+  account,
+
+  /// new type which not recognized by Fedi yet
+  unknown,
 }
 
 final _mastodonFilterContextTypeValues = EnumValues<MastodonFilterContextType>({
@@ -53,6 +58,7 @@ final _mastodonFilterContextTypeValues = EnumValues<MastodonFilterContextType>({
   "notifications": MastodonFilterContextType.notifications,
   "public": MastodonFilterContextType.public,
   "thread": MastodonFilterContextType.thread,
+  "account": MastodonFilterContextType.account,
 });
 
 extension MastodonFilterContextTypeJsonValueExtension
@@ -62,9 +68,12 @@ extension MastodonFilterContextTypeJsonValueExtension
 
 extension MastodonFilterContextTypeStringExtension on String {
   MastodonFilterContextType toMastodonFilterContextType() {
-    var visibility = _mastodonFilterContextTypeValues.valueToEnumMap[this];
-    assert(visibility != null, "invalid visibility $this");
-    return visibility;
+    if(this == null) {
+      return null;
+    }
+    var contextType = _mastodonFilterContextTypeValues.valueToEnumMap[this];
+    contextType ??= MastodonFilterContextType.unknown;
+    return contextType;
   }
 }
 

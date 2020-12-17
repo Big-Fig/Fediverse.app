@@ -1,24 +1,31 @@
+import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:fedi/app/ui/date_time/fedi_date_time_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:logging/logging.dart';
 
-Future<Duration> showDateTimeDurationPicker({
+final _logger = Logger("date_time_duration_picker.dart");
+
+Future<DurationPickerResult> showDateTimeDurationPicker({
   @required BuildContext context,
   @required String popupTitle,
   @required Duration minDuration,
   @required Duration currentDuration,
   @required Duration maxDuration,
+  @required bool isDeletePossible,
 }) async {
-  var jiffy = Jiffy();
-
   var minDateTime =
-      minDuration != null ? jiffy.add(duration: minDuration) : null;
+      minDuration != null ? Jiffy().add(duration: minDuration) : null;
   var maxDateTime =
-      maxDuration != null ? jiffy.add(duration: maxDuration) : null;
+      maxDuration != null ? Jiffy().add(duration: maxDuration) : null;
 
   var currentDateTime =
-      currentDuration != null ? jiffy.add(duration: currentDuration) : null;
-  var dateTime = await FediDatePicker.showDateTimePicker(
+      currentDuration != null ? Jiffy().add(duration: currentDuration) : null;
+
+  bool deleted = false;
+  bool canceled = false;
+
+  var pickedDateTime = await FediDatePicker.showDateTimePicker(
     context,
     showTitleActions: true,
     minDateTime: minDateTime,
@@ -28,25 +35,45 @@ Future<Duration> showDateTimeDurationPicker({
       context: context,
       customTitle: popupTitle,
     ),
-    onCancel: () {},
+    // todo: rework callbacks to better future result
+    onCancel: () {
+      canceled = true;
+    },
+    onDelete: () {
+      deleted = true;
+    },
+    isDeletePossible: isDeletePossible,
     onConfirm: (date) {},
   );
 
+  Duration resultDuration;
+
   var now = DateTime.now();
-  if (dateTime != null) {
-    var diffDuration = dateTime.difference(now).abs();
+  if (pickedDateTime != null) {
+    var diffDuration = pickedDateTime.difference(now).abs();
 
     if ((maxDuration == null || diffDuration < maxDuration) &&
         (minDuration == null || diffDuration > minDuration)) {
-      return diffDuration;
+      resultDuration = diffDuration;
     } else {
       if ((maxDuration == null || diffDuration > maxDuration)) {
-        return maxDuration;
+        resultDuration = maxDuration;
       } else {
-        return minDuration;
+        resultDuration = minDuration;
       }
     }
   } else {
-    return null;
+    resultDuration = null;
   }
+
+  var durationPickerResult = DurationPickerResult(
+    deleted: deleted,
+    canceled: canceled,
+    duration: resultDuration,
+  );
+
+  _logger.finest(() =>
+      "showDateTimeDurationPicker durationPickerResult $durationPickerResult");
+
+  return durationPickerResult;
 }
