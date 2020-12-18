@@ -35,6 +35,8 @@ abstract class IFilter {
 
   String get phrase;
 
+  List<String> get context;
+
   List<MastodonFilterContextType> get contextAsMastodonFilterContextType;
 
   DateTime get expiresAt;
@@ -46,7 +48,7 @@ abstract class IFilter {
   IFilter copyWith({
     int localId,
     String remoteId,
-    List<MastodonFilterContextType> contextAsMastodonFilterContextType,
+    List<String> context,
     DateTime expiresAt,
     bool irreversible,
     String phrase,
@@ -61,7 +63,7 @@ class DbFilterPopulatedWrapper implements IFilter {
 
   @override
   DbFilterPopulatedWrapper copyWith({
-    List<MastodonFilterContextType> contextAsMastodonFilterContextType,
+    List<String> context,
     DateTime expiresAt,
     int localId,
     String remoteId,
@@ -74,9 +76,7 @@ class DbFilterPopulatedWrapper implements IFilter {
           dbFilter: dbFilterPopulated.dbFilter.copyWith(
             id: localId ?? this.localId,
             remoteId: remoteId ?? this.remoteId,
-            contextAsMastodonFilterContextType:
-                contextAsMastodonFilterContextType ??
-                    this.contextAsMastodonFilterContextType,
+            context: context ?? this.context,
             phrase: phrase ?? this.phrase,
             irreversible: irreversible ?? this.irreversible,
             wholeWord: wholeWord ?? this.wholeWord,
@@ -93,7 +93,11 @@ class DbFilterPopulatedWrapper implements IFilter {
 
   @override
   List<MastodonFilterContextType> get contextAsMastodonFilterContextType =>
-      dbFilterPopulated.dbFilter.contextAsMastodonFilterContextType;
+      context
+          ?.map(
+            (contextString) => contextString.toMastodonFilterContextType(),
+          )
+          ?.toList();
 
   @override
   DateTime get expiresAt => dbFilterPopulated.dbFilter.expiresAt;
@@ -112,6 +116,9 @@ class DbFilterPopulatedWrapper implements IFilter {
 
   @override
   bool get wholeWord => dbFilterPopulated.dbFilter.wholeWord;
+
+  @override
+  List<String> get context => dbFilterPopulated.dbFilter.context;
 }
 
 class DbFilterPopulated {
@@ -134,5 +141,15 @@ class DbFilterPopulated {
   @override
   String toString() {
     return 'DbFilterPopulated{dbFilter: $dbFilter}';
+  }
+}
+
+extension IFilterExtension on IFilter {
+  bool get isExpired {
+    if (expiresAt == null) {
+      return false;
+    } else {
+      return DateTime.now().isAfter(expiresAt);
+    }
   }
 }

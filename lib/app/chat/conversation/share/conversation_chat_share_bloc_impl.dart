@@ -15,7 +15,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {

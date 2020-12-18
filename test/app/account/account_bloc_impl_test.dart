@@ -14,7 +14,7 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../pleroma/account/pleroma_account_service_mock.dart';
 import '../../pleroma/websockets/pleroma_websockets_service_mock.dart';

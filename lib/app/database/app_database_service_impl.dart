@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -5,8 +7,10 @@ import 'package:fedi/database/database_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/ffi.dart';
 import 'package:moor_inspector/moor_inspector.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class MoorDatabaseService extends AsyncInitLoadingBloc
@@ -21,22 +25,13 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-//    appDatabase = AppDatabase(LazyDatabase(() async {
-//      final dbFolder = await getApplicationDocumentsDirectory();
-//      final file = File(p.join(dbFolder.path, 'app.db'));
-//      return VmDatabase(file);
-//    }));
-
-//    appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
-//        path: 'db.sqlite', logStatements: true));
-
-    // todo: improve re-opening new database during account switch
-    moorRuntimeOptions.dontWarnAboutMultipleDatabases = true;
-
     var path = '$dbName.sqlite';
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, path));
+
     appDatabase = AppDatabase(
-      FlutterQueryExecutor.inDatabaseFolder(
-        path: path,
+      VmDatabase(
+        file,
         logStatements: false,
       ),
     );

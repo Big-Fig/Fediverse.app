@@ -15,13 +15,13 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../../pleroma/account/my/pleroma_my_account_service_mock.dart';
 import '../../status/database/status_database_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
-import 'my_acount_model_helper.dart';
+import 'my_account_model_helper.dart';
 
 void main() {
   IMyAccount myAccount;

@@ -209,12 +209,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     if (excludeStatusTextConditions?.isNotEmpty == true) {
       for (var condition in excludeStatusTextConditions) {
-        dao.addExcludeStatusContentWhere(
+        dao.addExcludeContentWhere(
           joinQuery,
           phrase: condition.phrase,
           wholeWord: condition.wholeWord,
         );
-        dao.addExcludeStatusSpoilerTextWhere(
+        dao.addExcludeSpoilerTextWhere(
           joinQuery,
           phrase: condition.phrase,
           wholeWord: condition.wholeWord,
@@ -418,14 +418,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (onlyNotDismissed) {
       return dao
           .countUnreadAllNotDismissed(
-            // excludeStatusTextConditions: excludeStatusTextConditions,
-          )
+              // excludeStatusTextConditions: excludeStatusTextConditions,
+              )
           .getSingle();
     } else {
       return dao
           .countUnreadAll(
-            // excludeStatusTextConditions: excludeStatusTextConditions,
-          )
+              // excludeStatusTextConditions: excludeStatusTextConditions,
+              )
           .getSingle();
     }
   }
@@ -461,14 +461,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (onlyNotDismissed) {
       return dao
           .countUnreadAllNotDismissed(
-            // excludeStatusTextConditions: excludeStatusTextConditions,
-          )
+              // excludeStatusTextConditions: excludeStatusTextConditions,
+              )
           .watchSingle();
     } else {
       return dao
           .countUnreadAll(
-            // excludeStatusTextConditions: excludeStatusTextConditions,
-          )
+              // excludeStatusTextConditions: excludeStatusTextConditions,
+              )
           .watchSingle();
     }
   }

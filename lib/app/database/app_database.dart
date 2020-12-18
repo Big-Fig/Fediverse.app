@@ -38,7 +38,7 @@ import 'package:fedi/app/status/draft/database/draft_status_database_model.dart'
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
-import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -107,7 +107,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -138,12 +138,21 @@ class AppDatabase extends _$AppDatabase {
             case 7:
               await _migrate7to8(m);
               break;
+            case 8:
+              await _migrate8to9(m);
+              break;
             default:
               throw "invalid currentVersion $currentVersion";
           }
           currentVersion++;
         }
       });
+
+  Future<void> _migrate8to9(Migrator m) async {
+    // rework schema
+    await m.deleteTable(dbFilters.actualTableName);
+    await m.createTable(dbFilters);
+  }
 
   Future<void> _migrate7to8(Migrator m) async {
     await m.createTable(dbFilters);

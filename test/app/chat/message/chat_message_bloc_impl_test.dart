@@ -12,7 +12,7 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../../pleroma/account/pleroma_account_service_mock.dart';
 import '../../../pleroma/chat/pleroma_chat_service_mock.dart';
