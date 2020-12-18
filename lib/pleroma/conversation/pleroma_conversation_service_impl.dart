@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_exception.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
@@ -9,7 +10,8 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
-class PleromaConversationService implements IPleromaConversationService {
+class PleromaConversationService extends DisposableOwner
+    implements IPleromaConversationService {
   final conversationRelativeUrlPath = "/api/v1/conversations/";
   final pleromaConversationRelativeUrlPath = "/api/v1/pleroma/conversations/";
   final conversationStatusesRelativeUrlPath = "statuses";
@@ -42,7 +44,7 @@ class PleromaConversationService implements IPleromaConversationService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

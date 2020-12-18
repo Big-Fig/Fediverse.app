@@ -7,6 +7,7 @@ import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
@@ -64,8 +65,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteNotifications(
-      List<IPleromaNotification> remoteNotifications,
-      {@required bool unread}) async {
+    List<IPleromaNotification> remoteNotifications, {
+    @required bool unread,
+  }) async {
     _logger.finer(
         () => "upsertRemoteNotifications ${remoteNotifications.length} ");
     if (remoteNotifications.isEmpty) {
@@ -104,7 +106,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Future<DbNotificationPopulatedWrapper> findByRemoteId(
           String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteId(remoteId));
+      mapDataClassToItem(
+        await dao.findByRemoteId(remoteId),
+      );
 
   @override
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
@@ -115,6 +119,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) async {
     var query = createQuery(
       excludeTypes: excludeTypes,
@@ -124,6 +129,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       offset: offset,
       orderingTermData: orderingTermData,
       onlyNotDismissed: onlyNotDismissed,
+      excludeStatusTextConditions: excludeStatusTextConditions,
     );
 
     return dao
@@ -141,6 +147,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     var query = createQuery(
       excludeTypes: excludeTypes,
@@ -150,6 +157,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       offset: offset,
       orderingTermData: orderingTermData,
       onlyNotDismissed: onlyNotDismissed,
+      excludeStatusTextConditions: excludeStatusTextConditions,
     );
 
     Stream<List<DbNotificationPopulated>> stream =
@@ -165,6 +173,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required NotificationOrderingTermData orderingTermData,
     @required bool onlyNotDismissed,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t excludeTypes=$excludeTypes\n"
@@ -172,7 +181,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
         "\t newerThanNotification=$newerThanNotification\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
-        "\t orderingTermData=$orderingTermData\n");
+        "\t orderingTermData=$orderingTermData\n"
+        "\t excludeStatusTextConditions=$excludeStatusTextConditions\n");
 
     var query = dao.startSelectQuery();
 
@@ -196,6 +206,21 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var joinQuery = query.join(
       dao.populateNotificationJoin(),
     );
+
+    if (excludeStatusTextConditions?.isNotEmpty == true) {
+      for (var condition in excludeStatusTextConditions) {
+        dao.addExcludeStatusContentWhere(
+          joinQuery,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
+        );
+        dao.addExcludeStatusSpoilerTextWhere(
+          joinQuery,
+          phrase: condition.phrase,
+          wholeWord: condition.wholeWord,
+        );
+      }
+    }
 
     var finalQuery = joinQuery;
 
@@ -292,28 +317,38 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future updateLocalNotificationByRemoteNotification(
-      {@required INotification oldLocalNotification,
-      @required IPleromaNotification newRemoteNotification,
-      @required bool unread}) async {
+  Future updateLocalNotificationByRemoteNotification({
+    @required INotification oldLocalNotification,
+    @required IPleromaNotification newRemoteNotification,
+    @required bool unread,
+  }) async {
     _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
         "\t old: $oldLocalNotification \n"
         "\t newRemoteNotification: $newRemoteNotification");
 
     var remoteAccount = newRemoteNotification.account;
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccount(
+      remoteAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
 
     var remoteStatus = newRemoteNotification.status;
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        conversationRemoteId: null, listRemoteId: null);
+    await statusRepository.upsertRemoteStatus(
+      remoteStatus,
+      conversationRemoteId: null,
+      listRemoteId: null,
+    );
 
     await updateById(
-        oldLocalNotification.localId,
-        mapRemoteNotificationToDbNotification(newRemoteNotification,
-            unread: unread));
+      oldLocalNotification.localId,
+      mapRemoteNotificationToDbNotification(
+        newRemoteNotification,
+        unread: unread,
+      ),
+    );
   }
 
   @override
@@ -323,6 +358,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required INotification newerThanNotification,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) async {
     var query = createQuery(
       excludeTypes: excludeTypes,
@@ -332,10 +368,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: orderingTermData,
       onlyNotDismissed: onlyNotDismissed,
+      excludeStatusTextConditions: excludeStatusTextConditions,
     );
 
     return mapDataClassToItem(
-        dao.typedResultToPopulated(await query.getSingle()));
+      dao.typedResultToPopulated(
+        await query.getSingle(),
+      ),
+    );
   }
 
   @override
@@ -345,6 +385,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required INotification newerThanNotification,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     var query = createQuery(
       excludeTypes: excludeTypes,
@@ -354,22 +395,38 @@ class NotificationRepository extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: orderingTermData,
       onlyNotDismissed: onlyNotDismissed,
+      excludeStatusTextConditions: excludeStatusTextConditions,
     );
 
-    Stream<DbNotificationPopulated> stream = query
-        .watchSingle()
-        .map((typedResult) => dao.typedResultToPopulated(typedResult));
-    return stream.map((dbNotification) => mapDataClassToItem(dbNotification));
+    Stream<DbNotificationPopulated> stream = query.watchSingle().map(
+          (typedResult) => dao.typedResultToPopulated(
+            typedResult,
+          ),
+        );
+    return stream.map(
+      (dbNotification) => mapDataClassToItem(
+        dbNotification,
+      ),
+    );
   }
 
   @override
   Future<int> countUnreadAnyType({
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     if (onlyNotDismissed) {
-      return dao.countUnreadAllNotDismissed().getSingle();
+      return dao
+          .countUnreadAllNotDismissed(
+            // excludeStatusTextConditions: excludeStatusTextConditions,
+          )
+          .getSingle();
     } else {
-      return dao.countUnreadAll().getSingle();
+      return dao
+          .countUnreadAll(
+            // excludeStatusTextConditions: excludeStatusTextConditions,
+          )
+          .getSingle();
     }
   }
 
@@ -377,17 +434,20 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<int> countUnreadByType({
     @required PleromaNotificationType type,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     if (onlyNotDismissed) {
       return dao
           .countUnreadByTypeNotDismissed(
             type.toJsonValue(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
           )
           .getSingle();
     } else {
       return dao
           .countUnreadByType(
             type.toJsonValue(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
           )
           .getSingle();
     }
@@ -396,11 +456,20 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Stream<int> watchUnreadCountAnyType({
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     if (onlyNotDismissed) {
-      return dao.countUnreadAllNotDismissed().watchSingle();
+      return dao
+          .countUnreadAllNotDismissed(
+            // excludeStatusTextConditions: excludeStatusTextConditions,
+          )
+          .watchSingle();
     } else {
-      return dao.countUnreadAll().watchSingle();
+      return dao
+          .countUnreadAll(
+            // excludeStatusTextConditions: excludeStatusTextConditions,
+          )
+          .watchSingle();
     }
   }
 
@@ -408,17 +477,20 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Stream<int> watchUnreadCountByType({
     @required PleromaNotificationType type,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) {
     if (onlyNotDismissed) {
       return dao
           .countUnreadByTypeNotDismissed(
             type.toJsonValue(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
           )
           .watchSingle();
     } else {
       return dao
           .countUnreadByType(
             type.toJsonValue(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
           )
           .watchSingle();
     }
@@ -428,6 +500,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<int> getUnreadCountExcludeTypes({
     @required List<PleromaNotificationType> excludeTypes,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) async =>
       dao
           .countUnreadExcludeTypes(
@@ -436,6 +509,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
                   (type) => type.toJsonValue(),
                 )
                 .toList(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
             onlyNotDismissed: onlyNotDismissed,
           )
           .getSingle();
@@ -444,6 +518,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Stream<int> watchUnreadCountExcludeTypes({
     @required List<PleromaNotificationType> excludeTypes,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   }) =>
       dao
           .countUnreadExcludeTypes(
@@ -452,6 +527,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
                   (type) => type.toJsonValue(),
                 )
                 .toList(),
+            // excludeStatusTextConditions: excludeStatusTextConditions,
             onlyNotDismissed: onlyNotDismissed,
           )
           .watchSingle();

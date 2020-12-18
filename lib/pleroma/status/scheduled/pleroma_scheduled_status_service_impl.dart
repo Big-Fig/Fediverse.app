@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -9,7 +10,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
+class PleromaScheduledStatusService extends DisposableOwner
+    implements IPleromaScheduledStatusService {
   final scheduledStatusesRelativeUrlPath = "/api/v1/scheduled_statuses/";
   @override
   final IPleromaAuthRestService restService;
@@ -40,7 +42,7 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

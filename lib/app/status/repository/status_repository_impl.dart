@@ -250,7 +250,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required String onlyWithHashtag,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -264,6 +264,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
@@ -271,7 +272,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyInListWithRemoteId: onlyInListWithRemoteId,
       onlyWithHashtag: onlyWithHashtag,
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-      onlyLocal: onlyLocal,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: onlyWithMedia,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -287,6 +288,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
       onlyNotDeleted: onlyNotDeleted,
+      excludeTextConditions: excludeTextConditions,
     );
 
     return dao
@@ -302,7 +304,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -316,6 +318,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   }) {
     var query = createQuery(
@@ -323,7 +326,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyWithHashtag: onlyWithHashtag,
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
       onlyInConversation: onlyInConversation,
-      onlyLocal: onlyLocal,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: onlyWithMedia,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -339,6 +342,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
       onlyNotDeleted: onlyNotDeleted,
+      excludeTextConditions: excludeTextConditions,
     );
 
     Stream<List<DbStatusPopulated>> stream =
@@ -355,7 +359,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -370,15 +374,17 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
     @required bool onlyNotDeleted,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool forceJoinConversation = false,
   }) {
+    // todo: rework excludeTextCondition with fts sqlite extension
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
         "\t onlyWithHashtag=$onlyWithHashtag\n"
         "\t onlyFromAccountsFollowingByAccount=$onlyFromAccountsFollowingByAccount\n"
         "\t onlyFromAccount=$onlyFromAccount\n"
         "\t onlyInConversation=$onlyInConversation\n"
-        "\t onlyLocal=$onlyLocal\n"
+        "\t onlyLocalCondition=$onlyLocalCondition\n"
         "\t onlyWithMedia=$onlyWithMedia\n"
         "\t withMuted=$withMuted\n"
         "\t excludeVisibilities=$excludeVisibilities\n"
@@ -391,14 +397,15 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t isFromHomeTimeline=$isFromHomeTimeline\n"
-        "\t orderingTermData=$orderingTermData\n");
+        "\t orderingTermData=$orderingTermData\n"
+        "\t excludeTextCondition=$excludeTextConditions\n");
 
     var query = dao.startSelectQuery();
 
-    if (onlyLocal != null) {
-      assert(onlyLocal.localUrlHost?.isNotEmpty == true);
+    if (onlyLocalCondition != null) {
+      assert(onlyLocalCondition.localUrlHost?.isNotEmpty == true);
 
-      dao.addOnlyLocalWhere(query, onlyLocal.localUrlHost);
+      dao.addOnlyLocalWhere(query, onlyLocalCondition.localUrlHost);
     }
 
     if (onlyWithMedia == true) {
@@ -441,6 +448,21 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (onlyNotDeleted == true) {
       dao.addOnlyNotDeletedWhere(query);
+    }
+
+    if (excludeTextConditions?.isNotEmpty == true) {
+      for (var textCondition in excludeTextConditions) {
+        dao.addExcludeContentWhere(
+          query,
+          phrase: textCondition.phrase,
+          wholeWord: textCondition.wholeWord,
+        );
+        dao.addExcludeSpoilerTextWhere(
+          query,
+          phrase: textCondition.phrase,
+          wholeWord: textCondition.wholeWord,
+        );
+      }
     }
 
     if (orderingTermData != null) {
@@ -620,7 +642,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -632,6 +654,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
@@ -639,7 +662,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyInListWithRemoteId: onlyInListWithRemoteId,
       onlyWithHashtag: onlyWithHashtag,
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-      onlyLocal: onlyLocal,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: onlyWithMedia,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -655,6 +678,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
       onlyNotDeleted: onlyNotDeleted,
+      excludeTextConditions: excludeTextConditions,
     );
 
     return mapDataClassToItem(
@@ -668,7 +692,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IAccount onlyFromAccount,
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -680,6 +704,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   }) {
     var query = createQuery(
@@ -687,7 +712,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyWithHashtag: onlyWithHashtag,
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
       onlyInConversation: onlyInConversation,
-      onlyLocal: onlyLocal,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: onlyWithMedia,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
@@ -703,6 +728,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
       onlyNotDeleted: onlyNotDeleted,
+      excludeTextConditions: excludeTextConditions,
     );
 
     Stream<DbStatusPopulated> stream = query
@@ -741,7 +767,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         onlyFromAccountsFollowingByAccount: null,
         onlyFromAccount: null,
         onlyInConversation: conversation,
-        onlyLocal: null,
+        onlyLocalCondition: null,
         onlyWithMedia: null,
         withMuted: null,
         excludeVisibilities: null,
@@ -756,6 +782,7 @@ class StatusRepository extends AsyncInitLoadingBloc
             orderingMode: OrderingMode.desc,
             orderType: StatusRepositoryOrderType.remoteId),
         onlyNotDeleted: onlyNotDeleted,
+        excludeTextConditions: null,
       );
 
   @override
@@ -769,7 +796,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         onlyFromAccountsFollowingByAccount: null,
         onlyFromAccount: null,
         onlyInConversation: conversation,
-        onlyLocal: null,
+        onlyLocalCondition: null,
         onlyWithMedia: null,
         withMuted: null,
         excludeVisibilities: null,
@@ -784,6 +811,7 @@ class StatusRepository extends AsyncInitLoadingBloc
             orderingMode: OrderingMode.desc,
             orderType: StatusRepositoryOrderType.remoteId),
         onlyNotDeleted: onlyNotDeleted,
+        excludeTextConditions: null,
       );
 
   @override
@@ -801,7 +829,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyFromAccount: null,
       onlyFromAccountsFollowingByAccount: null,
       onlyInConversation: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: null,
       withMuted: null,
       excludeVisibilities: null,
@@ -815,6 +843,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyFavourited: null,
       onlyBookmarked: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var typedResultList = await query.get();

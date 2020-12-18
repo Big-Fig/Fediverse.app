@@ -1,19 +1,41 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/filter/filter_model.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
-abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
+abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
+    implements IStatusCachedListBloc {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;
+
+  final IStatusRepository statusRepository;
+  final IFilterRepository filterRepository;
+  final IMyAccountBloc myAccountBloc;
+  List<IFilter> filters;
+
+  List<StatusTextCondition> get excludeTextConditions => filters
+      .map(
+        (filter) => filter.toStatusTextCondition(),
+      )
+      .toList();
 
   AccountStatusesCachedListBloc({
     @required this.account,
     @required this.pleromaAccountService,
+    @required this.statusRepository,
+    @required this.filterRepository,
+    @required this.myAccountBloc,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super() {
     addDisposable(
@@ -30,4 +52,23 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
+
+  @override
+  Future internalAsyncInit() async {
+    var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
+    if (isAccountIsMe) {
+      filters = [];
+    } else {
+      filters = await filterRepository.getFilters(
+        olderThanFilter: null,
+        newerThanFilter: null,
+        limit: null,
+        offset: null,
+        orderingTermData: null,
+        onlyWithContextTypes: [
+          MastodonFilterContextType.account,
+        ],
+      );
+    }
+  }
 }

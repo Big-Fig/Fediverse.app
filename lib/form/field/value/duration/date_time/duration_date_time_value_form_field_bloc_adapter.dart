@@ -1,9 +1,10 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 
-class DurationDateTimeValueFormFieldBlocAdapter
+class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
     implements IDurationValueFormFieldBloc {
   final IDurationDateTimeValueFormFieldBloc durationDateTimeValueFormFieldBloc;
 
@@ -39,7 +40,10 @@ class DurationDateTimeValueFormFieldBlocAdapter
   }
 
   @override
-  Future dispose() => durationDateTimeValueFormFieldBloc.dispose();
+  Future dispose() async {
+    await super.dispose();
+    return await durationDateTimeValueFormFieldBloc.dispose();
+  }
 
   @override
   List<FormItemValidationError> get errors =>

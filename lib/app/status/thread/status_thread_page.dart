@@ -5,6 +5,7 @@ import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -169,11 +170,15 @@ MaterialPageRoute createStatusThreadPageRoute({
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(
       create: (context) => StatusThreadBloc(
-          statusRepository: IStatusRepository.of(context, listen: false),
-          pleromaStatusService:
-              IPleromaStatusService.of(context, listen: false),
-          initialStatusToFetchThread: status,
-          initialMediaAttachment: initialMediaAttachment),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        initialStatusToFetchThread: status,
+        initialMediaAttachment: initialMediaAttachment,
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+      ),
       child: ThreadPostStatusBloc.provideToContext(
         context,
         inReplyToStatus: status,

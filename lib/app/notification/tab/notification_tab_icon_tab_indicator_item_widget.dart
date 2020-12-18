@@ -1,6 +1,7 @@
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_widget.dart';
+import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_bloc_impl.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
@@ -54,27 +55,31 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconTabIndicatorWidget(
-      customTabBuilder: (BuildContext context, Widget child,
-          NotificationTab tab) {
-        var widget =
-            CachedPaginationListWithNewItemsUnreadBadgeWidget(
-                child: child);
-
+      customTabBuilder:
+          (BuildContext context, Widget child, NotificationTab tab) {
         var notificationTabsBloc =
             INotificationTabsBloc.of(context, listen: false);
 
-        var paginationListBloc = notificationTabsBloc
-            .retrieveTimelineTabPaginationListBloc(tab);
+        var paginationListBloc =
+            notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
 
-        return Provider<
-            ICachedPaginationListWithNewItemsBloc>.value(
+        return Provider<ICachedPaginationListWithNewItemsBloc>.value(
           value: paginationListBloc,
-          child: widget,
+          child: DisposableProxyProvider<ICachedPaginationListWithNewItemsBloc,
+              CachedPaginationListWithNewItemsUnreadBadgeBloc>(
+            update: (context, cachedPaginationListWithNewItemsBloc, _) =>
+                CachedPaginationListWithNewItemsUnreadBadgeBloc(
+              cachedPaginationListWithNewItemsBloc:
+                  cachedPaginationListWithNewItemsBloc,
+            ),
+            child: FediBoolBadgeWidget(
+              child: child,
+            ),
+          ),
         );
       },
-      tabToIconMapper:
-          (BuildContext context, NotificationTab tab) =>
-              mapTabToIconData(context, tab),
+      tabToIconMapper: (BuildContext context, NotificationTab tab) =>
+          mapTabToIconData(context, tab),
       expand: true,
     );
   }

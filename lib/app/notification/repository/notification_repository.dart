@@ -1,6 +1,7 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/repository/repository.dart';
@@ -19,45 +20,55 @@ abstract class INotificationRepository
   Future<INotification> findByRemoteId(String remoteId);
 
   Future upsertRemoteNotifications(
-      List<IPleromaNotification> remoteNotifications,
-      {@required bool unread});
+    List<IPleromaNotification> remoteNotifications, {
+    @required bool unread,
+  });
 
   Stream<INotification> watchByRemoteId(String remoteId);
 
-  Future updateLocalNotificationByRemoteNotification(
-      {@required INotification oldLocalNotification,
-      @required IPleromaNotification newRemoteNotification,
-      @required bool unread});
+  Future updateLocalNotificationByRemoteNotification({
+    @required INotification oldLocalNotification,
+    @required IPleromaNotification newRemoteNotification,
+    @required bool unread,
+  });
 
-  Future upsertRemoteNotification(IPleromaNotification remoteNotification,
-      {@required bool unread});
+  Future upsertRemoteNotification(
+    IPleromaNotification remoteNotification, {
+    @required bool unread,
+  });
 
   Future<int> countUnreadAnyType({
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Future<int> countUnreadByType({
     @required PleromaNotificationType type,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Future<int> getUnreadCountExcludeTypes({
     @required List<PleromaNotificationType> excludeTypes,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Stream<int> watchUnreadCountExcludeTypes({
     @required List<PleromaNotificationType> excludeTypes,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Stream<int> watchUnreadCountAnyType({
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Stream<int> watchUnreadCountByType({
     @required PleromaNotificationType type,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
@@ -68,6 +79,7 @@ abstract class INotificationRepository
     @required int offset,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
@@ -78,6 +90,7 @@ abstract class INotificationRepository
     @required int offset,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Future<DbNotificationPopulatedWrapper> getNotification({
@@ -86,6 +99,7 @@ abstract class INotificationRepository
     @required INotification newerThanNotification,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Stream<DbNotificationPopulatedWrapper> watchNotification({
@@ -94,6 +108,7 @@ abstract class INotificationRepository
     @required INotification newerThanNotification,
     @required NotificationOrderingTermData orderingTermData,
     bool onlyNotDismissed = true,
+    @required List<StatusTextCondition> excludeStatusTextConditions,
   });
 
   Future markAsRead({@required INotification notification});

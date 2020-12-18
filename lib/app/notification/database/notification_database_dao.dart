@@ -167,6 +167,42 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 //    return query;
 //  }
 
+  JoinedSelectStatement addExcludeStatusContentWhere(
+    JoinedSelectStatement query, {
+    @required String phrase,
+    @required bool wholeWord,
+  }) {
+    if (wholeWord) {
+      return query
+        ..where(
+          statusAlias.content.regexp("\b$phrase\b").not(),
+        );
+    } else {
+      return query
+        ..where(
+          statusAlias.content.like("%$phrase%").not(),
+        );
+    }
+  }
+
+  JoinedSelectStatement addExcludeStatusSpoilerTextWhere(
+    JoinedSelectStatement query, {
+    @required String phrase,
+    @required bool wholeWord,
+  }) {
+    if (wholeWord) {
+      return query
+        ..where(
+          statusAlias.spoilerText.regexp("\b$phrase\b").not(),
+        );
+    } else {
+      return query
+        ..where(
+          statusAlias.spoilerText.like("%$phrase%").not(),
+        );
+    }
+  }
+
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {

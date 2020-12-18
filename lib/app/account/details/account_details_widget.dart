@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/details/account_details_body_widget.dart';
 import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -22,13 +23,15 @@ class AccountDetailsWidget extends StatefulWidget {
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );

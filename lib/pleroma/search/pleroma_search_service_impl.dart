@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/search/pleroma_search_exception.dart';
@@ -6,7 +7,8 @@ import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
 
-class PleromaSearchService implements IPleromaSearchService {
+class PleromaSearchService extends DisposableOwner
+    implements IPleromaSearchService {
   @override
   final IPleromaAuthRestService restService;
 
@@ -36,7 +38,7 @@ class PleromaSearchService implements IPleromaSearchService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

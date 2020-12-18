@@ -59,7 +59,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   void _init(IDraftStatus draftStatus) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
             streamSubscription: draftStatusRepository

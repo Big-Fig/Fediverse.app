@@ -1,5 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
@@ -10,7 +11,7 @@ import 'package:fedi/permission/permission_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class MediaDeviceGallerySelectedFolderData implements IDisposable {
+class MediaDeviceGallerySelectedFolderData extends DisposableOwner implements IDisposable {
   final IMediaDeviceFolder folder;
 
   final IMediaDeviceFolderBloc folderBloc;
@@ -46,6 +47,7 @@ class MediaDeviceGallerySelectedFolderData implements IDisposable {
 
   @override
   Future dispose() async {
+    await super.dispose();
     await folderBloc?.dispose();
     await filesListBloc?.dispose();
     await filesPaginationBloc?.dispose();

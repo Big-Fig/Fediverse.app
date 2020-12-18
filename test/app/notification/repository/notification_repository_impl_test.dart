@@ -271,6 +271,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -296,6 +297,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -318,7 +320,11 @@ void main() {
     expect((await query.get()).length, 1);
   });
   test('countUnread', () async {
-    expect((await notificationRepository.countUnreadAnyType()), 0);
+    expect(
+        (await notificationRepository.countUnreadAnyType(
+          excludeStatusTextConditions: null,
+        )),
+        0);
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
@@ -328,13 +334,21 @@ void main() {
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.reblog)),
+          type: PleromaNotificationType.reblog,
+          excludeStatusTextConditions: null,
+        )),
         0);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.follow)),
+          type: PleromaNotificationType.follow,
+          excludeStatusTextConditions: null,
+        )),
         1);
-    expect((await notificationRepository.countUnreadAnyType()), 1);
+    expect(
+        (await notificationRepository.countUnreadAnyType(
+          excludeStatusTextConditions: null,
+        )),
+        1);
 
     await insertDbNotification(
         notificationRepository,
@@ -345,13 +359,21 @@ void main() {
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.reblog)),
+          type: PleromaNotificationType.reblog,
+          excludeStatusTextConditions: null,
+        )),
         0);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.follow)),
+          type: PleromaNotificationType.follow,
+          excludeStatusTextConditions: null,
+        )),
         1);
-    expect((await notificationRepository.countUnreadAnyType()), 1);
+    expect(
+        (await notificationRepository.countUnreadAnyType(
+          excludeStatusTextConditions: null,
+        )),
+        1);
 
     await insertDbNotification(
         notificationRepository,
@@ -362,13 +384,21 @@ void main() {
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.reblog)),
+          type: PleromaNotificationType.reblog,
+          excludeStatusTextConditions: null,
+        )),
         1);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: PleromaNotificationType.follow)),
+          type: PleromaNotificationType.follow,
+          excludeStatusTextConditions: null,
+        )),
         1);
-    expect((await notificationRepository.countUnreadAnyType()), 2);
+    expect(
+        (await notificationRepository.countUnreadAnyType(
+          excludeStatusTextConditions: null,
+        )),
+        2);
   });
 
   test('createQuery newerThanNotification', () async {
@@ -381,6 +411,7 @@ void main() {
       olderThanNotification: null,
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -421,6 +452,7 @@ void main() {
           seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -463,6 +495,7 @@ void main() {
           seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -518,6 +551,7 @@ void main() {
       olderThanNotification: null,
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     var notification2 = await insertDbNotification(
@@ -554,6 +588,7 @@ void main() {
       olderThanNotification: null,
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     var notification2 = await insertDbNotification(
@@ -590,6 +625,7 @@ void main() {
       olderThanNotification: null,
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     var notification2 = await insertDbNotification(
@@ -625,6 +661,7 @@ void main() {
       olderThanNotification: null,
       excludeTypes: null,
       onlyNotDismissed: null,
+      excludeStatusTextConditions: null,
     );
 
     var notification2 = await insertDbNotification(

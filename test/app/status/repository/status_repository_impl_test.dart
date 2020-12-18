@@ -233,7 +233,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -243,6 +243,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -271,7 +272,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: StatusRepositoryOnlyLocalCondition("pleroma.com"),
+      onlyLocalCondition: StatusOnlyLocalCondition("pleroma.com"),
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -281,6 +282,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -325,7 +327,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -335,6 +337,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -371,7 +374,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -381,6 +384,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -447,7 +451,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -457,6 +461,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -501,7 +506,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -511,6 +516,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -553,7 +559,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -564,6 +570,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -607,7 +614,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -618,6 +625,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -676,7 +684,7 @@ void main() {
           orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.asc),
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -686,6 +694,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var status2 = await insertDbStatus(
@@ -724,7 +733,7 @@ void main() {
           orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.desc),
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -734,6 +743,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var status2 = await insertDbStatus(
@@ -772,7 +782,7 @@ void main() {
           orderType: StatusRepositoryOrderType.remoteId,
           orderingMode: OrderingMode.desc),
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -782,6 +792,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var status2 = await insertDbStatus(
@@ -816,7 +827,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: true,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -826,6 +837,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -854,7 +866,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: true,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -864,6 +876,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -907,10 +920,11 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: DbAccountWrapper(DbAccount(
+      onlyFromAccountsFollowingByAccount: DbAccountWrapper(
+        DbAccount(
           id: null,
           remoteId: followingAccountRemoteId,
           username: null,
@@ -928,13 +942,16 @@ void main() {
           avatar: null,
           acct: null,
           pleromaBackgroundImage: null,
-          lastStatusAt: null)),
+          lastStatusAt: null,
+        ),
+      ),
       olderThanStatus: null,
       onlyInListWithRemoteId: null,
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -969,7 +986,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: "#cats",
       onlyFromAccountsFollowingByAccount: null,
@@ -979,6 +996,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var dbStatus1 =
@@ -1050,7 +1068,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -1060,6 +1078,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var dbStatus1 =
@@ -1116,7 +1135,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -1126,6 +1145,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     var dbStatus1 =
@@ -1180,7 +1200,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -1190,6 +1210,7 @@ void main() {
       onlyBookmarked: null,
       onlyFavourited: null,
       onlyNotDeleted: null,
+      excludeTextConditions: null,
     );
 
     expect((await query.get()).length, 0);
@@ -1349,7 +1370,7 @@ void main() {
           onlyFromAccount: null,
           onlyInConversation: await createTestConversation(
               seed: "seed5", remoteId: conversationRemoteId),
-          onlyLocal: null,
+          onlyLocalCondition: null,
           onlyWithMedia: null,
           withMuted: null,
           excludeVisibilities: null,
@@ -1362,6 +1383,7 @@ void main() {
           limit: null,
           onlyBookmarked: null,
           onlyFavourited: null,
+          excludeTextConditions: null,
         ))
             .length,
         1);
@@ -1403,7 +1425,7 @@ void main() {
           orderingMode: OrderingMode.desc,
           orderType: StatusRepositoryOrderType.remoteId),
       onlyNoNsfwSensitive: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyNoReplies: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
@@ -1412,6 +1434,7 @@ void main() {
       onlyInListWithRemoteId: listRemoteId,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: null,
     )
         .listen((statuses) {
       watchedStatuses = statuses;
@@ -1473,7 +1496,7 @@ void main() {
   //     offset: null,
   //     orderingTermData: null,
   //     onlyNoNsfwSensitive: null,
-  //     onlyLocal: null,
+  //     onlyLocalCondition: null,
   //     onlyNoReplies: null,
   //     onlyWithHashtag: null,
   //     onlyFromAccountsFollowingByAccount: null,

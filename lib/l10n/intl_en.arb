@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-17T12:47:49+00:00",
+    "@@last_modified": "2020-12-17T18:19:13+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -520,7 +520,7 @@
     "app_filter_edit_field_irreversible_label": "Drop instead of hide",
     "app_filter_edit_field_context_label": "Contexts",
     "app_filter_edit_field_context_description": "One or multiply contexts where the filter should apply",
-    "app_filter_context_type_home": "Home",
+    "app_filter_context_type_home_and_lists": "Home and Lists",
     "app_filter_context_type_public": "Public",
     "app_filter_context_type_notifications": "Notifications",
     "app_filter_context_type_threads": "Conversations",

@@ -14,6 +14,7 @@ import 'package:fedi/app/account/statuses/media_only/account_statuses_media_only
 import 'package:fedi/app/account/statuses/pinned_only/account_statuses_pinned_only_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -233,13 +234,15 @@ class _AccountDetailsPageBodyTabWithRepliesProvider extends StatelessWidget {
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );
@@ -259,13 +262,15 @@ class _AccountDetailsPageBodyTabWithoutRepliesProvider extends StatelessWidget {
     return AccountStatusesWithoutRepliesListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );
@@ -286,13 +291,15 @@ class _AccountDetailsPageBodyTabMediaProvider extends StatelessWidget {
     return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );

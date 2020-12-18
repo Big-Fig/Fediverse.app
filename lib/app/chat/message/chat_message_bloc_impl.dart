@@ -35,7 +35,7 @@ abstract class ChatMessageBloc extends DisposableOwner
   }
 
   void _init(bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         watchLocalRepositoryChanges();
       }

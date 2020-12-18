@@ -43,8 +43,8 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
 
     switch(contextType) {
 
-      case MastodonFilterContextType.home:
-        return S.of(context).app_filter_context_type_home;
+      case MastodonFilterContextType.homeAndCustomLists:
+        return S.of(context).app_filter_context_type_home_and_lists;
         break;
       case MastodonFilterContextType.notifications:
         return S.of(context).app_filter_context_type_notifications;

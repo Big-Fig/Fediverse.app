@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -10,7 +11,8 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
-class PleromaTimelineService implements IPleromaTimelineService {
+class PleromaTimelineService extends DisposableOwner
+    implements IPleromaTimelineService {
   @override
   Uri get baseUrl => restService.baseUrl;
 
@@ -205,6 +207,6 @@ class PleromaTimelineService implements IPleromaTimelineService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

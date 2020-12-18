@@ -3,9 +3,12 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_c
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
-import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_count_widget.dart';
+import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -127,14 +130,19 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   }
 
   Widget buildSwitchToChatsActionButton(BuildContext context) {
-    return PleromaChatUnreadBadgeCountWidget(
-      child: FediBlurredTextButtonWithBorder(
-        S.of(context).app_home_tab_chat_conversation_action_switchToChats,
-        onPressed: () {
-          IChatSettingsBloc.of(context, listen: false)
-              .changeReplaceConversationsWithPleromaChats(true);
-        },
-        expanded: false,
+    return DisposableProxyProvider<IPleromaChatRepository, IFediBoolBadgeBloc>(
+      update: (context, pleromaChatRepository, _) => PleromaChatUnreadBadgeBloc(
+        pleromaChatRepository: pleromaChatRepository,
+      ),
+      child: FediBoolBadgeWidget(
+        child: FediBlurredTextButtonWithBorder(
+          S.of(context).app_home_tab_chat_conversation_action_switchToChats,
+          onPressed: () {
+            IChatSettingsBloc.of(context, listen: false)
+                .changeReplaceConversationsWithPleromaChats(true);
+          },
+          expanded: false,
+        ),
       ),
     );
   }

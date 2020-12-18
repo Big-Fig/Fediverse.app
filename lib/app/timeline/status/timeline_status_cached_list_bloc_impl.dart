@@ -1,5 +1,7 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/filter/filter_model.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -8,8 +10,9 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -21,11 +24,12 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("timeline_status_cached_list_bloc_impl.dart");
 
-class TimelineStatusCachedListBloc extends DisposableOwner
+class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
   final IPleromaAccountService pleromaAccountService;
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
+  final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
@@ -33,6 +37,14 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   Timeline get timeline => timelineLocalPreferencesBloc.value;
 
   TimelineType get timelineType => timeline.type;
+
+  List<IFilter> filters;
+
+  List<StatusTextCondition> get excludeTextConditions => filters
+      .map(
+        (filter) => filter.toStatusTextCondition(),
+      )
+      .toList();
 
   @override
   Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
@@ -46,6 +58,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.pleromaAccountService,
     @required this.pleromaTimelineService,
     @required this.statusRepository,
+    @required this.filterRepository,
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
     @required this.webSocketsHandlerManagerBloc,
@@ -63,8 +76,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
     webSocketsListenerDisposable?.dispose();
 
-
-    var isWebSocketsUpdatesEnabled = timeline.isWebSocketsUpdatesEnabled ?? true;
+    var isWebSocketsUpdatesEnabled =
+        timeline.isWebSocketsUpdatesEnabled ?? true;
     _logger.finest(() => "resubscribeWebSocketsUpdates "
         "isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled "
         "webSocketsListenType $webSocketsListenType "
@@ -214,10 +227,10 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     _logger.finest(() => "watchLocalItemsNewerThanItem \n"
         "\t item=$item");
 
-    var onlyLocalFilter;
+    var onlyLocalCondition;
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalFilter = StatusRepositoryOnlyLocalCondition(localUrlHost);
+      onlyLocalCondition = StatusOnlyLocalCondition(localUrlHost);
     }
     return statusRepository.watchStatuses(
       onlyInConversation: null,
@@ -227,7 +240,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
       onlyWithHashtag: timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: onlyLocalFilter,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: timeline.onlyWithMedia,
       withMuted: timeline.withMuted,
       excludeVisibilities: timeline.excludeVisibilities,
@@ -243,6 +256,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: excludeTextConditions,
     );
   }
 
@@ -255,10 +269,10 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    var onlyLocalFilter;
+    var onlyLocalCondition;
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalFilter = StatusRepositoryOnlyLocalCondition(localUrlHost);
+      onlyLocalCondition = StatusOnlyLocalCondition(localUrlHost);
     }
     var statuses = await statusRepository.getStatuses(
       onlyInConversation: null,
@@ -268,7 +282,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
       onlyWithHashtag: timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: onlyLocalFilter,
+      onlyLocalCondition: onlyLocalCondition,
       onlyWithMedia: timeline.onlyWithMedia,
       withMuted: timeline.withMuted,
       excludeVisibilities: timeline.excludeVisibilities,
@@ -284,6 +298,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: excludeTextConditions,
     );
 
     _logger.finer(() =>
@@ -320,5 +335,44 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           listen: false,
         ),
         webSocketsListenType: webSocketsListenType,
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
       );
+
+  @override
+  Future internalAsyncInit() async {
+    List<MastodonFilterContextType> onlyWithContextTypes;
+
+    switch (timelineType) {
+      case TimelineType.public:
+        onlyWithContextTypes = [
+          MastodonFilterContextType.public,
+        ];
+        break;
+      case TimelineType.home:
+      case TimelineType.customList:
+        onlyWithContextTypes = [
+          MastodonFilterContextType.homeAndCustomLists,
+        ];
+        break;
+      case TimelineType.hashtag:
+        onlyWithContextTypes = [];
+        break;
+      case TimelineType.account:
+        onlyWithContextTypes = [
+          MastodonFilterContextType.account,
+        ];
+        break;
+    }
+    filters = await filterRepository.getFilters(
+      olderThanFilter: null,
+      newerThanFilter: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyWithContextTypes: onlyWithContextTypes,
+    );
+  }
 }

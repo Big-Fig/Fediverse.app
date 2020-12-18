@@ -1,16 +1,24 @@
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/chat/unread/chat_unread_badge_count_widget.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
+import 'package:fedi/app/chat/unread/chat_unread_badge_bloc_impl.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
-import 'package:fedi/app/home/home_timelines_unread_badge_widget.dart';
-import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
+import 'package:fedi/app/home/home_timelines_unread_badge_bloc_impl.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_bloc_impl.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,22 +87,38 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     var badgeOffset = additionalOffset + FediSizes.smallPadding;
     switch (tab) {
       case HomeTab.timelines:
-        return HomeTimelinesUnreadBadgeWidget(
-          offset: badgeOffset,
-          child: Padding(
-            padding: insets,
-            child: FediTransparentIcon(
-              FediIcons.home,
-              color: color,
+        return DisposableProxyProvider<IHomeBloc, IFediBoolBadgeBloc>(
+          update: (context, homeBloc, _) => HomeTimelinesUnreadBadgeBloc(
+            homeBloc: homeBloc,
+          ),
+          child: FediBoolBadgeWidget(
+            offset: badgeOffset,
+            child: Padding(
+              padding: insets,
+              child: FediTransparentIcon(
+                FediIcons.home,
+                color: color,
+              ),
             ),
           ),
         );
         break;
       case HomeTab.notifications:
-        return NotificationUnreadBadgeExcludeTypesWidget(
+        return DisposableProvider<IFediBoolBadgeBloc>(
+          create: (context) => NotificationUnreadBadgeExcludeTypesBloc(
+            filterRepository: IFilterRepository.of(
+              context,
+              listen: false,
+            ),
+            notificationRepository: INotificationRepository.of(
+              context,
+              listen: false,
+            ),
             excludeTypes: <PleromaNotificationType>[
               PleromaNotificationType.pleromaChatMention
             ],
+          ),
+          child: FediBoolBadgeWidget(
             offset: badgeOffset,
             child: Padding(
               padding: insets,
@@ -102,14 +126,32 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
                 FediIcons.notification,
                 color: color,
               ),
-            ));
+            ),
+          ),
+        );
         break;
       case HomeTab.chat:
-        return ChatUnreadBadgeCountWidget(
-          offset: badgeOffset,
-          child: Padding(
-            padding: insets,
-            child: FediTransparentIcon(FediIcons.chat, color: color),
+        return DisposableProvider<IFediBoolBadgeBloc>(
+          create: (context) => ChatUnreadBadgeBloc(
+            conversationChatRepository: IConversationChatRepository.of(
+              context,
+              listen: false,
+            ),
+            pleromaChatRepository: IPleromaChatRepository.of(
+              context,
+              listen: false,
+            ),
+            chatSettingsBloc: IChatSettingsBloc.of(
+              context,
+              listen: false,
+            ),
+          ),
+          child: FediBoolBadgeWidget(
+            offset: badgeOffset,
+            child: Padding(
+              padding: insets,
+              child: FediTransparentIcon(FediIcons.chat, color: color),
+            ),
           ),
         );
         break;

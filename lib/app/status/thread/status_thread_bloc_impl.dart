@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/filter/filter_model.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -22,6 +26,7 @@ var _logger = Logger("status_thread_bloc_impl.dart");
 class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
+  final IFilterRepository filterRepository;
   @override
   IStatus initialStatusToFetchThread;
   final BehaviorSubject<List<IStatus>> _statusesSubject;
@@ -49,6 +54,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   StatusThreadBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
+    @required this.filterRepository,
     @required this.initialStatusToFetchThread,
     @required this.initialMediaAttachment,
   })  : _statusesSubject = BehaviorSubject.seeded([initialStatusToFetchThread]),
@@ -105,14 +111,28 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   Future<bool> refresh() async {
     try {
       _logger.finest(() => "refresh");
+
+      var filters = await filterRepository.getFilters(
+        olderThanFilter: null,
+        newerThanFilter: null,
+        limit: null,
+        offset: null,
+        orderingTermData: null,
+        onlyWithContextTypes: [MastodonFilterContextType.thread],
+      );
+
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: initialStatusToFetchThread.remoteId);
+        statusRemoteId: initialStatusToFetchThread.remoteId,
+      );
       if (updatedStartRemoteStatus != null) {
         // don't await because we don't need it
-        unawaited(statusRepository.updateLocalStatusByRemoteStatus(
+        unawaited(
+          statusRepository.updateLocalStatusByRemoteStatus(
             oldLocalStatus: initialStatusToFetchThread,
-            newRemoteStatus: updatedStartRemoteStatus));
+            newRemoteStatus: updatedStartRemoteStatus,
+          ),
+        );
         initialStatusToFetchThread =
             mapRemoteStatusToLocalStatus(updatedStartRemoteStatus);
 
@@ -123,13 +143,25 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
       // update context
       var remoteStatusContext = await pleromaStatusService.getStatusContext(
           statusRemoteId: initialStatusToFetchThread.remoteId);
+      var ancestors = remoteStatusContext.ancestors.where(
+        (remoteStatus) => isNotFiltered(remoteStatus, filters),
+      );
+      var descendants = remoteStatusContext.descendants.where(
+        (remoteStatus) => isNotFiltered(remoteStatus, filters),
+      );
 
       List<IStatus> newStatuses = [];
-      newStatuses.addAll(remoteStatusContext.ancestors
-          .map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus)));
+      newStatuses.addAll(
+        ancestors.map(
+          (remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus),
+        ),
+      );
       newStatuses.add(initialStatusToFetchThread);
-      newStatuses.addAll(remoteStatusContext.descendants
-          .map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus)));
+      newStatuses.addAll(
+        descendants.map(
+          (remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus),
+        ),
+      );
       _logger.finest(
           () => "refresh getStatusContext newStatuses ${newStatuses.length} ");
       _statusesSubject.add(newStatuses);
@@ -209,5 +241,39 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
       isJumpedToStartState = true;
       scrollToIndex(initialStatusToFetchThreadIndex);
     }
+  }
+
+  bool isNotFiltered(
+      IPleromaStatus remoteStatus, List<DbFilterPopulatedWrapper> filters) {
+    var spoilerText = remoteStatus.spoilerText;
+    var content = remoteStatus.content;
+
+    bool filtered = false;
+    for (var filter in filters) {
+      var phrase = filter.phrase;
+      if (filter.wholeWord) {
+        var regex = RegExp("\b$phrase\b");
+        if (content != null) {
+          filtered |= regex.hasMatch(content);
+        }
+
+        if (spoilerText != null) {
+          filtered |= regex.hasMatch(spoilerText);
+        }
+      } else {
+        if (content != null) {
+          filtered |= content.contains(phrase);
+        }
+
+        if (spoilerText != null) {
+          filtered |= spoilerText.contains(phrase);
+        }
+      }
+      if (filtered) {
+        break;
+      }
+    }
+
+    return !filtered;
   }
 }

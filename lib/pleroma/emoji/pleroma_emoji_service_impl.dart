@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_exception.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaEmojiService implements IPleromaEmojiService {
+class PleromaEmojiService extends DisposableOwner
+    implements IPleromaEmojiService {
   final emojiRelativeUrlPath = "/api/pleroma/emoji";
   @override
   final IPleromaAuthRestService restService;
@@ -42,7 +44,7 @@ class PleromaEmojiService implements IPleromaEmojiService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

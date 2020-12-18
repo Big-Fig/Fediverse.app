@@ -326,7 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_file_image_crop_title" : MessageLookupByLibrary.simpleMessage("Crop as"),
     "app_filter_context_empty" : MessageLookupByLibrary.simpleMessage("Nothing selected"),
     "app_filter_context_type_account" : MessageLookupByLibrary.simpleMessage("Account"),
-    "app_filter_context_type_home" : MessageLookupByLibrary.simpleMessage("Home"),
+    "app_filter_context_type_home_and_lists" : MessageLookupByLibrary.simpleMessage("Home and Lists"),
     "app_filter_context_type_notifications" : MessageLookupByLibrary.simpleMessage("Notifications"),
     "app_filter_context_type_public" : MessageLookupByLibrary.simpleMessage("Public"),
     "app_filter_context_type_threads" : MessageLookupByLibrary.simpleMessage("Conversations"),

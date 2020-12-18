@@ -16,7 +16,7 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
 
     if(currentInstance.isMastodonInstance) {
       return [
-        MastodonFilterContextType.home,
+        MastodonFilterContextType.homeAndCustomLists,
         MastodonFilterContextType.notifications,
         MastodonFilterContextType.public,
         MastodonFilterContextType.thread,
@@ -24,7 +24,7 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
       ];
     } else {
       return [
-        MastodonFilterContextType.home,
+        MastodonFilterContextType.homeAndCustomLists,
         MastodonFilterContextType.notifications,
         MastodonFilterContextType.public,
         MastodonFilterContextType.thread,

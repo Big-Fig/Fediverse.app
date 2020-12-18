@@ -1,10 +1,12 @@
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
+import 'package:fedi/app/status/post/action/post_status_poll_action_badge_bloc_impl.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
-import 'package:fedi/app/ui/badge/fedi_stream_bool_badge_widget.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,12 +41,16 @@ class PostStatusPollActionWidget extends StatelessWidget {
               builder: (context, snapshot) {
                 var isSomethingChanged = snapshot.data;
                 if (isSomethingChanged) {
-                  return FediStreamBoolBadgeWidget(
-                    offset: 8.0,
-                    stream: postStatusPollBloc
-                        .pollOptionsGroupBloc.itemsStream
-                        .map((items) => items?.isNotEmpty == true),
-                    child: button,
+                  return DisposableProxyProvider<IPostStatusPollBloc,
+                      PostStatusPollActionBadgeBloc>(
+                    update: (context, postStatusPollBloc, _) =>
+                        PostStatusPollActionBadgeBloc(
+                      postStatusPollBloc: postStatusPollBloc,
+                    ),
+                    child: FediBoolBadgeWidget(
+                      offset: 8.0,
+                      child: button,
+                    ),
                   );
                 } else {
                   return button;

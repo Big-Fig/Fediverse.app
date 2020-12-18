@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_exception.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -8,7 +9,8 @@ import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
 
-class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
+class PleromaMediaAttachmentService extends DisposableOwner
+    implements IPleromaMediaAttachmentService {
   @override
   final IPleromaAuthRestService restService;
 
@@ -54,6 +56,6 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

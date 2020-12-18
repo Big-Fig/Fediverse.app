@@ -166,6 +166,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 //            status.mediaAttachments.equals("").not()
             );
 
+  // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
           String localDomain) =>
@@ -173,6 +174,42 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..where((status) =>
             status.pleromaLocal.equals(true) |
             status.url.like("%$localDomain%"));
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeContentWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+    @required String phrase,
+    @required bool wholeWord,
+  }) {
+    if (wholeWord) {
+      return query
+        ..where(
+          (status) => status.content.regexp("\b$phrase\b").not(),
+        );
+    } else {
+      return query
+        ..where(
+          (status) => status.content.like("%$phrase%").not(),
+        );
+    }
+  }
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeSpoilerTextWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+    @required String phrase,
+    @required bool wholeWord,
+  }) {
+    if (wholeWord) {
+      return query
+        ..where(
+          (status) => status.spoilerText.regexp("\b$phrase\b").not(),
+        );
+    } else {
+      return query
+        ..where(
+          (status) => status.spoilerText.like("%$phrase%").not(),
+        );
+    }
+  }
 
   JoinedSelectStatement addFollowingWhere(
           JoinedSelectStatement query, String accountRemoteId) =>
@@ -202,12 +239,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotMutedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
-        ..where((status) =>
-            status.muted.equals(false)
+        ..where((status) => status.muted.equals(false)
             // (status.muted.equals(false)) &
             // (status.pleromaThreadMuted.equals(false) |
             //     isNull(status.pleromaThreadMuted))
-        );
+            );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -418,5 +454,4 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query;
   }
-
 }

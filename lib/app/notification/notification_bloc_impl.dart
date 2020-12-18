@@ -66,7 +66,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   void _init(INotification notification, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
             streamSubscription: notificationRepository

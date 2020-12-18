@@ -3,8 +3,10 @@ import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_page.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
@@ -236,57 +238,63 @@ MaterialPageRoute createCustomListPageRoute({
                         listen: false,
                       ),
                       webSocketsListenType: WebSocketsListenType.foreground,
+                      filterRepository: IFilterRepository.of(
+                        context,
+                        listen: false,
+                      ),
                     );
                     return customListTimelineStatusCachedListBloc;
                   },
                   child: ProxyProvider<IStatusCachedListBloc,
                       IPleromaCachedListBloc<IStatus>>(
                     update: (context, value, previous) => value,
-                    child: StatusCachedPaginationBloc.provideToContext(
-                      context,
-                      child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(
+                    child: StatusCachedListBlocLoadingWidget(
+                      child: StatusCachedPaginationBloc.provideToContext(
                         context,
-                        mergeNewItemsImmediately: false,
-                        child: Provider<ICustomList>.value(
-                          value: customList,
-                          child: DisposableProxyProvider<ICustomList,
-                              ICustomListBloc>(
-                            update: (context, customList, _) {
-                              var customListBloc = CustomListBloc(
-                                customList: customList,
-                                pleromaListService: IPleromaListService.of(
-                                  context,
-                                  listen: false,
-                                ),
-                              );
+                        child: StatusCachedPaginationListWithNewItemsBloc
+                            .provideToContext(
+                          context,
+                          mergeNewItemsImmediately: false,
+                          child: Provider<ICustomList>.value(
+                            value: customList,
+                            child: DisposableProxyProvider<ICustomList,
+                                ICustomListBloc>(
+                              update: (context, customList, _) {
+                                var customListBloc = CustomListBloc(
+                                  customList: customList,
+                                  pleromaListService: IPleromaListService.of(
+                                    context,
+                                    listen: false,
+                                  ),
+                                );
 
-                              if (onChanged != null) {
-                                customListBloc.addDisposable(
-                                  streamSubscription:
-                                      customListBloc.customListStream.listen(
-                                    (customList) {
-                                      onChanged(customList);
-                                    },
-                                  ),
-                                );
-                              }
-                              if (onDeleted != null) {
-                                customListBloc.addDisposable(
-                                  streamSubscription:
-                                      customListBloc.deletedStream.listen(
-                                    (_) {
-                                      onDeleted();
-                                    },
-                                  ),
-                                );
-                              }
-                              return customListBloc;
-                            },
-                            child: const CustomListPage(),
+                                if (onChanged != null) {
+                                  customListBloc.addDisposable(
+                                    streamSubscription:
+                                        customListBloc.customListStream.listen(
+                                      (customList) {
+                                        onChanged(customList);
+                                      },
+                                    ),
+                                  );
+                                }
+                                if (onDeleted != null) {
+                                  customListBloc.addDisposable(
+                                    streamSubscription:
+                                        customListBloc.deletedStream.listen(
+                                      (_) {
+                                        onDeleted();
+                                      },
+                                    ),
+                                  );
+                                }
+                                return customListBloc;
+                              },
+                              child: const CustomListPage(),
+                            ),
                           ),
+                          mergeOwnStatusesImmediately: false,
                         ),
-                        mergeOwnStatusesImmediately: false,
                       ),
                     ),
                   ),

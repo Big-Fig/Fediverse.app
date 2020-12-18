@@ -5,6 +5,7 @@ import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -58,6 +59,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int limit,
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
+    @required List<MastodonFilterContextType> onlyWithContextTypes,
   }) async {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -65,6 +67,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       limit: limit,
       offset: offset,
       orderingTermData: orderingTermData,
+      onlyWithContextTypes: onlyWithContextTypes,
     );
 
     return dao
@@ -80,6 +83,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int limit,
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
+    @required List<MastodonFilterContextType> onlyWithContextTypes,
   }) {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -87,6 +91,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       limit: limit,
       offset: offset,
       orderingTermData: orderingTermData,
+      onlyWithContextTypes: onlyWithContextTypes,
     );
 
     Stream<List<DbFilterPopulated>> stream =
@@ -100,12 +105,14 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int limit,
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
+    @required List<MastodonFilterContextType> onlyWithContextTypes,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t olderThanFilter=$olderThanFilter\n"
         "\t newerThanFilter=$newerThanFilter\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
+        "\t onlyWithContextTypes=$onlyWithContextTypes\n"
         "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
@@ -118,6 +125,10 @@ class FilterRepository extends AsyncInitLoadingBloc
       );
     }
 
+    if (onlyWithContextTypes?.isNotEmpty == true) {
+      dao.addContextTypesWhere(query, onlyWithContextTypes);
+    }
+    
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
     }
@@ -235,6 +246,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required IFilter olderThanFilter,
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
+    @required List<MastodonFilterContextType> onlyWithContextTypes,
   }) async {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -242,6 +254,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       limit: 1,
       offset: null,
       orderingTermData: orderingTermData,
+      onlyWithContextTypes: onlyWithContextTypes,
     );
 
     return mapDataClassToItem(
@@ -253,6 +266,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required IFilter olderThanFilter,
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
+    @required List<MastodonFilterContextType> onlyWithContextTypes,
   }) {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -260,6 +274,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       limit: 1,
       offset: null,
       orderingTermData: orderingTermData,
+      onlyWithContextTypes: onlyWithContextTypes,
     );
 
     Stream<DbFilterPopulated> stream = query
