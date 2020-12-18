@@ -12,7 +12,7 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
 import '../../conversation/conversation_model_helper.dart';
@@ -1480,6 +1480,155 @@ void main() {
 
     await subscription.cancel();
   });
+
+  test('createQuery excludeTextConditions wholeWord = false', () async {
+    var query = statusRepository.createQuery(
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      withMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocalCondition: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+      onlyNotDeleted: null,
+      excludeTextConditions: [
+        StatusTextCondition(phrase: "test", wholeWord: false),
+      ],
+    );
+
+    var dbStatus1 =
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "test",
+      content: "",
+    );
+    await insertDbStatus(statusRepository, dbStatus1);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus2 =
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "",
+      content: "test",
+    );
+    await insertDbStatus(statusRepository, dbStatus2);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus3 =
+        (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "",
+      content: "testing",
+    );
+    await insertDbStatus(statusRepository, dbStatus3);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus4 =
+        (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "",
+      content: "aaaa",
+    );
+    await insertDbStatus(statusRepository, dbStatus4);
+
+    expect((await query.get()).length, 1);
+  });
+
+
+
+  test('createQuery excludeTextConditions wholeWord = true', () async {
+    var query = statusRepository.createQuery(
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      withMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocalCondition: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+      onlyNotDeleted: null,
+      excludeTextConditions: [
+        StatusTextCondition(phrase: "test", wholeWord: true),
+      ],
+    );
+
+    var dbStatus1 =
+    (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+        .copyWith(
+      spoilerText: "test",
+      content: "",
+    );
+    await insertDbStatus(statusRepository, dbStatus1);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus2 =
+    (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+        .copyWith(
+      spoilerText: "",
+      content: "test",
+    );
+    await insertDbStatus(statusRepository, dbStatus2);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus3 =
+    (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+        .copyWith(
+      spoilerText: "",
+      content: "testing",
+    );
+    await insertDbStatus(statusRepository, dbStatus3);
+
+    expect((await query.get()).length, 1);
+
+    var dbStatus4 =
+    (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+        .copyWith(
+      spoilerText: "",
+      content: "aaaa",
+    );
+    await insertDbStatus(statusRepository, dbStatus4);
+
+    expect((await query.get()).length, 2);
+
+    var dbStatus5 =
+    (await createTestDbStatus(seed: "seed5", dbAccount: dbAccount))
+        .copyWith(
+      spoilerText: "",
+      content: "one test one",
+    );
+    await insertDbStatus(statusRepository, dbStatus5);
+
+    expect((await query.get()).length, 2);
+  });
+
 
   // TODO: test fails but logic is valid
   // fails due to limitation in native sql library. Actually works good on iOS/Android

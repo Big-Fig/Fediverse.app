@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 
 abstract class ExternalShareBloc extends DisposableOwner
     implements IExternalShareBloc {

@@ -366,6 +366,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         ];
         break;
     }
+
+    var countAll = await filterRepository.countAll();
+    _logger.finest(() =>
+    "filterRepository countAll ${countAll}");
+
     filters = await filterRepository.getFilters(
       olderThanFilter: null,
       newerThanFilter: null,
@@ -374,5 +379,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       orderingTermData: null,
       onlyWithContextTypes: onlyWithContextTypes,
     );
+
+    _logger.finest(() =>
+        "timelineType $timelineType, "
+            "onlyWithContextTypes $onlyWithContextTypes,"
+            " filters $filters");
   }
 }

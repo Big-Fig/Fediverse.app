@@ -167,15 +167,16 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 //    return query;
 //  }
 
-  JoinedSelectStatement addExcludeStatusContentWhere(
+  JoinedSelectStatement addExcludeContentWhere(
     JoinedSelectStatement query, {
     @required String phrase,
     @required bool wholeWord,
   }) {
+    final regex = r"\b" + phrase + r"\b";
     if (wholeWord) {
       return query
         ..where(
-          statusAlias.content.regexp("\b$phrase\b").not(),
+          statusAlias.content.regexp(regex).not(),
         );
     } else {
       return query
@@ -185,15 +186,16 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-  JoinedSelectStatement addExcludeStatusSpoilerTextWhere(
+  JoinedSelectStatement addExcludeSpoilerTextWhere(
     JoinedSelectStatement query, {
     @required String phrase,
     @required bool wholeWord,
   }) {
+    final regex = r"\b" + phrase + r"\b";
     if (wholeWord) {
       return query
         ..where(
-          statusAlias.spoilerText.regexp("\b$phrase\b").not(),
+          statusAlias.spoilerText.regexp(regex).not(),
         );
     } else {
       return query

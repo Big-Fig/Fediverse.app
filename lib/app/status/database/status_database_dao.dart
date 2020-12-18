@@ -180,10 +180,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     @required String phrase,
     @required bool wholeWord,
   }) {
+    final regex = r"\b"+phrase+r"\b";
     if (wholeWord) {
       return query
         ..where(
-          (status) => status.content.regexp("\b$phrase\b").not(),
+              (status) => status.content.regexp(regex).not(),
         );
     } else {
       return query
@@ -198,10 +199,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     @required String phrase,
     @required bool wholeWord,
   }) {
+    final regex = r"\b"+phrase+r"\b";
     if (wholeWord) {
       return query
         ..where(
-          (status) => status.spoilerText.regexp("\b$phrase\b").not(),
+          (status) => status.spoilerText.regexp(regex).not(),
         );
     } else {
       return query

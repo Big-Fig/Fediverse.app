@@ -10,7 +10,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';

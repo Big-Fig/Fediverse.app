@@ -123,14 +123,18 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
       List<MastodonFilterContextType> contextTypes) {
     assert(contextTypes?.isNotEmpty == true);
 
-    List<String> contextTypesStrings =
-        contextTypes.map((visibility) => visibility.toJsonValue()).toList();
-
-    var regex = contextTypesStrings.join("|");
-
+    List<String> contextTypesStrings = contextTypes
+        .map(
+          (visibility) => '${visibility.toJsonValue()}',
+        )
+        .toList();
     return query
       ..where(
-        (filter) => filter.contextAsMastodonFilterContextType.regexp(regex),
+        (filter) => CustomExpression<bool>(
+          contextTypesStrings
+              .map((type) => "db_filters.context LIKE '%$type%'")
+              .join(" OR "),
+        ),
       );
   }
 

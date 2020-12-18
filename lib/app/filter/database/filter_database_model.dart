@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:moor/moor.dart';
 
 @DataClassName("DbFilter")
@@ -10,8 +10,7 @@ class DbFilters extends Table {
 
   TextColumn get phrase => text()();
 
-  TextColumn get contextAsMastodonFilterContextType =>
-      text().nullable().map(MastodonFilterContextTypeListTypeConverter())();
+  TextColumn get context => text().nullable().map(StringListDatabaseConverter())();
 
   BoolColumn get irreversible => boolean().nullable()();
 

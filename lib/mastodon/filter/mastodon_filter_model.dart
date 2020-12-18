@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:fedi/enum/enum_values.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:moor/moor.dart';
 
 abstract class IBaseMastodonFilter {
   ///  The text to be filtered.
@@ -29,7 +25,6 @@ abstract class IMastodonFilter implements IBaseMastodonFilter {
 }
 
 abstract class IPostMastodonFilter implements IBaseMastodonFilter {
-
   /// When the filter should no longer be applied
   int get expiresInSeconds;
 }
@@ -46,6 +41,7 @@ enum MastodonFilterContextType {
 
   /// expanded thread of a detailed status
   thread,
+
   /// account page
   account,
 
@@ -68,56 +64,11 @@ extension MastodonFilterContextTypeJsonValueExtension
 
 extension MastodonFilterContextTypeStringExtension on String {
   MastodonFilterContextType toMastodonFilterContextType() {
-    if(this == null) {
+    if (this == null) {
       return null;
     }
     var contextType = _mastodonFilterContextTypeValues.valueToEnumMap[this];
     contextType ??= MastodonFilterContextType.unknown;
     return contextType;
-  }
-}
-
-class MastodonFilterContextTypeTypeConverter
-    implements JsonConverter<MastodonFilterContextType, String> {
-  const MastodonFilterContextTypeTypeConverter();
-
-  @override
-  MastodonFilterContextType fromJson(String value) =>
-      value.toMastodonFilterContextType();
-
-  @override
-  String toJson(MastodonFilterContextType value) => value.toJsonValue();
-}
-
-class MastodonFilterContextTypeListTypeConverter
-    extends TypeConverter<List<MastodonFilterContextType>, String> {
-  const MastodonFilterContextTypeListTypeConverter() : super();
-
-  @override
-  List<MastodonFilterContextType> mapToDart(String fromDb) {
-    if (fromDb?.isNotEmpty == true) {
-      var jsonList = jsonDecode(fromDb) as List<dynamic>;
-
-      return jsonList
-          .map(
-            (item) => item.toString().toMastodonFilterContextType(),
-          )
-          .toList();
-    } else {
-      return [];
-    }
-  }
-
-  @override
-  String mapToSql(List<MastodonFilterContextType> value) {
-    if (value?.isNotEmpty == true) {
-      return jsonEncode(value
-          .map(
-            (item) => item.toJsonValue(),
-          )
-          .toList());
-    } else {
-      return null;
-    }
   }
 }

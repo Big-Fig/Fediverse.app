@@ -5,7 +5,7 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model_adapter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../database/scheduled_status_database_model_helper.dart';
 import '../scheduled_status_model_helper.dart';

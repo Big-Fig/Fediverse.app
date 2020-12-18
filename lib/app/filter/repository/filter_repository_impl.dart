@@ -70,8 +70,9 @@ class FilterRepository extends AsyncInitLoadingBloc
       onlyWithContextTypes: onlyWithContextTypes,
     );
 
+    var typedResult = await query.get();
     return dao
-        .typedResultListToPopulated(await query.get())
+        .typedResultListToPopulated(typedResult)
         .map(mapDataClassToItem)
         .toList();
   }

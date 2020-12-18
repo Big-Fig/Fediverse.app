@@ -7,7 +7,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../conversation/conversation_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';

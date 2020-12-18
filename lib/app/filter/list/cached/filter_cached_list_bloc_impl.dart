@@ -6,7 +6,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 class FilterCachedListBloc extends IFilterCachedListBloc {
   final IPleromaFilterService pleromaFilterService;

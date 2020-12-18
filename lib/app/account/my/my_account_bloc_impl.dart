@@ -13,7 +13,6 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static final selfActionError = const SelfActionNotPossibleException();

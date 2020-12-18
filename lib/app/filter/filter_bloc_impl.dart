@@ -12,11 +12,11 @@ var _logger = Logger("filter_bloc_impl.dart");
 
 class FilterBloc extends DisposableOwner implements IFilterBloc {
   @override
-  bool get isExpired => _calculateIsExpired(filter.expiresAt);
+  bool get isExpired => filter.isExpired;
 
   @override
   Stream<bool> get isExpiredStream => filterStream.map(
-        (filter) => _calculateIsExpired(filter.expiresAt),
+        (filter) => filter.isExpired,
       );
 
   @override
@@ -108,10 +108,3 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   String get remoteId => filter.remoteId;
 }
 
-bool _calculateIsExpired(DateTime expiresAt) {
-  if (expiresAt == null) {
-    return false;
-  } else {
-    return DateTime.now().isAfter(expiresAt);
-  }
-}

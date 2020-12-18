@@ -23,12 +23,12 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../pleroma/account/my/pleroma_my_account_service_mock.dart';
 import '../../pleroma/chat/pleroma_chat_service_mock.dart';
 import '../account/account_model_helper.dart';
-import '../account/my/my_acount_model_helper.dart';
+import '../account/my/my_account_model_helper.dart';
 import 'chat_model_helper.dart';
 import 'message/chat_message_model_helper.dart';
 

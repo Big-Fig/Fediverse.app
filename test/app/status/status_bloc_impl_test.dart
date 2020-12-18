@@ -17,7 +17,7 @@ import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moor_ffi/moor_ffi.dart';
+import 'package:moor/ffi.dart';
 
 import '../../pleroma/account/pleroma_account_service_mock.dart';
 import '../../pleroma/status/pleroma_status_emoji_reaction_service_mock.dart';
