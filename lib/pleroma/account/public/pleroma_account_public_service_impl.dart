@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_exception.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_service.dart';
@@ -16,7 +17,8 @@ var urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger("pleroma_account_public_service_impl.dart");
 
-class PleromaAccountPublicService extends IPleromaAccountPublicService {
+class PleromaAccountPublicService extends DisposableOwner
+    implements IPleromaAccountPublicService {
   final accountRelativeUrlPath = "/api/v1/accounts/";
   @override
   final IPleromaRestService restService;
@@ -66,9 +68,8 @@ class PleromaAccountPublicService extends IPleromaAccountPublicService {
     }
   }
 
-
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

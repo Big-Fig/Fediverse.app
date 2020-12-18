@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_exception.dart';
@@ -10,7 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaNotificationService implements IPleromaNotificationService {
+class PleromaNotificationService extends DisposableOwner
+    implements IPleromaNotificationService {
   final notificationRelativeUrlPath = "api/v1/notifications";
   @override
   final IPleromaAuthRestService restService;
@@ -41,7 +43,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

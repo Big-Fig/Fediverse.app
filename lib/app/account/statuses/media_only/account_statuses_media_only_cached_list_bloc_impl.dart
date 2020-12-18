@@ -1,5 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -19,17 +21,21 @@ class AccountStatusesMediaOnlyCachedListBloc
   AccountStatusesMediaOnlyCachedListBloc({
     @required IAccount account,
     @required IPleromaAccountService pleromaAccountService,
-    @required this.statusRepository,
+    @required IStatusRepository statusRepository,
+    @required IFilterRepository filterRepository,
+    @required IMyAccountBloc myAccountBloc,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
           webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
+          statusRepository: statusRepository,
+          filterRepository: filterRepository,
+          myAccountBloc: myAccountBloc,
         );
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
-  final IStatusRepository statusRepository;
 
   static AccountStatusesMediaOnlyCachedListBloc createFromContext(
       BuildContext context,
@@ -45,6 +51,14 @@ class AccountStatusesMediaOnlyCachedListBloc
         context,
         listen: false,
       ),
+      filterRepository: IFilterRepository.of(
+        context,
+        listen: false,
+      ),
+      myAccountBloc: IMyAccountBloc.of(
+        context,
+        listen: false,
+      ),
     );
   }
 
@@ -57,7 +71,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       onlyInListWithRemoteId: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: true,
       withMuted: false,
       excludeVisibilities: null,
@@ -75,6 +89,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: excludeTextConditions,
     );
 
     return statuses;
@@ -86,7 +101,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       onlyInListWithRemoteId: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: true,
       withMuted: false,
       excludeVisibilities: null,
@@ -104,6 +119,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: excludeTextConditions,
     );
   }
 

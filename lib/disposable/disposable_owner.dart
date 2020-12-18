@@ -8,7 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DisposableOwner extends IDisposable {
-  bool disposed = false;
+  @override
+  bool isDisposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
   void addDisposable({
@@ -31,7 +32,8 @@ class DisposableOwner extends IDisposable {
     }
 
     if (streamController != null) {
-      _compositeDisposable.children.add(StreamControllerDisposable(streamController));
+      _compositeDisposable.children
+          .add(StreamControllerDisposable(streamController));
     }
 
     if (timer != null) {
@@ -62,7 +64,7 @@ class DisposableOwner extends IDisposable {
   @override
   @mustCallSuper
   Future dispose() async {
-    disposed = true;
+    isDisposed = true;
     await _compositeDisposable.dispose();
   }
 }

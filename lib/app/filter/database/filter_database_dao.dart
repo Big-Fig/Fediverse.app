@@ -2,6 +2,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:moor/moor.dart';
 
 part 'filter_database_dao.g.dart';
@@ -115,6 +116,22 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
     }
 
     return query;
+  }
+
+  SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
+      SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+      List<MastodonFilterContextType> contextTypes) {
+    assert(contextTypes?.isNotEmpty == true);
+
+    List<String> contextTypesStrings =
+        contextTypes.map((visibility) => visibility.toJsonValue()).toList();
+
+    var regex = contextTypesStrings.join("|");
+
+    return query
+      ..where(
+        (filter) => filter.contextAsMastodonFilterContextType.regexp(regex),
+      );
   }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> orderBy(

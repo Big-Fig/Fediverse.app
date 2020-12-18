@@ -4,6 +4,7 @@ import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
+import 'package:fedi/app/notification/notification_tabs_bloc_loading_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
@@ -42,14 +43,16 @@ class NotificationsHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProvider<INotificationTabsBloc>(
       create: (context) => NotificationsTabsBloc.createFromContext(context),
-      child: TabControllerProvider(
-        tabControllerCreator:
-            (BuildContext context, TickerProvider tickerProvider) =>
-                TabController(
-          vsync: tickerProvider,
-          length: _notificationTabs.length,
+      child: NotificationTabsBlocLoadingWidget(
+        child: TabControllerProvider(
+          tabControllerCreator:
+              (BuildContext context, TickerProvider tickerProvider) =>
+                  TabController(
+            vsync: tickerProvider,
+            length: _notificationTabs.length,
+          ),
+          child: const _NotificationsHomeTabPageBody(),
         ),
-        child: const _NotificationsHomeTabPageBody(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_exception.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -17,7 +18,7 @@ var urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger("pleroma_my_account_service_impl.dart");
 
-class PleromaMyAccountService implements IPleromaMyAccountService {
+class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccountService {
   final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
   @override
@@ -191,7 +192,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

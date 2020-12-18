@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_exception.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
@@ -12,7 +13,8 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaInstanceService implements IPleromaInstanceService {
+class PleromaInstanceService extends DisposableOwner
+    implements IPleromaInstanceService {
   final instanceRelativeUrlPath = "/api/v1/instance";
   @override
   final IPleromaRestService restService;
@@ -95,6 +97,6 @@ class PleromaInstanceService implements IPleromaInstanceService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

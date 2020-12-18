@@ -25,7 +25,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   void watchLocalRepositoryForUpdates();
 
   void _init(bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         watchLocalRepositoryForUpdates();
       }

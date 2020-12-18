@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
@@ -67,6 +68,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final ILocalPreferencesService preferencesService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final TickerProvider vsync;
+  final IFilterRepository filterRepository;
   VoidCallback tabControllerListener;
 
   TimelineTabListBloc({
@@ -83,6 +85,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     @required this.chatNewMessagesHandlerBloc,
     @required this.webSocketsHandlerManagerBloc,
     @required this.vsync,
+    @required this.filterRepository,
   }) {
     addDisposable(subject: timelineTabBlocsListSubject);
 
@@ -153,7 +156,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     }
 
     var newTabBlocs = <ITimelineTabBloc>[];
-    var selectedTimelineId = oldSelectedBloc?.timelineId ?? newTimelineIds.first;
+    var selectedTimelineId =
+        oldSelectedBloc?.timelineId ?? newTimelineIds.first;
 
     for (var timelineId in newTimelineIds) {
       var timelineTabBloc = TimelineTabBloc(
@@ -168,6 +172,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         webSocketsListenType: selectedTimelineId == timelineId
             ? WebSocketsListenType.foreground
             : WebSocketsListenType.background,
+        filterRepository: filterRepository,
       );
 
       await timelineTabBloc.performAsyncInit();
@@ -231,6 +236,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   }) =>
       TimelineTabListBloc(
         vsync: vsync,
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
         pleromaTimelineService:
             IPleromaTimelineService.of(context, listen: false),
         currentInstanceBloc:

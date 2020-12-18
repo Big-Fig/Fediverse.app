@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_exception.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
@@ -9,7 +10,8 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaPollService implements IPleromaPollService {
+class PleromaPollService extends DisposableOwner
+    implements IPleromaPollService {
   final pollRelativeUrlPath = "/api/v1/polls/";
   @override
   final IPleromaAuthRestService restService;
@@ -40,7 +42,7 @@ class PleromaPollService implements IPleromaPollService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

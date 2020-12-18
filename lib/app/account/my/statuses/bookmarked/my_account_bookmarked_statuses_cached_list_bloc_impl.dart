@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 var _logger =
     Logger("my_account_bookmarked_statuses_cached_list_bloc_impl.dart");
 
-class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
+class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IMyAccountBookmarkedStatusesCachedListBloc {
   final IStatusRepository statusRepository;
   final IPleromaMyAccountService pleromaMyAccountService;
@@ -38,7 +38,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
       onlyFromAccountsFollowingByAccount: null,
       onlyFromAccount: null,
       onlyInConversation: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: null,
       withMuted: null,
       excludeVisibilities: null,
@@ -52,6 +52,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
       isFromHomeTimeline: null,
       onlyBookmarked: true,
       onlyFavourited: null,
+      excludeTextConditions: null,
     );
   }
 
@@ -65,7 +66,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
       onlyFromAccountsFollowingByAccount: null,
       onlyFromAccount: null,
       onlyInConversation: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: null,
       withMuted: null,
       excludeVisibilities: null,
@@ -79,6 +80,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
       isFromHomeTimeline: null,
       onlyBookmarked: true,
       onlyFavourited: null,
+      excludeTextConditions: null,
     );
   }
 
@@ -107,5 +109,10 @@ class MyAccountBookmarkedStatusesCachedListBloc extends DisposableOwner
           "accounts is null");
       return false;
     }
+  }
+
+  @override
+  Future internalAsyncInit() async {
+    // nothing
   }
 }

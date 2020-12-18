@@ -1,5 +1,6 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_count_widget.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
+import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/pleroma/start/pleroma_chat_start_page.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_l
 import 'package:fedi/app/chat/pleroma/with_last_message/list/pleroma_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -166,25 +169,54 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       ],
       content: null,
       endingWidgets: [
-        ConversationChatUnreadBadgeCountWidget(
-          child: FediBlurredTextButtonWithBorder(
-            S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
-            onPressed: () {
-              IChatSettingsBloc.of(context, listen: false)
-                  .changeReplaceConversationsWithPleromaChats(false);
-            },
-            expanded: false,
-          ),
-        ),
+        const _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget(),
         const FediBigHorizontalSpacer(),
         if (isPleromaInstance && isSupportChats)
-          FediIconInCircleBlurredButton(
-            FediIcons.plus,
-            onPressed: () {
-              goToPleromaChatStartPage(context);
-            },
-          ),
+          const _ChatMessagesHomeTabPageHeaderAddActionWidget(),
       ],
+    );
+  }
+}
+
+class _ChatMessagesHomeTabPageHeaderAddActionWidget extends StatelessWidget {
+  const _ChatMessagesHomeTabPageHeaderAddActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.plus,
+      onPressed: () {
+        goToPleromaChatStartPage(context);
+      },
+    );
+  }
+}
+
+class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget extends StatelessWidget {
+  const _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DisposableProxyProvider<IConversationChatRepository,
+        IFediBoolBadgeBloc>(
+      update: (context, conversationChatRepository, _) =>
+          ConversationChatUnreadBadgeBloc(
+        conversationChatRepository: conversationChatRepository,
+      ),
+      child: FediBoolBadgeWidget(
+        child: FediBlurredTextButtonWithBorder(
+          S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
+          onPressed: () {
+            IChatSettingsBloc.of(context, listen: false)
+                .changeReplaceConversationsWithPleromaChats(false);
+          },
+          expanded: false,
+        ),
+      ),
     );
   }
 }

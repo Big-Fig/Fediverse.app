@@ -326,7 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_file_image_crop_title" : MessageLookupByLibrary.simpleMessage("Обрезать как"),
     "app_filter_context_empty" : MessageLookupByLibrary.simpleMessage("Ничего не выбрано"),
     "app_filter_context_type_account" : MessageLookupByLibrary.simpleMessage("Аккаунт"),
-    "app_filter_context_type_home" : MessageLookupByLibrary.simpleMessage("Домашняя лента"),
+    "app_filter_context_type_home_and_lists" : MessageLookupByLibrary.simpleMessage("Домашняя лента и Списки"),
     "app_filter_context_type_notifications" : MessageLookupByLibrary.simpleMessage("Оповещения"),
     "app_filter_context_type_public" : MessageLookupByLibrary.simpleMessage("Публичные ленты"),
     "app_filter_context_type_threads" : MessageLookupByLibrary.simpleMessage("Беседы"),

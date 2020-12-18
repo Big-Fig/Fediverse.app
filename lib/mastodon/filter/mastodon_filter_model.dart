@@ -36,7 +36,7 @@ abstract class IPostMastodonFilter implements IBaseMastodonFilter {
 
 enum MastodonFilterContextType {
   /// home timeline and lists
-  home,
+  homeAndCustomLists,
 
   /// notifications timeline
   notifications,
@@ -54,7 +54,7 @@ enum MastodonFilterContextType {
 }
 
 final _mastodonFilterContextTypeValues = EnumValues<MastodonFilterContextType>({
-  "home": MastodonFilterContextType.home,
+  "home": MastodonFilterContextType.homeAndCustomLists,
   "notifications": MastodonFilterContextType.notifications,
   "public": MastodonFilterContextType.public,
   "thread": MastodonFilterContextType.thread,

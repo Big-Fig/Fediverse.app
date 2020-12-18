@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_exception.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
@@ -10,7 +11,7 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaCaptchaService implements IPleromaCaptchaService {
+class PleromaCaptchaService extends DisposableOwner implements IPleromaCaptchaService {
   final captchaRelativeUrlPath = "/api/pleroma/captcha";
   @override
   final IPleromaRestService restService;
@@ -59,6 +60,6 @@ class PleromaCaptchaService implements IPleromaCaptchaService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

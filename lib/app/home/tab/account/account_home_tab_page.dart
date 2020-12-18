@@ -17,6 +17,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -248,13 +249,15 @@ class _AccountHomeTabProviderWithRepliesTabProviderWidget
     return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );
@@ -276,13 +279,15 @@ class _AccountHomeTabProviderWithoutRepliesTabProviderWidget
     return AccountStatusesWithoutRepliesListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );
@@ -303,13 +308,15 @@ class _AccountHomeTabProviderMediaTabProviderWidget extends StatelessWidget {
     return AccountStatusesMediaOnlyCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
-      child: StatusCachedPaginationBloc.provideToContext(
-        context,
-        child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: StatusCachedListBlocLoadingWidget(
+        child: StatusCachedPaginationBloc.provideToContext(
           context,
-          mergeNewItemsImmediately: true,
-          child: child,
-          mergeOwnStatusesImmediately: false,
+          child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+            context,
+            mergeNewItemsImmediately: true,
+            child: child,
+            mergeOwnStatusesImmediately: false,
+          ),
         ),
       ),
     );

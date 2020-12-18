@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_exception.dart';
@@ -11,7 +12,7 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaStatusEmojiReactionService
+class PleromaStatusEmojiReactionService extends DisposableOwner
     implements IPleromaStatusEmojiReactionService {
   final pleromaStatusesRelativeUrlPath = "/api/v1/pleroma/statuses/";
   final reactionsRelativeUrlPath = "reactions";
@@ -44,7 +45,7 @@ class PleromaStatusEmojiReactionService
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override

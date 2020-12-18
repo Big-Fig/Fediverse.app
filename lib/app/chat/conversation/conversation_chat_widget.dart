@@ -9,6 +9,7 @@ import 'package:fedi/app/chat/conversation/message/pagination/cached/conversatio
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +29,17 @@ class ConversationChatWidget extends StatelessWidget {
           context,
           conversation: chatBloc.chat,
           lastMessage: chatBloc.lastChatMessage,
-          child: ConversationChatMessageCachedPaginationBloc.provideToContext(
-            context,
-            child: ConversationChatMessageCachedPaginationListWithNewItemsBloc
-                .provideToContext(
+          child: StatusCachedListBlocLoadingWidget(
+            child: ConversationChatMessageCachedPaginationBloc.provideToContext(
               context,
-              mergeNewItemsImmediately: true,
-              child: const ChatWidgetBody(
-                child: ChatMessageListWidget<IConversationChatMessage>(
-                  itemBuilder: _itemBuilder,
+              child: ConversationChatMessageCachedPaginationListWithNewItemsBloc
+                  .provideToContext(
+                context,
+                mergeNewItemsImmediately: true,
+                child: const ChatWidgetBody(
+                  child: ChatMessageListWidget<IConversationChatMessage>(
+                    itemBuilder: _itemBuilder,
+                  ),
                 ),
               ),
             ),

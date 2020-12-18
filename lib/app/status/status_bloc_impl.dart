@@ -122,7 +122,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   void _init(IStatus status, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
             streamSubscription: statusRepository

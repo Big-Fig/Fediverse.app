@@ -3,14 +3,14 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("conversation_chat_status_list_bloc_impl.dart");
 
-abstract class ConversationChatStatusListBloc extends DisposableOwner
+abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
     implements IConversationChatStatusCachedListBloc {
   final IStatusRepository statusRepository;
   final IConversationChat conversation;
@@ -18,6 +18,11 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
   ConversationChatStatusListBloc(
       {@required this.conversation, @required this.statusRepository}) {
     assert(conversation != null);
+  }
+
+  @override
+  Future internalAsyncInit() async {
+    // nothing
   }
 
   @override
@@ -35,7 +40,7 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       onlyInListWithRemoteId: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: null,
       withMuted: null,
       excludeVisibilities: null,
@@ -51,6 +56,7 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: null,
     );
 
     _logger.finer(() =>
@@ -66,7 +72,7 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       onlyInListWithRemoteId: null,
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
-      onlyLocal: null,
+      onlyLocalCondition: null,
       onlyWithMedia: null,
       withMuted: null,
       excludeVisibilities: null,
@@ -82,6 +88,7 @@ abstract class ConversationChatStatusListBloc extends DisposableOwner
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      excludeTextConditions: null,
     );
   }
 }

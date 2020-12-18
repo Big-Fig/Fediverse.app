@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/application/mastodon_application_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/application/pleroma_application_exception.dart';
@@ -12,7 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
-class PleromaApplicationService implements IPleromaApplicationService {
+class PleromaApplicationService extends DisposableOwner implements IPleromaApplicationService {
   final appsRelativeUrlPath = "/api/v1/apps/";
   @override
   final IPleromaRestService restService;
@@ -43,7 +44,7 @@ class PleromaApplicationService implements IPleromaApplicationService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   PleromaApplication parseApplicationResponse(Response httpResponse) {

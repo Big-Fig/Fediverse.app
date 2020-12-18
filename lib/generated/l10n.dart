@@ -5042,11 +5042,11 @@ class S {
     );
   }
 
-  /// `Home`
-  String get app_filter_context_type_home {
+  /// `Home and Lists`
+  String get app_filter_context_type_home_and_lists {
     return Intl.message(
-      'Home',
-      name: 'app_filter_context_type_home',
+      'Home and Lists',
+      name: 'app_filter_context_type_home_and_lists',
       desc: '',
       args: [],
     );

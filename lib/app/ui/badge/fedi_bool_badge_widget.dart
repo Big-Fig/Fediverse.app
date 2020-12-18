@@ -1,27 +1,26 @@
+import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-abstract class FediBoolBadgeWidget extends StatelessWidget {
+class FediBoolBadgeWidget extends StatelessWidget {
   final Widget child;
   final double offset;
 
-  static const unreadBadgeSize = 8.0;
-  static const unreadBadgeDefaultOffset = 2.0;
-
+  static const badgeSize = 8.0;
+  static const badgeDefaultOffset = 2.0;
 
   const FediBoolBadgeWidget({
     @required this.child,
-    this.offset = unreadBadgeDefaultOffset,
+    this.offset = badgeDefaultOffset,
   });
-
-  Stream<bool> retrieveBoolStream(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
+    var fediBoolBadgeBloc = IFediBoolBadgeBloc.of(context);
+
     return StreamBuilder<bool>(
-        stream: retrieveBoolStream(context).distinct(),
+        stream: fediBoolBadgeBloc.badgeStream.distinct(),
         builder: (context, snapshot) {
           var unread = snapshot.data;
 
@@ -33,8 +32,8 @@ abstract class FediBoolBadgeWidget extends StatelessWidget {
                   right: offset,
                   top: offset,
                   child: Container(
-                    width: unreadBadgeSize,
-                    height: unreadBadgeSize,
+                    width: badgeSize,
+                    height: badgeSize,
                     decoration: BoxDecoration(
                         color: IFediUiColorTheme.of(context).secondary,
                         shape: BoxShape.circle),

@@ -1,3 +1,5 @@
+import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -5,7 +7,7 @@ import 'package:fedi/app/notification/tab/notification_tab_bloc.dart';
 import 'package:fedi/app/notification/tab/notification_tab_bloc_impl.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
@@ -16,7 +18,7 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("notification_tabs_bloc_impl.dart");
 
-class NotificationsTabsBloc extends DisposableOwner
+class NotificationsTabsBloc extends AsyncInitLoadingBloc
     implements INotificationTabsBloc {
   @override
   List<NotificationTab> tabs = [
@@ -51,11 +53,13 @@ class NotificationsTabsBloc extends DisposableOwner
 
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
+  final FilterRepository filterRepository;
 
   NotificationsTabsBloc({
     @required NotificationTab startTab,
     @required this.pleromaNotificationService,
     @required this.notificationRepository,
+    @required this.filterRepository,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
@@ -69,22 +73,6 @@ class NotificationsTabsBloc extends DisposableOwner
         chat: false,
       ),
     );
-
-    tabs.forEach(
-      (tab) {
-        tabsMap[tab] = NotificationTabBloc(
-          tab: tab,
-          notificationRepository: notificationRepository,
-          pleromaNotificationService: pleromaNotificationService,
-        );
-      },
-    );
-
-    addDisposable(custom: () {
-      tabsMap.values.forEach((bloc) => bloc.dispose());
-    });
-
-    _logger.finest(() => "constructor");
   }
 
   static NotificationsTabsBloc createFromContext(BuildContext context) =>
@@ -98,5 +86,31 @@ class NotificationsTabsBloc extends DisposableOwner
           context,
           listen: false,
         ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
       );
+
+  @override
+  Future internalAsyncInit() async {
+    _logger.finest(() => "internalAsyncInit");
+
+    for (var tab in tabs) {
+      var notificationTabBloc = NotificationTabBloc(
+        tab: tab,
+        notificationRepository: notificationRepository,
+        pleromaNotificationService: pleromaNotificationService,
+        filterRepository: filterRepository,
+      );
+
+      await notificationTabBloc.performAsyncInit();
+
+      tabsMap[tab] = notificationTabBloc;
+    }
+
+    addDisposable(custom: () {
+      tabsMap.values.forEach((bloc) => bloc.dispose());
+    });
+  }
 }

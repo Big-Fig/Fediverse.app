@@ -67,7 +67,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }
 
   void _init(IFilter filter, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
             streamSubscription: filterRepository

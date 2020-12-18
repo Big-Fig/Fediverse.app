@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
@@ -5,7 +6,8 @@ import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/src/response.dart';
 
-class PleromaRestServiceMock extends IPleromaRestService {
+class PleromaRestServiceMock extends DisposableOwner
+    implements IPleromaRestService {
   @override
   final Uri baseUrl;
   @override
@@ -24,7 +26,7 @@ class PleromaRestServiceMock extends IPleromaRestService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   @override
@@ -67,7 +69,8 @@ class PleromaRestServiceMock extends IPleromaRestService {
   PleromaApiState get pleromaApiState => throw UnimplementedError();
 
   @override
-  Stream<PleromaApiState> get pleromaApiStateStream => throw UnimplementedError();
+  Stream<PleromaApiState> get pleromaApiStateStream =>
+      throw UnimplementedError();
 
   @override
   IRestService get restService => this;

@@ -1,7 +1,9 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
@@ -164,23 +166,29 @@ MaterialPageRoute createHashtagPageRoute({
                       context,
                       listen: false,
                     ),
+                    filterRepository: IFilterRepository.of(
+                      context,
+                      listen: false,
+                    ),
                   );
                   return hashtagTimelineStatusCachedListBloc;
                 },
                 child: ProxyProvider<IStatusCachedListBloc,
                     IPleromaCachedListBloc<IStatus>>(
                   update: (context, value, previous) => value,
-                  child: StatusCachedPaginationBloc.provideToContext(
-                    context,
-                    child: StatusCachedPaginationListWithNewItemsBloc
-                        .provideToContext(
+                  child: StatusCachedListBlocLoadingWidget(
+                    child: StatusCachedPaginationBloc.provideToContext(
                       context,
-                      mergeNewItemsImmediately: false,
-                      child: Provider<IHashtag>.value(
-                        value: hashtag,
-                        child: const HashtagPage(),
+                      child: StatusCachedPaginationListWithNewItemsBloc
+                          .provideToContext(
+                        context,
+                        mergeNewItemsImmediately: false,
+                        child: Provider<IHashtag>.value(
+                          value: hashtag,
+                          child: const HashtagPage(),
+                        ),
+                        mergeOwnStatusesImmediately: false,
                       ),
-                      mergeOwnStatusesImmediately: false,
                     ),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/announcement/pleroma_announcement_exception.dart';
 import 'package:fedi/pleroma/announcement/pleroma_announcement_model.dart';
 import 'package:fedi/pleroma/announcement/pleroma_announcement_service.dart';
@@ -10,7 +11,7 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaAnnouncementService implements IPleromaAnnouncementService {
+class PleromaAnnouncementService extends DisposableOwner implements IPleromaAnnouncementService {
   final announcementRelativeUrlPath = "/api/v1/announcements";
   @override
   final IPleromaRestService restService;
@@ -116,6 +117,6 @@ class PleromaAnnouncementService implements IPleromaAnnouncementService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

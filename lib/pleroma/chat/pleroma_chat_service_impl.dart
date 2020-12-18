@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_exception.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
@@ -10,7 +11,8 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaChatService implements IPleromaChatService {
+class PleromaChatService extends DisposableOwner
+    implements IPleromaChatService {
   final chatRelativeUrlPath = "/api/v1/pleroma/chats";
   @override
   final IPleromaAuthRestService restService;
@@ -134,7 +136,7 @@ class PleromaChatService implements IPleromaChatService {
     assert(accountId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath:
-        urlPath.join(chatRelativeUrlPath, "by-account-id", accountId)));
+            urlPath.join(chatRelativeUrlPath, "by-account-id", accountId)));
 
     return parseChatResponse(httpResponse);
   }
@@ -149,8 +151,9 @@ class PleromaChatService implements IPleromaChatService {
   }
 
   @override
-  Future<IPleromaChatMessage> sendMessage({@required String chatId,
-    @required IPleromaChatMessageSendData data}) async {
+  Future<IPleromaChatMessage> sendMessage(
+      {@required String chatId,
+      @required IPleromaChatMessageSendData data}) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath: urlPath.join(chatRelativeUrlPath, chatId, "messages"),
@@ -159,9 +162,8 @@ class PleromaChatService implements IPleromaChatService {
     return parseChatMessageResponse(httpResponse);
   }
 
-
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }

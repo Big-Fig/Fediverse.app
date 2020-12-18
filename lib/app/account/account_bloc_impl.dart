@@ -86,7 +86,7 @@ class AccountBloc extends IAccountBloc {
   }
 
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
-    if (!disposed) {
+    if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription:

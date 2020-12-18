@@ -48,7 +48,7 @@ abstract class IStatusRepository
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -62,6 +62,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   });
 
@@ -71,7 +72,7 @@ abstract class IStatusRepository
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -85,6 +86,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   });
 
@@ -94,7 +96,7 @@ abstract class IStatusRepository
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -106,6 +108,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   });
 
@@ -115,7 +118,7 @@ abstract class IStatusRepository
     @required IAccount onlyFromAccountsFollowingByAccount,
     @required IAccount onlyFromAccount,
     @required IConversationChat onlyInConversation,
-    @required StatusRepositoryOnlyLocalCondition onlyLocal,
+    @required StatusOnlyLocalCondition onlyLocalCondition,
     @required bool onlyWithMedia,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
@@ -127,6 +130,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required List<StatusTextCondition> excludeTextConditions,
     bool onlyNotDeleted = true,
   });
 

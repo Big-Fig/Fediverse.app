@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_exception.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
@@ -8,12 +9,12 @@ import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
-class PleromaPushService implements IPleromaPushService {
+class PleromaPushService extends DisposableOwner
+    implements IPleromaPushService {
   final subscriptionRelativeUrlPath = "api/v1/push/subscription";
   @override
   final IPleromaAuthRestService restService;
   final PleromaPushSubscriptionKeys keys;
-
 
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
@@ -39,10 +40,9 @@ class PleromaPushService implements IPleromaPushService {
 
   PleromaPushService({@required this.restService, @required this.keys});
 
-
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 
   PleromaPushSubscription parsePushSubscriptionResponse(Response httpResponse) {

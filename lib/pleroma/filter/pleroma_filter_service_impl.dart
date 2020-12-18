@@ -1,3 +1,4 @@
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_exception.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
@@ -10,7 +11,8 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaFilterService implements IPleromaFilterService {
+class PleromaFilterService extends DisposableOwner
+    implements IPleromaFilterService {
   final filterRelativeUrlPath = "/api/v1/filters";
   @override
   final IPleromaRestService restService;
@@ -133,6 +135,6 @@ class PleromaFilterService implements IPleromaFilterService {
 
   @override
   Future dispose() async {
-    // nothing
+    return await super.dispose();
   }
 }
