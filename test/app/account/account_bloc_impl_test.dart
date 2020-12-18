@@ -504,13 +504,25 @@ void main() {
     when(pleromaAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: true,
-    )).thenAnswer(
-        (_) async => account.pleromaRelationship.copyWith(muting: true));
+    )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
+          muting: true,
+          mutingNotifications: true,
+        ));
+
+    when(pleromaAccountServiceMock.muteAccount(
+      accountRemoteId: account.remoteId,
+      notifications: false,
+    )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
+          muting: true,
+          mutingNotifications: false,
+        ));
 
     when(pleromaAccountServiceMock.unMuteAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: false));
+
+    await accountBloc.mute(notifications: false);
 
     await accountBloc.unMute();
 
@@ -572,5 +584,4 @@ void main() {
 
     await subscription.cancel();
   });
-
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
@@ -8,6 +9,8 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_account_model.g.dart';
+
+Function eq = const ListEquality().equals;
 
 abstract class IPleromaAccount implements IMastodonAccount {
   @override
@@ -158,8 +161,8 @@ class PleromaAccount implements IPleromaAccount {
           header == other.header &&
           followingCount == other.followingCount &&
           followersCount == other.followersCount &&
-          fields == other.fields &&
-          emojis == other.emojis &&
+          eq(fields, other.fields) &&
+          eq(emojis, other.emojis) &&
           displayName == other.displayName &&
           createdAt == other.createdAt &&
           bot == other.bot &&
@@ -347,6 +350,45 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
         ' allowFollowingMove: $allowFollowingMove,'
         ' skipThreadContainment: $skipThreadContainment}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountPleromaPart &&
+          runtimeType == other.runtimeType &&
+          backgroundImage == other.backgroundImage &&
+          eq(tags, other.tags) &&
+          relationship == other.relationship &&
+          isAdmin == other.isAdmin &&
+          isModerator == other.isModerator &&
+          confirmationPending == other.confirmationPending &&
+          hideFavorites == other.hideFavorites &&
+          hideFollowers == other.hideFollowers &&
+          hideFollows == other.hideFollows &&
+          hideFollowersCount == other.hideFollowersCount &&
+          hideFollowsCount == other.hideFollowsCount &&
+          settingsStore == other.settingsStore &&
+          deactivated == other.deactivated &&
+          allowFollowingMove == other.allowFollowingMove &&
+          skipThreadContainment == other.skipThreadContainment;
+
+  @override
+  int get hashCode =>
+      backgroundImage.hashCode ^
+      tags.hashCode ^
+      relationship.hashCode ^
+      isAdmin.hashCode ^
+      isModerator.hashCode ^
+      confirmationPending.hashCode ^
+      hideFavorites.hashCode ^
+      hideFollowers.hashCode ^
+      hideFollows.hashCode ^
+      hideFollowersCount.hashCode ^
+      hideFollowsCount.hashCode ^
+      settingsStore.hashCode ^
+      deactivated.hashCode ^
+      allowFollowingMove.hashCode ^
+      skipThreadContainment.hashCode;
 }
 
 abstract class IPleromaAccountRelationship

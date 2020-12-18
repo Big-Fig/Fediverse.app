@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
@@ -23,6 +24,8 @@ import '../../pleroma/status/pleroma_status_emoji_reaction_service_mock.dart';
 import '../../pleroma/status/pleroma_status_service_mock.dart';
 import '../account/account_model_helper.dart';
 import 'status_model_helper.dart';
+
+Function eq = const ListEquality().equals;
 
 void main() {
   IStatus status;
@@ -1264,6 +1267,7 @@ void main() {
 
     await subscription.cancel();
   });
+
   test('requestToggleEmojiReaction', () async {
     var emoji1 = "emoji1";
     var emoji2 = "emoji2";
@@ -1282,7 +1286,15 @@ void main() {
     await _update(status);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(statusBloc.pleromaEmojiReactions, status.pleromaEmojiReactions);
+
+    expect(
+      statusBloc.pleromaEmojiReactions,
+      status.pleromaEmojiReactions,
+    );
+    expect(
+      eq(statusBloc.pleromaEmojiReactions, status.pleromaEmojiReactions),
+      true,
+    );
 
     when(pleromaStatusEmojiReactionServiceMock.addReaction(
             emoji: emoji1, statusRemoteId: status.remoteId))
