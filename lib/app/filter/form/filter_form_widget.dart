@@ -43,6 +43,7 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
         description: S.of(context).app_filter_edit_field_expiresIn_description,
         descriptionOnDisabled:
             S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+        negativeValue: S.of(context).app_filter_expired,
       ),
     );
   }
