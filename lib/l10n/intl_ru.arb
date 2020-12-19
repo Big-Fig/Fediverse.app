@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-19T13:41:08+00:00",
+    "@@last_modified": "2020-12-19T19:11:12+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -543,5 +543,7 @@
     "app_ui_fontSize_type_medium": "Обычный",
     "app_ui_fontSize_type_large": "Большой",
     "app_ui_fontSize_type_largest": "Наибольший",
-    "app_ui_statusFontSize": "Размер шрифта записей"
+    "app_ui_statusFontSize": "Размер шрифта записей",
+    "app_pagination_settings_title": "Постраничная загрузка",
+    "app_pagination_settings_pageSize_label": "Размер страниц"
 }

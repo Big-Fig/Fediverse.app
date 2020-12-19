@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-19T13:41:08+00:00",
+    "@@last_modified": "2020-12-19T19:11:12+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -543,5 +543,7 @@
     "app_ui_fontSize_type_medium": "Medium",
     "app_ui_fontSize_type_large": "Large",
     "app_ui_fontSize_type_largest": "Largest",
-    "app_ui_statusFontSize": "Status font size"
+    "app_ui_statusFontSize": "Status font size",
+    "app_pagination_settings_title": "Pagination",
+    "app_pagination_settings_pageSize_label": "Page size"
 }

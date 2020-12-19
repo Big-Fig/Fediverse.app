@@ -5281,6 +5281,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Pagination`
+  String get app_pagination_settings_title {
+    return Intl.message(
+      'Pagination',
+      name: 'app_pagination_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Page size`
+  String get app_pagination_settings_pageSize_label {
+    return Intl.message(
+      'Page size',
+      name: 'app_pagination_settings_pageSize_label',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -10,6 +10,7 @@ import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -103,5 +104,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(ChatSettingsAdapter());
     Hive.registerAdapter(RecentSelectAccountListAdapter());
     Hive.registerAdapter(AppAnalyticsDataAdapter());
+    Hive.registerAdapter(PaginationSettingsAdapter());
   }
 }
