@@ -378,6 +378,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: null,
       onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: true,
     );
 
     _logger.finest(() =>

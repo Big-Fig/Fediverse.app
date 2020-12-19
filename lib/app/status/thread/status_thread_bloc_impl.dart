@@ -119,6 +119,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
         offset: null,
         orderingTermData: null,
         onlyWithContextTypes: [MastodonFilterContextType.thread],
+        notExpired: true,
       );
 
       // update start status

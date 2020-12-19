@@ -35,6 +35,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
         orderByType: FilterOrderByType.remoteId,
       ),
       onlyWithContextTypes: null,
+      notExpired: false,
     );
   }
 

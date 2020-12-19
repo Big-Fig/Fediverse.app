@@ -60,6 +60,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   }) async {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -68,6 +69,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       offset: offset,
       orderingTermData: orderingTermData,
       onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: notExpired,
     );
 
     var typedResult = await query.get();
@@ -85,6 +87,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   }) {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -93,6 +96,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       offset: offset,
       orderingTermData: orderingTermData,
       onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: notExpired,
     );
 
     Stream<List<DbFilterPopulated>> stream =
@@ -107,6 +111,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t olderThanFilter=$olderThanFilter\n"
@@ -114,6 +119,7 @@ class FilterRepository extends AsyncInitLoadingBloc
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t onlyWithContextTypes=$onlyWithContextTypes\n"
+        "\t notExpired=$notExpired\n"
         "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
@@ -129,7 +135,11 @@ class FilterRepository extends AsyncInitLoadingBloc
     if (onlyWithContextTypes?.isNotEmpty == true) {
       dao.addContextTypesWhere(query, onlyWithContextTypes);
     }
-    
+
+    if (notExpired == true) {
+      dao.addNotExpiredWhere(query);
+    }
+
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
     }
@@ -248,6 +258,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   }) async {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -256,6 +267,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: orderingTermData,
       onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: notExpired,
     );
 
     return mapDataClassToItem(
@@ -268,6 +280,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   }) {
     var query = createQuery(
       olderThanFilter: olderThanFilter,
@@ -276,6 +289,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: orderingTermData,
       onlyWithContextTypes: onlyWithContextTypes,
+      notExpired: notExpired,
     );
 
     Stream<DbFilterPopulated> stream = query
