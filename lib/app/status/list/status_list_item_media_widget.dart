@@ -55,23 +55,24 @@ class StatusListItemMediaWidget extends StatelessWidget {
       statusSensitiveBloc: statusSensitiveBloc,
     );
     return StreamBuilder<bool>(
-        stream: statusBloc.deletedStream.distinct(),
-        builder: (context, snapshot) {
-          var deleted = snapshot.data ?? false;
+      stream: statusBloc.deletedStream.distinct(),
+      builder: (context, snapshot) {
+        var deleted = snapshot.data ?? false;
 
-          if (deleted == true) {
-            return Stack(
-              children: [
-                Positioned.fill(
-                  child: const StatusDeletedOverlayWidget(),
-                ),
-                body,
-              ],
-            );
-          } else {
-            return body;
-          }
-        });
+        if (deleted == true) {
+          return Stack(
+            children: [
+              body,
+              Positioned.fill(
+                child: const StatusDeletedOverlayWidget(),
+              ),
+            ],
+          );
+        } else {
+          return body;
+        }
+      },
+    );
   }
 
   Widget buildBody({
