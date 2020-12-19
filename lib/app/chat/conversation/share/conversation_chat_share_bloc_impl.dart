@@ -11,6 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -136,7 +137,11 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaConversations =
-        await pleromaConversationService.getConversations(limit: limit);
+        await pleromaConversationService.getConversations(
+      pagination: PleromaPaginationRequest(
+        limit: limit,
+      ),
+    );
 
     await conversationRepository
         .upsertRemoteConversations(pleromaConversations);

@@ -8,6 +8,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -41,10 +42,13 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     List<IPleromaAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAccountService.getAccountFollowings(
-        accountRemoteId: account.remoteId,
+      accountRemoteId: account.remoteId,
+      pagination: PleromaPaginationRequest(
         maxId: olderThan?.remoteId,
         sinceId: newerThan?.remoteId,
-        limit: limit);
+        limit: limit,
+      ),
+    );
 
     if (remoteAccounts != null) {
       await accountRepository.upsertRemoteAccounts(remoteAccounts,

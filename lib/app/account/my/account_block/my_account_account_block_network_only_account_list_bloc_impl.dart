@@ -9,6 +9,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     await accountRepository.upsertRemoteAccount(remoteAccount,
         conversationRemoteId: null, chatRemoteId: null);
   }
+
   @override
   Future addAccountBlock({@required IAccount account}) async {
     var accountRelationship = await pleromaAccountService.blockAccount(
@@ -57,9 +59,11 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     String maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getAccountBlocks(
-      sinceId: minId,
-      maxId: maxId,
-      limit: itemsCountPerPage,
+      pagination: PleromaPaginationRequest(
+        sinceId: minId,
+        maxId: maxId,
+        limit: itemsCountPerPage,
+      ),
     );
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,

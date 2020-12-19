@@ -39,10 +39,17 @@ class PleromaMediaAttachmentService extends DisposableOwner
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
-  Future<PleromaMediaAttachment> uploadMedia({@required File file}) async {
+  Future<PleromaMediaAttachment> uploadMedia({
+    @required File file,
+  }) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
-        UploadMultipartRestRequest.post(
-            relativePath: "/api/v1/media", files: {"file": file}));
+      UploadMultipartRestRequest.post(
+        relativePath: "/api/v1/media",
+        files: {
+          "file": file,
+        },
+      ),
+    );
 
     if (httpResponse.statusCode == 200) {
       return PleromaMediaAttachment.fromJsonString(httpResponse.body);

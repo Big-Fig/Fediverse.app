@@ -46,17 +46,25 @@ class PleromaPollService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaPoll> getPoll({@required String pollRemoteId}) async {
-    var request =
-        RestRequest.get(relativePath: join(pollRelativeUrlPath, pollRemoteId));
+  Future<IPleromaPoll> getPoll({
+    @required String pollRemoteId,
+  }) async {
+    var request = RestRequest.get(
+      relativePath: join(
+        pollRelativeUrlPath,
+        pollRemoteId,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePollResponse(httpResponse);
   }
 
   @override
-  Future<IPleromaPoll> vote(
-      {@required String pollRemoteId, @required List<int> voteIndexes}) async {
+  Future<IPleromaPoll> vote({
+    @required String pollRemoteId,
+    @required List<int> voteIndexes,
+  }) async {
     var request = RestRequest.post(
         relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
         bodyJson: {"choices": voteIndexes});
@@ -68,14 +76,18 @@ class PleromaPollService extends DisposableOwner
   PleromaPoll parsePollResponse(Response httpResponse) {
     RestResponse<PleromaPoll> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaPoll.fromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaPoll.fromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaPollException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

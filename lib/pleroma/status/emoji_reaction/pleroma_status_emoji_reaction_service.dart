@@ -8,15 +8,22 @@ abstract class IPleromaStatusEmojiReactionService implements IPleromaApi {
           {bool listen = true}) =>
       Provider.of<IPleromaStatusEmojiReactionService>(context, listen: listen);
 
-  Future<IPleromaStatus> addReaction(
-      {@required String statusRemoteId, @required String emoji});
+  Future<IPleromaStatus> addReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  });
 
-  Future<IPleromaStatus> removeReaction(
-      {@required String statusRemoteId, @required String emoji});
+  Future<IPleromaStatus> removeReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  });
 
-  Future<List<IPleromaStatusEmojiReaction>> getReactions(
-      {@required String statusRemoteId});
+  Future<List<IPleromaStatusEmojiReaction>> getReactions({
+    @required String statusRemoteId,
+  });
 
-  Future<IPleromaStatusEmojiReaction> getReaction(
-      {@required String statusRemoteId, @required String emoji});
+  Future<IPleromaStatusEmojiReaction> getReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  });
 }

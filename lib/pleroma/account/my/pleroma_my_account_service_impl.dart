@@ -6,6 +6,7 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
@@ -18,7 +19,8 @@ var urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger("pleroma_my_account_service_impl.dart");
 
-class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccountService {
+class PleromaMyAccountService extends DisposableOwner
+    implements IPleromaMyAccountService {
   final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
   @override
@@ -141,51 +143,42 @@ class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccou
 
   @override
   Future<List<IPleromaStatus>> getBookmarks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: urlPath.join("api/v1/bookmarks"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ]));
+        queryArgs: pagination?.toQueryArgs(),
+      ),
+    );
 
     return parseStatusListResponse(httpResponse);
   }
 
   @override
   Future<List<IPleromaStatus>> getFavourites({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: urlPath.join("api/v1/favourites"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ]));
+        queryArgs: pagination?.toQueryArgs(),
+      ),
+    );
 
     return parseStatusListResponse(httpResponse);
   }
 
   @override
   Future<List<IPleromaAccount>> getFollowRequests({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: urlPath.join("api/v1/follow_requests"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ]));
+        queryArgs: pagination?.toQueryArgs(),
+      ),
+    );
 
     return parseAccountListResponse(httpResponse);
   }
@@ -219,18 +212,12 @@ class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccou
 
   @override
   Future<List<String>> getDomainBlocks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join("api/v1/domain_blocks"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ],
+        queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
@@ -239,18 +226,12 @@ class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccou
 
   @override
   Future<List<IPleromaAccount>> getAccountBlocks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join("api/v1/blocks"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ],
+        queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
@@ -259,18 +240,12 @@ class PleromaMyAccountService extends DisposableOwner implements IPleromaMyAccou
 
   @override
   Future<List<IPleromaAccount>> getAccountMutes({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join("api/v1/mutes"),
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ],
+        queryArgs: pagination?.toQueryArgs(),
       ),
     );
 

@@ -3,6 +3,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_exception.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -43,35 +44,39 @@ class PleromaFilterService extends DisposableOwner
 
   IPleromaFilter parseFilterResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaFilter.fromJsonString(httpResponse.body);
+      return PleromaFilter.fromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaFilterException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   List<IPleromaFilter> parseFilterListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaFilter.listFromJsonString(httpResponse.body);
+      return PleromaFilter.listFromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaFilterException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   @override
   Future<List<IPleromaFilter>> getFilters({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join(filterRelativeUrlPath),
         queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
+          ...pagination?.toQueryArgs(),
         ],
       ),
     );
@@ -80,10 +85,15 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaFilter> getFilter({@required String filterRemoteId}) async {
+  Future<IPleromaFilter> getFilter({
+    @required String filterRemoteId,
+  }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(filterRelativeUrlPath, filterRemoteId),
+        relativePath: urlPath.join(
+          filterRelativeUrlPath,
+          filterRemoteId,
+        ),
       ),
     );
 
@@ -91,10 +101,15 @@ class PleromaFilterService extends DisposableOwner
   }
 
   @override
-  Future deleteFilter({@required String filterRemoteId}) async {
+  Future deleteFilter({
+    @required String filterRemoteId,
+  }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
-        relativePath: urlPath.join(filterRelativeUrlPath, filterRemoteId),
+        relativePath: urlPath.join(
+          filterRelativeUrlPath,
+          filterRemoteId,
+        ),
       ),
     );
   }
@@ -105,8 +120,12 @@ class PleromaFilterService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(filterRelativeUrlPath),
-        bodyJson: _mapFilterToFromBody(postPleromaFilter),
+        relativePath: urlPath.join(
+          filterRelativeUrlPath,
+        ),
+        bodyJson: _mapFilterToFromBody(
+          postPleromaFilter,
+        ),
       ),
     );
 
@@ -120,8 +139,13 @@ class PleromaFilterService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
-        relativePath: urlPath.join(filterRelativeUrlPath, filterRemoteId),
-        bodyJson: _mapFilterToFromBody(postPleromaFilter),
+        relativePath: urlPath.join(
+          filterRelativeUrlPath,
+          filterRemoteId,
+        ),
+        bodyJson: _mapFilterToFromBody(
+          postPleromaFilter,
+        ),
       ),
     );
 
@@ -129,12 +153,6 @@ class PleromaFilterService extends DisposableOwner
   }
 
   Map<String, dynamic> _mapFilterToFromBody(
-      IPostPleromaFilter postPleromaFilter) {
-    return postPleromaFilter.toJson();
-  }
-
-  @override
-  Future dispose() async {
-    return await super.dispose();
-  }
+          IPostPleromaFilter postPleromaFilter) =>
+      postPleromaFilter.toJson();
 }

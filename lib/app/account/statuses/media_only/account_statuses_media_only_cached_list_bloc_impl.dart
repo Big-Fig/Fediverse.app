@@ -10,6 +10,7 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -134,11 +135,14 @@ class AccountStatusesMediaOnlyCachedListBloc
         "\t olderThan=$olderThan");
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-        onlyWithMedia: true,
-        accountRemoteId: account.remoteId,
-        limit: limit,
+      onlyWithMedia: true,
+      accountRemoteId: account.remoteId,
+      pagination: PleromaPaginationRequest(
         sinceId: newerThan?.remoteId,
-        maxId: olderThan?.remoteId);
+        maxId: olderThan?.remoteId,
+        limit: limit,
+      ),
+    );
 
     if (remoteStatuses != null) {
       await statusRepository.upsertRemoteStatuses(remoteStatuses,

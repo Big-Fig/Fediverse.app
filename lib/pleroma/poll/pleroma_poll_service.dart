@@ -7,8 +7,12 @@ abstract class IPleromaPollService implements IPleromaApi {
   static IPleromaPollService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaPollService>(context, listen: listen);
 
-  Future<IPleromaPoll> getPoll({@required String pollRemoteId});
+  Future<IPleromaPoll> getPoll({
+    @required String pollRemoteId,
+  });
 
-  Future<IPleromaPoll> vote(
-      {@required String pollRemoteId, @required List<int> voteIndexes});
+  Future<IPleromaPoll> vote({
+    @required String pollRemoteId,
+    @required List<int> voteIndexes,
+  });
 }

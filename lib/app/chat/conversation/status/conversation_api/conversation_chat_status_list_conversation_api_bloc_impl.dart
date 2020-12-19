@@ -4,6 +4,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -36,10 +37,13 @@ class ConversationChatStatusListConversationApiBloc
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(
-            conversationRemoteId: conversation.remoteId,
-            maxId: olderThan?.remoteId,
-            sinceId: newerThan?.remoteId,
-            limit: limit);
+      conversationRemoteId: conversation.remoteId,
+      pagination: PleromaPaginationRequest(
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId,
+      ),
+    );
 
     if (remoteStatuses != null) {
       await statusRepository.upsertRemoteStatuses(remoteStatuses,

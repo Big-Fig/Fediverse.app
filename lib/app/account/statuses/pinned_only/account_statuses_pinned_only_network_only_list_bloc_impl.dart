@@ -7,6 +7,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
@@ -56,11 +57,14 @@ class AccountStatusesPinnedOnlyNetworkOnlyListBloc
     String maxId,
   }) async {
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-        pinned: true,
-        accountRemoteId: account.remoteId,
+      pinned: true,
+      accountRemoteId: account.remoteId,
+      pagination: PleromaPaginationRequest(
         limit: itemsCountPerPage,
         sinceId: minId,
-        maxId: maxId);
+        maxId: maxId,
+      ),
+    );
     return remoteStatuses
         ?.map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus))
         ?.toList();

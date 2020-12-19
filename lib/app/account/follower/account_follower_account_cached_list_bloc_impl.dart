@@ -8,6 +8,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -38,27 +39,30 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-      List<IPleromaAccount> remoteAccounts;
+    List<IPleromaAccount> remoteAccounts;
 
-      remoteAccounts = await pleromaAccountService.getAccountFollowers(
-          accountRemoteId: account.remoteId,
-          maxId: olderThan?.remoteId,
-          sinceId: newerThan?.remoteId,
-          limit: limit);
+    remoteAccounts = await pleromaAccountService.getAccountFollowers(
+      accountRemoteId: account.remoteId,
+      pagination: PleromaPaginationRequest(
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit,
+      ),
+    );
 
-      if (remoteAccounts != null) {
-        await accountRepository.upsertRemoteAccounts(remoteAccounts,
-            conversationRemoteId: null, chatRemoteId: null);
+    if (remoteAccounts != null) {
+      await accountRepository.upsertRemoteAccounts(remoteAccounts,
+          conversationRemoteId: null, chatRemoteId: null);
 
-        await accountRepository.addAccountFollowers(
-            account.remoteId, remoteAccounts);
+      await accountRepository.addAccountFollowers(
+          account.remoteId, remoteAccounts);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "accounts is null");
-        return false;
-      }
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "accounts is null");
+      return false;
+    }
   }
 
   @override

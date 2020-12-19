@@ -1,5 +1,6 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_exception.dart';
@@ -41,42 +42,43 @@ class PleromaScheduledStatusService extends DisposableOwner
   PleromaScheduledStatusService({@required this.restService});
 
   @override
-  Future dispose() async {
-    return await super.dispose();
-  }
-
-  @override
-  Future<IPleromaScheduledStatus> getScheduledStatus(
-      {@required String scheduledStatusRemoteId}) async {
+  Future<IPleromaScheduledStatus> getScheduledStatus({
+    @required String scheduledStatusRemoteId,
+  }) async {
     var request = RestRequest.get(
-        relativePath:
-            join(scheduledStatusesRelativeUrlPath, scheduledStatusRemoteId));
+      relativePath: join(
+        scheduledStatusesRelativeUrlPath,
+        scheduledStatusRemoteId,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseScheduledStatusResponse(httpResponse);
   }
 
   @override
-  Future<bool> cancelScheduledStatus(
-      {@required String scheduledStatusRemoteId}) async {
+  Future<bool> cancelScheduledStatus({
+    @required String scheduledStatusRemoteId,
+  }) async {
     var request = RestRequest.delete(
-        relativePath:
-            join(scheduledStatusesRelativeUrlPath, scheduledStatusRemoteId));
+      relativePath: join(
+        scheduledStatusesRelativeUrlPath,
+        scheduledStatusRemoteId,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return httpResponse.statusCode == 200;
   }
 
   @override
-  Future<List<IPleromaScheduledStatus>> getScheduledStatuses(
-      {String sinceId, String maxId, int limit = 20}) async {
+  Future<List<IPleromaScheduledStatus>> getScheduledStatuses({
+    IPleromaPaginationRequest pagination,
+  }) async {
     var request = RestRequest.get(
-        relativePath: scheduledStatusesRelativeUrlPath,
-        queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
-        ]);
+      relativePath: scheduledStatusesRelativeUrlPath,
+      queryArgs: pagination?.toQueryArgs(),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseScheduledStatusesResponse(httpResponse);
@@ -87,9 +89,14 @@ class PleromaScheduledStatusService extends DisposableOwner
       {@required String scheduledStatusRemoteId,
       @required DateTime scheduledAt}) async {
     var request = RestRequest.put(
-        relativePath:
-            join(scheduledStatusesRelativeUrlPath, scheduledStatusRemoteId),
-        bodyJson: {"scheduled_at": scheduledAt});
+      relativePath: join(
+        scheduledStatusesRelativeUrlPath,
+        scheduledStatusRemoteId,
+      ),
+      bodyJson: {
+        "scheduled_at": scheduledAt,
+      },
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseScheduledStatusResponse(httpResponse);
@@ -99,15 +106,18 @@ class PleromaScheduledStatusService extends DisposableOwner
     RestResponse<PleromaScheduledStatus> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaScheduledStatus.fromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaScheduledStatus.fromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaScheduledStatusException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -116,15 +126,18 @@ class PleromaScheduledStatusService extends DisposableOwner
     RestResponse<List<PleromaScheduledStatus>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaScheduledStatus.listFromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaScheduledStatus.listFromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaScheduledStatusException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

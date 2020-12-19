@@ -6,37 +6,6 @@ part of 'pleroma_search_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaSearchRequest _$PleromaSearchRequestFromJson(Map<String, dynamic> json) {
-  return PleromaSearchRequest(
-    accountId: json['accountId'] as String,
-    excludeUnreviewed: json['exclude_unreviewed'] as bool,
-    following: json['following'] as bool,
-    limit: json['limit'] as int,
-    maxId: json['max_id'] as String,
-    minId: json['min_id'] as String,
-    offset: json['offset'] as int,
-    query: json['q'] as String,
-    resolve: json['resolve'] as bool,
-    type: const MastodonSearchRequestTypeConverter()
-        .fromJson(json['type'] as String),
-  );
-}
-
-Map<String, dynamic> _$PleromaSearchRequestToJson(
-        PleromaSearchRequest instance) =>
-    <String, dynamic>{
-      'accountId': instance.accountId,
-      'exclude_unreviewed': instance.excludeUnreviewed,
-      'following': instance.following,
-      'limit': instance.limit,
-      'max_id': instance.maxId,
-      'min_id': instance.minId,
-      'offset': instance.offset,
-      'q': instance.query,
-      'resolve': instance.resolve,
-      'type': const MastodonSearchRequestTypeConverter().toJson(instance.type),
-    };
-
 PleromaSearchResult _$PleromaSearchResultFromJson(Map<String, dynamic> json) {
   return PleromaSearchResult(
     accounts: (json['accounts'] as List)

@@ -1,12 +1,13 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/list/cached/pleroma_chat_message_cached_list_bloc.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -38,10 +39,13 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         "\t olderThan = $olderThan");
 
     var remoteMessages = await pleromaChatService.getChatMessages(
-        chatId: chat.remoteId,
+      chatId: chat.remoteId,
+      pagination: PleromaPaginationRequest(
         maxId: olderThan?.remoteId,
         sinceId: newerThan?.remoteId,
-        limit: limit);
+        limit: limit,
+      ),
+    );
 
     if (remoteMessages != null) {
       await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
@@ -79,7 +83,8 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }
 
   @override
-  Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(IPleromaChatMessage item) {
+  Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
+      IPleromaChatMessage item) {
     return chatMessageRepository.watchChatMessages(
         onlyInChats: [chat],
         limit: null,
@@ -91,7 +96,8 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         newerThanChatMessage: item);
   }
 
-  static PleromaChatMessageCachedListBloc createFromContext(BuildContext context,
+  static PleromaChatMessageCachedListBloc createFromContext(
+          BuildContext context,
           {@required IPleromaChat chat}) =>
       PleromaChatMessageCachedListBloc(
           chat: chat,
@@ -105,8 +111,9 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     @required Widget child,
   }) {
     return DisposableProvider<IPleromaChatMessageCachedListBloc>(
-      create: (context) =>
-          PleromaChatMessageCachedListBloc.createFromContext(context, chat: chat),
+      create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
+          context,
+          chat: chat),
       child: child,
     );
   }

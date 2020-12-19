@@ -12,6 +12,7 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -114,7 +115,9 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaChats = await pleromaChatService.getChats(
-      limit: limit,
+      pagination: PleromaPaginationRequest(
+        limit: limit,
+      ),
     );
 
     await chatRepository.upsertRemoteChats(pleromaChats);

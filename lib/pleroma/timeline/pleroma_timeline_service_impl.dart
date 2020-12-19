@@ -1,5 +1,6 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_exception.dart';
@@ -47,10 +48,7 @@ class PleromaTimelineService extends DisposableOwner
   @override
   Future<List<IPleromaStatus>> getHashtagTimeline({
     @required String hashtag,
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -61,10 +59,7 @@ class PleromaTimelineService extends DisposableOwner
     assert(hashtag != null);
     return getTimeline(
       relativeTimeLineUrlPath: "tag/$hashtag",
-      maxId: maxId,
-      sinceId: sinceId,
-      minId: minId,
-      limit: limit,
+      pagination: pagination,
       onlyWithMedia: onlyWithMedia,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
@@ -75,10 +70,7 @@ class PleromaTimelineService extends DisposableOwner
 
   @override
   Future<List<IPleromaStatus>> getHomeTimeline({
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
@@ -88,10 +80,7 @@ class PleromaTimelineService extends DisposableOwner
   }) {
     return getTimeline(
       relativeTimeLineUrlPath: "home",
-      maxId: maxId,
-      sinceId: sinceId,
-      minId: minId,
-      limit: limit,
+      pagination: pagination,
       onlyWithMedia: false,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
@@ -103,11 +92,8 @@ class PleromaTimelineService extends DisposableOwner
   @override
   Future<List<IPleromaStatus>> getListTimeline({
     @required String listId,
-    String maxId,
-    String sinceId,
-    String minId,
+    IPleromaPaginationRequest pagination,
     bool onlyLocal = false,
-    int limit = 20,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
@@ -116,10 +102,7 @@ class PleromaTimelineService extends DisposableOwner
     assert(listId != null);
     return getTimeline(
       relativeTimeLineUrlPath: "list/$listId",
-      maxId: maxId,
-      sinceId: sinceId,
-      minId: minId,
-      limit: limit,
+      pagination: pagination,
       onlyWithMedia: null,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
@@ -130,10 +113,7 @@ class PleromaTimelineService extends DisposableOwner
 
   @override
   Future<List<IPleromaStatus>> getPublicTimeline({
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -144,10 +124,7 @@ class PleromaTimelineService extends DisposableOwner
   }) {
     return getTimeline(
       relativeTimeLineUrlPath: "public",
-      maxId: maxId,
-      sinceId: sinceId,
-      minId: minId,
-      limit: limit,
+      pagination: pagination,
       onlyWithMedia: onlyWithMedia,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
@@ -158,10 +135,7 @@ class PleromaTimelineService extends DisposableOwner
 
   Future<List<IPleromaStatus>> getTimeline({
     @required String relativeTimeLineUrlPath,
-    @required String maxId,
-    @required String sinceId,
-    @required String minId,
-    @required int limit,
+    @required IPleromaPaginationRequest pagination,
     @required bool onlyWithMedia,
     @required bool onlyLocal,
     @required bool withMuted,
@@ -169,26 +143,24 @@ class PleromaTimelineService extends DisposableOwner
     @required PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   }) async {
     var request = RestRequest.get(
-        relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
-        queryArgs: [
-          RestRequestQueryArg("min_id", minId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("limit", limit.toString()),
-          RestRequestQueryArg("local", onlyLocal.toString()),
-          if (onlyWithMedia != null)
-            RestRequestQueryArg("only_media", onlyWithMedia.toString()),
-          RestRequestQueryArg("with_muted", withMuted.toString()),
-          if (pleromaReplyVisibilityFilter != null)
-            RestRequestQueryArg(
-                "reply_visibility", pleromaReplyVisibilityFilter.toJsonValue()),
-          // array
-          ...(excludeVisibilities?.map((visibility) {
-                return RestRequestQueryArg(
-                    "exclude_visibilities[]", visibility.toJsonValue());
-              }) ??
-              [])
-        ]);
+      relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
+      queryArgs: [
+        ...pagination?.toQueryArgs(),
+        RestRequestQueryArg("local", onlyLocal.toString()),
+        if (onlyWithMedia != null)
+          RestRequestQueryArg("only_media", onlyWithMedia.toString()),
+        RestRequestQueryArg("with_muted", withMuted.toString()),
+        if (pleromaReplyVisibilityFilter != null)
+          RestRequestQueryArg(
+              "reply_visibility", pleromaReplyVisibilityFilter.toJsonValue()),
+        // array
+        ...(excludeVisibilities?.map((visibility) {
+              return RestRequestQueryArg(
+                  "exclude_visibilities[]", visibility.toJsonValue());
+            }) ??
+            [])
+      ],
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     RestResponse<List<IPleromaStatus>> restResponse = RestResponse.fromResponse(
@@ -203,10 +175,5 @@ class PleromaTimelineService extends DisposableOwner
       throw PleromaTimelineException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
-  }
-
-  @override
-  Future dispose() async {
-    return await super.dispose();
   }
 }

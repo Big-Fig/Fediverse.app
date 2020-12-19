@@ -5,6 +5,7 @@ import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -46,9 +47,11 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
       @required IFilter olderThan}) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteFilters = await pleromaFilterService.getFilters(
-      maxId: olderThan?.remoteId,
-      sinceId: newerThan?.remoteId,
-      limit: limit,
+      pagination: PleromaPaginationRequest(
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit,
+      ),
     );
 
     if (remoteFilters != null) {

@@ -8,10 +8,10 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
-import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -79,15 +79,17 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       @required INotification olderThan}) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
-        request: MastodonNotificationsRequest(
-            excludeTypes: excludeTypes
-                ?.map(
-                  (type) => type.toJsonValue(),
-                )
-                ?.toList(),
-            maxId: olderThan?.remoteId,
-            sinceId: newerThan?.remoteId,
-            limit: limit));
+      pagination: PleromaPaginationRequest(
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId,
+      ),
+      excludeTypes: excludeTypes
+          ?.map(
+            (type) => type.toJsonValue(),
+          )
+          ?.toList(),
+    );
 
     if (remoteNotifications != null) {
       await notificationRepository

@@ -1,9 +1,9 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_exception.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
@@ -47,20 +47,54 @@ class PleromaNotificationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaNotification> getNotification(
-      {@required String notificationRemoteId}) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-        relativePath: join(notificationRelativeUrlPath, notificationRemoteId)));
+  Future<IPleromaNotification> getNotification({
+    @required String notificationRemoteId,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: join(
+          notificationRelativeUrlPath,
+          notificationRemoteId,
+        ),
+      ),
+    );
 
     return parseNotificationResponse(httpResponse);
   }
 
+  static const validTypes = {"follow", "favourite", "reblog", "mention"};
+
+  // only default set of types (follow, favourite, reblog, mention, poll)
+  // supported on all instances
+  List<String> _removeInvalidExcludeTypes(List<String> excludeTypes) {
+    return excludeTypes
+        .where((type) => validTypes.contains(type.toLowerCase()))
+        .toList();
+  }
+
   @override
-  Future<List<IPleromaNotification>> getNotifications(
-      {@required MastodonNotificationsRequest request}) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+  Future<List<IPleromaNotification>> getNotifications({
+    IPleromaPaginationRequest pagination,
+    List<String> excludeTypes,
+  }) async {
+    excludeTypes = excludeTypes?.isNotEmpty == true
+        ? _removeInvalidExcludeTypes(excludeTypes)
+        : null;
+
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: notificationRelativeUrlPath,
-        queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
+        queryArgs: [
+          ...pagination?.toQueryArgs(),
+          ...excludeTypes?.map(
+            (excludeType) => RestRequestQueryArg(
+              "exclude_types[]",
+              excludeType,
+            ),
+          ),
+        ],
+      ),
+    );
 
     return parseNotificationListResponse(httpResponse);
   }
@@ -83,39 +117,52 @@ class PleromaNotificationService extends DisposableOwner
       return restResponse.body;
     } else {
       throw PleromaNotificationException(
-          statusCode: httpResponse.statusCode, body: body);
+        statusCode: httpResponse.statusCode,
+        body: body,
+      );
     }
   }
 
   List<PleromaNotification> parseNotificationListResponse(
-      Response httpResponse) {
+    Response httpResponse,
+  ) {
     RestResponse<List<PleromaNotification>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaNotification.listFromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaNotification.listFromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaNotificationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   @override
-  Future dismissNotification({@required String notificationRemoteId}) async {
+  Future dismissNotification({
+    @required String notificationRemoteId,
+  }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            join(notificationRelativeUrlPath, notificationRemoteId, "dismiss"),
+        relativePath: join(
+          notificationRelativeUrlPath,
+          notificationRemoteId,
+          "dismiss",
+        ),
       ),
     );
 
     if (httpResponse.statusCode != 200) {
       throw PleromaNotificationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -123,13 +170,18 @@ class PleromaNotificationService extends DisposableOwner
   Future dismissAll() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: join(notificationRelativeUrlPath, "clear"),
+        relativePath: join(
+          notificationRelativeUrlPath,
+          "clear",
+        ),
       ),
     );
 
     if (httpResponse.statusCode != 200) {
       throw PleromaNotificationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

@@ -37,6 +37,7 @@ class PleromaStatusContext implements IPleromaStatusContext {
 
   @override
   String toString() {
-    return 'PleromaStatusContext{descendants: $descendants, ancestors: $ancestors}';
+    return 'PleromaStatusContext{descendants: $descendants,'
+        ' ancestors: $ancestors}';
   }
 }

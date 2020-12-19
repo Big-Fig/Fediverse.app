@@ -13,6 +13,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -130,10 +131,13 @@ class SelectAccountListBloc extends DisposableOwner
   }) async {
     // my account followings by default
     return await pleromaAccountService.getAccountFollowings(
-        maxId: olderThan?.remoteId,
+      pagination: PleromaPaginationRequest(
         sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId,
         limit: limit,
-        accountRemoteId: myAccountBloc.account.remoteId);
+      ),
+      accountRemoteId: myAccountBloc.account.remoteId,
+    );
   }
 
   @override

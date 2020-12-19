@@ -10,5 +10,7 @@ abstract class IPleromaMediaAttachmentService implements IPleromaApi {
           {bool listen = true}) =>
       Provider.of<IPleromaMediaAttachmentService>(context, listen: listen);
 
-  Future<IPleromaMediaAttachment> uploadMedia({@required File file});
+  Future<IPleromaMediaAttachment> uploadMedia({
+    @required File file,
+  });
 }

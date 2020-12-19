@@ -1,5 +1,6 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -8,18 +9,12 @@ abstract class IPleromaChatService implements IPleromaApi {
       Provider.of<IPleromaChatService>(context, listen: listen);
 
   Future<List<IPleromaChat>> getChats({
-    String sinceId,
-    String minId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaChatMessage>> getChatMessages({
     @required String chatId,
-    String sinceId,
-    String minId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<IPleromaChat> markChatAsRead({
@@ -27,7 +22,9 @@ abstract class IPleromaChatService implements IPleromaApi {
     @required String lastReadChatMessageId,
   });
 
-  Future<IPleromaChat> getChat({@required String id});
+  Future<IPleromaChat> getChat({
+    @required String id,
+  });
 
   Future<IPleromaChat> getOrCreateChatByAccountId({
     @required String accountId,

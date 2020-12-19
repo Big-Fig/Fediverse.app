@@ -1,5 +1,7 @@
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/mastodon/search/mastodon_search_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/search/pleroma_search_exception.dart';
 import 'package:fedi/pleroma/search/pleroma_search_model.dart';
@@ -37,20 +39,59 @@ class PleromaSearchService extends DisposableOwner
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
-  Future dispose() async {
-    return await super.dispose();
-  }
-
-  @override
-  Future<IPleromaSearchResult> search(
-      {@required IPleromaSearchRequest request}) async {
-    if (request.limit != null) {
-      assert(request.limit <= 40, "Server-side limit");
+  Future<IPleromaSearchResult> search({
+    @required String query,
+    String accountId,
+    bool excludeUnreviewed,
+    bool following,
+    bool resolve,
+    int offset,
+    MastodonSearchRequestType type,
+    IPleromaPaginationRequest pagination,
+  }) async {
+    if (pagination?.limit != null) {
+      assert(pagination.limit <= 40, "Server-side limit");
     }
 
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: "/api/v2/search",
-        queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
+        queryArgs: [
+          RestRequestQueryArg("q", query),
+          if (type != null)
+            RestRequestQueryArg(
+              "type",
+              mastodonSearchRequestTypeTypeValues.enumToValueMap[type],
+            ),
+          if (accountId != null)
+            RestRequestQueryArg(
+              "account_id",
+              accountId,
+            ),
+          if (excludeUnreviewed != null)
+            RestRequestQueryArg(
+              "exclude_unreviewed",
+              excludeUnreviewed.toString(),
+            ),
+          if (following != null)
+            RestRequestQueryArg(
+              "following",
+              following.toString(),
+            ),
+          if (resolve != null)
+            RestRequestQueryArg(
+              "resolve",
+              resolve.toString(),
+            ),
+          if (accountId != null)
+            RestRequestQueryArg(
+              "account_id",
+              accountId,
+            ),
+          ...pagination?.toQueryArgs(),
+        ],
+      ),
+    );
 
     if (httpResponse.statusCode == 200) {
       return PleromaSearchResult.fromJsonString(httpResponse.body);

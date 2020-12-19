@@ -202,10 +202,21 @@ class RestRequestQueryArg {
       if (value != null) {
         if (value is Iterable) {
           var iterable = value;
-          queryArgs.addAll(iterable
-              .map((item) => RestRequestQueryArg(entry.key, item.toString())));
+          queryArgs.addAll(
+            iterable.map(
+              (item) => RestRequestQueryArg(
+                entry.key,
+                item.toString(),
+              ),
+            ),
+          );
         } else {
-          queryArgs.add(RestRequestQueryArg(entry.key, entry.value.toString()));
+          queryArgs.add(
+            RestRequestQueryArg(
+              entry.key,
+              entry.value.toString(),
+            ),
+          );
         }
       }
     });

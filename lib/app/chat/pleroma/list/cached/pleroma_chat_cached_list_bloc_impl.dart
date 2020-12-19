@@ -1,10 +1,11 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/list/cached/pleroma_chat_cached_list_bloc.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_chat;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -33,7 +34,12 @@ class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
     List<pleroma_chat.IPleromaChat> remoteChats;
 
     remoteChats = await pleromaChatService.getChats(
-        maxId: olderThan?.remoteId, sinceId: newerThan?.remoteId, limit: limit);
+      pagination: PleromaPaginationRequest(
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit,
+      ),
+    );
 
     if (remoteChats != null) {
       await chatRepository.upsertRemoteChats(remoteChats);
