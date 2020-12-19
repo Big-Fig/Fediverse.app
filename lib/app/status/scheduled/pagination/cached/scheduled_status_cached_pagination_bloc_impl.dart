@@ -1,4 +1,5 @@
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/pagination/cached/scheduled_status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
@@ -15,23 +16,25 @@ class ScheduledStatusCachedPaginationBloc
     implements IScheduledStatusCachedPaginationBloc {
   final IScheduledStatusCachedListBloc scheduledStatusListService;
 
-  ScheduledStatusCachedPaginationBloc(
-      {@required this.scheduledStatusListService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  ScheduledStatusCachedPaginationBloc({
+    @required this.scheduledStatusListService,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => scheduledStatusListService.pleromaApi;
 
   @override
-  Future<List<IScheduledStatus>> loadLocalItems(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required CachedPaginationPage<IScheduledStatus> olderPage,
-          @required CachedPaginationPage<IScheduledStatus> newerPage}) =>
+  Future<List<IScheduledStatus>> loadLocalItems({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required CachedPaginationPage<IScheduledStatus> olderPage,
+    @required CachedPaginationPage<IScheduledStatus> newerPage,
+  }) =>
       scheduledStatusListService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -39,11 +42,12 @@ class ScheduledStatusCachedPaginationBloc
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required CachedPaginationPage<IScheduledStatus> olderPage,
-      @required CachedPaginationPage<IScheduledStatus> newerPage}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required CachedPaginationPage<IScheduledStatus> olderPage,
+    @required CachedPaginationPage<IScheduledStatus> newerPage,
+  }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -55,15 +59,18 @@ class ScheduledStatusCachedPaginationBloc
   }
 
   static ScheduledStatusCachedPaginationBloc createFromContext(
-          BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       ScheduledStatusCachedPaginationBloc(
-          scheduledStatusListService:
-              Provider.of<IScheduledStatusCachedListBloc>(context,
-                  listen: false),
-          itemsCountPerPage: itemsCountPerPage,
-          maximumCachedPagesCount: maximumCachedPagesCount);
+        scheduledStatusListService:
+            Provider.of<IScheduledStatusCachedListBloc>(context, listen: false),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      );
 
   static Widget provideToContext(BuildContext context,
       {int itemsCountPerPage = 20,
@@ -75,7 +82,6 @@ class ScheduledStatusCachedPaginationBloc
       create: (context) =>
           ScheduledStatusCachedPaginationBloc.createFromContext(
         context,
-        itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<

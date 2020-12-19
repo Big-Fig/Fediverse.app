@@ -134,7 +134,7 @@ class PleromaAccountService extends DisposableOwner
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "following"),
         queryArgs: [
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []),
         ],
       ),
     );
@@ -286,7 +286,9 @@ class PleromaAccountService extends DisposableOwner
       RestRequest.get(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "followers"),
-        queryArgs: [...pagination?.toQueryArgs()],
+        queryArgs: [
+          ...(pagination?.toQueryArgs() ?? []),
+        ],
       ),
     );
 
@@ -338,7 +340,7 @@ class PleromaAccountService extends DisposableOwner
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "statuses"),
         queryArgs: [
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []),
           RestRequestQueryArg("pinned", pinned?.toString()),
           RestRequestQueryArg("exclude_replies", excludeReplies?.toString()),
           RestRequestQueryArg("exclude_reblogs", excludeReblogs?.toString()),
@@ -368,7 +370,7 @@ class PleromaAccountService extends DisposableOwner
       RestRequest.get(
         relativePath: urlPath.join(accountRelativeUrlPath, "search"),
         queryArgs: [
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []),
           RestRequestQueryArg("q", query),
           if (resolve != null)
             RestRequestQueryArg("resolve", resolve?.toString()),

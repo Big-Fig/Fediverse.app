@@ -88,7 +88,7 @@ class PleromaSearchService extends DisposableOwner
               "account_id",
               accountId,
             ),
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []) ,
         ],
       ),
     );

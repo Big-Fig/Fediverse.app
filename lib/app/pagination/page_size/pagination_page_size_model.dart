@@ -22,6 +22,30 @@ extension PaginationPageSizeExtension on PaginationPageSize {
     assert(type != null, "invalid type $this");
     return type;
   }
+
+  int toCount() {
+    int count;
+
+    switch (this) {
+      case PaginationPageSize.size5:
+        count = 5;
+        break;
+      case PaginationPageSize.size10:
+        count = 10;
+        break;
+      case PaginationPageSize.size20:
+        count = 20;
+        break;
+      case PaginationPageSize.size50:
+        count = 50;
+        break;
+      case PaginationPageSize.size100:
+        count = 100;
+        break;
+    }
+
+    return count;
+  }
 }
 
 extension PaginationPageSizeStringExtension on String {

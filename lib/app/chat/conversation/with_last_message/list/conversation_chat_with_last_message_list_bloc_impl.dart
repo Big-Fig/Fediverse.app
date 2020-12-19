@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_c
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -42,9 +43,12 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   final IConversationChatWithLastMessageRepository
       conversationChatWithLastMessageRepository;
 
+  final IPaginationSettingsBloc paginationSettingsBloc;
+
   ConversationChatWithLastMessageListBloc({
     @required IPleromaConversationService conversationService,
     @required this.conversationRepository,
+    @required this.paginationSettingsBloc,
     @required this.conversationChatWithLastMessageRepository,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
@@ -54,11 +58,14 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
         chatWithLastMessageRepository:
             conversationChatWithLastMessageRepository,
         conversationRepository: conversationRepository);
-    addDisposable(disposable: chatListBloc);
+    addDisposable(
+      disposable: chatListBloc,
+    );
     chatPaginationBloc = ConversationChatWithLastMessagePaginationBloc(
-        itemsCountPerPage: 20,
-        listService: chatListBloc,
-        maximumCachedPagesCount: null);
+      paginationSettingsBloc: paginationSettingsBloc,
+      listService: chatListBloc,
+      maximumCachedPagesCount: null,
+    );
     addDisposable(disposable: chatListBloc);
     chatPaginationListWithNewItemsBloc =
         ConversationChatWithLastMessagePaginationListWithNewItemsBloc(
@@ -89,7 +96,13 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           listen: false,
         ),
         conversationChatWithLastMessageRepository:
-            IConversationChatWithLastMessageRepository.of(context,
-                listen: false),
+            IConversationChatWithLastMessageRepository.of(
+          context,
+          listen: false,
+        ),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
       );
 }

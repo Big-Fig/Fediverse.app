@@ -1,4 +1,5 @@
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -14,26 +15,32 @@ class SearchResultItemNetworkOnlyPaginationBloc
     implements ISearchResultItemNetworkOnlyPaginationBloc {
   final ISearchResultItemNetworkOnlyListBloc listBloc;
 
-  SearchResultItemNetworkOnlyPaginationBloc(
-      {@required this.listBloc,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  SearchResultItemNetworkOnlyPaginationBloc({
+    @required this.listBloc,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => listBloc.pleromaApi;
 
   static SearchResultItemNetworkOnlyPaginationBloc createFromContext(
           BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+          {int maximumCachedPagesCount}) =>
       SearchResultItemNetworkOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listBloc: ISearchResultItemNetworkOnlyListBloc.of(context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listBloc: ISearchResultItemNetworkOnlyListBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(BuildContext context,
       {@required Widget child}) {

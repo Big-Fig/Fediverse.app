@@ -1,3 +1,4 @@
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/local_only/local_only_pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -9,11 +10,13 @@ var _logger = Logger("local_only_pagination_bloc_impl.dart");
 abstract class LocalOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
     implements ILocalOnlyPaginationBloc<TPage, TItem> {
-  LocalOnlyPaginationBloc(
-      {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  LocalOnlyPaginationBloc({
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   Future<TPage> loadPage({

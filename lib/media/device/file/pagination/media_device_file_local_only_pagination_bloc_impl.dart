@@ -1,4 +1,5 @@
 import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
@@ -17,11 +18,11 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
 
   MediaDeviceFileLocalOnlyPaginationBloc({
     @required this.listBloc,
-    @required int itemsCountPerPage,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
     @required int maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
+          paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
@@ -36,11 +37,12 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
       );
 
   @override
-  Future<List<IMediaDeviceFile>> loadItemsFromLocalForPage(
-          {int pageIndex,
-          int itemsCountPerPage,
-          PaginationPage<IMediaDeviceFile> olderPage,
-          PaginationPage<IMediaDeviceFile> newerPage}) =>
+  Future<List<IMediaDeviceFile>> loadItemsFromLocalForPage({
+    int pageIndex,
+    int itemsCountPerPage,
+    PaginationPage<IMediaDeviceFile> olderPage,
+    PaginationPage<IMediaDeviceFile> newerPage,
+  }) =>
       listBloc.loadItemsFromLocalForPage(
         pageIndex: pageIndex,
         itemsCountPerPage: itemsCountPerPage,
@@ -49,14 +51,18 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
       );
 
   static MediaDeviceFileLocalOnlyPaginationBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       MediaDeviceFileLocalOnlyPaginationBloc(
         listBloc: Provider.of<ILocalOnlyListBloc<IMediaDeviceFile>>(
           context,
           listen: false,
         ),
         maximumCachedPagesCount: null,
-        itemsCountPerPage: 20,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
       );
 
   static Widget provideToContext(BuildContext context,
@@ -67,13 +73,15 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
         context,
       ),
       child: ProxyProvider<
-              IMediaDeviceFilePaginationBloc,
-              ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFile>,
-                  IMediaDeviceFile>>(
-          update: (context, value, previous) => value,
-          child: LocalOnlyPaginationBlocProxyProvider<
-              PaginationPage<IMediaDeviceFile>,
-              IMediaDeviceFile>(child: child)),
+          IMediaDeviceFilePaginationBloc,
+          ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFile>,
+              IMediaDeviceFile>>(
+        update: (context, value, previous) => value,
+        child: LocalOnlyPaginationBlocProxyProvider<
+            PaginationPage<IMediaDeviceFile>, IMediaDeviceFile>(
+          child: child,
+        ),
+      ),
     );
   }
 }

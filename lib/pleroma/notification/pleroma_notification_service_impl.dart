@@ -85,7 +85,7 @@ class PleromaNotificationService extends DisposableOwner
       RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: [
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []) ,
           ...excludeTypes?.map(
             (excludeType) => RestRequestQueryArg(
               "exclude_types[]",
