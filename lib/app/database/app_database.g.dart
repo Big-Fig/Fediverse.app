@@ -47,7 +47,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final bool pleromaThreadMuted;
   final List<PleromaStatusEmojiReaction> pleromaEmojiReactions;
   final bool deleted;
-
   DbStatus(
       {@required this.id,
       @required this.remoteId,
@@ -88,7 +87,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaThreadMuted,
       this.pleromaEmojiReactions,
       this.deleted});
-
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -176,7 +174,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -482,7 +479,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       deleted: serializer.fromJson<bool>(json['deleted']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -621,7 +617,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
             pleromaEmojiReactions ?? this.pleromaEmojiReactions,
         deleted: deleted ?? this.deleted,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbStatus(')
@@ -712,7 +707,6 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                           $mrjc(
                                                                               content.hashCode,
                                                                               $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, deleted.hashCode)))))))))))))))))))))))))))))))))))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -800,7 +794,6 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<bool> pleromaThreadMuted;
   final Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions;
   final Value<bool> deleted;
-
   const DbStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -842,7 +835,6 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaEmojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
   });
-
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -892,7 +884,6 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         reblogsCount = Value(reblogsCount),
         favouritesCount = Value(favouritesCount),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbStatus> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -1269,15 +1260,11 @@ class $DbStatusesTable extends DbStatuses
     with TableInfo<$DbStatusesTable, DbStatus> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbStatusesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -1285,10 +1272,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -1296,10 +1281,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   GeneratedDateTimeColumn _createdAt;
-
   @override
   GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
-
   GeneratedDateTimeColumn _constructCreatedAt() {
     return GeneratedDateTimeColumn(
       'created_at',
@@ -1311,11 +1294,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _inReplyToRemoteIdMeta =
       const VerificationMeta('inReplyToRemoteId');
   GeneratedTextColumn _inReplyToRemoteId;
-
   @override
   GeneratedTextColumn get inReplyToRemoteId =>
       _inReplyToRemoteId ??= _constructInReplyToRemoteId();
-
   GeneratedTextColumn _constructInReplyToRemoteId() {
     return GeneratedTextColumn(
       'in_reply_to_remote_id',
@@ -1327,11 +1308,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _inReplyToAccountRemoteIdMeta =
       const VerificationMeta('inReplyToAccountRemoteId');
   GeneratedTextColumn _inReplyToAccountRemoteId;
-
   @override
   GeneratedTextColumn get inReplyToAccountRemoteId =>
       _inReplyToAccountRemoteId ??= _constructInReplyToAccountRemoteId();
-
   GeneratedTextColumn _constructInReplyToAccountRemoteId() {
     return GeneratedTextColumn(
       'in_reply_to_account_remote_id',
@@ -1342,10 +1321,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _sensitiveMeta = const VerificationMeta('sensitive');
   GeneratedBoolColumn _sensitive;
-
   @override
   GeneratedBoolColumn get sensitive => _sensitive ??= _constructSensitive();
-
   GeneratedBoolColumn _constructSensitive() {
     return GeneratedBoolColumn(
       'sensitive',
@@ -1357,11 +1334,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _spoilerTextMeta =
       const VerificationMeta('spoilerText');
   GeneratedTextColumn _spoilerText;
-
   @override
   GeneratedTextColumn get spoilerText =>
       _spoilerText ??= _constructSpoilerText();
-
   GeneratedTextColumn _constructSpoilerText() {
     return GeneratedTextColumn(
       'spoiler_text',
@@ -1372,10 +1347,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _visibilityMeta = const VerificationMeta('visibility');
   GeneratedTextColumn _visibility;
-
   @override
   GeneratedTextColumn get visibility => _visibility ??= _constructVisibility();
-
   GeneratedTextColumn _constructVisibility() {
     return GeneratedTextColumn(
       'visibility',
@@ -1386,10 +1359,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _uriMeta = const VerificationMeta('uri');
   GeneratedTextColumn _uri;
-
   @override
   GeneratedTextColumn get uri => _uri ??= _constructUri();
-
   GeneratedTextColumn _constructUri() {
     return GeneratedTextColumn(
       'uri',
@@ -1400,10 +1371,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _urlMeta = const VerificationMeta('url');
   GeneratedTextColumn _url;
-
   @override
   GeneratedTextColumn get url => _url ??= _constructUrl();
-
   GeneratedTextColumn _constructUrl() {
     return GeneratedTextColumn(
       'url',
@@ -1415,11 +1384,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _repliesCountMeta =
       const VerificationMeta('repliesCount');
   GeneratedIntColumn _repliesCount;
-
   @override
   GeneratedIntColumn get repliesCount =>
       _repliesCount ??= _constructRepliesCount();
-
   GeneratedIntColumn _constructRepliesCount() {
     return GeneratedIntColumn(
       'replies_count',
@@ -1431,11 +1398,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _reblogsCountMeta =
       const VerificationMeta('reblogsCount');
   GeneratedIntColumn _reblogsCount;
-
   @override
   GeneratedIntColumn get reblogsCount =>
       _reblogsCount ??= _constructReblogsCount();
-
   GeneratedIntColumn _constructReblogsCount() {
     return GeneratedIntColumn(
       'reblogs_count',
@@ -1447,11 +1412,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _favouritesCountMeta =
       const VerificationMeta('favouritesCount');
   GeneratedIntColumn _favouritesCount;
-
   @override
   GeneratedIntColumn get favouritesCount =>
       _favouritesCount ??= _constructFavouritesCount();
-
   GeneratedIntColumn _constructFavouritesCount() {
     return GeneratedIntColumn(
       'favourites_count',
@@ -1462,10 +1425,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _favouritedMeta = const VerificationMeta('favourited');
   GeneratedBoolColumn _favourited;
-
   @override
   GeneratedBoolColumn get favourited => _favourited ??= _constructFavourited();
-
   GeneratedBoolColumn _constructFavourited() {
     return GeneratedBoolColumn('favourited', $tableName, false,
         defaultValue: const Constant(false));
@@ -1473,10 +1434,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _rebloggedMeta = const VerificationMeta('reblogged');
   GeneratedBoolColumn _reblogged;
-
   @override
   GeneratedBoolColumn get reblogged => _reblogged ??= _constructReblogged();
-
   GeneratedBoolColumn _constructReblogged() {
     return GeneratedBoolColumn('reblogged', $tableName, false,
         defaultValue: const Constant(false));
@@ -1484,10 +1443,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _mutedMeta = const VerificationMeta('muted');
   GeneratedBoolColumn _muted;
-
   @override
   GeneratedBoolColumn get muted => _muted ??= _constructMuted();
-
   GeneratedBoolColumn _constructMuted() {
     return GeneratedBoolColumn('muted', $tableName, false,
         defaultValue: const Constant(false));
@@ -1495,10 +1452,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _bookmarkedMeta = const VerificationMeta('bookmarked');
   GeneratedBoolColumn _bookmarked;
-
   @override
   GeneratedBoolColumn get bookmarked => _bookmarked ??= _constructBookmarked();
-
   GeneratedBoolColumn _constructBookmarked() {
     return GeneratedBoolColumn(
       'bookmarked',
@@ -1509,10 +1464,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _pinnedMeta = const VerificationMeta('pinned');
   GeneratedBoolColumn _pinned;
-
   @override
   GeneratedBoolColumn get pinned => _pinned ??= _constructPinned();
-
   GeneratedBoolColumn _constructPinned() {
     return GeneratedBoolColumn(
       'pinned',
@@ -1523,10 +1476,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _contentMeta = const VerificationMeta('content');
   GeneratedTextColumn _content;
-
   @override
   GeneratedTextColumn get content => _content ??= _constructContent();
-
   GeneratedTextColumn _constructContent() {
     return GeneratedTextColumn(
       'content',
@@ -1538,11 +1489,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _reblogStatusRemoteIdMeta =
       const VerificationMeta('reblogStatusRemoteId');
   GeneratedTextColumn _reblogStatusRemoteId;
-
   @override
   GeneratedTextColumn get reblogStatusRemoteId =>
       _reblogStatusRemoteId ??= _constructReblogStatusRemoteId();
-
   GeneratedTextColumn _constructReblogStatusRemoteId() {
     return GeneratedTextColumn(
       'reblog_status_remote_id',
@@ -1554,11 +1503,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _applicationMeta =
       const VerificationMeta('application');
   GeneratedTextColumn _application;
-
   @override
   GeneratedTextColumn get application =>
       _application ??= _constructApplication();
-
   GeneratedTextColumn _constructApplication() {
     return GeneratedTextColumn(
       'application',
@@ -1570,11 +1517,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -1586,11 +1531,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _mediaAttachmentsMeta =
       const VerificationMeta('mediaAttachments');
   GeneratedTextColumn _mediaAttachments;
-
   @override
   GeneratedTextColumn get mediaAttachments =>
       _mediaAttachments ??= _constructMediaAttachments();
-
   GeneratedTextColumn _constructMediaAttachments() {
     return GeneratedTextColumn(
       'media_attachments',
@@ -1601,10 +1544,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _mentionsMeta = const VerificationMeta('mentions');
   GeneratedTextColumn _mentions;
-
   @override
   GeneratedTextColumn get mentions => _mentions ??= _constructMentions();
-
   GeneratedTextColumn _constructMentions() {
     return GeneratedTextColumn(
       'mentions',
@@ -1615,10 +1556,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _tagsMeta = const VerificationMeta('tags');
   GeneratedTextColumn _tags;
-
   @override
   GeneratedTextColumn get tags => _tags ??= _constructTags();
-
   GeneratedTextColumn _constructTags() {
     return GeneratedTextColumn(
       'tags',
@@ -1629,10 +1568,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
   GeneratedTextColumn _emojis;
-
   @override
   GeneratedTextColumn get emojis => _emojis ??= _constructEmojis();
-
   GeneratedTextColumn _constructEmojis() {
     return GeneratedTextColumn(
       'emojis',
@@ -1643,10 +1580,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _pollMeta = const VerificationMeta('poll');
   GeneratedTextColumn _poll;
-
   @override
   GeneratedTextColumn get poll => _poll ??= _constructPoll();
-
   GeneratedTextColumn _constructPoll() {
     return GeneratedTextColumn(
       'poll',
@@ -1657,10 +1592,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _cardMeta = const VerificationMeta('card');
   GeneratedTextColumn _card;
-
   @override
   GeneratedTextColumn get card => _card ??= _constructCard();
-
   GeneratedTextColumn _constructCard() {
     return GeneratedTextColumn(
       'card',
@@ -1671,10 +1604,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _languageMeta = const VerificationMeta('language');
   GeneratedTextColumn _language;
-
   @override
   GeneratedTextColumn get language => _language ??= _constructLanguage();
-
   GeneratedTextColumn _constructLanguage() {
     return GeneratedTextColumn(
       'language',
@@ -1686,11 +1617,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaContentMeta =
       const VerificationMeta('pleromaContent');
   GeneratedTextColumn _pleromaContent;
-
   @override
   GeneratedTextColumn get pleromaContent =>
       _pleromaContent ??= _constructPleromaContent();
-
   GeneratedTextColumn _constructPleromaContent() {
     return GeneratedTextColumn(
       'pleroma_content',
@@ -1702,11 +1631,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaConversationIdMeta =
       const VerificationMeta('pleromaConversationId');
   GeneratedIntColumn _pleromaConversationId;
-
   @override
   GeneratedIntColumn get pleromaConversationId =>
       _pleromaConversationId ??= _constructPleromaConversationId();
-
   GeneratedIntColumn _constructPleromaConversationId() {
     return GeneratedIntColumn(
       'pleroma_conversation_id',
@@ -1718,11 +1645,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaDirectConversationIdMeta =
       const VerificationMeta('pleromaDirectConversationId');
   GeneratedIntColumn _pleromaDirectConversationId;
-
   @override
   GeneratedIntColumn get pleromaDirectConversationId =>
       _pleromaDirectConversationId ??= _constructPleromaDirectConversationId();
-
   GeneratedIntColumn _constructPleromaDirectConversationId() {
     return GeneratedIntColumn(
       'pleroma_direct_conversation_id',
@@ -1734,11 +1659,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaInReplyToAccountAcctMeta =
       const VerificationMeta('pleromaInReplyToAccountAcct');
   GeneratedTextColumn _pleromaInReplyToAccountAcct;
-
   @override
   GeneratedTextColumn get pleromaInReplyToAccountAcct =>
       _pleromaInReplyToAccountAcct ??= _constructPleromaInReplyToAccountAcct();
-
   GeneratedTextColumn _constructPleromaInReplyToAccountAcct() {
     return GeneratedTextColumn(
       'pleroma_in_reply_to_account_acct',
@@ -1750,11 +1673,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaLocalMeta =
       const VerificationMeta('pleromaLocal');
   GeneratedBoolColumn _pleromaLocal;
-
   @override
   GeneratedBoolColumn get pleromaLocal =>
       _pleromaLocal ??= _constructPleromaLocal();
-
   GeneratedBoolColumn _constructPleromaLocal() {
     return GeneratedBoolColumn(
       'pleroma_local',
@@ -1766,11 +1687,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaSpoilerTextMeta =
       const VerificationMeta('pleromaSpoilerText');
   GeneratedTextColumn _pleromaSpoilerText;
-
   @override
   GeneratedTextColumn get pleromaSpoilerText =>
       _pleromaSpoilerText ??= _constructPleromaSpoilerText();
-
   GeneratedTextColumn _constructPleromaSpoilerText() {
     return GeneratedTextColumn(
       'pleroma_spoiler_text',
@@ -1782,11 +1701,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaExpiresAtMeta =
       const VerificationMeta('pleromaExpiresAt');
   GeneratedDateTimeColumn _pleromaExpiresAt;
-
   @override
   GeneratedDateTimeColumn get pleromaExpiresAt =>
       _pleromaExpiresAt ??= _constructPleromaExpiresAt();
-
   GeneratedDateTimeColumn _constructPleromaExpiresAt() {
     return GeneratedDateTimeColumn(
       'pleroma_expires_at',
@@ -1798,11 +1715,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaThreadMutedMeta =
       const VerificationMeta('pleromaThreadMuted');
   GeneratedBoolColumn _pleromaThreadMuted;
-
   @override
   GeneratedBoolColumn get pleromaThreadMuted =>
       _pleromaThreadMuted ??= _constructPleromaThreadMuted();
-
   GeneratedBoolColumn _constructPleromaThreadMuted() {
     return GeneratedBoolColumn(
       'pleroma_thread_muted',
@@ -1814,11 +1729,9 @@ class $DbStatusesTable extends DbStatuses
   final VerificationMeta _pleromaEmojiReactionsMeta =
       const VerificationMeta('pleromaEmojiReactions');
   GeneratedTextColumn _pleromaEmojiReactions;
-
   @override
   GeneratedTextColumn get pleromaEmojiReactions =>
       _pleromaEmojiReactions ??= _constructPleromaEmojiReactions();
-
   GeneratedTextColumn _constructPleromaEmojiReactions() {
     return GeneratedTextColumn(
       'pleroma_emoji_reactions',
@@ -1829,10 +1742,8 @@ class $DbStatusesTable extends DbStatuses
 
   final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
   GeneratedBoolColumn _deleted;
-
   @override
   GeneratedBoolColumn get deleted => _deleted ??= _constructDeleted();
-
   GeneratedBoolColumn _constructDeleted() {
     return GeneratedBoolColumn(
       'deleted',
@@ -1883,15 +1794,12 @@ class $DbStatusesTable extends DbStatuses
         pleromaEmojiReactions,
         deleted
       ];
-
   @override
   $DbStatusesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_statuses';
   @override
   final String actualTableName = 'db_statuses';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbStatus> instance,
       {bool isInserting = false}) {
@@ -2078,7 +1986,6 @@ class $DbStatusesTable extends DbStatuses
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -2149,7 +2056,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final bool pleromaDeactivated;
   final bool pleromaAllowFollowingMove;
   final bool pleromaSkipThreadContainment;
-
   DbAccount(
       {@required this.id,
       @required this.remoteId,
@@ -2185,7 +2091,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.pleromaDeactivated,
       this.pleromaAllowFollowingMove,
       this.pleromaSkipThreadContainment});
-
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2260,7 +2165,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           data['${effectivePrefix}pleroma_skip_thread_containment']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2525,7 +2429,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           serializer.fromJson<bool>(json['pleromaSkipThreadContainment']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2651,7 +2554,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         pleromaSkipThreadContainment:
             pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbAccount(')
@@ -2737,7 +2639,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                           $mrjc(
                                                                               fields.hashCode,
                                                                               $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode))))))))))))))))))))))))))))))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2814,7 +2715,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<bool> pleromaDeactivated;
   final Value<bool> pleromaAllowFollowingMove;
   final Value<bool> pleromaSkipThreadContainment;
-
   const DbAccountsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -2851,7 +2751,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.pleromaAllowFollowingMove = const Value.absent(),
     this.pleromaSkipThreadContainment = const Value.absent(),
   });
-
   DbAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -2902,7 +2801,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
         avatarStatic = Value(avatarStatic),
         avatar = Value(avatar),
         acct = Value(acct);
-
   static Insertable<DbAccount> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -3235,15 +3133,11 @@ class $DbAccountsTable extends DbAccounts
     with TableInfo<$DbAccountsTable, DbAccount> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbAccountsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -3251,10 +3145,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -3262,10 +3154,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _usernameMeta = const VerificationMeta('username');
   GeneratedTextColumn _username;
-
   @override
   GeneratedTextColumn get username => _username ??= _constructUsername();
-
   GeneratedTextColumn _constructUsername() {
     return GeneratedTextColumn(
       'username',
@@ -3276,10 +3166,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _urlMeta = const VerificationMeta('url');
   GeneratedTextColumn _url;
-
   @override
   GeneratedTextColumn get url => _url ??= _constructUrl();
-
   GeneratedTextColumn _constructUrl() {
     return GeneratedTextColumn(
       'url',
@@ -3290,10 +3178,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _noteMeta = const VerificationMeta('note');
   GeneratedTextColumn _note;
-
   @override
   GeneratedTextColumn get note => _note ??= _constructNote();
-
   GeneratedTextColumn _constructNote() {
     return GeneratedTextColumn(
       'note',
@@ -3304,10 +3190,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _lockedMeta = const VerificationMeta('locked');
   GeneratedBoolColumn _locked;
-
   @override
   GeneratedBoolColumn get locked => _locked ??= _constructLocked();
-
   GeneratedBoolColumn _constructLocked() {
     return GeneratedBoolColumn(
       'locked',
@@ -3319,11 +3203,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _headerStaticMeta =
       const VerificationMeta('headerStatic');
   GeneratedTextColumn _headerStatic;
-
   @override
   GeneratedTextColumn get headerStatic =>
       _headerStatic ??= _constructHeaderStatic();
-
   GeneratedTextColumn _constructHeaderStatic() {
     return GeneratedTextColumn(
       'header_static',
@@ -3334,10 +3216,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _headerMeta = const VerificationMeta('header');
   GeneratedTextColumn _header;
-
   @override
   GeneratedTextColumn get header => _header ??= _constructHeader();
-
   GeneratedTextColumn _constructHeader() {
     return GeneratedTextColumn(
       'header',
@@ -3349,11 +3229,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _followingCountMeta =
       const VerificationMeta('followingCount');
   GeneratedIntColumn _followingCount;
-
   @override
   GeneratedIntColumn get followingCount =>
       _followingCount ??= _constructFollowingCount();
-
   GeneratedIntColumn _constructFollowingCount() {
     return GeneratedIntColumn(
       'following_count',
@@ -3365,11 +3243,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _followersCountMeta =
       const VerificationMeta('followersCount');
   GeneratedIntColumn _followersCount;
-
   @override
   GeneratedIntColumn get followersCount =>
       _followersCount ??= _constructFollowersCount();
-
   GeneratedIntColumn _constructFollowersCount() {
     return GeneratedIntColumn(
       'followers_count',
@@ -3381,11 +3257,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _statusesCountMeta =
       const VerificationMeta('statusesCount');
   GeneratedIntColumn _statusesCount;
-
   @override
   GeneratedIntColumn get statusesCount =>
       _statusesCount ??= _constructStatusesCount();
-
   GeneratedIntColumn _constructStatusesCount() {
     return GeneratedIntColumn(
       'statuses_count',
@@ -3397,11 +3271,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _displayNameMeta =
       const VerificationMeta('displayName');
   GeneratedTextColumn _displayName;
-
   @override
   GeneratedTextColumn get displayName =>
       _displayName ??= _constructDisplayName();
-
   GeneratedTextColumn _constructDisplayName() {
     return GeneratedTextColumn(
       'display_name',
@@ -3412,10 +3284,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   GeneratedDateTimeColumn _createdAt;
-
   @override
   GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
-
   GeneratedDateTimeColumn _constructCreatedAt() {
     return GeneratedDateTimeColumn(
       'created_at',
@@ -3426,10 +3296,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _botMeta = const VerificationMeta('bot');
   GeneratedBoolColumn _bot;
-
   @override
   GeneratedBoolColumn get bot => _bot ??= _constructBot();
-
   GeneratedBoolColumn _constructBot() {
     return GeneratedBoolColumn(
       'bot',
@@ -3441,11 +3309,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _avatarStaticMeta =
       const VerificationMeta('avatarStatic');
   GeneratedTextColumn _avatarStatic;
-
   @override
   GeneratedTextColumn get avatarStatic =>
       _avatarStatic ??= _constructAvatarStatic();
-
   GeneratedTextColumn _constructAvatarStatic() {
     return GeneratedTextColumn(
       'avatar_static',
@@ -3456,10 +3322,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
   GeneratedTextColumn _avatar;
-
   @override
   GeneratedTextColumn get avatar => _avatar ??= _constructAvatar();
-
   GeneratedTextColumn _constructAvatar() {
     return GeneratedTextColumn(
       'avatar',
@@ -3470,10 +3334,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _acctMeta = const VerificationMeta('acct');
   GeneratedTextColumn _acct;
-
   @override
   GeneratedTextColumn get acct => _acct ??= _constructAcct();
-
   GeneratedTextColumn _constructAcct() {
     return GeneratedTextColumn(
       'acct',
@@ -3485,11 +3347,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _lastStatusAtMeta =
       const VerificationMeta('lastStatusAt');
   GeneratedDateTimeColumn _lastStatusAt;
-
   @override
   GeneratedDateTimeColumn get lastStatusAt =>
       _lastStatusAt ??= _constructLastStatusAt();
-
   GeneratedDateTimeColumn _constructLastStatusAt() {
     return GeneratedDateTimeColumn(
       'last_status_at',
@@ -3500,10 +3360,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _fieldsMeta = const VerificationMeta('fields');
   GeneratedTextColumn _fields;
-
   @override
   GeneratedTextColumn get fields => _fields ??= _constructFields();
-
   GeneratedTextColumn _constructFields() {
     return GeneratedTextColumn(
       'fields',
@@ -3514,10 +3372,8 @@ class $DbAccountsTable extends DbAccounts
 
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
   GeneratedTextColumn _emojis;
-
   @override
   GeneratedTextColumn get emojis => _emojis ??= _constructEmojis();
-
   GeneratedTextColumn _constructEmojis() {
     return GeneratedTextColumn(
       'emojis',
@@ -3529,11 +3385,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaBackgroundImageMeta =
       const VerificationMeta('pleromaBackgroundImage');
   GeneratedTextColumn _pleromaBackgroundImage;
-
   @override
   GeneratedTextColumn get pleromaBackgroundImage =>
       _pleromaBackgroundImage ??= _constructPleromaBackgroundImage();
-
   GeneratedTextColumn _constructPleromaBackgroundImage() {
     return GeneratedTextColumn(
       'pleroma_background_image',
@@ -3545,11 +3399,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaTagsMeta =
       const VerificationMeta('pleromaTags');
   GeneratedTextColumn _pleromaTags;
-
   @override
   GeneratedTextColumn get pleromaTags =>
       _pleromaTags ??= _constructPleromaTags();
-
   GeneratedTextColumn _constructPleromaTags() {
     return GeneratedTextColumn(
       'pleroma_tags',
@@ -3561,11 +3413,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaRelationshipMeta =
       const VerificationMeta('pleromaRelationship');
   GeneratedTextColumn _pleromaRelationship;
-
   @override
   GeneratedTextColumn get pleromaRelationship =>
       _pleromaRelationship ??= _constructPleromaRelationship();
-
   GeneratedTextColumn _constructPleromaRelationship() {
     return GeneratedTextColumn(
       'pleroma_relationship',
@@ -3577,11 +3427,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaIsAdminMeta =
       const VerificationMeta('pleromaIsAdmin');
   GeneratedBoolColumn _pleromaIsAdmin;
-
   @override
   GeneratedBoolColumn get pleromaIsAdmin =>
       _pleromaIsAdmin ??= _constructPleromaIsAdmin();
-
   GeneratedBoolColumn _constructPleromaIsAdmin() {
     return GeneratedBoolColumn(
       'pleroma_is_admin',
@@ -3593,11 +3441,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaIsModeratorMeta =
       const VerificationMeta('pleromaIsModerator');
   GeneratedBoolColumn _pleromaIsModerator;
-
   @override
   GeneratedBoolColumn get pleromaIsModerator =>
       _pleromaIsModerator ??= _constructPleromaIsModerator();
-
   GeneratedBoolColumn _constructPleromaIsModerator() {
     return GeneratedBoolColumn(
       'pleroma_is_moderator',
@@ -3609,11 +3455,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaConfirmationPendingMeta =
       const VerificationMeta('pleromaConfirmationPending');
   GeneratedBoolColumn _pleromaConfirmationPending;
-
   @override
   GeneratedBoolColumn get pleromaConfirmationPending =>
       _pleromaConfirmationPending ??= _constructPleromaConfirmationPending();
-
   GeneratedBoolColumn _constructPleromaConfirmationPending() {
     return GeneratedBoolColumn(
       'pleroma_confirmation_pending',
@@ -3625,11 +3469,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaHideFavoritesMeta =
       const VerificationMeta('pleromaHideFavorites');
   GeneratedBoolColumn _pleromaHideFavorites;
-
   @override
   GeneratedBoolColumn get pleromaHideFavorites =>
       _pleromaHideFavorites ??= _constructPleromaHideFavorites();
-
   GeneratedBoolColumn _constructPleromaHideFavorites() {
     return GeneratedBoolColumn(
       'pleroma_hide_favorites',
@@ -3641,11 +3483,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaHideFollowersMeta =
       const VerificationMeta('pleromaHideFollowers');
   GeneratedBoolColumn _pleromaHideFollowers;
-
   @override
   GeneratedBoolColumn get pleromaHideFollowers =>
       _pleromaHideFollowers ??= _constructPleromaHideFollowers();
-
   GeneratedBoolColumn _constructPleromaHideFollowers() {
     return GeneratedBoolColumn(
       'pleroma_hide_followers',
@@ -3657,11 +3497,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaHideFollowsMeta =
       const VerificationMeta('pleromaHideFollows');
   GeneratedBoolColumn _pleromaHideFollows;
-
   @override
   GeneratedBoolColumn get pleromaHideFollows =>
       _pleromaHideFollows ??= _constructPleromaHideFollows();
-
   GeneratedBoolColumn _constructPleromaHideFollows() {
     return GeneratedBoolColumn(
       'pleroma_hide_follows',
@@ -3673,11 +3511,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaHideFollowersCountMeta =
       const VerificationMeta('pleromaHideFollowersCount');
   GeneratedBoolColumn _pleromaHideFollowersCount;
-
   @override
   GeneratedBoolColumn get pleromaHideFollowersCount =>
       _pleromaHideFollowersCount ??= _constructPleromaHideFollowersCount();
-
   GeneratedBoolColumn _constructPleromaHideFollowersCount() {
     return GeneratedBoolColumn(
       'pleroma_hide_followers_count',
@@ -3689,11 +3525,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaHideFollowsCountMeta =
       const VerificationMeta('pleromaHideFollowsCount');
   GeneratedBoolColumn _pleromaHideFollowsCount;
-
   @override
   GeneratedBoolColumn get pleromaHideFollowsCount =>
       _pleromaHideFollowsCount ??= _constructPleromaHideFollowsCount();
-
   GeneratedBoolColumn _constructPleromaHideFollowsCount() {
     return GeneratedBoolColumn(
       'pleroma_hide_follows_count',
@@ -3705,11 +3539,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaDeactivatedMeta =
       const VerificationMeta('pleromaDeactivated');
   GeneratedBoolColumn _pleromaDeactivated;
-
   @override
   GeneratedBoolColumn get pleromaDeactivated =>
       _pleromaDeactivated ??= _constructPleromaDeactivated();
-
   GeneratedBoolColumn _constructPleromaDeactivated() {
     return GeneratedBoolColumn(
       'pleroma_deactivated',
@@ -3721,11 +3553,9 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaAllowFollowingMoveMeta =
       const VerificationMeta('pleromaAllowFollowingMove');
   GeneratedBoolColumn _pleromaAllowFollowingMove;
-
   @override
   GeneratedBoolColumn get pleromaAllowFollowingMove =>
       _pleromaAllowFollowingMove ??= _constructPleromaAllowFollowingMove();
-
   GeneratedBoolColumn _constructPleromaAllowFollowingMove() {
     return GeneratedBoolColumn(
       'pleroma_allow_following_move',
@@ -3737,12 +3567,10 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _pleromaSkipThreadContainmentMeta =
       const VerificationMeta('pleromaSkipThreadContainment');
   GeneratedBoolColumn _pleromaSkipThreadContainment;
-
   @override
   GeneratedBoolColumn get pleromaSkipThreadContainment =>
       _pleromaSkipThreadContainment ??=
           _constructPleromaSkipThreadContainment();
-
   GeneratedBoolColumn _constructPleromaSkipThreadContainment() {
     return GeneratedBoolColumn(
       'pleroma_skip_thread_containment',
@@ -3788,15 +3616,12 @@ class $DbAccountsTable extends DbAccounts
         pleromaAllowFollowingMove,
         pleromaSkipThreadContainment
       ];
-
   @override
   $DbAccountsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_accounts';
   @override
   final String actualTableName = 'db_accounts';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbAccount> instance,
       {bool isInserting = false}) {
@@ -4004,7 +3829,6 @@ class $DbAccountsTable extends DbAccounts
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -4031,13 +3855,11 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   final String remoteId;
   final bool unread;
   final DateTime updatedAt;
-
   DbConversation(
       {@required this.id,
       @required this.remoteId,
       @required this.unread,
       this.updatedAt});
-
   factory DbConversation.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4056,7 +3878,6 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4099,7 +3920,6 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4119,7 +3939,6 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
         unread: unread ?? this.unread,
         updatedAt: updatedAt ?? this.updatedAt,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbConversation(')
@@ -4134,7 +3953,6 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -4150,14 +3968,12 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
   final Value<String> remoteId;
   final Value<bool> unread;
   final Value<DateTime> updatedAt;
-
   const DbConversationsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
-
   DbConversationsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -4165,7 +3981,6 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
     this.updatedAt = const Value.absent(),
   })  : remoteId = Value(remoteId),
         unread = Value(unread);
-
   static Insertable<DbConversation> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -4227,15 +4042,11 @@ class $DbConversationsTable extends DbConversations
     with TableInfo<$DbConversationsTable, DbConversation> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbConversationsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -4243,10 +4054,8 @@ class $DbConversationsTable extends DbConversations
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -4254,10 +4063,8 @@ class $DbConversationsTable extends DbConversations
 
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedBoolColumn _unread;
-
   @override
   GeneratedBoolColumn get unread => _unread ??= _constructUnread();
-
   GeneratedBoolColumn _constructUnread() {
     return GeneratedBoolColumn(
       'unread',
@@ -4268,10 +4075,8 @@ class $DbConversationsTable extends DbConversations
 
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   GeneratedDateTimeColumn _updatedAt;
-
   @override
   GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
-
   GeneratedDateTimeColumn _constructUpdatedAt() {
     return GeneratedDateTimeColumn(
       'updated_at',
@@ -4282,15 +4087,12 @@ class $DbConversationsTable extends DbConversations
 
   @override
   List<GeneratedColumn> get $columns => [id, remoteId, unread, updatedAt];
-
   @override
   $DbConversationsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_conversations';
   @override
   final String actualTableName = 'db_conversations';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbConversation> instance,
       {bool isInserting = false}) {
@@ -4320,7 +4122,6 @@ class $DbConversationsTable extends DbConversations
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbConversation map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -4346,7 +4147,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String type;
   final DateTime createdAt;
   final bool dismissed;
-
   DbNotification(
       {@required this.id,
       @required this.remoteId,
@@ -4360,7 +4160,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.type,
       @required this.createdAt,
       this.dismissed});
-
   factory DbNotification.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4394,7 +4193,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}dismissed']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4493,7 +4291,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       dismissed: serializer.fromJson<bool>(json['dismissed']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4540,7 +4337,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         createdAt: createdAt ?? this.createdAt,
         dismissed: dismissed ?? this.dismissed,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbNotification(')
@@ -4583,7 +4379,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                                           type.hashCode,
                                           $mrjc(createdAt.hashCode,
                                               dismissed.hashCode))))))))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -4615,7 +4410,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String> type;
   final Value<DateTime> createdAt;
   final Value<bool> dismissed;
-
   const DbNotificationsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -4630,7 +4424,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.createdAt = const Value.absent(),
     this.dismissed = const Value.absent(),
   });
-
   DbNotificationsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -4647,7 +4440,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   })  : remoteId = Value(remoteId),
         accountRemoteId = Value(accountRemoteId),
         createdAt = Value(createdAt);
-
   static Insertable<DbNotification> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -4776,15 +4568,11 @@ class $DbNotificationsTable extends DbNotifications
     with TableInfo<$DbNotificationsTable, DbNotification> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbNotificationsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -4792,10 +4580,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -4804,11 +4590,9 @@ class $DbNotificationsTable extends DbNotifications
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -4820,11 +4604,9 @@ class $DbNotificationsTable extends DbNotifications
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -4836,11 +4618,9 @@ class $DbNotificationsTable extends DbNotifications
   final VerificationMeta _chatRemoteIdMeta =
       const VerificationMeta('chatRemoteId');
   GeneratedTextColumn _chatRemoteId;
-
   @override
   GeneratedTextColumn get chatRemoteId =>
       _chatRemoteId ??= _constructChatRemoteId();
-
   GeneratedTextColumn _constructChatRemoteId() {
     return GeneratedTextColumn(
       'chat_remote_id',
@@ -4852,11 +4632,9 @@ class $DbNotificationsTable extends DbNotifications
   final VerificationMeta _chatMessageRemoteIdMeta =
       const VerificationMeta('chatMessageRemoteId');
   GeneratedTextColumn _chatMessageRemoteId;
-
   @override
   GeneratedTextColumn get chatMessageRemoteId =>
       _chatMessageRemoteId ??= _constructChatMessageRemoteId();
-
   GeneratedTextColumn _constructChatMessageRemoteId() {
     return GeneratedTextColumn(
       'chat_message_remote_id',
@@ -4867,10 +4645,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _emojiMeta = const VerificationMeta('emoji');
   GeneratedTextColumn _emoji;
-
   @override
   GeneratedTextColumn get emoji => _emoji ??= _constructEmoji();
-
   GeneratedTextColumn _constructEmoji() {
     return GeneratedTextColumn(
       'emoji',
@@ -4881,10 +4657,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _pleromaMeta = const VerificationMeta('pleroma');
   GeneratedTextColumn _pleroma;
-
   @override
   GeneratedTextColumn get pleroma => _pleroma ??= _constructPleroma();
-
   GeneratedTextColumn _constructPleroma() {
     return GeneratedTextColumn(
       'pleroma',
@@ -4895,10 +4669,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedBoolColumn _unread;
-
   @override
   GeneratedBoolColumn get unread => _unread ??= _constructUnread();
-
   GeneratedBoolColumn _constructUnread() {
     return GeneratedBoolColumn(
       'unread',
@@ -4909,10 +4681,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   GeneratedTextColumn _type;
-
   @override
   GeneratedTextColumn get type => _type ??= _constructType();
-
   GeneratedTextColumn _constructType() {
     return GeneratedTextColumn(
       'type',
@@ -4923,10 +4693,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   GeneratedDateTimeColumn _createdAt;
-
   @override
   GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
-
   GeneratedDateTimeColumn _constructCreatedAt() {
     return GeneratedDateTimeColumn(
       'created_at',
@@ -4937,10 +4705,8 @@ class $DbNotificationsTable extends DbNotifications
 
   final VerificationMeta _dismissedMeta = const VerificationMeta('dismissed');
   GeneratedBoolColumn _dismissed;
-
   @override
   GeneratedBoolColumn get dismissed => _dismissed ??= _constructDismissed();
-
   GeneratedBoolColumn _constructDismissed() {
     return GeneratedBoolColumn(
       'dismissed',
@@ -4964,15 +4730,12 @@ class $DbNotificationsTable extends DbNotifications
         createdAt,
         dismissed
       ];
-
   @override
   $DbNotificationsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_notifications';
   @override
   final String actualTableName = 'db_notifications';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbNotification> instance,
       {bool isInserting = false}) {
@@ -5041,7 +4804,6 @@ class $DbNotificationsTable extends DbNotifications
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbNotification map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5062,12 +4824,10 @@ class DbConversationStatus extends DataClass
   final int id;
   final String conversationRemoteId;
   final String statusRemoteId;
-
   DbConversationStatus(
       {@required this.id,
       @required this.conversationRemoteId,
       @required this.statusRemoteId});
-
   factory DbConversationStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -5082,7 +4842,6 @@ class DbConversationStatus extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5120,7 +4879,6 @@ class DbConversationStatus extends DataClass
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5138,7 +4896,6 @@ class DbConversationStatus extends DataClass
         conversationRemoteId: conversationRemoteId ?? this.conversationRemoteId,
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbConversationStatus(')
@@ -5152,7 +4909,6 @@ class DbConversationStatus extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(conversationRemoteId.hashCode, statusRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -5167,20 +4923,17 @@ class DbConversationStatusesCompanion
   final Value<int> id;
   final Value<String> conversationRemoteId;
   final Value<String> statusRemoteId;
-
   const DbConversationStatusesCompanion({
     this.id = const Value.absent(),
     this.conversationRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
   });
-
   DbConversationStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String conversationRemoteId,
     @required String statusRemoteId,
   })  : conversationRemoteId = Value(conversationRemoteId),
         statusRemoteId = Value(statusRemoteId);
-
   static Insertable<DbConversationStatus> custom({
     Expression<int> id,
     Expression<String> conversationRemoteId,
@@ -5236,15 +4989,11 @@ class $DbConversationStatusesTable extends DbConversationStatuses
     with TableInfo<$DbConversationStatusesTable, DbConversationStatus> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbConversationStatusesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -5253,11 +5002,9 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   final VerificationMeta _conversationRemoteIdMeta =
       const VerificationMeta('conversationRemoteId');
   GeneratedTextColumn _conversationRemoteId;
-
   @override
   GeneratedTextColumn get conversationRemoteId =>
       _conversationRemoteId ??= _constructConversationRemoteId();
-
   GeneratedTextColumn _constructConversationRemoteId() {
     return GeneratedTextColumn(
       'conversation_remote_id',
@@ -5269,11 +5016,9 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -5285,15 +5030,12 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   @override
   List<GeneratedColumn> get $columns =>
       [id, conversationRemoteId, statusRemoteId];
-
   @override
   $DbConversationStatusesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_conversation_statuses';
   @override
   final String actualTableName = 'db_conversation_statuses';
-
   @override
   VerificationContext validateIntegrity(
       Insertable<DbConversationStatus> instance,
@@ -5324,7 +5066,6 @@ class $DbConversationStatusesTable extends DbConversationStatuses
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbConversationStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5341,12 +5082,10 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
   final int id;
   final String statusRemoteId;
   final String hashtag;
-
   DbStatusHashtag(
       {@required this.id,
       @required this.statusRemoteId,
       @required this.hashtag});
-
   factory DbStatusHashtag.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -5361,7 +5100,6 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}hashtag']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5398,7 +5136,6 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
       hashtag: serializer.fromJson<String>(json['hashtag']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5415,7 +5152,6 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
         hashtag: hashtag ?? this.hashtag,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbStatusHashtag(')
@@ -5429,7 +5165,6 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
   @override
   int get hashCode => $mrjf(
       $mrjc(id.hashCode, $mrjc(statusRemoteId.hashCode, hashtag.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -5443,20 +5178,17 @@ class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
   final Value<int> id;
   final Value<String> statusRemoteId;
   final Value<String> hashtag;
-
   const DbStatusHashtagsCompanion({
     this.id = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
     this.hashtag = const Value.absent(),
   });
-
   DbStatusHashtagsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
     @required String hashtag,
   })  : statusRemoteId = Value(statusRemoteId),
         hashtag = Value(hashtag);
-
   static Insertable<DbStatusHashtag> custom({
     Expression<int> id,
     Expression<String> statusRemoteId,
@@ -5508,15 +5240,11 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
     with TableInfo<$DbStatusHashtagsTable, DbStatusHashtag> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbStatusHashtagsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -5525,11 +5253,9 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -5540,10 +5266,8 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
 
   final VerificationMeta _hashtagMeta = const VerificationMeta('hashtag');
   GeneratedTextColumn _hashtag;
-
   @override
   GeneratedTextColumn get hashtag => _hashtag ??= _constructHashtag();
-
   GeneratedTextColumn _constructHashtag() {
     return GeneratedTextColumn(
       'hashtag',
@@ -5554,15 +5278,12 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
 
   @override
   List<GeneratedColumn> get $columns => [id, statusRemoteId, hashtag];
-
   @override
   $DbStatusHashtagsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_status_hashtags';
   @override
   final String actualTableName = 'db_status_hashtags';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbStatusHashtag> instance,
       {bool isInserting = false}) {
@@ -5590,7 +5311,6 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbStatusHashtag map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5607,12 +5327,10 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
   final int id;
   final String statusRemoteId;
   final String listRemoteId;
-
   DbStatusList(
       {@required this.id,
       @required this.statusRemoteId,
       @required this.listRemoteId});
-
   factory DbStatusList.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -5626,7 +5344,6 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
           .mapFromDatabaseResponse(data['${effectivePrefix}list_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5663,7 +5380,6 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
       listRemoteId: serializer.fromJson<String>(json['listRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5680,7 +5396,6 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
         listRemoteId: listRemoteId ?? this.listRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbStatusList(')
@@ -5694,7 +5409,6 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, listRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -5708,20 +5422,17 @@ class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
   final Value<int> id;
   final Value<String> statusRemoteId;
   final Value<String> listRemoteId;
-
   const DbStatusListsCompanion({
     this.id = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
     this.listRemoteId = const Value.absent(),
   });
-
   DbStatusListsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
     @required String listRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         listRemoteId = Value(listRemoteId);
-
   static Insertable<DbStatusList> custom({
     Expression<int> id,
     Expression<String> statusRemoteId,
@@ -5775,15 +5486,11 @@ class $DbStatusListsTable extends DbStatusLists
     with TableInfo<$DbStatusListsTable, DbStatusList> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbStatusListsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -5792,11 +5499,9 @@ class $DbStatusListsTable extends DbStatusLists
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -5808,11 +5513,9 @@ class $DbStatusListsTable extends DbStatusLists
   final VerificationMeta _listRemoteIdMeta =
       const VerificationMeta('listRemoteId');
   GeneratedTextColumn _listRemoteId;
-
   @override
   GeneratedTextColumn get listRemoteId =>
       _listRemoteId ??= _constructListRemoteId();
-
   GeneratedTextColumn _constructListRemoteId() {
     return GeneratedTextColumn(
       'list_remote_id',
@@ -5823,15 +5526,12 @@ class $DbStatusListsTable extends DbStatusLists
 
   @override
   List<GeneratedColumn> get $columns => [id, statusRemoteId, listRemoteId];
-
   @override
   $DbStatusListsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_status_lists';
   @override
   final String actualTableName = 'db_status_lists';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbStatusList> instance,
       {bool isInserting = false}) {
@@ -5861,7 +5561,6 @@ class $DbStatusListsTable extends DbStatusLists
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbStatusList map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5879,12 +5578,10 @@ class DbStatusFavouritedAccount extends DataClass
   final int id;
   final String statusRemoteId;
   final String accountRemoteId;
-
   DbStatusFavouritedAccount(
       {@required this.id,
       @required this.statusRemoteId,
       @required this.accountRemoteId});
-
   factory DbStatusFavouritedAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -5899,7 +5596,6 @@ class DbStatusFavouritedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5936,7 +5632,6 @@ class DbStatusFavouritedAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5954,7 +5649,6 @@ class DbStatusFavouritedAccount extends DataClass
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbStatusFavouritedAccount(')
@@ -5968,7 +5662,6 @@ class DbStatusFavouritedAccount extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -5983,20 +5676,17 @@ class DbStatusFavouritedAccountsCompanion
   final Value<int> id;
   final Value<String> statusRemoteId;
   final Value<String> accountRemoteId;
-
   const DbStatusFavouritedAccountsCompanion({
     this.id = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
-
   DbStatusFavouritedAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
     @required String accountRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbStatusFavouritedAccount> custom({
     Expression<int> id,
     Expression<String> statusRemoteId,
@@ -6051,15 +5741,11 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
         TableInfo<$DbStatusFavouritedAccountsTable, DbStatusFavouritedAccount> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbStatusFavouritedAccountsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -6068,11 +5754,9 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -6084,11 +5768,9 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -6099,15 +5781,12 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
 
   @override
   List<GeneratedColumn> get $columns => [id, statusRemoteId, accountRemoteId];
-
   @override
   $DbStatusFavouritedAccountsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_status_favourited_accounts';
   @override
   final String actualTableName = 'db_status_favourited_accounts';
-
   @override
   VerificationContext validateIntegrity(
       Insertable<DbStatusFavouritedAccount> instance,
@@ -6138,7 +5817,6 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbStatusFavouritedAccount map(Map<String, dynamic> data,
       {String tablePrefix}) {
@@ -6158,12 +5836,10 @@ class DbStatusRebloggedAccount extends DataClass
   final int id;
   final String statusRemoteId;
   final String accountRemoteId;
-
   DbStatusRebloggedAccount(
       {@required this.id,
       @required this.statusRemoteId,
       @required this.accountRemoteId});
-
   factory DbStatusRebloggedAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6178,7 +5854,6 @@ class DbStatusRebloggedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6215,7 +5890,6 @@ class DbStatusRebloggedAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6233,7 +5907,6 @@ class DbStatusRebloggedAccount extends DataClass
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbStatusRebloggedAccount(')
@@ -6247,7 +5920,6 @@ class DbStatusRebloggedAccount extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6262,20 +5934,17 @@ class DbStatusRebloggedAccountsCompanion
   final Value<int> id;
   final Value<String> statusRemoteId;
   final Value<String> accountRemoteId;
-
   const DbStatusRebloggedAccountsCompanion({
     this.id = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
-
   DbStatusRebloggedAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
     @required String accountRemoteId,
   })  : statusRemoteId = Value(statusRemoteId),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbStatusRebloggedAccount> custom({
     Expression<int> id,
     Expression<String> statusRemoteId,
@@ -6329,15 +5998,11 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
     with TableInfo<$DbStatusRebloggedAccountsTable, DbStatusRebloggedAccount> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbStatusRebloggedAccountsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -6346,11 +6011,9 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn(
       'status_remote_id',
@@ -6362,11 +6025,9 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -6377,15 +6038,12 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
 
   @override
   List<GeneratedColumn> get $columns => [id, statusRemoteId, accountRemoteId];
-
   @override
   $DbStatusRebloggedAccountsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_status_reblogged_accounts';
   @override
   final String actualTableName = 'db_status_reblogged_accounts';
-
   @override
   VerificationContext validateIntegrity(
       Insertable<DbStatusRebloggedAccount> instance,
@@ -6416,7 +6074,6 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbStatusRebloggedAccount map(Map<String, dynamic> data,
       {String tablePrefix}) {
@@ -6436,12 +6093,10 @@ class DbAccountFollowing extends DataClass
   final int id;
   final String accountRemoteId;
   final String followingAccountRemoteId;
-
   DbAccountFollowing(
       {@required this.id,
       @required this.accountRemoteId,
       @required this.followingAccountRemoteId});
-
   factory DbAccountFollowing.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6456,7 +6111,6 @@ class DbAccountFollowing extends DataClass
           data['${effectivePrefix}following_account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6495,7 +6149,6 @@ class DbAccountFollowing extends DataClass
           serializer.fromJson<String>(json['followingAccountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6515,7 +6168,6 @@ class DbAccountFollowing extends DataClass
         followingAccountRemoteId:
             followingAccountRemoteId ?? this.followingAccountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbAccountFollowing(')
@@ -6529,7 +6181,6 @@ class DbAccountFollowing extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(accountRemoteId.hashCode, followingAccountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6543,20 +6194,17 @@ class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
   final Value<int> id;
   final Value<String> accountRemoteId;
   final Value<String> followingAccountRemoteId;
-
   const DbAccountFollowingsCompanion({
     this.id = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
     this.followingAccountRemoteId = const Value.absent(),
   });
-
   DbAccountFollowingsCompanion.insert({
     this.id = const Value.absent(),
     @required String accountRemoteId,
     @required String followingAccountRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         followingAccountRemoteId = Value(followingAccountRemoteId);
-
   static Insertable<DbAccountFollowing> custom({
     Expression<int> id,
     Expression<String> accountRemoteId,
@@ -6613,15 +6261,11 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
     with TableInfo<$DbAccountFollowingsTable, DbAccountFollowing> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbAccountFollowingsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -6630,11 +6274,9 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -6646,11 +6288,9 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   final VerificationMeta _followingAccountRemoteIdMeta =
       const VerificationMeta('followingAccountRemoteId');
   GeneratedTextColumn _followingAccountRemoteId;
-
   @override
   GeneratedTextColumn get followingAccountRemoteId =>
       _followingAccountRemoteId ??= _constructFollowingAccountRemoteId();
-
   GeneratedTextColumn _constructFollowingAccountRemoteId() {
     return GeneratedTextColumn(
       'following_account_remote_id',
@@ -6662,15 +6302,12 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   @override
   List<GeneratedColumn> get $columns =>
       [id, accountRemoteId, followingAccountRemoteId];
-
   @override
   $DbAccountFollowingsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_account_followings';
   @override
   final String actualTableName = 'db_account_followings';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbAccountFollowing> instance,
       {bool isInserting = false}) {
@@ -6701,7 +6338,6 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbAccountFollowing map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -6719,12 +6355,10 @@ class DbAccountFollower extends DataClass
   final int id;
   final String accountRemoteId;
   final String followerAccountRemoteId;
-
   DbAccountFollower(
       {@required this.id,
       @required this.accountRemoteId,
       @required this.followerAccountRemoteId});
-
   factory DbAccountFollower.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6739,7 +6373,6 @@ class DbAccountFollower extends DataClass
           data['${effectivePrefix}follower_account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6778,7 +6411,6 @@ class DbAccountFollower extends DataClass
           serializer.fromJson<String>(json['followerAccountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -6798,7 +6430,6 @@ class DbAccountFollower extends DataClass
         followerAccountRemoteId:
             followerAccountRemoteId ?? this.followerAccountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbAccountFollower(')
@@ -6812,7 +6443,6 @@ class DbAccountFollower extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(accountRemoteId.hashCode, followerAccountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6826,20 +6456,17 @@ class DbAccountFollowersCompanion extends UpdateCompanion<DbAccountFollower> {
   final Value<int> id;
   final Value<String> accountRemoteId;
   final Value<String> followerAccountRemoteId;
-
   const DbAccountFollowersCompanion({
     this.id = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
     this.followerAccountRemoteId = const Value.absent(),
   });
-
   DbAccountFollowersCompanion.insert({
     this.id = const Value.absent(),
     @required String accountRemoteId,
     @required String followerAccountRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         followerAccountRemoteId = Value(followerAccountRemoteId);
-
   static Insertable<DbAccountFollower> custom({
     Expression<int> id,
     Expression<String> accountRemoteId,
@@ -6896,15 +6523,11 @@ class $DbAccountFollowersTable extends DbAccountFollowers
     with TableInfo<$DbAccountFollowersTable, DbAccountFollower> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbAccountFollowersTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -6913,11 +6536,9 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -6929,11 +6550,9 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   final VerificationMeta _followerAccountRemoteIdMeta =
       const VerificationMeta('followerAccountRemoteId');
   GeneratedTextColumn _followerAccountRemoteId;
-
   @override
   GeneratedTextColumn get followerAccountRemoteId =>
       _followerAccountRemoteId ??= _constructFollowerAccountRemoteId();
-
   GeneratedTextColumn _constructFollowerAccountRemoteId() {
     return GeneratedTextColumn(
       'follower_account_remote_id',
@@ -6945,15 +6564,12 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   @override
   List<GeneratedColumn> get $columns =>
       [id, accountRemoteId, followerAccountRemoteId];
-
   @override
   $DbAccountFollowersTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_account_followers';
   @override
   final String actualTableName = 'db_account_followers';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbAccountFollower> instance,
       {bool isInserting = false}) {
@@ -6984,7 +6600,6 @@ class $DbAccountFollowersTable extends DbAccountFollowers
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbAccountFollower map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -7002,12 +6617,10 @@ class DbConversationAccount extends DataClass
   final int id;
   final String conversationRemoteId;
   final String accountRemoteId;
-
   DbConversationAccount(
       {@required this.id,
       @required this.conversationRemoteId,
       @required this.accountRemoteId});
-
   factory DbConversationAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -7022,7 +6635,6 @@ class DbConversationAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7060,7 +6672,6 @@ class DbConversationAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -7078,7 +6689,6 @@ class DbConversationAccount extends DataClass
         conversationRemoteId: conversationRemoteId ?? this.conversationRemoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbConversationAccount(')
@@ -7092,7 +6702,6 @@ class DbConversationAccount extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(conversationRemoteId.hashCode, accountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -7107,20 +6716,17 @@ class DbConversationAccountsCompanion
   final Value<int> id;
   final Value<String> conversationRemoteId;
   final Value<String> accountRemoteId;
-
   const DbConversationAccountsCompanion({
     this.id = const Value.absent(),
     this.conversationRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
-
   DbConversationAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String conversationRemoteId,
     @required String accountRemoteId,
   })  : conversationRemoteId = Value(conversationRemoteId),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbConversationAccount> custom({
     Expression<int> id,
     Expression<String> conversationRemoteId,
@@ -7176,15 +6782,11 @@ class $DbConversationAccountsTable extends DbConversationAccounts
     with TableInfo<$DbConversationAccountsTable, DbConversationAccount> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbConversationAccountsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -7193,11 +6795,9 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   final VerificationMeta _conversationRemoteIdMeta =
       const VerificationMeta('conversationRemoteId');
   GeneratedTextColumn _conversationRemoteId;
-
   @override
   GeneratedTextColumn get conversationRemoteId =>
       _conversationRemoteId ??= _constructConversationRemoteId();
-
   GeneratedTextColumn _constructConversationRemoteId() {
     return GeneratedTextColumn(
       'conversation_remote_id',
@@ -7209,11 +6809,9 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -7225,15 +6823,12 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   @override
   List<GeneratedColumn> get $columns =>
       [id, conversationRemoteId, accountRemoteId];
-
   @override
   $DbConversationAccountsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_conversation_accounts';
   @override
   final String actualTableName = 'db_conversation_accounts';
-
   @override
   VerificationContext validateIntegrity(
       Insertable<DbConversationAccount> instance,
@@ -7264,7 +6859,6 @@ class $DbConversationAccountsTable extends DbConversationAccounts
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbConversationAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -7285,7 +6879,6 @@ class DbScheduledStatus extends DataClass
   final bool canceled;
   final PleromaScheduledStatusParams params;
   final List<PleromaMediaAttachment> mediaAttachments;
-
   DbScheduledStatus(
       {@required this.id,
       @required this.remoteId,
@@ -7293,7 +6886,6 @@ class DbScheduledStatus extends DataClass
       @required this.canceled,
       this.params,
       this.mediaAttachments});
-
   factory DbScheduledStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -7317,7 +6909,6 @@ class DbScheduledStatus extends DataClass
               data['${effectivePrefix}media_attachments'])),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7378,7 +6969,6 @@ class DbScheduledStatus extends DataClass
           .fromJson<List<PleromaMediaAttachment>>(json['mediaAttachments']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -7408,7 +6998,6 @@ class DbScheduledStatus extends DataClass
         params: params ?? this.params,
         mediaAttachments: mediaAttachments ?? this.mediaAttachments,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbScheduledStatus(')
@@ -7431,7 +7020,6 @@ class DbScheduledStatus extends DataClass
               scheduledAt.hashCode,
               $mrjc(canceled.hashCode,
                   $mrjc(params.hashCode, mediaAttachments.hashCode))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -7451,7 +7039,6 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   final Value<bool> canceled;
   final Value<PleromaScheduledStatusParams> params;
   final Value<List<PleromaMediaAttachment>> mediaAttachments;
-
   const DbScheduledStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -7460,7 +7047,6 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     this.params = const Value.absent(),
     this.mediaAttachments = const Value.absent(),
   });
-
   DbScheduledStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -7471,7 +7057,6 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   })  : remoteId = Value(remoteId),
         scheduledAt = Value(scheduledAt),
         canceled = Value(canceled);
-
   static Insertable<DbScheduledStatus> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -7552,15 +7137,11 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
     with TableInfo<$DbScheduledStatusesTable, DbScheduledStatus> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbScheduledStatusesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -7568,10 +7149,8 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -7580,11 +7159,9 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   final VerificationMeta _scheduledAtMeta =
       const VerificationMeta('scheduledAt');
   GeneratedDateTimeColumn _scheduledAt;
-
   @override
   GeneratedDateTimeColumn get scheduledAt =>
       _scheduledAt ??= _constructScheduledAt();
-
   GeneratedDateTimeColumn _constructScheduledAt() {
     return GeneratedDateTimeColumn(
       'scheduled_at',
@@ -7595,10 +7172,8 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
 
   final VerificationMeta _canceledMeta = const VerificationMeta('canceled');
   GeneratedBoolColumn _canceled;
-
   @override
   GeneratedBoolColumn get canceled => _canceled ??= _constructCanceled();
-
   GeneratedBoolColumn _constructCanceled() {
     return GeneratedBoolColumn(
       'canceled',
@@ -7609,10 +7184,8 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
 
   final VerificationMeta _paramsMeta = const VerificationMeta('params');
   GeneratedTextColumn _params;
-
   @override
   GeneratedTextColumn get params => _params ??= _constructParams();
-
   GeneratedTextColumn _constructParams() {
     return GeneratedTextColumn(
       'params',
@@ -7624,11 +7197,9 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   final VerificationMeta _mediaAttachmentsMeta =
       const VerificationMeta('mediaAttachments');
   GeneratedTextColumn _mediaAttachments;
-
   @override
   GeneratedTextColumn get mediaAttachments =>
       _mediaAttachments ??= _constructMediaAttachments();
-
   GeneratedTextColumn _constructMediaAttachments() {
     return GeneratedTextColumn(
       'media_attachments',
@@ -7640,15 +7211,12 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   @override
   List<GeneratedColumn> get $columns =>
       [id, remoteId, scheduledAt, canceled, params, mediaAttachments];
-
   @override
   $DbScheduledStatusesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_scheduled_statuses';
   @override
   final String actualTableName = 'db_scheduled_statuses';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbScheduledStatus> instance,
       {bool isInserting = false}) {
@@ -7684,7 +7252,6 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbScheduledStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -7708,14 +7275,12 @@ class DbChat extends DataClass implements Insertable<DbChat> {
   final int unread;
   final DateTime updatedAt;
   final String accountRemoteId;
-
   DbChat(
       {@required this.id,
       @required this.remoteId,
       @required this.unread,
       this.updatedAt,
       @required this.accountRemoteId});
-
   factory DbChat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -7733,7 +7298,6 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7783,7 +7347,6 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -7809,7 +7372,6 @@ class DbChat extends DataClass implements Insertable<DbChat> {
         updatedAt: updatedAt ?? this.updatedAt,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbChat(')
@@ -7829,7 +7391,6 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           remoteId.hashCode,
           $mrjc(unread.hashCode,
               $mrjc(updatedAt.hashCode, accountRemoteId.hashCode)))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -7847,7 +7408,6 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
   final Value<int> unread;
   final Value<DateTime> updatedAt;
   final Value<String> accountRemoteId;
-
   const DbChatsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -7855,7 +7415,6 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
     this.updatedAt = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
-
   DbChatsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -7865,7 +7424,6 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
   })  : remoteId = Value(remoteId),
         unread = Value(unread),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbChat> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -7934,15 +7492,11 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
 class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbChatsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -7950,10 +7504,8 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -7961,10 +7513,8 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
 
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedIntColumn _unread;
-
   @override
   GeneratedIntColumn get unread => _unread ??= _constructUnread();
-
   GeneratedIntColumn _constructUnread() {
     return GeneratedIntColumn(
       'unread',
@@ -7975,10 +7525,8 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
 
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   GeneratedDateTimeColumn _updatedAt;
-
   @override
   GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
-
   GeneratedDateTimeColumn _constructUpdatedAt() {
     return GeneratedDateTimeColumn(
       'updated_at',
@@ -7990,11 +7538,9 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -8006,15 +7552,12 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
   @override
   List<GeneratedColumn> get $columns =>
       [id, remoteId, unread, updatedAt, accountRemoteId];
-
   @override
   $DbChatsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_chats';
   @override
   final String actualTableName = 'db_chats';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbChat> instance,
       {bool isInserting = false}) {
@@ -8052,7 +7595,6 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbChat map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -8075,7 +7617,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final List<PleromaEmoji> emojis;
   final PleromaMediaAttachment mediaAttachment;
   final PleromaCard card;
-
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -8086,7 +7627,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       this.emojis,
       this.mediaAttachment,
       this.card});
-
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -8114,7 +7654,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -8195,7 +7734,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       card: serializer.fromJson<PleromaCard>(json['card']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -8234,7 +7772,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         mediaAttachment: mediaAttachment ?? this.mediaAttachment,
         card: card ?? this.card,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbChatMessage(')
@@ -8268,7 +7805,6 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
                               emojis.hashCode,
                               $mrjc(mediaAttachment.hashCode,
                                   card.hashCode)))))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -8294,7 +7830,6 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<List<PleromaEmoji>> emojis;
   final Value<PleromaMediaAttachment> mediaAttachment;
   final Value<PleromaCard> card;
-
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -8306,7 +7841,6 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.mediaAttachment = const Value.absent(),
     this.card = const Value.absent(),
   });
-
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -8321,7 +7855,6 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
         createdAt = Value(createdAt);
-
   static Insertable<DbChatMessage> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -8427,15 +7960,11 @@ class $DbChatMessagesTable extends DbChatMessages
     with TableInfo<$DbChatMessagesTable, DbChatMessage> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbChatMessagesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -8443,10 +7972,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -8455,11 +7982,9 @@ class $DbChatMessagesTable extends DbChatMessages
   final VerificationMeta _chatRemoteIdMeta =
       const VerificationMeta('chatRemoteId');
   GeneratedTextColumn _chatRemoteId;
-
   @override
   GeneratedTextColumn get chatRemoteId =>
       _chatRemoteId ??= _constructChatRemoteId();
-
   GeneratedTextColumn _constructChatRemoteId() {
     return GeneratedTextColumn(
       'chat_remote_id',
@@ -8471,11 +7996,9 @@ class $DbChatMessagesTable extends DbChatMessages
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -8486,10 +8009,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   final VerificationMeta _contentMeta = const VerificationMeta('content');
   GeneratedTextColumn _content;
-
   @override
   GeneratedTextColumn get content => _content ??= _constructContent();
-
   GeneratedTextColumn _constructContent() {
     return GeneratedTextColumn(
       'content',
@@ -8500,10 +8021,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   GeneratedDateTimeColumn _createdAt;
-
   @override
   GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
-
   GeneratedDateTimeColumn _constructCreatedAt() {
     return GeneratedDateTimeColumn(
       'created_at',
@@ -8514,10 +8033,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
   GeneratedTextColumn _emojis;
-
   @override
   GeneratedTextColumn get emojis => _emojis ??= _constructEmojis();
-
   GeneratedTextColumn _constructEmojis() {
     return GeneratedTextColumn(
       'emojis',
@@ -8529,11 +8046,9 @@ class $DbChatMessagesTable extends DbChatMessages
   final VerificationMeta _mediaAttachmentMeta =
       const VerificationMeta('mediaAttachment');
   GeneratedTextColumn _mediaAttachment;
-
   @override
   GeneratedTextColumn get mediaAttachment =>
       _mediaAttachment ??= _constructMediaAttachment();
-
   GeneratedTextColumn _constructMediaAttachment() {
     return GeneratedTextColumn(
       'media_attachment',
@@ -8544,10 +8059,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   final VerificationMeta _cardMeta = const VerificationMeta('card');
   GeneratedTextColumn _card;
-
   @override
   GeneratedTextColumn get card => _card ??= _constructCard();
-
   GeneratedTextColumn _constructCard() {
     return GeneratedTextColumn(
       'card',
@@ -8568,15 +8081,12 @@ class $DbChatMessagesTable extends DbChatMessages
         mediaAttachment,
         card
       ];
-
   @override
   $DbChatMessagesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_chat_messages';
   @override
   final String actualTableName = 'db_chat_messages';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbChatMessage> instance,
       {bool isInserting = false}) {
@@ -8625,7 +8135,6 @@ class $DbChatMessagesTable extends DbChatMessages
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbChatMessage map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -8649,12 +8158,10 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
   final int id;
   final String chatRemoteId;
   final String accountRemoteId;
-
   DbChatAccount(
       {@required this.id,
       @required this.chatRemoteId,
       @required this.accountRemoteId});
-
   factory DbChatAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -8669,7 +8176,6 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -8706,7 +8212,6 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -8724,7 +8229,6 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
         chatRemoteId: chatRemoteId ?? this.chatRemoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbChatAccount(')
@@ -8738,7 +8242,6 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(chatRemoteId.hashCode, accountRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -8752,20 +8255,17 @@ class DbChatAccountsCompanion extends UpdateCompanion<DbChatAccount> {
   final Value<int> id;
   final Value<String> chatRemoteId;
   final Value<String> accountRemoteId;
-
   const DbChatAccountsCompanion({
     this.id = const Value.absent(),
     this.chatRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
-
   DbChatAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String chatRemoteId,
     @required String accountRemoteId,
   })  : chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId);
-
   static Insertable<DbChatAccount> custom({
     Expression<int> id,
     Expression<String> chatRemoteId,
@@ -8819,15 +8319,11 @@ class $DbChatAccountsTable extends DbChatAccounts
     with TableInfo<$DbChatAccountsTable, DbChatAccount> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbChatAccountsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -8836,11 +8332,9 @@ class $DbChatAccountsTable extends DbChatAccounts
   final VerificationMeta _chatRemoteIdMeta =
       const VerificationMeta('chatRemoteId');
   GeneratedTextColumn _chatRemoteId;
-
   @override
   GeneratedTextColumn get chatRemoteId =>
       _chatRemoteId ??= _constructChatRemoteId();
-
   GeneratedTextColumn _constructChatRemoteId() {
     return GeneratedTextColumn(
       'chat_remote_id',
@@ -8852,11 +8346,9 @@ class $DbChatAccountsTable extends DbChatAccounts
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn(
       'account_remote_id',
@@ -8867,15 +8359,12 @@ class $DbChatAccountsTable extends DbChatAccounts
 
   @override
   List<GeneratedColumn> get $columns => [id, chatRemoteId, accountRemoteId];
-
   @override
   $DbChatAccountsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_chat_accounts';
   @override
   final String actualTableName = 'db_chat_accounts';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbChatAccount> instance,
       {bool isInserting = false}) {
@@ -8905,7 +8394,6 @@ class $DbChatAccountsTable extends DbChatAccounts
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbChatAccount map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -8926,7 +8414,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
   final bool irreversible;
   final bool wholeWord;
   final DateTime expiresAt;
-
   DbFilter(
       {@required this.id,
       @required this.remoteId,
@@ -8935,7 +8422,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
       this.irreversible,
       this.wholeWord,
       this.expiresAt});
-
   factory DbFilter.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -8959,7 +8445,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
           .mapFromDatabaseResponse(data['${effectivePrefix}expires_at']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -9024,7 +8509,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
       expiresAt: serializer.fromJson<DateTime>(json['expiresAt']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -9056,7 +8540,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
         wholeWord: wholeWord ?? this.wholeWord,
         expiresAt: expiresAt ?? this.expiresAt,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbFilter(')
@@ -9082,7 +8565,6 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
                   context.hashCode,
                   $mrjc(irreversible.hashCode,
                       $mrjc(wholeWord.hashCode, expiresAt.hashCode)))))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -9104,7 +8586,6 @@ class DbFiltersCompanion extends UpdateCompanion<DbFilter> {
   final Value<bool> irreversible;
   final Value<bool> wholeWord;
   final Value<DateTime> expiresAt;
-
   const DbFiltersCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -9114,7 +8595,6 @@ class DbFiltersCompanion extends UpdateCompanion<DbFilter> {
     this.wholeWord = const Value.absent(),
     this.expiresAt = const Value.absent(),
   });
-
   DbFiltersCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -9125,7 +8605,6 @@ class DbFiltersCompanion extends UpdateCompanion<DbFilter> {
     this.expiresAt = const Value.absent(),
   })  : remoteId = Value(remoteId),
         phrase = Value(phrase);
-
   static Insertable<DbFilter> custom({
     Expression<int> id,
     Expression<String> remoteId,
@@ -9212,15 +8691,11 @@ class $DbFiltersTable extends DbFilters
     with TableInfo<$DbFiltersTable, DbFilter> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbFiltersTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -9228,10 +8703,8 @@ class $DbFiltersTable extends DbFilters
 
   final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
   GeneratedTextColumn _remoteId;
-
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
-
   GeneratedTextColumn _constructRemoteId() {
     return GeneratedTextColumn('remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -9239,10 +8712,8 @@ class $DbFiltersTable extends DbFilters
 
   final VerificationMeta _phraseMeta = const VerificationMeta('phrase');
   GeneratedTextColumn _phrase;
-
   @override
   GeneratedTextColumn get phrase => _phrase ??= _constructPhrase();
-
   GeneratedTextColumn _constructPhrase() {
     return GeneratedTextColumn(
       'phrase',
@@ -9253,10 +8724,8 @@ class $DbFiltersTable extends DbFilters
 
   final VerificationMeta _contextMeta = const VerificationMeta('context');
   GeneratedTextColumn _context;
-
   @override
   GeneratedTextColumn get context => _context ??= _constructContext();
-
   GeneratedTextColumn _constructContext() {
     return GeneratedTextColumn(
       'context',
@@ -9268,11 +8737,9 @@ class $DbFiltersTable extends DbFilters
   final VerificationMeta _irreversibleMeta =
       const VerificationMeta('irreversible');
   GeneratedBoolColumn _irreversible;
-
   @override
   GeneratedBoolColumn get irreversible =>
       _irreversible ??= _constructIrreversible();
-
   GeneratedBoolColumn _constructIrreversible() {
     return GeneratedBoolColumn(
       'irreversible',
@@ -9283,10 +8750,8 @@ class $DbFiltersTable extends DbFilters
 
   final VerificationMeta _wholeWordMeta = const VerificationMeta('wholeWord');
   GeneratedBoolColumn _wholeWord;
-
   @override
   GeneratedBoolColumn get wholeWord => _wholeWord ??= _constructWholeWord();
-
   GeneratedBoolColumn _constructWholeWord() {
     return GeneratedBoolColumn(
       'whole_word',
@@ -9297,10 +8762,8 @@ class $DbFiltersTable extends DbFilters
 
   final VerificationMeta _expiresAtMeta = const VerificationMeta('expiresAt');
   GeneratedDateTimeColumn _expiresAt;
-
   @override
   GeneratedDateTimeColumn get expiresAt => _expiresAt ??= _constructExpiresAt();
-
   GeneratedDateTimeColumn _constructExpiresAt() {
     return GeneratedDateTimeColumn(
       'expires_at',
@@ -9312,15 +8775,12 @@ class $DbFiltersTable extends DbFilters
   @override
   List<GeneratedColumn> get $columns =>
       [id, remoteId, phrase, context, irreversible, wholeWord, expiresAt];
-
   @override
   $DbFiltersTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_filters';
   @override
   final String actualTableName = 'db_filters';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbFilter> instance,
       {bool isInserting = false}) {
@@ -9361,7 +8821,6 @@ class $DbFiltersTable extends DbFilters
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbFilter map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -9382,12 +8841,10 @@ class DbHomeTimelineStatus extends DataClass
   final int id;
   final String accountRemoteId;
   final String statusRemoteId;
-
   DbHomeTimelineStatus(
       {@required this.id,
       @required this.accountRemoteId,
       @required this.statusRemoteId});
-
   factory DbHomeTimelineStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -9402,7 +8859,6 @@ class DbHomeTimelineStatus extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -9439,7 +8895,6 @@ class DbHomeTimelineStatus extends DataClass
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -9457,7 +8912,6 @@ class DbHomeTimelineStatus extends DataClass
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbHomeTimelineStatus(')
@@ -9471,7 +8925,6 @@ class DbHomeTimelineStatus extends DataClass
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode, $mrjc(accountRemoteId.hashCode, statusRemoteId.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -9486,20 +8939,17 @@ class DbHomeTimelineStatusesCompanion
   final Value<int> id;
   final Value<String> accountRemoteId;
   final Value<String> statusRemoteId;
-
   const DbHomeTimelineStatusesCompanion({
     this.id = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
   });
-
   DbHomeTimelineStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String accountRemoteId,
     @required String statusRemoteId,
   })  : accountRemoteId = Value(accountRemoteId),
         statusRemoteId = Value(statusRemoteId);
-
   static Insertable<DbHomeTimelineStatus> custom({
     Expression<int> id,
     Expression<String> accountRemoteId,
@@ -9553,15 +9003,11 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
     with TableInfo<$DbHomeTimelineStatusesTable, DbHomeTimelineStatus> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbHomeTimelineStatusesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -9570,11 +9016,9 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   GeneratedTextColumn _accountRemoteId;
-
   @override
   GeneratedTextColumn get accountRemoteId =>
       _accountRemoteId ??= _constructAccountRemoteId();
-
   GeneratedTextColumn _constructAccountRemoteId() {
     return GeneratedTextColumn('account_remote_id', $tableName, false,
         $customConstraints: 'NOT NULL');
@@ -9583,11 +9027,9 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
-
   @override
   GeneratedTextColumn get statusRemoteId =>
       _statusRemoteId ??= _constructStatusRemoteId();
-
   GeneratedTextColumn _constructStatusRemoteId() {
     return GeneratedTextColumn('status_remote_id', $tableName, false,
         $customConstraints: 'UNIQUE NOT NULL');
@@ -9595,15 +9037,12 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
 
   @override
   List<GeneratedColumn> get $columns => [id, accountRemoteId, statusRemoteId];
-
   @override
   $DbHomeTimelineStatusesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_home_timeline_statuses';
   @override
   final String actualTableName = 'db_home_timeline_statuses';
-
   @override
   VerificationContext validateIntegrity(
       Insertable<DbHomeTimelineStatus> instance,
@@ -9634,7 +9073,6 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbHomeTimelineStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -9651,10 +9089,8 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
   final int id;
   final DateTime updatedAt;
   final PostStatusData data;
-
   DbDraftStatus(
       {@required this.id, @required this.updatedAt, @required this.data});
-
   factory DbDraftStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -9670,7 +9106,6 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}data'])),
     );
   }
-
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -9706,7 +9141,6 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
       data: serializer.fromJson<PostStatusData>(json['data']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -9723,7 +9157,6 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
         updatedAt: updatedAt ?? this.updatedAt,
         data: data ?? this.data,
       );
-
   @override
   String toString() {
     return (StringBuffer('DbDraftStatus(')
@@ -9737,7 +9170,6 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
   @override
   int get hashCode =>
       $mrjf($mrjc(id.hashCode, $mrjc(updatedAt.hashCode, data.hashCode)));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -9751,20 +9183,17 @@ class DbDraftStatusesCompanion extends UpdateCompanion<DbDraftStatus> {
   final Value<int> id;
   final Value<DateTime> updatedAt;
   final Value<PostStatusData> data;
-
   const DbDraftStatusesCompanion({
     this.id = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.data = const Value.absent(),
   });
-
   DbDraftStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required DateTime updatedAt,
     @required PostStatusData data,
   })  : updatedAt = Value(updatedAt),
         data = Value(data);
-
   static Insertable<DbDraftStatus> custom({
     Expression<int> id,
     Expression<DateTime> updatedAt,
@@ -9817,15 +9246,11 @@ class $DbDraftStatusesTable extends DbDraftStatuses
     with TableInfo<$DbDraftStatusesTable, DbDraftStatus> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $DbDraftStatusesTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
-
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
-
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
@@ -9833,10 +9258,8 @@ class $DbDraftStatusesTable extends DbDraftStatuses
 
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   GeneratedDateTimeColumn _updatedAt;
-
   @override
   GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
-
   GeneratedDateTimeColumn _constructUpdatedAt() {
     return GeneratedDateTimeColumn(
       'updated_at',
@@ -9847,10 +9270,8 @@ class $DbDraftStatusesTable extends DbDraftStatuses
 
   final VerificationMeta _dataMeta = const VerificationMeta('data');
   GeneratedTextColumn _data;
-
   @override
   GeneratedTextColumn get data => _data ??= _constructData();
-
   GeneratedTextColumn _constructData() {
     return GeneratedTextColumn(
       'data',
@@ -9861,15 +9282,12 @@ class $DbDraftStatusesTable extends DbDraftStatuses
 
   @override
   List<GeneratedColumn> get $columns => [id, updatedAt, data];
-
   @override
   $DbDraftStatusesTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'db_draft_statuses';
   @override
   final String actualTableName = 'db_draft_statuses';
-
   @override
   VerificationContext validateIntegrity(Insertable<DbDraftStatus> instance,
       {bool isInserting = false}) {
@@ -9890,7 +9308,6 @@ class $DbDraftStatusesTable extends DbDraftStatuses
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
-
   @override
   DbDraftStatus map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -9909,249 +9326,191 @@ class $DbDraftStatusesTable extends DbDraftStatuses
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DbStatusesTable _dbStatuses;
-
   $DbStatusesTable get dbStatuses => _dbStatuses ??= $DbStatusesTable(this);
   Index _dbStatusRemoteIdIndex;
-
   Index get dbStatusRemoteIdIndex => _dbStatusRemoteIdIndex ??= Index(
       'db_status_remote_id_index',
       'CREATE UNIQUE INDEX db_status_remote_id_index ON db_statuses (remote_id);');
   $DbAccountsTable _dbAccounts;
-
   $DbAccountsTable get dbAccounts => _dbAccounts ??= $DbAccountsTable(this);
   Index _dbAccountRemoteIdIndex;
-
   Index get dbAccountRemoteIdIndex => _dbAccountRemoteIdIndex ??= Index(
       'db_account_remote_id_index',
       'CREATE UNIQUE INDEX db_account_remote_id_index ON db_accounts (remote_id);');
   $DbConversationsTable _dbConversations;
-
   $DbConversationsTable get dbConversations =>
       _dbConversations ??= $DbConversationsTable(this);
   Index _dbConversationRemoteIdIndex;
-
   Index get dbConversationRemoteIdIndex => _dbConversationRemoteIdIndex ??= Index(
       'db_conversation_remote_id_index',
       'CREATE UNIQUE INDEX db_conversation_remote_id_index ON db_conversations (remote_id);');
   $DbNotificationsTable _dbNotifications;
-
   $DbNotificationsTable get dbNotifications =>
       _dbNotifications ??= $DbNotificationsTable(this);
   Index _dbNotificationRemoteIdIndex;
-
   Index get dbNotificationRemoteIdIndex => _dbNotificationRemoteIdIndex ??= Index(
       'db_notification_remote_id_index',
       'CREATE UNIQUE INDEX db_notification_remote_id_index ON db_notifications (remote_id);');
   $DbConversationStatusesTable _dbConversationStatuses;
-
   $DbConversationStatusesTable get dbConversationStatuses =>
       _dbConversationStatuses ??= $DbConversationStatusesTable(this);
   Index _dbConversationStatusesIndex;
-
   Index get dbConversationStatusesIndex => _dbConversationStatusesIndex ??= Index(
       'db_conversation_statuses_index',
       'CREATE UNIQUE INDEX db_conversation_statuses_index ON db_conversation_statuses(status_remote_id, conversation_remote_id);');
   $DbStatusHashtagsTable _dbStatusHashtags;
-
   $DbStatusHashtagsTable get dbStatusHashtags =>
       _dbStatusHashtags ??= $DbStatusHashtagsTable(this);
   Index _dbStatusHashtagsIndex;
-
   Index get dbStatusHashtagsIndex => _dbStatusHashtagsIndex ??= Index(
       'db_status_hashtags_index',
       'CREATE UNIQUE INDEX db_status_hashtags_index ON db_status_hashtags(status_remote_id, hashtag);');
   $DbStatusListsTable _dbStatusLists;
-
   $DbStatusListsTable get dbStatusLists =>
       _dbStatusLists ??= $DbStatusListsTable(this);
   Index _dbStatusListsIndex;
-
   Index get dbStatusListsIndex => _dbStatusListsIndex ??= Index(
       'db_status_lists_index',
       'CREATE UNIQUE INDEX db_status_lists_index ON db_status_lists(status_remote_id, list_remote_id);');
   $DbStatusFavouritedAccountsTable _dbStatusFavouritedAccounts;
-
   $DbStatusFavouritedAccountsTable get dbStatusFavouritedAccounts =>
       _dbStatusFavouritedAccounts ??= $DbStatusFavouritedAccountsTable(this);
   Index _dbStatusFavouritedAccountsIndex;
-
   Index get dbStatusFavouritedAccountsIndex =>
       _dbStatusFavouritedAccountsIndex ??= Index(
           'db_status_favourited_accounts_index',
           'CREATE UNIQUE INDEX db_status_favourited_accounts_index ON db_status_favourited_accounts(status_remote_id, account_remote_id);');
   $DbStatusRebloggedAccountsTable _dbStatusRebloggedAccounts;
-
   $DbStatusRebloggedAccountsTable get dbStatusRebloggedAccounts =>
       _dbStatusRebloggedAccounts ??= $DbStatusRebloggedAccountsTable(this);
   Index _dbStatusRebloggedAccountsIndex;
-
   Index get dbStatusRebloggedAccountsIndex =>
       _dbStatusRebloggedAccountsIndex ??= Index(
           'db_status_reblogged_accounts_index',
           'CREATE UNIQUE INDEX db_status_reblogged_accounts_index ON db_status_reblogged_accounts(status_remote_id, account_remote_id);');
   $DbAccountFollowingsTable _dbAccountFollowings;
-
   $DbAccountFollowingsTable get dbAccountFollowings =>
       _dbAccountFollowings ??= $DbAccountFollowingsTable(this);
   Index _dbAccountFollowingsIndex;
-
   Index get dbAccountFollowingsIndex => _dbAccountFollowingsIndex ??= Index(
       'db_account_followings_index',
       'CREATE UNIQUE INDEX db_account_followings_index ON db_account_followings(account_remote_id, following_account_remote_id);');
   $DbAccountFollowersTable _dbAccountFollowers;
-
   $DbAccountFollowersTable get dbAccountFollowers =>
       _dbAccountFollowers ??= $DbAccountFollowersTable(this);
   Index _dbAccountFollowersIndex;
-
   Index get dbAccountFollowersIndex => _dbAccountFollowersIndex ??= Index(
       'db_account_followers_index',
       'CREATE UNIQUE INDEX db_account_followers_index ON db_account_followers(account_remote_id, follower_account_remote_id);');
   $DbConversationAccountsTable _dbConversationAccounts;
-
   $DbConversationAccountsTable get dbConversationAccounts =>
       _dbConversationAccounts ??= $DbConversationAccountsTable(this);
   Index _dbConversationAccountsIndex;
-
   Index get dbConversationAccountsIndex => _dbConversationAccountsIndex ??= Index(
       'db_conversation_accounts_index',
       'CREATE UNIQUE INDEX db_conversation_accounts_index ON db_conversation_accounts(conversation_remote_id, account_remote_id);');
   $DbScheduledStatusesTable _dbScheduledStatuses;
-
   $DbScheduledStatusesTable get dbScheduledStatuses =>
       _dbScheduledStatuses ??= $DbScheduledStatusesTable(this);
   Index _dbScheduledStatusRemoteIdIndex;
-
   Index get dbScheduledStatusRemoteIdIndex =>
       _dbScheduledStatusRemoteIdIndex ??= Index(
           'db_scheduled_status_remote_id_index',
           'CREATE UNIQUE INDEX db_scheduled_status_remote_id_index ON db_scheduled_statuses (remote_id);');
   $DbChatsTable _dbChats;
-
   $DbChatsTable get dbChats => _dbChats ??= $DbChatsTable(this);
   Index _dbChatRemoteIdIndex;
-
   Index get dbChatRemoteIdIndex => _dbChatRemoteIdIndex ??= Index(
       'db_chat_remote_id_index',
       'CREATE UNIQUE INDEX db_chat_remote_id_index ON db_chats (remote_id);');
   $DbChatMessagesTable _dbChatMessages;
-
   $DbChatMessagesTable get dbChatMessages =>
       _dbChatMessages ??= $DbChatMessagesTable(this);
   Index _dbChatMessagesRemoteIdIndex;
-
   Index get dbChatMessagesRemoteIdIndex => _dbChatMessagesRemoteIdIndex ??= Index(
       'db_chat_messages_remote_id_index',
       'CREATE UNIQUE INDEX db_chat_messages_remote_id_index ON db_chat_messages(remote_id);');
   Index _dbChatMessagesChatRemoteIdIndex;
-
   Index get dbChatMessagesChatRemoteIdIndex =>
       _dbChatMessagesChatRemoteIdIndex ??= Index(
           'db_chat_messages_chat_remote_id_index',
           'CREATE INDEX db_chat_messages_chat_remote_id_index ON db_chat_messages(chat_remote_id);');
   $DbChatAccountsTable _dbChatAccounts;
-
   $DbChatAccountsTable get dbChatAccounts =>
       _dbChatAccounts ??= $DbChatAccountsTable(this);
   Index _dbChatAccountsIndex;
-
   Index get dbChatAccountsIndex => _dbChatAccountsIndex ??= Index(
       'db_chat_accounts_index',
       'CREATE UNIQUE INDEX db_chat_accounts_index ON db_chat_accounts(chat_remote_id, account_remote_id);');
   $DbFiltersTable _dbFilters;
-
   $DbFiltersTable get dbFilters => _dbFilters ??= $DbFiltersTable(this);
   Index _dbFilterRemoteIdIndex;
-
   Index get dbFilterRemoteIdIndex => _dbFilterRemoteIdIndex ??= Index(
       'db_filter_remote_id_index',
       'CREATE UNIQUE INDEX db_filter_remote_id_index ON db_filters (remote_id);');
   $DbHomeTimelineStatusesTable _dbHomeTimelineStatuses;
-
   $DbHomeTimelineStatusesTable get dbHomeTimelineStatuses =>
       _dbHomeTimelineStatuses ??= $DbHomeTimelineStatusesTable(this);
   $DbDraftStatusesTable _dbDraftStatuses;
-
   $DbDraftStatusesTable get dbDraftStatuses =>
       _dbDraftStatuses ??= $DbDraftStatusesTable(this);
   StatusDao _statusDao;
-
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
   StatusHashtagsDao _statusHashtagsDao;
-
   StatusHashtagsDao get statusHashtagsDao =>
       _statusHashtagsDao ??= StatusHashtagsDao(this as AppDatabase);
   StatusListsDao _statusListsDao;
-
   StatusListsDao get statusListsDao =>
       _statusListsDao ??= StatusListsDao(this as AppDatabase);
   AccountDao _accountDao;
-
   AccountDao get accountDao => _accountDao ??= AccountDao(this as AppDatabase);
   AccountFollowingsDao _accountFollowingsDao;
-
   AccountFollowingsDao get accountFollowingsDao =>
       _accountFollowingsDao ??= AccountFollowingsDao(this as AppDatabase);
   AccountFollowersDao _accountFollowersDao;
-
   AccountFollowersDao get accountFollowersDao =>
       _accountFollowersDao ??= AccountFollowersDao(this as AppDatabase);
   ConversationDao _conversationDao;
-
   ConversationDao get conversationDao =>
       _conversationDao ??= ConversationDao(this as AppDatabase);
   ConversationAccountsDao _conversationAccountsDao;
-
   ConversationAccountsDao get conversationAccountsDao =>
       _conversationAccountsDao ??= ConversationAccountsDao(this as AppDatabase);
   ConversationStatusesDao _conversationStatusesDao;
-
   ConversationStatusesDao get conversationStatusesDao =>
       _conversationStatusesDao ??= ConversationStatusesDao(this as AppDatabase);
   StatusFavouritedAccountsDao _statusFavouritedAccountsDao;
-
   StatusFavouritedAccountsDao get statusFavouritedAccountsDao =>
       _statusFavouritedAccountsDao ??=
           StatusFavouritedAccountsDao(this as AppDatabase);
   StatusRebloggedAccountsDao _statusRebloggedAccountsDao;
-
   StatusRebloggedAccountsDao get statusRebloggedAccountsDao =>
       _statusRebloggedAccountsDao ??=
           StatusRebloggedAccountsDao(this as AppDatabase);
   NotificationDao _notificationDao;
-
   NotificationDao get notificationDao =>
       _notificationDao ??= NotificationDao(this as AppDatabase);
   ScheduledStatusDao _scheduledStatusDao;
-
   ScheduledStatusDao get scheduledStatusDao =>
       _scheduledStatusDao ??= ScheduledStatusDao(this as AppDatabase);
   ChatDao _chatDao;
-
   ChatDao get chatDao => _chatDao ??= ChatDao(this as AppDatabase);
   ChatAccountsDao _chatAccountsDao;
-
   ChatAccountsDao get chatAccountsDao =>
       _chatAccountsDao ??= ChatAccountsDao(this as AppDatabase);
   ChatMessageDao _chatMessageDao;
-
   ChatMessageDao get chatMessageDao =>
       _chatMessageDao ??= ChatMessageDao(this as AppDatabase);
   HomeTimelineStatusesDao _homeTimelineStatusesDao;
-
   HomeTimelineStatusesDao get homeTimelineStatusesDao =>
       _homeTimelineStatusesDao ??= HomeTimelineStatusesDao(this as AppDatabase);
   DraftStatusDao _draftStatusDao;
-
   DraftStatusDao get draftStatusDao =>
       _draftStatusDao ??= DraftStatusDao(this as AppDatabase);
   FilterDao _filterDao;
-
   FilterDao get filterDao => _filterDao ??= FilterDao(this as AppDatabase);
-
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
-
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         dbStatuses,

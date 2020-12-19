@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2020-12-17T18:19:26+00:00",
+    "@@last_modified": "2020-12-19T13:41:08+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -13,7 +13,7 @@
     "app_theme_type_system": "Авто",
     "app_customList_create_title": "Создать список",
     "app_customList_edit_title": "Редактировать",
-    "app_acccount_my_customList_list_title": "Списки",
+    "app_account_my_customList_list_title": "Списки",
     "app_customList_form_field_title_label": "Название*",
     "app_customList_form_field_title_hint": "Дайте вашему списку название",
     "app_emoji_custom_empty": "Данный сервер не имеет своих эмоджи",
@@ -537,5 +537,11 @@
     "app_filter_context_type_account": "Аккаунт",
     "app_duration_picker_action_delete": "Удалить",
     "app_filter_expired": "Время истекло",
-    "app_filter_context_type_unknown": "Неизвестно"
+    "app_filter_context_type_unknown": "Неизвестно",
+    "app_ui_fontSize_type_smallest": "Наименьший",
+    "app_ui_fontSize_type_small": "Маленький",
+    "app_ui_fontSize_type_medium": "Обычный",
+    "app_ui_fontSize_type_large": "Большой",
+    "app_ui_fontSize_type_largest": "Наибольший",
+    "app_ui_statusFontSize": "Размер шрифта записей"
 }

@@ -22,6 +22,8 @@ import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_but
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
+import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -389,39 +391,72 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+    var fediUiTextTheme = IFediUiTextTheme.of(context);
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-    return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-      update: (context, contentWithEmojis, _) {
-        var htmlTextBloc = HtmlTextBloc(
-          inputData: HtmlTextInputData(
-            input: contentWithEmojis?.text,
-            emojis: contentWithEmojis?.emojis,
-          ),
-          settings: HtmlTextSettings(
-            lineHeight: 1.5,
-            fontSize: 16.0,
-            // todo: 1000 is hack, actually it should be null, but don't
-            //  work as expected
-            textMaxLines: 1000,
-            textOverflow: TextOverflow.ellipsis,
-            linkColor: fediUiColorTheme.primary,
-            color: fediUiColorTheme.darkGrey,
-            textScaleFactor: textScaleFactor,
-            fontWeight: FontWeight.normal,
-            drawNewLines: false,
-          ),
-        );
-        htmlTextBloc.addDisposable(
-          streamSubscription: htmlTextBloc.linkClickedStream.listen(
-            (url) {
-              _onLinkTap(context, url);
+    var uiSettingsBloc = IUiSettingsBloc.of(context);
+
+    return StreamBuilder<UiSettingsFontSize>(
+        stream: uiSettingsBloc.statusFontSizeStream,
+        builder: (context, snapshot) {
+          var statusFontSize = snapshot.data;
+
+          if (statusFontSize == null) {
+            return const SizedBox.shrink();
+          }
+
+          TextStyle textStyle = fediUiTextTheme.bigTallDarkGrey;
+
+          switch (statusFontSize) {
+            case UiSettingsFontSize.smallest:
+              textStyle = fediUiTextTheme.smallTallDarkGrey;
+              break;
+            case UiSettingsFontSize.small:
+              textStyle = fediUiTextTheme.mediumTallDarkGrey;
+              break;
+            case UiSettingsFontSize.medium:
+              textStyle = fediUiTextTheme.bigTallDarkGrey;
+              break;
+            case UiSettingsFontSize.large:
+              textStyle = fediUiTextTheme.subHeaderTallDarkGrey;
+              break;
+            case UiSettingsFontSize.largest:
+              textStyle = fediUiTextTheme.headerDarkGrey;
+              break;
+          }
+
+          return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+            update: (context, contentWithEmojis, _) {
+              var htmlTextBloc = HtmlTextBloc(
+                inputData: HtmlTextInputData(
+                  input: contentWithEmojis?.text,
+                  emojis: contentWithEmojis?.emojis,
+                ),
+                settings: HtmlTextSettings(
+                  color: textStyle.color,
+                  lineHeight: textStyle.height,
+                  fontSize: textStyle.fontSize,
+                  // todo: 1000 is hack, actually it should be null, but don't
+                  //  work as expected
+                  textMaxLines: 1000,
+                  textOverflow: TextOverflow.ellipsis,
+                  linkColor: fediUiColorTheme.primary,
+                  textScaleFactor: textScaleFactor,
+                  fontWeight: FontWeight.normal,
+                  drawNewLines: false,
+                ),
+              );
+              htmlTextBloc.addDisposable(
+                streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                  (url) {
+                    _onLinkTap(context, url);
+                  },
+                ),
+              );
+              return htmlTextBloc;
             },
-          ),
-        );
-        return htmlTextBloc;
-      },
-      child: const HtmlTextWidget(),
-    );
+            child: const HtmlTextWidget(),
+          );
+        });
   }
 }

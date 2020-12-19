@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/app/settings/settings_model.dart';
+import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -15,9 +16,16 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
   @JsonKey(name: "theme_id")
   final String themeId;
 
+  @HiveField(1)
+  @JsonKey(name: "status_font_size")
+  final String statusFontSize;
+
+  UiSettingsFontSize get statusFontSizeAsUiSettingsFontSize =>
+      statusFontSize?.toUiSettingsFontSize();
 
   UiSettings({
     @required this.themeId,
+    @required this.statusFontSize,
   });
 
   factory UiSettings.fromJson(Map<String, dynamic> json) =>
@@ -40,22 +48,26 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
 
   UiSettings copyWith({
     String themeId,
-  }) => UiSettings(
-      themeId: themeId ?? this.themeId,
-    );
+    String statusFontSize,
+  }) =>
+      UiSettings(
+        themeId: themeId ?? this.themeId,
+        statusFontSize: statusFontSize ?? this.statusFontSize,
+      );
+
+  @override
+  String toString() {
+    return 'UiSettings{themeId: $themeId, statusFontSize: $statusFontSize}';
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is UiSettings &&
           runtimeType == other.runtimeType &&
-          themeId == other.themeId;
+          themeId == other.themeId &&
+          statusFontSize == other.statusFontSize;
 
   @override
-  int get hashCode => themeId.hashCode;
-
-  @override
-  String toString() {
-    return 'UiSettings{themeId: $themeId}';
-  }
+  int get hashCode => themeId.hashCode ^ statusFontSize.hashCode;
 }
