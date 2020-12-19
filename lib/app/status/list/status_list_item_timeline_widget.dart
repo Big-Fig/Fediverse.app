@@ -129,10 +129,10 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
         if (deleted == true) {
           return Stack(
             children: [
+              child,
               Positioned.fill(
                 child: const StatusDeletedOverlayWidget(),
               ),
-              child,
             ],
           );
         } else {
