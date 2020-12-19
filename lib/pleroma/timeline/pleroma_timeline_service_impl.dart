@@ -145,7 +145,7 @@ class PleromaTimelineService extends DisposableOwner
     var request = RestRequest.get(
       relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
       queryArgs: [
-        ...pagination?.toQueryArgs(),
+        ...(pagination?.toQueryArgs() ?? []) ,
         RestRequestQueryArg("local", onlyLocal.toString()),
         if (onlyWithMedia != null)
           RestRequestQueryArg("only_media", onlyWithMedia.toString()),

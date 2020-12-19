@@ -3,6 +3,7 @@ import 'package:fedi/app/custom_list/list/pagination/custom_list_pagination_bloc
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -15,24 +16,28 @@ class CustomListNetworkOnlyPaginationBloc
     implements ICustomListNetworkOnlyPaginationBloc {
   final INetworkOnlyListBloc<ICustomList> listService;
 
-  CustomListNetworkOnlyPaginationBloc(
-      {@required this.listService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  CustomListNetworkOnlyPaginationBloc({
+    @required this.listService,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
   static CustomListNetworkOnlyPaginationBloc createFromContext(
-          BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       CustomListNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
-        itemsCountPerPage: itemsCountPerPage,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
         listService: Provider.of<INetworkOnlyListBloc<ICustomList>>(
           context,
           listen: false,

@@ -1,4 +1,5 @@
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -7,11 +8,13 @@ import 'package:flutter/widgets.dart';
 abstract class CachedPleromaPaginationBloc<TItem>
     extends CachedPaginationBloc<CachedPaginationPage<TItem>, TItem>
     implements ICachedPleromaPaginationBloc<TItem> {
-  CachedPleromaPaginationBloc(
-      {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  CachedPleromaPaginationBloc({
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   IPleromaApi get pleromaApi;
 

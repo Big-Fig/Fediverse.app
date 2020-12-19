@@ -4,6 +4,7 @@ import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/single_media_picker_bloc.dart';
 import 'package:fedi/app/media/picker/single_media_picker_bloc_impl.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -177,7 +178,7 @@ class _SingleMediaPickerPageGalleryFolderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var storagePermissionBloc = IStoragePermissionBloc.of(context);
-  
+
     return FileGalleryFolderWidget(
       headerItemBuilder: (BuildContext context) {
         return const _FileGalleryFolderPickFromCameraHeaderItemWidget();
@@ -250,6 +251,10 @@ void goToSingleMediaPickerPage(
             typesToPick: typesToPick,
             storagePermissionBloc:
                 IStoragePermissionBloc.of(context, listen: false),
+            paginationSettingsBloc: IPaginationSettingsBloc.of(
+              context,
+              listen: false,
+            ),
           );
         }, // provide parent abstract implementation by type
         child: DisposableProvider<ISingleMediaPickerBloc>(

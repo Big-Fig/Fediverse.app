@@ -8,6 +8,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -42,26 +43,32 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   PleromaChatWithLastMessageListBloc({
     @required IPleromaChatService pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRepository,
     @required this.chatWithLastMessageRepository,
+    @required this.paginationSettingsBloc,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
     @required WebSocketsListenType webSocketsListenType,
   }) {
     _logger.finest(() => "constructor");
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
-        pleromaChatService: pleromaChatService,
-        chatWithLastMessageRepository: chatWithLastMessageRepository,
-        chatRepository: chatRepository);
+      pleromaChatService: pleromaChatService,
+      chatWithLastMessageRepository: chatWithLastMessageRepository,
+      chatRepository: chatRepository,
+    );
     addDisposable(disposable: chatListBloc);
     chatPaginationBloc = PleromaChatWithLastMessagePaginationBloc(
-        itemsCountPerPage: 20,
-        listService: chatListBloc,
-        maximumCachedPagesCount: null);
-    addDisposable(disposable: chatListBloc);
+      listService: chatListBloc,
+      paginationSettingsBloc: paginationSettingsBloc,
+      maximumCachedPagesCount: null,
+    );
+    addDisposable(
+      disposable: chatListBloc,
+    );
     chatPaginationListWithNewItemsBloc =
         PleromaChatWithLastMessagePaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
@@ -78,7 +85,8 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
   }
 
   static PleromaChatWithLastMessageListBloc createFromContext(
-          BuildContext context, {@required  WebSocketsListenType webSocketsListenType}) =>
+          BuildContext context,
+          {@required WebSocketsListenType webSocketsListenType}) =>
       PleromaChatWithLastMessageListBloc(
         pleromaChatService: IPleromaChatService.of(context, listen: false),
         chatWithLastMessageRepository:
@@ -89,6 +97,11 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,
           listen: false,
-        ), webSocketsListenType: webSocketsListenType,
+        ),
+        webSocketsListenType: webSocketsListenType,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
       );
 }

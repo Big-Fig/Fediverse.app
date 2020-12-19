@@ -1,3 +1,4 @@
+import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -16,13 +17,14 @@ void main() {
   MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
   int storageSize = 30;
   int maximumCachedPagesCount;
-  int itemsCountPerPage = 4;
+  int itemsCountPerPage = 5;
 
   setUp(() {
     memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
-        size: storageSize,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-        itemsCountPerPage: itemsCountPerPage);
+      size: storageSize,
+      maximumCachedPagesCount: maximumCachedPagesCount,
+      paginationPageSize: PaginationPageSize.size5,
+    );
 
     paginationBloc = memoryPaginationBloc;
 
@@ -37,7 +39,6 @@ void main() {
   test('itemsCountPerPage', () async {
     expect(paginationListBloc.itemsCountPerPage, itemsCountPerPage);
   });
-
 
   test('items', () async {
     expect(paginationListBloc.items, null);

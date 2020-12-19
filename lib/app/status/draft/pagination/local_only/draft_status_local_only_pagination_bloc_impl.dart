@@ -1,4 +1,5 @@
 import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/list/local_only/draft_status_local_only_list_bloc.dart';
 import 'package:fedi/app/status/draft/pagination/local_only/draft_status_local_only_pagination_bloc.dart';
@@ -14,36 +15,48 @@ class DraftStatusLocalOnlyPaginationBloc
     implements IDraftStatusLocalOnlyPaginationBloc {
   final ILocalOnlyListBloc<IDraftStatus> listService;
 
-  DraftStatusLocalOnlyPaginationBloc(
-      {@required this.listService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  DraftStatusLocalOnlyPaginationBloc({
+    @required this.listService,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   static DraftStatusLocalOnlyPaginationBloc createFromContext(
-          BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       DraftStatusLocalOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<ILocalOnlyListBloc<IDraftStatus>>(context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listService: Provider.of<ILocalOnlyListBloc<IDraftStatus>>(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     @required Widget child,
-    @required int itemsCountPerPage,
     @required int maximumCachedPagesCount,
   }) =>
       DisposableProvider<
           IPaginationBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
         create: (context) => DraftStatusLocalOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: IDraftStatusLocalOnlyListBloc.of(context, listen: false),
+          listService: IDraftStatusLocalOnlyListBloc.of(
+            context,
+            listen: false,
+          ),
+          paginationSettingsBloc: IPaginationSettingsBloc.of(
+            context,
+            listen: false,
+          ),
         ),
         child: child,
       );

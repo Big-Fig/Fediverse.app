@@ -1,3 +1,4 @@
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
@@ -8,12 +9,15 @@ import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
-  PhotoManagerMediaDeviceGalleryBloc(
-      {@required IStoragePermissionBloc storagePermissionBloc,
-      @required List<MediaDeviceFileType> typesToPick})
-      : super(
-            storagePermissionBloc: storagePermissionBloc,
-            typesToPick: typesToPick) {
+  PhotoManagerMediaDeviceGalleryBloc({
+    @required IStoragePermissionBloc storagePermissionBloc,
+    @required List<MediaDeviceFileType> typesToPick,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+  }) : super(
+          storagePermissionBloc: storagePermissionBloc,
+          typesToPick: typesToPick,
+          paginationSettingsBloc: paginationSettingsBloc,
+        ) {
     addDisposable(disposable: CustomDisposable(() async {
       await PhotoManager.releaseCache();
     }));
@@ -78,7 +82,7 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
       return RequestType.image;
     } else if (!isNeedImage && isNeedVideo) {
       return RequestType.video;
-    } else if (isNeedAudio){
+    } else if (isNeedAudio) {
       return RequestType.audio;
     }
 

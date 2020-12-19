@@ -6,6 +6,7 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/tab/notification_tab_bloc.dart';
 import 'package:fedi/app/notification/tab/notification_tab_bloc_impl.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -54,12 +55,14 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final FilterRepository filterRepository;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   NotificationsTabsBloc({
     @required NotificationTab startTab,
     @required this.pleromaNotificationService,
     @required this.notificationRepository,
     @required this.filterRepository,
+    @required this.paginationSettingsBloc,
     @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
@@ -90,6 +93,10 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
       );
 
   @override
@@ -102,6 +109,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
         notificationRepository: notificationRepository,
         pleromaNotificationService: pleromaNotificationService,
         filterRepository: filterRepository,
+        paginationSettingsBloc: paginationSettingsBloc,
       );
 
       await notificationTabBloc.performAsyncInit();
@@ -109,8 +117,12 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       tabsMap[tab] = notificationTabBloc;
     }
 
-    addDisposable(custom: () {
-      tabsMap.values.forEach((bloc) => bloc.dispose());
-    });
+    addDisposable(
+      custom: () {
+        tabsMap.values.forEach(
+          (bloc) => bloc.dispose(),
+        );
+      },
+    );
   }
 }

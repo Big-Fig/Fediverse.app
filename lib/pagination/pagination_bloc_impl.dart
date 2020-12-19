@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -26,8 +28,11 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   int get cachedPagesCount => indexToCachedPageMap.length;
+
+  final IPaginationSettingsBloc paginationSettingsBloc;
+
   @override
-  final int itemsCountPerPage;
+  int get itemsCountPerPage => paginationSettingsBloc.pageSize.toCount();
   final Map<int, TPage> indexToCachedPageMap = {};
 
   // ignore: close_sinks
@@ -77,9 +82,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<List<TPage>> get loadedPagesSortedByIndexStream => pagesSubject.stream;
 
-  PaginationBloc(
-      {@required this.maximumCachedPagesCount,
-      @required this.itemsCountPerPage}) {
+  PaginationBloc({
+    @required this.maximumCachedPagesCount,
+    @required this.paginationSettingsBloc,
+  }) {
     assert(itemsCountPerPage != null && itemsCountPerPage > 0);
     addDisposable(subject: pagesSubject);
     _logger.finest(() => "constructor");

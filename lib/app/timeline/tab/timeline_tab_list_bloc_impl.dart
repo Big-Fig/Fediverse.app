@@ -3,6 +3,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
@@ -71,6 +72,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final IFilterRepository filterRepository;
   VoidCallback tabControllerListener;
 
+  final IPaginationSettingsBloc paginationSettingsBloc;
+
   TimelineTabListBloc({
     @required this.preferencesService,
     @required this.currentAuthInstanceBloc,
@@ -86,6 +89,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     @required this.webSocketsHandlerManagerBloc,
     @required this.vsync,
     @required this.filterRepository,
+    @required this.paginationSettingsBloc,
   }) {
     addDisposable(subject: timelineTabBlocsListSubject);
 
@@ -173,6 +177,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
             ? WebSocketsListenType.foreground
             : WebSocketsListenType.background,
         filterRepository: filterRepository,
+        paginationSettingsBloc: paginationSettingsBloc,
       );
 
       await timelineTabBloc.performAsyncInit();
@@ -261,6 +266,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
             IWebSocketsHandlerManagerBloc.of(context, listen: false),
         timelinesHomeTabStorageLocalPreferences:
             ITimelinesHomeTabStorageLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,
         ),

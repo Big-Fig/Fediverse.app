@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
@@ -14,13 +15,14 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     implements IAccountCachedPaginationBloc {
   final IPleromaCachedListBloc<IAccount> listService;
 
-  AccountCachedPaginationBloc(
-      {@required this.listService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  AccountCachedPaginationBloc({
+    @required this.listService,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
@@ -53,23 +55,31 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     );
   }
 
-  static AccountCachedPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static AccountCachedPaginationBloc createFromContext(
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       AccountCachedPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaCachedListBloc<IAccount>>(context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listService: Provider.of<IPleromaCachedListBloc<IAccount>>(
+          context,
+          listen: false,
+        ),
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child,
-      int itemsCountPerPage = 20,
-      int maximumCachedPagesCount}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+    int maximumCachedPagesCount,
+  }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
       create: (context) => AccountCachedPaginationBloc.createFromContext(
         context,
-        itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IAccount>,

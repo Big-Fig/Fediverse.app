@@ -20,6 +20,7 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.d
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -61,6 +62,10 @@ class EditCustomListBloc extends DisposableOwner
       ),
       isPossibleToDelete: true,
       timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
+        context,
+        listen: false,
+      ),
+      paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,
       ),
@@ -127,6 +132,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   final bool isPossibleToDelete;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   EditCustomListBloc({
     @required this.customList,
@@ -134,6 +140,7 @@ class EditCustomListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.isPossibleToDelete,
     @required this.timelinesHomeTabStorageBloc,
+    @required this.paginationSettingsBloc,
     @required IMyAccountBloc myAccountBloc,
     @required IAccountRepository accountRepository,
     @required IPleromaAccountService pleromaAccountService,
@@ -155,9 +162,10 @@ class EditCustomListBloc extends DisposableOwner
 
     customListAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
-            listBloc: customListAccountListNetworkOnlyListBloc,
-            itemsCountPerPage: 20,
-            maximumCachedPagesCount: null);
+      listBloc: customListAccountListNetworkOnlyListBloc,
+      maximumCachedPagesCount: null,
+      paginationSettingsBloc: paginationSettingsBloc,
+    );
     accountPaginationListBloc = AccountPaginationListBloc(
       paginationBloc: customListAccountListNetworkOnlyPaginationBloc,
     );

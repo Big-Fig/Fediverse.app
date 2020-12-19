@@ -1,3 +1,4 @@
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc_impl.dart';
@@ -6,11 +7,13 @@ import 'package:flutter/widgets.dart';
 abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
     implements ICachedPaginationBloc<TPage, TItem> {
-  CachedPaginationBloc(
-      {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  CachedPaginationBloc({
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   bool get isPossibleToLoadFromNetwork;
 
@@ -37,19 +40,21 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
     }
 
     List<TItem> loadedItems = await loadLocalItems(
-        pageIndex: pageIndex,
-        itemsCountPerPage: itemsCountPerPage,
-        olderPage: nextPage,
-        newerPage: previousPage);
+      pageIndex: pageIndex,
+      itemsCountPerPage: itemsCountPerPage,
+      olderPage: nextPage,
+      newerPage: previousPage,
+    );
 
 //    if (forceToSkipCache && !isActuallyRefreshed) {
 //      return null;
 //    }
 
     return createPage(
-        pageIndex: pageIndex,
-        loadedItems: loadedItems,
-        isActuallyRefreshed: isActuallyRefreshed);
+      pageIndex: pageIndex,
+      loadedItems: loadedItems,
+      isActuallyRefreshed: isActuallyRefreshed,
+    );
   }
 
   Future<bool> refreshItemsFromRemoteForPage({

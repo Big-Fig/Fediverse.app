@@ -7,6 +7,7 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -21,27 +22,32 @@ class CreateCustomListBloc extends EditCustomListBloc
     @required Function(ICustomList) onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
-        pleromaListService: IPleromaListService.of(
-          context,
-          listen: false,
-        ),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        pleromaAccountService: IPleromaAccountService.of(
-          context,
-          listen: false,
-        ),
-        myAccountBloc: IMyAccountBloc.of(
-          context,
-          listen: false,
-        ),
-        accountRepository: IAccountRepository.of(
-          context,
-          listen: false,
-        ),
-        timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
-          context,
-          listen: false,
-        ));
+      pleromaListService: IPleromaListService.of(
+        context,
+        listen: false,
+      ),
+      statusRepository: IStatusRepository.of(context, listen: false),
+      pleromaAccountService: IPleromaAccountService.of(
+        context,
+        listen: false,
+      ),
+      myAccountBloc: IMyAccountBloc.of(
+        context,
+        listen: false,
+      ),
+      accountRepository: IAccountRepository.of(
+        context,
+        listen: false,
+      ),
+      timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
+        context,
+        listen: false,
+      ),
+      paginationSettingsBloc: IPaginationSettingsBloc.of(
+        context,
+        listen: false,
+      ),
+    );
 
     if (onSubmit != null) {
       createCustomListBloc.addDisposable(
@@ -88,6 +94,7 @@ class CreateCustomListBloc extends EditCustomListBloc
     @required IAccountRepository accountRepository,
     @required IPleromaAccountService pleromaAccountService,
     @required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
           isPossibleToDelete: false,
           pleromaListService: pleromaListService,
@@ -97,5 +104,6 @@ class CreateCustomListBloc extends EditCustomListBloc
           accountRepository: accountRepository,
           pleromaAccountService: pleromaAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
+          paginationSettingsBloc: paginationSettingsBloc,
         );
 }

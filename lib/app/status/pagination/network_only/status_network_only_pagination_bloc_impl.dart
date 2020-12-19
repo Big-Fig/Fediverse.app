@@ -1,5 +1,6 @@
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -17,30 +18,38 @@ class StatusNetworkOnlyPaginationBloc
 
   StatusNetworkOnlyPaginationBloc(
       {@required this.listService,
-      @required int itemsCountPerPage,
+      @required IPaginationSettingsBloc paginationSettingsBloc,
       @required int maximumCachedPagesCount})
       : super(
             maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+            paginationSettingsBloc: paginationSettingsBloc);
 
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
-  static StatusNetworkOnlyPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static StatusNetworkOnlyPaginationBloc createFromContext(
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       StatusNetworkOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<INetworkOnlyListBloc<IStatus>>(
-              context,
-              listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listService: Provider.of<INetworkOnlyListBloc<IStatus>>(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
-  Future<List<IStatus>> loadItemsFromRemoteForPage(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required PaginationPage<IStatus> olderPage,
-          @required PaginationPage<IStatus> newerPage}) =>
+  Future<List<IStatus>> loadItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required PaginationPage<IStatus> olderPage,
+    @required PaginationPage<IStatus> newerPage,
+  }) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
         pageIndex: pageIndex,
@@ -48,15 +57,15 @@ class StatusNetworkOnlyPaginationBloc
         maxId: olderPage?.items?.first?.remoteId,
       );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child,
-        int itemsCountPerPage = 20,
-        int maximumCachedPagesCount}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+    int maximumCachedPagesCount,
+  }) {
     return DisposableProvider<
         INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
       create: (context) => StatusNetworkOnlyPaginationBloc.createFromContext(
         context,
-        itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,

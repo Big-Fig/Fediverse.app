@@ -1,4 +1,5 @@
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -16,21 +17,23 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
 
   StatusCachedPaginationBloc({
     @required this.statusListService,
-    @required int itemsCountPerPage,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
     @required int maximumCachedPagesCount,
   }) : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => statusListService.pleromaApi;
 
   @override
-  Future<List<IStatus>> loadLocalItems(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required CachedPaginationPage<IStatus> olderPage,
-          @required CachedPaginationPage<IStatus> newerPage}) =>
+  Future<List<IStatus>> loadLocalItems({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required CachedPaginationPage<IStatus> olderPage,
+    @required CachedPaginationPage<IStatus> newerPage,
+  }) =>
       statusListService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -38,11 +41,12 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required CachedPaginationPage<IStatus> olderPage,
-      @required CachedPaginationPage<IStatus> newerPage}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required CachedPaginationPage<IStatus> olderPage,
+    @required CachedPaginationPage<IStatus> newerPage,
+  }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -53,23 +57,31 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     );
   }
 
-  static StatusCachedPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static StatusCachedPaginationBloc createFromContext(
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       StatusCachedPaginationBloc(
-          statusListService:
-              Provider.of<IStatusCachedListBloc>(context, listen: false),
-          itemsCountPerPage: itemsCountPerPage,
-          maximumCachedPagesCount: maximumCachedPagesCount);
+        statusListService: Provider.of<IStatusCachedListBloc>(
+          context,
+          listen: false,
+        ),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child,
-      int itemsCountPerPage = 20,
-      int maximumCachedPagesCount}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+    int maximumCachedPagesCount,
+  }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
       create: (context) => StatusCachedPaginationBloc.createFromContext(
         context,
-        itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,

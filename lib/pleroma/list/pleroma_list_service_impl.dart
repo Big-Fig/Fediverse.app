@@ -173,7 +173,7 @@ class PleromaListService extends DisposableOwner
         relativePath:
             urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
         queryArgs: [
-          ...pagination?.toQueryArgs(),
+          ...(pagination?.toQueryArgs() ?? []) ,
         ],
       ),
     );

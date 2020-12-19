@@ -51,7 +51,6 @@ void goToDraftStatusListPage(BuildContext context) {
           context,
           child: DraftStatusLocalOnlyPaginationBloc.provideToContext(
             context,
-            itemsCountPerPage: 20,
             maximumCachedPagesCount: null,
             child: DraftStatusPaginationListBloc.provideToContext(
               context,

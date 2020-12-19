@@ -1,3 +1,4 @@
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -18,10 +19,12 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     implements IDisposable, IPermissionBloc, IMediaDeviceGalleryBloc {
   final IStoragePermissionBloc storagePermissionBloc;
   final List<MediaDeviceFileType> typesToPick;
+  final IPaginationSettingsBloc paginationSettingsBloc;
 
   MediaDeviceGalleryBloc({
     @required this.storagePermissionBloc,
     @required this.typesToPick,
+    @required this.paginationSettingsBloc,
   }) {
     addDisposable(subject: foldersSubject);
     addDisposable(subject: selectedFolderSubject);
@@ -65,7 +68,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     var paginationBloc = MediaDeviceFileLocalOnlyPaginationBloc(
       listBloc: listBloc,
       maximumCachedPagesCount: null,
-      itemsCountPerPage: 20,
+      paginationSettingsBloc: paginationSettingsBloc,
     );
 
     var paginationListBloc = MediaDeviceFilePaginationListBloc(

@@ -1,5 +1,6 @@
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/scheduled/pagination/network_only/scheduled_status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -12,35 +13,41 @@ class ScheduledStatusNetworkOnlyPaginationBloc
     implements IScheduledStatusNetworkOnlyPaginationBloc {
   final INetworkOnlyListBloc<IScheduledStatus> listService;
 
-  ScheduledStatusNetworkOnlyPaginationBloc(
-      {@required this.listService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
-            maximumCachedPagesCount: maximumCachedPagesCount,
-            itemsCountPerPage: itemsCountPerPage);
+  ScheduledStatusNetworkOnlyPaginationBloc({
+    @required this.listService,
+    @required IPaginationSettingsBloc paginationSettingsBloc,
+    @required int maximumCachedPagesCount,
+  }) : super(
+          maximumCachedPagesCount: maximumCachedPagesCount,
+          paginationSettingsBloc: paginationSettingsBloc,
+        );
 
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
   static ScheduledStatusNetworkOnlyPaginationBloc createFromContext(
-          BuildContext context,
-          {int itemsCountPerPage = 20,
-          int maximumCachedPagesCount}) =>
+    BuildContext context, {
+    int maximumCachedPagesCount,
+  }) =>
       ScheduledStatusNetworkOnlyPaginationBloc(
-          maximumCachedPagesCount: maximumCachedPagesCount,
-          itemsCountPerPage: itemsCountPerPage,
-          listService:
-              Provider.of<INetworkOnlyListBloc<IScheduledStatus>>(
-                  context,
-                  listen: false));
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        listService: Provider.of<INetworkOnlyListBloc<IScheduledStatus>>(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
-  Future<List<IScheduledStatus>> loadItemsFromRemoteForPage(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required PaginationPage<IScheduledStatus> olderPage,
-          @required PaginationPage<IScheduledStatus> newerPage}) =>
+  Future<List<IScheduledStatus>> loadItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required PaginationPage<IScheduledStatus> olderPage,
+    @required PaginationPage<IScheduledStatus> newerPage,
+  }) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
         pageIndex: pageIndex,
