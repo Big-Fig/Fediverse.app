@@ -10,17 +10,18 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 // todo: refactor to use common widgets with  DurationValueFormFieldRowWidget
 class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
   final String label;
   final String description;
   final String descriptionOnDisabled;
+  final String negativeValue;
 
   DurationDateTimeValueFormFieldRowWidget({
     @required this.label,
     this.description,
     this.descriptionOnDisabled,
+    this.negativeValue,
   });
 
   @override
@@ -32,6 +33,7 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
           descriptionOnDisabled: descriptionOnDisabled,
           valueChild: _DurationDateTimeValueFormFieldRowValueWidget(
             popupTitle: label,
+            negativeValue: negativeValue,
           ),
         ),
       );
@@ -39,10 +41,12 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
 
 class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
   final String popupTitle;
+  final String negativeValue;
 
   const _DurationDateTimeValueFormFieldRowValueWidget({
     Key key,
     @required this.popupTitle,
+    @required this.negativeValue,
   }) : super(key: key);
 
   @override
@@ -66,7 +70,9 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
                   );
                 }
               },
-              child: const DurationDateTimeValueFormFieldRowValueTextWidget(),
+              child: DurationDateTimeValueFormFieldRowValueTextWidget(
+                negativeValue: negativeValue,
+              ),
             ),
             const FediSmallHorizontalSpacer(),
           ],
@@ -77,7 +83,11 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
 }
 
 class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
-  const DurationDateTimeValueFormFieldRowValueTextWidget();
+  final String negativeValue;
+
+  const DurationDateTimeValueFormFieldRowValueTextWidget({
+    @required this.negativeValue,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +104,22 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
           initialData: fieldBloc.currentValueDuration,
           builder: (context, snapshot) {
             var currentValue = snapshot.data;
+
+            String durationText;
+            if (currentValue == null) {
+              durationText = S.of(context).app_duration_value_null;
+            } else {
+              if (negativeValue != null && currentValue.isNegative) {
+                durationText = negativeValue;
+              } else {
+                durationText = formatDuration(
+                  context: context,
+                  duration: currentValue,
+                );
+              }
+            }
             return Text(
-              currentValue != null
-                  ? formatDuration(
-                      context: context,
-                      duration: currentValue,
-                    )
-                  : S.of(context).app_duration_value_null,
+              durationText,
               style: isEnabled
                   ? fediUiTextTheme.bigTallBoldMediumGrey
                   : fediUiTextTheme.bigTallBoldLightGrey,
