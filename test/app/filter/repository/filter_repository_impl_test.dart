@@ -5,8 +5,8 @@ import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
 
 import '../database/filter_database_model_helper.dart';
 import '../filter_model_helper.dart';
@@ -22,7 +22,11 @@ void main() {
   DbFilter dbFilter;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory(logStatements: false));
+    database = AppDatabase(
+      VmDatabase.memory(
+        logStatements: false,
+      ),
+    );
     filterRepository = FilterRepository(
       appDatabase: database,
     );
@@ -169,6 +173,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     await insertDbFilter(
@@ -181,7 +186,6 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-
   test('createQuery onlyWithContextTypes single', () async {
     var query = filterRepository.createQuery(
       olderThanFilter: null,
@@ -192,45 +196,41 @@ void main() {
       onlyWithContextTypes: [
         MastodonFilterContextType.homeAndCustomLists,
       ],
+      notExpired: null,
     );
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed1")).copyWith(
-      context: [],
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed1")).copyWith(
+          context: [],
+        ));
 
     expect((await query.get()).length, 0);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed2")).copyWith(
-        context: ["home", "notifications"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed2"))
+            .copyWith(context: ["home", "notifications"]));
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed3")).copyWith(
-        context: ["public"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed3"))
+            .copyWith(context: ["public"]));
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed4")).copyWith(
-        context: ["public", "home", "unknown"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed4"))
+            .copyWith(context: ["public", "home", "unknown"]));
     expect((await query.get()).length, 2);
 
-
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed5")).copyWith(
-        context: ["unknown"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed5"))
+            .copyWith(context: ["unknown"]));
     expect((await query.get()).length, 2);
   });
-
 
   test('createQuery onlyWithContextTypes several', () async {
     var query = filterRepository.createQuery(
@@ -243,43 +243,83 @@ void main() {
         MastodonFilterContextType.homeAndCustomLists,
         MastodonFilterContextType.public,
       ],
+      notExpired: null,
     );
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed1")).copyWith(
-      context: [],
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed1")).copyWith(
+          context: [],
+        ));
 
     expect((await query.get()).length, 0);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed2")).copyWith(
-      context: ["home", "notifications"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed2"))
+            .copyWith(context: ["home", "notifications"]));
     expect((await query.get()).length, 1);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed3")).copyWith(
-      context: ["public"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed3"))
+            .copyWith(context: ["public"]));
     expect((await query.get()).length, 2);
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed4")).copyWith(
-      context: ["public", "home", "unknown"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed4"))
+            .copyWith(context: ["public", "home", "unknown"]));
     expect((await query.get()).length, 3);
-
 
     await insertDbFilter(
-        filterRepository, (await createTestDbFilter(seed: "seed5")).copyWith(
-        context: ["unknown"]
-
-    ));
+        filterRepository,
+        (await createTestDbFilter(seed: "seed5"))
+            .copyWith(context: ["unknown"]));
     expect((await query.get()).length, 3);
+  });
+
+  test('createQuery notExpired', () async {
+    var query = filterRepository.createQuery(
+      olderThanFilter: null,
+      newerThanFilter: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyWithContextTypes: [
+        MastodonFilterContextType.homeAndCustomLists,
+      ],
+      notExpired: true,
+    );
+
+    await insertDbFilter(
+      filterRepository,
+      (await createTestDbFilter(
+        seed: "seed1",
+        expiresAt: null,
+      )),
+    );
+
+    expect((await query.get()).length, 1);
+    await insertDbFilter(
+      filterRepository,
+      (await createTestDbFilter(
+        seed: "seed2",
+        expiresAt: DateTime(3000),
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+    await insertDbFilter(
+      filterRepository,
+      (await createTestDbFilter(
+        seed: "seed3",
+        expiresAt: DateTime(1990),
+      )),
+    );
+
+    expect((await query.get()).length, 2);
   });
 
   test('createQuery newerThanFilter', () async {
@@ -293,6 +333,7 @@ void main() {
       orderingTermData: null,
       olderThanFilter: null,
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     await insertDbFilter(
@@ -342,6 +383,7 @@ void main() {
         remoteId: "remoteId5",
       ),
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     await insertDbFilter(
@@ -394,6 +436,7 @@ void main() {
         remoteId: "remoteId5",
       ),
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     await insertDbFilter(
@@ -463,6 +506,7 @@ void main() {
           orderingMode: OrderingMode.asc),
       olderThanFilter: null,
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     var filter2 = await insertDbFilter(
@@ -515,6 +559,7 @@ void main() {
           orderingMode: OrderingMode.desc),
       olderThanFilter: null,
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     var filter2 = await insertDbFilter(
@@ -567,6 +612,7 @@ void main() {
           orderingMode: OrderingMode.desc),
       olderThanFilter: null,
       onlyWithContextTypes: null,
+      notExpired: null,
     );
 
     var filter2 = await insertDbFilter(

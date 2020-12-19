@@ -65,6 +65,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
         limit: null,
         offset: null,
         orderingTermData: null,
+        notExpired: true,
         onlyWithContextTypes: [
           MastodonFilterContextType.account,
         ],

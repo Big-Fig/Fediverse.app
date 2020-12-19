@@ -42,6 +42,7 @@ class NotificationUnreadBadgeExcludeTypesBloc extends AsyncInitLoadingBloc
       onlyWithContextTypes: [
         MastodonFilterContextType.notifications,
       ],
+      notExpired: true,
     );
 
     if (!isDisposed) {

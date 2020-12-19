@@ -38,6 +38,7 @@ abstract class IFilterRepository
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   });
 
   Stream<List<DbFilterPopulatedWrapper>> watchFilters({
@@ -47,6 +48,7 @@ abstract class IFilterRepository
     @required int offset,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   });
 
   Future<DbFilterPopulatedWrapper> getFilter({
@@ -54,6 +56,7 @@ abstract class IFilterRepository
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   });
 
   Stream<DbFilterPopulatedWrapper> watchFilter({
@@ -61,5 +64,6 @@ abstract class IFilterRepository
     @required IFilter newerThanFilter,
     @required FilterOrderingTermData orderingTermData,
     @required List<MastodonFilterContextType> onlyWithContextTypes,
+    @required bool notExpired,
   });
 }

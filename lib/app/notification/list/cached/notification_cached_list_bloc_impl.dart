@@ -45,6 +45,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       onlyWithContextTypes: [
         MastodonFilterContextType.notifications,
       ],
+      notExpired: true,
     );
   }
 
