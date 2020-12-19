@@ -44,24 +44,28 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   PleromaStatusEmojiReactionService({@required this.restService});
 
   @override
-  Future dispose() async {
-    return await super.dispose();
-  }
-
-  @override
-  Future<IPleromaStatus> addReaction(
-      {@required String statusRemoteId, @required String emoji}) async {
+  Future<IPleromaStatus> addReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  }) async {
     var request = RestRequest.put(
-        relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
-            statusRemoteId, reactionsRelativeUrlPath, emoji));
+      relativePath: urlPath.join(
+        pleromaStatusesRelativeUrlPath,
+        statusRemoteId,
+        reactionsRelativeUrlPath,
+        emoji,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusResponse(httpResponse);
   }
 
   @override
-  Future<IPleromaStatusEmojiReaction> getReaction(
-      {@required String statusRemoteId, @required String emoji}) async {
+  Future<IPleromaStatusEmojiReaction> getReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  }) async {
     var request = RestRequest.get(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath, emoji));
@@ -72,8 +76,9 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatusEmojiReaction>> getReactions(
-      {@required String statusRemoteId}) async {
+  Future<List<IPleromaStatusEmojiReaction>> getReactions({
+    @required String statusRemoteId,
+  }) async {
     var request = RestRequest.get(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath));
@@ -83,8 +88,10 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaStatus> removeReaction(
-      {@required String statusRemoteId, @required String emoji}) async {
+  Future<IPleromaStatus> removeReaction({
+    @required String statusRemoteId,
+    @required String emoji,
+  }) async {
     var request = RestRequest.delete(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath, emoji));
@@ -96,14 +103,18 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   PleromaStatus parseStatusResponse(Response httpResponse) {
     RestResponse<PleromaStatus> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaStatus.fromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaStatus.fromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaStatusEmojiReactionException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -111,15 +122,18 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     RestResponse<PleromaStatusEmojiReaction> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaStatusEmojiReaction.fromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaStatusEmojiReaction.fromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaStatusEmojiReactionException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -128,15 +142,18 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     RestResponse<List<PleromaStatusEmojiReaction>> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaStatusEmojiReaction.listFromJsonString(httpResponse.body),
+      resultParser: (body) => PleromaStatusEmojiReaction.listFromJsonString(
+        httpResponse.body,
+      ),
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaStatusEmojiReactionException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 }

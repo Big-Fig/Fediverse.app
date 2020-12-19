@@ -1,6 +1,7 @@
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -19,39 +20,27 @@ abstract class IPleromaMyAccountService implements IPleromaApi {
   Future<IPleromaMyAccount> verifyCredentials();
 
   Future<List<String>> getDomainBlocks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaAccount>> getAccountBlocks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaAccount>> getAccountMutes({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaStatus>> getBookmarks({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaStatus>> getFavourites({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<List<IPleromaAccount>> getFollowRequests({
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   });
 
   Future<IPleromaAccountRelationship> acceptFollowRequest({

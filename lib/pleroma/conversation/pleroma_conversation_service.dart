@@ -1,5 +1,6 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +12,8 @@ abstract class IPleromaConversationService implements IPleromaApi {
 
   Future<List<IPleromaStatus>> getConversationStatuses({
     @required String conversationRemoteId,
-    int limit,
-    String maxId,
-    String sinceId,
+    IPleromaPaginationRequest pagination,
   });
-
 
   Future<IPleromaConversation> getConversation(
       {@required String conversationRemoteId});
@@ -25,10 +23,8 @@ abstract class IPleromaConversationService implements IPleromaApi {
 
   Future<bool> deleteConversation({@required String conversationRemoteId});
 
-  Future<List<IPleromaConversation>> getConversations(
-      {String maxId,
-      String sinceId,
-      String minId,
-      List<String> recipientsIds,
-      int limit});
+  Future<List<IPleromaConversation>> getConversations({
+    IPleromaPaginationRequest pagination,
+    List<String> recipientsIds,
+  });
 }

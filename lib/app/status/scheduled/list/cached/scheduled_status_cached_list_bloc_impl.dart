@@ -4,6 +4,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -88,9 +89,12 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
     var remoteStatuses =
         await pleromaScheduledStatusService.getScheduledStatuses(
-            limit: limit,
-            sinceId: newerThan?.remoteId,
-            maxId: olderThan?.remoteId);
+      pagination: PleromaPaginationRequest(
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId,
+      ),
+    );
 
     if (remoteStatuses != null) {
       await scheduledStatusRepository

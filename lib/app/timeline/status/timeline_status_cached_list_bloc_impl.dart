@@ -15,6 +15,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
@@ -151,14 +152,15 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     var onlyWithMedia = timeline.onlyWithMedia;
     var excludeVisibilities = timeline.excludeVisibilities;
     var pleromaReplyVisibilityFilter = timeline.replyVisibilityFilter;
-    var maxId = olderThan?.remoteId;
-    var sinceId = newerThan?.remoteId;
+    var pagination = PleromaPaginationRequest(
+      limit: limit,
+      sinceId: newerThan?.remoteId,
+      maxId: olderThan?.remoteId,
+    );
     switch (timelineType) {
       case TimelineType.public:
         remoteStatuses = await pleromaTimelineService.getPublicTimeline(
-          maxId: maxId,
-          sinceId: sinceId,
-          limit: limit,
+          pagination: pagination,
           onlyLocal: onlyLocal,
           onlyWithMedia: onlyWithMedia,
           withMuted: withMuted,
@@ -169,9 +171,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       case TimelineType.customList:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
           listId: timeline.onlyInRemoteList.id,
-          maxId: maxId,
-          sinceId: sinceId,
-          limit: limit,
+          pagination: pagination,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilities: excludeVisibilities,
@@ -179,9 +179,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
       case TimelineType.home:
         remoteStatuses = await pleromaTimelineService.getHomeTimeline(
-          maxId: maxId,
-          sinceId: sinceId,
-          limit: limit,
+          pagination: pagination,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilities: excludeVisibilities,
@@ -191,9 +189,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       case TimelineType.hashtag:
         remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
           hashtag: timeline.withRemoteHashtag,
-          maxId: maxId,
-          sinceId: sinceId,
-          limit: limit,
+          pagination: pagination,
           onlyLocal: onlyLocal,
           onlyWithMedia: onlyWithMedia,
           withMuted: withMuted,
@@ -368,8 +364,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
 
     var countAll = await filterRepository.countAll();
-    _logger.finest(() =>
-    "filterRepository countAll ${countAll}");
+    _logger.finest(() => "filterRepository countAll ${countAll}");
 
     filters = await filterRepository.getFilters(
       olderThanFilter: null,
@@ -381,9 +376,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       notExpired: true,
     );
 
-    _logger.finest(() =>
-        "timelineType $timelineType, "
-            "onlyWithContextTypes $onlyWithContextTypes,"
-            " filters $filters");
+    _logger.finest(() => "timelineType $timelineType, "
+        "onlyWithContextTypes $onlyWithContextTypes,"
+        " filters $filters");
   }
 }

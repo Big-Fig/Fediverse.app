@@ -1,4 +1,5 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -12,10 +13,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 
   Future<List<IPleromaStatus>> getPublicTimeline({
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -27,10 +25,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
 
   Future<List<IPleromaStatus>> getHashtagTimeline({
     @required String hashtag,
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
@@ -40,10 +35,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
   });
 
   Future<List<IPleromaStatus>> getHomeTimeline({
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
@@ -54,10 +46,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
 
   Future<List<IPleromaStatus>> getListTimeline({
     @required String listId,
-    String maxId,
-    String sinceId,
-    String minId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [

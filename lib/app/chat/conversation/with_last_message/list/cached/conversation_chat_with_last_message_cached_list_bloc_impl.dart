@@ -6,6 +6,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/cached/convers
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -41,9 +42,12 @@ class ConversationChatWithLastMessageCachedListBloc
     List<IPleromaConversation> remoteConversations;
 
     remoteConversations = await conversationChatService.getConversations(
+      pagination: PleromaPaginationRequest(
         maxId: olderThan?.chat?.remoteId,
         sinceId: newerThan?.chat?.remoteId,
-        limit: limit);
+        limit: limit,
+      ),
+    );
 
     if (remoteConversations != null) {
       await conversationRepository

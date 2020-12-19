@@ -5,6 +5,7 @@ import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -36,10 +37,13 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
       result = [];
     } else {
       var remoteAccounts = await pleromaListService.getListAccounts(
+        pagination: PleromaPaginationRequest(
           limit: itemsCountPerPage,
           sinceId: minId,
           maxId: maxId,
-          listRemoteId: customList.remoteId);
+        ),
+        listRemoteId: customList.remoteId,
+      );
       result = remoteAccounts
           ?.map(
               (remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))

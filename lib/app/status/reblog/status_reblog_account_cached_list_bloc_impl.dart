@@ -8,6 +8,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -42,10 +43,13 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     List<IPleromaAccount> remoteAccounts;
 
     remoteAccounts = await pleromaStatusService.rebloggedBy(
-        statusRemoteId: status.remoteId,
-        maxId: olderThan?.remoteId,
+      statusRemoteId: status.remoteId,
+      pagination: PleromaPaginationRequest(
+        limit: limit,
         sinceId: newerThan?.remoteId,
-        limit: limit);
+        maxId: olderThan?.remoteId,
+      ),
+    );
 
     if (remoteAccounts != null) {
       await accountRepository.upsertRemoteAccounts(remoteAccounts,

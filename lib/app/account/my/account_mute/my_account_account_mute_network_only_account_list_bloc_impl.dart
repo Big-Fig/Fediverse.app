@@ -9,6 +9,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -60,9 +61,11 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     String maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getAccountMutes(
-      sinceId: minId,
-      maxId: maxId,
-      limit: itemsCountPerPage,
+      pagination: PleromaPaginationRequest(
+        sinceId: minId,
+        maxId: maxId,
+        limit: itemsCountPerPage,
+      ),
     );
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,

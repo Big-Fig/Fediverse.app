@@ -28,6 +28,7 @@ class PleromaTag implements IPleromaTag {
   @override
   @HiveField(2)
   final List<PleromaHistory> history;
+
   PleromaTag({
     this.name,
     this.url,

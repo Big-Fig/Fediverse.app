@@ -6,7 +6,7 @@ import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/search/pleroma_search_model.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:flutter/widgets.dart';
 
@@ -37,12 +37,14 @@ class SearchResultItemNetworkOnlyListBloc
         offset += 1;
       }
       var searchResult = await pleromaSearchService.search(
-          request: PleromaSearchRequest(
-              type: null,
-              offset: offset,
-              resolve: true,
-              limit: itemsCountPerPage,
-              query: query));
+        offset: offset,
+        resolve: true,
+        query: query,
+        type: null,
+        pagination: PleromaPaginationRequest(
+          limit: itemsCountPerPage,
+        ),
+      );
 
       searchResult.statuses.forEach((status) {
         resultItems

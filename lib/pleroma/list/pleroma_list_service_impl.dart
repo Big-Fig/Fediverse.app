@@ -4,6 +4,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_exception.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -44,28 +45,40 @@ class PleromaListService extends DisposableOwner
 
   IPleromaList parseListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaList.fromJsonString(httpResponse.body);
+      return PleromaList.fromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaListException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   List<IPleromaList> parseListListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaList.listFromJsonString(httpResponse.body);
+      return PleromaList.listFromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaListException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaAccount.listFromJsonString(httpResponse.body);
+      return PleromaAccount.listFromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaListException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -73,7 +86,9 @@ class PleromaListService extends DisposableOwner
   Future<List<IPleromaList>> getLists() async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(listRelativeUrlPath),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+        ),
       ),
     );
 
@@ -81,10 +96,15 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaList> getList({@required String listRemoteId}) async {
+  Future<IPleromaList> getList({
+    @required String listRemoteId,
+  }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+          listRemoteId,
+        ),
       ),
     );
 
@@ -92,22 +112,32 @@ class PleromaListService extends DisposableOwner
   }
 
   @override
-  Future deleteList({@required String listRemoteId}) async {
+  Future deleteList({
+    @required String listRemoteId,
+  }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
-        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+          listRemoteId,
+        ),
       ),
     );
   }
 
   @override
-  Future<IPleromaList> createList({@required String title}) async {
+  Future<IPleromaList> createList({
+    @required String title,
+  }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-          relativePath: urlPath.join(listRelativeUrlPath),
-          bodyJson: {
-            "title": title,
-          }),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+        ),
+        bodyJson: {
+          "title": title,
+        },
+      ),
     );
 
     return parseListResponse(httpResponse);
@@ -120,35 +150,30 @@ class PleromaListService extends DisposableOwner
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
-          relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
-          bodyJson: {
-            "title": title,
-          }),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+          listRemoteId,
+        ),
+        bodyJson: {
+          "title": title,
+        },
+      ),
     );
 
     return parseListResponse(httpResponse);
   }
 
   @override
-  Future dispose() async {
-    return await super.dispose();
-  }
-
-  @override
   Future<List<IPleromaAccount>> getListAccounts({
     @required String listRemoteId,
-    String sinceId,
-    String maxId,
-    int limit = 20,
+    IPleromaPaginationRequest pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath:
             urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
         queryArgs: [
-          RestRequestQueryArg("since_id", sinceId),
-          RestRequestQueryArg("max_id", maxId),
-          RestRequestQueryArg("limit", limit?.toString()),
+          ...pagination?.toQueryArgs(),
         ],
       ),
     );
@@ -163,9 +188,15 @@ class PleromaListService extends DisposableOwner
   }) async {
     await restService.sendHttpRequest(
       RestRequest.post(
-          relativePath:
-              urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
-          bodyJson: {"account_ids": accountIds}),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+          listRemoteId,
+          "accounts",
+        ),
+        bodyJson: {
+          "account_ids": accountIds,
+        },
+      ),
     );
   }
 
@@ -176,9 +207,15 @@ class PleromaListService extends DisposableOwner
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
-          relativePath:
-              urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
-          bodyJson: {"account_ids": accountIds}),
+        relativePath: urlPath.join(
+          listRelativeUrlPath,
+          listRemoteId,
+          "accounts",
+        ),
+        bodyJson: {
+          "account_ids": accountIds,
+        },
+      ),
     );
   }
 }
