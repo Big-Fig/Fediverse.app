@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2020-12-17T18:19:13+00:00",
+    "@@last_modified": "2020-12-19T13:41:08+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -13,7 +13,7 @@
     "app_theme_type_system": "Auto",
     "app_customList_create_title": "Create a list",
     "app_customList_edit_title": "Edit list",
-    "app_acccount_my_customList_list_title": "Lists",
+    "app_account_my_customList_list_title": "Lists",
     "app_customList_form_field_title_label": "Title*",
     "app_customList_form_field_title_hint": "Give your list a title",
     "app_emoji_custom_empty": "This instance don't have custom emojis",
@@ -537,5 +537,11 @@
     "app_filter_context_type_account": "Account",
     "app_duration_picker_action_delete": "Delete",
     "app_filter_expired": "Expired",
-    "app_filter_context_type_unknown": "Unknown"
+    "app_filter_context_type_unknown": "Unknown",
+    "app_ui_fontSize_type_smallest": "Smallest",
+    "app_ui_fontSize_type_small": "Small",
+    "app_ui_fontSize_type_medium": "Medium",
+    "app_ui_fontSize_type_large": "Large",
+    "app_ui_fontSize_type_largest": "Largest",
+    "app_ui_statusFontSize": "Status font size"
 }

@@ -420,6 +420,8 @@ abstract class IFediUiTextTheme implements IUiTextTheme {
 
   TextStyle get subHeaderTallBoldMediumGrey;
 
+  TextStyle get headerDarkGrey;
+
   TextStyle get headerBoldWhite;
 
   TextStyle get dialogTitleBoldDarkGrey;
@@ -1997,6 +1999,13 @@ class FediUiTextTheme implements IFediUiTextTheme {
         fontSize: _subHeaderSize,
         height: _tallHeight,
         fontWeight: _boldWeight,
+      );
+
+  @override
+  TextStyle get headerDarkGrey => TextStyle(
+        fontSize: _headerSize,
+        fontWeight: _normalWeight,
+        color: _darkGreyColor,
       );
 
   @override

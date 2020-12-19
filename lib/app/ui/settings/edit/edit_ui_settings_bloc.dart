@@ -1,4 +1,5 @@
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc.dart';
+import 'package:fedi/app/ui/settings/font_size/form/ui_settings_font_size_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -10,4 +11,6 @@ abstract class IEditUiSettingsBloc
       Provider.of<IEditUiSettingsBloc>(context, listen: listen);
 
   IFediUiThemeSingleFromListValueFormFieldBloc get fediThemeFieldBloc;
+
+  IUiSettingsFontSizeSingleFromListValueFormFieldBloc get statusFontSizeBloc;
 }

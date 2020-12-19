@@ -25,12 +25,16 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   final BehaviorSubject<T> _currentValueSubject;
 
   @override
-  T get currentValue => _currentValueSubject.value;
+  T get currentValue => _currentValueSubject.value ?? defaultValue;
 
   // distinct is important, we don't need new value in stream on each widget
   // build
   @override
-  Stream<T> get currentValueStream => _currentValueSubject.stream.distinct();
+  Stream<T> get currentValueStream => _currentValueSubject.stream
+      .map((currentValue) => currentValue ?? defaultValue)
+      .distinct();
+
+  T get defaultValue => null;
 
   @override
   final bool isNullValuePossible;

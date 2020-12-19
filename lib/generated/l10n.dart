@@ -156,10 +156,10 @@ class S {
   }
 
   /// `Lists`
-  String get app_acccount_my_customList_list_title {
+  String get app_account_my_customList_list_title {
     return Intl.message(
       'Lists',
-      name: 'app_acccount_my_customList_list_title',
+      name: 'app_account_my_customList_list_title',
       desc: '',
       args: [],
     );
@@ -5217,6 +5217,66 @@ class S {
     return Intl.message(
       'Unknown',
       name: 'app_filter_context_type_unknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smallest`
+  String get app_ui_fontSize_type_smallest {
+    return Intl.message(
+      'Smallest',
+      name: 'app_ui_fontSize_type_smallest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Small`
+  String get app_ui_fontSize_type_small {
+    return Intl.message(
+      'Small',
+      name: 'app_ui_fontSize_type_small',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medium`
+  String get app_ui_fontSize_type_medium {
+    return Intl.message(
+      'Medium',
+      name: 'app_ui_fontSize_type_medium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Large`
+  String get app_ui_fontSize_type_large {
+    return Intl.message(
+      'Large',
+      name: 'app_ui_fontSize_type_large',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Largest`
+  String get app_ui_fontSize_type_largest {
+    return Intl.message(
+      'Largest',
+      name: 'app_ui_fontSize_type_largest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status font size`
+  String get app_ui_statusFontSize {
+    return Intl.message(
+      'Status font size',
+      name: 'app_ui_statusFontSize',
       desc: '',
       args: [],
     );

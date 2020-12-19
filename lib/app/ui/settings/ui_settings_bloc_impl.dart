@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';
@@ -19,24 +20,41 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       uiSettingsLocalPreferencesBloc.stream;
 
   @override
-  void changeThemeId(String value) {
-    updateSettings(
-      UiSettings(
-        themeId: value,
-      ),
-      // copyWith don't set null values
-      // settingsData.copyWith(
-      //   themeId: value,
-      // ),
-    );
-  }
-
-  @override
   String get themeId => settingsData?.themeId;
 
   @override
   Stream<String> get themeIdStream =>
       settingsDataStream.map((settings) => settings?.themeId);
+
+  @override
+  void changeThemeId(String value) {
+    updateSettings(
+      // copyWith don't set null values
+      UiSettings(themeId: value, statusFontSize: settingsData?.statusFontSize),
+    );
+  }
+
+  @override
+  UiSettingsFontSize get statusFontSize =>
+      settingsData?.statusFontSizeAsUiSettingsFontSize ??
+      IUiSettingsBloc.defaultStatusFontSettingsValue;
+
+  @override
+  Stream<UiSettingsFontSize> get statusFontSizeStream =>
+      settingsDataStream.map((settings) =>
+          settings?.statusFontSizeAsUiSettingsFontSize ??
+          IUiSettingsBloc.defaultStatusFontSettingsValue);
+
+  @override
+  void changeStatusFontSize(UiSettingsFontSize value) {
+    updateSettings(
+      // copyWith don't set null values
+      UiSettings(
+        themeId: settingsData.themeId,
+        statusFontSize: value?.toJsonValue(),
+      ),
+    );
+  }
 
   @override
   Future updateSettings(UiSettings newSettings) async {
