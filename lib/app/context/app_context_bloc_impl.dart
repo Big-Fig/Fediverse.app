@@ -30,6 +30,8 @@ import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -352,6 +354,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
             globalWebSocketsSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);
+    
+    var globalPaginationSettingsLocalPreferencesBloc =
+        GlobalPaginationSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalPaginationSettingsLocalPreferencesBloc>(
+            globalPaginationSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalPaginationSettingsLocalPreferencesBloc);
 
     var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
       hiveLocalPreferencesService,

@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/settings/edit/global_or_instance/edit_global_or_instance_chat_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global_or_instance/edit_global_or_instance_media_settings_dialog.dart';
+import 'package:fedi/app/pagination/settings/edit/global_or_instance/edit_global_or_instance_pagination_settings_dialog.dart';
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/edit/global_or_instance/edit_global_or_instance_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global_or_instance/edit_global_or_instance_status_sensitive_settings_dialog.dart';
@@ -17,6 +18,7 @@ class InstanceSettingsListWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const _InstanceSettingsCacheAndPaginationRowWidget(),
           const _InstanceSettingsPushRowWidget(),
           const _InstanceSettingsMediaRowWidget(),
           const _InstanceSettingsToastRowWidget(),
@@ -39,6 +41,22 @@ class _InstanceSettingsMediaRowWidget extends StatelessWidget {
       title: S.of(context).app_media_settings_title,
       onClick: () {
         showEditGlobalOrInstanceMediaSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
+  const _InstanceSettingsCacheAndPaginationRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_pagination_settings_title,
+      onClick: () {
+        showEditGlobalOrInstancePaginationSettingsDialog(context: context);
       },
     );
   }

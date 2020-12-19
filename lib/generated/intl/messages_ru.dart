@@ -407,6 +407,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_notification_header_reblog" : MessageLookupByLibrary.simpleMessage("Поделился вашей записью."),
     "app_notification_header_unknown" : m22,
     "app_notification_list_newItems_action_tapToLoadNew" : m23,
+    "app_pagination_settings_pageSize_label" : MessageLookupByLibrary.simpleMessage("Размер страниц"),
+    "app_pagination_settings_title" : MessageLookupByLibrary.simpleMessage("Постраничная загрузка"),
     "app_poll_metadata_expires_expired" : MessageLookupByLibrary.simpleMessage("Опрос окончен"),
     "app_poll_metadata_expires_notExpired" : m24,
     "app_poll_metadata_hideResults" : MessageLookupByLibrary.simpleMessage("Скрыть результаты"),

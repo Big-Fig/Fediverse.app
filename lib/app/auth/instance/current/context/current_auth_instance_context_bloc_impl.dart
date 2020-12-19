@@ -51,6 +51,11 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_asked_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_bloc.dart';
@@ -670,6 +675,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             instanceWebSocketsSettingsLocalPreferencesBloc);
     addDisposable(disposable: instanceWebSocketsSettingsLocalPreferencesBloc);
 
+    var instancePaginationSettingsLocalPreferencesBloc =
+        InstancePaginationSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstancePaginationSettingsLocalPreferencesBloc>(
+            instancePaginationSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instancePaginationSettingsLocalPreferencesBloc);
+
     var chatSettingsBloc = ChatSettingsBloc(
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
@@ -731,6 +747,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
     addDisposable(disposable: webSocketsSettingsBloc);
+
+    var paginationSettingsBloc = PaginationSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instancePaginationSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalPaginationSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IPaginationSettingsBloc>(paginationSettingsBloc);
+    addDisposable(disposable: paginationSettingsBloc);
 
     var statusSensitiveDisplayTimeStorageBloc =
         StatusSensitiveDisplayTimeStorageBloc();

@@ -1,6 +1,7 @@
 import 'package:fedi/app/chat/settings/edit/global/edit_global_chat_settings_dialog.dart';
 import 'package:fedi/app/localization/settings/edit/global/edit_global_localization_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
+import 'package:fedi/app/pagination/settings/edit/global/edit_global_pagination_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global/edit_global_status_sensitive_settings_dialog.dart';
 import 'package:fedi/app/toast/settings/edit/global/edit_global_toast_settings_dialog.dart';
@@ -20,6 +21,7 @@ class GlobalSettingsListWidget extends StatelessWidget {
         children: [
           const _GlobalSettingsUiRowWidget(),
           const _GlobalSettingsLocalizationRowWidget(),
+          const _GlobalSettingsPaginationRowWidget(),
           const _GlobalSettingsMediaRowWidget(),
           const _GlobalSettingsToastRowWidget(),
           const _GlobalSettingsStatusSensitiveRowWidget(),
@@ -57,6 +59,22 @@ class _GlobalSettingsUiRowWidget extends StatelessWidget {
       title: S.of(context).app_ui_settings_title,
       onClick: () {
         showEditGlobalUiSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsPaginationRowWidget extends StatelessWidget {
+  const _GlobalSettingsPaginationRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_pagination_settings_title,
+      onClick: () {
+        showEditGlobalPaginationSettingsDialog(context: context);
       },
     );
   }
