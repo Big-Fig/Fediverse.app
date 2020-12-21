@@ -29,17 +29,15 @@ class ConversationChatWidget extends StatelessWidget {
           context,
           conversation: chatBloc.chat,
           lastMessage: chatBloc.lastChatMessage,
-          child: StatusCachedListBlocLoadingWidget(
-            child: ConversationChatMessageCachedPaginationBloc.provideToContext(
+          child: ConversationChatMessageCachedPaginationBloc.provideToContext(
+            context,
+            child: ConversationChatMessageCachedPaginationListWithNewItemsBloc
+                .provideToContext(
               context,
-              child: ConversationChatMessageCachedPaginationListWithNewItemsBloc
-                  .provideToContext(
-                context,
-                mergeNewItemsImmediately: true,
-                child: const ChatWidgetBody(
-                  child: ChatMessageListWidget<IConversationChatMessage>(
-                    itemBuilder: _itemBuilder,
-                  ),
+              mergeNewItemsImmediately: true,
+              child: const ChatWidgetBody(
+                child: ChatMessageListWidget<IConversationChatMessage>(
+                  itemBuilder: _itemBuilder,
                 ),
               ),
             ),

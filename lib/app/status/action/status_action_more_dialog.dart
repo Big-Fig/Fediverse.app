@@ -70,6 +70,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             ),
             child: const AccountActionMoreDialog(
               cancelable: true,
+              showReportAction: true,
             ),
           ),
         ]

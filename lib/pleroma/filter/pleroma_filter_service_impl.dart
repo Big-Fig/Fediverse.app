@@ -76,7 +76,7 @@ class PleromaFilterService extends DisposableOwner
       RestRequest.get(
         relativePath: urlPath.join(filterRelativeUrlPath),
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? []) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
         ],
       ),
     );

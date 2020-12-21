@@ -123,7 +123,7 @@ class PleromaChatService extends DisposableOwner
           "messages",
         ),
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? []) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
         ],
       ),
     );
