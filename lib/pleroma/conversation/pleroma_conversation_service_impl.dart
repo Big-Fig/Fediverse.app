@@ -52,7 +52,7 @@ class PleromaConversationService extends DisposableOwner
       relativePath: join(pleromaConversationRelativeUrlPath,
           conversationRemoteId, conversationStatusesRelativeUrlPath),
       queryArgs: [
-        ...(pagination?.toQueryArgs() ?? []) ,
+        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
       ],
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -110,7 +110,7 @@ class PleromaConversationService extends DisposableOwner
     List<String> recipientsIds,
   }) async {
     var queryArgs = [
-      ...(pagination?.toQueryArgs() ?? []) ,
+      ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
     ];
 
     if (recipientsIds?.isNotEmpty == true) {

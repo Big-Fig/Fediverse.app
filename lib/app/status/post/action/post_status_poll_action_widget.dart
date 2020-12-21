@@ -2,6 +2,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/app/status/post/action/post_status_poll_action_badge_bloc_impl.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -42,7 +43,7 @@ class PostStatusPollActionWidget extends StatelessWidget {
                 var isSomethingChanged = snapshot.data;
                 if (isSomethingChanged) {
                   return DisposableProxyProvider<IPostStatusPollBloc,
-                      PostStatusPollActionBadgeBloc>(
+                      IFediBoolBadgeBloc>(
                     update: (context, postStatusPollBloc, _) =>
                         PostStatusPollActionBadgeBloc(
                       postStatusPollBloc: postStatusPollBloc,

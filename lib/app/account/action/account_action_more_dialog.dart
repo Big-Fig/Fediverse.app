@@ -29,6 +29,7 @@ void showAccountActionMoreDialog({
         value: accountBloc.account,
         child: const AccountActionMoreDialog(
           cancelable: true,
+          showReportAction: false,
         ),
       ),
     ),
@@ -37,9 +38,11 @@ void showAccountActionMoreDialog({
 
 class AccountActionMoreDialog extends StatelessWidget {
   final bool cancelable;
+  final bool showReportAction;
 
   const AccountActionMoreDialog({
     @required this.cancelable,
+    @required this.showReportAction,
   });
 
   @override
@@ -63,7 +66,8 @@ class AccountActionMoreDialog extends StatelessWidget {
                   if (accountBloc.isOnRemoteDomain)
                     AccountActionMoreDialog.buildAccountBlockDomainAction(
                         context),
-                  AccountActionMoreDialog.buildAccountReportAction(context),
+                  if (showReportAction)
+                    AccountActionMoreDialog.buildAccountReportAction(context),
                 ],
           loadingActions: loadingActions,
           cancelable: cancelable,
