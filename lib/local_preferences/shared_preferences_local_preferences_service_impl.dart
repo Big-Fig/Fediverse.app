@@ -148,4 +148,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
       });
     }
   }
+
+  @override
+  Future<bool> delete() => clearAllValues();
 }

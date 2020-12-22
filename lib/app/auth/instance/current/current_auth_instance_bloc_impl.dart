@@ -33,10 +33,9 @@ class CurrentAuthInstanceBloc extends DisposableOwner
         (existInstance) => existInstance.userAtHost == instance.userAtHost,
         orElse: () => null);
 
-    if (found != null) {
-      await instanceListBloc.removeInstance(found);
+    if (found == null) {
+      await instanceListBloc.addInstance(instance);
     }
-    await instanceListBloc.addInstance(instance);
 
     await currentLocalPreferenceBloc.setValue(instance);
   }
@@ -50,8 +49,8 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     await instanceListBloc.removeInstance(currentInstance);
 
     if (instanceListBloc.isHaveInstances == true) {
-      await currentLocalPreferenceBloc.setValue(instanceListBloc
-          .availableInstances.first);
+      await currentLocalPreferenceBloc
+          .setValue(instanceListBloc.availableInstances.first);
     } else {
       await currentLocalPreferenceBloc.setValue(null);
     }

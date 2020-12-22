@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
@@ -186,6 +189,43 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
+    instanceListBloc.addDisposable(
+      streamSubscription: instanceListBloc.instanceRemovedStream.listen(
+        (removedInstance) {
+          _logger.finest(() => "removedInstance $removedInstance");
+
+          Future.delayed(
+            Duration(seconds: 1),
+            () async {
+              var userAtHost = removedInstance.userAtHost;
+              var databaseFilePath =
+                  await AppDatabaseService.calculateDatabaseFilePath(
+                userAtHost,
+              );
+              var file = File(databaseFilePath);
+              _logger.finest(
+                  () => "removedInstance delete database $databaseFilePath");
+              await file.delete();
+
+              var localPreferencesBlocCreators =
+                  FediLocalPreferencesServiceMigrationBloc
+                      .calculateUserAtHostLocalPreferencesBlocCreators(
+                          userAtHost);
+
+              for (var blocCreator in localPreferencesBlocCreators) {
+                var localPreferencesBloc =
+                    blocCreator(hiveLocalPreferencesService);
+
+                await localPreferencesBloc.performAsyncInit();
+                await localPreferencesBloc.clearValue();
+                await localPreferencesBloc.dispose();
+              }
+            },
+          );
+        },
+      ),
+    );
+
     var currentInstanceLocalPreferenceBloc =
         CurrentAuthInstanceLocalPreferenceBloc(hiveLocalPreferencesService);
     await globalProviderService
@@ -354,7 +394,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IGlobalWebSocketsSettingsLocalPreferencesBloc>(
             globalWebSocketsSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalWebSocketsSettingsLocalPreferencesBloc);
-    
+
     var globalPaginationSettingsLocalPreferencesBloc =
         GlobalPaginationSettingsLocalPreferencesBloc(
       hiveLocalPreferencesService,

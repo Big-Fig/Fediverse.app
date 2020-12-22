@@ -30,6 +30,12 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
+  Future<bool> delete() async {
+    await _box.deleteFromDisk();
+    return true;
+  }
+
+  @override
   bool isKeyExist(String key) {
     var contains = _box.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");

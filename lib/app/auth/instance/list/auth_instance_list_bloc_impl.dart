@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
@@ -12,7 +14,9 @@ class AuthInstanceListBloc extends DisposableOwner
     implements IAuthInstanceListBloc {
   final IAuthInstanceListLocalPreferenceBloc instanceListLocalPreferenceBloc;
 
-  AuthInstanceListBloc({@required this.instanceListLocalPreferenceBloc});
+  AuthInstanceListBloc({
+    @required this.instanceListLocalPreferenceBloc,
+  });
 
   @override
   List<AuthInstance> get availableInstances =>
@@ -22,6 +26,13 @@ class AuthInstanceListBloc extends DisposableOwner
   Stream<List<AuthInstance>> get availableInstancesStream =>
       instanceListLocalPreferenceBloc.stream
           .map((instanceList) => instanceList?.instances ?? []);
+
+  StreamController<AuthInstance> instanceRemovedStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<AuthInstance> get instanceRemovedStream =>
+      instanceRemovedStreamController.stream;
 
   @override
   bool get isHaveInstances => availableInstances?.isNotEmpty == true;
@@ -46,12 +57,17 @@ class AuthInstanceListBloc extends DisposableOwner
     _logger.finest(() => "removeInstance $instance");
     var instances = availableInstances;
 
-    var found = findInstanceByCredentials(host: instance.urlHost,acct: instance
-        .acct );
-    if (found != null) {
-      instances.remove(found);
-      await instanceListLocalPreferenceBloc
-          .setValue(AuthInstanceList(instances: instances));
+    var foundInstanceToRemove =
+        findInstanceByCredentials(host: instance.urlHost, acct: instance.acct);
+    if (foundInstanceToRemove != null) {
+      instances.remove(foundInstanceToRemove);
+      await instanceListLocalPreferenceBloc.setValue(
+        AuthInstanceList(
+          instances: instances,
+        ),
+      );
+
+      instanceRemovedStreamController.add(foundInstanceToRemove);
     }
   }
 
