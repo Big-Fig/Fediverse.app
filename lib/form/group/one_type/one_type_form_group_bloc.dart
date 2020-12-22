@@ -14,6 +14,8 @@ abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
 
   void removeField(T field);
 
+  void changeFields(List<T> fields);
+
   int get maximumFieldsCount;
 
   bool get isMaximumFieldsCountReached;

@@ -124,6 +124,23 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }
 
   @override
+  void changeFields(List<T> fields) {
+    var oldFields = items;
+    _itemsSubject.add(fields);
+    isGroupChanged = false;
+    checkIsSomethingChanged();
+    recalculateErrors();
+    Future.delayed(
+      Duration(seconds: 1),
+      () {
+        for (var field in oldFields) {
+          field.dispose();
+        }
+      },
+    );
+  }
+
+  @override
   void clear() {
     for (var item in items) {
       item.clear();
