@@ -86,13 +86,13 @@ class PleromaRestService extends DisposableOwner
         var error = jsonBody[PleromaRestException.jsonBodyErrorKey];
         var isPleromaInvalidCredentials = error ==
                 PleromaInvalidCredentialsForbiddenRestException
-                    .pleromaInvalidCredentialsErrorValue ||
+                    .pleromaInvalidCredentialsErrorValue &&
             statusCode ==
                 PleromaInvalidCredentialsForbiddenRestException
                     .pleromaInvalidCredentialsStatusCode;
         var isMastodonInvalidCredentials = error ==
                 PleromaInvalidCredentialsForbiddenRestException
-                    .mastodonInvalidCredentialsErrorValue ||
+                    .mastodonInvalidCredentialsErrorValue &&
             statusCode ==
                 PleromaInvalidCredentialsForbiddenRestException
                     .mastodonInvalidCredentialsStatusCode;
