@@ -58,9 +58,13 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           currentInstance: currentInstance,
         ),
         super(isAllItemsInitialized: false) {
+    // strange logic from Pleroma/Mastodon
+    // it is not possible to delete value from expiresIn field,
+    // only change to not-null
+    var isExpiresInNullValuePossible = initialValue?.expiresAt == null;
     expiresInField = DurationDateTimeValueFormFieldBloc(
       isEnabled: currentInstance.isMastodonInstance,
-      isNullValuePossible: true,
+      isNullValuePossible: isExpiresInNullValuePossible,
       minDuration: Duration(minutes: 30),
       maxDuration: Duration(days: 365),
       originValue: DurationDateTime(
