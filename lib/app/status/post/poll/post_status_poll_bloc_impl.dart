@@ -118,7 +118,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   void fillFormData(IPostStatusPoll poll) {
     multiplyFieldBloc.changeCurrentValue(poll.multiple);
 
-    durationDateTimeLengthFieldBloc.changeCurrentValueDuration(poll.durationLength);
+    durationDateTimeLengthFieldBloc
+        .changeCurrentValueDuration(poll.durationLength);
     if (poll.options?.isNotEmpty == true) {
       pollOptionsGroupBloc.removeAllFields();
 
@@ -139,18 +140,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   void clear() {
     // super.clear();
 
-    var oldBloc = pollOptionsGroupBloc;
-
-    pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-      originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
-      minimumFieldsCount: 2,
-      maximumFieldsCount: pollLimits?.maxOptions ?? 20,
-      newEmptyFieldCreator: () =>
-          createPollOptionBloc(pollLimits?.maxOptionChars),
+    pollOptionsGroupBloc.changeFields(
+      createDefaultPollOptions(pollLimits?.maxOptionChars),
     );
-
-    onItemsChanged();
-
-    oldBloc.dispose();
   }
 }
