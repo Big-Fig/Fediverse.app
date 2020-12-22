@@ -210,10 +210,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IRecentSearchLocalPreferenceBloc>(recentSearchLocalPreferenceBloc);
 
-    var moorDatabaseService = MoorDatabaseService(dbName: userAtHost);
+    var moorDatabaseService = AppDatabaseService(dbName: userAtHost);
     addDisposable(disposable: moorDatabaseService);
     await globalProviderService
-        .asyncInitAndRegister<MoorDatabaseService>(moorDatabaseService);
+        .asyncInitAndRegister<AppDatabaseService>(moorDatabaseService);
 
     var accountRepository =
         AccountRepository(appDatabase: moorDatabaseService.appDatabase);

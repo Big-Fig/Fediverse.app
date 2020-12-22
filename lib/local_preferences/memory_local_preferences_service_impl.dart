@@ -18,6 +18,10 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     _logger.fine(() => "internalAsyncInit");
   }
 
+
+  @override
+  Future<bool> delete() => clearAllValues();
+
   @override
   Future<bool> clearAllValues() async {
     preferences.clear();
@@ -122,4 +126,5 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
       });
     }
   }
+
 }

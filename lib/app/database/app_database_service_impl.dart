@@ -13,21 +13,23 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-class MoorDatabaseService extends AsyncInitLoadingBloc
+class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
   final String dbName;
 
-  MoorDatabaseService({@required this.dbName});
+  AppDatabaseService({@required this.dbName});
 
   AppDatabase appDatabase;
 
   MoorInspector inspector;
 
+  String filePath;
+  File file;
+
   @override
   Future internalAsyncInit() async {
-    var path = '$dbName.sqlite';
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, path));
+    filePath = await calculateDatabaseFilePath(dbName);
+    file = File(filePath);
 
     appDatabase = AppDatabase(
       VmDatabase(
@@ -36,26 +38,45 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
       ),
     );
 
-    addDisposable(disposable: CustomDisposable(() async {
-      await appDatabase.close();
-    }));
+    addDisposable(
+      disposable: CustomDisposable(
+        () async {
+          await appDatabase.close();
+        },
+      ),
+    );
 
     if (!kReleaseMode) {
-      var packageId = await FediPackageInfoHelper.getPackageId();
-
-      final moorInspectorBuilder = MoorInspectorBuilder()
-        ..bundleId = packageId
-        ..icon = 'flutter'
-        ..addDatabase(path, appDatabase);
-      inspector = moorInspectorBuilder.build();
-
-      //Start server and announcement server
-      await inspector.start();
-
-      addDisposable(custom: () async {
-        await inspector.stop();
-      });
+      await _addMoorInspectorSupport();
     }
+  }
+
+  Future _addMoorInspectorSupport() async {
+      var packageId = await FediPackageInfoHelper.getPackageId();
+    
+    final moorInspectorBuilder = MoorInspectorBuilder()
+      ..bundleId = packageId
+      ..icon = 'flutter'
+      ..addDatabase(filePath, appDatabase);
+    inspector = moorInspectorBuilder.build();
+    
+    //Start server and announcement server
+    await inspector.start();
+    
+    addDisposable(custom: () async {
+      await inspector.stop();
+    });
+  }
+
+
+  static Future<String> calculateDatabaseFilePath(String dbName) async {
+    var path = '$dbName.sqlite';
+    final dbFolder = await getApplicationDocumentsDirectory();
+    var filePath = p.join(
+      dbFolder.path,
+      path,
+    );
+    return filePath;
   }
 
   @override
@@ -66,6 +87,12 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
     }
   }
 
-  static MoorDatabaseService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<MoorDatabaseService>(context, listen: listen);
+  @override
+  Future delete() async {
+    await appDatabase.close();
+    await file.delete();
+  }
+
+  static AppDatabaseService of(BuildContext context, {bool listen = true}) =>
+      Provider.of<AppDatabaseService>(context, listen: listen);
 }
