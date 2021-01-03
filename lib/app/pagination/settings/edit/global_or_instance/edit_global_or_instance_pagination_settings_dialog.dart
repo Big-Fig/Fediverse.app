@@ -35,6 +35,7 @@ void showEditGlobalOrInstancePaginationSettingsDialog({
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editPaginationSettingsBloc = EditPaginationSettingsBloc(
+          isGlobalForced: false,
           paginationSettingsBloc: IPaginationSettingsBloc.of(
             context,
             listen: false,

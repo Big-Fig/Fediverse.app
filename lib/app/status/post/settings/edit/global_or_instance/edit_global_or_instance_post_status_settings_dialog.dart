@@ -37,6 +37,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editPostStatusSettingsBloc = EditPostStatusSettingsBloc(
+          isGlobalForced: false,
           postStatusSettingsBloc: IPostStatusSettingsBloc.of(
             context,
             listen: false,

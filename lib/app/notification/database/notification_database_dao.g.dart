@@ -20,6 +20,13 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
+  Selectable<DbNotification> oldest() {
+    return customSelect(
+        'SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;',
+        variables: [],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
+  }
+
   Selectable<int> countUnreadAll() {
     return customSelect(
         'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed;',
@@ -89,5 +96,30 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         'SELECT id FROM db_notifications WHERE remote_id = :remoteId;',
         variables: [Variable.withString(remoteId)],
         readsFrom: {dbNotifications}).map((QueryRow row) => row.readInt('id'));
+  }
+
+  Future<int> deleteOlderThanDate(DateTime createdAt) {
+    return customUpdate(
+      'DELETE FROM db_notifications WHERE created_at < :createdAt',
+      variables: [Variable.withDateTime(createdAt)],
+      updates: {dbNotifications},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Future<int> deleteOlderThanLocalId(int id) {
+    return customUpdate(
+      'DELETE FROM db_notifications WHERE id = :id;',
+      variables: [Variable.withInt(id)],
+      updates: {dbNotifications},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Selectable<DbNotification> getNewestByLocalIdWithOffset(int offset) {
+    return customSelect(
+        'SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset',
+        variables: [Variable.withInt(offset)],
+        readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 }

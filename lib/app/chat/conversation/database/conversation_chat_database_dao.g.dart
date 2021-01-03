@@ -20,6 +20,13 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
   }
 
+  Selectable<DbConversation> oldest() {
+    return customSelect(
+        'SELECT * FROM db_conversations ORDER BY updated_at ASC LIMIT 1;',
+        variables: [],
+        readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
+  }
+
   Selectable<DbConversation> findByRemoteId(String remoteId) {
     return customSelect(
         'SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;',

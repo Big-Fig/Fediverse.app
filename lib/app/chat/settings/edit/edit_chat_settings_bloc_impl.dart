@@ -29,11 +29,13 @@ class EditChatSettingsBloc
     @required this.chatSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: chatSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           isEnabled: isEnabled,
           isAllItemsInitialized: false,
+          isGlobalForced: isGlobalForced,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.countConversationsInChatsUnreadBadges,

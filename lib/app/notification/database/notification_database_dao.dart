@@ -19,6 +19,7 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_notifications;",
   "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
+  "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
   "countUnreadAll": "SELECT COUNT(*) FROM db_notifications"
       " WHERE unread = 1 AND dismissed;",
   "countUnreadAllNotDismissed": "SELECT COUNT(*) FROM db_notifications"
@@ -32,6 +33,12 @@ var _statusReblogAccountAliasId = "status_reblog_account";
   "getAll": "SELECT * FROM db_notifications",
   "findLocalIdByRemoteId": "SELECT id FROM db_notifications WHERE remote_id = "
       ":remoteId;",
+  "deleteOlderThanDate":
+      "DELETE FROM db_notifications WHERE created_at < :createdAt",
+  "deleteOlderThanLocalId": "DELETE FROM db_notifications WHERE id = "
+      ":id;",
+  "getNewestByLocalIdWithOffset":
+      "SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset",
 })
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {

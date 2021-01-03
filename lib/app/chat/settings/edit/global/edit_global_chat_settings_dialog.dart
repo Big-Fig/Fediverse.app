@@ -28,6 +28,7 @@ void showEditGlobalChatSettingsDialog({
       ),
       child: DisposableProxyProvider<IChatSettingsBloc, IEditChatSettingsBloc>(
         update: (context, value, previous) => EditChatSettingsBloc(
+          isGlobalForced: true,
           chatSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,

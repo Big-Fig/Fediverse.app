@@ -58,9 +58,11 @@ class FediBaseEditTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return TextField(
-    var actualTextInputAction = maxLines == 1 ? textInputAction : TextInputAction.newline;
+    var actualTextInputAction =
+        maxLines == 1 ? textInputAction : TextInputAction.newline;
+    Widget child;
     if (highlightMentions) {
-      return ExtendedTextField(
+      child = ExtendedTextField(
         enabled: enabled,
         specialTextSpanBuilder: _SpecialTextSpanBuilder(
           color: IFediUiColorTheme.of(context).primary,
@@ -69,8 +71,7 @@ class FediBaseEditTextField extends StatelessWidget {
         autocorrect: autocorrect,
         obscureText: obscureText,
         focusNode: focusNode,
-        textInputAction:
-            actualTextInputAction,
+        textInputAction: actualTextInputAction,
         onSubmitted: (value) {
           onSubmitted(value);
         },
@@ -100,14 +101,13 @@ class FediBaseEditTextField extends StatelessWidget {
             null,
       );
     } else {
-      return TextField(
+      child = TextField(
         enabled: enabled,
         maxLength: maxLength,
         autocorrect: autocorrect,
         obscureText: obscureText,
         focusNode: focusNode,
-        textInputAction:
-            actualTextInputAction,
+        textInputAction: actualTextInputAction,
         onSubmitted: (value) {
           onSubmitted(value);
         },
@@ -137,6 +137,7 @@ class FediBaseEditTextField extends StatelessWidget {
             null,
       );
     }
+    return child;
   }
 }
 

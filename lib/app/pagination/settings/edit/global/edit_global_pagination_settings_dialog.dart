@@ -30,6 +30,7 @@ void showEditGlobalPaginationSettingsDialog({
       child: DisposableProxyProvider<IPaginationSettingsBloc,
           IEditPaginationSettingsBloc>(
         update: (context, value, previous) => EditPaginationSettingsBloc(
+          isGlobalForced: true,
           paginationSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,

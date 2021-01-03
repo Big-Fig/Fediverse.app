@@ -30,7 +30,9 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
             IEditWebSocketsSettingsBloc>(
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
-            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
+            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
+                context,
+                listen: false);
 
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
@@ -41,6 +43,7 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
           ),
           globalOrInstanceSettingsType: globalOrInstanceType,
           isEnabled: enabled,
+          isGlobalForced: false,
         );
 
         editWebSocketsSettingsBloc.addDisposable(

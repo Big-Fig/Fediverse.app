@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_media_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_media_page.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
@@ -109,7 +109,7 @@ class _MediaAttachmentDetailsPageState
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
-        return CachedNetworkImage(
+        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageBuilder: (context, imageProvider) {
             return Container(
               child: PhotoView(
@@ -125,8 +125,7 @@ class _MediaAttachmentDetailsPageState
         );
         break;
       case MastodonMediaAttachmentType.video:
-        var mediaSettingsBloc =
-        IMediaSettingsBloc.of(context, listen: false);
+        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return VideoMediaPlayerBloc.provideToContext(
           context,
           autoInit: mediaSettingsBloc.autoInit,
@@ -141,8 +140,7 @@ class _MediaAttachmentDetailsPageState
 
         break;
       case MastodonMediaAttachmentType.audio:
-        var mediaSettingsBloc =
-            IMediaSettingsBloc.of(context, listen: false);
+        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return AudioMediaPlayerBloc.provideToContext(
           context,
           autoInit: mediaSettingsBloc.autoInit,
@@ -203,7 +201,8 @@ class _MediaAttachmentDetailsPageState
     }
   }
 
-  Widget buildDetails() => CachedNetworkImage(
+  Widget buildDetails() =>
+      IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: mediaAttachment.url,
         imageBuilder: (context, imageProvider) {
           return Container(

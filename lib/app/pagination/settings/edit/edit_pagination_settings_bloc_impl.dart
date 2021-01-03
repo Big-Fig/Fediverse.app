@@ -25,11 +25,13 @@ class EditPaginationSettingsBloc
     @required this.paginationSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: paginationSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           isEnabled: isEnabled,
           isAllItemsInitialized: false,
+    isGlobalForced: isGlobalForced,
         ) {
     pageSizeFieldBloc = PaginationPageSizeSingleFromListValueFormFieldBloc(
       isEnabled: isEnabled,

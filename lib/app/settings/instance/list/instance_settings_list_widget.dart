@@ -1,3 +1,5 @@
+import 'package:fedi/app/cache/database/settings/edit/global_or_instance/edit_global_or_instance_database_cache_settings_dialog.dart';
+import 'package:fedi/app/cache/files/settings/edit/global_or_instance/edit_global_or_instance_files_cache_settings_dialog.dart';
 import 'package:fedi/app/chat/settings/edit/global_or_instance/edit_global_or_instance_chat_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global_or_instance/edit_global_or_instance_media_settings_dialog.dart';
 import 'package:fedi/app/pagination/settings/edit/global_or_instance/edit_global_or_instance_pagination_settings_dialog.dart';
@@ -26,6 +28,8 @@ class InstanceSettingsListWidget extends StatelessWidget {
           const _InstanceStatusPostSensitiveRowWidget(),
           const _InstanceSettingsChatRowWidget(),
           const _InstanceSettingsWebSocketsRowWidget(),
+          const _InstanceSettingsDatabaseCacheRowWidget(),
+          const _InstanceSettingsFilesCacheRowWidget(),
         ],
       );
 }
@@ -153,6 +157,38 @@ class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
       title: S.of(context).app_web_sockets_settings_title,
       onClick: () {
         showEditGlobalOrInstanceWebSocketsSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
+  const _InstanceSettingsDatabaseCacheRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_database_settings_title,
+      onClick: () {
+        showEditGlobalOrInstanceDatabaseCacheSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _InstanceSettingsFilesCacheRowWidget extends StatelessWidget {
+  const _InstanceSettingsFilesCacheRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_files_settings_title,
+      onClick: () {
+        showEditGlobalOrInstanceFilesCacheSettingsDialog(context: context);
       },
     );
   }

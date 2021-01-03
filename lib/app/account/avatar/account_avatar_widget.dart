@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,7 +59,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
       width: imageSize,
       height: imageSize,
       child: Center(
-        child: CachedNetworkImage(
+        child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageBuilder: (context, imageProvider) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(imageSize / 2),

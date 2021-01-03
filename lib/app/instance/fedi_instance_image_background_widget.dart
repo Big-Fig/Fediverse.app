@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ var _logger = Logger("fedi_instance_image_background_widget.dart");
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
   const FediInstanceImageBackgroundWidget();
+
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
@@ -74,7 +76,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
     if (backgroundImageAbsolutePath?.isNotEmpty == true) {
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        return CachedNetworkImage(
+        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageUrl: backgroundImageAbsolutePath,
           width: constraints.maxWidth,
           memCacheWidth: constraints.maxWidth.toInt(),

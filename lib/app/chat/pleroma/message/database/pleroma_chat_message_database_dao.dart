@@ -16,8 +16,15 @@ var _accountAliasId = "account";
   "deleteById": "DELETE FROM db_chat_messages WHERE id = :id;",
   "clear": "DELETE FROM db_chat_messages",
   "getAll": "SELECT * FROM db_chat_messages",
+  "oldest": "SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;",
   "findLocalIdByRemoteId": "SELECT id FROM db_chat_messages WHERE remote_id = "
       ":remoteId;",
+  "deleteOlderThanDate":
+      "DELETE FROM db_chat_messages WHERE created_at < :createdAt",
+  "deleteOlderThanLocalId": "DELETE FROM db_chat_messages WHERE id = "
+      ":localId;",
+  "getNewestByLocalIdWithOffset":
+      "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT :limit",
 })
 class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     with _$ChatMessageDaoMixin {

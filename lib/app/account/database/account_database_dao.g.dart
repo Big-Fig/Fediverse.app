@@ -27,6 +27,13 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
+  Selectable<DbAccount> oldest() {
+    return customSelect(
+        'SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;',
+        variables: [],
+        readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
+  }
+
   Selectable<int> countById(int id) {
     return customSelect('SELECT COUNT(*) FROM db_accounts WHERE id = :id;',
         variables: [Variable.withInt(id)],
@@ -61,5 +68,21 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         'SELECT id FROM db_accounts WHERE remote_id = :remoteId;',
         variables: [Variable.withString(remoteId)],
         readsFrom: {dbAccounts}).map((QueryRow row) => row.readInt('id'));
+  }
+
+  Future<int> deleteOlderThanLocalId(int id) {
+    return customUpdate(
+      'DELETE FROM db_accounts WHERE id = :id;',
+      variables: [Variable.withInt(id)],
+      updates: {dbAccounts},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Selectable<DbAccount> getNewestByLocalIdWithOffset(int offset) {
+    return customSelect(
+        'SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset',
+        variables: [Variable.withInt(offset)],
+        readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 }

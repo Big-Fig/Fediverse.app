@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/sensitive/nsfw/status_sensitive_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
@@ -24,7 +24,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     return Container(
       color: fediUiColorTheme.black.withOpacity(0.2),
       child: SizedBox.expand(
-        child: CachedNetworkImage(
+        child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
           fit: BoxFit.cover,
           imageUrl: previewUrl,
           placeholder: (context, url) => const Center(

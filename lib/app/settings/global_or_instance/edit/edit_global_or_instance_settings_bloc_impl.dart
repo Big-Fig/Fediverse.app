@@ -14,9 +14,19 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
   @override
   final GlobalOrInstanceSettingsType globalOrInstanceSettingsType;
 
+  @override
+  final bool isGlobalForced;
+
+  @override
+  bool get isGlobal => globalOrInstanceSettingsBloc.isGlobal;
+
+  @override
+  bool get isInstance => globalOrInstanceSettingsBloc.isInstance;
+
   EditGlobalOrInstanceSettingsBloc({
     @required this.globalOrInstanceSettingsBloc,
     @required this.globalOrInstanceSettingsType,
+    @required this.isGlobalForced,
     @required bool isEnabled,
     @required bool isAllItemsInitialized,
   }) : super(

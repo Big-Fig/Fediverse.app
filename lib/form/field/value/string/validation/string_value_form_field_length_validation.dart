@@ -21,13 +21,16 @@ class StringValueFormFieldLengthValidationError
           .form_field_text_error_length_minAndMax_desc(minLength, maxLength);
     } else if (minLength != null) {
       return S.of(context).form_field_text_error_length_minOnly_desc(minLength);
-    } else if (maxLength != null) {}
-    return S.of(context).form_field_text_error_length_maxOnly_desc(maxLength);
+    } else if (maxLength != null) {
+      return S.of(context).form_field_text_error_length_maxOnly_desc(maxLength);
+    } else {
+      return null;
+    }
   }
 
-  static FormValueFieldValidation createValidator(
+  static FormValueFieldValidation<String> createValidator(
           {@required int minLength, @required int maxLength}) =>
-      (currentValue) {
+      (String currentValue) {
         assert(minLength != null || maxLength != null);
         var length = currentValue?.length ?? 0;
         bool moreThanMin;

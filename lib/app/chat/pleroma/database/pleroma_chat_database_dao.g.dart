@@ -29,6 +29,13 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Selectable<DbChat> oldest() {
+    return customSelect(
+        'SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;',
+        variables: [],
+        readsFrom: {dbChats}).map(dbChats.mapFromRow);
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_chats',

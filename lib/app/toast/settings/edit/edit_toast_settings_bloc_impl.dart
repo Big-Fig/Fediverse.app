@@ -58,11 +58,13 @@ class EditToastSettingsBloc
     @required this.currentInstance,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
   }) : super(
           isEnabled: isEnabled,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           globalOrInstanceSettingsBloc: toastSettingsBloc,
           isAllItemsInitialized: false,
+          isGlobalForced: isGlobalForced,
         ) {
     favouriteFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings.favourite,

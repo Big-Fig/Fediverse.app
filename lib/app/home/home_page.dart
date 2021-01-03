@@ -29,6 +29,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("home_page.dart");

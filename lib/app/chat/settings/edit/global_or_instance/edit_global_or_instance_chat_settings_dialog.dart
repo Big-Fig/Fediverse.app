@@ -35,6 +35,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editChatSettingsBloc = EditChatSettingsBloc(
+          isGlobalForced: false,
           chatSettingsBloc: IChatSettingsBloc.of(
             context,
             listen: false,

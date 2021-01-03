@@ -30,6 +30,7 @@ void showEditGlobalStatusSensitiveSettingsDialog({
       child: DisposableProxyProvider<IStatusSensitiveSettingsBloc,
           IEditStatusSensitiveSettingsBloc>(
         update: (context, value, previous) => EditStatusSensitiveSettingsBloc(
+          isGlobalForced: true,
           statusSensitiveSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,

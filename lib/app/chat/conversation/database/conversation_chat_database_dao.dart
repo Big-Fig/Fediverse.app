@@ -13,8 +13,9 @@ var _conversationAccountsAliasId = "conversationAccounts";
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_conversations;",
   "findById": "SELECT * FROM db_conversations WHERE id = :id;",
+  "oldest": "SELECT * FROM db_conversations ORDER BY updated_at ASC LIMIT 1;",
   "findByRemoteId":
-  "SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;",
+      "SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_conversations WHERE id = :id;",
   "deleteById": "DELETE FROM db_conversations WHERE id = :id;",
   "clear": "DELETE FROM db_conversations",
@@ -36,14 +37,14 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<int> insert(Insertable<DbConversation> entity,
-      {InsertMode mode}) async =>
+          {InsertMode mode}) async =>
       into(db.dbConversations).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbConversation> entity) async =>
       into(db.dbConversations).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(Iterable<Insertable<DbConversation>> entities,
-      InsertMode mode) async =>
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbConversations, entities, mode: mode);
       });
@@ -51,13 +52,12 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   Future<bool> replace(Insertable<DbConversation> entity) async =>
       await update(db.dbConversations).replace(entity);
 
-  Future<int> updateByRemoteId(String remoteId,
-      Insertable<DbConversation> entity) async {
+  Future<int> updateByRemoteId(
+      String remoteId, Insertable<DbConversation> entity) async {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
-      await (update(db.dbConversations)
-        ..where((i) => i.id.equals(localId)))
+      await (update(db.dbConversations)..where((i) => i.id.equals(localId)))
           .write(entity);
     } else {
       localId = await insert(entity);
@@ -67,16 +67,16 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   }
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation>
-  startSelectQuery() => (select(db.dbConversations));
+      startSelectQuery() => (select(db.dbConversations));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
   SimpleSelectStatement<$DbConversationsTable, DbConversation>
-  addRemoteIdBoundsWhere(
-      SimpleSelectStatement<$DbConversationsTable, DbConversation> query, {
-        @required String minimumRemoteIdExcluding,
-        @required String maximumRemoteIdExcluding,
-      }) {
+      addRemoteIdBoundsWhere(
+    SimpleSelectStatement<$DbConversationsTable, DbConversation> query, {
+    @required String minimumRemoteIdExcluding,
+    @required String maximumRemoteIdExcluding,
+  }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
     assert(minimumExist || maximumExist);
@@ -96,32 +96,31 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   }
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
-      SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-      List<ConversationChatOrderingTermData> orderTerms) =>
+          SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+          List<ConversationChatOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) =>
-            (item) {
-          var expression;
-          switch (orderTerm.orderByType) {
-            case ConversationPleromaChatOrderByType.remoteId:
-              expression = item.remoteId;
-              break;
-            case ConversationPleromaChatOrderByType.updatedAt:
-              expression = item.updatedAt;
-              break;
-          }
-          return OrderingTerm(
-              expression: expression, mode: orderTerm.orderingMode);
-        })
+            .map((orderTerm) => (item) {
+                  var expression;
+                  switch (orderTerm.orderByType) {
+                    case ConversationPleromaChatOrderByType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case ConversationPleromaChatOrderByType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
+                  }
+                  return OrderingTerm(
+                      expression: expression, mode: orderTerm.orderingMode);
+                })
             .toList());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-        isNotNull(status.mediaAttachments) |
-        status.mediaAttachments.equals(""));
+            isNotNull(status.mediaAttachments) |
+            status.mediaAttachments.equals(""));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
@@ -130,7 +129,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
 
   Selectable<int> totalAmountUnreadQuery() {
     return customSelect('SELECT COUNT(*) FROM db_conversations WHERE unread=1;',
-         readsFrom: {dbConversations})
+            readsFrom: {dbConversations})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 }

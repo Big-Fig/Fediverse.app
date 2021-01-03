@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
@@ -261,7 +261,7 @@ class EditMyAccountWidget extends StatelessWidget {
         }
         if (source.url != null) {
           var url = source.url;
-          return CachedNetworkImage(
+          return IFilesCacheService.of(context).createCachedNetworkImageWidget(
             imageUrl: url,
             placeholder: (context, url) => Container(
               width: editAccountProgressSize,
@@ -332,7 +332,8 @@ class EditMyAccountWidget extends StatelessWidget {
           }
           if (source.url != null) {
             var url = source.url;
-            return CachedNetworkImage(
+            return IFilesCacheService.of(context)
+                .createCachedNetworkImageWidget(
               imageUrl: url,
               fit: BoxFit.cover,
               placeholder: (context, url) => Center(
@@ -373,9 +374,13 @@ class EditMyAccountWidget extends StatelessWidget {
                     ClipRRect(
                       borderRadius: FediBorderRadius.allBigBorderRadius,
                       child: Container(
-                          width: double.infinity,
-                          height: editAccountBackgroundHeight,
-                          child: buildBackgroundImageFromImageSource(source)),
+                        width: double.infinity,
+                        height: editAccountBackgroundHeight,
+                        child: buildBackgroundImageFromImageSource(
+                          context,
+                          source,
+                        ),
+                      ),
                     ),
                     Positioned(
                       bottom: FediSizes.bigPadding,
@@ -411,10 +416,11 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  Widget buildBackgroundImageFromImageSource(MediaImageSource imageSource) {
+  Widget buildBackgroundImageFromImageSource(
+      BuildContext context, MediaImageSource imageSource) {
     if (imageSource?.url != null) {
       var url = imageSource.url;
-      return CachedNetworkImage(
+      return IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: url,
         fit: BoxFit.cover,
         placeholder: (context, url) => Center(
