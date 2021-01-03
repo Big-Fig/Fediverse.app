@@ -23,6 +23,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final Color backgroundColor;
   final bool highlightMentions;
   final int maxLength;
+
   // todo: refactor to own widget
   final bool filled;
 

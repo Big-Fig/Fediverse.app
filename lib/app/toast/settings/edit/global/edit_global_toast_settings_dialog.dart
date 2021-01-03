@@ -33,6 +33,7 @@ DisposableProvider<IToastSettingsBloc> _buildBody() {
     ),
     child: DisposableProxyProvider<IToastSettingsBloc, IEditToastSettingsBloc>(
       update: (context, value, previous) => EditToastSettingsBloc(
+        isGlobalForced: true,
         toastSettingsBloc: value,
         globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
         isEnabled: true,

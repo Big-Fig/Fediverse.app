@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -96,7 +96,7 @@ class _CardImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var card = Provider.of<IPleromaCard>(context);
 
-    return CachedNetworkImage(
+    return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       width: _cardImageSize,
       height: _cardImageSize,
       imageUrl: card.image,

@@ -14,12 +14,14 @@ class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
     @required AuthInstance currentInstance,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
     @required this.switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc,
   }) : super(
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           toastSettingsBloc: toastSettingsBloc,
           currentInstance: currentInstance,
           isEnabled: isEnabled,
+          isGlobalForced: isGlobalForced,
         );
 
   @override

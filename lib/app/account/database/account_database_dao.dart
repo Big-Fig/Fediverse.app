@@ -19,15 +19,20 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
   "countAll": "SELECT Count(*) FROM db_accounts;",
   "findById": "SELECT * FROM db_accounts WHERE id = :id;",
   "findByRemoteId": "SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;",
+  "oldest": "SELECT * FROM db_accounts ORDER BY last_status_at ASC LIMIT 1;",
   "countById": "SELECT COUNT(*) FROM db_accounts WHERE id = :id;",
   "deleteById": "DELETE FROM db_accounts WHERE id = :id;",
   "clear": "DELETE FROM db_accounts",
   "getAll": "SELECT * FROM db_accounts",
   "findLocalIdByRemoteId": "SELECT id FROM db_accounts WHERE remote_id = "
       ":remoteId;",
+  "deleteOlderThanLocalId": "DELETE FROM db_accounts WHERE id = "
+      ":id;",
+  "getNewestByLocalIdWithOffset":
+      "SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset",
 })
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;
   $DbAccountFollowersTable accountFollowersAlias;
@@ -202,23 +207,22 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   JoinedSelectStatement addChatWhere(
           JoinedSelectStatement query, String chatRemoteId) =>
       query
-        ..where(CustomExpression<bool>(
-            "$_chatAccountsAliasId.chat_remote_id"
+        ..where(CustomExpression<bool>("$_chatAccountsAliasId.chat_remote_id"
             " = '$chatRemoteId'"));
 
   JoinedSelectStatement addStatusFavouritedByWhere(
           JoinedSelectStatement query, String statusRemoteId) =>
       query
-        ..where(CustomExpression<bool>(
-            "$_statusFavouritedAccounts.status_remote_id"
-            " = '$statusRemoteId'"));
+        ..where(
+            CustomExpression<bool>("$_statusFavouritedAccounts.status_remote_id"
+                " = '$statusRemoteId'"));
 
   JoinedSelectStatement addStatusRebloggedByWhere(
           JoinedSelectStatement query, String statusRemoteId) =>
       query
-        ..where(CustomExpression<bool>(
-            "$_statusRebloggedAccounts.status_remote_id"
-            " = '$statusRemoteId'"));
+        ..where(
+            CustomExpression<bool>("$_statusRebloggedAccounts.status_remote_id"
+                " = '$statusRemoteId'"));
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
@@ -232,9 +236,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   JoinedSelectStatement addFollowersWhere(
           JoinedSelectStatement query, String followerAccountRemoteId) =>
       query
-        ..where(CustomExpression<bool>(
-            "$_accountFollowersAliasId.account_remote_id"
-            " = '$followerAccountRemoteId'"));
+        ..where(
+            CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
+                " = '$followerAccountRemoteId'"));
 
   List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {
     if (typedResult == null) {

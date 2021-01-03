@@ -35,6 +35,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
             var isEnabled =
                 globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
             var editStatusSensitiveSettingsBloc = EditStatusSensitiveSettingsBloc(
+              isGlobalForced: false,
               statusSensitiveSettingsBloc: IStatusSensitiveSettingsBloc.of(
                 context,
                 listen: false,

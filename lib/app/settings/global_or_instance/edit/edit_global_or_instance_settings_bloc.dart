@@ -13,5 +13,11 @@ abstract class IEditGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   IGlobalOrInstanceSettingsBloc<T> get globalOrInstanceSettingsBloc;
 
+  bool get isInstance;
+
+  bool get isGlobal;
+
+  bool get isGlobalForced;
+
   GlobalOrInstanceSettingsType get globalOrInstanceSettingsType;
 }

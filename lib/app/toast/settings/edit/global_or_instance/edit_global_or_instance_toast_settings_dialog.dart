@@ -38,6 +38,7 @@ void showEditGlobalOrInstanceToastSettingsDialog({
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editToastSettingsBloc = EditGlobalOrInstanceToastSettingsBloc(
+          isGlobalForced: false,
           toastSettingsBloc: IToastSettingsBloc.of(
             context,
             listen: false,

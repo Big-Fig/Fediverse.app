@@ -14,6 +14,10 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
@@ -404,6 +408,28 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IGlobalPaginationSettingsLocalPreferencesBloc>(
             globalPaginationSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalPaginationSettingsLocalPreferencesBloc);
+    
+    var globalDatabaseCacheSettingsLocalPreferencesBloc =
+        GlobalDatabaseCacheSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalDatabaseCacheSettingsLocalPreferencesBloc>(
+            globalDatabaseCacheSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalDatabaseCacheSettingsLocalPreferencesBloc);
+
+
+    var globalFilesCacheSettingsLocalPreferencesBloc =
+    GlobalFilesCacheSettingsLocalPreferencesBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalFilesCacheSettingsLocalPreferencesBloc>(
+        globalFilesCacheSettingsLocalPreferencesBloc);
+    addDisposable(disposable: globalFilesCacheSettingsLocalPreferencesBloc);
+
 
     var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
       hiveLocalPreferencesService,

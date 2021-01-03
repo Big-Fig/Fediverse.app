@@ -15,8 +15,13 @@ void showFediModalBottomSheetDialog({
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,
     isScrollControlled: true,
-    builder: (BuildContext context) => _FediModalBottomSheetDialogBodyWidget(
-      child: child,
+    builder: (BuildContext context) => AnimatedPadding(
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.decelerate,
+      padding: MediaQuery.of(context).viewInsets,
+      child: _FediModalBottomSheetDialogBodyWidget(
+        child: child,
+      ),
     ),
   );
 }

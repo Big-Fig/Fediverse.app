@@ -6,6 +6,19 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
+import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
+import 'package:fedi/app/cache/files/files_cache_service_impl.dart';
+import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc.dart';
+import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc_impl.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/cache/files/settings/local_preferences/instance/instance_files_cache_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
@@ -103,6 +116,7 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dar
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/database/database_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
@@ -214,6 +228,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: moorDatabaseService);
     await globalProviderService
         .asyncInitAndRegister<AppDatabaseService>(moorDatabaseService);
+    await globalProviderService
+        .asyncInitAndRegister<IDatabaseService>(moorDatabaseService);
 
     var accountRepository =
         AccountRepository(appDatabase: moorDatabaseService.appDatabase);
@@ -686,6 +702,29 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             instancePaginationSettingsLocalPreferencesBloc);
     addDisposable(disposable: instancePaginationSettingsLocalPreferencesBloc);
 
+    var instanceFilesCacheSettingsLocalPreferencesBloc =
+        InstanceFilesCacheSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferencesBloc>(
+            instanceFilesCacheSettingsLocalPreferencesBloc);
+    addDisposable(disposable: instanceFilesCacheSettingsLocalPreferencesBloc);
+
+    var instanceDatabaseCacheSettingsLocalPreferencesBloc =
+        InstanceDatabaseCacheSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+            IInstanceDatabaseCacheSettingsLocalPreferencesBloc>(
+        instanceDatabaseCacheSettingsLocalPreferencesBloc);
+    addDisposable(
+        disposable: instanceDatabaseCacheSettingsLocalPreferencesBloc);
+
     var chatSettingsBloc = ChatSettingsBloc(
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
@@ -758,6 +797,28 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPaginationSettingsBloc>(paginationSettingsBloc);
     addDisposable(disposable: paginationSettingsBloc);
+
+    var databaseCacheSettingsBloc = DatabaseCacheSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instanceDatabaseCacheSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc: appContextBloc
+          .get<IGlobalDatabaseCacheSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService.asyncInitAndRegister<
+        IDatabaseCacheSettingsBloc>(databaseCacheSettingsBloc);
+    addDisposable(disposable: databaseCacheSettingsBloc);
+
+    var filesCacheSettingsBloc = FilesCacheSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instanceFilesCacheSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalFilesCacheSettingsLocalPreferencesBloc>(),
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<IFilesCacheSettingsBloc>(filesCacheSettingsBloc);
+    addDisposable(disposable: filesCacheSettingsBloc);
 
     var statusSensitiveDisplayTimeStorageBloc =
         StatusSensitiveDisplayTimeStorageBloc();
@@ -833,5 +894,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: filterRepository);
     await globalProviderService
         .asyncInitAndRegister<IFilterRepository>(filterRepository);
+
+    var filesCacheService = FilesCacheService(
+      key: userAtHost,
+      stalePeriod: filesCacheSettingsBloc.filesCacheAgeLimitType?.toDuration(),
+      maxNrOfCacheObjects:
+          filesCacheSettingsBloc.filesCacheSizeLimitCountType?.toCount(),
+    );
+    addDisposable(disposable: filesCacheService);
+    await globalProviderService
+        .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
   }
 }

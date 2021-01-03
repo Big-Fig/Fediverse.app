@@ -16,6 +16,8 @@ class FediFormEditTextRow extends StatelessWidget {
   final int maxLength;
   final bool enabled;
   final int maxLines;
+  final TextInputType keyboardType;
+  final Axis axis;
 
   FediFormEditTextRow({
     @required this.label,
@@ -30,32 +32,54 @@ class FediFormEditTextRow extends StatelessWidget {
     @required this.maxLength,
     this.maxLines = 1,
     this.enabled = true,
+    this.keyboardType,
+    this.axis = Axis.vertical,
   });
 
   @override
-  Widget build(BuildContext context) => FediFormRow(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (label != null) FediFormColumnLabel(label),
-            FediTransparentEditTextField(
-              enabled: enabled,
-              focusNode: focusNode,
-              autocorrect: autocorrect,
-              expanded: false,
-              autofocus: false,
-              hintText: hint,
-              maxLines: maxLines,
-              obscureText: obscureText,
-              onSubmitted: onSubmitted,
-              textInputAction: textInputAction,
-              textEditingController: textEditingController,
-              displayUnderlineBorder: true,
-              errorText: errorText,
-              highlightMentions: false,
-              maxLength: maxLength,
-            ),
-          ],
-        ),
+  Widget build(BuildContext context) {
+    var textFieldWidget = FediTransparentEditTextField(
+      keyboardType: keyboardType,
+      enabled: enabled,
+      focusNode: focusNode,
+      autocorrect: autocorrect,
+      expanded: false,
+      autofocus: false,
+      hintText: hint,
+      maxLines: maxLines,
+      obscureText: obscureText,
+      onSubmitted: onSubmitted,
+      textInputAction: textInputAction,
+      textEditingController: textEditingController,
+      displayUnderlineBorder: true,
+      errorText: errorText,
+      highlightMentions: false,
+      maxLength: maxLength,
+    );
+
+    Widget child;
+    if (axis == Axis.vertical) {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) FediFormColumnLabel(label),
+          textFieldWidget,
+        ],
       );
+    } else {
+      child = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (label != null) FediFormColumnLabel(label),
+          Flexible(
+            child: textFieldWidget,
+          ),
+        ],
+      );
+    }
+
+    return FediFormRow(
+      child: child,
+    );
+  }
 }

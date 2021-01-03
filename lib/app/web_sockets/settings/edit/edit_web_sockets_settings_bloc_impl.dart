@@ -25,11 +25,14 @@ class EditWebSocketsSettingsBloc
     @required this.webSocketsSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
   }) : super(
-            globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
-            globalOrInstanceSettingsType: globalOrInstanceSettingsType,
-            isEnabled: isEnabled,
-            isAllItemsInitialized: false) {
+          globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
+          globalOrInstanceSettingsType: globalOrInstanceSettingsType,
+          isEnabled: isEnabled,
+          isAllItemsInitialized: false,
+          isGlobalForced: isGlobalForced,
+        ) {
     typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
       originValue: currentSettings.type,
       isEnabled: isEnabled,

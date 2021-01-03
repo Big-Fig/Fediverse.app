@@ -35,6 +35,7 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
             var enabled =
                 globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
             var editMediaSettingsBloc = EditMediaSettingsBloc(
+              isGlobalForced: false,
               mediaSettingsBloc: IMediaSettingsBloc.of(
                 context,
                 listen: false,

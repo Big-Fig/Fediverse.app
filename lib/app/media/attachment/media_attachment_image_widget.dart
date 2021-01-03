@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -19,7 +19,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
 
     return Container(
       color: IFediUiColorTheme.of(context).ultraLightGrey,
-      child: CachedNetworkImage(
+      child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: mediaAttachment.previewUrl,
         fit: BoxFit.cover,
         placeholder: (context, url) =>

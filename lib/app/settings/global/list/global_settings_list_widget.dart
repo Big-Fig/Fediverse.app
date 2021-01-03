@@ -1,3 +1,5 @@
+import 'package:fedi/app/cache/database/settings/edit/global/edit_global_database_cache_settings_dialog.dart';
+import 'package:fedi/app/cache/files/settings/edit/global/edit_global_files_cache_settings_dialog.dart';
 import 'package:fedi/app/chat/settings/edit/global/edit_global_chat_settings_dialog.dart';
 import 'package:fedi/app/localization/settings/edit/global/edit_global_localization_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
@@ -28,6 +30,8 @@ class GlobalSettingsListWidget extends StatelessWidget {
           const _GlobalSettingsPostStatusRowWidget(),
           const _GlobalSettingsChatRowWidget(),
           const _GlobalSettingsWebSocketsRowWidget(),
+          const _GlobalSettingsDatabaseCacheRowWidget(),
+          const _GlobalSettingsFilesCacheRowWidget(),
         ],
       );
 }
@@ -171,6 +175,38 @@ class _GlobalSettingsWebSocketsRowWidget extends StatelessWidget {
       title: S.of(context).app_web_sockets_settings_title,
       onClick: () {
         showEditGlobalWebSocketsSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsDatabaseCacheRowWidget extends StatelessWidget {
+  const _GlobalSettingsDatabaseCacheRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_database_settings_title,
+      onClick: () {
+        showEditGlobalDatabaseCacheSettingsDialog(context: context);
+      },
+    );
+  }
+}
+
+class _GlobalSettingsFilesCacheRowWidget extends StatelessWidget {
+  const _GlobalSettingsFilesCacheRowWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleFediSelectionItemRowWidget(
+      title: S.of(context).app_cache_files_settings_title,
+      onClick: () {
+        showEditGlobalFilesCacheSettingsDialog(context: context);
       },
     );
   }

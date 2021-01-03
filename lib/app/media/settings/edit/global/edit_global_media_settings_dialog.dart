@@ -29,6 +29,7 @@ void showEditGlobalMediaSettingsDialog({
       child:
           DisposableProxyProvider<IMediaSettingsBloc, IEditMediaSettingsBloc>(
         update: (context, value, previous) => EditMediaSettingsBloc(
+          isGlobalForced: true,
           mediaSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,

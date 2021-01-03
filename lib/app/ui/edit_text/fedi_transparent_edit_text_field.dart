@@ -27,6 +27,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final bool highlightMentions;
   final int maxLength;
   final bool enabled;
+
   final Color customBorderColor;
 
   FediTransparentEditTextField({

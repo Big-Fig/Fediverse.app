@@ -5301,6 +5301,406 @@ class S {
       args: [],
     );
   }
+
+  /// `Age limit`
+  String get app_cache_database_settings_limitAge_label {
+    return Intl.message(
+      'Age limit',
+      name: 'app_cache_database_settings_limitAge_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entries count per type limit`
+  String get app_cache_database_settings_limitEntriesCountByType_label {
+    return Intl.message(
+      'Entries count per type limit',
+      name: 'app_cache_database_settings_limitEntriesCountByType_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Objects count limit`
+  String get app_cache_files_settings_sizeLimit_label {
+    return Intl.message(
+      'Objects count limit',
+      name: 'app_cache_files_settings_sizeLimit_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Databаse cache`
+  String get app_cache_database_settings_title {
+    return Intl.message(
+      'Databаse cache',
+      name: 'app_cache_database_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Files cache`
+  String get app_cache_files_settings_title {
+    return Intl.message(
+      'Files cache',
+      name: 'app_cache_files_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exceed limits data will be deleted on each app start.`
+  String get app_cache_files_settings_description {
+    return Intl.message(
+      'Exceed limits data will be deleted on each app start.',
+      name: 'app_cache_files_settings_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear cache by limits ({userAtHost})`
+  String app_cache_settings_action_clear_by_limits_now(Object userAtHost) {
+    return Intl.message(
+      'Clear cache by limits ($userAtHost)',
+      name: 'app_cache_settings_action_clear_by_limits_now',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Clear whole cache ({userAtHost})`
+  String app_cache_settings_action_clear_all_now(Object userAtHost) {
+    return Intl.message(
+      'Clear whole cache ($userAtHost)',
+      name: 'app_cache_settings_action_clear_all_now',
+      desc: '',
+      args: [userAtHost],
+    );
+  }
+
+  /// `Accounts, statuses, conversation, notifications and chats. Huge limits may cause bad performance due to complex calculations for big amount of data.\n Exceed limits data will be deleted on each app start.`
+  String get app_cache_database_settings_description {
+    return Intl.message(
+      'Accounts, statuses, conversation, notifications and chats. Huge limits may cause bad performance due to complex calculations for big amount of data.\n Exceed limits data will be deleted on each app start.',
+      name: 'app_cache_database_settings_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Should be not more than {max}`
+  String form_field_int_error_length_maxOnlyValue_desc(Object max) {
+    return Intl.message(
+      'Should be not more than $max',
+      name: 'form_field_int_error_length_maxOnlyValue_desc',
+      desc: '',
+      args: [max],
+    );
+  }
+
+  /// `Should be at least {min}`
+  String form_field_int_error_length_minOnlyValue_desc(Object min) {
+    return Intl.message(
+      'Should be at least $min',
+      name: 'form_field_int_error_length_minOnlyValue_desc',
+      desc: '',
+      args: [min],
+    );
+  }
+
+  /// `Should be between {min} and {max}`
+  String form_field_int_error_length_minAndMax_desc(Object min, Object max) {
+    return Intl.message(
+      'Should be between $min and $max',
+      name: 'form_field_int_error_length_minAndMax_desc',
+      desc: '',
+      args: [min, max],
+    );
+  }
+
+  /// `{count}`
+  String app_cache_database_settings_currentEntriesCountByType_value(Object count) {
+    return Intl.message(
+      '$count',
+      name: 'app_cache_database_settings_currentEntriesCountByType_value',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Current max age`
+  String get app_cache_database_settings_currentMaxAge_label {
+    return Intl.message(
+      'Current max age',
+      name: 'app_cache_database_settings_currentMaxAge_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{dateTime}`
+  String app_cache_database_settings_currentMaxAge_value(Object dateTime) {
+    return Intl.message(
+      '$dateTime',
+      name: 'app_cache_database_settings_currentMaxAge_value',
+      desc: '',
+      args: [dateTime],
+    );
+  }
+
+  /// `Current max entries count by type`
+  String get app_cache_database_settings_currentEntriesCountByType_label {
+    return Intl.message(
+      'Current max entries count by type',
+      name: 'app_cache_database_settings_currentEntriesCountByType_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get app_cache_database_settings_limitAge_value_notSet {
+    return Intl.message(
+      'No',
+      name: 'app_cache_database_settings_limitAge_value_notSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `7 days`
+  String get app_cache_database_settings_limitAge_value_days7 {
+    return Intl.message(
+      '7 days',
+      name: 'app_cache_database_settings_limitAge_value_days7',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `30 days`
+  String get app_cache_database_settings_limitAge_value_days30 {
+    return Intl.message(
+      '30 days',
+      name: 'app_cache_database_settings_limitAge_value_days30',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `90 days`
+  String get app_cache_database_settings_limitAge_value_days90 {
+    return Intl.message(
+      '90 days',
+      name: 'app_cache_database_settings_limitAge_value_days90',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `180 days`
+  String get app_cache_database_settings_limitAge_value_days180 {
+    return Intl.message(
+      '180 days',
+      name: 'app_cache_database_settings_limitAge_value_days180',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 year`
+  String get app_cache_database_settings_limitAge_value_days365 {
+    return Intl.message(
+      '1 year',
+      name: 'app_cache_database_settings_limitAge_value_days365',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get app_cache_database_settings_limitEntriesCountByType_value_notSet {
+    return Intl.message(
+      'No',
+      name: 'app_cache_database_settings_limitEntriesCountByType_value_notSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1000 entries`
+  String get app_cache_database_settings_limitEntriesCountByType_value_limit1000 {
+    return Intl.message(
+      '1000 entries',
+      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit1000',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `5000 entries`
+  String get app_cache_database_settings_limitEntriesCountByType_value_limit5000 {
+    return Intl.message(
+      '5000 entries',
+      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit5000',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `10000 entries`
+  String get app_cache_database_settings_limitEntriesCountByType_value_limit10000 {
+    return Intl.message(
+      '10000 entries',
+      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit10000',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `100000 entries`
+  String get app_cache_database_settings_limitEntriesCountByType_value_limit100000 {
+    return Intl.message(
+      '100000 entries',
+      name: 'app_cache_database_settings_limitEntriesCountByType_value_limit100000',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get app_cache_files_settings_sizeLimit_value_notSet {
+    return Intl.message(
+      'No',
+      name: 'app_cache_files_settings_sizeLimit_value_notSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `50`
+  String get app_cache_files_settings_sizeLimit_value_size50 {
+    return Intl.message(
+      '50',
+      name: 'app_cache_files_settings_sizeLimit_value_size50',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `100`
+  String get app_cache_files_settings_sizeLimit_value_size100 {
+    return Intl.message(
+      '100',
+      name: 'app_cache_files_settings_sizeLimit_value_size100',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `200`
+  String get app_cache_files_settings_sizeLimit_value_size200 {
+    return Intl.message(
+      '200',
+      name: 'app_cache_files_settings_sizeLimit_value_size200',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `500`
+  String get app_cache_files_settings_sizeLimit_value_size500 {
+    return Intl.message(
+      '500',
+      name: 'app_cache_files_settings_sizeLimit_value_size500',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1000`
+  String get app_cache_files_settings_sizeLimit_value_size1000 {
+    return Intl.message(
+      '1000',
+      name: 'app_cache_files_settings_sizeLimit_value_size1000',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get app_cache_files_settings_limitAge_value_notSet {
+    return Intl.message(
+      'No',
+      name: 'app_cache_files_settings_limitAge_value_notSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `7 days`
+  String get app_cache_files_settings_limitAge_value_days7 {
+    return Intl.message(
+      '7 days',
+      name: 'app_cache_files_settings_limitAge_value_days7',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `30 days`
+  String get app_cache_files_settings_limitAge_value_days30 {
+    return Intl.message(
+      '30 days',
+      name: 'app_cache_files_settings_limitAge_value_days30',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `90 days`
+  String get app_cache_files_settings_limitAge_value_days90 {
+    return Intl.message(
+      '90 days',
+      name: 'app_cache_files_settings_limitAge_value_days90',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `180 days`
+  String get app_cache_files_settings_limitAge_value_days180 {
+    return Intl.message(
+      '180 days',
+      name: 'app_cache_files_settings_limitAge_value_days180',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 year`
+  String get app_cache_files_settings_limitAge_value_days365 {
+    return Intl.message(
+      '1 year',
+      name: 'app_cache_files_settings_limitAge_value_days365',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Age limit`
+  String get app_cache_files_settings_limitAge_label {
+    return Intl.message(
+      'Age limit',
+      name: 'app_cache_files_settings_limitAge_label',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

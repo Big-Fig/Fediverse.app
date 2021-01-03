@@ -44,10 +44,42 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 
+  Selectable<DbChatMessage> oldest() {
+    return customSelect(
+        'SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;',
+        variables: [],
+        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
+  }
+
   Selectable<int> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_chat_messages WHERE remote_id = :remoteId;',
         variables: [Variable.withString(remoteId)],
         readsFrom: {dbChatMessages}).map((QueryRow row) => row.readInt('id'));
+  }
+
+  Future<int> deleteOlderThanDate(DateTime createdAt) {
+    return customUpdate(
+      'DELETE FROM db_chat_messages WHERE created_at < :createdAt',
+      variables: [Variable.withDateTime(createdAt)],
+      updates: {dbChatMessages},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Future<int> deleteOlderThanLocalId(int localId) {
+    return customUpdate(
+      'DELETE FROM db_chat_messages WHERE id = :localId;',
+      variables: [Variable.withInt(localId)],
+      updates: {dbChatMessages},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
+  Selectable<DbChatMessage> getNewestByLocalIdWithOffset(int limit) {
+    return customSelect(
+        'SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT :limit',
+        variables: [Variable.withInt(limit)],
+        readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 }

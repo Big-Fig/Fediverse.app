@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -25,7 +25,8 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
         return Provider<String>.value(
           value: header,
-          child: RepaintBoundary(child: const _AccountHeaderBackgroundImageWidget()),
+          child: RepaintBoundary(
+              child: const _AccountHeaderBackgroundImageWidget()),
         );
       },
     );
@@ -42,7 +43,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
     String header = Provider.of<String>(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return CachedNetworkImage(
+        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageUrl: header,
           width: constraints.maxWidth,
           memCacheWidth: constraints.maxWidth.toInt(),

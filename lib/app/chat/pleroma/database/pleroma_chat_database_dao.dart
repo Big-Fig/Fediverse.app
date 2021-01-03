@@ -15,6 +15,7 @@ var _chatAccountsAliasId = "chatAccounts";
   "countAll": "SELECT Count(*) FROM db_chats;",
   "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
   "deleteById": "DELETE FROM db_chats WHERE id = :id;",
+  "oldest": "SELECT * FROM db_chats ORDER BY updated_at ASC LIMIT 1;",
   "clear": "DELETE FROM db_chats",
   "getAll": "SELECT * FROM db_chats",
   "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "

@@ -30,6 +30,7 @@ void showEditGlobalPostStatusSettingsDialog({
       child: DisposableProxyProvider<IPostStatusSettingsBloc,
           IEditPostStatusSettingsBloc>(
         update: (context, value, previous) => EditPostStatusSettingsBloc(
+          isGlobalForced: true,
           postStatusSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,

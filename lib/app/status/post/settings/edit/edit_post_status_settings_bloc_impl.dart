@@ -33,11 +33,13 @@ class EditPostStatusSettingsBloc
     @required this.postStatusSettingsBloc,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
+    @required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: postStatusSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           isEnabled: isEnabled,
           isAllItemsInitialized: false,
+          isGlobalForced: isGlobalForced,
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySingleFromListValueFormFieldBloc(
