@@ -26,7 +26,7 @@ class DatabaseCacheSettings
   final String ageLimitTypeString;
 
   DatabaseCacheAgeLimitType get ageLimitType =>
-      entriesCountByTypeLimitTypeString?.toDatabaseCacheAgeLimitType();
+      ageLimitTypeString?.toDatabaseCacheAgeLimitType();
 
   DatabaseCacheSettings({
     @required this.entriesCountByTypeLimitTypeString,

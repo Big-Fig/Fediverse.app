@@ -39,7 +39,6 @@ class EditDatabaseCacheSettingsBloc
   List<IFormItemBloc> get currentItems => [
         ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
         entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
-
         currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc,
         currentMaxAgeDatabaseCacheInfoFormFieldBloc,
       ];
@@ -97,14 +96,15 @@ class EditDatabaseCacheSettingsBloc
   @override
   DatabaseCacheSettings calculateCurrentFormFieldsSettings() =>
       DatabaseCacheSettings(
-          ageLimitTypeString:
-              ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                  .currentValue
-                  ?.toJsonValue(),
-          entriesCountByTypeLimitTypeString:
-              entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
-                  .currentValue
-                  ?.toJsonValue());
+        ageLimitTypeString:
+            ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
+                .currentValue
+                ?.toJsonValue(),
+        entriesCountByTypeLimitTypeString:
+            entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
+                .currentValue
+                ?.toJsonValue(),
+      );
 
   @override
   Future fillSettingsToFormFields(DatabaseCacheSettings settings) async {

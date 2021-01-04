@@ -6,6 +6,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/app/cache/database/database_cache_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
@@ -904,5 +905,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: filesCacheService);
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
+
+
+
+
+
+    await moorDatabaseService.clearByLimits(
+      ageLimit: databaseCacheSettingsBloc.ageLimit?.toDuration(),
+      entriesCountByTypeLimit:
+      databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCount(),
+    );
   }
 }

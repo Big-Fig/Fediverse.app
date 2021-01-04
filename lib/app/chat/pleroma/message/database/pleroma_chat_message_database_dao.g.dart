@@ -76,10 +76,10 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
-  Selectable<DbChatMessage> getNewestByLocalIdWithOffset(int limit) {
+  Selectable<DbChatMessage> getNewestByLocalIdWithOffset(int offset) {
     return customSelect(
-        'SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT :limit',
-        variables: [Variable.withInt(limit)],
+        'SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset',
+        variables: [Variable.withInt(offset)],
         readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 }
