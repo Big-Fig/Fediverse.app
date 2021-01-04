@@ -24,7 +24,7 @@ var _accountAliasId = "account";
   "deleteOlderThanLocalId": "DELETE FROM db_chat_messages WHERE id = "
       ":localId;",
   "getNewestByLocalIdWithOffset":
-      "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT :limit",
+      "SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset",
 })
 class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     with _$ChatMessageDaoMixin {

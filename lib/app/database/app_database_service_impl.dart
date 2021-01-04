@@ -8,11 +8,14 @@ import 'package:fedi/database/database_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor_inspector/moor_inspector.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger("app_database_service_impl.dart");
 
 class AppDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
@@ -156,6 +159,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     @required Duration ageLimit,
     @required int entriesCountByTypeLimit,
   }) async {
+    _logger.finest(() => "clearByLimits \n"
+        "ageLimit $ageLimit \n"
+        "entriesCountByTypeLimit $entriesCountByTypeLimit \n");
 
     // todo: clear related tables too
 
@@ -168,36 +174,49 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     }
 
     if (entriesCountByTypeLimit != null) {
-      var oldestAccountToStartToDelete = await appDatabase.accountDao
-          .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-          .getSingle();
-      if (oldestAccountToStartToDelete != null) {
-        await appDatabase.accountDao
-            .deleteOlderThanLocalId(oldestAccountToStartToDelete.id);
+      if ((await appDatabase.accountDao.countAll().getSingle()) >
+          entriesCountByTypeLimit) {
+        var oldestAccountToStartToDelete = await appDatabase.accountDao
+            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
+            .getSingle();
+        if (oldestAccountToStartToDelete != null) {
+          await appDatabase.accountDao
+              .deleteOlderThanLocalId(oldestAccountToStartToDelete.id);
+        }
       }
 
-      var oldestStatusToStartToDelete = await appDatabase.statusDao
-          .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-          .getSingle();
-      if (oldestStatusToStartToDelete != null) {
-        await appDatabase.statusDao
-            .deleteOlderThanLocalId(oldestStatusToStartToDelete.id);
+      if ((await appDatabase.statusDao.countAll().getSingle()) >
+          entriesCountByTypeLimit) {
+        var oldestStatusToStartToDelete = await appDatabase.statusDao
+            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
+            .getSingle();
+        if (oldestStatusToStartToDelete != null) {
+          await appDatabase.statusDao
+              .deleteOlderThanLocalId(oldestStatusToStartToDelete.id);
+        }
       }
 
-      var oldestNotificationToStartToDelete = await appDatabase.notificationDao
-          .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-          .getSingle();
-      if (oldestNotificationToStartToDelete != null) {
-        await appDatabase.notificationDao
-            .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id);
+      if ((await appDatabase.notificationDao.countAll().getSingle()) >
+          entriesCountByTypeLimit) {
+        var oldestNotificationToStartToDelete = await appDatabase
+            .notificationDao
+            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
+            .getSingle();
+        if (oldestNotificationToStartToDelete != null) {
+          await appDatabase.notificationDao
+              .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id);
+        }
       }
 
-      var oldestChatMessageToStartToDelete = await appDatabase.chatMessageDao
-          .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-          .getSingle();
-      if (oldestNotificationToStartToDelete != null) {
-        await appDatabase.chatMessageDao
-            .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id);
+      if ((await appDatabase.chatMessageDao.countAll().getSingle()) >
+          entriesCountByTypeLimit) {
+        var oldestChatMessageToStartToDelete = await appDatabase.chatMessageDao
+            .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
+            .getSingle();
+        if (oldestChatMessageToStartToDelete != null) {
+          await appDatabase.chatMessageDao
+              .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id);
+        }
       }
     }
   }
