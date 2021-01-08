@@ -266,7 +266,6 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 
   @override
   @HiveField(8)
-  // TODO: CHECK, was in previous implementation, but not exist at
   @JsonKey(name: "hide_favorites")
   final bool hideFavorites;
   @override

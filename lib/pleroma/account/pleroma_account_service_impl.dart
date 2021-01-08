@@ -360,6 +360,25 @@ class PleromaAccountService extends DisposableOwner
   }
 
   @override
+  Future<List<IPleromaStatus>> getAccountFavouritedStatuses({
+    @required String accountRemoteId,
+    IPleromaPaginationRequest pagination,
+  }) async {
+    assert(accountRemoteId?.isNotEmpty == true);
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath:
+            urlPath.join(pleromaAccountRelativeUrlPath, accountRemoteId, "favourites"),
+        queryArgs: [
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+        ],
+      ),
+    );
+
+    return parseStatusListResponse(httpResponse);
+  }
+
+  @override
   Future<List<IPleromaAccount>> search({
     @required String query,
     bool resolve,

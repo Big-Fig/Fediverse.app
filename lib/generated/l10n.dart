@@ -5721,6 +5721,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Favourites`
+  String get app_account_statuses_tab_favourites {
+    return Intl.message(
+      'Favourites',
+      name: 'app_account_statuses_tab_favourites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User restricted access to it's favourites`
+  String get app_account_statuses_tab_favourites_accessRestricted {
+    return Intl.message(
+      'User restricted access to it\'s favourites',
+      name: 'app_account_statuses_tab_favourites_accessRestricted',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

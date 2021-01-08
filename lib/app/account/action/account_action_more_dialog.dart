@@ -71,7 +71,7 @@ class AccountActionMoreDialog extends StatelessWidget {
                         context),
                   if (showReportAction)
                     AccountActionMoreDialog.buildAccountReportAction(context),
-                  if (currentInstance.isSupportSubscribeToAccount)
+                  if (currentInstance.isSubscribeToAccountFeatureSupported)
                     AccountActionMoreDialog.buildAccountSubscribeAction(
                         context),
                 ],

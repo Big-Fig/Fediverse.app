@@ -43,11 +43,6 @@ class PleromaForbiddenRestException extends PleromaRestException {
   PleromaForbiddenRestException(
       {@required int statusCode, @required String body})
       : super(statusCode: statusCode, body: body);
-
-  @override
-  String toString() {
-    return 'PleromaForbiddenRestException{}';
-  }
 }
 
 class PleromaInvalidCredentialsForbiddenRestException
@@ -56,7 +51,8 @@ class PleromaInvalidCredentialsForbiddenRestException
   static const pleromaInvalidCredentialsStatusCode = 403;
 
   static const mastodonInvalidCredentialsStatusCode = 401;
-  static const mastodonInvalidCredentialsErrorValue = "The access token was revoked";
+  static const mastodonInvalidCredentialsErrorValue =
+      "The access token was revoked";
 
   PleromaInvalidCredentialsForbiddenRestException(
       {@required int statusCode, @required String body})

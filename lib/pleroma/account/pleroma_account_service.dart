@@ -49,6 +49,11 @@ abstract class IPleromaAccountService implements IPleromaApi {
     IPleromaPaginationRequest pagination,
   });
 
+  Future<List<IPleromaStatus>> getAccountFavouritedStatuses({
+    @required String accountRemoteId,
+    IPleromaPaginationRequest pagination,
+  });
+
   Future<List<IPleromaAccountIdentityProof>> getAccountIdentifyProofs({
     @required String accountRemoteId,
   });

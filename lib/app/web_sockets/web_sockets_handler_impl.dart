@@ -50,12 +50,13 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
     addDisposable(
       disposable: webSocketsChannel.listenForEvents(
-          listener: WebSocketChannelListener<PleromaWebSocketsEvent>(
-        listenType: listenType,
-        onEvent: (PleromaWebSocketsEvent event) async {
-          await handleEvent(event);
-        },
-      )),
+        listener: WebSocketChannelListener<PleromaWebSocketsEvent>(
+          listenType: listenType,
+          onEvent: (PleromaWebSocketsEvent event) {
+            handleEvent(event);
+          },
+        ),
+      ),
     );
   }
 

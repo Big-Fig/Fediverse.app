@@ -258,6 +258,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_report_toast_success" : MessageLookupByLibrary.simpleMessage("Успех"),
     "app_account_select_recent_empty" : MessageLookupByLibrary.simpleMessage("Вы еще не выбирали аккаунты"),
     "app_account_select_recent_header" : MessageLookupByLibrary.simpleMessage("Недавние"),
+    "app_account_statuses_tab_favourites" : MessageLookupByLibrary.simpleMessage("Избранное"),
+    "app_account_statuses_tab_favourites_accessRestricted" : MessageLookupByLibrary.simpleMessage("Пользователь закрыл доступ к избранному"),
     "app_account_statuses_tab_media" : MessageLookupByLibrary.simpleMessage("Медиа"),
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Прикрепленные"),
     "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("Включая ответы"),

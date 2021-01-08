@@ -60,6 +60,9 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
       case AccountStatusesTab.media:
         return S.of(context).app_account_statuses_tab_media;
         break;
+      case AccountStatusesTab.favourites:
+        return S.of(context).app_account_statuses_tab_favourites;
+        break;
     }
 
     throw "Invalid tab $tab";
