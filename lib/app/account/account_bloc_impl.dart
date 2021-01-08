@@ -146,6 +146,40 @@ class AccountBloc extends IAccountBloc {
     return newRelationship;
   }
 
+  @override
+  Future<IPleromaAccountRelationship> toggleSubscribe() async {
+    assert(relationship != null);
+    var newRelationship;
+    if (relationship.subscribing) {
+      newRelationship = await pleromaAccountService.unSubscribeAccount(
+          accountRemoteId: account.remoteId);
+    } else {
+      newRelationship = await pleromaAccountService.subscribeAccount(
+          accountRemoteId: account.remoteId);
+    }
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> toggleMute() async {
+    assert(relationship != null);
+    var newRelationship;
+    if (relationship.muting) {
+      newRelationship = await pleromaAccountService.unMuteAccount(
+          accountRemoteId: account.remoteId);
+    } else {
+      newRelationship = await pleromaAccountService.muteAccount(
+        accountRemoteId: account.remoteId,
+        notifications: false,
+      );
+    }
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
     if (newRelationship == null) {
@@ -232,6 +266,33 @@ class AccountBloc extends IAccountBloc {
     assert(relationship.muting == true);
 
     var newRelationship = await pleromaAccountService.unMuteAccount(
+        accountRemoteId: account.remoteId);
+
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> subscribe() async {
+    assert(relationship != null);
+    assert(relationship.subscribing != true);
+
+    var newRelationship = await pleromaAccountService.subscribeAccount(
+      accountRemoteId: account.remoteId,
+    );
+
+    await _updateRelationship(account, newRelationship);
+
+    return newRelationship;
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> unSubscribe() async {
+    assert(relationship != null);
+    assert(relationship.subscribing == true);
+
+    var newRelationship = await pleromaAccountService.unSubscribeAccount(
         accountRemoteId: account.remoteId);
 
     await _updateRelationship(account, newRelationship);

@@ -65,6 +65,14 @@ abstract class IPleromaAccountService implements IPleromaApi {
     @required String accountRemoteId,
   });
 
+  Future<IPleromaAccountRelationship> subscribeAccount({
+    @required String accountRemoteId,
+  });
+
+  Future<IPleromaAccountRelationship> unSubscribeAccount({
+    @required String accountRemoteId,
+  });
+
   Future<IPleromaAccountRelationship> pinAccount({
     @required String accountRemoteId,
   });

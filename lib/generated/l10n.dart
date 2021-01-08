@@ -5701,6 +5701,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Subscribe`
+  String get app_account_action_subscribe {
+    return Intl.message(
+      'Subscribe',
+      name: 'app_account_action_subscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unsubscribe`
+  String get app_account_action_unsubscribe {
+    return Intl.message(
+      'Unsubscribe',
+      name: 'app_account_action_unsubscribe',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
