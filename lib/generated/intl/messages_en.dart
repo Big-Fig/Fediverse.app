@@ -174,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_info_followers" : MessageLookupByLibrary.simpleMessage("Followers"),
     "app_account_info_following" : MessageLookupByLibrary.simpleMessage("Following"),
     "app_account_info_statuses" : MessageLookupByLibrary.simpleMessage("Statuses"),
+    "app_account_info_value_hidden" : MessageLookupByLibrary.simpleMessage("Hidden"),
     "app_account_list_privacy" : MessageLookupByLibrary.simpleMessage("Some information may be missed due to privacy settings"),
     "app_account_mute_description" : MessageLookupByLibrary.simpleMessage("Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted."),
     "app_account_mute_dialog_action_mute_with_notifications" : MessageLookupByLibrary.simpleMessage("Mute with notifications"),

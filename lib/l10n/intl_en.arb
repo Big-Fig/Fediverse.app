@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-08T15:31:08+00:00",
+    "@@last_modified": "2021-01-08T17:24:55+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -589,5 +589,6 @@
     "app_account_action_subscribe": "Subscribe",
     "app_account_action_unsubscribe": "Unsubscribe",
     "app_account_statuses_tab_favourites": "Favourites",
-    "app_account_statuses_tab_favourites_accessRestricted": "User restricted access to it's favourites"
+    "app_account_statuses_tab_favourites_accessRestricted": "User restricted access to it's favourites",
+    "app_account_info_value_hidden": "Hidden"
 }

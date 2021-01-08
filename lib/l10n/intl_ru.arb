@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-08T15:32:41+00:00",
+    "@@last_modified": "2021-01-08T17:24:58+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "Системный",
@@ -589,5 +589,6 @@
     "app_account_action_subscribe": "Получать уведомления",
     "app_account_action_unsubscribe": "Не получать уведомления",
     "app_account_statuses_tab_favourites": "Избранное",
-    "app_account_statuses_tab_favourites_accessRestricted": "Пользователь закрыл доступ к избранному"
+    "app_account_statuses_tab_favourites_accessRestricted": "Пользователь закрыл доступ к избранному",
+    "app_account_info_value_hidden": "Скрыто"
 }

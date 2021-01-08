@@ -24,7 +24,6 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Future<IPleromaAccountRelationship> toggleMute();
 
-
   Future<IPleromaAccountRelationship> mute({@required bool notifications});
 
   Future<IPleromaAccountRelationship> unMute();
@@ -62,6 +61,31 @@ extension IAccountBlocExtension on IAccountBloc {
 
   Stream<String> get pleromaBackgroundImageStream =>
       accountStream.map((account) => account.pleromaBackgroundImage);
+
+  bool get pleromaHideFavorites => account?.pleromaHideFavorites;
+
+  Stream<bool> get pleromaHideFavoritesStream =>
+      accountStream.map((account) => account.pleromaHideFavorites);
+
+  bool get pleromaHideFollowers => account?.pleromaHideFollowers;
+
+  Stream<bool> get pleromaHideFollowersStream =>
+      accountStream.map((account) => account.pleromaHideFollowers);
+
+  bool get pleromaHideFollowersCount => account?.pleromaHideFollowersCount;
+
+  Stream<bool> get pleromaHideFollowersCountStream =>
+      accountStream.map((account) => account.pleromaHideFollowersCount);
+
+  bool get pleromaHideFollows => account?.pleromaHideFollows;
+
+  Stream<bool> get pleromaHideFollowsStream =>
+      accountStream.map((account) => account.pleromaHideFollows);
+
+  bool get pleromaHideFollowsCount => account?.pleromaHideFollowsCount;
+
+  Stream<bool> get pleromaHideFollowsCountStream =>
+      accountStream.map((account) => account.pleromaHideFollowsCount);
 
   List<IPleromaField> get fields => account.fields;
 
