@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
@@ -122,15 +123,21 @@ class _HomePageAccountTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var accountHomeTabBloc = AccountHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
-            );
+          currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+            context,
+            listen: false,
+          ),
+        );
 
-        accountHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.account) {
-            accountHomeTabBloc.scrollToTop();
-          }
-        }));
+        accountHomeTabBloc.addDisposable(
+          streamSubscription: homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.account) {
+                accountHomeTabBloc.scrollToTop();
+              }
+            },
+          ),
+        );
 
         return accountHomeTabBloc;
       },

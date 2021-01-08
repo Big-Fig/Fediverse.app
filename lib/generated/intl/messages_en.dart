@@ -258,6 +258,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_report_toast_success" : MessageLookupByLibrary.simpleMessage("Successfully reported"),
     "app_account_select_recent_empty" : MessageLookupByLibrary.simpleMessage("You don’t have recent accounts selection"),
     "app_account_select_recent_header" : MessageLookupByLibrary.simpleMessage("Recent"),
+    "app_account_statuses_tab_favourites" : MessageLookupByLibrary.simpleMessage("Favourites"),
+    "app_account_statuses_tab_favourites_accessRestricted" : MessageLookupByLibrary.simpleMessage("User restricted access to it\'s favourites"),
     "app_account_statuses_tab_media" : MessageLookupByLibrary.simpleMessage("Media"),
     "app_account_statuses_tab_pinned" : MessageLookupByLibrary.simpleMessage("Pinned"),
     "app_account_statuses_tab_withReplies" : MessageLookupByLibrary.simpleMessage("Including replies"),

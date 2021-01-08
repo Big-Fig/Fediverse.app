@@ -1,1 +1,7 @@
-enum AccountStatusesTab { withReplies, withoutReplies, pinned, media }
+enum AccountStatusesTab {
+  withReplies,
+  withoutReplies,
+  pinned,
+  media,
+  favourites,
+}

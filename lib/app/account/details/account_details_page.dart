@@ -10,10 +10,12 @@ import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_timeline_widget.dart';
+import 'package:fedi/app/account/statuses/favourites/account_statuses_favourites_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/media_only/account_statuses_media_only_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/pinned_only/account_statuses_pinned_only_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
@@ -21,6 +23,7 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_wi
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
@@ -33,6 +36,7 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -45,24 +49,20 @@ import 'package:provider/provider.dart';
 
 var _headerBackgroundHeight = 200.0;
 
-const _tabs = [
-  AccountStatusesTab.withoutReplies,
-  AccountStatusesTab.pinned,
-  AccountStatusesTab.media,
-  AccountStatusesTab.withReplies,
-];
-
 class AccountDetailsPage extends StatelessWidget {
   const AccountDetailsPage({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TabControllerProvider(
-        tabControllerCreator: (context, tickerProvider) => TabController(
-          vsync: tickerProvider,
-          length: _tabs.length,
-        ),
-        child: const AccountDetailsPageBody(),
-      );
+  Widget build(BuildContext context) {
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    return TabControllerProvider(
+      tabControllerCreator: (context, tickerProvider) => TabController(
+        vsync: tickerProvider,
+        length: accountDetailsBloc.tabs.length,
+      ),
+      child: const AccountDetailsPageBody(),
+    );
+  }
 }
 
 class AccountDetailsPageBody extends StatelessWidget {
@@ -95,7 +95,9 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var tabController = Provider.of<TabController>(context);
-    var accountDetailsBloc = IAccountDetailsBloc.of(context, listen: false);
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    var tabs = accountDetailsBloc.tabs;
+
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -121,17 +123,17 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
                 (BuildContext context, int index, Widget child) =>
                     buildBodyProvider(
               context: context,
-              tab: _tabs[index],
+              tab: tabs[index],
               child: child,
             ),
             tabBodyContentBuilder: (BuildContext context, int index) =>
                 buildTabBodyContent(
               context,
-              _tabs[index],
+              tabs[index],
             ),
             tabBodyOverlayBuilder: (BuildContext context, int index) =>
                 buildTabBodyOverlay(
-              _tabs[index],
+              tabs[index],
             ),
             tabBarViewContainerBuilder: null,
           ),
@@ -148,6 +150,11 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
     return Builder(
       builder: (context) {
         switch (tab) {
+          case AccountStatusesTab.favourites:
+            return _AccountDetailsPageBodyTabFavouritesProvider(
+              child: child,
+            );
+            break;
           case AccountStatusesTab.withReplies:
             return _AccountDetailsPageBodyTabWithRepliesProvider(
               child: child,
@@ -168,11 +175,9 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             return _AccountDetailsPageBodyTabPinnedProvider(
               child: child,
             );
-
             break;
-          default:
-            throw "Invalid tab $tab";
         }
+        throw "Invalid tab $tab";
       },
     );
   }
@@ -187,6 +192,7 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
       case AccountStatusesTab.withReplies:
       case AccountStatusesTab.withoutReplies:
       case AccountStatusesTab.pinned:
+      case AccountStatusesTab.favourites:
         return Container(
           color: fediUiColorTheme.white,
           child: const CollapsibleOwnerWidget(
@@ -200,9 +206,8 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
           child: const AccountStatusesMediaWidget(),
         );
         break;
-      default:
-        throw "Invalid tab $tab";
     }
+    throw "Invalid tab $tab";
   }
 
   Widget buildTabBodyOverlay(AccountStatusesTab tab) {
@@ -213,11 +218,11 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
         return const StatusListTapToLoadOverlayWidget();
         break;
       case AccountStatusesTab.pinned:
+      case AccountStatusesTab.favourites:
         return const SizedBox.shrink();
         break;
-      default:
-        throw "Invalid tab $tab";
     }
+    throw "Invalid tab $tab";
   }
 }
 
@@ -337,6 +342,45 @@ class _AccountDetailsPageBodyTabPinnedProvider extends StatelessWidget {
   }
 }
 
+class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
+  final Widget child;
+
+  const _AccountDetailsPageBodyTabFavouritesProvider({
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context);
+
+    if (accountBloc.account.pleromaHideFavorites != false) {
+      return FediEmptyWidget(
+        title:
+            S.of(context).app_account_statuses_tab_favourites_accessRestricted,
+      );
+    } else {
+      return AccountStatusesFavouritesNetworkOnlyListBloc.provideToContext(
+        context,
+        account: accountBloc.account,
+        child: StatusNetworkOnlyPaginationBloc.provideToContext(
+          context,
+          child: DisposableProvider<
+              IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+            create: (context) =>
+                PaginationListBloc<PaginationPage<IStatus>, IStatus>(
+              paginationBloc: Provider.of<
+                      IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                  context,
+                  listen: false),
+            ),
+            child: child,
+          ),
+        ),
+      );
+    }
+  }
+}
+
 class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
   const _AccountDetailsNestedScrollViewHeader({
     Key key,
@@ -379,10 +423,12 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding:  EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    var tabs = accountDetailsBloc.tabs;
+    return Padding(
+      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
       child: AccountTabTextTabIndicatorItemWidget(
-        accountTabs: _tabs,
+        accountTabs: tabs,
       ),
     );
   }
@@ -397,16 +443,22 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
 
 MaterialPageRoute createAccountDetailsPageRoute(IAccount account) {
   return MaterialPageRoute(
-      builder: (context) => DisposableProvider<IAccountDetailsBloc>(
-            create: (context) => AccountDetailsBloc(),
-            child: DisposableProvider<IAccountBloc>(
-              create: (context) => AccountBloc.createFromContext(context,
-                  isNeedWatchLocalRepositoryForUpdates: true,
-                  account: account,
-                  isNeedRefreshFromNetworkOnInit: false,
-                  isNeedWatchWebSocketsEvents: false,
-                  isNeedPreFetchRelationship: true),
-              child: const AccountDetailsPage(),
-            ),
-          ));
+    builder: (context) => DisposableProvider<IAccountDetailsBloc>(
+      create: (context) => AccountDetailsBloc(
+        currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        ),
+      ),
+      child: DisposableProvider<IAccountBloc>(
+        create: (context) => AccountBloc.createFromContext(context,
+            isNeedWatchLocalRepositoryForUpdates: true,
+            account: account,
+            isNeedRefreshFromNetworkOnInit: false,
+            isNeedWatchWebSocketsEvents: false,
+            isNeedPreFetchRelationship: true),
+        child: const AccountDetailsPage(),
+      ),
+    ),
+  );
 }
