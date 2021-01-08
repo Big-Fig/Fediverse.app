@@ -16,8 +16,9 @@ var urlPath = path.Context(style: path.Style.url);
 
 class PleromaAccountService extends DisposableOwner
     implements IPleromaAccountService {
-  final accountRelativeUrlPath = "/api/v1/accounts/";
-  final accountReportRelativeUrlPath = "/api/v1/reports";
+  final String accountRelativeUrlPath = "/api/v1/accounts/";
+  final String pleromaAccountRelativeUrlPath = "/api/v1/pleroma/accounts/";
+  final String accountReportRelativeUrlPath = "/api/v1/reports";
   @override
   final IPleromaAuthRestService restService;
 
@@ -432,5 +433,33 @@ class PleromaAccountService extends DisposableOwner
       throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> subscribeAccount({
+    @required String accountRemoteId,
+  }) async {
+    assert(accountRemoteId?.isNotEmpty == true);
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath: urlPath.join(
+          pleromaAccountRelativeUrlPath, accountRemoteId, "subscribe"),
+    ));
+
+    return parseAccountRelationshipResponse(httpResponse);
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> unSubscribeAccount({
+    @required String accountRemoteId,
+  }) async {
+    assert(accountRemoteId?.isNotEmpty == true);
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: urlPath.join(
+            pleromaAccountRelativeUrlPath, accountRemoteId, "unsubscribe"),
+      ),
+    );
+
+    return parseAccountRelationshipResponse(httpResponse);
   }
 }

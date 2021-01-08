@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-03T21:22:04+00:00",
+    "@@last_modified": "2021-01-08T11:47:43+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_system": "System",
@@ -585,5 +585,7 @@
     "app_cache_files_settings_limitAge_value_days90": "90 days",
     "app_cache_files_settings_limitAge_value_days180": "180 days",
     "app_cache_files_settings_limitAge_value_days365": "1 year",
-    "app_cache_files_settings_limitAge_label": "Age limit"
+    "app_cache_files_settings_limitAge_label": "Age limit",
+    "app_account_action_subscribe": "Subscribe",
+    "app_account_action_unsubscribe": "Unsubscribe"
 }

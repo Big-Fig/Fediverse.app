@@ -22,13 +22,22 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Future<IPleromaAccountRelationship> toggleFollow();
 
+  Future<IPleromaAccountRelationship> toggleMute();
+
+
   Future<IPleromaAccountRelationship> mute({@required bool notifications});
 
   Future<IPleromaAccountRelationship> unMute();
 
+  Future<IPleromaAccountRelationship> subscribe();
+
+  Future<IPleromaAccountRelationship> unSubscribe();
+
   Future<IPleromaAccountRelationship> togglePin();
 
   Future<IPleromaAccountRelationship> toggleBlock();
+
+  Future<IPleromaAccountRelationship> toggleSubscribe();
 
   Future<IPleromaAccountRelationship> toggleBlockDomain();
 
@@ -136,6 +145,11 @@ extension IAccountBlocExtension on IAccountBloc {
   Stream<bool> get relationshipFollowingStream =>
       relationshipStream.map((relationship) => relationship?.following);
 
+  bool get relationshipSubscribing => relationship?.subscribing;
+
+  Stream<bool> get relationshipSubscribingStream =>
+      relationshipStream.map((relationship) => relationship?.subscribing);
+
   String get relationshipId => relationship?.id;
 
   Stream<String> get relationshipIdStream =>
@@ -160,11 +174,6 @@ extension IAccountBlocExtension on IAccountBloc {
 
   Stream<bool> get relationshipShowingReblogsStream =>
       relationshipStream.map((relationship) => relationship?.showingReblogs);
-
-  bool get relationshipSubscribing => relationship?.subscribing;
-
-  Stream<bool> get relationshipSubscribingStream =>
-      relationshipStream.map((relationship) => relationship?.subscribing);
 
   String get relationshipNote => relationship?.note;
 

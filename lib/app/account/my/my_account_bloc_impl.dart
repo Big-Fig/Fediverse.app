@@ -118,4 +118,17 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future<IPleromaAccountRelationship> unMute() => throw selfActionError;
+
+  @override
+  Future<IPleromaAccountRelationship> subscribe() => throw selfActionError;
+
+  @override
+  Future<IPleromaAccountRelationship> toggleMute() => throw selfActionError;
+
+  @override
+  Future<IPleromaAccountRelationship> toggleSubscribe() =>
+      throw selfActionError;
+
+  @override
+  Future<IPleromaAccountRelationship> unSubscribe() => throw selfActionError;
 }

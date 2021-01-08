@@ -61,6 +61,8 @@ class AuthInstance extends IJsonObject {
     this.info,
   });
 
+  bool get isSupportSubscribeToAccount => isPleromaInstance;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

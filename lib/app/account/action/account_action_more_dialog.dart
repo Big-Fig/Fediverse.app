@@ -48,6 +48,9 @@ class AccountActionMoreDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+
     return StreamBuilder<IPleromaAccountRelationship>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
@@ -68,6 +71,9 @@ class AccountActionMoreDialog extends StatelessWidget {
                         context),
                   if (showReportAction)
                     AccountActionMoreDialog.buildAccountReportAction(context),
+                  if (currentInstance.isSupportSubscribeToAccount)
+                    AccountActionMoreDialog.buildAccountSubscribeAction(
+                        context),
                 ],
           loadingActions: loadingActions,
           cancelable: cancelable,
@@ -152,6 +158,23 @@ class AccountActionMoreDialog extends StatelessWidget {
         } else {
           showAccountActionMuteDialog(context, accountBloc);
         }
+      },
+    );
+  }
+
+  static DialogAction buildAccountSubscribeAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    var muting = accountBloc.relationship?.subscribing == true;
+    return DialogAction(
+      icon: muting ? FediIcons.unsubscribe : FediIcons.subscribe,
+      label: muting
+          ? S.of(context).app_account_action_unsubscribe
+          : S.of(context).app_account_action_subscribe,
+      onAction: (context) async {
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context, asyncCode: () => accountBloc.toggleSubscribe());
+
+        Navigator.of(context).pop();
       },
     );
   }
