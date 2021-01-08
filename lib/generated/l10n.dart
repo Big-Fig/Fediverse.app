@@ -5741,6 +5741,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Hidden`
+  String get app_account_info_value_hidden {
+    return Intl.message(
+      'Hidden',
+      name: 'app_account_info_value_hidden',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

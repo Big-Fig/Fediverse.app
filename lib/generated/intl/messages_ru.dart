@@ -174,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_account_info_followers" : MessageLookupByLibrary.simpleMessage("Подписчики"),
     "app_account_info_following" : MessageLookupByLibrary.simpleMessage("Подписики"),
     "app_account_info_statuses" : MessageLookupByLibrary.simpleMessage("Записи"),
+    "app_account_info_value_hidden" : MessageLookupByLibrary.simpleMessage("Скрыто"),
     "app_account_list_privacy" : MessageLookupByLibrary.simpleMessage("Часть данных может быть скрыта из-за настройких приватности"),
     "app_account_mute_description" : MessageLookupByLibrary.simpleMessage("При скрытии пользователя будет скрыто: в публичных и домашней ленте, его упоминания и записи, которыми поделились.\n При скрытие, вы можите дополнительно скрыть оповещения.\n Пользователь не будет знать о том, что вы его скрыли."),
     "app_account_mute_dialog_action_mute_with_notifications" : MessageLookupByLibrary.simpleMessage("Скрыть (не влияя на оповещения)"),
