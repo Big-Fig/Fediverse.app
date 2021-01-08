@@ -2,8 +2,10 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_dialog.dart';
+import 'package:fedi/app/timeline/timeline_label_extension.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_animations.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -18,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/app/timeline/timeline_label_extension.dart';
 
 var _logger = Logger("timelines_home_tab_storage_widget.dart");
 
@@ -63,8 +64,8 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
 
     if (items.isEmpty) {
       return Center(
-        child: Text(
-          S.of(context).app_timeline_storage_empty,
+        child: FediEmptyWidget(
+          title: S.of(context).app_timeline_storage_empty,
         ),
       );
     }
