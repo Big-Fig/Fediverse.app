@@ -1,594 +1,124 @@
-import 'dart:math';
-
-import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
-import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
-import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
+import 'package:fedi/app/account/my/edit/field/avatar/edit_my_account_avatar_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/bot/edit_my_account_bot_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/custom_fields/edit_my_account_custom_fields_list_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/discoverable/edit_my_account_discoverable_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/display_name/edit_my_account_display_name_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/header/edit_my_account_header_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/locked/edit_my_account_locked_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/note/edit_my_account_note_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/accepts_chat_messages/edit_my_account_pleroma_accepts_chat_messages_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/allow_following_move/edit_my_account_pleroma_allow_following_move_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/background_image/edit_my_account_pleroma_background_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/hide_favourites/edit_my_account_pleroma_hide_favourites_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/hide_followers/count/edit_my_account_pleroma_hide_followers_count_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/hide_followers/edit_my_account_pleroma_hide_followers_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/hide_follows/count/edit_my_account_pleroma_hide_follows_count_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/hide_follows/edit_my_account_pleroma_hide_follows_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/no_rich_text/edit_my_account_pleroma_no_rich_text_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/show_role/edit_my_account_pleroma_show_role_field_widget.dart';
+import 'package:fedi/app/account/my/edit/field/pleroma/skip_thread_containment/edit_my_account_pleroma_skip_thread_containment_field_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/cache/files/files_cache_service.dart';
-import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
-import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
-import 'package:fedi/app/media/picker/single_media_picker_page.dart';
-import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
-import 'package:fedi/app/ui/fedi_border_radius.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
-import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
-import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:fedi/media/media_image_source_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
-const editAccountAvatarSize = 120.0;
-const editAccountProgressSize = 30.0;
-const editAccountAvatarTopPadding = 50.0;
-const editAccountAvatarCircleBorderWidth = 4.0;
-const editAccountHeaderHeight = 148.0;
-const editAccountBackgroundHeight = 200.0;
-const editAccountAvatarAndBorderSize =
-    editAccountAvatarSize + editAccountAvatarCircleBorderWidth;
-
-var _logger = Logger("edit_my_account_widget.dart");
+const double _editAccountAvatarSize = 120.0;
+const double _editAccountAvatarCircleBorderWidth = 4.0;
+const double _editAccountHeaderHeight = 148.0;
+const double _editAccountBackgroundHeight = 200.0;
+const double _editAccountAvatarTopPadding = 50.0;
 
 class EditMyAccountWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
-
-    var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: true);
-    return ListView(
-      children: <Widget>[
-        Container(
-          height: editAccountAvatarTopPadding +
-              editAccountAvatarSize +
-              editAccountAvatarCircleBorderWidth * 2,
-          child: Stack(
-            children: [
-              Container(
-                height: editAccountHeaderHeight,
-                child: buildHeaderField(context, editMyAccountBloc),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: editAccountAvatarTopPadding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildAvatarField(context, editMyAccountBloc),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        const FediSmallVerticalSpacer(),
-        Padding(
-          padding: FediPadding.horizontalBigPadding,
-          child: Column(
-            children: [
-              if (currentAuthInstanceBloc.currentInstance.isPleromaInstance)
-                buildPleromaBackgroundFieldImage(context, editMyAccountBloc),
-              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
-                update: (context, value, _) => value.displayNameField,
-                child: buildTextField(
-                    label: S
-                        .of(context)
-                        .app_account_my_edit_field_displayName_label,
-                    nextFormStringFieldBloc: editMyAccountBloc.noteField),
-              ),
-              ProxyProvider<IEditMyAccountBloc, IStringValueFormFieldBloc>(
-                update: (context, value, _) => value.noteField,
-                child: buildTextField(
-                  label: S.of(context).app_account_my_edit_field_note_label,
-                  nextFormStringFieldBloc: null,
-                ),
-              ),
-              buildLockedField(context, editMyAccountBloc),
-              buildCustomFields(context, editMyAccountBloc)
-            ],
-          ),
-        ),
-        // Form
-      ],
-    );
-  }
-
-  Widget buildEditHeaderBackgroundActionButton(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.camera,
-        iconSize: FediSizes.mediumIconSize,
-        size: FediSizes.smallFilledButtonHeight,
-        onPressed: () {
-          startChoosingFileToUploadHeader(context, editMyAccountBloc);
-        },
-      );
-
-  Widget buildEditPleromaBackgroundActionButton(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.camera,
-        iconSize: FediSizes.mediumIconSize,
-        size: FediSizes.smallFilledButtonHeight,
-        onPressed: () {
-          startChoosingFileToUploadBackground(context, editMyAccountBloc);
-        },
-      );
-
-  Widget buildDeletePleromaBackgroundActionButton(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.remove,
-        iconSize: FediSizes.mediumIconSize,
-        size: FediSizes.smallFilledButtonHeight,
-        onPressed: () {
-          editMyAccountBloc.backgroundField.deleteOriginal();
-        },
-      );
-
-  void startChoosingFileToUploadHeader(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, typesToPick: [
-      MediaDeviceFileType.image,
-    ], onFileSelectedCallback:
-        (context, IMediaDeviceFile mediaDeviceFile) async {
-      showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (context, filePickerFile) async {
-        try {
-          await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
-        } catch (e, stackTrace) {
-          _logger.warning(
-              "startChoosingFileToUploadHeader error", e, stackTrace);
-          showMediaAttachmentFailedNotificationOverlay(context, e);
-        }
-        Navigator.of(context).pop();
-      });
-    });
-  }
-
-  void startChoosingFileToUploadBackground(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, typesToPick: [
-      MediaDeviceFileType.image,
-    ], onFileSelectedCallback:
-        (context, IMediaDeviceFile mediaDeviceFile) async {
-      showEditMyAccountHeaderDialog(context, mediaDeviceFile,
-          (context, filePickerFile) async {
-        try {
-          await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
-        } catch (e, stackTrace) {
-          _logger.warning(
-              "startChoosingFileToUploadBackground error", e, stackTrace);
-          showMediaAttachmentFailedNotificationOverlay(context, e);
-        }
-        Navigator.of(context).pop();
-      });
-    });
-  }
-
-  GestureDetector buildAvatarField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        startChoosingFileToUploadAvatar(context, editMyAccountBloc);
-      },
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        children: <Widget>[
-          buildAvatarFieldImage(context, editMyAccountBloc),
-          buildEditAvatarActionButton(context, editMyAccountBloc),
-        ],
-      ),
-    );
-  }
-
-  void startChoosingFileToUploadAvatar(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, typesToPick: [
-      MediaDeviceFileType.image,
-    ], onFileSelectedCallback:
-        (context, IMediaDeviceFile mediaDeviceFile) async {
-      showEditMyAccountAvatarDialog(context, mediaDeviceFile,
-          (context, filePickerFile) async {
-        try {
-          await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
-        } catch (e, stackTrace) {
-          _logger.warning(
-              "startChoosingFileToUploadAvatar error", e, stackTrace);
-          showMediaAttachmentFailedNotificationOverlay(context, e);
-        }
-        Navigator.of(context).pop();
-      });
-    });
-  }
-
-  Widget buildEditAvatarActionButton(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.camera,
-        iconSize: FediSizes.mediumIconSize,
-        borderWidth: 2.0,
-        size: FediSizes.smallFilledButtonHeight,
-        onPressed: () {
-          startChoosingFileToUploadAvatar(context, editMyAccountBloc);
-        },
-      );
-
-  Widget buildAvatarFieldImage(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(editAccountAvatarAndBorderSize / 2),
-        border: Border.all(
-          width: editAccountAvatarCircleBorderWidth,
-          color: IFediUiColorTheme.of(context).white,
-          style: BorderStyle.solid,
-        ),
-      ),
-      child: buildAvatarMediaImageSourceStreamBuilder(editMyAccountBloc),
-      // child: FediCircularProgressIndicator(),
-    );
-  }
-
-  StreamBuilder<MediaImageSource> buildAvatarMediaImageSourceStreamBuilder(
-      IEditMyAccountBloc editMyAccountBloc) {
-    return StreamBuilder<MediaImageSource>(
-      stream: editMyAccountBloc.avatarField.imageSourceStream,
-      builder: (context, snapshot) {
-        var source = snapshot.data;
-
-        if (source == null) {
-          return FediCircularProgressIndicator();
-        }
-        if (source.url != null) {
-          var url = source.url;
-          return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-            imageUrl: url,
-            placeholder: (context, url) => Container(
-              width: editAccountProgressSize,
-              height: editAccountProgressSize,
-              child: FediCircularProgressIndicator(),
-            ),
-            imageBuilder: (context, imageProvider) {
-              return buildAvatarImageContainer(imageProvider);
-            },
-            errorWidget: (context, url, error) => Icon(FediIcons.warning),
-            height: editAccountAvatarSize,
-            width: editAccountAvatarSize,
-          );
-        } else {
-          return buildAvatarImageContainer(Image.file(source.file).image);
-        }
-      },
-    );
-  }
-
-  Container buildAvatarImageContainer(ImageProvider imageProvider) {
-    return Container(
-      height: editAccountAvatarSize,
-      width: editAccountAvatarSize,
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(
-              editAccountAvatarSize / 2 - editAccountAvatarCircleBorderWidth),
-          child: Image(
-            image: imageProvider,
-          )),
-    );
-  }
-
-  Widget buildHeaderField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Stack(
-      children: <Widget>[
-        buildHeaderFieldImage(context, editMyAccountBloc),
-        Positioned(
-          bottom: FediSizes.bigPadding,
-          right: FediSizes.bigPadding,
-          child:
-              buildEditHeaderBackgroundActionButton(context, editMyAccountBloc),
-        ),
-      ],
-    );
-  }
-
-  Widget buildHeaderFieldImage(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child: buildHeaderImageSourceStreamBuilder(editMyAccountBloc),
-      // child: FediCircularProgressIndicator(),
-    );
-  }
-
-  StreamBuilder<MediaImageSource> buildHeaderImageSourceStreamBuilder(
-      IEditMyAccountBloc editMyAccountBloc) {
-    return StreamBuilder<MediaImageSource>(
-        stream: editMyAccountBloc.headerField.imageSourceStream,
-        builder: (context, snapshot) {
-          var source = snapshot.data;
-
-          if (source == null) {
-            return FediCircularProgressIndicator();
-          }
-          if (source.url != null) {
-            var url = source.url;
-            return IFilesCacheService.of(context)
-                .createCachedNetworkImageWidget(
-              imageUrl: url,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: Container(
-                  width: editAccountProgressSize,
-                  height: editAccountProgressSize,
-                  child: FediCircularProgressIndicator(),
-                ),
-              ),
-              errorWidget: (context, url, error) => Icon(FediIcons.warning),
-            );
-          } else {
-            return Image.file(
-              source.file,
-              fit: BoxFit.cover,
-            );
-          }
-        });
-  }
-
-  Widget buildPleromaBackgroundFieldImage(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        FediFormColumnLabel(
-          S.of(context).app_account_my_edit_field_backgroundImage_label,
-        ),
-        FediSmallVerticalSpacer(),
-        StreamBuilder<MediaImageSource>(
-            stream: editMyAccountBloc.backgroundField.imageSourceStream,
-            builder: (context, snapshot) {
-              var source = snapshot.data;
-
-              if (source != null) {
-                return Stack(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: FediBorderRadius.allBigBorderRadius,
-                      child: Container(
-                        width: double.infinity,
-                        height: editAccountBackgroundHeight,
-                        child: buildBackgroundImageFromImageSource(
-                          context,
-                          source,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: FediSizes.bigPadding,
-                      right: FediSizes.bigPadding,
-                      child: buildEditPleromaBackgroundActionButton(
-                          context, editMyAccountBloc),
-                    ),
-                    Positioned(
-                      top: FediSizes.bigPadding,
-                      right: FediSizes.bigPadding,
-                      child: buildDeletePleromaBackgroundActionButton(
-                          context, editMyAccountBloc),
-                    ),
-                  ],
-                );
-              } else {
-                return Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: FediPrimaryFilledTextButtonWithBorder(
-                    S
-                        .of(context)
-                        .app_account_my_edit_field_backgroundImage_action_add,
-                    onPressed: () {
-                      startChoosingFileToUploadBackground(
-                          context, editMyAccountBloc);
-                    },
-                    expanded: false,
-                  ),
-                );
-              }
-            }),
-      ],
-    );
-  }
-
-  Widget buildBackgroundImageFromImageSource(
-      BuildContext context, MediaImageSource imageSource) {
-    if (imageSource?.url != null) {
-      var url = imageSource.url;
-      return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: url,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => Center(
-          child: Container(
-            width: editAccountProgressSize,
-            height: editAccountProgressSize,
-            child: FediCircularProgressIndicator(),
-          ),
-        ),
-        errorWidget: (context, url, error) => Icon(FediIcons.warning),
-      );
-    } else if (imageSource?.file != null) {
-      return Image.file(
-        imageSource.file,
-        fit: BoxFit.cover,
-      );
-    } else {
-      throw "MediaImageSource imageSource is invalid $imageSource";
-    }
-  }
-
-  Widget buildTextField({
-    @required String label,
-    @required IStringValueFormFieldBloc nextFormStringFieldBloc,
-  }) {
-    var isHaveNextField = nextFormStringFieldBloc != null;
-
-    return StringValueFormFieldRowWidget(
-      autocorrect: true,
-      label: label,
-      hint: label,
-      onSubmitted: isHaveNextField
-          ? (String value) {
-              nextFormStringFieldBloc.focusNode.requestFocus();
-            }
-          : null,
-      textInputAction:
-          isHaveNextField ? TextInputAction.next : TextInputAction.done,
-    );
-  }
-
-  Widget buildLockedField(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.lockedField,
-        child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_account_my_edit_field_locked_label,
-        ),
-      );
-
-  Widget buildCustomFields(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var customFieldsGroupBloc = editMyAccountBloc.customFieldsGroupBloc;
-    return StreamBuilder<List<ILinkPairFormGroupBloc>>(
-        stream: customFieldsGroupBloc.itemsStream,
-        initialData: customFieldsGroupBloc.items,
-        builder: (context, snapshot) {
-          var fields = snapshot.data;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ...fields.asMap().entries.map(
-                (entry) {
-                  var index = entry.key;
-                  var nextIndex = index + 1;
-
-                  ILinkPairFormGroupBloc nextCustomField;
-                  if (nextIndex < fields.length) {
-                    nextCustomField = fields[nextIndex];
-                  }
-                  return buildCustomField(
-                      context: context,
-                      fieldGroupBloc: customFieldsGroupBloc,
-                      customField: entry.value,
-                      index: index,
-                      nextCustomField: nextCustomField);
-                },
-              ),
-              StreamBuilder<bool>(
-                  stream:
-                      customFieldsGroupBloc.isMaximumFieldsCountReachedStream,
-                  initialData:
-                      customFieldsGroupBloc.isMaximumFieldsCountReached,
-                  builder: (context, snapshot) {
-                    var isMaximumCustomFieldsCountReached = snapshot.data;
-
-                    if (isMaximumCustomFieldsCountReached != true) {
-                      return Padding(
-                        padding: FediPadding.allBigPadding,
-                        child: FediPrimaryFilledTextButtonWithBorder(
-                          S
-                              .of(context)
-                              .app_account_my_edit_field_customField_action_addNew,
-                          onPressed: () {
-                            customFieldsGroupBloc.addNewEmptyField();
-                          },
-                          expanded: false,
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),
-            ],
-          );
-        });
-  }
-
-  Widget buildCustomField(
-      {@required BuildContext context,
-      @required IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> fieldGroupBloc,
-      @required ILinkPairFormGroupBloc customField,
-      @required ILinkPairFormGroupBloc nextCustomField,
-      @required int index}) {
-    var number = index + 1;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: FediFormPairEditTextRow(
-            label: S
-                .of(context)
-                .app_account_my_edit_field_customField_label(number),
-            nameHint:
-                S.of(context).app_account_my_edit_field_customField_name_label,
-            valueHint:
-                S.of(context).app_account_my_edit_field_customField_value_label,
-            nameStringFieldBloc: customField.keyField,
-            valueStringFieldBloc: customField.valueField,
-            ending: FediIconButton(
-              icon: Icon(FediIcons.close),
-              onPressed: () {
-                fieldGroupBloc.removeField(customField);
-              },
-            ),
-            nextFocusNode: nextCustomField?.keyField?.focusNode,
-          ),
-        ),
-      ],
-    );
-  }
-
   const EditMyAccountWidget();
 
-  static final _numberFormat = NumberFormat("#.#");
+  @override
+  Widget build(BuildContext context) => ListView(
+        children: <Widget>[
+          const _EditMyAccountTopHeaderAndAvatarWidget(),
+          const FediSmallVerticalSpacer(),
+          Padding(
+            padding: FediPadding.horizontalBigPadding,
+            child: const _EditMyAccountBodyWidget(),
+          ),
+        ],
+      );
+}
 
-  void showMediaAttachmentFailedNotificationOverlay(
-      BuildContext context, dynamic e) {
-    String contentText;
-    if (e is UploadMediaExceedFileSizeLimitException) {
-      // todo: refactor
-      contentText =
-          S.of(context).app_media_upload_failed_notification_exceedSize_content(
-                _numberFormat.format(
-                  e.currentFileSizeInBytes / pow(1024, 2),
-                ),
-                _numberFormat.format(
-                  e.maximumFileSizeInBytes / pow(1024, 2),
-                ),
-              );
-    } else {
-      contentText = e.toString();
-    }
+class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
+  const _EditMyAccountTopHeaderAndAvatarWidget({
+    Key key,
+  }) : super(key: key);
 
-    IToastService.of(context, listen: false).showErrorToast(
-      context: context,
-      content: contentText,
-      title: S.of(context).app_media_upload_failed_notification_title,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _editAccountAvatarTopPadding +
+          _editAccountAvatarSize +
+          _editAccountAvatarCircleBorderWidth * 2,
+      child: Container(
+        child: Stack(
+          children: [
+            Container(
+              height: _editAccountHeaderHeight,
+              child: const EditMyAccountHeaderFieldWidget(),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              top: _editAccountAvatarTopPadding,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const EditMyAccountAvatarFieldWidget(
+                    avatarSize: _editAccountAvatarSize,
+                    avatarCircleBorderWidth:
+                        _editAccountAvatarCircleBorderWidth,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EditMyAccountBodyWidget extends StatelessWidget {
+  const _EditMyAccountBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+
+    return Column(
+      children: [
+        if (currentAuthInstanceBloc.currentInstance.isPleromaInstance)
+          const EditMyAccountPleromaBackgroundFieldWidget(
+            backgroundHeight: _editAccountBackgroundHeight,
+          ),
+        const EditMyAccountDisplayNameFieldWidget(),
+        const EditMyAccountNoteFieldWidget(),
+        const EditMyAccountLockedFieldWidget(),
+        const EditMyAccountDiscoverableFieldWidget(),
+        const EditMyAccountBotFieldWidget(),
+        if (currentAuthInstanceBloc.currentInstance.isPleromaInstance) ...[
+          const EditMyAccountPleromaAcceptsChatMessagesFieldWidget(),
+          const EditMyAccountPleromaAllowFollowingMoveFieldWidget(),
+          const EditMyAccountPleromaHideFavouritesFieldWidget(),
+          const EditMyAccountPleromaHideFollowersFieldWidget(),
+          const EditMyAccountPleromaHideFollowersCountFieldWidget(),
+          const EditMyAccountPleromaHideFollowsFieldWidget(),
+          const EditMyAccountPleromaHideFollowsCountFieldWidget(),
+          const EditMyAccountPleromaNoRichTextFieldWidget(),
+          const EditMyAccountPleromaShowRoleFieldWidget(),
+          const EditMyAccountPleromaSkipThreadContainmentFieldWidget(),
+        ],
+        const EditMyAccountCustomFieldsListFieldWidget(),
+      ],
     );
   }
 }

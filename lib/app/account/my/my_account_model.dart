@@ -19,6 +19,12 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
   int get pleromaUnreadConversationCount;
 
   String get pleromaChatToken;
+
+  bool get discoverable;
+
+  IPleromaMyAccountSource get source;
+
+  IPleromaMyAccountPleromaPart get pleroma;
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -33,6 +39,15 @@ class MyAccountRemoteWrapper extends IMyAccount {
   final PleromaMyAccount remoteAccount;
 
   MyAccountRemoteWrapper({this.remoteAccount});
+
+  @override
+  IPleromaMyAccountSource get source => remoteAccount.source;
+
+  @override
+  IPleromaMyAccountPleromaPart get pleroma => remoteAccount.pleroma;
+
+  @override
+  bool get discoverable => remoteAccount.discoverable ?? source.pleroma.discoverable ?? false;
 
   @override
   String get acct => remoteAccount.acct;
@@ -234,7 +249,6 @@ class MyAccountRemoteWrapper extends IMyAccount {
 
   @override
   String get pleromaBackgroundImage => remoteAccount.pleroma?.backgroundImage;
-
 
   factory MyAccountRemoteWrapper.fromJson(Map<String, dynamic> json) =>
       _$MyAccountRemoteWrapperFromJson(json);

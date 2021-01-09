@@ -123,13 +123,15 @@ class PleromaAccountPleromaPartAdapter
       settingsStore: fields[14] as dynamic,
       deactivated: fields[16] as bool,
       allowFollowingMove: fields[17] as bool,
+      skipThreadContainment: fields[18] as bool,
+      acceptsChatMessages: fields[19] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaAccountPleromaPart obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(16)
       ..writeByte(1)
       ..write(obj.backgroundImage)
       ..writeByte(2)
@@ -157,7 +159,11 @@ class PleromaAccountPleromaPartAdapter
       ..writeByte(16)
       ..write(obj.deactivated)
       ..writeByte(17)
-      ..write(obj.allowFollowingMove);
+      ..write(obj.allowFollowingMove)
+      ..writeByte(18)
+      ..write(obj.skipThreadContainment)
+      ..writeByte(19)
+      ..write(obj.acceptsChatMessages);
   }
 
   @override
@@ -329,6 +335,7 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     deactivated: json['deactivated'] as bool,
     allowFollowingMove: json['allow_following_move'] as bool,
     skipThreadContainment: json['skip_thread_containment'] as bool,
+    acceptsChatMessages: json['accepts_chat_messages'] as bool,
   );
 }
 
@@ -350,6 +357,7 @@ Map<String, dynamic> _$PleromaAccountPleromaPartToJson(
       'deactivated': instance.deactivated,
       'allow_following_move': instance.allowFollowingMove,
       'skip_thread_containment': instance.skipThreadContainment,
+      'accepts_chat_messages': instance.acceptsChatMessages,
     };
 
 PleromaAccountRelationship _$PleromaAccountRelationshipFromJson(

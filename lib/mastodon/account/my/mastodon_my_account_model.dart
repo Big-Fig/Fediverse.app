@@ -4,7 +4,7 @@ import 'package:fedi/mastodon/visibility/mastodon_visibility_model.dart';
 
 abstract class IMastodonMyAccountEdit {
   /// Whether the account should be shown in the profile directory.
-  dynamic get discoverable;
+  bool get discoverable;
 
   /// Whether the account has a bot flag.
   bool get bot;
@@ -17,7 +17,7 @@ abstract class IMastodonMyAccountEdit {
   /// Whether manual approval of follow requests is required.
   bool get locked;
 
-  IMastodonMyAccountSource get source;
+  IMastodonMyAccountEditSource get source;
 
   /// Profile metadata name and value.
   /// (By default, max 4 fields and 255 characters per property/value)
@@ -30,22 +30,12 @@ abstract class IMastodonMyAccount implements IMastodonAccount {
   /// Also note that plain-text is used within source and
   /// HTML is used for their corresponding properties such as note and fields.
   IMastodonMyAccountSource get source;
+
+  bool get discoverable;
 }
 
-abstract class IMastodonMyAccountSource {
-  /// The default post privacy to be used for new statuses.
-  String get privacy;
-
-  /// The default post privacy to be used for new statuses.
-  MastodonVisibility get privacyMastodon =>
-      mastodonVisibilityValues.valueToEnumMap[privacy];
-
-  /// Whether new statuses should be marked sensitive by default.
-  bool get sensitive;
-
-  /// The default posting language for new statuses.
-  String get language;
-
+abstract class IMastodonMyAccountSource
+    implements IMastodonMyAccountEditSource {
   /// Profile bio.
   String get note;
 
@@ -54,4 +44,22 @@ abstract class IMastodonMyAccountSource {
 
   /// The number of pending follow requests.
   int get followRequestsCount;
+}
+
+abstract class IMastodonMyAccountEditSource {
+  /// The default post privacy to be used for new statuses.
+  String get privacy;
+
+  /// Whether new statuses should be marked sensitive by default.
+  bool get sensitive;
+
+  /// The default posting language for new statuses.
+  String get language;
+}
+
+extension IMastodonMyAccountEditSourceExtension
+    on IMastodonMyAccountEditSource {
+  /// The default post privacy to be used for new statuses.
+  MastodonVisibility get privacyMastodon =>
+      mastodonVisibilityValues.valueToEnumMap[privacy];
 }

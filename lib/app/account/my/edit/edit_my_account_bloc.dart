@@ -11,8 +11,7 @@ abstract class IEditMyAccountBloc implements IFormBloc {
   static IEditMyAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditMyAccountBloc>(context, listen: listen);
 
-  IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>
-      get customFieldsGroupBloc;
+  IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc> get customFieldsGroupBloc;
 
   IImageFilePickerOrUrlFormFieldBloc get avatarField;
 
@@ -25,6 +24,30 @@ abstract class IEditMyAccountBloc implements IFormBloc {
   IStringValueFormFieldBloc get noteField;
 
   IBoolValueFormFieldBloc get lockedField;
+
+  IBoolValueFormFieldBloc get discoverableField;
+
+  IBoolValueFormFieldBloc get hideFollowersField;
+
+  IBoolValueFormFieldBloc get hideFavouritesField;
+
+  IBoolValueFormFieldBloc get hideFollowersCountField;
+
+  IBoolValueFormFieldBloc get hideFollowsField;
+
+  IBoolValueFormFieldBloc get hideFollowsCountField;
+
+  IBoolValueFormFieldBloc get noRichTextField;
+
+  IBoolValueFormFieldBloc get showRoleField;
+
+  IBoolValueFormFieldBloc get skipThreadContainmentField;
+
+  IBoolValueFormFieldBloc get allowFollowingMoveField;
+
+  IBoolValueFormFieldBloc get acceptsChatMessagesField;
+
+  IBoolValueFormFieldBloc get botField;
 
   Future submitChanges();
 }
