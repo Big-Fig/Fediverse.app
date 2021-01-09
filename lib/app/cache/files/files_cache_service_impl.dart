@@ -72,6 +72,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
         fadeInCurve: fadeInCurve,
         width: width,
         height: height,
+        fit:fit,
         alignment: alignment,
         repeat: repeat,
         matchTextDirection: matchTextDirection,

@@ -224,6 +224,8 @@ abstract class IPleromaAccountPleromaPart {
 
   bool get allowFollowingMove;
 
+  bool get acceptsChatMessages;
+
   bool get skipThreadContainment;
 }
 
@@ -303,11 +305,15 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   @JsonKey(name: "allow_following_move")
   final bool allowFollowingMove;
 
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
+  @HiveField(18)
   @JsonKey(name: "skip_thread_containment")
   final bool skipThreadContainment;
+
+  @override
+  @HiveField(19)
+  @JsonKey(name: "accepts_chat_messages")
+  final bool acceptsChatMessages;
 
   PleromaAccountPleromaPart({
     this.backgroundImage,
@@ -325,6 +331,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
     this.deactivated,
     this.allowFollowingMove,
     this.skipThreadContainment,
+    this.acceptsChatMessages,
   });
 
   factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
@@ -347,6 +354,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
         ' hideFollowsCount: $hideFollowsCount, settingsStore: $settingsStore,'
         ' deactivated: $deactivated,'
         ' allowFollowingMove: $allowFollowingMove,'
+        ' acceptsChatMessages: $acceptsChatMessages,'
         ' skipThreadContainment: $skipThreadContainment}';
   }
 
@@ -369,6 +377,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
           settingsStore == other.settingsStore &&
           deactivated == other.deactivated &&
           allowFollowingMove == other.allowFollowingMove &&
+          acceptsChatMessages == other.acceptsChatMessages &&
           skipThreadContainment == other.skipThreadContainment;
 
   @override
@@ -387,6 +396,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
       settingsStore.hashCode ^
       deactivated.hashCode ^
       allowFollowingMove.hashCode ^
+      acceptsChatMessages.hashCode ^
       skipThreadContainment.hashCode;
 }
 

@@ -43,6 +43,7 @@ class MyAccountBloc extends IMyAccountBloc {
     }));
   }
 
+  @override
   IMyAccount get myAccount => myAccountLocalPreferenceBloc.value;
 
   @override
@@ -100,8 +101,11 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
-    myAccountLocalPreferenceBloc
-        .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
+    myAccountLocalPreferenceBloc.setValue(
+      MyAccountRemoteWrapper(
+        remoteAccount: remoteMyAccount,
+      ),
+    );
   }
 
   @override

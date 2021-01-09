@@ -5751,6 +5751,316 @@ class S {
       args: [],
     );
   }
+
+  /// `Select`
+  String get app_account_my_edit_field_pleroma_background_dialog_action_select {
+    return Intl.message(
+      'Select',
+      name: 'app_account_my_edit_field_pleroma_background_dialog_action_select',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crop`
+  String get app_account_my_edit_field_pleroma_background_dialog_action_crop {
+    return Intl.message(
+      'Crop',
+      name: 'app_account_my_edit_field_pleroma_background_dialog_action_crop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get app_account_my_edit_field_pleroma_background_dialog_action_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'app_account_my_edit_field_pleroma_background_dialog_action_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pleroma background`
+  String get app_account_my_edit_field_pleroma_background_dialog_title {
+    return Intl.message(
+      'Pleroma background',
+      name: 'app_account_my_edit_field_pleroma_background_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You should manually approve follow requests`
+  String get app_account_my_edit_field_locked_description {
+    return Intl.message(
+      'You should manually approve follow requests',
+      name: 'app_account_my_edit_field_locked_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your bio and links to your pages`
+  String get app_account_my_edit_field_note_hint {
+    return Intl.message(
+      'Your bio and links to your pages',
+      name: 'app_account_my_edit_field_note_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `John Smith`
+  String get app_account_my_edit_field_displayName_hint {
+    return Intl.message(
+      'John Smith',
+      name: 'app_account_my_edit_field_displayName_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bot`
+  String get app_account_my_edit_field_bot_label {
+    return Intl.message(
+      'Bot',
+      name: 'app_account_my_edit_field_bot_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark if current account is bot`
+  String get app_account_my_edit_field_bot_description {
+    return Intl.message(
+      'Mark if current account is bot',
+      name: 'app_account_my_edit_field_bot_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discoverable`
+  String get app_account_my_edit_field_discoverable_label {
+    return Intl.message(
+      'Discoverable',
+      name: 'app_account_my_edit_field_discoverable_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search engines & Profile directory`
+  String get app_account_my_edit_field_discoverable_description {
+    return Intl.message(
+      'Search engines & Profile directory',
+      name: 'app_account_my_edit_field_discoverable_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accepts chat messages`
+  String get app_account_my_edit_field_pleroma_acceptsChatMessages_label {
+    return Intl.message(
+      'Accepts chat messages',
+      name: 'app_account_my_edit_field_pleroma_acceptsChatMessages_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable to reject all messages`
+  String get app_account_my_edit_field_pleroma_acceptsChatMessages_description {
+    return Intl.message(
+      'Disable to reject all messages',
+      name: 'app_account_my_edit_field_pleroma_acceptsChatMessages_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow following move`
+  String get app_account_my_edit_field_pleroma_allowFollowingMove_label {
+    return Intl.message(
+      'Allow following move',
+      name: 'app_account_my_edit_field_pleroma_allowFollowingMove_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatically follow moved accounts`
+  String get app_account_my_edit_field_pleroma_allowFollowingMove_description {
+    return Intl.message(
+      'Automatically follow moved accounts',
+      name: 'app_account_my_edit_field_pleroma_allowFollowingMove_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide favourites`
+  String get app_account_my_edit_field_pleroma_hideFavourites_label {
+    return Intl.message(
+      'Hide favourites',
+      name: 'app_account_my_edit_field_pleroma_hideFavourites_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only private access to favourites list`
+  String get app_account_my_edit_field_pleroma_hideFavourites_description {
+    return Intl.message(
+      'Only private access to favourites list',
+      name: 'app_account_my_edit_field_pleroma_hideFavourites_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide followers`
+  String get app_account_my_edit_field_pleroma_hideFollowers_label {
+    return Intl.message(
+      'Hide followers',
+      name: 'app_account_my_edit_field_pleroma_hideFollowers_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only private access to followers list`
+  String get app_account_my_edit_field_pleroma_hideFollowers_description {
+    return Intl.message(
+      'Only private access to followers list',
+      name: 'app_account_my_edit_field_pleroma_hideFollowers_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide followers count`
+  String get app_account_my_edit_field_pleroma_hideFollowersCount_label {
+    return Intl.message(
+      'Hide followers count',
+      name: 'app_account_my_edit_field_pleroma_hideFollowersCount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display '0' as followers count`
+  String get app_account_my_edit_field_pleroma_hideFollowersCount_description {
+    return Intl.message(
+      'Display \'0\' as followers count',
+      name: 'app_account_my_edit_field_pleroma_hideFollowersCount_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide follows`
+  String get app_account_my_edit_field_pleroma_hideFollows_label {
+    return Intl.message(
+      'Hide follows',
+      name: 'app_account_my_edit_field_pleroma_hideFollows_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only private access to follows list`
+  String get app_account_my_edit_field_pleroma_hideFollows_description {
+    return Intl.message(
+      'Only private access to follows list',
+      name: 'app_account_my_edit_field_pleroma_hideFollows_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide follows count`
+  String get app_account_my_edit_field_pleroma_hideFollowsCount_label {
+    return Intl.message(
+      'Hide follows count',
+      name: 'app_account_my_edit_field_pleroma_hideFollowsCount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display '0' as follows count`
+  String get app_account_my_edit_field_pleroma_hideFollowsCount_description {
+    return Intl.message(
+      'Display \'0\' as follows count',
+      name: 'app_account_my_edit_field_pleroma_hideFollowsCount_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ignore rich text`
+  String get app_account_my_edit_field_pleroma_noRichText_label {
+    return Intl.message(
+      'Ignore rich text',
+      name: 'app_account_my_edit_field_pleroma_noRichText_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Strip html tags`
+  String get app_account_my_edit_field_pleroma_noRichText_description {
+    return Intl.message(
+      'Strip html tags',
+      name: 'app_account_my_edit_field_pleroma_noRichText_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show role`
+  String get app_account_my_edit_field_pleroma_showRole_label {
+    return Intl.message(
+      'Show role',
+      name: 'app_account_my_edit_field_pleroma_showRole_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. Admin, Moderator`
+  String get app_account_my_edit_field_pleroma_showRole_description {
+    return Intl.message(
+      'e.g. Admin, Moderator',
+      name: 'app_account_my_edit_field_pleroma_showRole_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip thread containment`
+  String get app_account_my_edit_field_pleroma_skipThreadContainment_label {
+    return Intl.message(
+      'Skip thread containment',
+      name: 'app_account_my_edit_field_pleroma_skipThreadContainment_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ignore broken threads`
+  String get app_account_my_edit_field_pleroma_skipThreadContainment_description {
+    return Intl.message(
+      'Ignore broken threads',
+      name: 'app_account_my_edit_field_pleroma_skipThreadContainment_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

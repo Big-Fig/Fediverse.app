@@ -25,6 +25,7 @@ class StringValueFormFieldRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var formFieldBloc = IStringValueFormFieldBloc.of(context);
+
     return StreamBuilder<List<FormItemValidationError>>(
       stream: formFieldBloc.errorsStream,
       initialData: formFieldBloc.errors,

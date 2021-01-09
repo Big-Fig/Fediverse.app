@@ -135,13 +135,14 @@ class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
       pleroma: fields[19] as PleromaMyAccountPleromaPart,
       lastStatusAt: fields[20] as DateTime,
       source: fields[21] as PleromaMyAccountSource,
+      discoverable: fields[22] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccount obj) {
     writer
-      ..writeByte(21)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
@@ -183,7 +184,9 @@ class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
       ..writeByte(20)
       ..write(obj.lastStatusAt)
       ..writeByte(21)
-      ..write(obj.source);
+      ..write(obj.source)
+      ..writeByte(22)
+      ..write(obj.discoverable);
   }
 
   @override
@@ -273,13 +276,14 @@ class PleromaMyAccountPleromaPartAdapter
       skipThreadContainment: fields[20] as bool,
       notificationSettings:
           fields[19] as PleromaMyAccountPleromaPartNotificationsSettings,
+      acceptsChatMessages: fields[21] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaMyAccountPleromaPart obj) {
     writer
-      ..writeByte(18)
+      ..writeByte(19)
       ..writeByte(1)
       ..write(obj.backgroundImage)
       ..writeByte(2)
@@ -315,7 +319,9 @@ class PleromaMyAccountPleromaPartAdapter
       ..writeByte(19)
       ..write(obj.notificationSettings)
       ..writeByte(20)
-      ..write(obj.skipThreadContainment);
+      ..write(obj.skipThreadContainment)
+      ..writeByte(21)
+      ..write(obj.acceptsChatMessages);
   }
 
   @override
@@ -346,10 +352,11 @@ PleromaMyAccountEdit _$PleromaMyAccountEditFromJson(Map<String, dynamic> json) {
     note: json['note'] as String,
     source: json['source'] == null
         ? null
-        : PleromaMyAccountSource.fromJson(
+        : PleromaMyAccountEditSource.fromJson(
             json['source'] as Map<String, dynamic>),
     actorType: json['actor_type'],
     allowFollowingMove: json['allow_following_move'] as bool,
+    acceptsChatMessages: json['accepts_chat_messages'] as bool,
     defaultScope: json['default_scope'] as String,
     hideFavorites: json['hide_favorites'] as bool,
     hideFollowers: json['hide_followers'] as bool,
@@ -371,13 +378,14 @@ Map<String, dynamic> _$PleromaMyAccountEditToJson(
       'bot': instance.bot,
       'discoverable': instance.discoverable,
       'display_name': instance.displayName,
-      'fields_attributes':
-          instance.fieldsAttributes?.map((k, e) => MapEntry(k.toString(), e)),
+      'fields_attributes': instance.fieldsAttributes
+          ?.map((k, e) => MapEntry(k.toString(), e?.toJson())),
       'locked': instance.locked,
       'note': instance.note,
-      'source': instance.source,
+      'source': instance.source?.toJson(),
       'actor_type': instance.actorType,
       'allow_following_move': instance.allowFollowingMove,
+      'accepts_chat_messages': instance.acceptsChatMessages,
       'default_scope': instance.defaultScope,
       'hide_favorites': instance.hideFavorites,
       'hide_followers': instance.hideFollowers,
@@ -389,6 +397,23 @@ Map<String, dynamic> _$PleromaMyAccountEditToJson(
       'pleroma_settings_store': instance.pleromaSettingsStore,
       'show_role': instance.showRole,
       'skip_thread_containment': instance.skipThreadContainment,
+    };
+
+PleromaMyAccountEditSource _$PleromaMyAccountEditSourceFromJson(
+    Map<String, dynamic> json) {
+  return PleromaMyAccountEditSource(
+    language: json['language'] as String,
+    privacy: json['privacy'] as String,
+    sensitive: json['sensitive'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PleromaMyAccountEditSourceToJson(
+        PleromaMyAccountEditSource instance) =>
+    <String, dynamic>{
+      'language': instance.language,
+      'privacy': instance.privacy,
+      'sensitive': instance.sensitive,
     };
 
 PleromaMyAccountSource _$PleromaMyAccountSourceFromJson(
@@ -480,6 +505,7 @@ PleromaMyAccount _$PleromaMyAccountFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaMyAccountSource.fromJson(
             json['source'] as Map<String, dynamic>),
+    discoverable: json['discoverable'] as bool,
   );
 }
 
@@ -506,6 +532,7 @@ Map<String, dynamic> _$PleromaMyAccountToJson(PleromaMyAccount instance) =>
       'pleroma': instance.pleroma?.toJson(),
       'last_status_at': instance.lastStatusAt?.toIso8601String(),
       'source': instance.source?.toJson(),
+      'discoverable': instance.discoverable,
     };
 
 PleromaMyAccountPleromaPartNotificationsSettings
@@ -555,6 +582,7 @@ PleromaMyAccountPleromaPart _$PleromaMyAccountPleromaPartFromJson(
         ? null
         : PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
             json['notifications_settings'] as Map<String, dynamic>),
+    acceptsChatMessages: json['accepts_chat_messages'] as bool,
   );
 }
 
@@ -579,4 +607,5 @@ Map<String, dynamic> _$PleromaMyAccountPleromaPartToJson(
       'unread_conversation_count': instance.unreadConversationCount,
       'notifications_settings': instance.notificationSettings?.toJson(),
       'skip_thread_containment': instance.skipThreadContainment,
+      'accepts_chat_messages': instance.acceptsChatMessages,
     };

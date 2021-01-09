@@ -20,6 +20,7 @@ import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
+  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
 
@@ -28,9 +29,6 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   final StringValueFormFieldBloc noteField;
-
-  @override
-  final BoolValueFormFieldBloc lockedField;
 
   @override
   final IOneTypeFormGroupBloc<ILinkPairFormGroupBloc> customFieldsGroupBloc;
@@ -44,19 +42,58 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IImageFilePickerOrUrlFormFieldBloc backgroundField;
 
   @override
+  final BoolValueFormFieldBloc lockedField;
+  @override
+  final BoolValueFormFieldBloc discoverableField;
+  @override
+  final BoolValueFormFieldBloc hideFollowersField;
+  @override
+  final BoolValueFormFieldBloc hideFavouritesField;
+  @override
+  final BoolValueFormFieldBloc hideFollowersCountField;
+  @override
+  final BoolValueFormFieldBloc hideFollowsField;
+  @override
+  final BoolValueFormFieldBloc hideFollowsCountField;
+  @override
+  final BoolValueFormFieldBloc noRichTextField;
+  @override
+  final BoolValueFormFieldBloc showRoleField;
+  @override
+  final BoolValueFormFieldBloc skipThreadContainmentField;
+  @override
+  final BoolValueFormFieldBloc allowFollowingMoveField;
+  @override
+  final BoolValueFormFieldBloc acceptsChatMessagesField;
+  @override
+  final BoolValueFormFieldBloc botField;
+
+  @override
   List<IFormItemBloc> get currentItems => [
         avatarField,
         headerField,
         backgroundField,
         displayNameField,
         noteField,
+        customFieldsGroupBloc,
         lockedField,
-        customFieldsGroupBloc
+        discoverableField,
+        hideFavouritesField,
+        hideFollowersField,
+        hideFollowersCountField,
+        hideFollowsField,
+        hideFollowsCountField,
+        noRichTextField,
+        showRoleField,
+        allowFollowingMoveField,
+        skipThreadContainmentField,
+        acceptsChatMessagesField,
+        botField,
       ];
-
 
   EditMyAccountBloc({
     @required this.myAccountBloc,
+    @required this.currentAuthInstanceBloc,
     @required this.pleromaMyAccountService,
     @required int noteMaxLength,
     @required int avatarUploadSizeInBytes,
@@ -75,8 +112,9 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           validators: [],
           maxLength: noteMaxLength,
         ),
-        lockedField =
-            BoolValueFormFieldBloc(originValue: myAccountBloc.account.locked),
+        lockedField = BoolValueFormFieldBloc(
+          originValue: myAccountBloc.account.locked,
+        ),
         avatarField = ImageFilePickerOrUrlFormFieldBloc(
           originalUrl: myAccountBloc.account.avatar,
           maxFileSizeInBytes: avatarUploadSizeInBytes,
@@ -112,13 +150,96 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
               .toList(),
           minimumFieldsCount: null,
         ),
+        discoverableField = BoolValueFormFieldBloc(
+          originValue: myAccountBloc?.myAccount?.discoverable ?? false,
+        ),
+        hideFavouritesField = BoolValueFormFieldBloc(
+          originValue: myAccountBloc?.myAccount?.pleroma?.hideFavorites ?? true,
+        ),
+        hideFollowersCountField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.hideFollowersCount ?? false,
+        ),
+        hideFollowersField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.hideFollowers ?? false,
+        ),
+        hideFollowsCountField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.hideFollowsCount ?? false,
+        ),
+        hideFollowsField = BoolValueFormFieldBloc(
+          originValue: myAccountBloc?.myAccount?.pleroma?.hideFollows ?? false,
+        ),
+        noRichTextField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.source?.pleroma?.noRichText ?? false,
+        ),
+        showRoleField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.source?.pleroma?.showRole ?? false,
+        ),
+        allowFollowingMoveField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.allowFollowingMove ?? true,
+        ),
+        skipThreadContainmentField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.skipThreadContainment ?? false,
+        ),
+        acceptsChatMessagesField = BoolValueFormFieldBloc(
+          originValue:
+              myAccountBloc?.myAccount?.pleroma?.acceptsChatMessages ?? true,
+        ),
+        botField = BoolValueFormFieldBloc(
+          originValue: myAccountBloc?.myAccount?.bot ?? false,
+        ),
         super(isAllItemsInitialized: true) {
     addDisposable(disposable: displayNameField);
     addDisposable(disposable: noteField);
     addDisposable(disposable: lockedField);
     addDisposable(disposable: avatarField);
     addDisposable(disposable: headerField);
+    addDisposable(disposable: lockedField);
     addDisposable(disposable: customFieldsGroupBloc);
+
+    addDisposable(disposable: discoverableField);
+    addDisposable(disposable: hideFollowersField);
+    addDisposable(disposable: hideFollowersCountField);
+    addDisposable(disposable: hideFollowsField);
+    addDisposable(disposable: hideFollowsCountField);
+    addDisposable(disposable: noRichTextField);
+    addDisposable(disposable: showRoleField);
+    addDisposable(disposable: allowFollowingMoveField);
+    addDisposable(disposable: skipThreadContainmentField);
+    addDisposable(disposable: acceptsChatMessagesField);
+    addDisposable(disposable: botField);
+
+    addDisposable(
+      streamSubscription: hideFollowersField.currentValueStream.listen(
+        (hideFollowers) {
+          if (hideFollowers == true) {
+            hideFollowersCountField.changeIsEnabled(true);
+          } else {
+            hideFollowersCountField.changeIsEnabled(false);
+            hideFollowersCountField.changeCurrentValue(false);
+          }
+        },
+      ),
+    );
+
+    addDisposable(
+      streamSubscription: hideFollowsField.currentValueStream.listen(
+        (hideFollows) {
+          if (hideFollows == true) {
+            hideFollowsCountField.changeIsEnabled(true);
+          } else {
+            hideFollowsCountField.changeIsEnabled(false);
+            hideFollowsCountField.changeCurrentValue(false);
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -157,13 +278,15 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
     Map<int, PleromaField> fieldsAttributes = {};
 
-    customFieldsGroupBloc.items.asMap().entries.forEach((entry) {
-      var index = entry.key;
-      var field = entry.value;
-      fieldsAttributes[index] = PleromaField(
-          name: field.keyField.currentValue,
-          value: field.valueField.currentValue);
-    });
+    customFieldsGroupBloc.items.asMap().entries.forEach(
+      (entry) {
+        var index = entry.key;
+        var field = entry.value;
+        fieldsAttributes[index] = PleromaField(
+            name: field.keyField.currentValue,
+            value: field.valueField.currentValue);
+      },
+    );
 
     var backgroundImageOriginalDeleted = backgroundField.isOriginalDeleted;
     String pleromaBackgroundImage;
@@ -172,13 +295,38 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       // We should set pleromaBackgroundImage to empty string to delete it
       pleromaBackgroundImage = "";
     }
+
+    var isPleromaInstance =
+        currentAuthInstanceBloc.currentInstance.isPleromaInstance;
+
     var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
-        PleromaMyAccountEdit(
-            displayName: displayNameField.currentValue,
-            note: noteField.currentValue,
-            fieldsAttributes: fieldsAttributes,
-            locked: lockedField.currentValue,
-            pleromaBackgroundImage: pleromaBackgroundImage));
+      PleromaMyAccountEdit(
+        displayName: displayNameField.currentValue,
+        note: noteField.currentValue,
+        fieldsAttributes: fieldsAttributes,
+        locked: lockedField.currentValue,
+        discoverable: discoverableField.currentValue,
+        bot: botField.currentValue,
+        acceptsChatMessages:
+            isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
+        allowFollowingMove:
+            isPleromaInstance ? allowFollowingMoveField.currentValue : null,
+        pleromaBackgroundImage: pleromaBackgroundImage,
+        hideFavorites:
+            isPleromaInstance ? hideFavouritesField.currentValue : null,
+        hideFollowers:
+            isPleromaInstance ? hideFollowersField.currentValue : null,
+        hideFollowersCount:
+            isPleromaInstance ? hideFollowersCountField.currentValue : null,
+        hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
+        hideFollowsCount:
+            isPleromaInstance ? hideFollowsCountField.currentValue : null,
+        noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
+        showRole: isPleromaInstance ? showRoleField.currentValue : null,
+        skipThreadContainment:
+            isPleromaInstance ? skipThreadContainmentField.currentValue : null,
+      ),
+    );
 
     await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
   }
@@ -201,6 +349,10 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         .currentInstance
         .info;
     return EditMyAccountBloc(
+      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+        context,
+        listen: false,
+      ),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       pleromaMyAccountService:
           IPleromaMyAccountService.of(context, listen: false),
