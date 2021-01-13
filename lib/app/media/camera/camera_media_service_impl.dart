@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:fedi/app/media/picker/media_picker_service.dart';
+import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:image_picker/image_picker.dart';
 
-class MediaPickerService extends DisposableOwner
-    implements IMediaPickerService {
+class CameraMediaService extends DisposableOwner
+    implements ICameraMediaService {
   final ImagePicker imagePicker = ImagePicker();
 
   @override

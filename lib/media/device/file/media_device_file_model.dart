@@ -9,9 +9,6 @@ enum MediaDeviceFileType {
   other,
 }
 
-typedef MediaDeviceFileCallback = Function(
-    BuildContext context, IMediaDeviceFile mediaDeviceFile);
-
 abstract class IMediaDeviceFile {
   MediaDeviceFileType get type;
 

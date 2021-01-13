@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
-import 'package:fedi/app/media/picker/media_picker_service.dart';
-import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/media/camera/camera_media_service.dart';
+import 'package:fedi/app/media/picker/single/single_media_picker_page.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
@@ -126,26 +126,25 @@ class _SelectMediaAttachmentTypeToPickGalleryVideoActionWidget
   @override
   Widget build(BuildContext context) {
     return _SelectMediaAttachmentTypeToPickActionWidget(
-        iconData: FediIcons.video,
-        label: S.of(context).app_media_attachment_type_video,
-        onTap: () async {
-          var mediaPickerService =
-              IMediaPickerService.of(context, listen: false);
+      iconData: FediIcons.video,
+      label: S.of(context).app_media_attachment_type_video,
+      onTap: () async {
+        var cameraMediaService = ICameraMediaService.of(context, listen: false);
 
-          var pickedFile = await mediaPickerService.pickVideoFromCamera();
+        var pickedFile = await cameraMediaService.pickVideoFromCamera();
 
-          if (pickedFile != null) {
-            var mediaDeviceFile = FileMediaDeviceFile(
-              type: MediaDeviceFileType.video,
-              isNeedDeleteAfterUsage: true,
-              originalFile: pickedFile,
-            );
-            var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
-            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
-          }
-        });
+        if (pickedFile != null) {
+          var mediaDeviceFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.video,
+            isNeedDeleteAfterUsage: true,
+            originalFile: pickedFile,
+          );
+          var attachmentsCollectionBloc =
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+          await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
+        }
+      },
+    );
   }
 }
 
@@ -158,26 +157,25 @@ class _SelectMediaAttachmentTypeToPickGalleryPhotoActionWidget
   @override
   Widget build(BuildContext context) {
     return _SelectMediaAttachmentTypeToPickActionWidget(
-        iconData: FediIcons.camera,
-        label: S.of(context).app_media_attachment_type_photo,
-        onTap: () async {
-          var mediaPickerService =
-              IMediaPickerService.of(context, listen: false);
+      iconData: FediIcons.camera,
+      label: S.of(context).app_media_attachment_type_photo,
+      onTap: () async {
+        var cameraMediaService = ICameraMediaService.of(context, listen: false);
 
-          var pickedFile = await mediaPickerService.pickImageFromCamera();
+        var pickedFile = await cameraMediaService.pickImageFromCamera();
 
-          if (pickedFile != null) {
-            var mediaDeviceFile = FileMediaDeviceFile(
-              type: MediaDeviceFileType.image,
-              isNeedDeleteAfterUsage: true,
-              originalFile: pickedFile,
-            );
-            var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
-            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
-          }
-        });
+        if (pickedFile != null) {
+          var mediaDeviceFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.image,
+            isNeedDeleteAfterUsage: true,
+            originalFile: pickedFile,
+          );
+          var attachmentsCollectionBloc =
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+          await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
+        }
+      },
+    );
   }
 }
 
@@ -196,14 +194,14 @@ class _SelectMediaAttachmentTypeToPickGalleryActionWidget
       iconData: FediIcons.image,
       label: S.of(context).app_media_attachment_type_gallery,
       onTap: () async {
-        goToSingleMediaPickerPage(
+        var mediaDeviceFile = await goToSingleMediaPickerPage(
           context,
-          onFileSelectedCallback:
-              (context, IMediaDeviceFile mediaDeviceFile) async {
-            navigatorState.pop();
-            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
-          },
         );
+
+        navigatorState.pop();
+        if (mediaDeviceFile != null) {
+          await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
+        }
       },
     );
   }

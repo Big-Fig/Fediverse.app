@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/field/pleroma/background_image/edit_my_account_pleroma_background_field_picker.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
-import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/media/picker/single/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
@@ -175,32 +175,31 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
       FediIcons.camera,
       iconSize: FediSizes.mediumIconSize,
       size: FediSizes.smallFilledButtonHeight,
-      onPressed: () {
+      onPressed: () async {
         var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
-        goToSingleMediaPickerPage(
+        var mediaDeviceFile = await goToSingleMediaPickerPage(
           context,
           typesToPick: [
             MediaDeviceFileType.image,
           ],
-          onFileSelectedCallback:
-              (context, IMediaDeviceFile mediaDeviceFile) async {
-            var filePickerFile =
-                await showEditMyAccountPleromaBackgroundFieldPicker(
-              context,
-              mediaDeviceFile,
-            );
-
-            try {
-              await editMyAccountBloc.backgroundField
-                  .pickNewFile(filePickerFile);
-            } catch (e, stackTrace) {
-              _logger.warning(
-                  "startChoosingFileToUploadBackground error", e, stackTrace);
-              showMediaAttachmentFailedNotificationOverlay(context, e);
-            }
-            Navigator.of(context).pop();
-          },
         );
+
+        if (mediaDeviceFile != null) {
+          var filePickerFile =
+              await showEditMyAccountPleromaBackgroundFieldPicker(
+            context,
+            mediaDeviceFile,
+          );
+
+          try {
+            await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
+          } catch (e, stackTrace) {
+            _logger.warning(
+                "startChoosingFileToUploadBackground error", e, stackTrace);
+            showMediaAttachmentFailedNotificationOverlay(context, e);
+          }
+          Navigator.of(context).pop();
+        }
       },
     );
   }
@@ -227,26 +226,27 @@ class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
 }
 
 void startChoosingFileToUploadBackground(
-    BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-  goToSingleMediaPickerPage(
+    BuildContext context, IEditMyAccountBloc editMyAccountBloc) async {
+  var mediaDeviceFile = await goToSingleMediaPickerPage(
     context,
     typesToPick: [
       MediaDeviceFileType.image,
     ],
-    onFileSelectedCallback: (context, IMediaDeviceFile mediaDeviceFile) async {
-      var filePickerFile = await showEditMyAccountPleromaBackgroundFieldPicker(
-        context,
-        mediaDeviceFile,
-      );
-
-      try {
-        await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
-      } catch (e, stackTrace) {
-        _logger.warning(
-            "startChoosingFileToUploadBackground error", e, stackTrace);
-        showMediaAttachmentFailedNotificationOverlay(context, e);
-      }
-      Navigator.of(context).pop();
-    },
   );
+
+  if (mediaDeviceFile != null) {
+    var filePickerFile = await showEditMyAccountPleromaBackgroundFieldPicker(
+      context,
+      mediaDeviceFile,
+    );
+
+    try {
+      await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
+    } catch (e, stackTrace) {
+      _logger.warning(
+          "startChoosingFileToUploadBackground error", e, stackTrace);
+      showMediaAttachmentFailedNotificationOverlay(context, e);
+    }
+    Navigator.of(context).pop();
+  }
 }
