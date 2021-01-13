@@ -32,8 +32,8 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
-import 'package:fedi/app/media/picker/media_picker_service.dart';
-import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
+import 'package:fedi/app/media/camera/camera_media_service.dart';
+import 'package:fedi/app/media/camera/camera_media_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
@@ -118,9 +118,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var connectionService = ConnectionService();
     await globalProviderService
         .asyncInitAndRegister<IConnectionService>(connectionService);
-    var mediaPickerService = MediaPickerService();
+    var cameraMediaService = CameraMediaService();
     await globalProviderService
-        .asyncInitAndRegister<IMediaPickerService>(mediaPickerService);
+        .asyncInitAndRegister<ICameraMediaService>(cameraMediaService);
 
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());

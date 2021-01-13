@@ -1,8 +1,9 @@
 import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
-import 'package:fedi/app/media/picker/media_picker_service.dart';
-import 'package:fedi/app/media/picker/single_media_picker_bloc.dart';
-import 'package:fedi/app/media/picker/single_media_picker_bloc_impl.dart';
+import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
+import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc_impl.dart';
+import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc_proxy_provider.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -34,25 +35,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SingleMediaPickerPage extends StatelessWidget {
-  const SingleMediaPickerPage();
+class MultiMediaPickerPage extends StatelessWidget {
+  const MultiMediaPickerPage();
 
   @override
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
 
     return Scaffold(
-      appBar: const _SingleMediaPickerPageAppBar(), //      body:
-      // SingleFilePickerWidget(),
+      appBar: const _MultiMediaPickerPageAppBar(), //      body:
+      // MultiFilePickerWidget(),
       body: SafeArea(
         child: FediGrantPermissionWidget(
           grantedBuilder: (BuildContext context) {
             return FediAsyncInitLoadingWidget(
               loadingFinishedBuilder: (BuildContext context) {
                 if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
-                  return const _SingleMediaPickerPageNoFoldersWidget();
+                  return const _MultiMediaPickerPageNoFoldersWidget();
                 } else {
-                  return const _SingleMediaPickerPageFoldersWidget();
+                  return const _MultiMediaPickerPageFoldersWidget();
                 }
               },
               asyncInitLoadingBloc: mediaDeviceGalleryBloc,
@@ -66,8 +67,8 @@ class SingleMediaPickerPage extends StatelessWidget {
   }
 }
 
-class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
-  const _SingleMediaPickerPageFoldersWidget({Key key}) : super(key: key);
+class _MultiMediaPickerPageFoldersWidget extends StatelessWidget {
+  const _MultiMediaPickerPageFoldersWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
         var folderData = snapshot.data;
         var folder = folderData?.folder;
         if (folder == null) {
-          return const _SingleMediaPickerPageFolderLoadingWidget();
+          return const _MultiMediaPickerPageFolderLoadingWidget();
         }
 
         return Provider<IMediaDeviceFolder>.value(
@@ -110,7 +111,7 @@ class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
                             IPaginationListBloc>(
                           update: (context, value, previous) => value,
                           child:
-                              const _SingleMediaPickerPageGalleryFolderWidget(),
+                              const _MultiMediaPickerPageGalleryFolderWidget(),
                         ),
                       ),
                     ),
@@ -125,8 +126,8 @@ class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
   }
 }
 
-class _SingleMediaPickerPageNoFoldersWidget extends StatelessWidget {
-  const _SingleMediaPickerPageNoFoldersWidget({
+class _MultiMediaPickerPageNoFoldersWidget extends StatelessWidget {
+  const _MultiMediaPickerPageNoFoldersWidget({
     Key key,
   }) : super(key: key);
 
@@ -140,8 +141,8 @@ class _SingleMediaPickerPageNoFoldersWidget extends StatelessWidget {
   }
 }
 
-class _SingleMediaPickerPageFolderLoadingWidget extends StatelessWidget {
-  const _SingleMediaPickerPageFolderLoadingWidget({
+class _MultiMediaPickerPageFolderLoadingWidget extends StatelessWidget {
+  const _MultiMediaPickerPageFolderLoadingWidget({
     Key key,
   }) : super(key: key);
 
@@ -151,9 +152,9 @@ class _SingleMediaPickerPageFolderLoadingWidget extends StatelessWidget {
   }
 }
 
-class _SingleMediaPickerPageAppBar extends StatelessWidget
+class _MultiMediaPickerPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const _SingleMediaPickerPageAppBar({
+  const _MultiMediaPickerPageAppBar({
     Key key,
   }) : super(key: key);
 
@@ -161,7 +162,7 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return FediPageCustomAppBar(
       centerTitle: true,
-      child: const _SingleMediaPickerPageAppBarTitle(),
+      child: const _MultiMediaPickerPageAppBarTitle(),
       leading: const FediBackIconButton(),
     );
   }
@@ -170,8 +171,8 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
 }
 
-class _SingleMediaPickerPageGalleryFolderWidget extends StatelessWidget {
-  const _SingleMediaPickerPageGalleryFolderWidget({
+class _MultiMediaPickerPageGalleryFolderWidget extends StatelessWidget {
+  const _MultiMediaPickerPageGalleryFolderWidget({
     Key key,
   }) : super(key: key);
 
@@ -204,15 +205,14 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return InkWell(
       onTap: () async {
-        var mediaPickerService = IMediaPickerService.of(context, listen: false);
+        var cameraMediaService = ICameraMediaService.of(context, listen: false);
 
-        var pickedFile = await mediaPickerService.pickImageFromCamera();
+        var pickedFile = await cameraMediaService.pickImageFromCamera();
 
         if (pickedFile != null) {
-          var singleMediaPickerBloc =
-              ISingleMediaPickerBloc.of(context, listen: false);
-          singleMediaPickerBloc.onFileSelectedCallback(
-            context,
+          var multiMediaPickerBloc =
+              IMultiMediaPickerBloc.of(context, listen: false);
+          multiMediaPickerBloc.onFileSelected(
             FileMediaDeviceFile(
               type: MediaDeviceFileType.image,
               isNeedDeleteAfterUsage: true,
@@ -234,15 +234,14 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
   }
 }
 
-void goToSingleMediaPickerPage(
+Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(
   BuildContext context, {
-  @required MediaDeviceFileCallback onFileSelectedCallback,
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,
     MediaDeviceFileType.video
   ],
 }) {
-  Navigator.push(
+  return Navigator.push(
     context,
     NavigationSlideBottomRouteBuilder(
       page: DisposableProvider<IMediaDeviceGalleryBloc>(
@@ -257,10 +256,23 @@ void goToSingleMediaPickerPage(
             ),
           );
         }, // provide parent abstract implementation by type
-        child: DisposableProvider<ISingleMediaPickerBloc>(
-          create: (context) => SingleMediaPickerBloc(
-              onFileSelectedCallback: onFileSelectedCallback),
-          child: const SingleMediaPickerPage(),
+        child: DisposableProvider<IMultiMediaPickerBloc>(
+          create: (context) {
+            var multiMediaPickerBloc = MultiMediaPickerBloc();
+
+            multiMediaPickerBloc.addDisposable(
+              streamSubscription:
+                  multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
+                (acceptedFiles) {
+                  Navigator.pop(context, acceptedFiles);
+                },
+              ),
+            );
+            return multiMediaPickerBloc;
+          },
+          child: MultiMediaPickerBlocProxyProvider(
+            child: const MultiMediaPickerPage(),
+          ),
         ),
       ),
     ),
@@ -270,8 +282,8 @@ void goToSingleMediaPickerPage(
 String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
     "${selectedFolder.name} (${selectedFolder.assetCount})";
 
-class _SingleMediaPickerPageAppBarTitle extends StatelessWidget {
-  const _SingleMediaPickerPageAppBarTitle({
+class _MultiMediaPickerPageAppBarTitle extends StatelessWidget {
+  const _MultiMediaPickerPageAppBarTitle({
     Key key,
   }) : super(key: key);
 

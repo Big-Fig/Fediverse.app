@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/field/header/edit_my_account_header_field_picker.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
-import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/media/picker/single/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -97,24 +97,25 @@ class EditMyAccountHeaderFieldEditButtonWidget extends StatelessWidget {
       );
 }
 
-void _startChoosingFileToUploadHeader(BuildContext context) {
-  goToSingleMediaPickerPage(
+void _startChoosingFileToUploadHeader(BuildContext context) async {
+  var mediaDeviceFile = await goToSingleMediaPickerPage(
     context,
     typesToPick: [
       MediaDeviceFileType.image,
     ],
-    onFileSelectedCallback: (context, IMediaDeviceFile mediaDeviceFile) async {
-      var filePickerFile =
-          await showEditMyAccountHeaderFieldPicker(context, mediaDeviceFile);
-
-      var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
-      try {
-        await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
-      } catch (e, stackTrace) {
-        _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
-        showMediaAttachmentFailedNotificationOverlay(context, e);
-      }
-      Navigator.of(context).pop();
-    },
   );
+
+  if (mediaDeviceFile != null) {
+    var filePickerFile =
+        await showEditMyAccountHeaderFieldPicker(context, mediaDeviceFile);
+
+    var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
+    try {
+      await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
+    } catch (e, stackTrace) {
+      _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
+      showMediaAttachmentFailedNotificationOverlay(context, e);
+    }
+    Navigator.of(context).pop();
+  }
 }

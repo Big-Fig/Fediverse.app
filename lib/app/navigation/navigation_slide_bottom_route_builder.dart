@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NavigationSlideBottomRouteBuilder extends PageRouteBuilder {
+class NavigationSlideBottomRouteBuilder<T> extends PageRouteBuilder<T> {
   final Widget page;
   NavigationSlideBottomRouteBuilder({this.page})
       : super(

@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/field/avatar/edit_my_account_avatar_field_picker.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
-import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/app/media/picker/single/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -48,29 +48,30 @@ class EditMyAccountAvatarFieldWidget extends StatelessWidget {
   }
 }
 
-void _startChoosingFileToUploadAvatar(BuildContext context) {
+void _startChoosingFileToUploadAvatar(BuildContext context) async {
   var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
 
-  goToSingleMediaPickerPage(
+  var mediaDeviceFile = await goToSingleMediaPickerPage(
     context,
     typesToPick: [
       MediaDeviceFileType.image,
     ],
-    onFileSelectedCallback: (context, IMediaDeviceFile mediaDeviceFile) async {
-      var filePickerFile = await showEditMyAccountAvatarFieldPicker(
-        context,
-        mediaDeviceFile,
-      );
-
-      try {
-        await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
-      } catch (e, stackTrace) {
-        _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
-        showMediaAttachmentFailedNotificationOverlay(context, e);
-      }
-      Navigator.of(context).pop();
-    },
   );
+
+  if (mediaDeviceFile != null) {
+    var filePickerFile = await showEditMyAccountAvatarFieldPicker(
+      context,
+      mediaDeviceFile,
+    );
+
+    try {
+      await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
+    } catch (e, stackTrace) {
+      _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
+      showMediaAttachmentFailedNotificationOverlay(context, e);
+    }
+    Navigator.of(context).pop();
+  }
 }
 
 class _EditMyAccountAvatarFieldEditButtonWidget extends StatelessWidget {
