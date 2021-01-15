@@ -12,10 +12,13 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/scroll_view.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
+final _logger = Logger("media_picker_file_grid_widget.dart");
+
 class MediaPickerFileGridWidget
-    extends FediPaginationListWidget<IMediaDeviceFile> {
+    extends FediPaginationListWidget<IMediaDeviceFileMetadata> {
   final WidgetBuilder headerItemBuilder;
 
   MediaPickerFileGridWidget({
@@ -40,12 +43,14 @@ class MediaPickerFileGridWidget
   @override
   ScrollView buildItemsCollectionView({
     @required BuildContext context,
-    @required List<IMediaDeviceFile> items,
+    @required List<IMediaDeviceFileMetadata> items,
     @required Widget header,
     @required Widget footer,
   }) {
     assert(header == null && footer == null,
         "Grid view don't support header or footer");
+
+    _logger.finest(() => "buildItemsCollectionView");
 
     var itemCount = items.length;
     if (headerItemBuilder != null) {
@@ -63,7 +68,7 @@ class MediaPickerFileGridWidget
             index--;
           }
         }
-        return Provider<IMediaDeviceFile>.value(
+        return Provider<IMediaDeviceFileMetadata>.value(
           value: items[index],
           child: const _MediaPickerFileGridItemWidget(),
         );
@@ -72,12 +77,12 @@ class MediaPickerFileGridWidget
   }
 
   @override
-  IPaginationListBloc<PaginationPage<IMediaDeviceFile>, IMediaDeviceFile>
-      retrievePaginationListBloc(
+  IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
+      IMediaDeviceFileMetadata> retrievePaginationListBloc(
     BuildContext context, {
     bool listen,
   }) =>
-          IMediaDeviceFilePaginationListBloc.of(context, listen: listen);
+      IMediaDeviceFilePaginationListBloc.of(context, listen: listen);
 }
 
 class _MediaPickerFileGridItemWidget extends StatelessWidget {
@@ -87,15 +92,16 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProxyProvider<IMediaDeviceFile, IMediaDeviceFileBloc>(
-      update: (BuildContext context, file, previous) {
-        if (file is PhotoManagerMediaDeviceFile) {
+    return DisposableProxyProvider<IMediaDeviceFileMetadata, IMediaDeviceFileBloc>(
+      update: (BuildContext context, fileMetadata, previous) {
+        if (fileMetadata is PhotoManagerMediaDeviceFileMetadata) {
           var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
-              photoManagerMediaDeviceFile: file);
+            photoManagerMediaDeviceFileMetadata: fileMetadata,
+          );
           mediaDeviceFileBloc.performAsyncInit();
           return mediaDeviceFileBloc;
         } else {
-          throw "IMediaDeviceFile file type not supported $file";
+          throw "IMediaDeviceFile file type not supported $fileMetadata";
         }
       },
       child: const MediaPickerFileGridItemWidget(),

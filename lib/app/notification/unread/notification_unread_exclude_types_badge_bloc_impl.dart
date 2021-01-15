@@ -2,7 +2,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
-import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';

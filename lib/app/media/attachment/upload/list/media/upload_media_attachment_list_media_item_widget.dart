@@ -127,7 +127,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
           return const FediCircularProgressIndicator();
         }
         Widget preview;
-        switch (mediaDeviceFile.type) {
+        switch (mediaDeviceFile.metadata.type) {
           case MediaDeviceFileType.image:
             preview = Image.file(
               file,

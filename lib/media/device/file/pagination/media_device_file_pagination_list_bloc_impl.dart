@@ -10,8 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
-    PaginationPage<IMediaDeviceFile>,
-    IMediaDeviceFile> implements IMediaDeviceFilePaginationListBloc {
+    PaginationPage<IMediaDeviceFileMetadata>,
+    IMediaDeviceFileMetadata> implements IMediaDeviceFilePaginationListBloc {
   MediaDeviceFilePaginationListBloc(
       {@required IMediaDeviceFilePaginationBloc paginationBloc})
       : super(paginationBloc: paginationBloc);
@@ -20,7 +20,7 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
       BuildContext context) {
     return MediaDeviceFilePaginationListBloc(
       paginationBloc: Provider.of<
-          IPaginationBloc<PaginationPage<IMediaDeviceFile>, IMediaDeviceFile>>(
+          IPaginationBloc<PaginationPage<IMediaDeviceFileMetadata>, IMediaDeviceFileMetadata>>(
         context,
         listen: false,
       ),
@@ -36,8 +36,8 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
         ),
         child: ProxyProvider<
             IMediaDeviceFilePaginationListBloc,
-            IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
-                IMediaDeviceFile>>(
+            IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
+                IMediaDeviceFileMetadata>>(
           update: (context, value, previous) => value,
           child: ProxyProvider<IMediaDeviceFilePaginationListBloc,
               IPaginationListBloc>(

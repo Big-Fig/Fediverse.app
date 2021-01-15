@@ -35,7 +35,7 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
         folderBloc: folderBloc,
       ),
       child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-          ILocalOnlyListBloc<IMediaDeviceFile>>(
+          ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
         update: (context, value, previous) => value,
         child: child,
       ),
@@ -43,11 +43,11 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IMediaDeviceFile>> loadItemsFromLocalForPage({
+  Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({
     @required int pageIndex,
     @required int itemsCountPerPage,
-    @required IMediaDeviceFile olderThan,
-    @required IMediaDeviceFile newerThan,
+    @required IMediaDeviceFileMetadata olderThan,
+    @required IMediaDeviceFileMetadata newerThan,
   }) =>
       folderBloc.loadPagedFiles(
           pageIndex: pageIndex,

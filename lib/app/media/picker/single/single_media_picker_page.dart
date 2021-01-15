@@ -94,18 +94,19 @@ class _SingleMediaPickerPageFoldersWidget extends StatelessWidget {
                 child: Provider<IMediaDeviceFilePaginationListBloc>.value(
                   value: folderData.filesPaginationListBloc,
                   child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-                      ILocalOnlyListBloc<IMediaDeviceFile>>(
+                      ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
                     update: (context, value, previous) => value,
                     child: ProxyProvider<
                         IMediaDeviceFilePaginationBloc,
                         ILocalOnlyPaginationBloc<
-                            PaginationPage<IMediaDeviceFile>,
-                            IMediaDeviceFile>>(
+                            PaginationPage<IMediaDeviceFileMetadata>,
+                            IMediaDeviceFileMetadata>>(
                       update: (context, value, previous) => value,
                       child: ProxyProvider<
                           IMediaDeviceFilePaginationListBloc,
-                          IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
-                              IMediaDeviceFile>>(
+                          IPaginationListBloc<
+                              PaginationPage<IMediaDeviceFileMetadata>,
+                              IMediaDeviceFileMetadata>>(
                         update: (context, value, previous) => value,
                         child: ProxyProvider<IMediaDeviceFilePaginationListBloc,
                             IPaginationListBloc>(
@@ -212,8 +213,8 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
         if (pickedFile != null) {
           var singleMediaPickerBloc =
               ISingleMediaPickerBloc.of(context, listen: false);
-          singleMediaPickerBloc.onFileSelected(
-            FileMediaDeviceFile(
+          await singleMediaPickerBloc.toggleFileMetadataSelection(
+            FileMediaDeviceFileMetadata(
               type: MediaDeviceFileType.image,
               isNeedDeleteAfterUsage: true,
               originalFile: pickedFile,
@@ -241,41 +242,42 @@ Future<IMediaDeviceFile> goToSingleMediaPickerPage(
     MediaDeviceFileType.image,
     MediaDeviceFileType.video
   ],
-}) => Navigator.push(
-    context,
-    NavigationSlideBottomRouteBuilder(
-      page: DisposableProvider<IMediaDeviceGalleryBloc>(
-        create: (context) {
-          return PhotoManagerMediaDeviceGalleryBloc(
-            typesToPick: typesToPick,
-            storagePermissionBloc:
-                IStoragePermissionBloc.of(context, listen: false),
-            paginationSettingsBloc: IPaginationSettingsBloc.of(
-              context,
-              listen: false,
-            ),
-          );
-        }, // provide parent abstract implementation by type
-        child: DisposableProvider<ISingleMediaPickerBloc>(
+}) =>
+    Navigator.push(
+      context,
+      NavigationSlideBottomRouteBuilder(
+        page: DisposableProvider<IMediaDeviceGalleryBloc>(
           create: (context) {
-            var singleMediaPickerBloc = SingleMediaPickerBloc();
-            singleMediaPickerBloc.addDisposable(
-              streamSubscription:
-                  singleMediaPickerBloc.fileSelectionStream.listen(
-                (file) {
-                  Navigator.pop(context, file);
-                },
+            return PhotoManagerMediaDeviceGalleryBloc(
+              typesToPick: typesToPick,
+              storagePermissionBloc:
+                  IStoragePermissionBloc.of(context, listen: false),
+              paginationSettingsBloc: IPaginationSettingsBloc.of(
+                context,
+                listen: false,
               ),
             );
-            return singleMediaPickerBloc;
-          },
-          child: SingleMediaPickerBlocProxyProvider(
-            child: const SingleMediaPickerPage(),
+          }, // provide parent abstract implementation by type
+          child: DisposableProvider<ISingleMediaPickerBloc>(
+            create: (context) {
+              var singleMediaPickerBloc = SingleMediaPickerBloc();
+              singleMediaPickerBloc.addDisposable(
+                streamSubscription:
+                    singleMediaPickerBloc.fileSelectionStream.listen(
+                  (IMediaDeviceFile file) {
+                    Navigator.pop(context, file);
+                  },
+                ),
+              );
+              return singleMediaPickerBloc;
+            },
+            child: SingleMediaPickerBlocProxyProvider(
+              child: const SingleMediaPickerPage(),
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
 
 String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
     "${selectedFolder.name} (${selectedFolder.assetCount})";

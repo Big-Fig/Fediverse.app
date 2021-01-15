@@ -9,13 +9,17 @@ abstract class IMultiMediaPickerBloc implements IMediaPickerBloc {
 
   Stream<List<IMediaDeviceFile>> get acceptedFilesSelectionStream;
 
-  Stream<List<IMediaDeviceFile>> get currentFilesSelectionStream;
+  Stream<List<IMediaDeviceFileMetadata>> get currentFilesMetadataSelectionStream;
 
-  List<IMediaDeviceFile> get currentFilesSelection;
+  List<IMediaDeviceFileMetadata> get currentFilesMetadataSelection;
 
   bool get isSomethingSelected;
 
   Stream<bool> get isSomethingSelectedStream;
 
-  void acceptSelectedFiles();
+  int get currentFilesMetadataSelectionCount;
+
+  Stream<int> get currentFilesMetadataSelectionCountStream;
+
+  Future acceptSelectedFilesMetadata();
 }

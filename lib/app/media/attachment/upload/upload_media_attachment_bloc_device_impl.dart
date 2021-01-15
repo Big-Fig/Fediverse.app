@@ -106,5 +106,5 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   Future<String>  calculateFilePath() => mediaDeviceFile.calculateFilePath();
 
   @override
-  bool get isMedia => mediaDeviceFile.isMedia;
+  bool get isMedia => mediaDeviceFile.metadata.isMedia;
 }

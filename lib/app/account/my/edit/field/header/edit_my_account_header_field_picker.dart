@@ -61,11 +61,16 @@ class _EditMyAccountHeaderFieldPickerSelectAndCropAction
               await mediaDeviceFile.delete();
             }
 
+            var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
+              originalFile: croppedFile,
+              type: mediaDeviceFile.metadata.type,
+              isNeedDeleteAfterUsage: true,
+            );
+            var resultMediaDeviceFile =
+                await mediaDeviceFileMetadata.loadMediaDeviceFile();
+
             Navigator.of(context).pop(
-              FileMediaDeviceFile(
-                  originalFile: croppedFile,
-                  type: mediaDeviceFile.type,
-                  isNeedDeleteAfterUsage: true),
+              resultMediaDeviceFile,
             );
           } else {
             Navigator.of(context).pop(mediaDeviceFile);

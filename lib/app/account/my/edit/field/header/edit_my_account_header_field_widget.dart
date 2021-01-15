@@ -116,6 +116,5 @@ void _startChoosingFileToUploadHeader(BuildContext context) async {
       _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
       showMediaAttachmentFailedNotificationOverlay(context, e);
     }
-    Navigator.of(context).pop();
   }
 }

@@ -75,23 +75,24 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       onRefresh: () {
         _logger.finest(() => "refresh");
         return AsyncSmartRefresherHelper.doAsyncRefresh(
-            controller: refreshController,
-            action: () async {
-              var success;
-              try {
-                success = await additionalPreRefreshAction(context);
-              } catch (e, stackTrace) {
-                success = false;
-                _logger.severe(
-                    () => "additionalPreRefreshAction()", e, stackTrace);
-              }
+          controller: refreshController,
+          action: () async {
+            var success;
+            try {
+              success = await additionalPreRefreshAction(context);
+            } catch (e, stackTrace) {
+              success = false;
+              _logger.severe(
+                  () => "additionalPreRefreshAction()", e, stackTrace);
+            }
 
-              _logger.finest(() => "additionalPreRefreshAction() $success");
-              var state = await paginationListBloc.refreshWithoutController();
-              _logger.finest(
-                  () => "paginationListBloc.refreshWithoutController() $state");
-              return state;
-            });
+            _logger.finest(() => "additionalPreRefreshAction() $success");
+            var state = await paginationListBloc.refreshWithoutController();
+            _logger.finest(
+                () => "paginationListBloc.refreshWithoutController() $state");
+            return state;
+          },
+        );
       },
       onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
           controller: refreshController,
@@ -138,7 +139,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                 return customEmptyWidget ??
                     Center(
                       child: FediEmptyWidget(
-                        title:S.of(context).pagination_list_empty,
+                        title: S.of(context).pagination_list_empty,
                       ),
                     );
                 break;

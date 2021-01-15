@@ -27,6 +27,12 @@ class AsyncInitLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // hack for better performance to avoid redraw if init already finished
+    if (asyncInitLoadingBloc.initLoadingState ==
+        AsyncInitLoadingState.finished) {
+      return loadingFinishedBuilder(context);
+    }
+
     return StreamBuilder<AsyncInitLoadingState>(
         stream: asyncInitLoadingBloc.initLoadingStateStream,
         initialData: asyncInitLoadingBloc.initLoadingState,

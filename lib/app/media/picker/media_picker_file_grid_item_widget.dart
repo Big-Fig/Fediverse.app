@@ -13,18 +13,36 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fileBloc = IMediaDeviceFileBloc.of(context);
+    var mediaPickerBloc = IMediaPickerBloc.of(context);
+    var mediaDeviceFileBloc = IMediaDeviceFileBloc.of(context);
+    var mediaDeviceFileMetadata = mediaDeviceFileBloc.mediaDeviceFileMetadata;
 
-    return Container(
-      color: IFediUiColorTheme.of(context).darkGrey,
-      child: AsyncInitLoadingWidget(
-        loadingFinishedBuilder: (context) =>
-            const _MediaPickerFileGridItemBodyWidget(
-          loadingWidget: _MediaPickerFileGridItemLoadingWidget(),
-        ),
-        asyncInitLoadingBloc: fileBloc,
-        loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
-      ),
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return StreamBuilder<bool>(
+      stream: mediaPickerBloc.isFileMetadataSelectedStream(mediaDeviceFileMetadata),
+      initialData: mediaPickerBloc.isFileMetadataSelected(mediaDeviceFileMetadata),
+      builder: (context, snapshot) {
+        var isFileSelected = snapshot.data;
+        return Container(
+          decoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).darkGrey,
+            border: isFileSelected
+                ? Border.all(
+                    color: fediUiColorTheme.primaryDark,
+                    width: 4,
+                  )
+                : null,
+          ),
+          child: AsyncInitLoadingWidget(
+            loadingFinishedBuilder: (context) =>
+                const _MediaPickerFileGridItemBodyWidget(
+              loadingWidget: _MediaPickerFileGridItemLoadingWidget(),
+            ),
+            asyncInitLoadingBloc: mediaDeviceFileBloc,
+            loadingWidget: const _MediaPickerFileGridItemLoadingWidget(),
+          ),
+        );
+      },
     );
   }
 }
@@ -47,8 +65,8 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
           listen: false,
         );
 
-        var mediaDeviceFile = await mediaDeviceFileBloc.retrieveFile();
-        mediaPickerBloc.onFileSelected(mediaDeviceFile);
+        var mediaDeviceFileMetadata = await mediaDeviceFileBloc.mediaDeviceFileMetadata;
+        await mediaPickerBloc.toggleFileMetadataSelection(mediaDeviceFileMetadata);
       },
       child: const _MediaPickerFileGridItemPreviewWidget(),
     );

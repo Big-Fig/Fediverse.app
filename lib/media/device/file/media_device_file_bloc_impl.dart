@@ -10,17 +10,20 @@ const _thumbImageSize = 150;
 
 abstract class MediaDeviceFileBloc extends AsyncInitLoadingBloc
     implements IMediaDeviceFileBloc {
-  final IMediaDeviceFile mediaDeviceFile;
+  @override
+  final IMediaDeviceFileMetadata mediaDeviceFileMetadata;
 
   @override
   Uint8List thumbImageData;
 
-  MediaDeviceFileBloc({@required this.mediaDeviceFile});
+  MediaDeviceFileBloc({@required this.mediaDeviceFileMetadata});
 
   @override
   Future internalAsyncInit() async {
-    thumbImageData =
-        await loadThumbData(width: _thumbImageSize, height: _thumbImageSize);
+    thumbImageData = await loadThumbData(
+      width: _thumbImageSize,
+      height: _thumbImageSize,
+    );
   }
 
   Future<Uint8List> loadThumbData({@required int width, @required int height});
