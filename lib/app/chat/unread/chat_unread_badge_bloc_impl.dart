@@ -1,7 +1,7 @@
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
-import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';

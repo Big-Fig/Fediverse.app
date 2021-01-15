@@ -11,7 +11,7 @@ abstract class IMediaDeviceFileBloc
   static IMediaDeviceFileBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMediaDeviceFileBloc>(context, listen: listen);
 
-  Future<IMediaDeviceFile> retrieveFile();
+  IMediaDeviceFileMetadata get mediaDeviceFileMetadata;
 
   MediaDeviceFileType get type;
 

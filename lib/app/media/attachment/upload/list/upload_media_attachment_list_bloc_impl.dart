@@ -1,7 +1,7 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_device_impl.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_device_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -36,17 +36,25 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       await uploadedSubscription?.dispose();
     }));
 
-    addDisposable(streamSubscription:
-        mediaAttachmentBlocsStream.listen((mediaAttachmentBlocs) {
-      uploadedSubscription?.dispose();
-      uploadedSubscription = DisposableOwner();
-      mediaAttachmentBlocs.forEach((bloc) {
-        uploadedSubscription.addDisposable(
-            streamSubscription: bloc.uploadStateStream.listen((_) {
-          _recalculateIsAllAttachedMediaUploaded();
-        }));
-      });
-    }));
+    addDisposable(
+      streamSubscription: mediaAttachmentBlocsStream.listen(
+        (mediaAttachmentBlocs) {
+          uploadedSubscription?.dispose();
+          uploadedSubscription = DisposableOwner();
+          mediaAttachmentBlocs.forEach(
+            (bloc) {
+              uploadedSubscription.addDisposable(
+                streamSubscription: bloc.uploadStateStream.listen(
+                  (_) {
+                    _recalculateIsAllAttachedMediaUploaded();
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 
   // ignore: close_sinks
@@ -125,6 +133,13 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
       await uploadMediaAttachmentBloc.startUpload();
     }
+  }
+
+  @override
+  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
+    var futures = mediaDeviceFiles.map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
+
+    await Future.wait(futures);
   }
 
   @override

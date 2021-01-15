@@ -1,8 +1,8 @@
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_bloc_impl.dart';
-import 'package:fedi/app/ui/badge/fedi_bool_badge_bloc.dart';
-import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
+import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';

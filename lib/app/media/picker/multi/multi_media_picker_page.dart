@@ -7,7 +7,10 @@ import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc_proxy_provid
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
@@ -17,6 +20,7 @@ import 'package:fedi/app/ui/permission/fedi_grant_permission_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -94,18 +98,18 @@ class _MultiMediaPickerPageFoldersWidget extends StatelessWidget {
                 child: Provider<IMediaDeviceFilePaginationListBloc>.value(
                   value: folderData.filesPaginationListBloc,
                   child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-                      ILocalOnlyListBloc<IMediaDeviceFile>>(
+                      ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
                     update: (context, value, previous) => value,
                     child: ProxyProvider<
                         IMediaDeviceFilePaginationBloc,
                         ILocalOnlyPaginationBloc<
-                            PaginationPage<IMediaDeviceFile>,
-                            IMediaDeviceFile>>(
+                            PaginationPage<IMediaDeviceFileMetadata>,
+                            IMediaDeviceFileMetadata>>(
                       update: (context, value, previous) => value,
                       child: ProxyProvider<
                           IMediaDeviceFilePaginationListBloc,
-                          IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
-                              IMediaDeviceFile>>(
+                          IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
+                              IMediaDeviceFileMetadata>>(
                         update: (context, value, previous) => value,
                         child: ProxyProvider<IMediaDeviceFilePaginationListBloc,
                             IPaginationListBloc>(
@@ -164,11 +168,65 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
       centerTitle: true,
       child: const _MultiMediaPickerPageAppBarTitle(),
       leading: const FediBackIconButton(),
+      actions: [
+        const _MultiMediaPickerPageAppBarAttachAction(),
+      ],
     );
   }
 
   @override
   Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
+}
+
+class _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc
+    extends DisposableOwner implements IFediIntBadgeBloc {
+  final IMultiMediaPickerBloc multiMediaPickerBloc;
+
+  _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc({
+    @required this.multiMediaPickerBloc,
+  });
+
+  @override
+  Stream<int> get badgeStream =>
+      multiMediaPickerBloc.currentFilesMetadataSelectionCountStream;
+}
+
+class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
+  const _MultiMediaPickerPageAppBarAttachAction({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var multiMediaPickerBloc = IMultiMediaPickerBloc.of(context);
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
+    return StreamBuilder<bool>(
+      stream: multiMediaPickerBloc.isSomethingSelectedStream,
+      initialData: multiMediaPickerBloc.isSomethingSelected,
+      builder: (context, snapshot) {
+        var isSomethingSelected = snapshot.data;
+        return DisposableProvider<IFediIntBadgeBloc>(
+          create: (context) =>
+              _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc(
+            multiMediaPickerBloc: multiMediaPickerBloc,
+          ),
+          child: FediIntBadgeWidget(
+            child: FediIconButton(
+              color: isSomethingSelected
+                  ? fediUiColorTheme.darkGrey
+                  : fediUiColorTheme.lightGrey,
+              icon: Icon(FediIcons.check),
+              onPressed: isSomethingSelected
+                  ? () {
+                      multiMediaPickerBloc.acceptSelectedFilesMetadata();
+                    }
+                  : null,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _MultiMediaPickerPageGalleryFolderWidget extends StatelessWidget {
@@ -212,8 +270,9 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
         if (pickedFile != null) {
           var multiMediaPickerBloc =
               IMultiMediaPickerBloc.of(context, listen: false);
-          multiMediaPickerBloc.onFileSelected(
-            FileMediaDeviceFile(
+
+          await multiMediaPickerBloc.toggleFileMetadataSelection(
+            FileMediaDeviceFileMetadata(
               type: MediaDeviceFileType.image,
               isNeedDeleteAfterUsage: true,
               originalFile: pickedFile,
@@ -261,9 +320,10 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(
             var multiMediaPickerBloc = MultiMediaPickerBloc();
 
             multiMediaPickerBloc.addDisposable(
-              streamSubscription:
-                  multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
-                (acceptedFiles) {
+              streamSubscription: multiMediaPickerBloc
+                  .acceptedFilesSelectionStream
+                  .listen(
+                (List<IMediaDeviceFile> acceptedFiles) {
                   Navigator.pop(context, acceptedFiles);
                 },
               ),

@@ -42,6 +42,8 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 
+  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
+
   void detachMediaAttachmentBloc(
       IUploadMediaAttachmentBloc mediaAttachmentBloc);
 

@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 abstract class IMediaDeviceFilePaginationListBloc
     implements
-        IPaginationListBloc<PaginationPage<IMediaDeviceFile>,
-            IMediaDeviceFile> {
+        IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
+            IMediaDeviceFileMetadata> {
   static IMediaDeviceFilePaginationListBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IMediaDeviceFilePaginationListBloc>(context, listen: listen);

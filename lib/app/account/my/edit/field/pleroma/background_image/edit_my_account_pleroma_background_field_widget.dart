@@ -198,7 +198,6 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
                 "startChoosingFileToUploadBackground error", e, stackTrace);
             showMediaAttachmentFailedNotificationOverlay(context, e);
           }
-          Navigator.of(context).pop();
         }
       },
     );
@@ -247,6 +246,5 @@ void startChoosingFileToUploadBackground(
           "startChoosingFileToUploadBackground error", e, stackTrace);
       showMediaAttachmentFailedNotificationOverlay(context, e);
     }
-    Navigator.of(context).pop();
   }
 }

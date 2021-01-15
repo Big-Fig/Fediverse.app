@@ -70,7 +70,6 @@ void _startChoosingFileToUploadAvatar(BuildContext context) async {
       _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
       showMediaAttachmentFailedNotificationOverlay(context, e);
     }
-    Navigator.of(context).pop();
   }
 }
 

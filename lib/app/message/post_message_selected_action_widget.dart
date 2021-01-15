@@ -1,5 +1,5 @@
 import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
-import 'package:fedi/app/media/attachment/select_media_attachment_type_to_pick_widget.dart';
+import 'package:fedi/app/message/post_message_select_media_attachment_type_to_pick_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_widget.dart';
@@ -98,7 +98,7 @@ class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
           padding: FediPadding.verticalBigPadding,
           child: FediUltraLightGreyDivider(),
         ),
-        const SelectMediaAttachmentTypeToPickWidget(),
+        const PostMessageSelectMediaAttachmentTypeToPickWidget(),
       ],
     );
   }

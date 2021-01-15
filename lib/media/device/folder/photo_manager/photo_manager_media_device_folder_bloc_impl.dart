@@ -14,11 +14,11 @@ class PhotoManagerFileGalleryFolderBloc extends MediaDeviceFolderBloc {
   }) : super(storagePermissionBloc: storagePermissionBloc);
 
   @override
-  Future<List<IMediaDeviceFile>> loadPagedFiles({
+  Future<List<IMediaDeviceFileMetadata>> loadPagedFiles({
     int pageIndex,
     int itemsCountPerPage,
-    IMediaDeviceFile olderThan,
-    IMediaDeviceFile newerThan,
+    IMediaDeviceFileMetadata olderThan,
+    IMediaDeviceFileMetadata newerThan,
   }) async {
     var assetEntities = await folder.assetPathEntity
         .getAssetListPaged(pageIndex, itemsCountPerPage);
@@ -28,10 +28,12 @@ class PhotoManagerFileGalleryFolderBloc extends MediaDeviceFolderBloc {
     //     .getAssetListRange(start: start, end: end);
 
     return assetEntities
-        ?.map((assetEntity) => PhotoManagerMediaDeviceFile(
-              assetEntity: assetEntity,
-              isNeedDeleteAfterUsage: false,
-            ))
+        ?.map(
+          (assetEntity) => PhotoManagerMediaDeviceFileMetadata(
+            assetEntity: assetEntity,
+            isNeedDeleteAfterUsage: false,
+          ),
+        )
         ?.toList();
   }
 }

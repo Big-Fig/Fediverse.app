@@ -93,12 +93,14 @@ class _EditMyAccountAvatarFieldPickerSelectAndCropAction
         await mediaDeviceFile.delete();
       }
     
-      Navigator.of(context).pop(
-        FileMediaDeviceFile(
+      var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
           originalFile: croppedFile,
-          type: mediaDeviceFile.type,
+          type: mediaDeviceFile.metadata.type,
           isNeedDeleteAfterUsage: true,
-        ),
+        );
+      var resultMediaDeviceFile = await mediaDeviceFileMetadata.loadMediaDeviceFile();
+      Navigator.of(context).pop(
+        resultMediaDeviceFile,
       );
     } else {
       Navigator.of(context).pop(mediaDeviceFile);

@@ -9,8 +9,16 @@ enum MediaDeviceFileType {
   other,
 }
 
-abstract class IMediaDeviceFile {
+abstract class IMediaDeviceFileMetadata {
+  String get deviceId;
+
   MediaDeviceFileType get type;
+
+  Future<IMediaDeviceFile> loadMediaDeviceFile();
+}
+
+abstract class IMediaDeviceFile {
+  IMediaDeviceFileMetadata get metadata;
 
   bool get isNeedDeleteAfterUsage;
 
@@ -21,7 +29,7 @@ abstract class IMediaDeviceFile {
   Future delete();
 }
 
-extension IMediaDeviceFileExtension on IMediaDeviceFile {
+extension IMediaDeviceFileMetadataExtension on IMediaDeviceFileMetadata {
   bool get isMedia {
     switch (type) {
       case MediaDeviceFileType.image:
@@ -35,39 +43,70 @@ extension IMediaDeviceFileExtension on IMediaDeviceFile {
   }
 }
 
-class FileMediaDeviceFile extends IMediaDeviceFile {
-  final File originalFile;
+extension IMediaDeviceFileExtension on IMediaDeviceFile {
+  Future deleteIfNeedAfterUsage() async {
+    if (isNeedDeleteAfterUsage) {
+      await delete();
+    }
+  }
+}
 
-  @override
+class FileMediaDeviceFileMetadata extends IMediaDeviceFileMetadata {
+  final File originalFile;
   final bool isNeedDeleteAfterUsage;
 
   @override
   final MediaDeviceFileType type;
 
-  FileMediaDeviceFile({
+  FileMediaDeviceFileMetadata({
     @required this.originalFile,
     @required this.isNeedDeleteAfterUsage,
     @required this.type,
   });
 
   @override
+  String get deviceId => originalFile.absolute.path;
+
+  @override
+  Future<IMediaDeviceFile> loadMediaDeviceFile() async => FileMediaDeviceFile(
+        originalFile: originalFile,
+        isNeedDeleteAfterUsage: isNeedDeleteAfterUsage,
+        metadata: this,
+      );
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FileMediaDeviceFile &&
+      other is FileMediaDeviceFileMetadata &&
           runtimeType == other.runtimeType &&
-          loadFile == other.loadFile &&
+          originalFile == other.originalFile &&
           isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage &&
           type == other.type;
 
   @override
   int get hashCode =>
-      loadFile.hashCode ^ isNeedDeleteAfterUsage.hashCode ^ type.hashCode;
+      originalFile.hashCode ^ isNeedDeleteAfterUsage.hashCode ^ type.hashCode;
 
   @override
   String toString() {
-    return 'FileMediaDeviceFile{file: $loadFile,'
-        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage, type: $type}';
+    return 'FileMediaDeviceFileMetadata{'
+        'isNeedDeleteAfterUsage: $originalFile,'
+        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage,'
+        ' type: $type}';
   }
+}
+
+class FileMediaDeviceFile extends IMediaDeviceFile {
+  final File originalFile;
+
+  @override
+  final bool isNeedDeleteAfterUsage;
+
+  FileMediaDeviceFile({
+    @required this.originalFile,
+    @required this.isNeedDeleteAfterUsage,
+    @required this.metadata,
+  });
 
   @override
   Future delete() => originalFile.delete();
@@ -77,4 +116,31 @@ class FileMediaDeviceFile extends IMediaDeviceFile {
 
   @override
   Future<String> calculateFilePath() async => originalFile.path;
+
+  @override
+  final IMediaDeviceFileMetadata metadata;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FileMediaDeviceFile &&
+          runtimeType == other.runtimeType &&
+          originalFile == other.originalFile &&
+          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage &&
+          metadata == other.metadata;
+
+  @override
+  int get hashCode =>
+      originalFile.hashCode ^
+      isNeedDeleteAfterUsage.hashCode ^
+      metadata.hashCode;
+
+  @override
+  String toString() {
+    return 'FileMediaDeviceFile{'
+        'originalFile: $originalFile,'
+        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage,'
+        ' metadata: $metadata'
+        '}';
+  }
 }
