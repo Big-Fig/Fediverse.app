@@ -29,6 +29,8 @@ class LocalizationLocale implements IJsonObject {
 
   LocalizationLocale({
     this.languageCode,
+    this.scriptCode,
+    this.countryCode,
   });
 
   factory LocalizationLocale.fromJson(Map<String, dynamic> json) =>
@@ -58,8 +60,10 @@ class LocalizationLocale implements IJsonObject {
       languageCode.hashCode ^ scriptCode.hashCode ^ countryCode.hashCode;
   @override
   String toString() {
-    return 'LocalizationLocale{languageCode: $languageCode,'
+    return 'LocalizationLocale{'
+        'languageCode: $languageCode,'
         ' scriptCode: $scriptCode,'
-        ' countryCode: $countryCode}';
+        ' countryCode: $countryCode'
+        '}';
   }
 }

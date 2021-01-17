@@ -48,12 +48,14 @@ class ThreadPostStatusBloc extends PostStatusBloc
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required bool markMediaAsNsfwOnAttach,
+    @required String language,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.public.toJsonValue(),
+            language: language,
             inReplyToPleromaStatus:
                 mapLocalStatusToRemoteStatus(inReplyToStatus),
           ),
@@ -81,7 +83,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
-          IPostStatusSettingsBloc.of(context, listen: false).markMediaAsNsfwOnAttach,
+          IPostStatusSettingsBloc.of(context, listen: false)
+              .markMediaAsNsfwOnAttach,
+      language: IPostStatusSettingsBloc.of(context, listen: false)
+          .defaultStatusLocale
+          ?.localeString,
     );
   }
 
@@ -93,8 +99,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
         inReplyToStatus: inReplyToStatus,
       ),
       child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
-          update: (context, value, previous) => value,
-          child: PostStatusMessageBlocProxyProvider(child: child)),
+        update: (context, value, previous) => value,
+        child: PostStatusMessageBlocProxyProvider(
+          child: child,
+        ),
+      ),
     );
   }
 

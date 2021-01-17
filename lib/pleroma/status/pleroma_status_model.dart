@@ -129,6 +129,9 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final String visibility;
 
   @override
+  final String language;
+
+  @override
   @JsonKey(name: "scheduled_at")
   final DateTime scheduledAt;
 
@@ -147,17 +150,19 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   // int or String
   final dynamic applicationId;
 
-  PleromaScheduledStatusParams(
-      {this.text,
-      this.mediaIds,
-      this.sensitive,
-      this.spoilerText,
-      this.visibility,
-      this.scheduledAt,
-      this.poll,
-      this.idempotency,
-      this.inReplyToId,
-      this.applicationId});
+  PleromaScheduledStatusParams({
+    this.text,
+    this.mediaIds,
+    this.sensitive,
+    this.spoilerText,
+    this.visibility,
+    this.scheduledAt,
+    this.poll,
+    this.idempotency,
+    this.inReplyToId,
+    this.applicationId,
+    this.language,
+  });
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
       _$PleromaScheduledStatusParamsFromJson(json);
@@ -180,7 +185,9 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
     return 'PleromaScheduledStatusParams{text: $text, mediaIds: $mediaIds,'
         ' sensitive: $sensitive, spoilerText: $spoilerText,'
         ' visibility: $visibility, scheduledAt: $scheduledAt, poll: $poll, '
-        'idempotency: $idempotency, inReplyToId: $inReplyToId, '
+        'idempotency: $idempotency, '
+        'inReplyToId: $inReplyToId, '
+        'language: $language, '
         'applicationId: $applicationId}';
   }
 
@@ -190,10 +197,11 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       other is PleromaScheduledStatusParams &&
           runtimeType == other.runtimeType &&
           text == other.text &&
-          eq(mediaIds, other.mediaIds) &&
+          mediaIds == other.mediaIds &&
           sensitive == other.sensitive &&
           spoilerText == other.spoilerText &&
           visibility == other.visibility &&
+          language == other.language &&
           scheduledAt == other.scheduledAt &&
           poll == other.poll &&
           idempotency == other.idempotency &&
@@ -207,6 +215,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       sensitive.hashCode ^
       spoilerText.hashCode ^
       visibility.hashCode ^
+      language.hashCode ^
       scheduledAt.hashCode ^
       poll.hashCode ^
       idempotency.hashCode ^
@@ -553,21 +562,22 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @override
   final List<String> to;
 
-  PleromaPostStatus(
-      {this.contentType,
-      this.expiresInSeconds,
-      this.idempotencyKey,
-      this.inReplyToConversationId,
-      this.inReplyToId,
-      this.language,
-      this.visibility,
-      this.mediaIds,
-      this.poll,
-      this.preview,
-      this.sensitive,
-      this.spoilerText,
-      this.status,
-      this.to}) {
+  PleromaPostStatus({
+    this.contentType,
+    this.expiresInSeconds,
+    this.idempotencyKey,
+    this.inReplyToConversationId,
+    this.inReplyToId,
+    this.language,
+    this.visibility,
+    this.mediaIds,
+    this.poll,
+    this.preview,
+    this.sensitive,
+    this.spoilerText,
+    this.status,
+    this.to,
+  }) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;

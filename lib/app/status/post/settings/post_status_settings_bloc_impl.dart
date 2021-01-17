@@ -2,6 +2,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/status/post/settings/local_preferences/post_status_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
@@ -19,19 +20,28 @@ class PostStatusSettingsBloc
         );
 
   @override
+  bool get markMediaAsNsfwOnAttach => settingsData.markMediaAsNsfwOnAttach;
+
+  @override
+  Stream<bool> get markMediaAsNsfwOnAttachStream =>
+      settingsDataStream.map((settings) => settings.markMediaAsNsfwOnAttach);
+
+  @override
+  void changeMarkMediaAsNsfwOnAttach(bool value) {
+    updateInstanceSettings(
+      settingsData.copyWith(
+        markMediaAsNsfwOnAttach: value,
+      ),
+    );
+  }
+
+  @override
   PleromaVisibility get defaultVisibility =>
       settingsData.defaultVisibilityPleroma;
 
   @override
   Stream<PleromaVisibility> get defaultVisibilityStream =>
       settingsDataStream.map((settings) => settings.defaultVisibilityPleroma);
-
-  @override
-  bool get markMediaAsNsfwOnAttach => settingsData.markMediaAsNsfwOnAttach;
-
-  @override
-  Stream<bool> get markMediaAsNsfwOnAttachStream =>
-      settingsDataStream.map((settings) => settings.markMediaAsNsfwOnAttach);
 
   @override
   void changeDefaultVisibility(PleromaVisibility value) {
@@ -43,10 +53,18 @@ class PostStatusSettingsBloc
   }
 
   @override
-  void changeMarkMediaAsNsfwOnAttach(bool value) {
+  LocalizationLocale get defaultStatusLocale =>
+      settingsData.defaultStatusLocale;
+
+  @override
+  Stream<LocalizationLocale> get defaultStatusLocaleStream =>
+      settingsDataStream.map((settings) => settings.defaultStatusLocale);
+
+  @override
+  void changeDefaultStatusLocale(LocalizationLocale value) {
     updateInstanceSettings(
       settingsData.copyWith(
-        markMediaAsNsfwOnAttach: value,
+        defaultStatusLocale: value,
       ),
     );
   }

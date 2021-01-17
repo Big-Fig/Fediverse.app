@@ -102,6 +102,8 @@ abstract class IMastodonScheduledStatusParams {
 
   String get inReplyToId;
 
+  String get language;
+
   dynamic get applicationId;
 
   MastodonVisibility get visibilityMastodon =>

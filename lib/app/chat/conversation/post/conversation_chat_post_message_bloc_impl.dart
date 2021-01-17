@@ -27,13 +27,16 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required bool markMediaAsNsfwOnAttach,
+    @required String language,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-              visibility: PleromaVisibility.private.toJsonValue(),
-              inReplyToConversationId: conversation.remoteId),
+            visibility: PleromaVisibility.private.toJsonValue(),
+            language: language,
+            inReplyToConversationId: conversation.remoteId,
+          ),
           initialAccountsToMention: conversationAccountsWithoutMe,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
@@ -61,6 +64,8 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
+      language: IPostStatusSettingsBloc.of(context, listen: false)
+          .defaultStatusLocale?.localeString,
     );
   }
 

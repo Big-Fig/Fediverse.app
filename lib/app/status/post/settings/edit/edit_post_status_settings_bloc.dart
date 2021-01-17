@@ -1,3 +1,4 @@
+import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
@@ -15,4 +16,7 @@ abstract class IEditPostStatusSettingsBloc
 
   IStatusVisibilitySingleFromListValueFormFieldBloc
       get defaultVisibilityFormFieldBloc;
+
+  ILocalizationLocaleSingleFromListValueFormFieldBloc get
+  defaultStatusLocaleFormFieldBloc;
 }

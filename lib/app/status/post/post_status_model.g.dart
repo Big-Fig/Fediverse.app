@@ -29,19 +29,29 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
             json['in_reply_to_status'] as Map<String, dynamic>),
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String,
     isNsfwSensitiveEnabled: json['is_nsfw_sensitive_enabled'] as bool,
+    language: json['language'] as String,
   );
 }
 
-Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) =>
-    <String, dynamic>{
-      'subject': instance.subject,
-      'text': instance.text,
-      'scheduled_at': instance.scheduledAt?.toIso8601String(),
-      'visibility': instance.visibility,
-      'to': instance.to,
-      'media_attachments': instance.mediaAttachments,
-      'poll': instance.poll,
-      'in_reply_to_status': instance.inReplyToPleromaStatus,
-      'in_reply_to_conversation_id': instance.inReplyToConversationId,
-      'is_nsfw_sensitive_enabled': instance.isNsfwSensitiveEnabled,
-    };
+Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('subject', instance.subject);
+  writeNotNull('text', instance.text);
+  writeNotNull('scheduled_at', instance.scheduledAt?.toIso8601String());
+  writeNotNull('visibility', instance.visibility);
+  writeNotNull('to', instance.to);
+  writeNotNull('media_attachments', instance.mediaAttachments);
+  writeNotNull('poll', instance.poll);
+  writeNotNull('in_reply_to_status', instance.inReplyToPleromaStatus);
+  writeNotNull('in_reply_to_conversation_id', instance.inReplyToConversationId);
+  writeNotNull('is_nsfw_sensitive_enabled', instance.isNsfwSensitiveEnabled);
+  writeNotNull('language', instance.language);
+  return val;
+}

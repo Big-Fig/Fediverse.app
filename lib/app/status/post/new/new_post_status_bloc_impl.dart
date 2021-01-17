@@ -21,13 +21,16 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required int maximumFileSizeInBytes,
     @required PleromaVisibility initialVisibility,
     @required bool markMediaAsNsfwOnAttach,
+    @required String language,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
-          initialData: PostStatusBloc.defaultInitData
-              .copyWith(visibility: initialVisibility.toJsonValue()),
+          initialData: PostStatusBloc.defaultInitData.copyWith(
+            visibility: initialVisibility.toJsonValue(),
+            language: language,
+          ),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
@@ -51,6 +54,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       initialVisibility: postStatusSettingsBloc.defaultVisibility,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      language: postStatusSettingsBloc
+          .defaultStatusLocale?.localeString,
     );
   }
 
