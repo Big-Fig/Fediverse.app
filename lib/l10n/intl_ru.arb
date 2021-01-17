@@ -1,9 +1,9 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-09T17:44:44+00:00",
+    "@@last_modified": "2021-01-17T10:14:45+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
-    "localization_locale_system": "Системный",
+    "localization_locale_default": "По умолчанию",
     "app_localization_dialog_title": "Язык",
     "app_localization_form_field_label": "Язык",
     "app_init_fail": "Ошибка при инициализации.\nПерезапустите или переустановите приложение",
@@ -621,5 +621,16 @@
     "app_account_my_edit_field_pleroma_showRole_label": "Показывать роль",
     "app_account_my_edit_field_pleroma_showRole_description": "например Админ или Модератор",
     "app_account_my_edit_field_pleroma_skipThreadContainment_label": "Пропускать поврежденные беседы",
-    "app_account_my_edit_field_pleroma_skipThreadContainment_description": "Скрывать в списках"
+    "app_account_my_edit_field_pleroma_skipThreadContainment_description": "Скрывать в списках",
+    "app_auth_instance_register_field_acceptTermsOfService_label": "Принимаю условия использования",
+    "app_auth_instance_register_field_locale_label": "Язык",
+    "app_auth_instance_register_field_acceptTermsOfService_description": "{domain}",
+    "app_auth_instance_register_field_locale_description": "Язык по умолчания для ваших записей и подтверждающего email",
+    "form_field_bool_onlyTrue_error_desc": "Должно быть включено",
+    "app_auth_instance_register_emailConfirmationRequired_notification_title": "Успешная регистрация",
+    "app_auth_instance_register_emailConfirmationRequired_notification_content": "Подтвердите email перед входом",
+    "app_auth_instance_register_cantLogin_notification_title": "Успешная регистрация",
+    "app_auth_instance_register_cantLogin_notification_content": "Ошибка при входе: {errorDescription}",
+    "app_auth_instance_register_field_reason_label": "Причина (необязательно)",
+    "app_auth_instance_register_field_reason_hint": "Будет проверено модераторами во время ручного утверждения"
 }

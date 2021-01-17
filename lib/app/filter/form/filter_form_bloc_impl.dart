@@ -88,7 +88,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         },
       ),
     );
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

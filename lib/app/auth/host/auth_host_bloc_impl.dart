@@ -20,12 +20,14 @@ import 'package:fedi/pleroma/account/public/pleroma_account_public_service_impl.
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_service.dart';
 import 'package:fedi/pleroma/application/pleroma_application_service_impl.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_service.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_service_impl.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service.dart';
@@ -36,6 +38,11 @@ import 'package:logging/logging.dart';
 final scopes = "read write follow push";
 
 var _logger = Logger("auth_host_bloc_impl.dart");
+
+// todo: report to mastodon/pleroma.
+//  It's should be error code instead of string handling
+const emailConfirmationRequiredDescription =
+    "Your login is missing a confirmed e-mail address";
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final Uri instanceBaseUrl;
@@ -206,25 +213,48 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       clientId: hostApplication.clientId,
     ));
 
-    return await _createInstanceFromToken(token: token, authCode: authCode);
+    return await _createInstanceFromToken(
+      token: token,
+      authCode: authCode,
+    );
   }
 
-  Future<AuthInstance> _createInstanceFromToken(
-      {@required PleromaOAuthToken token, @required String authCode}) async {
+  Future<AuthInstance> _createInstanceFromToken({
+    @required PleromaOAuthToken token,
+    @required String authCode,
+  }) async {
     var restService = RestService(baseUrl: instanceBaseUrl);
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
         restService: restService,
         isPleromaInstance: isPleromaInstance);
-    var pleromaMyAccountService =
-        PleromaMyAccountService(restService: pleromaAuthRestService);
 
     var pleromaInstanceService =
         PleromaInstanceService(restService: pleromaAuthRestService);
 
     var hostInstance = await pleromaInstanceService.getInstance();
 
+    AuthInstance instance = await _createAuthInstance(
+      pleromaAuthRestService: pleromaAuthRestService,
+      authCode: authCode,
+      token: token,
+      hostInstance: hostInstance,
+    );
+
+    await pleromaInstanceService.dispose();
+    await pleromaAuthRestService.dispose();
+    return instance;
+  }
+
+  Future<AuthInstance> _createAuthInstance({
+    @required PleromaAuthRestService pleromaAuthRestService,
+    @required String authCode,
+    @required PleromaOAuthToken token,
+    @required IPleromaInstance hostInstance,
+  }) async {
+    var pleromaMyAccountService =
+        PleromaMyAccountService(restService: pleromaAuthRestService);
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
     var instance = AuthInstance(
@@ -237,23 +267,81 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       info: hostInstance,
       isPleromaInstance: myAccount.pleroma != null,
     );
-
     await pleromaMyAccountService.dispose();
-    await pleromaInstanceService.dispose();
-    await pleromaAuthRestService.dispose();
+
     return instance;
   }
 
   @override
-  Future<AuthInstance> registerAccount(
-      {@required IPleromaAccountRegisterRequest request}) async {
+  Future<AuthHostRegistrationResult> registerAccount({
+    @required IPleromaAccountRegisterRequest request,
+  }) async {
     await checkApplicationRegistration();
     await checkHostAccessTokenRegistration();
     await checkIsRegistrationsEnabled();
 
     var token = await pleromaAccountPublicService.registerAccount(
-        request: request, appAccessToken: hostAccessToken.accessToken);
-    return _createInstanceFromToken(token: token, authCode: null);
+      request: request,
+      appAccessToken: hostAccessToken.accessToken,
+    );
+
+    var restService = RestService(baseUrl: instanceBaseUrl);
+    var pleromaAuthRestService = PleromaAuthRestService(
+        accessToken: token.accessToken,
+        connectionService: connectionService,
+        restService: restService,
+        isPleromaInstance: isPleromaInstance);
+
+    var pleromaInstanceService =
+        PleromaInstanceService(restService: pleromaAuthRestService);
+
+    var hostInstance = await pleromaInstanceService.getInstance();
+
+    AuthHostRegistrationResult result;
+    if (hostInstance.approvalRequired) {
+      result = AuthHostRegistrationResult(
+        authInstance: null,
+        token: token,
+        pleromaInstance: hostInstance,
+        authInstanceFetchError: null,
+      );
+    } else {
+      AuthInstance instance;
+      var authInstanceFetchError;
+      try {
+        instance = await _createAuthInstance(
+          pleromaAuthRestService: pleromaAuthRestService,
+          authCode: null,
+          token: token,
+          hostInstance: hostInstance,
+        );
+      } catch (e, stackTrace) {
+        _logger.warning(() => "error during registerAccount", e, stackTrace);
+        if (e is PleromaRestException) {
+          if (e.decodedErrorDescription ==
+              emailConfirmationRequiredDescription) {
+            authInstanceFetchError =
+                const EmailConfirmationRequiredAuthHostException();
+          } else {
+            authInstanceFetchError = e;
+          }
+        } else {
+          authInstanceFetchError = e;
+        }
+      }
+
+      result = AuthHostRegistrationResult(
+        authInstanceFetchError: authInstanceFetchError,
+        authInstance: instance,
+        token: token,
+        pleromaInstance: hostInstance,
+      );
+    }
+
+    await pleromaInstanceService.dispose();
+    await pleromaAuthRestService.dispose();
+
+    return result;
   }
 
   @override
@@ -265,7 +353,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       _logger.finest(() => "checkApplicationRegistration "
           "success=$success");
       if (!success) {
-        throw CantRegisterAppAuthHostException();
+        throw const CantRegisterAppAuthHostException();
       }
     }
   }
@@ -273,6 +361,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future checkIsRegistrationsEnabled() async {
     _logger.finest(() => "checkIsRegistrationsEnabled");
+
+    var result = false;
 
     PleromaInstanceService pleromaInstanceService;
     try {
@@ -285,16 +375,18 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       if (isRegistrationEnabled != false) {
         var invitesEnabled = pleromaInstance.invitesEnabled;
         if (invitesEnabled != false) {
-          return true;
+          result =  true;
         } else {
-          throw InvitesOnlyRegistrationAuthHostException();
+          throw const InvitesOnlyRegistrationAuthHostException();
         }
       } else {
-        throw DisabledRegistrationAuthHostException();
+        throw const DisabledRegistrationAuthHostException();
       }
     } finally {
       await pleromaInstanceService?.dispose();
     }
+
+    return result;
   }
 
   Future checkHostAccessTokenRegistration() async {
@@ -302,7 +394,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       var success = await retrieveAppAccessToken();
 
       if (!success) {
-        throw CantRetrieveAppTokenAuthHostException();
+        throw const CantRetrieveAppTokenAuthHostException();
       }
     }
   }
@@ -310,17 +402,18 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   static AuthHostBloc createFromContext(BuildContext context,
           {@required Uri instanceBaseUrl}) =>
       AuthHostBloc(
-          instanceBaseUrl: instanceBaseUrl,
-          isPleromaInstance: false,
-          preferencesService:
-              ILocalPreferencesService.of(context, listen: false),
-          connectionService: IConnectionService.of(context, listen: false),
-          currentInstanceBloc:
-              ICurrentAuthInstanceBloc.of(context, listen: false),
-          pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-              IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
-                  context,
-                  listen: false));
+        instanceBaseUrl: instanceBaseUrl,
+        isPleromaInstance: false,
+        preferencesService: ILocalPreferencesService.of(context, listen: false),
+        connectionService: IConnectionService.of(context, listen: false),
+        currentInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
+        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+            IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future logout() async {
@@ -330,10 +423,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var instance = currentInstance;
     try {
       await pleromaOAuthService.revokeToken(
-          revokeRequest: PleromaOAuthAppTokenRevokeRequest(
-              clientId: instance.application.clientId,
-              clientSecret: instance.application.clientSecret,
-              token: instance.token.accessToken));
+        revokeRequest: PleromaOAuthAppTokenRevokeRequest(
+          clientId: instance.application.clientId,
+          clientSecret: instance.application.clientSecret,
+          token: instance.token.accessToken,
+        ),
+      );
     } finally {
       await currentInstanceBloc.logoutCurrentInstance();
     }

@@ -161,7 +161,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       typeFieldBloc,
       editTimelineSettingsBloc,
     ];
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

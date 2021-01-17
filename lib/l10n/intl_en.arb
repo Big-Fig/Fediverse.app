@@ -1,9 +1,9 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-09T17:42:06+00:00",
+    "@@last_modified": "2021-01-17T10:14:28+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
-    "localization_locale_system": "System",
+    "localization_locale_default": "Default",
     "app_localization_dialog_title": "Language",
     "app_localization_form_field_label": "Language",
     "app_init_fail": "Failed to start app.\nTry restart or re-install app.",
@@ -621,5 +621,16 @@
     "app_account_my_edit_field_pleroma_showRole_label": "Show role",
     "app_account_my_edit_field_pleroma_showRole_description": "e.g. Admin, Moderator",
     "app_account_my_edit_field_pleroma_skipThreadContainment_label": "Skip thread containment",
-    "app_account_my_edit_field_pleroma_skipThreadContainment_description": "Ignore broken threads"
+    "app_account_my_edit_field_pleroma_skipThreadContainment_description": "Ignore broken threads",
+    "app_auth_instance_register_field_acceptTermsOfService_label": "Accept Terms of Service",
+    "app_auth_instance_register_field_locale_label": "Locale",
+    "app_auth_instance_register_field_acceptTermsOfService_description": "{domain}",
+    "app_auth_instance_register_field_locale_description": "Default language for your statuses and confirmation email",
+    "form_field_bool_onlyTrue_error_desc": "Should be enabled",
+    "app_auth_instance_register_emailConfirmationRequired_notification_title": "Success registration",
+    "app_auth_instance_register_emailConfirmationRequired_notification_content": "Please confirm email before login",
+    "app_auth_instance_register_cantLogin_notification_title": "Success registration",
+    "app_auth_instance_register_cantLogin_notification_content": "Error during login: {errorDescription}",
+    "app_auth_instance_register_field_reason_label": "Reason (optional)",
+    "app_auth_instance_register_field_reason_hint": "Will be reviewed by moderators during manual approval"
 }

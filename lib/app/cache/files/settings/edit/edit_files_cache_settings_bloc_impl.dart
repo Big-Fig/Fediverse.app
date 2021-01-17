@@ -59,7 +59,7 @@ class EditFilesCacheSettingsBloc
           sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc,
     );
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

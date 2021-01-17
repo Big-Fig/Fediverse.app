@@ -90,7 +90,7 @@ class EditDatabaseCacheSettingsBloc
         disposable: currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc);
     addDisposable(disposable: currentMaxAgeDatabaseCacheInfoFormFieldBloc);
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

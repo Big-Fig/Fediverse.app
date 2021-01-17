@@ -3,12 +3,16 @@ import 'package:flutter/cupertino.dart';
 
 class FediFormColumnDesc extends StatelessWidget {
   final String text;
+  final TextStyle textStyle;
 
-  FediFormColumnDesc(this.text);
+  FediFormColumnDesc(
+    this.text, {
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) => Text(
         text,
-        style: IFediUiTextTheme.of(context).smallShortGrey,
+        style: textStyle ?? IFediUiTextTheme.of(context).smallShortGrey,
       );
 }

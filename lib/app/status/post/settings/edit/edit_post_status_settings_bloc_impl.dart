@@ -54,7 +54,7 @@ class EditPostStatusSettingsBloc
     addDisposable(disposable: defaultVisibilityFormFieldBloc);
     addDisposable(disposable: markMediaAsNsfwOnAttachFormFieldBloc);
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

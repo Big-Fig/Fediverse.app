@@ -47,7 +47,7 @@ class EditMediaSettingsBloc
       isEnabled: isEnabled,
     );
 
-    onItemsChanged();
+    onFormItemsChanged();
 
     addDisposable(disposable: autoPlayFieldBloc);
     addDisposable(disposable: autoInitFieldBloc);

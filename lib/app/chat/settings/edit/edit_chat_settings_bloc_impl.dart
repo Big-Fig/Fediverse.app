@@ -49,7 +49,7 @@ class EditChatSettingsBloc
     addDisposable(disposable: countConversationsInChatsUnreadBadgesFieldBloc);
     addDisposable(disposable: replaceConversationsWithPleromaChatsFieldBloc);
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

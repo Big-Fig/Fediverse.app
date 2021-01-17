@@ -63,7 +63,7 @@ class EditStatusSensitiveSettingsBloc
     addDisposable(disposable: isAlwaysShowSpoilerFieldBloc);
     addDisposable(disposable: isAlwaysShowNsfwFieldBloc);
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

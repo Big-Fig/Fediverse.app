@@ -9,7 +9,6 @@ part 'pleroma_account_public_model.g.dart';
 abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
   Map<String, dynamic> toJson();
 
-
   String get captchaToken;
 
   String get captchaAnswerData;
@@ -17,7 +16,9 @@ abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
   String get captchaSolution;
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  includeIfNull: false,
+)
 class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
   @override
   final bool agreement;
@@ -59,7 +60,6 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
     @required this.captchaSolution,
   });
 
-
   @override
   String toString() {
     return 'PleromaAccountRegisterRequest{agreement: $agreement, '
@@ -68,7 +68,6 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
         'captchaAnswerData: $captchaAnswerData, '
         'captchaSolution: $captchaSolution}';
   }
-
 
   @override
   bool operator ==(Object other) =>
@@ -84,6 +83,7 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
           captchaToken == other.captchaToken &&
           captchaAnswerData == other.captchaAnswerData &&
           captchaSolution == other.captchaSolution;
+
   @override
   int get hashCode =>
       agreement.hashCode ^

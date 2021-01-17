@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 class EditLocalizationSettingsBloc
     extends EditGlobalSettingsBloc<LocalizationSettings>
     implements IEditLocalizationSettingsBloc {
-  final ILocalizationSettingsBloc localizationSettingBloc;
+  final ILocalizationSettingsBloc localizationSettingsBloc;
 
   @override
   final ILocalizationLocaleSingleFromListValueFormFieldBloc
@@ -23,28 +23,28 @@ class EditLocalizationSettingsBloc
       ];
 
   EditLocalizationSettingsBloc({
-    @required this.localizationSettingBloc,
+    @required this.localizationSettingsBloc,
     @required bool isEnabled,
   })  : localizationLocaleFieldBloc =
             LocalizationLocaleSingleFromListValueFormFieldBloc(
-          originValue: localizationSettingBloc.localizationLocale,
+          originValue: localizationSettingsBloc.localizationLocale,
           isEnabled: isEnabled,
           possibleValues: supportedLocalizationLocaleList,
         ),
         super(
           isEnabled:isEnabled,
-          settingsBloc:localizationSettingBloc,
+          settingsBloc:localizationSettingsBloc,
         isAllItemsInitialized:true,
         ) {
     addDisposable(disposable: localizationLocaleFieldBloc);
   }
 
   @override
-  LocalizationSettings get settingsData => localizationSettingBloc.settingsData;
+  LocalizationSettings get settingsData => localizationSettingsBloc.settingsData;
 
   @override
   Stream<LocalizationSettings> get settingsDataStream =>
-      localizationSettingBloc.settingsDataStream;
+      localizationSettingsBloc.settingsDataStream;
 
   @override
   LocalizationSettings calculateCurrentFormFieldsSettings() =>

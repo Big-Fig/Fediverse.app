@@ -17,7 +17,7 @@ void showEditGlobalLocalizationSettingsDialog({
     subTitleBuilder: (context) => S.of(context).app_localization_settings_title,
     child: DisposableProvider<IEditLocalizationSettingsBloc>(
       create: (context) => EditLocalizationSettingsBloc(
-        localizationSettingBloc: ILocalizationSettingsBloc.of(
+        localizationSettingsBloc: ILocalizationSettingsBloc.of(
           context,
           listen: false,
         ),
