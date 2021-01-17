@@ -20,13 +20,15 @@ abstract class MediaDeviceFolderBloc extends AsyncInitLoadingBloc
       await _initAfterPermissionGranted();
     } else {
       addDisposable(
-          streamSubscription: storagePermissionBloc.permissionGrantedStream
-              .distinct()
-              .listen((granted) {
-        // if (granted && files?.isNotEmpty != true) {
-        //   _initAfterPermissionGranted();
-        // }
-      }));
+        streamSubscription:
+            storagePermissionBloc.permissionGrantedStream.distinct().listen(
+          (granted) {
+            // if (granted && files?.isNotEmpty != true) {
+            //   _initAfterPermissionGranted();
+            // }
+          },
+        ),
+      );
     }
   }
 

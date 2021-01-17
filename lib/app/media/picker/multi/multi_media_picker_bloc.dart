@@ -9,7 +9,8 @@ abstract class IMultiMediaPickerBloc implements IMediaPickerBloc {
 
   Stream<List<IMediaDeviceFile>> get acceptedFilesSelectionStream;
 
-  Stream<List<IMediaDeviceFileMetadata>> get currentFilesMetadataSelectionStream;
+  Stream<List<IMediaDeviceFileMetadata>>
+      get currentFilesMetadataSelectionStream;
 
   List<IMediaDeviceFileMetadata> get currentFilesMetadataSelection;
 
@@ -20,6 +21,10 @@ abstract class IMultiMediaPickerBloc implements IMediaPickerBloc {
   int get currentFilesMetadataSelectionCount;
 
   Stream<int> get currentFilesMetadataSelectionCountStream;
+
+  bool get isSelectionCountLimitReached;
+
+  Stream<bool> get selectionCountLimitReachedStream;
 
   Future acceptSelectedFilesMetadata();
 }

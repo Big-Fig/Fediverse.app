@@ -6171,6 +6171,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose medias`
+  String get file_picker_multi_title {
+    return Intl.message(
+      'Choose medias',
+      name: 'file_picker_multi_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selection`
+  String get file_picker_selectionFolder_title {
+    return Intl.message(
+      'Selection',
+      name: 'file_picker_selectionFolder_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selection count limit reached`
+  String get file_picker_multi_selectionCountLimitReached_notification_title {
+    return Intl.message(
+      'Selection count limit reached',
+      name: 'file_picker_multi_selectionCountLimitReached_notification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum {selectionCountLimit}`
+  String file_picker_multi_selectionCountLimitReached_notification_content(Object selectionCountLimit) {
+    return Intl.message(
+      'Maximum $selectionCountLimit',
+      name: 'file_picker_multi_selectionCountLimitReached_notification_content',
+      desc: '',
+      args: [selectionCountLimit],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

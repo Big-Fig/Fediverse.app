@@ -111,29 +111,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m45(count) => "${Intl.plural(count, one: '1 минута', other: '${count} минуты')}";
 
-  static m46(max) => "Не больше ${max}";
+  static m46(selectionCountLimit) => "Максимум ${selectionCountLimit}";
 
-  static m47(min, max) => "Должны быть между ${min} и ${max}";
+  static m47(max) => "Не больше ${max}";
 
-  static m48(min) => "Не меньше ${min}";
+  static m48(min, max) => "Должны быть между ${min} и ${max}";
 
-  static m49(maxCharactersCount) => "Максимальная длина: ${maxCharactersCount}";
+  static m49(min) => "Не меньше ${min}";
 
-  static m50(minCharactersCount, maxCharactersCount) => "Длина должна быть между ${minCharactersCount} и ${maxCharactersCount}";
+  static m50(maxCharactersCount) => "Максимальная длина: ${maxCharactersCount}";
 
-  static m51(minCharactersCount) => "Минимальная длина: ${minCharactersCount}";
+  static m51(minCharactersCount, maxCharactersCount) => "Длина должна быть между ${minCharactersCount} и ${maxCharactersCount}";
 
-  static m52(url) => "URL ${url} имеет неправильный формат";
+  static m52(minCharactersCount) => "Минимальная длина: ${minCharactersCount}";
 
-  static m53(days) => "${Intl.plural(days, one: '1 д', other: '${days} д')}";
+  static m53(url) => "URL ${url} имеет неправильный формат";
 
-  static m54(hours) => "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
+  static m54(days) => "${Intl.plural(days, one: '1 д', other: '${days} д')}";
 
-  static m55(minutes) => "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
+  static m55(hours) => "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
 
-  static m56(months) => "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
+  static m56(minutes) => "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
 
-  static m57(years) => "${Intl.plural(years, one: '1 г', other: '${years} г')}";
+  static m57(months) => "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
+
+  static m58(years) => "${Intl.plural(years, one: '1 г', other: '${years} г')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -712,20 +714,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration_hour" : m44,
     "duration_minute" : m45,
     "file_picker_empty" : MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
+    "file_picker_multi_selectionCountLimitReached_notification_content" : m46,
+    "file_picker_multi_selectionCountLimitReached_notification_title" : MessageLookupByLibrary.simpleMessage("Достигнут лимит"),
+    "file_picker_multi_title" : MessageLookupByLibrary.simpleMessage("Выберите файлы"),
+    "file_picker_selectionFolder_title" : MessageLookupByLibrary.simpleMessage("Выбрано"),
     "file_picker_single_title" : MessageLookupByLibrary.simpleMessage("Выберите файл"),
     "form_field_bool_onlyTrue_error_desc" : MessageLookupByLibrary.simpleMessage("Должно быть включено"),
-    "form_field_int_error_length_maxOnlyValue_desc" : m46,
-    "form_field_int_error_length_minAndMax_desc" : m47,
-    "form_field_int_error_length_minOnlyValue_desc" : m48,
+    "form_field_int_error_length_maxOnlyValue_desc" : m47,
+    "form_field_int_error_length_minAndMax_desc" : m48,
+    "form_field_int_error_length_minOnlyValue_desc" : m49,
     "form_field_text_email_error_invalid_desc" : MessageLookupByLibrary.simpleMessage("Неправильный email"),
     "form_field_text_error_empty_desc" : MessageLookupByLibrary.simpleMessage("Не может быть пустым"),
-    "form_field_text_error_length_maxOnly_desc" : m49,
-    "form_field_text_error_length_minAndMax_desc" : m50,
-    "form_field_text_error_length_minOnly_desc" : m51,
+    "form_field_text_error_length_maxOnly_desc" : m50,
+    "form_field_text_error_length_minAndMax_desc" : m51,
+    "form_field_text_error_length_minOnly_desc" : m52,
     "form_field_text_password_error_notMatch_desc" : MessageLookupByLibrary.simpleMessage("Пароли должны совпадать"),
     "form_field_text_url_error_invalid_desc" : MessageLookupByLibrary.simpleMessage("Неправильный URL"),
     "form_field_value_error_null_desc" : MessageLookupByLibrary.simpleMessage("Необходимо"),
-    "link_error_dialog_content" : m52,
+    "link_error_dialog_content" : m53,
     "link_error_dialog_title" : MessageLookupByLibrary.simpleMessage("Не возможно открыть URL"),
     "localization_locale_default" : MessageLookupByLibrary.simpleMessage("По умолчанию"),
     "localization_locale_en" : MessageLookupByLibrary.simpleMessage("English"),
@@ -737,16 +743,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "timeago_aboutAMonth" : MessageLookupByLibrary.simpleMessage("~1 мес"),
     "timeago_aboutAYear" : MessageLookupByLibrary.simpleMessage("~1 г"),
     "timeago_aboutAnHour" : MessageLookupByLibrary.simpleMessage("~1 ч"),
-    "timeago_days" : m53,
-    "timeago_hours" : m54,
+    "timeago_days" : m54,
+    "timeago_hours" : m55,
     "timeago_lessThanOneMinute" : MessageLookupByLibrary.simpleMessage("сейчас"),
-    "timeago_minutes" : m55,
-    "timeago_months" : m56,
+    "timeago_minutes" : m56,
+    "timeago_months" : m57,
     "timeago_prefixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_prefixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixAgo" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_suffixFromNow" : MessageLookupByLibrary.simpleMessage(""),
     "timeago_wordSeparator" : MessageLookupByLibrary.simpleMessage(" "),
-    "timeago_years" : m57
+    "timeago_years" : m58
   };
 }
