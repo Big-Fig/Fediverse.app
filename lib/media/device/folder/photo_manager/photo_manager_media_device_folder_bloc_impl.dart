@@ -5,10 +5,10 @@ import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_devic
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/widgets.dart';
 
-class PhotoManagerFileGalleryFolderBloc extends MediaDeviceFolderBloc {
+class PhotoManagerMediaDeviceFolderBloc extends MediaDeviceFolderBloc {
   final PhotoManagerMediaDeviceFolder folder;
 
-  PhotoManagerFileGalleryFolderBloc({
+  PhotoManagerMediaDeviceFolderBloc({
     @required this.folder,
     @required IStoragePermissionBloc storagePermissionBloc,
   }) : super(storagePermissionBloc: storagePermissionBloc);
