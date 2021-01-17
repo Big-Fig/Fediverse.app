@@ -239,29 +239,51 @@ class EditCustomListBloc extends DisposableOwner
       var addedAccounts =
           editCustomListAccountListPaginationListBloc.addedItems;
 
+      // TODO: remove hack
+      // Pleroma issue: it is only possible to add one account in one request
       if (addedAccounts.isNotEmpty) {
-        await pleromaListService.addAccountsToList(
-          listRemoteId: listRemoteId,
-          accountIds: addedAccounts
-              .map(
-                (account) => account.remoteId,
-              )
-              .toList(),
-        );
+        for (var addedAccount in addedAccounts) {
+          await pleromaListService.addAccountsToList(
+            listRemoteId: listRemoteId,
+            accountIds: [
+              addedAccount.remoteId,
+            ],
+          );
+        }
+        // await pleromaListService.addAccountsToList(
+        //   listRemoteId: listRemoteId,
+        //   accountIds: addedAccounts
+        //       .map(
+        //         (account) => account.remoteId,
+        //       )
+        //       .toList(),
+        // );
       }
 
       var removedAccounts =
           editCustomListAccountListPaginationListBloc.removedItems;
 
       if (removedAccounts.isNotEmpty) {
-        await pleromaListService.removeAccountsFromList(
-          listRemoteId: listRemoteId,
-          accountIds: removedAccounts
-              .map(
-                (account) => account.remoteId,
-              )
-              .toList(),
-        );
+
+        // TODO: remove hack
+        // Pleroma issue: it is only possible to remove one account in one request
+        for (var removedAccount in removedAccounts) {
+          await pleromaListService.removeAccountsFromList(
+            listRemoteId: listRemoteId,
+            accountIds: [
+              removedAccount.remoteId,
+            ],
+          );
+        }
+
+        // await pleromaListService.removeAccountsFromList(
+        //   listRemoteId: listRemoteId,
+        //   accountIds: removedAccounts
+        //       .map(
+        //         (account) => account.remoteId,
+        //       )
+        //       .toList(),
+        // );
       }
 
       await editCustomListAccountListPaginationListBloc
