@@ -58,7 +58,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
     await oldFolderData?.dispose();
 
-    var folderBloc = PhotoManagerFileGalleryFolderBloc(
+    var folderBloc = PhotoManagerMediaDeviceFolderBloc(
       storagePermissionBloc: storagePermissionBloc,
       folder: folder,
     );
