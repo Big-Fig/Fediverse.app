@@ -48,7 +48,7 @@ class EditCustomListWidget extends StatelessWidget {
             padding: FediPadding.allBigPadding,
             child: const _EditCustomListDeleteButton(),
           ),
-        _EditCustomListAccountDescriptionWidget(),
+        const _EditCustomListAccountDescriptionWidget(),
         Expanded(
           child: const _EditCustomListBodyWidget(),
         ),

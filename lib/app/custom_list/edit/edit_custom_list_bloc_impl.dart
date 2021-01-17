@@ -151,7 +151,7 @@ class EditCustomListBloc extends DisposableOwner
             excludeMyAccount: true,
             customEmptySearchRemoteAccountListLoader: null,
             customEmptySearchLocalAccountListLoader: null,
-            followingsOnly: false),
+            followingsOnly: true),
         customListFormBloc =
             CustomListFormBloc(initialTitleValue: customList?.title) {
     customListAccountListNetworkOnlyListBloc =
@@ -242,7 +242,11 @@ class EditCustomListBloc extends DisposableOwner
       if (addedAccounts.isNotEmpty) {
         await pleromaListService.addAccountsToList(
           listRemoteId: listRemoteId,
-          accountIds: addedAccounts.map((account) => account.remoteId).toList(),
+          accountIds: addedAccounts
+              .map(
+                (account) => account.remoteId,
+              )
+              .toList(),
         );
       }
 
@@ -252,8 +256,11 @@ class EditCustomListBloc extends DisposableOwner
       if (removedAccounts.isNotEmpty) {
         await pleromaListService.removeAccountsFromList(
           listRemoteId: listRemoteId,
-          accountIds:
-              removedAccounts.map((account) => account.remoteId).toList(),
+          accountIds: removedAccounts
+              .map(
+                (account) => account.remoteId,
+              )
+              .toList(),
         );
       }
 
