@@ -197,7 +197,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       other is PleromaScheduledStatusParams &&
           runtimeType == other.runtimeType &&
           text == other.text &&
-          mediaIds == other.mediaIds &&
+          eq(mediaIds, other.mediaIds) &&
           sensitive == other.sensitive &&
           spoilerText == other.spoilerText &&
           visibility == other.visibility &&
