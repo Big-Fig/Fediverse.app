@@ -357,7 +357,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_auth_instance_register_field_locale_label" : MessageLookupByLibrary.simpleMessage("Locale"),
     "app_auth_instance_register_field_password_hint" : MessageLookupByLibrary.simpleMessage("Password"),
     "app_auth_instance_register_field_password_label" : MessageLookupByLibrary.simpleMessage("Password*"),
-    "app_auth_instance_register_field_reason_hint" : MessageLookupByLibrary.simpleMessage("Will be reviewed by moderators during manual approval"),
+    "app_auth_instance_register_field_reason_hint" : MessageLookupByLibrary.simpleMessage("Will be reviewed by moderators"),
     "app_auth_instance_register_field_reason_label" : MessageLookupByLibrary.simpleMessage("Reason (optional)"),
     "app_auth_instance_register_field_username_hint" : MessageLookupByLibrary.simpleMessage("lain"),
     "app_auth_instance_register_field_username_label" : MessageLookupByLibrary.simpleMessage("Username*"),

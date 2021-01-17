@@ -357,7 +357,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_auth_instance_register_field_locale_label" : MessageLookupByLibrary.simpleMessage("Язык"),
     "app_auth_instance_register_field_password_hint" : MessageLookupByLibrary.simpleMessage("Пароль"),
     "app_auth_instance_register_field_password_label" : MessageLookupByLibrary.simpleMessage("Пароль*"),
-    "app_auth_instance_register_field_reason_hint" : MessageLookupByLibrary.simpleMessage("Будет проверено модераторами во время ручного утверждения"),
+    "app_auth_instance_register_field_reason_hint" : MessageLookupByLibrary.simpleMessage("Будет проверено модераторами"),
     "app_auth_instance_register_field_reason_label" : MessageLookupByLibrary.simpleMessage("Причина (необязательно)"),
     "app_auth_instance_register_field_username_hint" : MessageLookupByLibrary.simpleMessage("lain"),
     "app_auth_instance_register_field_username_label" : MessageLookupByLibrary.simpleMessage("Никнейм*"),

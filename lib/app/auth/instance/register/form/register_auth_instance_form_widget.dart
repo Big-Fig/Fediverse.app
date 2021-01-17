@@ -129,7 +129,7 @@ class _RegisterAuthInstanceFormReasonFieldWidget extends StatelessWidget {
       context: context,
       formStringFieldBloc: registerAuthInstanceBloc.reasonFieldBloc,
       labelText: S.of(context).app_auth_instance_register_field_reason_label,
-      hintText: S.of(context).app_auth_instance_register_field_reason_label,
+      hintText: S.of(context).app_auth_instance_register_field_reason_hint,
       autocorrect: false,
       nextFormStringFieldBloc: null,
       obscureText: false,
