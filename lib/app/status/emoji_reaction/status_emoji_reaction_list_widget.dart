@@ -39,15 +39,16 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                 IStatusEmojiReactionBloc>(
                               update: (context, value, previous) =>
                                   StatusEmojiReactionBloc(
-                                      status: statusBloc.status,
-                                      statusRepository: IStatusRepository.of(
-                                          context,
-                                          listen: false),
-                                      emojiReaction: value,
-                                      pleromaStatusEmojiReactionService:
-                                          IPleromaStatusEmojiReactionService.of(
-                                              context,
-                                              listen: false)),
+                                status: statusBloc.status,
+                                statusRepository: IStatusRepository.of(context,
+                                    listen: false),
+                                emojiReaction: value,
+                                pleromaStatusEmojiReactionService:
+                                    IPleromaStatusEmojiReactionService.of(
+                                  context,
+                                  listen: false,
+                                ),
+                              ),
                               child: const StatusEmojiReactionListItemWidget(),
                             ),
                           ))

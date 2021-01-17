@@ -49,11 +49,7 @@ class _StatusEmojiReactionListItemBodyWidget extends StatelessWidget {
               const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
           child: InkWell(
             onTap: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: FediSizes.mediumPadding),
-              child: const _StatusEmojiReactionListItemContentWidget(),
-            ),
+            child: const _StatusEmojiReactionListItemContentWidget(),
           ),
         );
       },
