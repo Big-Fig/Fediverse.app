@@ -108,7 +108,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxLength: null,
         ),
         noteField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.note,
+          originValue: myAccountBloc.noteUnescaped,
           validators: [],
           maxLength: noteMaxLength,
         ),
