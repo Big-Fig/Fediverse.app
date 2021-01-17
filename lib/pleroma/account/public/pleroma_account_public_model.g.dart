@@ -22,15 +22,23 @@ PleromaAccountRegisterRequest _$PleromaAccountRegisterRequestFromJson(
 }
 
 Map<String, dynamic> _$PleromaAccountRegisterRequestToJson(
-        PleromaAccountRegisterRequest instance) =>
-    <String, dynamic>{
-      'agreement': instance.agreement,
-      'email': instance.email,
-      'locale': instance.locale,
-      'password': instance.password,
-      'reason': instance.reason,
-      'username': instance.username,
-      'captcha_token': instance.captchaToken,
-      'captcha_answer_data': instance.captchaAnswerData,
-      'captcha_solution': instance.captchaSolution,
-    };
+    PleromaAccountRegisterRequest instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('agreement', instance.agreement);
+  writeNotNull('email', instance.email);
+  writeNotNull('locale', instance.locale);
+  writeNotNull('password', instance.password);
+  writeNotNull('reason', instance.reason);
+  writeNotNull('username', instance.username);
+  writeNotNull('captcha_token', instance.captchaToken);
+  writeNotNull('captcha_answer_data', instance.captchaAnswerData);
+  writeNotNull('captcha_solution', instance.captchaSolution);
+  return val;
+}

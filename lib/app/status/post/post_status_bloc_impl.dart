@@ -63,10 +63,14 @@ abstract class PostStatusBloc extends PostMessageBloc
     nsfwSensitiveSubject =
         BehaviorSubject.seeded(initialData.isNsfwSensitiveEnabled);
 
-    addDisposable(streamSubscription:
-        mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
-      _regenerateIdempotencyKey();
-    }));
+    addDisposable(
+      streamSubscription:
+          mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+        (_) {
+          _regenerateIdempotencyKey();
+        },
+      ),
+    );
 
     pollBloc = PostStatusPollBloc(
       pollLimits: pleromaInstancePollLimits,
@@ -169,6 +173,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     inReplyToConversationId: null,
     isNsfwSensitiveEnabled: false,
     to: null,
+    language: null,
   );
 
   void onFocusChange(bool hasFocus) {
@@ -421,18 +426,20 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
-        data: PleromaPostStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
-      to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-    ));
+      data: PleromaPostStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        idempotencyKey: idempotencyKey,
+        to: calculateToField(),
+        poll: _calculatePleromaPostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        language: initialData.language,
+      ),
+    );
 
     var success;
     if (remoteStatus != null) {
@@ -566,11 +573,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   IPostStatusPoll _calculatePostStatusPoll() {
-
     var poll;
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
-        durationLength: pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
+        durationLength:
+            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
@@ -656,6 +663,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         ),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+        language: initialData.language,
         to: calculateToField(),
       );
 

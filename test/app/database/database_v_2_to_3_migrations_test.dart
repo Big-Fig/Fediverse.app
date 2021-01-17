@@ -44,20 +44,25 @@ void main() {
     await draftStatusDao.clear();
     expect((await draftStatusDao.getAll().get()).isNotEmpty, false);
 
-    await draftStatusDao.insert(DbDraftStatus(
+    await draftStatusDao.insert(
+      DbDraftStatus(
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData(
-            subject: null,
-            text: null,
-            scheduledAt: null,
-            visibility: null,
-            to: null,
-            mediaAttachments: null,
-            poll: null,
-            inReplyToPleromaStatus: null,
-            inReplyToConversationId: null,
-            isNsfwSensitiveEnabled: null)));
+          subject: null,
+          text: null,
+          scheduledAt: null,
+          visibility: null,
+          to: null,
+          mediaAttachments: null,
+          poll: null,
+          inReplyToPleromaStatus: null,
+          inReplyToConversationId: null,
+          isNsfwSensitiveEnabled: null,
+          language: null,
+        ),
+      ),
+    );
 
     expect((await draftStatusDao.getAll().get()).isNotEmpty, true);
   });

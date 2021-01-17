@@ -151,6 +151,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
               ?.map((mediaAttachment) => mediaAttachment.id)
               ?.toList(),
           sensitive: postStatusData.isNsfwSensitiveEnabled,
+          language: postStatusData.language,
           spoilerText: postStatusData.subject,
           status: postStatusData.text,
           to: postStatusData.to,

@@ -18,6 +18,8 @@ abstract class IPostStatusData {
 
   String get visibility;
 
+  String get language;
+
   List<String> get to;
 
   List<IPleromaMediaAttachment> get mediaAttachments;
@@ -35,6 +37,7 @@ abstract class IPostStatusData {
     String text,
     DateTime scheduledAt,
     String visibility,
+    String language,
     String to,
     IPleromaMediaAttachment mediaAttachments,
     PleromaPostStatusPoll poll,
@@ -44,7 +47,7 @@ abstract class IPostStatusData {
   });
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class PostStatusData implements IPostStatusData {
   @override
   @JsonKey()
@@ -74,6 +77,10 @@ class PostStatusData implements IPostStatusData {
   @JsonKey(name: "is_nsfw_sensitive_enabled")
   final bool isNsfwSensitiveEnabled;
 
+  @override
+  @JsonKey()
+  final String language;
+
   const PostStatusData({
     @required this.subject,
     @required this.text,
@@ -85,10 +92,10 @@ class PostStatusData implements IPostStatusData {
     @required this.inReplyToPleromaStatus,
     @required this.inReplyToConversationId,
     @required this.isNsfwSensitiveEnabled,
+    @required this.language,
   });
 
-  PleromaVisibility get visibilityPleroma =>
-      visibility.toPleromaVisibility();
+  PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
 
   @override
   PostStatusData copyWith({
@@ -96,6 +103,7 @@ class PostStatusData implements IPostStatusData {
     String text,
     DateTime scheduledAt,
     String visibility,
+    String language,
     String to,
     IPleromaMediaAttachment mediaAttachments,
     IPleromaPostStatusPoll poll,
@@ -108,6 +116,7 @@ class PostStatusData implements IPostStatusData {
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         visibility: visibility ?? this.visibility,
+        language: language ?? this.language,
         to: to ?? this.to,
         mediaAttachments: mediaAttachments ?? this.mediaAttachments,
         poll: poll ?? this.poll,
@@ -118,7 +127,6 @@ class PostStatusData implements IPostStatusData {
         isNsfwSensitiveEnabled:
             isNsfwSensitiveEnabled ?? this.isNsfwSensitiveEnabled,
       );
-
 
   @override
   bool operator ==(Object other) =>
@@ -134,7 +142,8 @@ class PostStatusData implements IPostStatusData {
           poll == other.poll &&
           inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
-          isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled;
+          isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled &&
+          language == other.language;
 
   @override
   int get hashCode =>
@@ -147,7 +156,8 @@ class PostStatusData implements IPostStatusData {
       poll.hashCode ^
       inReplyToPleromaStatus.hashCode ^
       inReplyToConversationId.hashCode ^
-      isNsfwSensitiveEnabled.hashCode;
+      isNsfwSensitiveEnabled.hashCode ^
+      language.hashCode;
 
   @override
   String toString() => 'PostStatusData{subject: $subject, text: $text,'
@@ -156,6 +166,7 @@ class PostStatusData implements IPostStatusData {
       ' inReplyToStatus: $inReplyToPleromaStatus,'
       ' inReplyToConversationId: $inReplyToConversationId,'
       ' to: $to,'
+      ' language: $language,'
       ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
 
   factory PostStatusData.fromJson(Map<String, dynamic> json) =>

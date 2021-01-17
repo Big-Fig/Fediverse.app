@@ -268,6 +268,7 @@ class ScheduledStatusBloc extends DisposableOwner
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       // actually to should be extracted fro
       to: null,
+      language: scheduledStatus.params?.language,
     );
   }
 }
