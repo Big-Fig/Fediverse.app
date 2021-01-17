@@ -38,7 +38,7 @@ class EditWebSocketsSettingsBloc
       isEnabled: isEnabled,
     );
     addDisposable(disposable: typeFieldBloc);
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

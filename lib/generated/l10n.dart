@@ -55,11 +55,11 @@ class S {
     );
   }
 
-  /// `System`
-  String get localization_locale_system {
+  /// `Default`
+  String get localization_locale_default {
     return Intl.message(
-      'System',
-      name: 'localization_locale_system',
+      'Default',
+      name: 'localization_locale_default',
       desc: '',
       args: [],
     );
@@ -6057,6 +6057,116 @@ class S {
     return Intl.message(
       'Ignore broken threads',
       name: 'app_account_my_edit_field_pleroma_skipThreadContainment_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept Terms of Service`
+  String get app_auth_instance_register_field_acceptTermsOfService_label {
+    return Intl.message(
+      'Accept Terms of Service',
+      name: 'app_auth_instance_register_field_acceptTermsOfService_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locale`
+  String get app_auth_instance_register_field_locale_label {
+    return Intl.message(
+      'Locale',
+      name: 'app_auth_instance_register_field_locale_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{domain}`
+  String app_auth_instance_register_field_acceptTermsOfService_description(Object domain) {
+    return Intl.message(
+      '$domain',
+      name: 'app_auth_instance_register_field_acceptTermsOfService_description',
+      desc: '',
+      args: [domain],
+    );
+  }
+
+  /// `Default language for your statuses and confirmation email`
+  String get app_auth_instance_register_field_locale_description {
+    return Intl.message(
+      'Default language for your statuses and confirmation email',
+      name: 'app_auth_instance_register_field_locale_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Should be enabled`
+  String get form_field_bool_onlyTrue_error_desc {
+    return Intl.message(
+      'Should be enabled',
+      name: 'form_field_bool_onlyTrue_error_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success registration`
+  String get app_auth_instance_register_emailConfirmationRequired_notification_title {
+    return Intl.message(
+      'Success registration',
+      name: 'app_auth_instance_register_emailConfirmationRequired_notification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm email before login`
+  String get app_auth_instance_register_emailConfirmationRequired_notification_content {
+    return Intl.message(
+      'Please confirm email before login',
+      name: 'app_auth_instance_register_emailConfirmationRequired_notification_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success registration`
+  String get app_auth_instance_register_cantLogin_notification_title {
+    return Intl.message(
+      'Success registration',
+      name: 'app_auth_instance_register_cantLogin_notification_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error during login: {errorDescription}`
+  String app_auth_instance_register_cantLogin_notification_content(Object errorDescription) {
+    return Intl.message(
+      'Error during login: $errorDescription',
+      name: 'app_auth_instance_register_cantLogin_notification_content',
+      desc: '',
+      args: [errorDescription],
+    );
+  }
+
+  /// `Reason (optional)`
+  String get app_auth_instance_register_field_reason_label {
+    return Intl.message(
+      'Reason (optional)',
+      name: 'app_auth_instance_register_field_reason_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Will be reviewed by moderators during manual approval`
+  String get app_auth_instance_register_field_reason_hint {
+    return Intl.message(
+      'Will be reviewed by moderators during manual approval',
+      name: 'app_auth_instance_register_field_reason_hint',
       desc: '',
       args: [],
     );

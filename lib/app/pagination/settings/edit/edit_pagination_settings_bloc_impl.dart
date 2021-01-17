@@ -40,7 +40,7 @@ class EditPaginationSettingsBloc
 
     addDisposable(disposable: pageSizeFieldBloc);
 
-    onItemsChanged();
+    onFormItemsChanged();
   }
 
   @override

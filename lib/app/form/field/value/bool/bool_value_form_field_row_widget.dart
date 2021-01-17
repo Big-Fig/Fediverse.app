@@ -22,14 +22,14 @@ class BoolValueFormFieldRowWidget extends StatelessWidget {
         label: label,
         description: description,
         descriptionOnDisabled: descriptionOnDisabled,
-        valueChild: const _BoolValueFormFieldRowValueWidget(),
+        valueChild: const BoolValueFormFieldRowValueWidget(),
       ),
     );
   }
 }
 
-class _BoolValueFormFieldRowValueWidget extends StatelessWidget {
-  const _BoolValueFormFieldRowValueWidget({
+class BoolValueFormFieldRowValueWidget extends StatelessWidget {
+  const BoolValueFormFieldRowValueWidget({
     Key key,
   }) : super(key: key);
 

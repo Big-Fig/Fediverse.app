@@ -23,7 +23,7 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   }) {
     addDisposable(subject: itemsSubject);
     if (isAllItemsInitialized) {
-      onItemsChanged();
+      onFormItemsChanged();
     }
   }
 
@@ -35,7 +35,7 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
 
   List<IFormItemBloc> get currentItems;
 
-  void onItemsChanged() {
+  void onFormItemsChanged() {
     itemsSubject.add(currentItems);
   }
 

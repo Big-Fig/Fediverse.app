@@ -58,7 +58,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 padding: EdgeInsets.only(
                   top: FediSizes.bigPadding,
                 ),
-                child: const _JoinAuthInstanceTOSButtonWidget(),
+                child: const _JoinAuthInstanceTermsOfServiceButtonWidget(),
               ),
             ],
           ),
@@ -80,11 +80,11 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: _JoinAuthInstanceSignUpButtonWidget(),
+            child: const _JoinAuthInstanceSignUpButtonWidget(),
           ),
           Expanded(
             flex: 1,
-            child: __JoinAuthInstanceLoginButtonWidget(),
+            child: const _JoinAuthInstanceLoginButtonWidget(),
           ),
         ],
       ),
@@ -92,8 +92,8 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
   }
 }
 
-class __JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
-  const __JoinAuthInstanceLoginButtonWidget({
+class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
+  const _JoinAuthInstanceLoginButtonWidget({
     Key key,
   }) : super(key: key);
 
@@ -206,8 +206,8 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceTOSButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceTOSButtonWidget({
+class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
+  const _JoinAuthInstanceTermsOfServiceButtonWidget({
     Key key,
   }) : super(key: key);
 
@@ -298,15 +298,16 @@ Future signUpToInstance(BuildContext context) async {
         }
       ]);
   if (asyncDialogResult.success) {
-    goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri,
-        successRegistrationCallback: () {
-      if (!joinInstanceBloc.isFromScratch) {
-        // exit from join from scratch
-        Navigator.of(context).pop();
-        // exit from bottom modal dialog, todo: refactor
-        Navigator.of(context).pop();
-      }
-    });
+    var registrationResult = await goToRegisterAuthInstancePage(
+      context,
+      instanceBaseUrl: hostUri,
+    );
+    if (registrationResult != null && !joinInstanceBloc.isFromScratch) {
+      // exit from join from scratch
+      Navigator.of(context).pop();
+      // exit from bottom modal dialog, todo: refactor
+      Navigator.of(context).pop();
+    }
   }
 }
 
@@ -346,29 +347,30 @@ Future logInToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
   var dialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-          context: context,
-          contentMessage:
-              S.of(context).app_auth_instance_join_progress_dialog_content,
-          cancelable: true,
-          asyncCode: () async {
-            var hostUri = joinInstanceBloc.extractCurrentUri();
-            AuthHostBloc bloc;
-            try {
-              bloc = AuthHostBloc.createFromContext(context,
-                  instanceBaseUrl: hostUri);
-              var instance = await bloc.launchLoginToAccount();
+    context: context,
+    contentMessage:
+        S.of(context).app_auth_instance_join_progress_dialog_content,
+    cancelable: true,
+    asyncCode: () async {
+      var hostUri = joinInstanceBloc.extractCurrentUri();
+      AuthHostBloc bloc;
+      try {
+        bloc =
+            AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
+        var instance = await bloc.launchLoginToAccount();
 
-              return instance;
-            } finally {
-              await bloc?.dispose();
-            }
-          },
-          errorDataBuilders: [
-        (context, error, stackTrace) {
-          // todo: handle specific error
-          return createInstanceDeadErrorData(context, error, stackTrace);
-        }
-      ]);
+        return instance;
+      } finally {
+        await bloc?.dispose();
+      }
+    },
+    errorDataBuilders: [
+      (context, error, stackTrace) {
+        // todo: handle specific error
+        return createInstanceDeadErrorData(context, error, stackTrace);
+      }
+    ],
+  );
 
   if (dialogResult.result != null) {
     if (!joinInstanceBloc.isFromScratch) {

@@ -119,7 +119,7 @@ class EditToastSettingsBloc
       isEnabled: isEnabled,
     );
 
-    onItemsChanged();
+    onFormItemsChanged();
 
     addDisposable(disposable: favouriteFieldBloc);
     addDisposable(disposable: followFieldBloc);

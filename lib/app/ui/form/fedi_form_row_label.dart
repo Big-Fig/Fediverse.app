@@ -3,12 +3,16 @@ import 'package:flutter/cupertino.dart';
 
 class FediFormRowLabel extends StatelessWidget {
   final String text;
+  final TextStyle textStyle;
 
-  FediFormRowLabel(this.text);
+  FediFormRowLabel(
+    this.text, {
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) => Text(
-      text,
-      style: IFediUiTextTheme.of(context).bigTallMediumGrey,
-    );
+        text,
+        style: textStyle ?? IFediUiTextTheme.of(context).bigTallMediumGrey,
+      );
 }
