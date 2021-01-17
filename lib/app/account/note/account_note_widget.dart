@@ -28,7 +28,11 @@ class AccountNoteWidget extends StatelessWidget {
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+      padding: const EdgeInsets.only(
+        bottom: FediSizes.smallPadding,
+        left: FediSizes.bigPadding,
+        right: FediSizes.bigPadding,
+      ),
       child: StreamProvider.value(
         value: accountBloc.noteEmojiTextStream,
         child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
