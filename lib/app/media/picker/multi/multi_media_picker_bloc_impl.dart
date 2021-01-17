@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fedi/app/media/picker/media_picker_bloc_impl.dart';
 import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,19 +14,37 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   final BehaviorSubject<List<IMediaDeviceFileMetadata>>
       currentFilesMetadataSelectionSubject = BehaviorSubject.seeded([]);
   final StreamController<List<IMediaDeviceFile>>
-      acceptedFilesSelectionStreamController =
-      StreamController.broadcast();
+      acceptedFilesSelectionStreamController = StreamController.broadcast();
 
-  MultiMediaPickerBloc() {
-    addDisposable(subject: currentFilesMetadataSelectionSubject);
-    addDisposable(
-        streamController: acceptedFilesSelectionStreamController);
+  final int selectionCountLimit;
+
+  final StreamController<bool> selectionCountLimitReachedStreamController =
+      StreamController();
+
+  @override
+  bool get isSelectionCountLimitReached {
+    if (selectionCountLimit == null) {
+      return false;
+    } else {
+      return currentFilesMetadataSelectionCount >= selectionCountLimit;
+    }
   }
 
   @override
-  Stream<List<IMediaDeviceFile>>
-      get acceptedFilesSelectionStream =>
-          acceptedFilesSelectionStreamController.stream;
+  Stream<bool> get selectionCountLimitReachedStream =>
+      selectionCountLimitReachedStreamController.stream;
+
+  MultiMediaPickerBloc({
+    @required this.selectionCountLimit,
+  }) {
+    addDisposable(subject: currentFilesMetadataSelectionSubject);
+    addDisposable(streamController: acceptedFilesSelectionStreamController);
+    addDisposable(streamController: selectionCountLimitReachedStreamController);
+  }
+
+  @override
+  Stream<List<IMediaDeviceFile>> get acceptedFilesSelectionStream =>
+      acceptedFilesSelectionStreamController.stream;
 
   @override
   List<IMediaDeviceFileMetadata> get currentFilesMetadataSelection =>
@@ -53,12 +72,16 @@ class MultiMediaPickerBloc extends MediaPickerBloc
             .toList(),
       );
     } else {
-      currentFilesMetadataSelectionSubject.add(
-        [
-          ...currentFilesMetadataSelection,
-          mediaDeviceFileMetadata,
-        ],
-      );
+      if (isSelectionCountLimitReached) {
+        selectionCountLimitReachedStreamController.add(true);
+      } else {
+        currentFilesMetadataSelectionSubject.add(
+          [
+            ...currentFilesMetadataSelection,
+            mediaDeviceFileMetadata,
+          ],
+        );
+      }
     }
   }
 
@@ -67,11 +90,11 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     assert(isSomethingSelected);
     _logger.fine(
         () => "acceptSelectedFiles ${currentFilesMetadataSelection.length}");
-    var futures = currentFilesMetadataSelection.map((fileMetadata) => fileMetadata.loadMediaDeviceFile());
+    var futures = currentFilesMetadataSelection
+        .map((fileMetadata) => fileMetadata.loadMediaDeviceFile());
 
     var mediaFiles = await Future.wait(futures);
-    acceptedFilesSelectionStreamController
-        .add(mediaFiles);
+    acceptedFilesSelectionStreamController.add(mediaFiles);
     currentFilesMetadataSelectionSubject.add([]);
   }
 
@@ -102,9 +125,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       selectedFilesMetadata: currentFilesMetadataSelection,
       mediaDeviceFileMetadata: mediaDeviceFileMetadata,
     );
-    _logger.fine(() =>
-        "isFileMetadataSelected $selected "
-            "mediaDeviceFileMetadata = $mediaDeviceFileMetadata");
+    _logger.fine(() => "isFileMetadataSelected $selected "
+        "mediaDeviceFileMetadata = $mediaDeviceFileMetadata");
     return selected;
   }
 

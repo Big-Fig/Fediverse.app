@@ -206,6 +206,8 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget
       onTap: () async {
         var mediaDeviceFiles = await goToMultiMediaPickerPage(
           context,
+          selectionCountLimit:
+              attachmentsCollectionBloc.maximumMediaAttachmentCountLeft,
         );
 
         if (mediaDeviceFiles?.isNotEmpty == true) {

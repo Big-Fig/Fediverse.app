@@ -93,16 +93,36 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
               mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList());
 
   @override
-  bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
-      mediaAttachmentBlocs: mediaAttachmentBlocs,
-      maximumMediaAttachmentCount: maximumMediaAttachmentCount);
+  bool get isMaximumMediaAttachmentCountReached =>
+      calculateIsMaximumAttachmentReached(
+        mediaAttachmentBlocs: mediaAttachmentBlocs,
+        maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+      );
 
   @override
   Stream<bool> get isMaximumMediaAttachmentCountReachedStream =>
-      mediaAttachmentBlocsStream.map((mediaAttachmentBlocs) =>
-          isMaximumAttachmentReached(
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              maximumMediaAttachmentCount: maximumMediaAttachmentCount));
+      mediaAttachmentBlocsStream.map(
+        (mediaAttachmentBlocs) => calculateIsMaximumAttachmentReached(
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+        ),
+      );
+
+  @override
+  int get maximumMediaAttachmentCountLeft =>
+      calculateMaximumMediaAttachmentCountLeft(
+        mediaAttachmentBlocs: mediaAttachmentBlocs,
+        maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+      );
+
+  @override
+  Stream<int> get maximumMediaAttachmentCountLeftStream =>
+      mediaAttachmentBlocsStream.map(
+        (mediaAttachmentBlocs) => calculateMaximumMediaAttachmentCountLeft(
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+        ),
+      );
 
   @override
   bool get isPossibleToAttachMedia => !isMaximumMediaAttachmentCountReached;
@@ -137,7 +157,8 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
-    var futures = mediaDeviceFiles.map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
+    var futures =
+        mediaDeviceFiles.map((mediaDeviceFile) => attachMedia(mediaDeviceFile));
 
     await Future.wait(futures);
   }
@@ -162,10 +183,32 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         }
       }, orElse: () => null);
 
-  static bool isMaximumAttachmentReached(
-          {@required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-          @required int maximumMediaAttachmentCount}) =>
-      mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
+  static bool calculateIsMaximumAttachmentReached({
+    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+    @required int maximumMediaAttachmentCount,
+  }) {
+    var maximumMediaAttachmentCountLeft =
+        calculateMaximumMediaAttachmentCountLeft(
+      mediaAttachmentBlocs: mediaAttachmentBlocs,
+      maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+    );
+
+    if (maximumMediaAttachmentCountLeft == null) {
+      return false;
+    } else {
+      return maximumMediaAttachmentCountLeft <= 0;
+    }
+  }
+
+  static int calculateMaximumMediaAttachmentCountLeft({
+    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+    @required int maximumMediaAttachmentCount,
+  }) {
+    if (maximumMediaAttachmentCount == null) {
+      return null;
+    }
+    return maximumMediaAttachmentCount - mediaAttachmentBlocs.length;
+  }
 
   @override
   Future clear() async {
