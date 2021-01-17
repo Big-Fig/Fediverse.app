@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-17T10:14:45+00:00",
+    "@@last_modified": "2021-01-17T17:32:18+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -632,5 +632,5 @@
     "app_auth_instance_register_cantLogin_notification_title": "Успешная регистрация",
     "app_auth_instance_register_cantLogin_notification_content": "Ошибка при входе: {errorDescription}",
     "app_auth_instance_register_field_reason_label": "Причина (необязательно)",
-    "app_auth_instance_register_field_reason_hint": "Будет проверено модераторами во время ручного утверждения"
+    "app_auth_instance_register_field_reason_hint": "Будет проверено модераторами"
 }

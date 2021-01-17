@@ -6162,10 +6162,10 @@ class S {
     );
   }
 
-  /// `Will be reviewed by moderators during manual approval`
+  /// `Will be reviewed by moderators`
   String get app_auth_instance_register_field_reason_hint {
     return Intl.message(
-      'Will be reviewed by moderators during manual approval',
+      'Will be reviewed by moderators',
       name: 'app_auth_instance_register_field_reason_hint',
       desc: '',
       args: [],

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-17T10:14:28+00:00",
+    "@@last_modified": "2021-01-17T17:32:12+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -632,5 +632,5 @@
     "app_auth_instance_register_cantLogin_notification_title": "Success registration",
     "app_auth_instance_register_cantLogin_notification_content": "Error during login: {errorDescription}",
     "app_auth_instance_register_field_reason_label": "Reason (optional)",
-    "app_auth_instance_register_field_reason_hint": "Will be reviewed by moderators during manual approval"
+    "app_auth_instance_register_field_reason_hint": "Will be reviewed by moderators"
 }
