@@ -77,7 +77,7 @@ class PleromaAsyncOperationHelper {
         contentCreator: (context) => S
             .of(context)
             .app_async_pleroma_error_forbidden_dialog_content(
-                error.body),
+                error.decodedErrorDescriptionOrBody),
       );
     } else {
       return null;

@@ -318,7 +318,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       } catch (e, stackTrace) {
         _logger.warning(() => "error during registerAccount", e, stackTrace);
         if (e is PleromaRestException) {
-          if (e.decodedErrorDescription ==
+          if (e.decodedErrorDescriptionOrBody ==
               emailConfirmationRequiredDescription) {
             authInstanceFetchError =
                 const EmailConfirmationRequiredAuthHostException();
