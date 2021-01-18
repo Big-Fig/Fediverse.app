@@ -35,7 +35,9 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   int get localId => dbChatMessagePopulated.dbChatMessage.id;
 
   @override
-  IAccount get account => DbAccountWrapper(dbChatMessagePopulated.dbAccount);
+  IAccount get account => dbChatMessagePopulated.dbAccount != null
+      ? DbAccountWrapper(dbChatMessagePopulated.dbAccount)
+      : null;
 
   @override
   String get chatRemoteId => dbChatMessagePopulated.dbChatMessage.chatRemoteId;
