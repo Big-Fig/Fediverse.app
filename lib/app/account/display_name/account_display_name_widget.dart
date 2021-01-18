@@ -23,6 +23,10 @@ class AccountDisplayNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+    // hack to avoid non-fatal crashes during account switch
+    if(accountBloc == null) {
+      return const SizedBox.shrink();
+    }
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     var textStyle =
