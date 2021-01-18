@@ -158,7 +158,7 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
         // but isInitialized contains old true value
         if (isInitialized && videoMediaPlayerBloc.isInitialized) {
           return AspectRatio(
-            aspectRatio: videoMediaPlayerBloc.actualAspectRatio,
+            aspectRatio: videoMediaPlayerBloc.actualAspectRatio ?? 1.0,
             child: const _FediVideoPlayerInitializedWidget(),
           );
         } else {
