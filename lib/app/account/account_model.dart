@@ -230,7 +230,7 @@ class DbAccountWrapper implements IAccount {
   List<PleromaTag> get pleromaTags => dbAccount.pleromaTags;
 
   @override
-  String get remoteId => dbAccount.remoteId;
+  String get remoteId => dbAccount?.remoteId;
 
   @override
   int get statusesCount => dbAccount.statusesCount;
