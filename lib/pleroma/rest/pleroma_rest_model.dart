@@ -13,6 +13,8 @@ class PleromaRestException implements Exception {
 
   String decodedErrorDescription;
 
+  String get decodedErrorDescriptionOrBody => decodedErrorDescription ?? body;
+
   PleromaRestException({@required this.statusCode, @required this.body}) {
     try {
       var jsonBody = jsonDecode(body);
