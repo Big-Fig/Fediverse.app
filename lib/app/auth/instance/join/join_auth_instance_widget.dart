@@ -227,6 +227,10 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
               style: textStyle,
             ),
             TextSpan(
+              text: " ",
+              style: textStyle,
+            ),
+            TextSpan(
               text: S.of(context).app_auth_instance_join_action_tos_terms,
               style: textStyle.copyWith(
                 fontWeight: FontWeight.w500,
