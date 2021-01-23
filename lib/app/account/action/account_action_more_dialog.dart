@@ -6,6 +6,8 @@ import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
+import 'package:fedi/app/instance/details/home/home_instance_details_page.dart';
+import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -74,6 +76,7 @@ class AccountActionMoreDialog extends StatelessWidget {
                   if (currentInstance.isSubscribeToAccountFeatureSupported)
                     AccountActionMoreDialog.buildAccountSubscribeAction(
                         context),
+                  buildAccountInstanceInfoAction(context),
                 ],
           loadingActions: loadingActions,
           cancelable: cancelable,
@@ -136,6 +139,40 @@ class AccountActionMoreDialog extends StatelessWidget {
       onAction: (context) async {
         await accountBloc.toggleBlockDomain();
         Navigator.of(context).pop();
+      },
+    );
+  }
+
+  static DialogAction buildAccountInstanceInfoAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+
+    var isOnRemoteDomain = accountBloc.isOnRemoteDomain;
+    var remoteDomainOrNull = accountBloc.remoteDomainOrNull;
+    var currentInstanceUrlHost =
+        ICurrentAuthInstanceBloc.of(context, listen: false)
+            .currentInstance
+            .urlHost;
+
+
+
+    return DialogAction(
+      icon: FediIcons.instance,
+      label: S.of(context).app_account_action_instanceDetails(
+            isOnRemoteDomain ? remoteDomainOrNull : currentInstanceUrlHost,
+          ),
+      onAction: (context) async {
+        if (isOnRemoteDomain) {
+          // todo: https shouldn't be hardcoded
+          var remoteInstanceUri = Uri.parse(
+            "https://$remoteDomainOrNull",
+          );
+          goToRemoteInstanceDetailsPage(
+            context,
+            remoteInstanceUri: remoteInstanceUri,
+          );
+        } else {
+          goToHomeInstanceDetailsPage(context);
+        }
       },
     );
   }

@@ -2,12 +2,34 @@ import 'dart:convert';
 
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_instance_model.g.dart';
 
 abstract class IPleromaInstanceHistory extends IMastodonInstanceHistory {}
+
+enum PleromaInstanceVersionType { pleroma, mastodon, unknown }
+
+extension IPleromaInstanceExtension on IPleromaInstance {
+  static const pleromaVersionPart = "(compatible; Pleroma";
+
+  PleromaInstanceVersionType get versionType {
+    // todo: better type detection
+    if (version == null) {
+      return PleromaInstanceVersionType.unknown;
+    }
+    var containsPleroma = version.contains(pleromaVersionPart);
+    if (containsPleroma) {
+      return PleromaInstanceVersionType.pleroma;
+    } else {
+      return PleromaInstanceVersionType.mastodon;
+    }
+  }
+
+  bool get isPleroma => versionType == PleromaInstanceVersionType.pleroma;
+}
 
 @JsonSerializable()
 class PleromaInstanceHistory extends IPleromaInstanceHistory {
@@ -23,8 +45,12 @@ class PleromaInstanceHistory extends IPleromaInstanceHistory {
   @override
   final String week;
 
-  PleromaInstanceHistory(
-      {this.logins, this.registrations, this.statuses, this.week});
+  PleromaInstanceHistory({
+    @required this.logins,
+    @required this.registrations,
+    @required this.statuses,
+    @required this.week,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -101,19 +127,13 @@ class PleromaInstancePleromaPart {
   @HiveField(0)
   final PleromaInstancePleromaPartMetadata metadata;
 
-  @HiveField(1)
-  @JsonKey(name: "vapid_public_key")
-  final String vapidPublicKey;
-
   PleromaInstancePleromaPart({
-    this.metadata,
-    this.vapidPublicKey,
+    @required this.metadata,
   });
 
   @override
   String toString() {
-    return 'PleromaInstancePleromaPart{metadata: $metadata,'
-        ' vapidPublicKey: $vapidPublicKey}';
+    return 'PleromaInstancePleromaPart{metadata: $metadata}';
   }
 
   @override
@@ -121,11 +141,10 @@ class PleromaInstancePleromaPart {
       identical(this, other) ||
       other is PleromaInstancePleromaPart &&
           runtimeType == other.runtimeType &&
-          metadata == other.metadata &&
-          vapidPublicKey == other.vapidPublicKey;
+          metadata == other.metadata;
 
   @override
-  int get hashCode => metadata.hashCode ^ vapidPublicKey.hashCode;
+  int get hashCode => metadata.hashCode;
 
   factory PleromaInstancePleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaInstancePleromaPartFromJson(json);
@@ -163,10 +182,10 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
   final int valueLength;
 
   PleromaInstancePleromaPartMetadataFieldLimits({
-    this.maxFields,
-    this.maxRemoteFields,
-    this.nameLength,
-    this.valueLength,
+    @required this.maxFields,
+    @required this.maxRemoteFields,
+    @required this.nameLength,
+    @required this.valueLength,
   });
 
   factory PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
@@ -193,6 +212,134 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
+@HiveType(typeId: -32 + 98)
+class PleromaInstancePleromaPartMetadataFederationMfrObjectAge {
+  @HiveField(0)
+  final int threshold;
+  @HiveField(1)
+  final List<String> actions;
+
+  PleromaInstancePleromaPartMetadataFederationMfrObjectAge({
+    @required this.threshold,
+    @required this.actions,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataFederationMfrObjectAge &&
+          runtimeType == other.runtimeType &&
+          threshold == other.threshold &&
+          actions == other.actions;
+
+  @override
+  int get hashCode => threshold.hashCode ^ actions.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaInstancePleromaPartMetadataFederationMfrObjectAge{'
+        'threshold: $threshold, actions: $actions}';
+  }
+
+  factory PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
+          Map<String, dynamic> json) =>
+      _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(json);
+
+  factory PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJsonString(
+          String jsonString) =>
+      _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
+          jsonDecode(jsonString));
+
+  static List<PleromaInstancePleromaPartMetadataFederationMfrObjectAge>
+      listFromJsonString(String str) =>
+          List<PleromaInstancePleromaPartMetadataFederationMfrObjectAge>.from(
+              json.decode(str).map((x) =>
+                  PleromaInstancePleromaPartMetadataFederationMfrObjectAge
+                      .fromJson(x)));
+
+  Map<String, dynamic> toJson() =>
+      _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeToJson(this);
+
+  String toJsonString() => jsonEncode(
+      _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeToJson(this));
+}
+
+@JsonSerializable(explicitToJson: true)
+@HiveType(typeId: -32 + 99)
+class PleromaInstancePleromaPartMetadataFederation {
+  @HiveField(0)
+  final bool enabled;
+  @HiveField(1)
+  final bool exclusions;
+  @HiveField(2)
+  @JsonKey(name: "mrf_object_age")
+  final PleromaInstancePleromaPartMetadataFederationMfrObjectAge mrfObjectAge;
+  @HiveField(3)
+  @JsonKey(name: "mrf_policies")
+  final List<String> mrfPolicies;
+  @HiveField(4)
+  @JsonKey(name: "quarantined_instances")
+  final List<String> quarantinedInstances;
+
+  PleromaInstancePleromaPartMetadataFederation({
+    @required this.enabled,
+    @required this.exclusions,
+    @required this.mrfObjectAge,
+    @required this.mrfPolicies,
+    @required this.quarantinedInstances,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataFederation &&
+          runtimeType == other.runtimeType &&
+          enabled == other.enabled &&
+          exclusions == other.exclusions &&
+          mrfObjectAge == other.mrfObjectAge &&
+          mrfPolicies == other.mrfPolicies &&
+          quarantinedInstances == other.quarantinedInstances;
+
+  @override
+  int get hashCode =>
+      enabled.hashCode ^
+      exclusions.hashCode ^
+      mrfObjectAge.hashCode ^
+      mrfPolicies.hashCode ^
+      quarantinedInstances.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaInstancePleromaPartMetadataFederation{'
+        'enabled: $enabled, exclusions: $exclusions, '
+        'mrfObjectAge: $mrfObjectAge, mrfPolicies: $mrfPolicies,'
+        ' quarantinedInstances: $quarantinedInstances}';
+  }
+
+  factory PleromaInstancePleromaPartMetadataFederation.fromJson(
+          Map<String, dynamic> json) =>
+      _$PleromaInstancePleromaPartMetadataFederationFromJson(json);
+
+  factory PleromaInstancePleromaPartMetadataFederation.fromJsonString(
+          String jsonString) =>
+      _$PleromaInstancePleromaPartMetadataFederationFromJson(
+          jsonDecode(jsonString));
+
+  static List<PleromaInstancePleromaPartMetadataFederation> listFromJsonString(
+          String str) =>
+      List<PleromaInstancePleromaPartMetadataFederation>.from(json
+          .decode(str)
+          .map(
+              (x) => PleromaInstancePleromaPartMetadataFederation.fromJson(x)));
+
+  Map<String, dynamic> toJson() =>
+      _$PleromaInstancePleromaPartMetadataFederationToJson(this);
+
+  String toJsonString() =>
+      jsonEncode(_$PleromaInstancePleromaPartMetadataFederationToJson(this));
+}
+
+@JsonSerializable(explicitToJson: true)
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
@@ -202,25 +349,7 @@ class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
   final List<String> features;
   @HiveField(1)
-  final dynamic federation;
-
-  // "federation":{
-  //            "enabled":true,
-  //            "exclusions":false,
-  //            "mrf_object_age":{
-  //               "actions":[
-  //                  "delist",
-  //                  "strip_followers"
-  //               ],
-  //               "threshold":604800
-  //            },
-  //            "mrf_policies":[
-  //               "ObjectAgePolicy"
-  //            ],
-  //            "quarantined_instances":[
-  //
-  //            ]
-  //         },
+  final PleromaInstancePleromaPartMetadataFederation federation;
 
   @HiveField(2)
   @JsonKey(name: "post_formats")
@@ -232,12 +361,13 @@ class PleromaInstancePleromaPartMetadata {
   @JsonKey(name: "fields_limits")
   final PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
 
-  PleromaInstancePleromaPartMetadata(
-      {this.features,
-      this.federation,
-      this.postFormats,
-      this.accountActivationRequired,
-      this.fieldsLimits});
+  PleromaInstancePleromaPartMetadata({
+    @required this.features,
+    @required this.federation,
+    @required this.postFormats,
+    @required this.accountActivationRequired,
+    @required this.fieldsLimits,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -307,11 +437,12 @@ class PleromaInstancePollLimits {
   @JsonKey(name: "min_expiration")
   final int minExpiration;
 
-  PleromaInstancePollLimits(
-      {this.maxExpiration,
-      this.maxOptionChars,
-      this.maxOptions,
-      this.minExpiration});
+  PleromaInstancePollLimits({
+    @required this.maxExpiration,
+    @required this.maxOptionChars,
+    @required this.maxOptions,
+    @required this.minExpiration,
+  });
 
   factory PleromaInstancePollLimits.fromJson(Map<String, dynamic> json) =>
       _$PleromaInstancePollLimitsFromJson(json);
@@ -450,31 +581,31 @@ class PleromaInstance extends IPleromaInstance {
   final bool invitesEnabled;
 
   PleromaInstance({
-    this.approvalRequired,
-    this.avatarUploadLimit,
-    this.backgroundUploadLimit,
-    this.bannerUploadLimit,
-    this.contactAccount,
-    this.email,
-    this.languages,
-    this.maxTootChars,
-    this.pleroma,
-    this.pollLimits,
-    this.registrations,
-    this.shortDescription,
-    this.stats,
-    this.thumbnail,
-    this.title,
-    this.uploadLimit,
-    this.uri,
-    this.urls,
-    this.vapidPublicKey,
-    this.version,
-    this.backgroundImage,
-    this.chatLimit,
-    this.description,
-    this.descriptionLimit,
-    this.invitesEnabled,
+    @required this.approvalRequired,
+    @required this.avatarUploadLimit,
+    @required this.backgroundUploadLimit,
+    @required this.bannerUploadLimit,
+    @required this.contactAccount,
+    @required this.email,
+    @required this.languages,
+    @required this.maxTootChars,
+    @required this.pleroma,
+    @required this.pollLimits,
+    @required this.registrations,
+    @required this.shortDescription,
+    @required this.stats,
+    @required this.thumbnail,
+    @required this.title,
+    @required this.uploadLimit,
+    @required this.uri,
+    @required this.urls,
+    @required this.vapidPublicKey,
+    @required this.version,
+    @required this.backgroundImage,
+    @required this.chatLimit,
+    @required this.description,
+    @required this.descriptionLimit,
+    @required this.invitesEnabled,
   });
 
   @override

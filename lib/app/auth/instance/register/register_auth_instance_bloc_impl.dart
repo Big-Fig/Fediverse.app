@@ -23,7 +23,7 @@ import 'package:flutter/widgets.dart';
 
 class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     implements IRegisterAuthInstanceBloc {
-  final Uri instanceBaseUrl;
+  final Uri instanceBaseUri;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
@@ -42,16 +42,15 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
 
   RegisterAuthInstanceBloc({
-    @required this.instanceBaseUrl,
+    @required this.instanceBaseUri,
     @required this.localPreferencesService,
     @required this.connectionService,
     @required this.currentInstanceBloc,
     @required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     @required this.localizationSettingsBloc,
   }) : super() {
-    restService = RestService(baseUrl: instanceBaseUrl);
+    restService = RestService(baseUri: instanceBaseUri);
     pleromaRestService = PleromaRestService(
-      isPleromaInstance: false,
       connectionService: connectionService,
       restService: restService,
     );
@@ -80,7 +79,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     AuthHostBloc authApplicationBloc;
     try {
       authApplicationBloc = AuthHostBloc(
-        instanceBaseUrl: instanceBaseUrl,
+        instanceBaseUri: instanceBaseUri,
         isPleromaInstance: false,
         preferencesService: localPreferencesService,
         connectionService: connectionService,
@@ -124,7 +123,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
     registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
       pleromaCaptchaService: pleromaCaptchaService,
-      instanceBaseUrl: instanceBaseUrl,
+      instanceBaseUri: instanceBaseUri,
       localizationSettingsBloc: localizationSettingsBloc,
       approvalRequired: pleromaInstance.approvalRequired,
     );

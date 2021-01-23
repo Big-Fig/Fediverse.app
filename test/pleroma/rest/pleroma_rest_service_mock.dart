@@ -9,9 +9,7 @@ import 'package:http/src/response.dart';
 class PleromaRestServiceMock extends DisposableOwner
     implements IPleromaRestService {
   @override
-  final Uri baseUrl;
-  @override
-  final bool isPleromaInstance;
+  final Uri baseUri;
 
   Function(RestRequest request) sendHttpRequestMock;
   Function(UploadMultipartRestRequest request) uploadFileMultipartRequestMock;
@@ -20,8 +18,7 @@ class PleromaRestServiceMock extends DisposableOwner
   final Map<UploadMultipartRestRequest, Response> uploadRequestToResponse = {};
 
   PleromaRestServiceMock({
-    @required this.baseUrl,
-    @required this.isPleromaInstance,
+    @required this.baseUri,
   });
 
   @override

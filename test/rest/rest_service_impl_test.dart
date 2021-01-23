@@ -6,18 +6,18 @@ void main() {
   test('createUrl simple', () {
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com"), relativeUrlPath: "one"),
+            baseUri: Uri.parse("https://pleroma.com"), relativeUrlPath: "one"),
         Uri.parse("https://pleroma.com/one"));
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com/"), relativeUrlPath: "one"),
+            baseUri: Uri.parse("https://pleroma.com/"), relativeUrlPath: "one"),
         Uri.parse("https://pleroma.com/one"));
   });
 
   test('createUrl queryArgs single', () {
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com"),
+            baseUri: Uri.parse("https://pleroma.com"),
             relativeUrlPath: "one",
             queryArgs: [RestRequestQueryArg("arg1", "value1")]
             ),
@@ -26,7 +26,7 @@ void main() {
   test('createUrl queryArgs single and null', () {
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com"),
+            baseUri: Uri.parse("https://pleroma.com"),
             relativeUrlPath: "one",
             queryArgs: [
               RestRequestQueryArg("arg1", "value1"),
@@ -38,7 +38,7 @@ void main() {
   test('createUrl queryArgs two', () {
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com"),
+            baseUri: Uri.parse("https://pleroma.com"),
             relativeUrlPath: "one",
             queryArgs: [
               RestRequestQueryArg("arg1", "value1"),
@@ -49,7 +49,7 @@ void main() {
   test('createUrl query args array', () {
     expect(
         RestService.createUrl(
-            baseUrl: Uri.parse("https://pleroma.com"),
+            baseUri: Uri.parse("https://pleroma.com"),
             relativeUrlPath: "one",
             queryArgs: [
               RestRequestQueryArg("arg1", "value1"),

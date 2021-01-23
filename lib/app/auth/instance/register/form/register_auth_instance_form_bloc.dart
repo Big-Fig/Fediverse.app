@@ -12,7 +12,7 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
           {bool listen = true}) =>
       Provider.of<IRegisterAuthInstanceFormBloc>(context, listen: listen);
 
-  Uri get instanceBaseUrl;
+  Uri get instanceBaseUri;
 
   bool get approvalRequired;
 

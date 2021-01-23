@@ -260,7 +260,7 @@ Future signUpToInstance(BuildContext context) async {
             AuthHostBloc authHostBloc;
             authHostBloc = AuthHostBloc.createFromContext(
               context,
-              instanceBaseUrl: hostUri,
+              instanceBaseUri: hostUri,
             );
             await authHostBloc.checkApplicationRegistration();
             await authHostBloc.checkIsRegistrationsEnabled();
@@ -304,7 +304,7 @@ Future signUpToInstance(BuildContext context) async {
   if (asyncDialogResult.success) {
     var registrationResult = await goToRegisterAuthInstancePage(
       context,
-      instanceBaseUrl: hostUri,
+      instanceBaseUri: hostUri,
     );
     if (registrationResult != null && !joinInstanceBloc.isFromScratch) {
       // exit from join from scratch
@@ -359,8 +359,10 @@ Future logInToInstance(BuildContext context) async {
       var hostUri = joinInstanceBloc.extractCurrentUri();
       AuthHostBloc bloc;
       try {
-        bloc =
-            AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
+        bloc = AuthHostBloc.createFromContext(
+          context,
+          instanceBaseUri: hostUri,
+        );
         var instance = await bloc.launchLoginToAccount();
 
         return instance;

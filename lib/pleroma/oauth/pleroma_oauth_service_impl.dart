@@ -24,9 +24,6 @@ class PleromaOAuthService extends DisposableOwner
   final IPleromaRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
@@ -71,7 +68,7 @@ class PleromaOAuthService extends DisposableOwner
   Future<String> launchAuthorizeFormAndExtractAuthorizationCode(
       {@required PleromaOAuthAuthorizeRequest authorizeRequest}) async {
     _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
-    var host = restService.baseUrl;
+    var host = restService.baseUri;
     var baseUrl = join(oauthRelativeUrlPath, "authorize");
 
     var keyValueMap = authorizeRequest.toJson();

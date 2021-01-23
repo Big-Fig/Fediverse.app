@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -33,25 +34,25 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<PaginationListLoadingError> get loadMoreErrorStream =>
       loadMoreErrorStreamController.stream;
 
-  BehaviorSubject<PaginationListLoadingState> refreshStateSubject =
-      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
+  BehaviorSubject<FediListSmartRefresherLoadingState> refreshStateSubject =
+      BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
 
   @override
-  Stream<PaginationListLoadingState> get refreshStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get refreshStateStream =>
       refreshStateSubject.stream;
 
   @override
-  PaginationListLoadingState get refreshState => refreshStateSubject.value;
+  FediListSmartRefresherLoadingState get refreshState => refreshStateSubject.value;
 
-  BehaviorSubject<PaginationListLoadingState> loadMoreStateSubject =
-      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
+  BehaviorSubject<FediListSmartRefresherLoadingState> loadMoreStateSubject =
+      BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
 
   @override
-  Stream<PaginationListLoadingState> get loadMoreStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream =>
       loadMoreStateSubject.stream;
 
   @override
-  PaginationListLoadingState get loadMoreState => loadMoreStateSubject.value;
+  FediListSmartRefresherLoadingState get loadMoreState => loadMoreStateSubject.value;
 
   @override
   final RefreshController refreshController =
@@ -124,20 +125,20 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationBloc.loadedPagesSortedByIndexStream;
 
   @override
-  Future<PaginationListLoadingState> loadMoreWithoutController() async {
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() async {
     _logger.finest(() => "loadMoreWithoutController");
-    loadMoreStateSubject.add(PaginationListLoadingState.loading);
+    loadMoreStateSubject.add(FediListSmartRefresherLoadingState.loading);
 
     try {
-      PaginationListLoadingState state;
+      FediListSmartRefresherLoadingState state;
       var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
       var nextPage = await paginationBloc.requestPage(
           pageIndex: nextPageIndex, forceToSkipCache: true);
 
       if (nextPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+        state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        state = PaginationListLoadingState.noData;
+        state = FediListSmartRefresherLoadingState.noData;
       }
       loadMoreStateSubject.add(state);
 
@@ -145,7 +146,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
-        loadMoreStateSubject.add(PaginationListLoadingState.failed);
+        loadMoreStateSubject.add(FediListSmartRefresherLoadingState.failed);
       }
 
       if (!loadMoreErrorStreamController.isClosed) {
@@ -160,19 +161,19 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() async {
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
     _logger.finest(() => "refreshWithoutController");
     try {
-      PaginationListLoadingState state;
+      FediListSmartRefresherLoadingState state;
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(PaginationListLoadingState.loading);
+        refreshStateSubject.add(FediListSmartRefresherLoadingState.loading);
       }
       var newPage = await paginationBloc.refreshWithoutController();
 
       if (newPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+        state = FediListSmartRefresherLoadingState.loaded;
       } else {
-        state = PaginationListLoadingState.noData;
+        state = FediListSmartRefresherLoadingState.noData;
       }
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(state);
@@ -180,7 +181,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       return state;
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(PaginationListLoadingState.failed);
+        refreshStateSubject.add(FediListSmartRefresherLoadingState.failed);
       }
       if (!refreshErrorStreamController.isClosed) {
         refreshErrorStreamController

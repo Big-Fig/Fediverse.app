@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -202,9 +202,9 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() async {
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() async {
     var state = await super.refreshWithoutController();
-    if (state == PaginationListLoadingState.loaded) {
+    if (state == FediListSmartRefresherLoadingState.loaded) {
       clearNewItems();
     }
     return state;

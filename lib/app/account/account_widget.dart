@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 class AccountWidget extends StatelessWidget {
   final OnClickUiCallback onStatusesTapCallback;
   final Widget footer;
+  final bool displayActions;
 
   const AccountWidget({
     @required this.onStatusesTapCallback,
     @required this.footer,
+    this.displayActions = true,
   });
 
   @override
@@ -43,7 +45,8 @@ class AccountWidget extends StatelessWidget {
                 child: AccountInfoWidget(
                     onStatusesTapCallback: onStatusesTapCallback),
               ),
-              if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
+              if (!myAccountBloc.checkAccountIsMe(accountBloc.account) &&
+                  displayActions)
                 const AccountActionListWidget(),
               const _AccountNoteWidget(),
               const _AccountFieldListWidget(),

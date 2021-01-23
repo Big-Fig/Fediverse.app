@@ -109,5 +109,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PaginationSettingsAdapter());
     Hive.registerAdapter(DatabaseCacheSettingsAdapter());
     Hive.registerAdapter(FilesCacheSettingsAdapter());
+    Hive.registerAdapter(PleromaInstancePleromaPartMetadataFederationAdapter());
+    Hive.registerAdapter(PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter());
   }
 }

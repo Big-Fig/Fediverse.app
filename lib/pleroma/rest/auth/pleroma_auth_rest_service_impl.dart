@@ -13,17 +13,19 @@ class PleromaAuthRestService extends PleromaRestService
   static final authHeaderKey = "authorization";
   static final authHeaderValuePrefix = "Bearer";
 
+  @override
+  final bool isPleromaInstance;
+
   final String accessToken;
 
-  PleromaAuthRestService(
-      {@required IRestService restService,
-      @required IConnectionService connectionService,
-      @required bool isPleromaInstance,
-      @required this.accessToken})
-      : super(
+  PleromaAuthRestService({
+    @required IRestService restService,
+    @required IConnectionService connectionService,
+    @required this.isPleromaInstance,
+    @required this.accessToken,
+  }) : super(
           restService: restService,
           connectionService: connectionService,
-          isPleromaInstance: isPleromaInstance,
         );
 
   Map<String, String> createAuthHeaders() =>

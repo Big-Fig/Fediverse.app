@@ -26,14 +26,14 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
   @override
-  final Uri instanceBaseUrl;
+  final Uri instanceBaseUri;
 
   @override
   final bool approvalRequired;
 
   RegisterAuthInstanceFormBloc({
     @required IPleromaCaptchaService pleromaCaptchaService,
-    @required this.instanceBaseUrl,
+    @required this.instanceBaseUri,
     @required this.approvalRequired,
     @required this.localizationSettingsBloc,
   }) : super(isAllItemsInitialized: false) {

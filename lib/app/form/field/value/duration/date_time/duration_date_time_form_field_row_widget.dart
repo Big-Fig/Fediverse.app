@@ -1,4 +1,5 @@
 import 'package:fedi/app/duration/picker/date_time_duration_picker.dart';
+import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/form/fedi_form_field_row.dart';
@@ -128,30 +129,6 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
         );
       },
     );
-  }
-}
-
-String formatDuration({
-  @required BuildContext context,
-  @required Duration duration,
-}) {
-  var inDays = duration.inDays;
-
-  if (inDays > 0) {
-    return S.of(context).duration_day(inDays);
-  } else {
-    var inHours = duration.inHours;
-
-    if (inHours > 0) {
-      return S.of(context).duration_hour(inHours);
-    } else {
-      var inMinutes = duration.inMinutes;
-
-      if (inMinutes == 0) {
-        inMinutes = 1;
-      }
-      return S.of(context).duration_minute(inMinutes);
-    }
   }
 }
 

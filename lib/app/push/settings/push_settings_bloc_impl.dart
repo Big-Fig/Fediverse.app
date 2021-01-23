@@ -169,7 +169,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         subscription = await pleromaPushService.subscribe(
           endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
               account: currentInstance.acct,
-              baseServerUrl: currentInstance.url,
+              baseServerUrl: currentInstance.uri,
               fcmDeviceToken: deviceToken),
           data: PleromaPushSubscribeData(
             alerts: PleromaPushSettingsDataAlerts(

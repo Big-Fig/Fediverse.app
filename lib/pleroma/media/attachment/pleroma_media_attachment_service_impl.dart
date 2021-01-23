@@ -17,9 +17,6 @@ class PleromaMediaAttachmentService extends DisposableOwner
   PleromaMediaAttachmentService({@required this.restService});
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 

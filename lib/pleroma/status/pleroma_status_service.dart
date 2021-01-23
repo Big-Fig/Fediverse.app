@@ -6,7 +6,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaStatusService implements IPleromaApi {
+abstract class IPleromaStatusService implements IPleromaAuthApi {
   static IPleromaStatusService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaStatusService>(context, listen: listen);
 

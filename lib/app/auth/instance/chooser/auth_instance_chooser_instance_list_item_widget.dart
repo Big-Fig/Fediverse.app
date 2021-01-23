@@ -30,8 +30,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
                 const FediBigHorizontalSpacer(),
                 Flexible(
                   child:
-                      const
-                      _AuthInstanceChooserInstanceListItemAccountInfoWidget(),
+                      const _AuthInstanceChooserInstanceListItemAccountInfoWidget(),
                 ),
               ],
             ),
@@ -155,8 +154,10 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
             if (instanceListItemBloc.isSelected) {
               await Navigator.of(context).pop();
               await Navigator.of(context).pop();
-              var authHostBloc = AuthHostBloc.createFromContext(context,
-                  instanceBaseUrl: instanceListItemBloc.instance.url);
+              var authHostBloc = AuthHostBloc.createFromContext(
+                context,
+                instanceBaseUri: instanceListItemBloc.instance.uri,
+              );
               await authHostBloc.performAsyncInit();
               await authHostBloc.logout();
             } else {

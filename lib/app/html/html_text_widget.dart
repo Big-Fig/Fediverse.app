@@ -20,6 +20,7 @@ class HtmlTextWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    // TODO: add linkify support
     if (htmlData.isActuallyHaveHtmlInData) {
       return Html(
         data: htmlData.text,
@@ -60,10 +61,11 @@ class HtmlTextWidget extends StatelessWidget {
       var text = Text(
         htmlData.text,
         style: TextStyle(
-            color: settings.color,
-            fontSize: settings.fontSize,
-            fontWeight: settings.fontWeight,
-            height: settings.lineHeight),
+          color: settings.color,
+          fontSize: settings.fontSize,
+          fontWeight: settings.fontWeight,
+          height: settings.lineHeight,
+        ),
         textAlign: settings.textAlign,
         overflow: settings.textOverflow,
         maxLines: settings.textMaxLines,

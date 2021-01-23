@@ -11,13 +11,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaCaptchaService extends DisposableOwner implements IPleromaCaptchaService {
+class PleromaCaptchaService extends DisposableOwner
+    implements IPleromaCaptchaService {
   final captchaRelativeUrlPath = "/api/pleroma/captcha";
   @override
   final IPleromaRestService restService;
-
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>

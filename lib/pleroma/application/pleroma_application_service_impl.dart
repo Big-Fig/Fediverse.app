@@ -18,8 +18,6 @@ class PleromaApplicationService extends DisposableOwner implements IPleromaAppli
   @override
   final IPleromaRestService restService;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>

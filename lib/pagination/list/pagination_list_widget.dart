@@ -1,7 +1,7 @@
 import 'package:fedi/app/pagination/fedi_pagination_list_loading_error_notification_overlay_builder_widget.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +80,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     _logger.finest(() => "build "
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}");
 
-    if (paginationListBloc.refreshState != PaginationListLoadingState.loaded &&
+    if (paginationListBloc.refreshState != FediListSmartRefresherLoadingState.loaded &&
         refreshOnFirstLoad) {
       askToRefresh(context);
     }
@@ -148,8 +148,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
       final refreshState = paginationListBloc.refreshState;
       _logger.finest(() => "askToRefresh refreshState $refreshState");
-      if (refreshState != PaginationListLoadingState.loading &&
-          refreshState != PaginationListLoadingState.loaded) {
+      if (refreshState != FediListSmartRefresherLoadingState.loading &&
+          refreshState != FediListSmartRefresherLoadingState.loaded) {
         paginationListBloc.refreshWithController();
       }
     });

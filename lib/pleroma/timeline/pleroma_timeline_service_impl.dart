@@ -15,14 +15,11 @@ import 'package:path/path.dart';
 class PleromaTimelineService extends DisposableOwner
     implements IPleromaTimelineService {
   @override
-  Uri get baseUrl => restService.baseUrl;
+  Uri get baseUrl => restService.baseUri;
 
   final timelineRelativeUrlPath = "/api/v1/timelines/";
   @override
   final IPleromaAuthRestService restService;
-
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>

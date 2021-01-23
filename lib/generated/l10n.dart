@@ -6211,6 +6211,516 @@ class S {
       args: [selectionCountLimit],
     );
   }
+
+  /// `Instance: {instanceDomain}`
+  String app_instance_detials_title(Object instanceDomain) {
+    return Intl.message(
+      'Instance: $instanceDomain',
+      name: 'app_instance_detials_title',
+      desc: '',
+      args: [instanceDomain],
+    );
+  }
+
+  /// `Instance: {instanceDomain}`
+  String app_account_action_instanceDetails(Object instanceDomain) {
+    return Intl.message(
+      'Instance: $instanceDomain',
+      name: 'app_account_action_instanceDetails',
+      desc: '',
+      args: [instanceDomain],
+    );
+  }
+
+  /// `Email`
+  String get app_instance_details_field_email_label {
+    return Intl.message(
+      'Email',
+      name: 'app_instance_details_field_email_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version`
+  String get app_instance_details_field_version_label {
+    return Intl.message(
+      'Version',
+      name: 'app_instance_details_field_version_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistic`
+  String get app_instance_details_field_stats_title {
+    return Intl.message(
+      'Statistic',
+      name: 'app_instance_details_field_stats_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Federation domains`
+  String get app_instance_details_field_stats_domainCount_label {
+    return Intl.message(
+      'Federation domains',
+      name: 'app_instance_details_field_stats_domainCount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statuses`
+  String get app_instance_details_field_stats_statusCount_label {
+    return Intl.message(
+      'Statuses',
+      name: 'app_instance_details_field_stats_statusCount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get app_instance_details_field_stats_userCount_label {
+    return Intl.message(
+      'Users',
+      name: 'app_instance_details_field_stats_userCount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Languages`
+  String get app_instance_details_field_languages_label {
+    return Intl.message(
+      'Languages',
+      name: 'app_instance_details_field_languages_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registrations enabled`
+  String get app_instance_details_field_registrations_label {
+    return Intl.message(
+      'Registrations enabled',
+      name: 'app_instance_details_field_registrations_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Approval required`
+  String get app_instance_details_field_approvalRequired_label {
+    return Intl.message(
+      'Approval required',
+      name: 'app_instance_details_field_approvalRequired_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invites Enabled`
+  String get app_instance_details_field_invitesEnabled_label {
+    return Intl.message(
+      'Invites Enabled',
+      name: 'app_instance_details_field_invitesEnabled_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get app_instance_details_field_contactAccount_label {
+    return Intl.message(
+      'Contact',
+      name: 'app_instance_details_field_contactAccount_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max status length`
+  String get app_instance_details_field_maxTootChars_label {
+    return Intl.message(
+      'Max status length',
+      name: 'app_instance_details_field_maxTootChars_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max chat message length`
+  String get app_instance_details_field_chatLimit_label {
+    return Intl.message(
+      'Max chat message length',
+      name: 'app_instance_details_field_chatLimit_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max media description length`
+  String get app_instance_details_field_imageDescriptionLimit_label {
+    return Intl.message(
+      'Max media description length',
+      name: 'app_instance_details_field_imageDescriptionLimit_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poll limits`
+  String get app_instance_details_field_pollLimit_title {
+    return Intl.message(
+      'Poll limits',
+      name: 'app_instance_details_field_pollLimit_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Min expiration`
+  String get app_instance_details_field_pollLimit_minExpiration_label {
+    return Intl.message(
+      'Min expiration',
+      name: 'app_instance_details_field_pollLimit_minExpiration_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max expiration`
+  String get app_instance_details_field_pollLimit_maxExpiration_label {
+    return Intl.message(
+      'Max expiration',
+      name: 'app_instance_details_field_pollLimit_maxExpiration_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max options length`
+  String get app_instance_details_field_pollLimit_maxOptionsChars_label {
+    return Intl.message(
+      'Max options length',
+      name: 'app_instance_details_field_pollLimit_maxOptionsChars_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max options count`
+  String get app_instance_details_field_pollLimit_maxOptions_label {
+    return Intl.message(
+      'Max options count',
+      name: 'app_instance_details_field_pollLimit_maxOptions_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload media limit`
+  String get app_instance_details_field_uploadMedia_label {
+    return Intl.message(
+      'Upload media limit',
+      name: 'app_instance_details_field_uploadMedia_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload avatar limit`
+  String get app_instance_details_field_uploadAvatar_label {
+    return Intl.message(
+      'Upload avatar limit',
+      name: 'app_instance_details_field_uploadAvatar_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload banner limit`
+  String get app_instance_details_field_uploadBanner_label {
+    return Intl.message(
+      'Upload banner limit',
+      name: 'app_instance_details_field_uploadBanner_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload background limit`
+  String get app_instance_details_field_uploadBackground_label {
+    return Intl.message(
+      'Upload background limit',
+      name: 'app_instance_details_field_uploadBackground_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vapid public key`
+  String get app_instance_details_field_vapidPublicKey_label {
+    return Intl.message(
+      'Vapid public key',
+      name: 'app_instance_details_field_vapidPublicKey_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Features`
+  String get app_instance_details_field_pleroma_metadata_features_label {
+    return Intl.message(
+      'Features',
+      name: 'app_instance_details_field_pleroma_metadata_features_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fields limit`
+  String get app_instance_details_field_pleroma_metadata_fields_title {
+    return Intl.message(
+      'Fields limit',
+      name: 'app_instance_details_field_pleroma_metadata_fields_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max fields count`
+  String get app_instance_details_field_pleroma_metadata_fields_maxFields_label {
+    return Intl.message(
+      'Max fields count',
+      name: 'app_instance_details_field_pleroma_metadata_fields_maxFields_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max remote fields count`
+  String get app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label {
+    return Intl.message(
+      'Max remote fields count',
+      name: 'app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max name length`
+  String get app_instance_details_field_pleroma_metadata_fields_nameLength_label {
+    return Intl.message(
+      'Max name length',
+      name: 'app_instance_details_field_pleroma_metadata_fields_nameLength_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max value length`
+  String get app_instance_details_field_pleroma_metadata_fields_valueLength_label {
+    return Intl.message(
+      'Max value length',
+      name: 'app_instance_details_field_pleroma_metadata_fields_valueLength_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `True`
+  String get app_instance_details_value_bool_true {
+    return Intl.message(
+      'True',
+      name: 'app_instance_details_value_bool_true',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `False`
+  String get app_instance_details_value_bool_false {
+    return Intl.message(
+      'False',
+      name: 'app_instance_details_value_bool_false',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mastodon`
+  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon {
+    return Intl.message(
+      'Mastodon',
+      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pleroma`
+  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma {
+    return Intl.message(
+      'Pleroma',
+      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown {
+    return Intl.message(
+      'Unknown',
+      name: 'app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post formats`
+  String get app_instance_details_field_pleroma_metadata_fields_postFormats_label {
+    return Intl.message(
+      'Post formats',
+      name: 'app_instance_details_field_pleroma_metadata_fields_postFormats_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registration limits`
+  String get app_instance_details_field_registrationsLimits_title {
+    return Intl.message(
+      'Registration limits',
+      name: 'app_instance_details_field_registrationsLimits_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get app_instance_details_field_details_title {
+    return Intl.message(
+      'Details',
+      name: 'app_instance_details_field_details_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload limits`
+  String get app_instance_details_field_uploadLimits_title {
+    return Intl.message(
+      'Upload limits',
+      name: 'app_instance_details_field_uploadLimits_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Messages limits`
+  String get app_instance_details_field_messagesLimits_title {
+    return Intl.message(
+      'Messages limits',
+      name: 'app_instance_details_field_messagesLimits_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Metadata`
+  String get app_instance_details_field_metadata_title {
+    return Intl.message(
+      'Metadata',
+      name: 'app_instance_details_field_metadata_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Federation`
+  String get app_instance_details_field_federation_title {
+    return Intl.message(
+      'Federation',
+      name: 'app_instance_details_field_federation_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enabled`
+  String get app_instance_details_field_federation_enabled_label {
+    return Intl.message(
+      'Enabled',
+      name: 'app_instance_details_field_federation_enabled_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exclusions`
+  String get app_instance_details_field_federation_exclusions_label {
+    return Intl.message(
+      'Exclusions',
+      name: 'app_instance_details_field_federation_exclusions_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MFR Policies`
+  String get app_instance_details_field_federation_mrfPolicies_label {
+    return Intl.message(
+      'MFR Policies',
+      name: 'app_instance_details_field_federation_mrfPolicies_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quarantined Instances`
+  String get app_instance_details_field_federation_quarantinedInstances_label {
+    return Intl.message(
+      'Quarantined Instances',
+      name: 'app_instance_details_field_federation_quarantinedInstances_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MFR Object Age Threshold`
+  String get app_instance_details_field_federation_mrfObjectAge_threshold_label {
+    return Intl.message(
+      'MFR Object Age Threshold',
+      name: 'app_instance_details_field_federation_mrfObjectAge_threshold_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MFR Object Age Actions`
+  String get app_instance_details_field_federation_mrfObjectAge_actions_label {
+    return Intl.message(
+      'MFR Object Age Actions',
+      name: 'app_instance_details_field_federation_mrfObjectAge_actions_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{sizeInMb} MB`
+  String app_instance_details_value_sizeInMb(Object sizeInMb) {
+    return Intl.message(
+      '$sizeInMb MB',
+      name: 'app_instance_details_value_sizeInMb',
+      desc: '',
+      args: [sizeInMb],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

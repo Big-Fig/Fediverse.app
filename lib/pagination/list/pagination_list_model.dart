@@ -1,10 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-enum PaginationListLoadingState { initialized, loading, failed, loaded, noData }
-
-class CantUpdateFromNetworkException implements Exception {
-  
-}
+class CantUpdateFromNetworkException implements Exception {}
 
 class PaginationListLoadingError {
   final dynamic error;

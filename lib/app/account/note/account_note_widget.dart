@@ -53,13 +53,16 @@ class AccountNoteWidget extends StatelessWidget {
                 textMaxLines: null,
                 textScaleFactor: textScaleFactor,
                 drawNewLines: true,
-                textOverflow: TextOverflow.ellipsis,
+                textOverflow: null,
               ),
             );
-            htmlTextBloc.addDisposable(streamSubscription:
-                htmlTextBloc.linkClickedStream.listen((url) {
-              _onLinkClick(url, noteEmojiText, context);
-            }));
+            htmlTextBloc.addDisposable(
+              streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                (url) {
+                  _onLinkClick(url, noteEmojiText, context);
+                },
+              ),
+            );
             return htmlTextBloc;
           },
           child: const HtmlTextWidget(),

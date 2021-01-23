@@ -38,9 +38,11 @@ class RestService extends DisposableOwner implements IRestService {
   Stream<RestHttpError> get lastErrorStream => _lastErrorSubject.stream;
 
   @override
-  final Uri baseUrl;
+  final Uri baseUri;
 
-  RestService({@required this.baseUrl});
+  RestService({
+    @required this.baseUri,
+  });
 
   @override
   Future<http.Response> sendHttpRequest<T extends RestRequest, K>(
@@ -48,7 +50,7 @@ class RestService extends DisposableOwner implements IRestService {
     assert(request.relativeUrlPath != null);
     assert(request.type != null);
     var url = createUrl(
-        baseUrl: baseUrl,
+        baseUri: baseUri,
         relativeUrlPath: request.relativeUrlPath,
         queryArgs: request.queryArgs);
 
@@ -140,11 +142,12 @@ class RestService extends DisposableOwner implements IRestService {
     return response;
   }
 
-  static Uri createUrl(
-      {@required Uri baseUrl,
-      @required String relativeUrlPath,
-      List<RestRequestQueryArg> queryArgs}) {
-    var urlWithoutArgs = urlPath.join(baseUrl.toString(), relativeUrlPath);
+  static Uri createUrl({
+    @required Uri baseUri,
+    @required String relativeUrlPath,
+    List<RestRequestQueryArg> queryArgs,
+  }) {
+    var urlWithoutArgs = urlPath.join(baseUri.toString(), relativeUrlPath);
 
     var filteredQueryArgs =
         queryArgs?.where((arg) => arg.value?.isNotEmpty == true);
@@ -189,7 +192,7 @@ class RestService extends DisposableOwner implements IRestService {
     assert(request.type != null);
 
     var url = createUrl(
-        baseUrl: baseUrl,
+        baseUri: baseUri,
         relativeUrlPath: request.relativeUrlPath,
         queryArgs: request.queryArgs);
 

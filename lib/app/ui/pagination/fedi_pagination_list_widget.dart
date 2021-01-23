@@ -3,11 +3,11 @@ import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
@@ -120,21 +120,21 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     } else {
       _logger.finest(() => "build empty");
       return buildNotListBody(
-        StreamBuilder<PaginationListLoadingState>(
+        StreamBuilder<FediListSmartRefresherLoadingState>(
           stream: paginationListBloc.refreshStateStream,
           initialData: paginationListBloc.refreshState,
           builder: (context, snapshot) {
             var refreshState = snapshot.data;
 
             switch (refreshState) {
-              case PaginationListLoadingState.initialized:
-              case PaginationListLoadingState.loading:
+              case FediListSmartRefresherLoadingState.initialized:
+              case FediListSmartRefresherLoadingState.loading:
                 return customLoadingWidget ??
                     const Center(
                       child: FediCircularProgressIndicator(),
                     );
-              case PaginationListLoadingState.failed:
-              case PaginationListLoadingState.loaded:
+              case FediListSmartRefresherLoadingState.failed:
+              case FediListSmartRefresherLoadingState.loaded:
               default:
                 return customEmptyWidget ??
                     Center(
