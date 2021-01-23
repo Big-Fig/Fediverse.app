@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -180,6 +181,19 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   List<IPleromaMention> get mentions => status.mentions;
 
   @override
+  List<IPleromaMention> get reblogOrOriginalMentions =>
+      status.mentions?.isNotEmpty == true
+          ? status.mentions
+          : status.reblog?.mentions;
+
+  @override
+  List<IPleromaTag> get tags => status.tags;
+
+  @override
+  List<IPleromaTag> get reblogOrOriginalTags =>
+      status.tags?.isNotEmpty == true ? status.tags : status.reblog?.tags;
+
+  @override
   Stream<List<IPleromaMention>> get mentionsStream =>
       statusStream.map((status) => status.mentions);
 
@@ -325,17 +339,24 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
-    var foundMention = mentions?.firstWhere((mention) => mention.url == url,
-        orElse: () => null);
+    // todo: ask user open on local instance or remote
+    var foundMention = reblogOrOriginalMentions?.firstWhere(
+      (mention) => mention.url == url,
+      orElse: () => null,
+    );
 
     var account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
       if (pleromaAccountService.isApiReadyToUse) {
         var remoteAccount = await pleromaAccountService.getAccount(
-            accountRemoteId: accountRemoteId);
-        await accountRepository.upsertRemoteAccount(remoteAccount,
-            conversationRemoteId: null, chatRemoteId: null);
+          accountRemoteId: accountRemoteId,
+        );
+        await accountRepository.upsertRemoteAccount(
+          remoteAccount,
+          conversationRemoteId: null,
+          chatRemoteId: null,
+        );
       }
       account = await accountRepository.findByRemoteId(accountRemoteId);
     }
@@ -345,11 +366,16 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future<IHashtag> loadHashtagByUrl({@required String url}) async {
-    var foundPleromaHashtag = status.tags?.firstWhere((pleromaHashtag) {
-      // actually status.tags contains relative url (without domain)
-      // todo: report to pleroma
-      return url.contains(pleromaHashtag.url);
-    }, orElse: () => null);
+    var tagsToSearch = reblogOrOriginalTags;
+    var foundPleromaHashtag = tagsToSearch?.firstWhere(
+      (pleromaHashtag) {
+        // todo: ask user open on local instance or remote
+        var pleromaHashtagUrl = pleromaHashtag.url.toLowerCase();
+        var success = url.toLowerCase().contains(pleromaHashtagUrl);
+        return success;
+      },
+      orElse: () => null,
+    );
 
     var hashtag;
     if (foundPleromaHashtag != null) {
