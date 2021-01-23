@@ -1,26 +1,18 @@
-import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+final _logger = Logger("url_helper.dart");
 
 class UrlHelper {
   static Future handleUrlClick(BuildContext context, String url) async {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
-
-    var uri = Uri.parse(url);
-
-    var host = uri.host;
-    if (host?.isNotEmpty != true) {
-      var urlHost = currentAuthInstanceBloc.currentInstance.urlHost;
-      var urlSchema = currentAuthInstanceBloc.currentInstance.urlSchema;
-
-      url = "${urlSchema}://$urlHost$url";
-    }
-
-    if (await canLaunch(url)) {
-      await launch(url);
+    var isCanLaunch = await canLaunch(url);
+    _logger.finest(() => "handleUrlClick isCanLaunch $isCanLaunch $url");
+    if (isCanLaunch) {
+      var launched = await launch(url);
+      _logger.finest(() => "handleUrlClick launched $launched $url");
     } else {
       await FediSimpleAlertDialog(
         context: context,
