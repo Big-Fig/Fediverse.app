@@ -19,9 +19,6 @@ class PleromaFilterService extends DisposableOwner
   final IPleromaRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
@@ -76,7 +73,7 @@ class PleromaFilterService extends DisposableOwner
       RestRequest.get(
         relativePath: urlPath.join(filterRelativeUrlPath),
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );

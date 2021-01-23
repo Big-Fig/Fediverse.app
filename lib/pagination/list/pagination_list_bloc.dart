@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -23,21 +24,21 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   Stream<List<TItem>> get itemsDistinctStream;
 
-  Future<PaginationListLoadingState> refreshWithoutController();
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController();
 
   void refreshWithController();
 
-  Future<PaginationListLoadingState> loadMoreWithoutController();
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController();
 
   RefreshController get refreshController;
 
-  Stream<PaginationListLoadingState> get refreshStateStream;
+  Stream<FediListSmartRefresherLoadingState> get refreshStateStream;
 
-  PaginationListLoadingState get refreshState;
+  FediListSmartRefresherLoadingState get refreshState;
 
-  Stream<PaginationListLoadingState> get loadMoreStateStream;
+  Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream;
 
-  PaginationListLoadingState get loadMoreState;
+  FediListSmartRefresherLoadingState get loadMoreState;
 
   Stream<PaginationListLoadingError> get refreshErrorStream;
 

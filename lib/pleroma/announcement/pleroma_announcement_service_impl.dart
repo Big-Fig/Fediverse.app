@@ -11,13 +11,11 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaAnnouncementService extends DisposableOwner implements IPleromaAnnouncementService {
+class PleromaAnnouncementService extends DisposableOwner
+    implements IPleromaAnnouncementService {
   final announcementRelativeUrlPath = "/api/v1/announcements";
   @override
   final IPleromaRestService restService;
-
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -113,7 +111,6 @@ class PleromaAnnouncementService extends DisposableOwner implements IPleromaAnno
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
-
 
   @override
   Future dispose() async {

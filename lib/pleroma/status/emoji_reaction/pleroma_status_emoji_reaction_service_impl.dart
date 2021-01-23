@@ -20,9 +20,6 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   final IPleromaAuthRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 

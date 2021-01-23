@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/list/edit/edit_pagination_list_bloc.dart';
@@ -276,16 +277,16 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.loadMoreErrorStream;
 
   @override
-  PaginationListLoadingState get loadMoreState =>
+  FediListSmartRefresherLoadingState get loadMoreState =>
       paginationListBloc.loadMoreState;
 
   @override
   // TODO: implement loadMoreStateStream
-  Stream<PaginationListLoadingState> get loadMoreStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream =>
       paginationListBloc.loadMoreStateStream;
 
   @override
-  Future<PaginationListLoadingState> loadMoreWithoutController() =>
+  Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() =>
       paginationListBloc.loadMoreWithoutController();
 
   @override
@@ -300,11 +301,11 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.refreshErrorStream;
 
   @override
-  PaginationListLoadingState get refreshState =>
+  FediListSmartRefresherLoadingState get refreshState =>
       paginationListBloc.refreshState;
 
   @override
-  Stream<PaginationListLoadingState> get refreshStateStream =>
+  Stream<FediListSmartRefresherLoadingState> get refreshStateStream =>
       paginationListBloc.refreshStateStream;
 
   @override
@@ -313,7 +314,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future<PaginationListLoadingState> refreshWithoutController() =>
+  Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>
       paginationListBloc.refreshWithoutController();
 
   @override

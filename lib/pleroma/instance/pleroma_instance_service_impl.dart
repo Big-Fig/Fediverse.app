@@ -20,9 +20,6 @@ class PleromaInstanceService extends DisposableOwner
   final IPleromaRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
@@ -82,15 +79,24 @@ class PleromaInstanceService extends DisposableOwner
   @override
   Future<IPleromaInstance> getInstance() async {
     var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(relativePath: instanceRelativeUrlPath));
+      RestRequest.get(
+        relativePath: instanceRelativeUrlPath,
+      ),
+    );
 
     return parseInstanceResponse(httpResponse);
   }
 
   @override
   Future<List<String>> getPeers() async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-        relativePath: urlPath.join(instanceRelativeUrlPath, "peers")));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join(
+          instanceRelativeUrlPath,
+          "peers",
+        ),
+      ),
+    );
 
     return parseInstancePeers(httpResponse);
   }

@@ -14,9 +14,6 @@ class PleromaSearchService extends DisposableOwner
   @override
   final IPleromaAuthRestService restService;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
   PleromaSearchService({@required this.restService});
 
   @override

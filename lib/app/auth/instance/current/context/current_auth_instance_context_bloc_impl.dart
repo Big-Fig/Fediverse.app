@@ -309,14 +309,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IConversationChatWithLastMessageRepository>(
             conversationChatWithLastMessageRepository);
 
-    var restService = RestService(baseUrl: currentInstance.url);
+    var restService = RestService(baseUri: currentInstance.uri);
     addDisposable(disposable: restService);
     await globalProviderService.asyncInitAndRegister<IRestService>(restService);
 
     var pleromaRestService = PleromaRestService(
       restService: restService,
       connectionService: connectionService,
-      isPleromaInstance: isPleromaInstance,
     );
     addDisposable(disposable: pleromaRestService);
     await globalProviderService
@@ -838,7 +837,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
         accessToken: currentInstance.token.accessToken,
-        baseUri: currentInstance.url,
+        baseUri: currentInstance.uri,
         connectionService: connectionService);
 
     addDisposable(disposable: pleromaWebSocketsService);

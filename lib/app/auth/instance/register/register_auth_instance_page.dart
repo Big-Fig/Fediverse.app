@@ -32,7 +32,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
 
 Future<AuthHostRegistrationResult> goToRegisterAuthInstancePage(
   BuildContext context, {
-  @required Uri instanceBaseUrl,
+  @required Uri instanceBaseUri,
 }) async =>
     Navigator.push(
       context,
@@ -40,7 +40,7 @@ Future<AuthHostRegistrationResult> goToRegisterAuthInstancePage(
         builder: (context) => DisposableProvider<IRegisterAuthInstanceBloc>(
           create: (context) {
             var registerAuthInstanceBloc = RegisterAuthInstanceBloc(
-              instanceBaseUrl: instanceBaseUrl,
+              instanceBaseUri: instanceBaseUri,
               localPreferencesService:
                   ILocalPreferencesService.of(context, listen: false),
               connectionService: IConnectionService.of(context, listen: false),

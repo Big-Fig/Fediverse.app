@@ -45,14 +45,14 @@ const emailConfirmationRequiredDescription =
     "Your login is missing a confirmed e-mail address";
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
-  final Uri instanceBaseUrl;
+  final Uri instanceBaseUri;
   final bool isPleromaInstance;
 
-  String get instanceBaseUrlString => instanceBaseUrl.toString();
+  String get instanceBaseUriString => instanceBaseUri.toString();
 
-  String get instanceBaseUrlHost => instanceBaseUrl.host;
+  String get instanceBaseUriHost => instanceBaseUri.host;
 
-  String get instanceBaseUrlSchema => instanceBaseUrl.scheme;
+  String get instanceBaseUriScheme => instanceBaseUri.scheme;
   IPleromaApplicationService pleromaApplicationService;
   IRestService restService;
   IPleromaRestService pleromaRestService;
@@ -66,29 +66,28 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final IConnectionService connectionService;
 
   AuthHostBloc({
-    @required this.instanceBaseUrl,
+    @required this.instanceBaseUri,
     @required this.isPleromaInstance,
     @required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     @required ILocalPreferencesService preferencesService,
     @required this.connectionService,
     @required this.currentInstanceBloc,
   }) {
-    assert(instanceBaseUrlSchema?.isNotEmpty == true);
-    assert(instanceBaseUrlHost?.isNotEmpty == true);
+    assert(instanceBaseUriScheme?.isNotEmpty == true);
+    assert(instanceBaseUriHost?.isNotEmpty == true);
     hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
         preferencesService,
-        host: instanceBaseUrlHost);
+        host: instanceBaseUriHost);
     addDisposable(disposable: hostApplicationLocalPreferenceBloc);
     hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
         preferencesService,
-        host: instanceBaseUrlHost);
+        host: instanceBaseUriHost);
     addDisposable(disposable: hostAccessTokenLocalPreferenceBloc);
-    restService = RestService(baseUrl: instanceBaseUrl);
+    restService = RestService(baseUri: instanceBaseUri);
     addDisposable(disposable: restService);
     pleromaRestService = PleromaRestService(
       restService: restService,
       connectionService: connectionService,
-      isPleromaInstance: isPleromaInstance,
     );
     addDisposable(disposable: pleromaRestService);
 
@@ -176,7 +175,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     _logger.finest(() => "launchLoginToAccount");
     await checkApplicationRegistration();
 
-    var baseUrl = pleromaOAuthService.restService.baseUrl;
+    var baseUrl = pleromaOAuthService.restService.baseUri;
 
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());
@@ -223,7 +222,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     @required PleromaOAuthToken token,
     @required String authCode,
   }) async {
-    var restService = RestService(baseUrl: instanceBaseUrl);
+    var restService = RestService(baseUri: instanceBaseUri);
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
@@ -258,8 +257,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
     var instance = AuthInstance(
-      urlHost: instanceBaseUrlHost.toLowerCase(),
-      urlSchema: instanceBaseUrlSchema,
+      urlHost: instanceBaseUriHost.toLowerCase(),
+      urlSchema: instanceBaseUriScheme,
       authCode: authCode,
       token: token,
       acct: myAccount.acct,
@@ -285,7 +284,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       appAccessToken: hostAccessToken.accessToken,
     );
 
-    var restService = RestService(baseUrl: instanceBaseUrl);
+    var restService = RestService(baseUri: instanceBaseUri);
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
@@ -375,7 +374,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       if (isRegistrationEnabled != false) {
         var invitesEnabled = pleromaInstance.invitesEnabled;
         if (invitesEnabled != false) {
-          result =  true;
+          result = true;
         } else {
           throw const InvitesOnlyRegistrationAuthHostException();
         }
@@ -399,10 +398,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     }
   }
 
-  static AuthHostBloc createFromContext(BuildContext context,
-          {@required Uri instanceBaseUrl}) =>
+  static AuthHostBloc createFromContext(
+    BuildContext context, {
+    @required Uri instanceBaseUri,
+  }) =>
       AuthHostBloc(
-        instanceBaseUrl: instanceBaseUrl,
+        instanceBaseUri: instanceBaseUri,
         isPleromaInstance: false,
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         connectionService: IConnectionService.of(context, listen: false),

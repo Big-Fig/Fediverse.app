@@ -19,18 +19,15 @@ class PleromaInstancePleromaPartAdapter
     };
     return PleromaInstancePleromaPart(
       metadata: fields[0] as PleromaInstancePleromaPartMetadata,
-      vapidPublicKey: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaInstancePleromaPart obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.metadata)
       ..writeByte(1)
-      ..write(obj.vapidPublicKey);
+      ..writeByte(0)
+      ..write(obj.metadata);
   }
 
   @override
@@ -89,6 +86,96 @@ class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
           typeId == other.typeId;
 }
 
+class PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
+    extends TypeAdapter<
+        PleromaInstancePleromaPartMetadataFederationMfrObjectAge> {
+  @override
+  final int typeId = 66;
+
+  @override
+  PleromaInstancePleromaPartMetadataFederationMfrObjectAge read(
+      BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
+      threshold: fields[0] as int,
+      actions: (fields[1] as List)?.cast<String>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer,
+      PleromaInstancePleromaPartMetadataFederationMfrObjectAge obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.threshold)
+      ..writeByte(1)
+      ..write(obj.actions);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class PleromaInstancePleromaPartMetadataFederationAdapter
+    extends TypeAdapter<PleromaInstancePleromaPartMetadataFederation> {
+  @override
+  final int typeId = 67;
+
+  @override
+  PleromaInstancePleromaPartMetadataFederation read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePleromaPartMetadataFederation(
+      enabled: fields[0] as bool,
+      exclusions: fields[1] as bool,
+      mrfObjectAge:
+          fields[2] as PleromaInstancePleromaPartMetadataFederationMfrObjectAge,
+      mrfPolicies: (fields[3] as List)?.cast<String>(),
+      quarantinedInstances: (fields[4] as List)?.cast<String>(),
+    );
+  }
+
+  @override
+  void write(
+      BinaryWriter writer, PleromaInstancePleromaPartMetadataFederation obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.enabled)
+      ..writeByte(1)
+      ..write(obj.exclusions)
+      ..writeByte(2)
+      ..write(obj.mrfObjectAge)
+      ..writeByte(3)
+      ..write(obj.mrfPolicies)
+      ..writeByte(4)
+      ..write(obj.quarantinedInstances);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataFederationAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class PleromaInstancePleromaPartMetadataAdapter
     extends TypeAdapter<PleromaInstancePleromaPartMetadata> {
   @override
@@ -102,7 +189,7 @@ class PleromaInstancePleromaPartMetadataAdapter
     };
     return PleromaInstancePleromaPartMetadata(
       features: (fields[0] as List)?.cast<String>(),
-      federation: fields[1] as dynamic,
+      federation: fields[1] as PleromaInstancePleromaPartMetadataFederation,
       postFormats: (fields[2] as List)?.cast<String>(),
       accountActivationRequired: fields[3] as bool,
       fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits,
@@ -316,7 +403,6 @@ PleromaInstancePleromaPart _$PleromaInstancePleromaPartFromJson(
         ? null
         : PleromaInstancePleromaPartMetadata.fromJson(
             json['metadata'] as Map<String, dynamic>),
-    vapidPublicKey: json['vapid_public_key'] as String,
   );
 }
 
@@ -324,7 +410,6 @@ Map<String, dynamic> _$PleromaInstancePleromaPartToJson(
         PleromaInstancePleromaPart instance) =>
     <String, dynamic>{
       'metadata': instance.metadata?.toJson(),
-      'vapid_public_key': instance.vapidPublicKey,
     };
 
 PleromaInstancePleromaPartMetadataFieldLimits
@@ -347,11 +432,59 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFieldLimitsToJson(
       'value_length': instance.valueLength,
     };
 
+PleromaInstancePleromaPartMetadataFederationMfrObjectAge
+    _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
+        Map<String, dynamic> json) {
+  return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
+    threshold: json['threshold'] as int,
+    actions: (json['actions'] as List)?.map((e) => e as String)?.toList(),
+  );
+}
+
+Map<String,
+    dynamic> _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeToJson(
+        PleromaInstancePleromaPartMetadataFederationMfrObjectAge instance) =>
+    <String, dynamic>{
+      'threshold': instance.threshold,
+      'actions': instance.actions,
+    };
+
+PleromaInstancePleromaPartMetadataFederation
+    _$PleromaInstancePleromaPartMetadataFederationFromJson(
+        Map<String, dynamic> json) {
+  return PleromaInstancePleromaPartMetadataFederation(
+    enabled: json['enabled'] as bool,
+    exclusions: json['exclusions'] as bool,
+    mrfObjectAge: json['mrf_object_age'] == null
+        ? null
+        : PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
+            json['mrf_object_age'] as Map<String, dynamic>),
+    mrfPolicies:
+        (json['mrf_policies'] as List)?.map((e) => e as String)?.toList(),
+    quarantinedInstances: (json['quarantined_instances'] as List)
+        ?.map((e) => e as String)
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFederationToJson(
+        PleromaInstancePleromaPartMetadataFederation instance) =>
+    <String, dynamic>{
+      'enabled': instance.enabled,
+      'exclusions': instance.exclusions,
+      'mrf_object_age': instance.mrfObjectAge?.toJson(),
+      'mrf_policies': instance.mrfPolicies,
+      'quarantined_instances': instance.quarantinedInstances,
+    };
+
 PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
     Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadata(
     features: (json['features'] as List)?.map((e) => e as String)?.toList(),
-    federation: json['federation'],
+    federation: json['federation'] == null
+        ? null
+        : PleromaInstancePleromaPartMetadataFederation.fromJson(
+            json['federation'] as Map<String, dynamic>),
     postFormats:
         (json['post_formats'] as List)?.map((e) => e as String)?.toList(),
     accountActivationRequired: json['account_activation_required'] as bool,
@@ -366,7 +499,7 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
         PleromaInstancePleromaPartMetadata instance) =>
     <String, dynamic>{
       'features': instance.features,
-      'federation': instance.federation,
+      'federation': instance.federation?.toJson(),
       'post_formats': instance.postFormats,
       'account_activation_required': instance.accountActivationRequired,
       'fields_limits': instance.fieldsLimits?.toJson(),

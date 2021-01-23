@@ -19,9 +19,6 @@ class PleromaChatService extends DisposableOwner
   final IPleromaAuthRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
@@ -123,7 +120,7 @@ class PleromaChatService extends DisposableOwner
           "messages",
         ),
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );

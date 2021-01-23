@@ -17,9 +17,6 @@ class PleromaPushService extends DisposableOwner
   final PleromaPushSubscriptionKeys keys;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 

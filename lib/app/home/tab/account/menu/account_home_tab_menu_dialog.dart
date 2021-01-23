@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_st
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
+import 'package:fedi/app/instance/details/home/home_instance_details_page.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
 import 'package:fedi/app/settings/instance/list/instance_settings_list_page.dart';
@@ -33,6 +34,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
       children: [
         const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget(),
         const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget(),
+        const _AccountHomeTabMenuDialogBodyInstanceItemWidget(),
         const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
@@ -56,6 +58,32 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.account,
         text: S.of(context).app_account_home_tab_menu_action_account,
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
+  const _AccountHomeTabMenuDialogBodyInstanceItemWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var currentInstanceUrlHost =
+        ICurrentAuthInstanceBloc.of(context, listen: false)
+            .currentInstance
+            .urlHost;
+
+    return InkWell(
+      onTap: () {
+        goToHomeInstanceDetailsPage(context);
+      },
+      child: _AccountHomeTabMenuDialogBodyItem(
+        iconData: FediIcons.instance,
+        text: S.of(context).app_account_action_instanceDetails(
+              currentInstanceUrlHost,
+            ),
       ),
     );
   }
@@ -163,7 +191,8 @@ class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
           if (isProdPackageId == true) {
             return InkWell(
               onTap: () {
-                var inAppReviewBloc = IInAppReviewBloc.of(context, listen: false);
+                var inAppReviewBloc =
+                    IInAppReviewBloc.of(context, listen: false);
                 inAppReviewBloc.openStoreListing();
               },
               child: _AccountHomeTabMenuDialogBodyItem(

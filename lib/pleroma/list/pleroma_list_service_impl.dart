@@ -20,9 +20,6 @@ class PleromaListService extends DisposableOwner
   final IPleromaRestService restService;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
@@ -173,7 +170,7 @@ class PleromaListService extends DisposableOwner
         relativePath:
             urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
     );

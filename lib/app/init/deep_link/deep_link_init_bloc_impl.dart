@@ -44,7 +44,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         "lastLaunchedHost = $lastLaunchedHost");
     if (lastLaunchedHost != null) {
       var authHostBloc = AuthHostBloc(
-        instanceBaseUrl: Uri.parse(lastLaunchedHost),
+        instanceBaseUri: Uri.parse(lastLaunchedHost),
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentAuthInstanceBloc,

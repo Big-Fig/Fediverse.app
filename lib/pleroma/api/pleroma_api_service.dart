@@ -4,9 +4,9 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class IPleromaApi implements IDisposable {
   IRestService get restService;
+
   Stream<PleromaApiState> get pleromaApiStateStream;
 
-  bool get isPleromaInstance;
   PleromaApiState get pleromaApiState;
 
   Stream<bool> get isConnectedStream;
@@ -24,3 +24,7 @@ bool mapIsReady(PleromaApiState pleromaState, bool isConnected) =>
     pleromaState == PleromaApiState.validAuth && isConnected == true;
 
 enum PleromaApiState { validAuth, brokenAuth, loggedOut }
+
+abstract class IPleromaAuthApi implements IPleromaApi {
+  bool get isPleromaInstance;
+}

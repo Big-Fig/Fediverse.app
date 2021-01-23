@@ -124,9 +124,14 @@ String formatDuration({
     } else {
       var inMinutes = duration.inMinutes;
 
-      if (inMinutes == 0) {
-        inMinutes = 1;
+      if (duration.inMilliseconds == 0) {
+        inMinutes = 0;
+      } else {
+        if (inMinutes == 0) {
+          inMinutes = 1;
+        }
       }
+
       return S.of(context).duration_minute(inMinutes);
     }
   }
