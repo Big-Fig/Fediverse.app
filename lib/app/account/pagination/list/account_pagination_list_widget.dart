@@ -1,8 +1,11 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/list/account_list_bloc.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -52,50 +55,69 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
           alwaysShowFooter: alwaysShowFooter,
           customLoadingWidget: customLoadingWidget,
           customEmptyWidget: customEmptyWidget,
-    refreshOnFirstLoad: refreshOnFirstLoad,
+          refreshOnFirstLoad: refreshOnFirstLoad,
         );
 
   @override
   ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IAccount> items,
-          @required Widget header,
-          @required Widget footer}) =>
-      PaginationListWidget.buildItemsListView(
-        context: context,
-        items: items,
-        header: header,
-        footer: footer,
-        itemBuilder: (context, index) {
-          var item = items[index];
-          _logger.finest(() => "itemBuilder ${item.remoteId}");
-          return Provider<IAccount>.value(
-            value: item,
-            child: DisposableProxyProvider<IAccount, IAccountBloc>(
-              update: (context, account, oldValue) =>
-                  AccountBloc.createFromContext(
-                      context,
-                      isNeedWatchLocalRepositoryForUpdates:
-                          needWatchLocalRepositoryForUpdates,
-                      account: account,
-                      isNeedRefreshFromNetworkOnInit: false,
-                      isNeedWatchWebSocketsEvents: false,
-                      isNeedPreFetchRelationship: isNeedPreFetchRelationship),
-              child: customItemBodyBuilder != null
-                  ? customItemBodyBuilder(
-                      context,
-                      accountSelectedCallback,
-                      accountActions,
-                    )
-                  : _AccountPaginationListBodyWidget(
-                      accountSelectedCallback: accountSelectedCallback,
-                      accountActions: accountActions,
-                      itemPadding: itemPadding,
-                    ),
-            ),
-          );
-        },
-      );
+      {@required BuildContext context,
+      @required List<IAccount> items,
+      @required Widget header,
+      @required Widget footer}) {
+    var accountListBloc = IAccountListBloc.of(context, listen: false);
+
+    var instanceLocation = accountListBloc.instanceLocation;
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    return PaginationListWidget.buildItemsListView(
+      context: context,
+      items: items,
+      header: header,
+      footer: footer,
+      itemBuilder: (context, index) {
+        var item = items[index];
+        _logger.finest(() => "itemBuilder ${item.remoteId}");
+        return Provider<IAccount>.value(
+          value: item,
+          child: DisposableProxyProvider<IAccount, IAccountBloc>(
+            update: (context, account, oldValue) {
+              var isNeedRefreshFromNetworkOnInit = false;
+              if (isLocal) {
+                return LocalAccountBloc.createFromContext(
+                  context,
+                  isNeedWatchLocalRepositoryForUpdates:
+                      needWatchLocalRepositoryForUpdates,
+                  account: account,
+                  isNeedRefreshFromNetworkOnInit:
+                      isNeedRefreshFromNetworkOnInit,
+                  isNeedWatchWebSocketsEvents: false,
+                  isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+                );
+              } else {
+                return RemoteAccountBloc.createFromContext(
+                  context,
+                  account: account,
+                  isNeedRefreshFromNetworkOnInit:
+                      isNeedRefreshFromNetworkOnInit,
+                );
+              }
+            },
+            child: customItemBodyBuilder != null
+                ? customItemBodyBuilder(
+                    context,
+                    accountSelectedCallback,
+                    accountActions,
+                  )
+                : _AccountPaginationListBodyWidget(
+                    accountSelectedCallback: accountSelectedCallback,
+                    accountActions: accountActions,
+                    itemPadding: itemPadding,
+                  ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   IPaginationListBloc<PaginationPage<IAccount>, IAccount>

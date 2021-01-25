@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -83,7 +83,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
 
     return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
-      update: (context, value, previous) => AccountBloc.createFromContext(
+      update: (context, value, previous) => LocalAccountBloc.createFromContext(
         context,
         account: value.account,
         isNeedWatchWebSocketsEvents: false,
@@ -480,7 +480,10 @@ class _NotificationListItemAvatarWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
     return InkWell(
       onTap: () {
-        goToAccountDetailsPage(context, notificationBloc.account);
+        goToLocalAccountDetailsPage(
+          context,
+          account: notificationBloc.account,
+        );
       },
       child: const AccountAvatarWidget(
         progressSize: FediSizes.accountAvatarProgressDefaultSize,

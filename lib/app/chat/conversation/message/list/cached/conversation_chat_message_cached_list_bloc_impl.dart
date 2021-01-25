@@ -140,8 +140,9 @@ ConversationChatStatusListBloc _createStatusListBloc({
   if (currentInstanceBloc.currentInstance.isPleromaInstance) {
     // pleroma instances support loading by conversation id
     return ConversationChatStatusListConversationApiBloc.createFromContext(
-        context,
-        conversation: conversation);
+      context,
+      conversation: conversation,
+    );
   } else {
     // mastodon instances support conversation
     // only by status context

@@ -6,8 +6,9 @@ import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
-import 'package:fedi/app/instance/details/home/home_instance_details_page.dart';
+import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -53,6 +54,8 @@ class AccountActionMoreDialog extends StatelessWidget {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var currentInstance = currentAuthInstanceBloc.currentInstance;
 
+    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+
     return StreamBuilder<IPleromaAccountRelationship>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
@@ -68,7 +71,7 @@ class AccountActionMoreDialog extends StatelessWidget {
                       context),
                   AccountActionMoreDialog.buildAccountMuteAction(context),
                   AccountActionMoreDialog.buildAccountBlockAction(context),
-                  if (accountBloc.isOnRemoteDomain)
+                  if (!isLocal)
                     AccountActionMoreDialog.buildAccountBlockDomainAction(
                         context),
                   if (showReportAction)
@@ -146,22 +149,22 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountInstanceInfoAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
 
-    var isOnRemoteDomain = accountBloc.isOnRemoteDomain;
     var remoteDomainOrNull = accountBloc.remoteDomainOrNull;
     var currentInstanceUrlHost =
         ICurrentAuthInstanceBloc.of(context, listen: false)
             .currentInstance
             .urlHost;
 
-
-
+    var isLocal = remoteDomainOrNull == null;
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_instanceDetails(
-            isOnRemoteDomain ? remoteDomainOrNull : currentInstanceUrlHost,
+            isLocal ? currentInstanceUrlHost : remoteDomainOrNull,
           ),
       onAction: (context) async {
-        if (isOnRemoteDomain) {
+        if (isLocal) {
+          goToLocalInstanceDetailsPage(context);
+        } else {
           // todo: https shouldn't be hardcoded
           var remoteInstanceUri = Uri.parse(
             "https://$remoteDomainOrNull",
@@ -170,8 +173,6 @@ class AccountActionMoreDialog extends StatelessWidget {
             context,
             remoteInstanceUri: remoteInstanceUri,
           );
-        } else {
-          goToHomeInstanceDetailsPage(context);
         }
       },
     );

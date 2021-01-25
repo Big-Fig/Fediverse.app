@@ -29,7 +29,8 @@ var _logger = Logger("timeline_tab_bloc_impl.dart");
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   Timeline get timeline => timelineLocalPreferencesBloc.value;
-  TimelineStatusCachedListBloc statusCachedListService;
+  @override
+  TimelineStatusCachedListBloc statusCachedListBloc;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
   ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
@@ -93,22 +94,22 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
 
   @override
   void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
-    statusCachedListService.resubscribeWebSocketsUpdates(webSocketsListenType);
+    statusCachedListBloc.resubscribeWebSocketsUpdates(webSocketsListenType);
   }
 
   @override
   Future internalAsyncInit() async {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
-    statusCachedListService =
+    statusCachedListBloc =
         createListService(webSocketsListenType: webSocketsListenType);
-    addDisposable(disposable: statusCachedListService);
+    addDisposable(disposable: statusCachedListBloc);
 
-    await statusCachedListService.performAsyncInit();
+    await statusCachedListBloc.performAsyncInit();
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
       maximumCachedPagesCount: null,
-      statusListService: statusCachedListService,
+      statusListService: statusCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
     );
     addDisposable(disposable: statusCachedPaginationBloc);
@@ -118,7 +119,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       paginationBloc: statusCachedPaginationBloc,
       mergeNewItemsImmediately: false,
       mergeOwnStatusesImmediately: true,
-      statusCachedListBloc: statusCachedListService,
+      statusCachedListBloc: statusCachedListBloc,
       myAccountBloc: myAccountBloc,
     );
     addDisposable(disposable: paginationListWithNewItemsBloc);

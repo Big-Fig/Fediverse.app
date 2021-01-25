@@ -1,12 +1,10 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc_impl.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -16,9 +14,9 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -26,125 +24,104 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("status_bloc_impl.dart");
 
-class StatusBloc extends DisposableOwner implements IStatusBloc {
-  static StatusBloc createFromContext(
-    BuildContext context,
-    IStatus status, {
-    bool isNeedWatchLocalRepositoryForUpdates = true,
-    bool delayInit = true,
-  }) =>
-      StatusBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        accountRepository: IAccountRepository.of(context, listen: false),
-        status: status,
-        needRefreshFromNetworkOnInit: false,
-        delayInit: delayInit,
-        isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
-        pleromaStatusEmojiReactionService:
-            IPleromaStatusEmojiReactionService.of(context, listen: false),
-        pleromaPollService: IPleromaPollService.of(context, listen: false),
-      );
-
+abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   IPollBloc pollBloc;
 
-  final BehaviorSubject<IStatus> _statusSubject;
+  final BehaviorSubject<IStatus> statusSubject;
 
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IPleromaAccountService pleromaAccountService;
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
   final IPleromaPollService pleromaPollService;
-  final IStatusRepository statusRepository;
-  final IAccountRepository accountRepository;
-  final bool isNeedWatchLocalRepositoryForUpdates;
 
+  // todo: remove hack. Don't init when bloc quickly disposed. Help
   StatusBloc({
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required this.pleromaAccountService,
     @required this.pleromaStatusEmojiReactionService,
     @required this.pleromaPollService,
-    @required this.statusRepository,
-    @required this.accountRepository,
-    @required
-        IStatus status, // for better performance we don't update account too
-    // often
-    bool needRefreshFromNetworkOnInit =
-        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
-    //  improve performance in timeline unnecessary recreations
-    bool delayInit = true,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-  }) : _statusSubject = BehaviorSubject.seeded(status) {
+    @required IStatus status,
+    @required bool isNeedRefreshFromNetworkOnInit,
+    @required bool delayInit,
+  }) : statusSubject = BehaviorSubject.seeded(status) {
     _logger.finest(() => "required constructor ${status.remoteId}");
 
     if (status.poll != null) {
       pollBloc = PollBloc(
         pleromaPollService: pleromaPollService,
         poll: status.poll,
+        instanceLocation: instanceLocation,
       );
       addDisposable(disposable: pollBloc);
-      addDisposable(streamSubscription: pollBloc.pollStream.listen((poll) {
-        // update status poll data if something changed in pollBloc
-        var isChanged = this.poll == poll;
-        if (!isChanged) {
-          _logger.finest(() => "update status poll data isChanged $isChanged \n"
-              "old ${this.poll} \n"
-              "new $poll");
-          onPollUpdated(poll);
-        }
-      }));
-      addDisposable(streamSubscription: pollStream.listen((poll) {
-        // update pollBloc after status poll data changed
-        var isChanged = pollBloc.poll == poll;
-        if (!isChanged) {
-          _logger
-              .finest(() => "update pollBloc poll data isChanged $isChanged \n"
-                  "old ${pollBloc.poll} \n"
-                  "new $poll");
-          pollBloc.onPollUpdated(poll);
-        }
-      }));
+      addDisposable(
+        streamSubscription: pollBloc.pollStream.listen(
+          (poll) {
+            // update status poll data if something changed in pollBloc
+            var isChanged = this.poll == poll;
+            if (!isChanged) {
+              _logger.finest(
+                  () => "update status poll data isChanged $isChanged \n"
+                      "old ${this.poll} \n"
+                      "new $poll");
+              onPollUpdated(poll);
+            }
+          },
+        ),
+      );
+      addDisposable(
+        streamSubscription: pollStream.listen(
+          (poll) {
+            // update pollBloc after status poll data changed
+            var isChanged = pollBloc.poll == poll;
+            if (!isChanged) {
+              _logger.finest(
+                  () => "update pollBloc poll data isChanged $isChanged \n"
+                      "old ${pollBloc.poll} \n"
+                      "new $poll");
+              pollBloc.onPollUpdated(poll);
+            }
+          },
+        ),
+      );
     }
 
-    addDisposable(subject: _statusSubject);
+    addDisposable(subject: statusSubject);
 
-    assert(needRefreshFromNetworkOnInit != null);
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
+    assert(isNeedRefreshFromNetworkOnInit != null);
+
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
-        _init(status, needRefreshFromNetworkOnInit);
+        _init(
+          status: status,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+        );
       });
     } else {
-      _init(status, needRefreshFromNetworkOnInit);
+      _init(
+        status: status,
+        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+      );
     }
   }
 
-  void _init(IStatus status, bool needRefreshFromNetworkOnInit) {
+  Future _init({
+    @required IStatus status,
+    @required bool isNeedRefreshFromNetworkOnInit,
+  }) async {
     if (!isDisposed) {
-      if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-            streamSubscription: statusRepository
-                .watchByRemoteId(status.remoteId)
-                .listen((updatedStatus) {
-          if (updatedStatus != null) {
-            _statusSubject.add(updatedStatus);
-          }
-        }));
-      }
-      if (needRefreshFromNetworkOnInit) {
-        refreshFromNetwork();
-      }
+      await actualInit(
+        status: status,
+        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+      );
     }
   }
 
   @override
-  IStatus get status => _statusSubject.value;
+  IStatus get status => statusSubject.value;
 
   @override
-  Stream<IStatus> get statusStream => _statusSubject.stream;
+  Stream<IStatus> get statusStream => statusSubject.stream;
 
   @override
   IStatus get reblogOrOriginal => reblog ?? status;
@@ -198,33 +175,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.mentions);
 
   @override
-  Future<IAccount> getInReplyToAccount() {
-    assert(status.inReplyToAccountRemoteId != null);
-    return accountRepository.findByRemoteId(status.inReplyToAccountRemoteId);
-  }
-
-  @override
-  Stream<IAccount> watchInReplyToAccount() {
-    assert(status.inReplyToAccountRemoteId != null);
-    return accountRepository.watchByRemoteId(status.inReplyToAccountRemoteId);
-  }
-
-  @override
-  Future<IStatus> getInReplyToStatus() async {
-    assert(status.inReplyToRemoteId != null);
-    if (status.inReplyToStatus != null) {
-      return status.inReplyToStatus;
-    }
-    return await statusRepository.findByRemoteId(status.inReplyToRemoteId);
-  }
-
-  @override
-  Stream<IStatus> watchInReplyToStatus() {
-    assert(status.inReplyToRemoteId != null);
-    return statusRepository.watchByRemoteId(status.inReplyToRemoteId);
-  }
-
-  @override
   String get content => status?.content;
 
   @override
@@ -236,8 +186,11 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       HtmlTextHelper.extractRawStringFromHtmlString(content);
 
   @override
-  Stream<String> get contentRawTextStream => contentStream
-      .map((content) => HtmlTextHelper.extractRawStringFromHtmlString(content));
+  Stream<String> get contentRawTextStream => contentStream.map(
+        (content) => HtmlTextHelper.extractRawStringFromHtmlString(
+          content,
+        ),
+      );
 
   @override
   IPleromaCard get card => status?.card;
@@ -289,17 +242,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get favouritedStream =>
       statusStream.map((status) => status?.favourited);
 
-  @override
-  Future refreshFromNetwork() async {
+  Future<IPleromaStatus> loadRemoteStatus() async {
     var remoteStatus =
-        await pleromaStatusService.getStatus(statusRemoteId: remoteId);
-
-    return _updateByRemoteStatus(remoteStatus);
-  }
-
-  Future _updateByRemoteStatus(IPleromaStatus remoteStatus) {
-    return statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+        await pleromaAuthStatusService.getStatus(statusRemoteId: remoteId);
+    return remoteStatus;
   }
 
   @override
@@ -336,33 +282,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<bool> get pinnedStream => statusStream.map((status) => status.pinned);
-
-  @override
-  Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
-    // todo: ask user open on local instance or remote
-    var foundMention = reblogOrOriginalMentions?.firstWhere(
-      (mention) => mention.url == url,
-      orElse: () => null,
-    );
-
-    var account;
-    if (foundMention != null) {
-      var accountRemoteId = foundMention.id;
-      if (pleromaAccountService.isApiReadyToUse) {
-        var remoteAccount = await pleromaAccountService.getAccount(
-          accountRemoteId: accountRemoteId,
-        );
-        await accountRepository.upsertRemoteAccount(
-          remoteAccount,
-          conversationRemoteId: null,
-          chatRemoteId: null,
-        );
-      }
-      account = await accountRepository.findByRemoteId(accountRemoteId);
-    }
-
-    return account;
-  }
 
   @override
   Future<IHashtag> loadHashtagByUrl({@required String url}) async {
@@ -403,9 +322,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<int> get reblogPlusOriginalFavouritesCountStream => Rx.combineLatest2(
-      favouritesCountStream,
-      reblogFavouritesCountStream,
-      (originalCount, reblogCount) => originalCount + (reblogCount ?? 0));
+        favouritesCountStream,
+        reblogFavouritesCountStream,
+        (originalCount, reblogCount) => originalCount + (reblogCount ?? 0),
+      );
 
   @override
   int get reblogsCount => status.reblogsCount;
@@ -425,9 +345,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Stream<int> get reblogPlusOriginalReblogsCountStream => Rx.combineLatest2(
-      reblogsCountStream,
-      reblogReblogsCountStream,
-      (originalCount, reblogCount) => originalCount + (reblogCount ?? 0));
+        reblogsCountStream,
+        reblogReblogsCountStream,
+        (originalCount, reblogCount) => originalCount + (reblogCount ?? 0),
+      );
 
   @override
   int get repliesCount => status.repliesCount;
@@ -435,99 +356,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<int> get repliesCountStream =>
       statusStream.map((status) => status.repliesCount);
-
-  @override
-  Future<IStatus> toggleFavourite() async {
-    IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.favourited == true) {
-      remoteStatus = await pleromaStatusService.unFavouriteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    } else {
-      remoteStatus = await pleromaStatusService.favouriteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    }
-
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
-
-    return statusRepository.findByRemoteId(remoteStatus.id);
-  }
-
-  @override
-  Future<IStatus> toggleReblog() async {
-    _logger.finest(() =>
-        "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
-    IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.reblogged == true) {
-      remoteStatus = await pleromaStatusService.unReblogStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    } else {
-      remoteStatus = await pleromaStatusService.reblogStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    }
-
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    return statusRepository.findByRemoteId(remoteStatus.id);
-  }
-
-  @override
-  Future<IStatus> toggleMute() async {
-    IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.muted == true) {
-      remoteStatus = await pleromaStatusService.unMuteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    } else {
-      remoteStatus = await pleromaStatusService.muteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    }
-
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
-
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
-  }
-
-  @override
-  Future<IStatus> toggleBookmark() async {
-    IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.bookmarked == true) {
-      remoteStatus = await pleromaStatusService.unBookmarkStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    } else {
-      remoteStatus = await pleromaStatusService.bookmarkStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    }
-
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
-
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
-  }
-
-  @override
-  Future<IStatus> togglePin() async {
-    IPleromaStatus remoteStatus;
-    if (reblogOrOriginal.pinned == true) {
-      remoteStatus = await pleromaStatusService.unPinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
-    } else {
-      // reblogged don't support pin
-      if (reblogOrOriginal.reblogged) {
-        remoteStatus = await pleromaStatusService.pinStatus(
-            statusRemoteId: reblogOrOriginal.remoteId);
-      } else {
-        remoteStatus = await pleromaStatusService.pinStatus(
-            statusRemoteId: reblogOrOriginal.remoteId);
-      }
-    }
-
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
-
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
-  }
 
   @override
   List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions =>
@@ -584,34 +412,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           );
 
   @override
-  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji}) async {
-    var alreadyAdded;
-    var foundEmojiReaction = pleromaEmojiReactions?.firstWhere(
-        (emojiReaction) => emojiReaction.name == emoji,
-        orElse: () => null);
-
-    if (foundEmojiReaction != null) {
-      alreadyAdded = foundEmojiReaction.me;
-    } else {
-      alreadyAdded = false;
-    }
-
-    IPleromaStatus remoteStatus;
-    if (alreadyAdded) {
-      remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
-          statusRemoteId: status.remoteId, emoji: emoji);
-    } else {
-      remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
-          statusRemoteId: status.remoteId, emoji: emoji);
-    }
-
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    return remoteStatus;
-  }
-
-  @override
   Future dispose() {
     _logger.finest(() => "dispose");
     return super.dispose();
@@ -663,25 +463,22 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   bool get isHaveReblog => status.isHaveReblog;
 
   @override
-  Future onPollUpdated(IPleromaPoll poll) async {
-    var updatedLocalStatus = status.copyWith(poll: poll);
-    _statusSubject.add(updatedLocalStatus);
-
-    await statusRepository.updateById(
-        status.localId, dbStatusFromStatus(updatedLocalStatus));
-  }
-
-  @override
-  Future delete() async {
-    await pleromaStatusService.deleteStatus(statusRemoteId: status.remoteId);
-
-    await statusRepository.markStatusAsDeleted(statusRemoteId: status.remoteId);
-  }
-
-  @override
   bool get deleted => status.deleted;
 
   @override
   Stream<bool> get deletedStream =>
       statusStream.map((status) => status.deleted);
+
+  @override
+  Future<IStatus> onPollUpdated(IPleromaPoll poll) async {
+    var updatedLocalStatus = status.copyWith(poll: poll);
+    statusSubject.add(updatedLocalStatus);
+
+    return updatedLocalStatus;
+  }
+
+  Future actualInit({
+    @required IStatus status,
+    @required bool isNeedRefreshFromNetworkOnInit,
+  });
 }

@@ -2,13 +2,13 @@ import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -65,7 +65,8 @@ class ConversationChatStatusListWidget
                   success = await additionalPreRefreshAction(context);
                 } catch (e, stackTrace) {
                   success = false;
-                  _logger.severe(() => "additionalPreRefreshAction()", e, stackTrace);
+                  _logger.severe(
+                      () => "additionalPreRefreshAction()", e, stackTrace);
                 }
                 _logger.finest(() => "additionalPreRefreshAction() $success");
                 var state = await paginationListBloc.refreshWithoutController();
@@ -146,7 +147,10 @@ class ConversationChatStatusListWidget
           value: currentMessage,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, value, previous) =>
-                  StatusBloc.createFromContext(context, value),
+                  LocalStatusBloc.createFromContext(
+                    context,
+                    status: value,
+                  ),
               child: ConversationChatStatusListItemWidget(
                 isLastInMinuteGroup: isLastInMinuteGroup,
                 isFirstInMinuteGroup: isFirstInMinuteGroup,

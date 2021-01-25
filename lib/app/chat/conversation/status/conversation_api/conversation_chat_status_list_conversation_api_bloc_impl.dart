@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_status_list_bloc_impl.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -16,11 +17,14 @@ class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
   final IPleromaConversationService pleromaConversationService;
 
-  ConversationChatStatusListConversationApiBloc(
-      {@required IConversationChat conversation,
-      @required this.pleromaConversationService,
-      @required IStatusRepository statusRepository})
-      : super(conversation: conversation, statusRepository: statusRepository);
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  ConversationChatStatusListConversationApiBloc({
+    @required IConversationChat conversation,
+    @required this.pleromaConversationService,
+    @required IStatusRepository statusRepository,
+  }) : super(conversation: conversation, statusRepository: statusRepository);
 
   @override
   IPleromaApi get pleromaApi => pleromaConversationService;
@@ -58,13 +62,18 @@ class ConversationChatStatusListConversationApiBloc
   }
 
   static ConversationChatStatusListConversationApiBloc createFromContext(
-          BuildContext context,
-          {@required IConversationChat conversation}) =>
+    BuildContext context, {
+    @required IConversationChat conversation,
+  }) =>
       ConversationChatStatusListConversationApiBloc(
-          conversation: conversation,
-          pleromaConversationService:
-              IPleromaConversationService.of(context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false));
+        conversation: conversation,
+        pleromaConversationService:
+            IPleromaConversationService.of(context, listen: false),
+        statusRepository: IStatusRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();

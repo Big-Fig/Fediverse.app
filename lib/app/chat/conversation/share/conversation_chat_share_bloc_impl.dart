@@ -12,8 +12,8 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
@@ -23,7 +23,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
   final IPleromaConversationService pleromaConversationService;
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
 
@@ -44,7 +44,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     @required this.conversationRepository,
     @required this.statusRepository,
     @required this.pleromaConversationService,
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required IPleromaAccountService pleromaAccountService,
     @required this.myAccountBloc,
     @required this.accountRepository,
@@ -61,7 +61,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     final pleromaVisibility = PleromaVisibility.direct;
 
     var targetAccounts = [account];
-    var accountsPleromaStatus = await pleromaStatusService.postStatus(
+    var accountsPleromaStatus = await pleromaAuthStatusService.postStatus(
         data: createSendData(
       to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
       visibility: pleromaVisibility,

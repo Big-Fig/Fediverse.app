@@ -1,3 +1,4 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/account/status_account_widget.dart';
 import 'package:fedi/app/status/action/status_actions_list_widget.dart';
 import 'package:fedi/app/status/action/status_show_this_thread_action_widget.dart';
@@ -9,8 +10,11 @@ import 'package:fedi/app/status/collapsible_item/status_collapsible_item_bloc_im
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/deleted/status_deleted_overlay_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/reblog/status_reblog_header_widget.dart';
+import 'package:fedi/app/status/remote_status_bloc_impl.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc_impl.dart';
 import 'package:fedi/app/status/reply/status_reply_sub_header_widget.dart';
@@ -18,7 +22,6 @@ import 'package:fedi/app/status/reply/status_reply_widget.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -71,10 +74,24 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var statusListBloc = IStatusListBloc.of(context);
+    var instanceLocation = statusListBloc.instanceLocation;
+    var isLocal = instanceLocation == InstanceLocation.local;
+
     return DisposableProxyProvider<IStatusListItemTimelineBloc, IStatusBloc>(
-      update: (context, statusListItemTimelineBloc, oldValue) =>
-          StatusBloc.createFromContext(
-              context, statusListItemTimelineBloc.status),
+      update: (context, statusListItemTimelineBloc, oldValue) {
+        if (isLocal) {
+          return LocalStatusBloc.createFromContext(
+            context,
+            status: statusListItemTimelineBloc.status,
+          );
+        } else {
+          return RemoteStatusBloc.createFromContext(
+            context,
+            status: statusListItemTimelineBloc.status,
+          );
+        }
+      },
       child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
         update: (context, statusBloc, _) =>
             StatusSensitiveBloc.createFromContext(

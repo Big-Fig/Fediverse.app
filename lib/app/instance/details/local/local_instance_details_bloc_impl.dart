@@ -2,17 +2,18 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:flutter/widgets.dart';
 
-class HomeInstanceDetailsBloc extends InstanceDetailsBloc
+class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
   @override
   final IPleromaInstanceService pleromaInstanceService;
 
-  HomeInstanceDetailsBloc({
+  LocalInstanceDetailsBloc({
     @required IPleromaInstance initialInstance,
     @required this.pleromaInstanceService,
   }) : super(
@@ -20,12 +21,12 @@ class HomeInstanceDetailsBloc extends InstanceDetailsBloc
           initialInstance: initialInstance,
         );
 
-  static HomeInstanceDetailsBloc createFromContext(BuildContext context) {
+  static LocalInstanceDetailsBloc createFromContext(BuildContext context) {
     var pleromaInstanceService =
         IPleromaInstanceService.of(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
-    return HomeInstanceDetailsBloc(
+    return LocalInstanceDetailsBloc(
       pleromaInstanceService: pleromaInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance.info,
     );
@@ -36,7 +37,7 @@ class HomeInstanceDetailsBloc extends InstanceDetailsBloc
     @required Widget child,
   }) {
     return DisposableProvider<IInstanceDetailsBloc>(
-      create: (context) => HomeInstanceDetailsBloc.createFromContext(context),
+      create: (context) => LocalInstanceDetailsBloc.createFromContext(context),
       child: InstanceDetailsBlocProxyProvider(child: child),
     );
   }
@@ -47,8 +48,5 @@ class HomeInstanceDetailsBloc extends InstanceDetailsBloc
   }
 
   @override
-  bool get isHomeInstance => true;
-
-  @override
-  bool get isRemoteInstance => false;
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

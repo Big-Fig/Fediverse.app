@@ -1,3 +1,4 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
@@ -18,9 +19,7 @@ abstract class IInstanceDetailsBloc
 
   Uri get instanceUri;
 
-  bool get isHomeInstance;
-
-  bool get isRemoteInstance;
+  InstanceLocation get instanceLocation;
 
   IPleromaInstance get instance;
 

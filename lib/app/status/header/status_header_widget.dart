@@ -1,6 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -23,7 +26,20 @@ class StatusHeaderWidget extends StatelessWidget {
       height: _statusHeaderHeight,
       child: GestureDetector(
         onTap: () {
-          goToAccountDetailsPage(context, account);
+          var statusBloc = IStatusBloc.of(context, listen: false);
+
+          var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+          if (isLocal) {
+            goToLocalAccountDetailsPage(
+              context,
+              account: account,
+            );
+          } else {
+            goToRemoteAccountDetailsPage(
+              context,
+              account: account,
+            );
+          }
         },
         behavior: HitTestBehavior.translucent,
         child: Column(

@@ -41,7 +41,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     @required bool markMediaAsNsfwOnAttach,
     @required String language,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(

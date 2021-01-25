@@ -15,8 +15,8 @@ import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -41,7 +41,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   final PleromaInstancePollLimits pleromaInstancePollLimits;
 
   PostStatusBloc({
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
@@ -146,7 +146,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IStatusRepository statusRepository;
 
   @override
@@ -425,7 +425,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   Future<bool> _postStatus() async {
-    var remoteStatus = await pleromaStatusService.postStatus(
+    var remoteStatus = await pleromaAuthStatusService.postStatus(
       data: PleromaPostStatus(
         mediaIds: _calculateMediaIdsField(),
         status: calculateStatusTextField(),
@@ -486,7 +486,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   Future<bool> _scheduleStatus() async {
-    var scheduledStatus = await pleromaStatusService.scheduleStatus(
+    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
@@ -548,7 +548,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   List<String> calculateToField() {
-    if (pleromaStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleromaInstance) {
       return mentionedAccts;
     } else {
       return null;
@@ -556,7 +556,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String calculateStatusTextField() {
-    if (pleromaStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleromaInstance) {
       return inputText;
     } else {
       if (originInReplyToStatus != null) {

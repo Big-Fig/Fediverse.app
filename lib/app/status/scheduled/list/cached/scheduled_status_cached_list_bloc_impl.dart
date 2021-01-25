@@ -1,3 +1,5 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
@@ -9,6 +11,7 @@ import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.d
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("scheduled_status_cached_list_bloc_impl.dart");
 
@@ -40,7 +43,10 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     return DisposableProvider<IScheduledStatusCachedListBloc>(
       create: (context) =>
           ScheduledStatusCachedListBloc.createFromContext(context),
-      child: child,
+      child: ProxyProvider<IScheduledStatusCachedListBloc, IStatusListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      ),
     );
   }
 
@@ -107,4 +113,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       return false;
     }
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

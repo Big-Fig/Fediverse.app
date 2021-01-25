@@ -4,10 +4,10 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -30,8 +30,8 @@ Function eq = const ListEquality().equals;
 void main() {
   IStatus status;
   IStatusBloc statusBloc;
-  PleromaStatusServiceMock pleromaStatusServiceMock;
-  PleromaAccountServiceMock pleromaAccountServiceMock;
+  PleromaAuthStatusServiceMock pleromaAuthStatusServiceMock;
+  PleromaAuthAccountServiceMock pleromaAccountServiceMock;
   PleromaStatusEmojiReactionServiceMock pleromaStatusEmojiReactionServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
@@ -43,28 +43,30 @@ void main() {
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
 
-    pleromaStatusServiceMock = PleromaStatusServiceMock();
-    pleromaAccountServiceMock = PleromaAccountServiceMock();
+    pleromaAuthStatusServiceMock = PleromaAuthStatusServiceMock();
+    pleromaAccountServiceMock = PleromaAuthAccountServiceMock();
     pleromaStatusEmojiReactionServiceMock =
         PleromaStatusEmojiReactionServiceMock();
 
-    when(pleromaStatusServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaAuthStatusServiceMock.isApiReadyToUse).thenReturn(true);
     when(pleromaAccountServiceMock.isApiReadyToUse).thenReturn(true);
     when(pleromaStatusEmojiReactionServiceMock.isApiReadyToUse)
         .thenReturn(true);
 
     status = await createTestStatus(seed: "seed1");
 
-    statusBloc = StatusBloc(
-        status: status,
-        pleromaStatusService: pleromaStatusServiceMock,
-        statusRepository: statusRepository,
-        delayInit: false,
-        accountRepository: accountRepository,
-        pleromaAccountService: pleromaAccountServiceMock,
-        pleromaStatusEmojiReactionService:
-            pleromaStatusEmojiReactionServiceMock,
-        pleromaPollService: null);
+    statusBloc = LocalStatusBloc(
+      status: status,
+      pleromaStatusService: pleromaAuthStatusServiceMock,
+      statusRepository: statusRepository,
+      delayInit: false,
+      accountRepository: accountRepository,
+      pleromaAccountService: pleromaAccountServiceMock,
+      pleromaStatusEmojiReactionService: pleromaStatusEmojiReactionServiceMock,
+      pleromaPollService: null,
+      isNeedWatchLocalRepositoryForUpdates: false,
+      isNeedRefreshFromNetworkOnInit: false,
+    );
   });
 
   tearDown(() async {
@@ -982,7 +984,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expectStatus(listenedValue, status);
 
-    when(pleromaStatusServiceMock.getStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async => mapLocalStatusToRemoteStatus(newValue));
 
     await statusBloc.refreshFromNetwork();
@@ -1056,11 +1058,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.reblogged, status.reblogged);
 
-    when(pleromaStatusServiceMock.reblogStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.reblogStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(reblogged: true)));
 
-    when(pleromaStatusServiceMock.unReblogStatus(
+    when(pleromaAuthStatusServiceMock.unReblogStatus(
             statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(reblogged: false)));
@@ -1102,12 +1104,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.favourited, status.favourited);
 
-    when(pleromaStatusServiceMock.favouriteStatus(
+    when(pleromaAuthStatusServiceMock.favouriteStatus(
             statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(favourited: true)));
 
-    when(pleromaStatusServiceMock.unFavouriteStatus(
+    when(pleromaAuthStatusServiceMock.unFavouriteStatus(
             statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(favourited: false)));
@@ -1149,11 +1151,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.muted, status.muted);
 
-    when(pleromaStatusServiceMock.muteStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.muteStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(muted: true)));
 
-    when(pleromaStatusServiceMock.unMuteStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.unMuteStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(muted: false)));
 
@@ -1194,12 +1196,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.bookmarked, status.bookmarked);
 
-    when(pleromaStatusServiceMock.bookmarkStatus(
+    when(pleromaAuthStatusServiceMock.bookmarkStatus(
             statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(bookmarked: true)));
 
-    when(pleromaStatusServiceMock.unBookmarkStatus(
+    when(pleromaAuthStatusServiceMock.unBookmarkStatus(
             statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(bookmarked: false)));
@@ -1241,11 +1243,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.pinned, status.pinned);
 
-    when(pleromaStatusServiceMock.pinStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.pinStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(pinned: true)));
 
-    when(pleromaStatusServiceMock.unPinStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.unPinStatus(statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(pinned: false)));
 

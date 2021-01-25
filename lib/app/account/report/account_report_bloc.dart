@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
@@ -12,7 +13,10 @@ abstract class IAccountReportBloc implements IFormBloc {
 
   bool get isAccountOnRemoteHost;
 
+  InstanceLocation get instanceLocation;
+
   IAccount get account;
+
   List<IStatus> get statuses;
 
   IStringValueFormFieldBloc get messageStringValueFormFieldBloc;

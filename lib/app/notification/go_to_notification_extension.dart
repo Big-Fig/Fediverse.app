@@ -1,10 +1,10 @@
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pedantic/pedantic.dart';
@@ -26,7 +26,7 @@ extension GoToNotificationExtension on INotification {
     if (typePleroma == PleromaNotificationType.followRequest) {
       goToMyAccountFollowRequestListPage(context);
     } else if (status != null) {
-      goToStatusThreadPage(
+      goToLocalStatusThreadPage(
         context,
         status: status,
         initialMediaAttachment: null,
@@ -38,7 +38,10 @@ extension GoToNotificationExtension on INotification {
 
       goToPleromaChatPage(context, chat: chat);
     } else if (account != null) {
-      goToAccountDetailsPage(context, account);
+      goToLocalAccountDetailsPage(
+        context,
+        account: account,
+      );
     }
   }
 }

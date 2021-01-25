@@ -3,7 +3,7 @@ import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_st
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_account_sub_page.dart';
-import 'package:fedi/app/instance/details/home/home_instance_details_page.dart';
+import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
 import 'package:fedi/app/settings/instance/list/instance_settings_list_page.dart';
@@ -77,7 +77,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        goToHomeInstanceDetailsPage(context);
+        goToLocalInstanceDetailsPage(context);
       },
       child: _AccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.instance,

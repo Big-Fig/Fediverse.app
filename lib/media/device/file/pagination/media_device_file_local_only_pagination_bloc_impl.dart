@@ -1,4 +1,4 @@
-import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/list/local_only/local_only_list_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';

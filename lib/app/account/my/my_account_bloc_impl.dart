@@ -8,6 +8,7 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -135,4 +136,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future<IPleromaAccountRelationship> unSubscribe() => throw selfActionError;
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

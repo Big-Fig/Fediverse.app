@@ -22,7 +22,7 @@ void main() {
   IPleromaChatMessage chatMessage;
   IPleromaChatMessageBloc chatMessageBloc;
   PleromaChatServiceMock pleromaChatServiceMock;
-  PleromaAccountServiceMock pleromaAccountServiceMock;
+  PleromaAuthAccountServiceMock pleromaAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
   IPleromaChatMessageRepository chatMessageRepository;
@@ -34,7 +34,7 @@ void main() {
         appDatabase: database, accountRepository: accountRepository);
 
     pleromaChatServiceMock = PleromaChatServiceMock();
-    pleromaAccountServiceMock = PleromaAccountServiceMock();
+    pleromaAccountServiceMock = PleromaAuthAccountServiceMock();
 
     when(pleromaChatServiceMock.isApiReadyToUse).thenReturn(true);
     when(pleromaAccountServiceMock.isApiReadyToUse).thenReturn(true);

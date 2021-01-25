@@ -9,6 +9,7 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
@@ -33,14 +34,14 @@ class ScheduledStatusBloc extends DisposableOwner
   @override
   Stream<ScheduledStatusState> get stateStream => _stateSubject.stream;
 
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IPleromaScheduledStatusService pleromaScheduledStatusService;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ScheduledStatusBloc({
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required this.pleromaScheduledStatusService,
     @required this.statusRepository,
     @required this.scheduledStatusRepository,
@@ -173,7 +174,7 @@ class ScheduledStatusBloc extends DisposableOwner
     bool delayInit = true,
   }) =>
       ScheduledStatusBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService: IPleromaStatusService.of(context, listen: false),
         pleromaScheduledStatusService:
             IPleromaScheduledStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
@@ -209,7 +210,7 @@ class ScheduledStatusBloc extends DisposableOwner
   Future<bool> postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-    var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
+    var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
       data: PleromaScheduleStatus(
         mediaIds: postStatusData.mediaAttachments
             ?.map((mediaAttachment) => mediaAttachment.id)

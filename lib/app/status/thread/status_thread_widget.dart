@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
@@ -9,11 +10,13 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -279,11 +282,21 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                 statusCallback: (context, status) {
                   if (status.remoteId !=
                       statusThreadBloc.initialStatusToFetchThread.remoteId) {
-                    goToStatusThreadPage(
-                      context,
-                      status: status,
-                      initialMediaAttachment: null,
-                    );
+                    var isLocal = statusThreadBloc.instanceLocation ==
+                        InstanceLocation.local;
+                    if (isLocal) {
+                      goToLocalStatusThreadPage(
+                        context,
+                        status: status,
+                        initialMediaAttachment: null,
+                      );
+                    } else {
+                      goToRemoteStatusThreadPage(
+                        context,
+                        status: status,
+                        initialMediaAttachment: null,
+                      );
+                    }
                   }
                 },
                 collapsible: false,
@@ -312,7 +325,7 @@ class _StatusThreadStatusesListEmptyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(S.of(context).app_list_empty);
-  }
+  Widget build(BuildContext context) => FediEmptyWidget(
+        title: S.of(context).app_list_empty,
+      );
 }

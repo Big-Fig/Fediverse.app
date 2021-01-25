@@ -1,5 +1,6 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_status_list_bloc_impl.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -9,18 +10,26 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("conversation_chat_status_list_context_api_bloc_impl.dart");
+var _logger =
+    Logger("conversation_chat_status_list_context_api_bloc_impl.dart");
 
-class ConversationChatStatusListContextApiBloc extends ConversationChatStatusListBloc {
+class ConversationChatStatusListContextApiBloc
+    extends ConversationChatStatusListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatus statusToFetchContext;
 
-  ConversationChatStatusListContextApiBloc(
-      {@required this.pleromaStatusService,
-      @required IConversationChat conversation,
-      @required this.statusToFetchContext,
-      @required IStatusRepository statusRepository})
-      : super(conversation: conversation, statusRepository: statusRepository) {
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  ConversationChatStatusListContextApiBloc({
+    @required this.pleromaStatusService,
+    @required IConversationChat conversation,
+    @required this.statusToFetchContext,
+    @required IStatusRepository statusRepository,
+  }) : super(
+          conversation: conversation,
+          statusRepository: statusRepository,
+        ) {
     assert(statusToFetchContext != null);
   }
 
@@ -64,15 +73,16 @@ class ConversationChatStatusListContextApiBloc extends ConversationChatStatusLis
   }
 
   static ConversationChatStatusListContextApiBloc createFromContext(
-          BuildContext context,
-          {@required IConversationChat conversation,
-          @required IStatus statusToFetchContext}) =>
+    BuildContext context, {
+    @required IConversationChat conversation,
+    @required IStatus statusToFetchContext,
+  }) =>
       ConversationChatStatusListContextApiBloc(
-          conversation: conversation,
-          pleromaStatusService:
-              IPleromaStatusService.of(context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false),
-          statusToFetchContext: statusToFetchContext);
+        conversation: conversation,
+        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        statusToFetchContext: statusToFetchContext,
+      );
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();

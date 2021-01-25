@@ -6,10 +6,12 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -34,7 +36,7 @@ var _logger = Logger("select_account_list_bloc_impl.dart");
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
-  final IPleromaAccountService pleromaAccountService;
+  final IPleromaAuthAccountService pleromaAuthAccountService;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
@@ -55,7 +57,7 @@ class SelectAccountListBloc extends DisposableOwner
   String get searchText => searchInputBloc.confirmedSearchTerm;
 
   SelectAccountListBloc({
-    @required this.pleromaAccountService,
+    @required this.pleromaAuthAccountService,
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.excludeMyAccount,
@@ -68,7 +70,7 @@ class SelectAccountListBloc extends DisposableOwner
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IPleromaApi get pleromaApi => pleromaAuthAccountService;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
@@ -84,7 +86,7 @@ class SelectAccountListBloc extends DisposableOwner
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
       var following = followingsOnly == true;
-      remoteAccounts = await pleromaAccountService.search(
+      remoteAccounts = await pleromaAuthAccountService.search(
         query: searchText,
         resolve: true,
         following: following,
@@ -130,7 +132,7 @@ class SelectAccountListBloc extends DisposableOwner
     @required int limit,
   }) async {
     // my account followings by default
-    return await pleromaAccountService.getAccountFollowings(
+    return await pleromaAuthAccountService.getAccountFollowings(
       pagination: PleromaPaginationRequest(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -240,7 +242,7 @@ class SelectAccountListBloc extends DisposableOwner
         excludeMyAccount: excludeMyAccount,
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService:
+        pleromaAuthAccountService:
             IPleromaAccountService.of(context, listen: false),
         customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
         customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,
@@ -271,4 +273,7 @@ class SelectAccountListBloc extends DisposableOwner
   void onAccountSelected(IAccount account) {
     accountSelectedStreamController.add(account);
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

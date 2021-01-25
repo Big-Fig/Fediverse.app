@@ -7,6 +7,8 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
@@ -16,8 +18,8 @@ import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
-import 'package:fedi/app/ui/button/icon_text/with_border/fedi_transparent_icon_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/button/icon_text/with_border/fedi_transparent_icon_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -207,7 +209,15 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
           update: (context, value, previous) =>
               value.paginationListWithNewItemsBloc,
           child: CachedPaginationListWithNewItemsBlocProxyProvider<
-              CachedPaginationPage<IStatus>, IStatus>(child: child),
+              CachedPaginationPage<IStatus>, IStatus>(
+            child: ProxyProvider<ITimelineTabBloc, IStatusCachedListBloc>(
+              // value: tabBloc.paginationListWithNewItemsBloc,
+              update: (context, value, previous) => value.statusCachedListBloc,
+              child: StatusCachedListBlocProxyProvider(
+                child: child,
+              ),
+            ),
+          ),
         ),
       ),
     );

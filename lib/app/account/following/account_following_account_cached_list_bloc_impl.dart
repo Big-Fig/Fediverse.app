@@ -3,6 +3,7 @@ import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -118,4 +119,8 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       child: AccountCachedListBlocProxyProvider(child: child),
     );
   }
+
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

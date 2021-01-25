@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/analytics/analytics_service.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -28,7 +28,7 @@ import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/splash/splash_page.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
@@ -265,26 +265,37 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                 .listen(
               (launchOrResumePushLoaderNotification) {
                 if (launchOrResumePushLoaderNotification != null) {
-                  Future.delayed(Duration(milliseconds: 100), () async {
-                    var notification =
-                        launchOrResumePushLoaderNotification.notification;
-                    if (notification.isContainsChat) {
-                      await navigatorKey.currentState.push(
+                  Future.delayed(
+                    Duration(milliseconds: 100),
+                    () async {
+                      var notification =
+                          launchOrResumePushLoaderNotification.notification;
+                      if (notification.isContainsChat) {
+                        await navigatorKey.currentState.push(
                           createPleromaChatPageRoute(
-                              await currentInstanceContextBloc
-                                  .get<IPleromaChatRepository>()
-                                  .findByRemoteId(notification.chatRemoteId)));
-                    } else if (notification.isContainsStatus) {
-                      await navigatorKey.currentState
-                          .push(createStatusThreadPageRoute(
-                        status: notification.status,
-                        initialMediaAttachment: null,
-                      ));
-                    } else if (notification.isContainsAccount) {
-                      await navigatorKey.currentState.push(
-                          createAccountDetailsPageRoute(notification.account));
-                    }
-                  });
+                            await currentInstanceContextBloc
+                                .get<IPleromaChatRepository>()
+                                .findByRemoteId(
+                                  notification.chatRemoteId,
+                                ),
+                          ),
+                        );
+                      } else if (notification.isContainsStatus) {
+                        await navigatorKey.currentState.push(
+                          createLocalStatusThreadPageRoute(
+                            status: notification.status,
+                            initialMediaAttachment: null,
+                          ),
+                        );
+                      } else if (notification.isContainsAccount) {
+                        await navigatorKey.currentState.push(
+                          createLocalAccountDetailsPageRoute(
+                            notification.account,
+                          ),
+                        );
+                      }
+                    },
+                  );
                 }
               },
             ),

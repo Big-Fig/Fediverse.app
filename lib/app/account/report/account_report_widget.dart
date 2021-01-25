@@ -2,11 +2,13 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/report/account_report_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
+import 'package:fedi/app/status/remote_status_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
@@ -68,6 +70,7 @@ class _AccountReportStatusesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
+    var isLocal = accountReportBloc.instanceLocation == InstanceLocation.local;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -75,10 +78,19 @@ class _AccountReportStatusesWidget extends StatelessWidget {
           (status) => Provider<IStatus>.value(
             value: status,
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
-              update: (context, status, _) => StatusBloc.createFromContext(
-                context,
-                status,
-              ),
+              update: (context, status, _) {
+                if (isLocal) {
+                  return LocalStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                  );
+                } else {
+                  return RemoteStatusBloc.createFromContext(
+                    context,
+                    status: status,
+                  );
+                }
+              },
               child:
                   DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
                 update: (context, status, _) => StatusListItemTimelineBloc.list(

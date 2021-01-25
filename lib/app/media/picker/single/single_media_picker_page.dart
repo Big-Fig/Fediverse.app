@@ -1,4 +1,4 @@
-import 'package:fedi/app/list/local_only/network_only_list_bloc.dart';
+import 'package:fedi/app/list/local_only/local_only_list_bloc.dart';
 import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
 import 'package:fedi/app/media/picker/single/single_media_picker_bloc.dart';

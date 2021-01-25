@@ -47,7 +47,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
             actionsAxis: Axis.horizontal,
             cancelable: true) {
     addMyAccountDomainBlockBloc = AddMyAccountDomainBlockBloc(
-      pleromaAccountService: IPleromaAccountService.of(
+      pleromaAuthAccountService: IPleromaAccountService.of(
         context,
         listen: false,
       ),

@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_st
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -77,17 +78,19 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
       child: ProxyProvider<IMyAccountBookmarkedStatusesCachedListBloc,
           IStatusCachedListBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IMyAccountBookmarkedStatusesCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedListBlocLoadingWidget(
-            child: StatusCachedPaginationBloc.provideToContext(
-              context,
-              child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+        child: StatusCachedListBlocProxyProvider(
+          child: ProxyProvider<IMyAccountBookmarkedStatusesCachedListBloc,
+              IPleromaCachedListBloc<IStatus>>(
+            update: (context, value, previous) => value,
+            child: StatusCachedListBlocLoadingWidget(
+              child: StatusCachedPaginationBloc.provideToContext(
                 context,
-                child: const MyAccountBookmarkedStatusesPage(),
-                mergeNewItemsImmediately: false,
-                mergeOwnStatusesImmediately: false,
+                child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                  context,
+                  child: const MyAccountBookmarkedStatusesPage(),
+                  mergeNewItemsImmediately: false,
+                  mergeOwnStatusesImmediately: false,
+                ),
               ),
             ),
           ),

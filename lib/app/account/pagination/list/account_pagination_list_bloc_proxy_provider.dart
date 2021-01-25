@@ -16,7 +16,9 @@ class AccountPaginationListBlocProxyProvider extends StatelessWidget {
         IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<IAccountPaginationListBloc, IPaginationListBloc>(
-          update: (context, value, previous) => value, child: child),
+        update: (context, value, previous) => value,
+        child: child,
+      ),
     );
   }
 }

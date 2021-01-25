@@ -1,5 +1,8 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -11,7 +14,6 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final IconData icon;
   final IAccount account;
   final AccountCallback accountCallback;
-
 
   StatusSubHeaderWidget({
     @required this.account,
@@ -28,7 +30,19 @@ class StatusSubHeaderWidget extends StatelessWidget {
             if (accountCallback != null) {
               accountCallback(context, account);
             } else {
-              goToAccountDetailsPage(context, account);
+              var statusBloc = IStatusBloc.of(context, listen: false);
+              var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+              if (isLocal) {
+                goToLocalAccountDetailsPage(
+                  context,
+                  account: account,
+                );
+              } else {
+                goToRemoteAccountDetailsPage(
+                  context,
+                  account: account,
+                );
+              }
             }
           },
           behavior: HitTestBehavior.translucent,
@@ -63,5 +77,4 @@ class StatusSubHeaderWidget extends StatelessWidget {
       ],
     );
   }
-
 }

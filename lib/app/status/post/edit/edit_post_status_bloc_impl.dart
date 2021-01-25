@@ -28,7 +28,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     @required int maximumFileSizeInBytes,
     @required bool markMediaAsNsfwOnAttach,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: initialData,

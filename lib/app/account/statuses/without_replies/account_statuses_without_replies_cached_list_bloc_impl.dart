@@ -2,7 +2,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -166,7 +168,12 @@ class AccountStatusesWithoutRepliesListBloc
       create: (context) =>
           AccountStatusesWithoutRepliesListBloc.createFromContext(context,
               account: account),
-      child: child,
+      child: StatusCachedListBlocProxyProvider(
+        child: child,
+      ),
     );
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }
