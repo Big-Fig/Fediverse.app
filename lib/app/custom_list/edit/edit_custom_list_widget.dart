@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
@@ -13,6 +13,7 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_proxy_provider.dart';
+import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
@@ -30,8 +31,6 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'account_list/edit_custom_list_account_list_item_add_remove_action_widget.dart';
 
 class EditCustomListWidget extends StatelessWidget {
   const EditCustomListWidget();
@@ -134,7 +133,10 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
               ],
               accountSelectedCallback:
                   (BuildContext context, IAccount account) {
-                goToAccountDetailsPage(context, account);
+                goToLocalAccountDetailsPage(
+                  context,
+                  account: account,
+                );
               },
               itemPadding: FediPadding.verticalSmallPadding,
               headerPadding: EdgeInsets.zero,
@@ -212,23 +214,25 @@ class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
     return ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
       update: (context, editCustomListBloc, _) =>
           editCustomListBloc.selectAccountListBloc,
-      child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
-        update: (context, selectAccountListBloc, _) =>
-            selectAccountListBloc.searchInputBloc,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _EditCustomListBodySearchHeader(),
-            const SearchInputWidget(
-              padding: EdgeInsets.zero,
-            ),
-            const FediBigVerticalSpacer(),
-            Expanded(
-              child: _EditCustomListBodySearchToAddAccountsBodyWidget(
-                emptySearchChild: emptySearchChild,
+      child: SelectAccountListBlocProxyProvider(
+        child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
+          update: (context, selectAccountListBloc, _) =>
+              selectAccountListBloc.searchInputBloc,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _EditCustomListBodySearchHeader(),
+              const SearchInputWidget(
+                padding: EdgeInsets.zero,
               ),
-            ),
-          ],
+              const FediBigVerticalSpacer(),
+              Expanded(
+                child: _EditCustomListBodySearchToAddAccountsBodyWidget(
+                  emptySearchChild: emptySearchChild,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

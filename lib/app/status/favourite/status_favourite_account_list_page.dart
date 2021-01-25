@@ -1,8 +1,12 @@
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_cached_list_bloc_impl.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
@@ -24,7 +28,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
             const _StatusFavouriteAccountListPrivacyWarningWidget(),
             const Expanded(
               child: AccountPaginationListWidget(
-                accountSelectedCallback: goToAccountDetailsPage,
+                accountSelectedCallback: _goToAccountDetailsPage,
                 key: PageStorageKey("StatusFavouriteAccountListPage"),
               ),
             ),
@@ -35,6 +39,24 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
   }
 
   const StatusFavouriteAccountListPage();
+}
+
+void _goToAccountDetailsPage(BuildContext context, IAccount account) {
+  var statusBloc = IStatusBloc.of(context, listen: false);
+
+  var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
+  if (isLocal) {
+    goToLocalAccountDetailsPage(
+      context,
+      account: account,
+    );
+  } else {
+    goToRemoteAccountDetailsPage(
+      context,
+      account: account,
+    );
+  }
 }
 
 class _StatusFavouriteAccountListPrivacyWarningWidget extends StatelessWidget {
@@ -59,17 +81,18 @@ void goToStatusFavouriteAccountListPage(BuildContext context, IStatus status) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) =>
-            StatusFavouriteAccountCachedListBloc.provideToContext(
-              context,
-              status: status,
-              child: AccountCachedPaginationBloc.provideToContext(
-                context,
-                child: AccountPaginationListBloc.provideToContext(
-                  context,
-                  child: const StatusFavouriteAccountListPage(),
-                ),
-              ),
-            )),
+      builder: (context) =>
+          StatusFavouriteAccountCachedListBloc.provideToContext(
+        context,
+        status: status,
+        child: AccountCachedPaginationBloc.provideToContext(
+          context,
+          child: AccountPaginationListBloc.provideToContext(
+            context,
+            child: const StatusFavouriteAccountListPage(),
+          ),
+        ),
+      ),
+    ),
   );
 }

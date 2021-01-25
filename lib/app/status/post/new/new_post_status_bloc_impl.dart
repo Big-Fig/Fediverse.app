@@ -23,7 +23,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required bool markMediaAsNsfwOnAttach,
     @required String language,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,

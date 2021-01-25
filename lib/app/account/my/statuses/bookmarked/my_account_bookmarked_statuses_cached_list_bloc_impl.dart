@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_cached_list_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -118,4 +119,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     // nothing
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

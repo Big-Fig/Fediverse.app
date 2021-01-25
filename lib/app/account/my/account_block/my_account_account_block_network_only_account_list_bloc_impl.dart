@@ -1,11 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
+import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -15,19 +18,19 @@ import 'package:provider/provider.dart';
 
 class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountBlockNetworkOnlyAccountListBloc {
-  final IPleromaAccountService pleromaAccountService;
+  final IPleromaAuthAccountService pleromaAuthAccountService;
   final IPleromaMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountBlockNetworkOnlyAccountListBloc({
-    @required this.pleromaAccountService,
+    @required this.pleromaAuthAccountService,
     @required this.pleromaMyAccountService,
     @required this.accountRepository,
   });
 
   @override
   Future removeAccountBlock({@required IAccount account}) async {
-    var accountRelationship = await pleromaAccountService.unBlockAccount(
+    var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
         accountRemoteId: account.remoteId);
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
@@ -40,7 +43,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future addAccountBlock({@required IAccount account}) async {
-    var accountRelationship = await pleromaAccountService.blockAccount(
+    var accountRelationship = await pleromaAuthAccountService.blockAccount(
         accountRemoteId: account.remoteId);
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
@@ -87,7 +90,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAuthAccountService: IPleromaAccountService.of(
           context,
           listen: false,
         ),
@@ -105,10 +108,17 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
       child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
           IAccountNetworkOnlyListBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
-                INetworkOnlyListBloc<IAccount>>(
-            update: (context, value, previous) => value, child: child),
+        child: AccountNetworkOnlyListBlocProxyProvider(
+          child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
+              INetworkOnlyListBloc<IAccount>>(
+            update: (context, value, previous) => value,
+            child: child,
+          ),
+        ),
       ),
     );
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

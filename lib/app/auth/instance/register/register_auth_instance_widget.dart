@@ -2,6 +2,7 @@ import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_widget.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
@@ -20,7 +21,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var registerAuthInstanceBloc = IRegisterAuthInstanceBloc.of(context);
     return Padding(
       padding: FediPadding.verticalBigPadding,
-      child: AsyncInitLoadingWidget(
+      child: FediAsyncInitLoadingWidget(
         asyncInitLoadingBloc: registerAuthInstanceBloc,
         loadingFinishedBuilder: (context) {
           return Column(

@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_network_only_account_list_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -105,4 +106,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

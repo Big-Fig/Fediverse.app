@@ -1,4 +1,5 @@
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
@@ -77,17 +78,19 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
       child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
           IStatusCachedListBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedListBlocLoadingWidget(
-            child: StatusCachedPaginationBloc.provideToContext(
-              context,
-              child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+        child: StatusCachedListBlocProxyProvider(
+          child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+              IPleromaCachedListBloc<IStatus>>(
+            update: (context, value, previous) => value,
+            child: StatusCachedListBlocLoadingWidget(
+              child: StatusCachedPaginationBloc.provideToContext(
                 context,
-                child: const MyAccountFavouritedStatusesPage(),
-                mergeNewItemsImmediately: false,
-                mergeOwnStatusesImmediately: false,
+                child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                  context,
+                  child: const MyAccountFavouritedStatusesPage(),
+                  mergeNewItemsImmediately: false,
+                  mergeOwnStatusesImmediately: false,
+                ),
               ),
             ),
           ),

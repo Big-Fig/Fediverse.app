@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/account_widget.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/details/remote_account_details_page.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/form/field/value/duration/duration_value_form_field_row_widget.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
@@ -13,6 +15,8 @@ import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
@@ -41,7 +45,7 @@ class InstanceDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return AsyncInitLoadingWidget(
+    return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: instanceDetailsBloc,
       loadingFinishedBuilder: (context) {
         return FediListSmartRefresherWidget(
@@ -324,7 +328,6 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
         if (descriptionOrShortDescription?.isNotEmpty == true) {
-          
           return Provider<String>.value(
             value: descriptionOrShortDescription,
             child: DisposableProxyProvider<String, IHtmlTextBloc>(
@@ -830,7 +833,9 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    var isHomeInstance = instanceDetailsBloc.isHomeInstance;
+    var instanceLocation = instanceDetailsBloc.instanceLocation;
+
+    var isLocal = instanceLocation == InstanceLocation.local;
 
     return StreamBuilder<IPleromaAccount>(
       stream: instanceDetailsBloc.contactAccountStream,
@@ -859,20 +864,38 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
                 value: account,
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                   update: (context, account, _) {
-                    return AccountBloc.createFromContext(
-                      context,
-                      account: account,
-                      isNeedWatchWebSocketsEvents: false,
-                      isNeedRefreshFromNetworkOnInit: false,
-                      isNeedPreFetchRelationship: isHomeInstance,
-                      isNeedWatchLocalRepositoryForUpdates: false,
-                    );
+                    var isNeedRefreshFromNetworkOnInit = false;
+                    if (isLocal) {
+                      return LocalAccountBloc.createFromContext(
+                        context,
+                        account: account,
+                        isNeedWatchWebSocketsEvents: false,
+                        isNeedRefreshFromNetworkOnInit:
+                            isNeedRefreshFromNetworkOnInit,
+                        isNeedPreFetchRelationship: true,
+                        isNeedWatchLocalRepositoryForUpdates: false,
+                      );
+                    } else {
+                      return RemoteAccountBloc.createFromContext(
+                        context,
+                        account: account,
+                        isNeedRefreshFromNetworkOnInit:
+                            isNeedRefreshFromNetworkOnInit,
+                      );
+                    }
                   },
                   child: AccountWidget(
-                    displayActions: isHomeInstance,
                     onStatusesTapCallback: (context) {
-                      if (isHomeInstance) {
-                        goToAccountDetailsPage(context, account);
+                      if (isLocal) {
+                        goToLocalAccountDetailsPage(
+                          context,
+                          account: account,
+                        );
+                      } else {
+                        goToRemoteAccountDetailsPage(
+                          context,
+                          account: account,
+                        );
                       }
                     },
                     footer: const SizedBox.shrink(),

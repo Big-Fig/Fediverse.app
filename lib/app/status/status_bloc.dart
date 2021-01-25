@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -13,7 +14,7 @@ import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc implements IDisposable {
+abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
@@ -192,7 +193,7 @@ abstract class IStatusBloc implements IDisposable {
 
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
 
-  Future onPollUpdated(IPleromaPoll poll);
+  Future<IStatus> onPollUpdated(IPleromaPoll poll);
 
   bool get deleted;
 

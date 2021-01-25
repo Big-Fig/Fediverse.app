@@ -28,6 +28,7 @@ class AccountDisplayNameAndAcctWidget extends StatelessWidget {
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    // todo: autosize text for appBar
     return StreamProvider.value(
       value: accountBloc.displayNameEmojiTextStream,
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(

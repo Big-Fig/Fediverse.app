@@ -1,10 +1,12 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -50,6 +52,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
 
+    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     return ListView(
       shrinkWrap: true,
       children: [
@@ -60,14 +64,31 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           ),
           const FediBigVerticalSpacer(),
           DisposableProvider<IAccountBloc>(
-            create: (context) => AccountBloc.createFromContext(
-              context,
-              account: statusBloc.account,
-              isNeedWatchWebSocketsEvents: false,
-              isNeedRefreshFromNetworkOnInit: false,
-              isNeedWatchLocalRepositoryForUpdates: false,
-              isNeedPreFetchRelationship: true,
-            ),
+            create: (context) {
+              var isNeedWatchWebSocketsEvents = false;
+              var isNeedRefreshFromNetworkOnInit = false;
+              var isNeedWatchLocalRepositoryForUpdates = false;
+              var isNeedPreFetchRelationship = true;
+              if (isLocal) {
+                return LocalAccountBloc.createFromContext(
+                  context,
+                  account: statusBloc.account,
+                  isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
+                  isNeedRefreshFromNetworkOnInit:
+                      isNeedRefreshFromNetworkOnInit,
+                  isNeedWatchLocalRepositoryForUpdates:
+                      isNeedWatchLocalRepositoryForUpdates,
+                  isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+                );
+              } else {
+                return RemoteAccountBloc.createFromContext(
+                  context,
+                  account: statusBloc.account,
+                  isNeedRefreshFromNetworkOnInit:
+                      isNeedRefreshFromNetworkOnInit,
+                );
+              }
+            },
             child: const AccountActionMoreDialog(
               cancelable: true,
               showReportAction: true,
@@ -176,6 +197,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildShareAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
+    var instanceLocation = statusBloc.instanceLocation;
     var status = statusBloc.status;
     return DialogAction(
       icon: FediIcons.share,
@@ -185,15 +207,27 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           context,
           externalShareAction: () {
             Navigator.of(context).pop();
-            goToExternalShareStatusPage(context: context, status: status);
+            goToExternalShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+            );
           },
           conversationsShareAction: () {
             Navigator.of(context).pop();
-            goToConversationShareStatusPage(context: context, status: status);
+            goToConversationShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+            );
           },
           chatsShareAction: () {
             Navigator.of(context).pop();
-            goToPleromaChatShareStatusPage(context: context, status: status);
+            goToPleromaChatShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+            );
           },
         );
       },

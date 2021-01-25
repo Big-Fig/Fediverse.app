@@ -9,6 +9,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/duration/duration_extension.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +19,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   // ignore: close_sinks
   final BehaviorSubject<IDraftStatus> _draftStatusSubject;
 
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IDraftStatusRepository draftStatusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
@@ -35,7 +36,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   Stream<DraftStatusState> get stateStream => _stateSubject.stream;
 
   DraftStatusBloc({
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required this.statusRepository,
     @required this.scheduledStatusRepository,
     @required this.draftStatusRepository,
@@ -85,7 +86,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
         bool delayInit = true,
       }) =>
       DraftStatusBloc(
-        pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService: IPleromaStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
         IDraftStatusRepository.of(context, listen: false),
@@ -116,7 +117,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future postDraft(PostStatusData postStatusData) async {
     if (postStatusData.scheduledAt != null) {
-      var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
+      var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
           inReplyToConversationId: postStatusData.inReplyToConversationId,
           inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
@@ -142,7 +143,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       await scheduledStatusRepository
           .upsertRemoteScheduledStatus(pleromaScheduledStatus);
     } else {
-      var pleromaStatus = await pleromaStatusService.postStatus(
+      var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: PleromaPostStatus(
           inReplyToConversationId: postStatusData.inReplyToConversationId,
           inReplyToId: postStatusData.inReplyToPleromaStatus?.id,

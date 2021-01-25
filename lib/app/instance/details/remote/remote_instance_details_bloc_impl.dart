@@ -1,6 +1,7 @@
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
@@ -9,11 +10,6 @@ import 'package:flutter/widgets.dart';
 
 class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
-  @override
-  bool get isHomeInstance => false;
-
-  @override
-  bool get isRemoteInstance => true;
 
   final IRemoteInstanceBloc remoteInstanceBloc;
 
@@ -57,4 +53,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
 
   @override
   Future internalAsyncInit() => refresh();
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.remote;
 }

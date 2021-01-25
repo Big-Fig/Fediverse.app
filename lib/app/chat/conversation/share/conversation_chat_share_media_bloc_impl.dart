@@ -35,7 +35,7 @@ class ConversationChatShareMediaBloc extends ConversationChatShareBloc
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
           pleromaConversationService: pleromaConversationService,
-          pleromaStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaStatusService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
           pleromaAccountService: pleromaAccountService,

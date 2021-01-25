@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_bloc.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -132,7 +132,8 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
             (account) => Provider.value(
               value: account,
               child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                update: (context, account, _) => AccountBloc.createFromContext(
+                update: (context, account, _) =>
+                    LocalAccountBloc.createFromContext(
                   context,
                   account: account,
                   isNeedWatchWebSocketsEvents: false,

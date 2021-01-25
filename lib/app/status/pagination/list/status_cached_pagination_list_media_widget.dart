@@ -1,11 +1,15 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
+import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/remote_status_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -43,6 +47,9 @@ class StatusCachedPaginationListMediaWidget
     @required Widget footer,
   }) {
     _logger.finest(() => "buildStaggeredGridView ${items?.length}");
+    var statusListBloc = IStatusListBloc.of(context);
+    var instanceLocation = statusListBloc.instanceLocation;
+    var isLocal = instanceLocation == InstanceLocation.local;
 
     // all statuses should be already with media attachments
     items = items
@@ -105,8 +112,19 @@ class StatusCachedPaginationListMediaWidget
             child: Provider<IStatus>.value(
               value: statusWithMediaAttachment.status,
               child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                update: (context, status, oldValue) =>
-                    StatusBloc.createFromContext(context, status),
+                update: (context, status, oldValue) {
+                  if (isLocal) {
+                    return LocalStatusBloc.createFromContext(
+                      context,
+                      status: status,
+                    );
+                  } else {
+                    return RemoteStatusBloc.createFromContext(
+                      context,
+                      status: status,
+                    );
+                  }
+                },
                 child:
                     DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
                   update: (context, statusBloc, _) =>
@@ -116,12 +134,21 @@ class StatusCachedPaginationListMediaWidget
                   ),
                   child: InkWell(
                     onTap: () {
-                      goToStatusThreadPage(
-                        context,
-                        status: statusWithMediaAttachment.status,
-                        initialMediaAttachment:
-                            statusWithMediaAttachment.mediaAttachment,
-                      );
+                      if (isLocal) {
+                        goToLocalStatusThreadPage(
+                          context,
+                          status: statusWithMediaAttachment.status,
+                          initialMediaAttachment:
+                              statusWithMediaAttachment.mediaAttachment,
+                        );
+                      } else {
+                        goToRemoteStatusThreadPage(
+                          context,
+                          status: statusWithMediaAttachment.status,
+                          initialMediaAttachment:
+                              statusWithMediaAttachment.mediaAttachment,
+                        );
+                      }
                     },
                     child: Padding(
                       padding: FediPadding.allSmallPadding,

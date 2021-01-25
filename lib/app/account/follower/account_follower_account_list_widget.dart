@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/account/list/account_list_bloc.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -59,11 +61,26 @@ class _AccountFollowerAccountListBodyWidget extends StatelessWidget {
         ),
         const Expanded(
           child: AccountPaginationListWidget(
-            accountSelectedCallback: goToAccountDetailsPage,
+            accountSelectedCallback: _goToAccountDetailsPage,
             key: PageStorageKey("AccountFollowerAccountListPage"),
           ),
         ),
       ],
     );
+  }
+}
+
+void _goToAccountDetailsPage(BuildContext context, IAccount account) {
+  var accountListBloc = IAccountListBloc.of(context, listen: false);
+  var instanceLocation = accountListBloc.instanceLocation;
+  var isLocal = instanceLocation == InstanceLocation.local;
+  if (isLocal) {
+    goToLocalAccountDetailsPage(
+      context,
+      account: account,
+    );
+  } else {
+    throw UnsupportedError(
+        "Account following list supported only for local accounts");
   }
 }

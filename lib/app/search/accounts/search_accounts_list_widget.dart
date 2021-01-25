@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,5 +15,8 @@ class SearchAccountsListWidget extends StatelessWidget {
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {
-  goToAccountDetailsPage(context, account);
+  goToLocalAccountDetailsPage(
+    context,
+    account: account,
+  );
 }

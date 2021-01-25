@@ -1,12 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAccountBloc extends DisposableOwner {
+abstract class IAccountBloc extends DisposableOwner
+    implements IInstanceLocationBloc {
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
 
@@ -46,8 +48,6 @@ abstract class IAccountBloc extends DisposableOwner {
 }
 
 extension IAccountBlocExtension on IAccountBloc {
-  bool get isOnRemoteDomain => remoteDomainOrNull != null;
-
   String get acct => account.acct;
 
   Stream<String> get acctStream => accountStream.map((account) => account.acct);

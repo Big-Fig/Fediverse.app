@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -10,7 +10,7 @@ import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
@@ -155,13 +155,13 @@ class SearchResultItemPaginationListWidget
     return Provider<IAccount>.value(
       value: account,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
-          update: (context, account, oldValue) => AccountBloc.createFromContext(
-              context,
-              isNeedWatchLocalRepositoryForUpdates: false,
-              account: account,
-              isNeedRefreshFromNetworkOnInit: false,
-              isNeedWatchWebSocketsEvents: false,
-              isNeedPreFetchRelationship: false),
+          update: (context, account, oldValue) =>
+              LocalAccountBloc.createFromContext(context,
+                  isNeedWatchLocalRepositoryForUpdates: false,
+                  account: account,
+                  isNeedRefreshFromNetworkOnInit: false,
+                  isNeedWatchWebSocketsEvents: false,
+                  isNeedPreFetchRelationship: false),
           child: Column(
             children: [
               const AccountListItemWidget(
@@ -182,7 +182,10 @@ class SearchResultItemPaginationListWidget
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {
-  goToAccountDetailsPage(context, account);
+  goToLocalAccountDetailsPage(
+    context,
+    account: account,
+  );
 }
 
 class _ItemOrSeparator<T> {
@@ -196,5 +199,6 @@ class _ItemOrSeparator<T> {
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {
-  goToStatusThreadPage(context, status: status, initialMediaAttachment: null);
+  goToLocalStatusThreadPage(context,
+      status: status, initialMediaAttachment: null);
 }

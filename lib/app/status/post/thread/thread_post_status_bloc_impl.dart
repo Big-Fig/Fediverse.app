@@ -50,7 +50,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     @required bool markMediaAsNsfwOnAttach,
     @required String language,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
@@ -188,7 +188,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   List<String> calculateToField() {
-    if (pleromaStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleromaInstance) {
       if (originInReplyToStatus != null && !originInReplyToStatusCanceled) {
         var inReplyToStatusAcct = originInReplyToStatus.account.acct;
 

@@ -5,9 +5,10 @@ import 'package:flutter/widgets.dart';
 abstract class INetworkOnlyListBloc<T> extends DisposableOwner {
   IPleromaApi get pleromaApi;
 
-  Future<List<T>> loadItemsFromRemoteForPage(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required String minId,
-      @required String maxId});
+  Future<List<T>> loadItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required String minId,
+    @required String maxId,
+  });
 }

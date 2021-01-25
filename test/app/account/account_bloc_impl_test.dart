@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -23,7 +23,7 @@ import 'account_model_helper.dart';
 void main() {
   IAccount account;
   IAccountBloc accountBloc;
-  PleromaAccountServiceMock pleromaAccountServiceMock;
+  PleromaAuthAccountServiceMock pleromaAuthAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
@@ -35,9 +35,9 @@ void main() {
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
 
-    pleromaAccountServiceMock = PleromaAccountServiceMock();
+    pleromaAuthAccountServiceMock = PleromaAuthAccountServiceMock();
 
-    when(pleromaAccountServiceMock.isApiReadyToUse).thenReturn(true);
+    when(pleromaAuthAccountServiceMock.isApiReadyToUse).thenReturn(true);
 
     account = await createTestAccount(seed: "seed1");
 
@@ -49,14 +49,15 @@ void main() {
         chatRemoteId: null);
     account = await accountRepository.findByRemoteId(account.remoteId);
 
-    accountBloc = AccountBloc(
-        account: account,
-        pleromaAccountService: pleromaAccountServiceMock,
-        accountRepository: accountRepository,
-        delayInit: false,
-        pleromaWebSocketsService: pleromaWebSocketsService,
-        statusRepository: statusRepository,
-        myAccount: null);
+    accountBloc = LocalAccountBloc(
+      account: account,
+      pleromaAuthAccountService: pleromaAuthAccountServiceMock,
+      accountRepository: accountRepository,
+      delayInit: false,
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      statusRepository: statusRepository,
+      myAccount: null,
+    );
   });
 
   tearDown(() async {
@@ -388,11 +389,11 @@ void main() {
     expectAccount(listenedValue, account);
 
     var newRelationship = createTestAccountRelationship(seed: "seed11");
-    when(pleromaAccountServiceMock.getAccount(
+    when(pleromaAuthAccountServiceMock.getAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer((_) async => mapLocalAccountToRemoteAccount(newValue));
 
-    when(pleromaAccountServiceMock
+    when(pleromaAuthAccountServiceMock
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
@@ -419,12 +420,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    when(pleromaAccountServiceMock.blockAccount(
+    when(pleromaAuthAccountServiceMock.blockAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(blocking: true));
 
-    when(pleromaAccountServiceMock.unBlockAccount(
+    when(pleromaAuthAccountServiceMock.unBlockAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(blocking: false));
@@ -459,12 +460,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    when(pleromaAccountServiceMock.followAccount(
+    when(pleromaAuthAccountServiceMock.followAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(following: true));
 
-    when(pleromaAccountServiceMock.unFollowAccount(
+    when(pleromaAuthAccountServiceMock.unFollowAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer((_) async => account.pleromaRelationship.copyWith(
               following: false,
@@ -501,7 +502,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    when(pleromaAccountServiceMock.muteAccount(
+    when(pleromaAuthAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: true,
     )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
@@ -509,7 +510,7 @@ void main() {
           mutingNotifications: true,
         ));
 
-    when(pleromaAccountServiceMock.muteAccount(
+    when(pleromaAuthAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: false,
     )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
@@ -517,7 +518,7 @@ void main() {
           mutingNotifications: false,
         ));
 
-    when(pleromaAccountServiceMock.unMuteAccount(
+    when(pleromaAuthAccountServiceMock.unMuteAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: false));
@@ -556,12 +557,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    when(pleromaAccountServiceMock.pinAccount(
+    when(pleromaAuthAccountServiceMock.pinAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: true));
 
-    when(pleromaAccountServiceMock.unPinAccount(
+    when(pleromaAuthAccountServiceMock.unPinAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: false));

@@ -1,8 +1,7 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
-import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/status/context/pleroma_status_context_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_exception.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -17,10 +16,7 @@ class PleromaStatusService extends DisposableOwner
     implements IPleromaStatusService {
   final statusRelativeUrlPath = "/api/v1/statuses/";
   @override
-  final IPleromaAuthRestService restService;
-
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
+  final IPleromaRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -54,79 +50,6 @@ class PleromaStatusService extends DisposableOwner
   }) async {
     var request = RestRequest.get(
       relativePath: join(statusRelativeUrlPath, statusRemoteId),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future deleteStatus({
-    @required String statusRemoteId,
-  }) async {
-    await restService.sendHttpRequest(RestRequest.delete(
-      relativePath: join(statusRelativeUrlPath, statusRemoteId),
-    ));
-  }
-
-  @override
-  Future<IPleromaStatus> muteStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "mute",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> unMuteStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "unmute",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> pinStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "pin",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> unPinStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "unpin",
-      ),
     );
     var httpResponse = await restService.sendHttpRequest(request);
 
@@ -206,42 +129,6 @@ class PleromaStatusService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> favouritedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
-  }) async {
-    var request = RestRequest.get(
-      queryArgs: pagination?.toQueryArgs(),
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "favourited_by",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseAccountsResponse(httpResponse);
-  }
-
-  @override
-  Future<List<IPleromaAccount>> rebloggedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
-  }) async {
-    var request = RestRequest.get(
-      queryArgs: pagination?.toQueryArgs(),
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "reblogged_by",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseAccountsResponse(httpResponse);
-  }
-
-  @override
   Future<PleromaStatusContext> getStatusContext({
     @required String statusRemoteId,
   }) async {
@@ -255,131 +142,5 @@ class PleromaStatusService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusContextResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> reblogStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "reblog",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> unReblogStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "unreblog",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> favouriteStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "favourite",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> unFavouriteStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "unfavourite",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> bookmarkStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "bookmark",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> unBookmarkStatus({
-    @required String statusRemoteId,
-  }) async {
-    var request = RestRequest.post(
-      relativePath: join(
-        statusRelativeUrlPath,
-        statusRemoteId,
-        "unbookmark",
-      ),
-    );
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaStatus> postStatus({@required IPleromaPostStatus data}) async {
-    var json = data.toJson();
-
-    var request = RestRequest.post(
-      relativePath: statusRelativeUrlPath,
-      bodyJson: json,
-    );
-
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaScheduledStatus> scheduleStatus(
-      {IPleromaScheduleStatus data}) async {
-    var json = data.toJson();
-
-    assert(data.scheduledAt != null);
-    var request = RestRequest.post(
-      relativePath: statusRelativeUrlPath,
-      bodyJson: json,
-    );
-
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseScheduledStatusResponse(httpResponse);
   }
 }

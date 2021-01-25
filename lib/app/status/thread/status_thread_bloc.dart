@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-abstract class IStatusThreadBloc implements IDisposable {
+abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
   static IStatusThreadBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusThreadBloc>(context, listen: listen);
 

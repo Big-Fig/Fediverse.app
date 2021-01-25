@@ -1,10 +1,13 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/list/local_only/draft_status_local_only_list_bloc.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
+import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 
 class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
   final IDraftStatusRepository draftStatusRepository;
@@ -23,7 +26,10 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
     return DisposableProvider<IDraftStatusLocalOnlyListBloc>(
       create: (context) =>
           DraftStatusLocalOnlyListBloc.createFromContext(context),
-      child: child,
+      child: ProxyProvider<IDraftStatusLocalOnlyListBloc, IStatusListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      ),
     );
   }
 
@@ -46,4 +52,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
 
     return statuses;
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

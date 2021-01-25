@@ -119,10 +119,11 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart'
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service_impl.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_service.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_service_impl.dart';
 import 'package:fedi/pleroma/announcement/pleroma_announcement_service.dart';
@@ -156,10 +157,11 @@ import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service_impl.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service_impl.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service_impl.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service_impl.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
@@ -366,19 +368,26 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaAccountPublicService>(pleromaAccountPublicService);
     addDisposable(disposable: pleromaAccountPublicService);
     var pleromaAccountService =
-        PleromaAccountService(restService: pleromaAuthRestService);
+        PleromaAuthAccountService(authRestService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaAccountService>(pleromaAccountService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaAuthAccountService>(pleromaAccountService);
+
     addDisposable(disposable: pleromaAccountService);
     var pleromaTimelineService =
         PleromaTimelineService(restService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaTimelineService>(pleromaTimelineService);
     addDisposable(disposable: pleromaTimelineService);
+
     var pleromaStatusService =
-        PleromaStatusService(restService: pleromaAuthRestService);
+        PleromaAuthStatusService(authRestService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaStatusService>(pleromaStatusService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaAuthStatusService>(pleromaStatusService);
+
     addDisposable(disposable: pleromaStatusService);
     var pleromaScheduledStatusService =
         PleromaScheduledStatusService(restService: pleromaAuthRestService);
@@ -905,14 +914,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
-
-
-
-
     await moorDatabaseService.clearByLimits(
       ageLimit: databaseCacheSettingsBloc.ageLimit?.toDuration(),
       entriesCountByTypeLimit:
-      databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCount(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCount(),
     );
   }
 }

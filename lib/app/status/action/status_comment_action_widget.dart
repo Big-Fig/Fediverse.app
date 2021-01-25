@@ -1,6 +1,8 @@
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/status/thread/local_status_thread_page.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -51,11 +53,21 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
 
 void _onActionClick(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
-  return goToStatusThreadPage(
-    context,
-    status: statusBloc.status,
-    initialMediaAttachment: null,
-  );
+  var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
+  if (isLocal) {
+    return goToLocalStatusThreadPage(
+      context,
+      status: statusBloc.status,
+      initialMediaAttachment: null,
+    );
+  } else {
+    return goToRemoteStatusThreadPage(
+      context,
+      status: statusBloc.status,
+      initialMediaAttachment: null,
+    );
+  }
 }
 
 class _StatusCommentActionButtonWidget extends StatelessWidget {

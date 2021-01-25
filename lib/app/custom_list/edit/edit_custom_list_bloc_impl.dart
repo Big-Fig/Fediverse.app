@@ -145,7 +145,7 @@ class EditCustomListBloc extends DisposableOwner
     @required IAccountRepository accountRepository,
     @required IPleromaAccountService pleromaAccountService,
   })  : selectAccountListBloc = SelectAccountListBloc(
-            pleromaAccountService: pleromaAccountService,
+            pleromaAuthAccountService: pleromaAccountService,
             accountRepository: accountRepository,
             myAccountBloc: myAccountBloc,
             excludeMyAccount: true,

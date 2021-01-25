@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
@@ -27,9 +28,12 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   final IPleromaPollService pleromaPollService;
 
+  final InstanceLocation instanceLocation;
+
   PollBloc({
     @required IPleromaPoll poll,
     @required this.pleromaPollService,
+    @required this.instanceLocation,
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     addDisposable(subject: pollSubject);
     addDisposable(subject: selectedVotesSubject);
@@ -40,12 +44,19 @@ class PollBloc extends DisposableOwner implements IPollBloc {
         var diff = DateTime.now().difference(poll.expiresAt).abs();
 
         addDisposable(
-            timer: Timer(diff, () {
-          refreshFromNetwork();
-        }));
+          timer: Timer(
+            diff,
+            () {
+              refreshFromNetwork();
+            },
+          ),
+        );
       }
     }
   }
+
+  bool get isLocalInstanceLocation =>
+      instanceLocation == InstanceLocation.local;
 
   @override
   IPleromaPoll get poll => pollSubject.value;
@@ -54,11 +65,11 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   Stream<IPleromaPoll> get pollStream => pollSubject.stream;
 
   @override
-  bool get isPossibleToVote => poll.isPossibleToVote;
+  bool get isPossibleToVote => isLocalInstanceLocation && poll.isPossibleToVote;
 
   @override
-  Stream<bool> get isPossibleToVoteStream =>
-      pollStream.map((poll) => poll.isPossibleToVote);
+  Stream<bool> get isPossibleToVoteStream => pollStream
+      .map((poll) => isLocalInstanceLocation && poll.isPossibleToVote);
 
   @override
   DateTime get expiresAt => poll.expiresAt;

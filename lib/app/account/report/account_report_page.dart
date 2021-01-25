@@ -114,7 +114,7 @@ MaterialPageRoute createAccountReportPageRoute({
       create: (context) => AccountReportBloc(
         account: account,
         statuses: statuses,
-        pleromaAccountService: IPleromaAccountService.of(
+        pleromaAuthAccountService: IPleromaAccountService.of(
           context,
           listen: false,
         ),

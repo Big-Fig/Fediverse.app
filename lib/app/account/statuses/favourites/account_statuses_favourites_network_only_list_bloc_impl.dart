@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_network_only_list_bloc_impl.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -69,4 +70,7 @@ class AccountStatusesFavouritesNetworkOnlyListBloc
         ?.map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus))
         ?.toList();
   }
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

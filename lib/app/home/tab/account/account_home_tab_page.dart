@@ -22,6 +22,7 @@ import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -404,18 +405,20 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
       child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
           IStatusCachedListBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedListBlocLoadingWidget(
-            child: StatusCachedPaginationBloc.provideToContext(
-              context,
-              child:
-                  StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+        child: StatusCachedListBlocProxyProvider(
+          child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+              IPleromaCachedListBloc<IStatus>>(
+            update: (context, value, previous) => value,
+            child: StatusCachedListBlocLoadingWidget(
+              child: StatusCachedPaginationBloc.provideToContext(
                 context,
-                child: child,
-                mergeNewItemsImmediately: false,
-                mergeOwnStatusesImmediately: false,
+                child:
+                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                  context,
+                  child: child,
+                  mergeNewItemsImmediately: false,
+                  mergeOwnStatusesImmediately: false,
+                ),
               ),
             ),
           ),

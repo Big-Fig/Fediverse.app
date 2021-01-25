@@ -3,12 +3,14 @@ import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -18,18 +20,18 @@ var _logger = Logger("status_reblog_account_list_service_impl.dart");
 
 class StatusReblogAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
-  final IPleromaStatusService pleromaStatusService;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
   StatusReblogAccountCachedListBloc({
-    @required this.pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required this.accountRepository,
     @required this.status,
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaStatusService;
+  IPleromaApi get pleromaApi => pleromaAuthStatusService;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
@@ -42,7 +44,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
 
     List<IPleromaAccount> remoteAccounts;
 
-    remoteAccounts = await pleromaStatusService.rebloggedBy(
+    remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
       statusRemoteId: status.remoteId,
       pagination: PleromaPaginationRequest(
         limit: limit,
@@ -100,7 +102,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
           {@required IStatus status}) =>
       StatusReblogAccountCachedListBloc(
           accountRepository: IAccountRepository.of(context, listen: false),
-          pleromaStatusService:
+          pleromaAuthStatusService:
               IPleromaStatusService.of(context, listen: false),
           status: status);
 
@@ -117,4 +119,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
         ),
         child: AccountCachedListBlocProxyProvider(child: child),
       );
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
 }

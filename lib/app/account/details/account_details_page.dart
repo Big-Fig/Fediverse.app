@@ -1,9 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_bloc_impl.dart';
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_widget.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
-import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi/app/account/display_name/account_display_name_and_acct_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
@@ -15,7 +12,6 @@ import 'package:fedi/app/account/statuses/media_only/account_statuses_media_only
 import 'package:fedi/app/account/statuses/pinned_only/account_statuses_pinned_only_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
@@ -432,33 +428,4 @@ class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-void goToAccountDetailsPage(BuildContext context, IAccount account) {
-  Navigator.push(
-    context,
-    createAccountDetailsPageRoute(account),
-  );
-}
-
-MaterialPageRoute createAccountDetailsPageRoute(IAccount account) {
-  return MaterialPageRoute(
-    builder: (context) => DisposableProvider<IAccountDetailsBloc>(
-      create: (context) => AccountDetailsBloc(
-        currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
-          context,
-          listen: false,
-        ),
-      ),
-      child: DisposableProvider<IAccountBloc>(
-        create: (context) => AccountBloc.createFromContext(context,
-            isNeedWatchLocalRepositoryForUpdates: true,
-            account: account,
-            isNeedRefreshFromNetworkOnInit: false,
-            isNeedWatchWebSocketsEvents: false,
-            isNeedPreFetchRelationship: true),
-        child: const AccountDetailsPage(),
-      ),
-    ),
-  );
 }
