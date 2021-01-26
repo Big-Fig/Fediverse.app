@@ -4,8 +4,10 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/account_widget.dart';
+import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/details/remote_account_details_page.dart';
+import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
@@ -856,7 +858,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
                     account: account,
                     isNeedWatchWebSocketsEvents: false,
                     isNeedRefreshFromNetworkOnInit:
-                    isNeedRefreshFromNetworkOnInit,
+                        isNeedRefreshFromNetworkOnInit,
                     isNeedPreFetchRelationship: true,
                     isNeedWatchLocalRepositoryForUpdates: false,
                   );
@@ -865,7 +867,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
                     context,
                     account: account,
                     isNeedRefreshFromNetworkOnInit:
-                    isNeedRefreshFromNetworkOnInit,
+                        isNeedRefreshFromNetworkOnInit,
                   );
                 }
               },
@@ -900,8 +902,6 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
                 ],
               ),
             ),
-          
-            
           );
         } else {
           return const SizedBox.shrink();
@@ -929,20 +929,23 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsContactAccountDisplayNameAndAcctWidget extends StatelessWidget {
+class _InstanceDetailsContactAccountDisplayNameAndAcctWidget
+    extends StatelessWidget {
   const _InstanceDetailsContactAccountDisplayNameAndAcctWidget({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    var accountBloc = IAccountBloc.of(context);
     return Padding(
-      padding: _InstanceDetailsRowWidget.padding,
-      child: _InstanceDetailsRowValueWidget(
-        value:
-        "${accountBloc.displayName} (${accountBloc.acctWithForcedRemoteInstanceHost})",
+      padding: FediPadding.allBigPadding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AccountDisplayNameWidget(),
+          const AccountAcctWidget(),
+        ],
       ),
     );
   }
