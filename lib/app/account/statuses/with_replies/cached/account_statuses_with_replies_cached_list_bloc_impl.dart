@@ -17,11 +17,12 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("account_statuses_media_only_cached_list_bloc_impl.dart");
+var _logger =
+    Logger("account_statuses_with_replies_cached_list_bloc_impl.dart");
 
-class AccountStatusesMediaOnlyCachedListBloc
+class AccountStatusesWithRepliesCachedListBloc
     extends AccountStatusesCachedListBloc {
-  AccountStatusesMediaOnlyCachedListBloc({
+  AccountStatusesWithRepliesCachedListBloc({
     @required IAccount account,
     @required IPleromaAccountService pleromaAccountService,
     @required IStatusRepository statusRepository,
@@ -40,10 +41,10 @@ class AccountStatusesMediaOnlyCachedListBloc
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesMediaOnlyCachedListBloc createFromContext(
+  static AccountStatusesWithRepliesCachedListBloc createFromContext(
       BuildContext context,
       {@required IAccount account}) {
-    return AccountStatusesMediaOnlyCachedListBloc(
+    return AccountStatusesWithRepliesCachedListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
@@ -75,7 +76,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocalCondition: null,
-      onlyWithMedia: true,
+      onlyWithMedia: false,
       withMuted: false,
       excludeVisibilities: null,
       olderThanStatus: olderThan,
@@ -105,7 +106,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocalCondition: null,
-      onlyWithMedia: true,
+      onlyWithMedia: false,
       withMuted: false,
       excludeVisibilities: null,
       olderThanStatus: null,
@@ -137,18 +138,20 @@ class AccountStatusesMediaOnlyCachedListBloc
         "\t olderThan=$olderThan");
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-      onlyWithMedia: true,
       accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
+        limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
-        limit: limit,
       ),
     );
 
     if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null, conversationRemoteId: null);
+      await statusRepository.upsertRemoteStatuses(
+        remoteStatuses,
+        listRemoteId: null,
+        conversationRemoteId: null,
+      );
 
       return true;
     } else {
@@ -165,14 +168,15 @@ class AccountStatusesMediaOnlyCachedListBloc
       {@required IAccount account, @required Widget child}) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
-          AccountStatusesMediaOnlyCachedListBloc.createFromContext(context,
+          AccountStatusesWithRepliesCachedListBloc.createFromContext(context,
               account: account),
-      child: StatusCachedListBlocProxyProvider(
-        child: child,
-      ),
+      child: StatusCachedListBlocProxyProvider(child: child),
     );
   }
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

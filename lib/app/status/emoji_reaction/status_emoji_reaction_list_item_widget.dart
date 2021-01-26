@@ -1,5 +1,7 @@
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -40,20 +42,31 @@ class _StatusEmojiReactionListItemBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
-    return PleromaAsyncOperationButtonBuilderWidget(
-      showProgressDialog: false,
-      asyncButtonAction: () => statusEmojiReactionBloc.toggleEmojiReaction(),
-      builder: (BuildContext context, void Function() onPressed) {
-        return Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
-          child: InkWell(
-            onTap: onPressed,
-            child: const _StatusEmojiReactionListItemContentWidget(),
-          ),
-        );
-      },
-    );
+
+    var statusBloc = IStatusBloc.of(context);
+
+    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+    if (isLocal) {
+      return PleromaAsyncOperationButtonBuilderWidget(
+        showProgressDialog: false,
+        asyncButtonAction: () => statusEmojiReactionBloc.toggleEmojiReaction(),
+        builder: (BuildContext context, void Function() onPressed) {
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
+            child: InkWell(
+              onTap: onPressed,
+              child: const _StatusEmojiReactionListItemContentWidget(),
+            ),
+          );
+        },
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
+        child: const _StatusEmojiReactionListItemContentWidget(),
+      );
+    }
   }
 }
 

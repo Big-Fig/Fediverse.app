@@ -6721,6 +6721,26 @@ class S {
       args: [sizeInMb],
     );
   }
+
+  /// `Open on {remoteInstanceDomain}`
+  String app_account_action_openOnRemoteInstance(Object remoteInstanceDomain) {
+    return Intl.message(
+      'Open on $remoteInstanceDomain',
+      name: 'app_account_action_openOnRemoteInstance',
+      desc: '',
+      args: [remoteInstanceDomain],
+    );
+  }
+
+  /// `Open on {remoteInstanceDomain}`
+  String app_status_action_openOnRemoteInstance(Object remoteInstanceDomain) {
+    return Intl.message(
+      'Open on $remoteInstanceDomain',
+      name: 'app_status_action_openOnRemoteInstance',
+      desc: '',
+      args: [remoteInstanceDomain],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

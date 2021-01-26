@@ -4,8 +4,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -16,9 +15,12 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger("remote_account_bloc_impl.dart");
 
 class RemoteAccountBloc extends AccountBloc {
+  final Uri instanceUri;
+
   RemoteAccountBloc({
     @required IPleromaAccountService pleromaAccountService,
     @required IAccount account,
+    @required this.instanceUri,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) : super(
@@ -34,18 +36,7 @@ class RemoteAccountBloc extends AccountBloc {
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) {
-    var remoteHost = account.acctRemoteHost;
-
-    // todo: refactor https
-    var instanceUri = Uri.parse("https://$remoteHost");
-
-    var remoteInstanceBloc = RemoteInstanceBloc(
-      instanceUri: instanceUri,
-      connectionService: IConnectionService.of(
-        context,
-        listen: false,
-      ),
-    );
+    var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
     var pleromaAccountService = PleromaAccountService(
       restService: remoteInstanceBloc.pleromaRestService,
@@ -55,10 +46,10 @@ class RemoteAccountBloc extends AccountBloc {
       account: account,
       isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
       pleromaAccountService: pleromaAccountService,
+      instanceUri: remoteInstanceBloc.instanceUri,
     );
 
     remoteAccountBloc.addDisposable(disposable: pleromaAccountService);
-    remoteAccountBloc.addDisposable(disposable: remoteInstanceBloc);
 
     return remoteAccountBloc;
   }
@@ -83,6 +74,9 @@ class RemoteAccountBloc extends AccountBloc {
   InstanceLocation get instanceLocation => InstanceLocation.remote;
 
   @override
+  Uri get remoteInstanceUriOrNull => instanceUri;
+
+  @override
   Future actualInit({
     @required IAccount account,
     @required bool isNeedRefreshFromNetworkOnInit,
@@ -97,10 +91,6 @@ class RemoteAccountBloc extends AccountBloc {
     @required bool isNeedPreFetchRelationship,
   }) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
-
-    if (isNeedPreFetchRelationship == true) {
-      throw UnsupportedOnRemoteInstanceLocationException();
-    }
 
     var remoteAccount = await loadRemoteAccount();
 

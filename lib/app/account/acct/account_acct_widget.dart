@@ -13,7 +13,7 @@ class AccountAcctWidget extends StatelessWidget {
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).mediumShortDarkGrey;
     return StreamBuilder<String>(
-      stream: accountBloc.acctStream,
+      stream: accountBloc.acctWithForcedRemoteInstanceHostStream,
       builder: (context, snapshot) {
         var acct = snapshot.data;
 

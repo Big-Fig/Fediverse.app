@@ -86,4 +86,7 @@ class ConversationChatStatusListContextApiBloc
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

@@ -14,9 +14,9 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
-import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -30,14 +30,14 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   final BehaviorSubject<IStatus> statusSubject;
 
-  final IPleromaAuthStatusService pleromaAuthStatusService;
+  final IPleromaStatusService pleromaStatusService;
   final IPleromaAccountService pleromaAccountService;
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
   final IPleromaPollService pleromaPollService;
 
   // todo: remove hack. Don't init when bloc quickly disposed. Help
   StatusBloc({
-    @required this.pleromaAuthStatusService,
+    @required this.pleromaStatusService,
     @required this.pleromaAccountService,
     @required this.pleromaStatusEmojiReactionService,
     @required this.pleromaPollService,
@@ -244,7 +244,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   Future<IPleromaStatus> loadRemoteStatus() async {
     var remoteStatus =
-        await pleromaAuthStatusService.getStatus(statusRemoteId: remoteId);
+        await pleromaStatusService.getStatus(statusRemoteId: remoteId);
     return remoteStatus;
   }
 

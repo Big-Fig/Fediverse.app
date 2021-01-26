@@ -1,4 +1,4 @@
-import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class IInstanceDetailsBloc
-    implements IDisposable, IAsyncInitLoadingBloc {
+    implements IDisposable, IAsyncInitLoadingBloc, IInstanceLocationBloc {
   static IInstanceDetailsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IInstanceDetailsBloc>(context, listen: listen);
 
@@ -18,8 +18,6 @@ abstract class IInstanceDetailsBloc
   bool get isPleroma;
 
   Uri get instanceUri;
-
-  InstanceLocation get instanceLocation;
 
   IPleromaInstance get instance;
 

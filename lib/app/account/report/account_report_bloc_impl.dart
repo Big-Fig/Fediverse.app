@@ -57,7 +57,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
       ];
 
   @override
-  bool get isAccountOnRemoteHost => account.isOnRemoteHost;
+  bool get isAccountOnRemoteHost => account.isAcctOnRemoteHost;
 
   @override
   Future<bool> send() async {

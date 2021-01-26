@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-22T21:53:23+00:00",
+    "@@last_modified": "2021-01-26T10:41:41+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -687,5 +687,7 @@
     "app_instance_details_field_federation_quarantinedInstances_label": "Quarantined Instances",
     "app_instance_details_field_federation_mrfObjectAge_threshold_label": "MFR Object Age Threshold",
     "app_instance_details_field_federation_mrfObjectAge_actions_label": "MFR Object Age Actions",
-    "app_instance_details_value_sizeInMb": "{sizeInMb} MB"
+    "app_instance_details_value_sizeInMb": "{sizeInMb} MB",
+    "app_account_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}",
+    "app_status_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}"
 }

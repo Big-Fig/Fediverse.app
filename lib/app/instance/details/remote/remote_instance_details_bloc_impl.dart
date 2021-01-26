@@ -56,4 +56,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;
+
+  @override
+  Uri get remoteInstanceUriOrNull => instanceUri;
 }
