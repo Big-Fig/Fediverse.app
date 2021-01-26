@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
@@ -8,12 +9,14 @@ import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
+import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +39,85 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   BuildContext context, {
   @required IAccount localInstanceRemoteAccount,
 }) async {
+  AsyncDialogResult<IAccount> remoteInstanceAccountDialogResult =
+      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IAccount>(
+    context: context,
+    errorDataBuilders: [
+      remoteInstanceLoadDataErrorAlertDialogBuilder,
+    ],
+    asyncCode: () async {
+      IAccount result;
+      RemoteInstanceBloc remoteInstanceBloc;
+      PleromaStatusService pleromaStatusService;
+      PleromaAccountService pleromaAccountService;
+      try {
+        var instanceUri = localInstanceRemoteAccount.urlRemoteHostUri;
+
+        remoteInstanceBloc = RemoteInstanceBloc(
+          instanceUri: instanceUri,
+          connectionService: IConnectionService.of(
+            context,
+            listen: false,
+          ),
+        );
+
+        pleromaStatusService = PleromaStatusService(
+          restService: remoteInstanceBloc.pleromaRestService,
+        );
+        pleromaAccountService = PleromaAccountService(
+          restService: remoteInstanceBloc.pleromaRestService,
+        );
+
+        try {
+          // load in Mastodon way. Extract account from status
+          result = await loadRemoteInstanceAccountViaAccountInStatus(
+            context,
+            localInstanceRemoteAccount,
+            pleromaStatusService,
+          );
+        } catch (e) {
+          // load in Pleroma way. Use username as id
+          var pleromaAccount = await pleromaAccountService.getAccount(
+              accountRemoteId: localInstanceRemoteAccount.username);
+          result = mapRemoteAccountToLocalAccount(pleromaAccount);
+        }
+      } finally {
+        unawaited(pleromaStatusService?.dispose());
+        unawaited(pleromaAccountService?.dispose());
+        unawaited(remoteInstanceBloc?.dispose());
+      }
+
+      return result;
+    },
+  );
+
+  var remoteInstanceAccount = remoteInstanceAccountDialogResult.result;
+  if (remoteInstanceAccount != null) {
+    goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+      context,
+      remoteInstanceAccount: remoteInstanceAccount,
+    );
+  }
+}
+
+Future<IAccount> loadRemoteInstanceAccountViaAccountInStatus(
+    BuildContext context,
+    IAccount localInstanceRemoteAccount,
+    PleromaStatusService pleromaStatusService) async {
+  var localInstanceRemoteStatus =
+      await loadLocalInstanceRemoteStatus(context, localInstanceRemoteAccount);
+
+  var remoteInstanceStatusRemoteId = localInstanceRemoteStatus.urlRemoteId;
+
+  var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
+      statusRemoteId: remoteInstanceStatusRemoteId);
+  var result =
+      mapRemoteAccountToLocalAccount(remoteInstanceRemoteStatus.account);
+  return result;
+}
+
+Future<IStatus> loadLocalInstanceRemoteStatus(
+    BuildContext context, IAccount localInstanceRemoteAccount) async {
   var localInstancePleromaAccountService =
       IPleromaAccountService.of(context, listen: false);
 
@@ -47,42 +129,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 
   IStatus localInstanceRemoteStatus =
       mapRemoteStatusToLocalStatus(remoteStatuses.first);
-
-  var instanceUri = localInstanceRemoteStatus.urlRemoteHostUri;
-
-  var remoteInstanceStatusRemoteId = localInstanceRemoteStatus.urlRemoteId;
-  var remoteInstanceBloc = RemoteInstanceBloc(
-    instanceUri: instanceUri,
-    connectionService: IConnectionService.of(
-      context,
-      listen: false,
-    ),
-  );
-
-  var pleromaStatusService = PleromaStatusService(
-    restService: remoteInstanceBloc.pleromaRestService,
-  );
-
-  AsyncDialogResult<IStatus> remoteInstanceStatusDialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus>(
-    context: context,
-    asyncCode: () async {
-      var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: remoteInstanceStatusRemoteId);
-
-      return mapRemoteStatusToLocalStatus(remoteInstanceRemoteStatus);
-    },
-  );
-
-  IStatus remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
-
-  unawaited(pleromaStatusService.dispose());
-  unawaited(remoteInstanceBloc.dispose());
-
-  goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
-    context,
-    remoteInstanceAccount: remoteInstanceStatus.account,
-  );
+  return localInstanceRemoteStatus;
 }
 
 MaterialPageRoute createRemoteAccountDetailsPageRoute({

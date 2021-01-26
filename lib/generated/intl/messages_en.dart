@@ -526,6 +526,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_instance_details_value_bool_true" : MessageLookupByLibrary.simpleMessage("True"),
     "app_instance_details_value_sizeInMb" : m25,
     "app_instance_detials_title" : m26,
+    "app_instance_remote_error_failed_dialog_content" : MessageLookupByLibrary.simpleMessage("Remote host don\'t support this feature or network error"),
+    "app_instance_remote_error_failed_dialog_title" : MessageLookupByLibrary.simpleMessage("Failed to load data from remote host"),
     "app_list_cantUpdateFromNetwork" : MessageLookupByLibrary.simpleMessage("Can\'t update from network"),
     "app_list_empty" : MessageLookupByLibrary.simpleMessage("Items not found"),
     "app_list_loading_state_canLoadMore" : MessageLookupByLibrary.simpleMessage("Can load more"),

@@ -1,6 +1,7 @@
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
+import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
@@ -36,53 +37,69 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   @required IStatus localInstanceRemoteStatus,
   @required IMastodonMediaAttachment localInstanceRemoteInitialMediaAttachment,
 }) async {
-  var instanceUri = localInstanceRemoteStatus.urlRemoteHostUri;
-
-  var remoteInstanceStatusRemoteId = localInstanceRemoteStatus.urlRemoteId;
-  var remoteInstanceBloc = RemoteInstanceBloc(
-    instanceUri: instanceUri,
-    connectionService: IConnectionService.of(
-      context,
-      listen: false,
-    ),
-  );
-
-  var pleromaStatusService = PleromaStatusService(
-    restService: remoteInstanceBloc.pleromaRestService,
-  );
-
   AsyncDialogResult<IStatus> remoteInstanceStatusDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus>(
     context: context,
+    errorDataBuilders: [
+      remoteInstanceLoadDataErrorAlertDialogBuilder,
+    ],
     asyncCode: () async {
-      var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: remoteInstanceStatusRemoteId);
+      IStatus result;
+      RemoteInstanceBloc remoteInstanceBloc;
+      PleromaStatusService pleromaStatusService;
+      try {
+        var instanceUri = localInstanceRemoteStatus.urlRemoteHostUri;
 
-      return mapRemoteStatusToLocalStatus(remoteInstanceRemoteStatus);
+        var remoteInstanceStatusRemoteId =
+            localInstanceRemoteStatus.urlRemoteId;
+
+        remoteInstanceBloc = RemoteInstanceBloc(
+          instanceUri: instanceUri,
+          connectionService: IConnectionService.of(
+            context,
+            listen: false,
+          ),
+        );
+
+        pleromaStatusService = PleromaStatusService(
+          restService: remoteInstanceBloc.pleromaRestService,
+        );
+
+        var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
+            statusRemoteId: remoteInstanceStatusRemoteId);
+
+        result = mapRemoteStatusToLocalStatus(remoteInstanceRemoteStatus);
+      } finally {
+        unawaited(pleromaStatusService?.dispose());
+        unawaited(remoteInstanceBloc?.dispose());
+      }
+
+      return result;
     },
   );
 
   IStatus remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
 
-  unawaited(pleromaStatusService.dispose());
-  unawaited(remoteInstanceBloc.dispose());
+  if (remoteInstanceStatus != null) {
+    IMastodonMediaAttachment remoteInstanceInitialMediaAttachment;
 
-  IMastodonMediaAttachment remoteInstanceInitialMediaAttachment;
+    if (localInstanceRemoteInitialMediaAttachment != null) {
+      remoteInstanceInitialMediaAttachment =
+          remoteInstanceStatus.mediaAttachments.firstWhere(
+        (mediaAttachment) =>
+            mediaAttachment.url ==
+            localInstanceRemoteInitialMediaAttachment.url,
+        orElse: () => null,
+      );
+    }
 
-  if (localInstanceRemoteInitialMediaAttachment != null) {
-    remoteInstanceInitialMediaAttachment =
-        remoteInstanceStatus.mediaAttachments.firstWhere(
-      (mediaAttachment) =>
-          mediaAttachment.url == localInstanceRemoteInitialMediaAttachment.url,
-      orElse: () => null,
+    goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+      context,
+      remoteInstanceStatus: remoteInstanceStatus,
+      remoteInstanceInitialMediaAttachment:
+          remoteInstanceInitialMediaAttachment,
     );
   }
-
-  goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
-    context,
-    remoteInstanceStatus: remoteInstanceStatus,
-    remoteInstanceInitialMediaAttachment: remoteInstanceInitialMediaAttachment,
-  );
 }
 
 MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({

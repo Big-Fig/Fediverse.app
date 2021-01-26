@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-26T10:41:41+00:00",
+    "@@last_modified": "2021-01-26T18:52:51+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -689,5 +689,7 @@
     "app_instance_details_field_federation_mrfObjectAge_actions_label": "MFR Object Age Actions",
     "app_instance_details_value_sizeInMb": "{sizeInMb} MB",
     "app_account_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}",
-    "app_status_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}"
+    "app_status_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}",
+    "app_instance_remote_error_failed_dialog_title": "Failed to load data from remote host",
+    "app_instance_remote_error_failed_dialog_content": "Remote host don't support this feature or network error"
 }

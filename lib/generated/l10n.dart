@@ -6741,6 +6741,26 @@ class S {
       args: [remoteInstanceDomain],
     );
   }
+
+  /// `Failed to load data from remote host`
+  String get app_instance_remote_error_failed_dialog_title {
+    return Intl.message(
+      'Failed to load data from remote host',
+      name: 'app_instance_remote_error_failed_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remote host don't support this feature or network error`
+  String get app_instance_remote_error_failed_dialog_content {
+    return Intl.message(
+      'Remote host don\'t support this feature or network error',
+      name: 'app_instance_remote_error_failed_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

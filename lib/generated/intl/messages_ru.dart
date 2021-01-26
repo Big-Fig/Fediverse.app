@@ -93,6 +93,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m36(userAtHost) => "Настройки: ${userAtHost}";
 
+  static m37(remoteInstanceDomain) => "Открыть на ${remoteInstanceDomain}";
+
   static m38(errorMessage) => "Ошибка: ${errorMessage}";
 
   static m39(count) => "${Intl.plural(count, one: '1 новая запись. Нажмите для загрузки.', other: '${count} новых записей. Нажмите для загрузки.')}";
@@ -524,6 +526,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_instance_details_value_bool_true" : MessageLookupByLibrary.simpleMessage("Да"),
     "app_instance_details_value_sizeInMb" : m25,
     "app_instance_detials_title" : m26,
+    "app_instance_remote_error_failed_dialog_content" : MessageLookupByLibrary.simpleMessage("Удаленный сервер не поддерживает или проблемы с соединением"),
+    "app_instance_remote_error_failed_dialog_title" : MessageLookupByLibrary.simpleMessage("Не удалось загрузить"),
     "app_list_cantUpdateFromNetwork" : MessageLookupByLibrary.simpleMessage("Не получилось обновить по сети"),
     "app_list_empty" : MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
     "app_list_loading_state_canLoadMore" : MessageLookupByLibrary.simpleMessage("Можно загрузить больше"),
@@ -621,6 +625,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_action_delete" : MessageLookupByLibrary.simpleMessage("Удалить"),
     "app_status_action_mute" : MessageLookupByLibrary.simpleMessage("Скрыть записи из беседы"),
     "app_status_action_openInBrowser" : MessageLookupByLibrary.simpleMessage("Открыть в браузере"),
+    "app_status_action_openOnRemoteInstance" : m37,
     "app_status_action_pin" : MessageLookupByLibrary.simpleMessage("Прикрепить"),
     "app_status_action_popup_title" : MessageLookupByLibrary.simpleMessage("Операции с записью"),
     "app_status_action_showThisThread" : MessageLookupByLibrary.simpleMessage("Показать эту беседу"),
