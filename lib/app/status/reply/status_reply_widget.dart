@@ -27,29 +27,30 @@ class StatusReplyWidget extends StatelessWidget {
         IStatusReplyLoaderBloc.of(context, listen: false);
 
     return StreamBuilder<AsyncInitLoadingState>(
-        stream: statusReplyLoaderBloc.initLoadingStateStream,
-        initialData: statusReplyLoaderBloc.initLoadingState,
-        builder: (context, snapshot) {
-          var loadingState = snapshot.data;
+      stream: statusReplyLoaderBloc.initLoadingStateStream,
+      initialData: statusReplyLoaderBloc.initLoadingState,
+      builder: (context, snapshot) {
+        var loadingState = snapshot.data;
 
-          switch (loadingState) {
-            case AsyncInitLoadingState.notStarted:
-            case AsyncInitLoadingState.loading:
-              return const _StatusReplyLoadingWidget();
-              break;
-            case AsyncInitLoadingState.finished:
-              return Provider<IStatus>.value(
-                value: statusReplyLoaderBloc.inReplyToStatus,
-                child: _buildStatusListItemTimelineWidget(),
-              );
-              break;
-            case AsyncInitLoadingState.failed:
-              return _StatusReplyFailedWidget();
-              break;
-          }
+        switch (loadingState) {
+          case AsyncInitLoadingState.notStarted:
+          case AsyncInitLoadingState.loading:
+            return const _StatusReplyLoadingWidget();
+            break;
+          case AsyncInitLoadingState.finished:
+            return Provider<IStatus>.value(
+              value: statusReplyLoaderBloc.inReplyToStatus,
+              child: _buildStatusListItemTimelineWidget(),
+            );
+            break;
+          case AsyncInitLoadingState.failed:
+            return _StatusReplyFailedWidget();
+            break;
+        }
 
-          throw "Invalid loadingState $loadingState";
-        });
+        throw "Invalid loadingState $loadingState";
+      },
+    );
   }
 
   Widget _buildStatusListItemTimelineWidget() {

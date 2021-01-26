@@ -12,6 +12,7 @@ class MediaAttachmentListBloc extends DisposableOwner
   final List<IPleromaMediaAttachment> mediaAttachments;
   @override
   final IPleromaMediaAttachment initialMediaAttachment;
+
   MediaAttachmentListBloc({
     @required this.mediaAttachments,
     @required this.initialMediaAttachment,
@@ -24,9 +25,11 @@ class MediaAttachmentListBloc extends DisposableOwner
           runtimeType == other.runtimeType &&
           eq(mediaAttachments, other.mediaAttachments) &&
           initialMediaAttachment == other.initialMediaAttachment;
+
   @override
   int get hashCode =>
       mediaAttachments.hashCode ^ initialMediaAttachment.hashCode;
+
   @override
   String toString() {
     return 'MediaAttachmentListBloc{mediaAttachments: $mediaAttachments,'
