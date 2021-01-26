@@ -1,7 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_widget.dart';
+import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
-import 'package:fedi/app/account/display_name/account_display_name_and_acct_widget.dart';
+import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
@@ -77,7 +78,13 @@ class AccountDetailsPageBody extends StatelessWidget {
       backgroundColor: IFediUiColorTheme.of(context).white,
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: const AccountDisplayNameAndAcctWidget(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AccountDisplayNameWidget(),
+            const AccountAcctWidget(),
+          ],
+        ),
       ),
       body: Stack(
         children: [
