@@ -60,7 +60,7 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
       );
 }
 
-void _onStatusClick(BuildContext context, IStatus status) {
+Future _onStatusClick(BuildContext context, IStatus status) async {
   var accountBloc = IAccountBloc.of(context, listen: false);
 
   var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
@@ -72,10 +72,10 @@ void _onStatusClick(BuildContext context, IStatus status) {
       initialMediaAttachment: null,
     );
   } else {
-    goToRemoteStatusThreadPage(
+    await goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
       context,
-      status: status,
-      initialMediaAttachment: null,
+      remoteInstanceStatus: status,
+      remoteInstanceInitialMediaAttachment: null,
     );
   }
 }

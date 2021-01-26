@@ -121,10 +121,10 @@ void _onStatusClick(BuildContext context, IStatus status) {
       initialMediaAttachment: null,
     );
   } else {
-    goToRemoteStatusThreadPage(
+    goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
       context,
-      status: status,
-      initialMediaAttachment: null,
+      remoteInstanceStatus: status,
+      remoteInstanceInitialMediaAttachment: null,
     );
   }
 }

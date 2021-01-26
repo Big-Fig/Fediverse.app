@@ -52,9 +52,9 @@ void _goToAccountDetailsPage(BuildContext context, IAccount account) {
       account: account,
     );
   } else {
-    goToRemoteAccountDetailsPage(
+    goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
       context,
-      account: account,
+      remoteInstanceAccount: account,
     );
   }
 }

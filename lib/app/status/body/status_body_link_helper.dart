@@ -24,9 +24,9 @@ Future handleStatusBodyLinkClick({
         account: mentionedAccount,
       );
     } else {
-      goToRemoteAccountDetailsPage(
+      goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
         context,
-        account: mentionedAccount,
+        remoteInstanceAccount: mentionedAccount,
       );
     }
   } else {

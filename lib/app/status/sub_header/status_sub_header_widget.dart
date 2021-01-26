@@ -38,9 +38,9 @@ class StatusSubHeaderWidget extends StatelessWidget {
                   account: account,
                 );
               } else {
-                goToRemoteAccountDetailsPage(
+                goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
                   context,
-                  account: account,
+                  remoteInstanceAccount: account,
                 );
               }
             }

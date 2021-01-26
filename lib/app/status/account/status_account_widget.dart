@@ -68,9 +68,9 @@ class StatusAccountWidget extends StatelessWidget {
                 account: reblogOrOriginalAccount,
               );
             } else {
-              goToRemoteAccountDetailsPage(
+              goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
                 context,
-                account: reblogOrOriginalAccount,
+                remoteInstanceAccount: reblogOrOriginalAccount,
               );
             }
           },

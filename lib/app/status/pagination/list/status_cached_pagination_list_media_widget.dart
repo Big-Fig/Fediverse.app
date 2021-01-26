@@ -142,10 +142,10 @@ class StatusCachedPaginationListMediaWidget
                               statusWithMediaAttachment.mediaAttachment,
                         );
                       } else {
-                        goToRemoteStatusThreadPage(
+                        goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
                           context,
-                          status: statusWithMediaAttachment.status,
-                          initialMediaAttachment:
+                          remoteInstanceStatus: statusWithMediaAttachment.status,
+                          remoteInstanceInitialMediaAttachment:
                               statusWithMediaAttachment.mediaAttachment,
                         );
                       }
