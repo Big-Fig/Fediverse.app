@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
@@ -14,16 +14,23 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RemoteStatusBloc extends StatusBloc {
+  final Uri instanceUri;
+
+  final BehaviorSubject<IAccount> inReplyToAccountSubject = BehaviorSubject();
+  final BehaviorSubject<IStatus> inReplyToStatusSubject = BehaviorSubject();
+
   RemoteStatusBloc({
+    @required this.instanceUri,
     @required IPleromaStatusService pleromaStatusService,
     @required IPleromaAccountService pleromaAccountService,
     @required IStatus status,
     @required bool isNeedRefreshFromNetworkOnInit,
     @required bool delayInit,
   }) : super(
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaStatusService: pleromaStatusService,
           pleromaAccountService: pleromaAccountService,
           // todo: rework passing null to separate classes without these fields
           pleromaStatusEmojiReactionService: null,
@@ -31,7 +38,10 @@ class RemoteStatusBloc extends StatusBloc {
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
-        );
+        ) {
+    addDisposable(subject: inReplyToAccountSubject);
+    addDisposable(subject: inReplyToStatusSubject);
+  }
 
   static RemoteStatusBloc createFromContext(
     BuildContext context, {
@@ -39,18 +49,7 @@ class RemoteStatusBloc extends StatusBloc {
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) {
-    var remoteHost = status.account.acctRemoteHost;
-
-    // todo: refactor https
-    var instanceUri = Uri.parse("https://$remoteHost");
-
-    var remoteInstanceBloc = RemoteInstanceBloc(
-      instanceUri: instanceUri,
-      connectionService: IConnectionService.of(
-        context,
-        listen: false,
-      ),
-    );
+    var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
     var pleromaAccountService = PleromaAccountService(
       restService: remoteInstanceBloc.pleromaRestService,
@@ -65,11 +64,11 @@ class RemoteStatusBloc extends StatusBloc {
       delayInit: delayInit,
       pleromaStatusService: pleromaStatusService,
       pleromaAccountService: pleromaAccountService,
+      instanceUri: remoteInstanceBloc.instanceUri,
     );
 
     remoteStatusBloc.addDisposable(disposable: pleromaAccountService);
     remoteStatusBloc.addDisposable(disposable: pleromaStatusService);
-    remoteStatusBloc.addDisposable(disposable: remoteInstanceBloc);
 
     return remoteStatusBloc;
   }
@@ -116,34 +115,81 @@ class RemoteStatusBloc extends StatusBloc {
     );
   }
 
-  @override
-  Future<IAccount> getInReplyToAccount() {
-    // TODO: implement getInReplyToAccount
-    throw UnimplementedError();
+  Future _checkIsInReplyToAccountLoaded() async {
+    // todo: don't load account if inReplyToStatus already loaded
+    var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
+    if (inReplyToAccountRemoteId != null) {
+      var remoteAccount = await pleromaAccountService.getAccount(
+          accountRemoteId: inReplyToAccountRemoteId);
+
+      inReplyToAccountSubject.add(
+        mapRemoteAccountToLocalAccount(remoteAccount),
+      );
+    }
+  }
+
+  Future _checkIsInReplyToStatusLoaded() async {
+    var inReplyToRemoteId = status.inReplyToRemoteId;
+    if (inReplyToRemoteId != null) {
+      var remoteStatus = await pleromaStatusService.getStatus(
+          statusRemoteId: inReplyToRemoteId);
+
+      inReplyToStatusSubject.add(
+        mapRemoteStatusToLocalStatus(remoteStatus),
+      );
+    }
   }
 
   @override
-  Future<IStatus> getInReplyToStatus() {
-    // TODO: implement getInReplyToStatus
-    throw UnimplementedError();
-  }
+  Future<IAccount> getInReplyToAccount() async {
+    await _checkIsInReplyToAccountLoaded();
 
-  @override
-  Future<IAccount> loadAccountByMentionUrl({String url}) {
-    // TODO: implement loadAccountByMentionUrl
-    throw UnimplementedError();
+    return inReplyToAccountSubject.value;
   }
 
   @override
   Stream<IAccount> watchInReplyToAccount() {
-    // TODO: implement watchInReplyToAccount
-    throw UnimplementedError();
+    _checkIsInReplyToAccountLoaded();
+
+    return inReplyToAccountSubject.stream;
+  }
+
+  @override
+  Future<IStatus> getInReplyToStatus() async {
+    await _checkIsInReplyToStatusLoaded();
+
+    return inReplyToStatusSubject.value;
   }
 
   @override
   Stream<IStatus> watchInReplyToStatus() {
-    // TODO: implement watchInReplyToStatus
-    throw UnimplementedError();
+    _checkIsInReplyToStatusLoaded();
+
+    return inReplyToStatusSubject.stream;
+  }
+
+  @override
+  Future<IAccount> loadAccountByMentionUrl({
+    @required String url,
+  }) async {
+    var foundMention = reblogOrOriginalMentions?.firstWhere(
+      (mention) => mention.url == url,
+      orElse: () => null,
+    );
+
+    var account;
+    if (foundMention != null) {
+      var accountRemoteId = foundMention.id;
+      if (pleromaAccountService.isApiReadyToUse) {
+        var remoteAccount = await pleromaAccountService.getAccount(
+          accountRemoteId: accountRemoteId,
+        );
+
+        account = mapRemoteAccountToLocalAccount(remoteAccount);
+      }
+    }
+
+    return account;
   }
 
   @override
@@ -182,4 +228,7 @@ class RemoteStatusBloc extends StatusBloc {
   Future<IStatus> toggleReblog() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
+
+  @override
+  Uri get remoteInstanceUriOrNull => instanceUri;
 }

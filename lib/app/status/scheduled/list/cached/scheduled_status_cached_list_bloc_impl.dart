@@ -116,4 +116,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

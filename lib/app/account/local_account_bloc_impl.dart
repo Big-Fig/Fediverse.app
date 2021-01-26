@@ -325,7 +325,7 @@ class LocalAccountBloc extends AccountBloc {
     assert(relationship != null);
     var newRelationship;
     var domainBlocking = relationship.domainBlocking == true;
-    var domain = remoteDomainOrNull;
+    var domain = acctRemoteDomainOrNull;
     if (domainBlocking) {
       await pleromaAuthAccountService.unBlockDomain(domain: domain);
     } else {
@@ -424,4 +424,7 @@ class LocalAccountBloc extends AccountBloc {
 
     return remoteAccount != null;
   }
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

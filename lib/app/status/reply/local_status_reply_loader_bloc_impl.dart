@@ -5,7 +5,7 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 
-class StatusReplyLoaderBloc extends AsyncInitLoadingBloc
+class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     implements IStatusReplyLoaderBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
@@ -14,17 +14,17 @@ class StatusReplyLoaderBloc extends AsyncInitLoadingBloc
   @override
   IStatus inReplyToStatus;
 
-  static StatusReplyLoaderBloc createFromContext(
+  static LocalStatusReplyLoaderBloc createFromContext(
     BuildContext context,
     IStatus originalStatus,
   ) =>
-      StatusReplyLoaderBloc(
+      LocalStatusReplyLoaderBloc(
         pleromaStatusService: IPleromaStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         originalStatus: originalStatus,
       );
 
-  StatusReplyLoaderBloc({
+  LocalStatusReplyLoaderBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required this.originalStatus,

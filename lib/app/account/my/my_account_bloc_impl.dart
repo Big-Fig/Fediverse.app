@@ -34,14 +34,18 @@ class MyAccountBloc extends IMyAccountBloc {
     @required this.accountRepository,
     @required this.instance,
   }) {
-    addDisposable(streamSubscription: accountStream.listen((myAccount) {
-      if (myAccount != null) {
-        accountRepository.upsertRemoteAccount(
-            mapLocalAccountToRemoteAccount(myAccount),
-            conversationRemoteId: null,
-            chatRemoteId: null);
-      }
-    }));
+    addDisposable(
+      streamSubscription: accountStream.listen(
+        (myAccount) {
+          if (myAccount != null) {
+            accountRepository.upsertRemoteAccount(
+                mapLocalAccountToRemoteAccount(myAccount),
+                conversationRemoteId: null,
+                chatRemoteId: null);
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -115,9 +119,6 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  String get remoteDomainOrNull => null;
-
-  @override
   Future<IPleromaAccountRelationship> mute({@required bool notifications}) =>
       throw selfActionError;
 
@@ -139,4 +140,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

@@ -57,7 +57,7 @@ void main() {
 
     statusBloc = LocalStatusBloc(
       status: status,
-      pleromaStatusService: pleromaAuthStatusServiceMock,
+      pleromaAuthStatusService: pleromaAuthStatusServiceMock,
       statusRepository: statusRepository,
       delayInit: false,
       accountRepository: accountRepository,

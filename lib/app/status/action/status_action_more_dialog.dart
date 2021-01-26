@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -110,6 +112,23 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             await UrlHelper.handleUrlClick(context, url);
             Navigator.of(context).pop();
           });
+
+  static DialogAction buildAccountOpenOnRemoteInstance(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context, listen: false);
+
+    return DialogAction(
+      icon: FediIcons.instance,
+      label: S.of(context).app_status_action_openOnRemoteInstance(
+          statusBloc.account.acctRemoteDomainOrNull),
+      onAction: (context) async {
+        goToRemoteStatusThreadPage(
+          context,
+          status: statusBloc.status,
+          initialMediaAttachment: null,
+        );
+      },
+    );
+  }
 
   static DialogAction buildCopyAction(BuildContext context) => DialogAction(
         icon: FediIcons.link,
@@ -246,7 +265,7 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     IStatus status = statusBloc.status;
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
-
+    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
     return FediChooserDialogBody(
         title: S.of(context).app_status_action_popup_title,
         actions: [
@@ -259,6 +278,9 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
           StatusActionMoreDialogBody.buildBookmarkAction(context),
           StatusActionMoreDialogBody.buildCopyAction(context),
           StatusActionMoreDialogBody.buildOpenInBrowserAction(context),
+          if (isLocal && statusBloc.account.isAcctRemoteDomainExist)
+            StatusActionMoreDialogBody.buildAccountOpenOnRemoteInstance(
+                context),
           StatusActionMoreDialogBody.buildShareAction(context),
         ],
         cancelable: false);

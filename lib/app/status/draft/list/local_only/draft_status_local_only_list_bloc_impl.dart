@@ -55,4 +55,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

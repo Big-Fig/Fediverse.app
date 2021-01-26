@@ -35,8 +35,18 @@ class AccountDisplayNameAndAcctWidget extends StatelessWidget {
         update: (context, emojiText, _) {
           String text;
           if (emojiText != null) {
-            text = "${emojiText.text} (${accountBloc.acct})";
+            text =
+                "${emojiText.text} (${accountBloc.acctWithForcedRemoteInstanceHost})";
           }
+          var textLength = text?.length ?? 0;
+
+          var fontSize = textStyle.fontSize;
+          var textLengthToReduceFont = 20;
+          if (textLength > textLengthToReduceFont) {
+            var count = textLength / textLengthToReduceFont;
+            fontSize *= (1 - 0.1 * count);
+          }
+
           return HtmlTextBloc(
             inputData: HtmlTextInputData(
               input: text,
@@ -48,7 +58,7 @@ class AccountDisplayNameAndAcctWidget extends StatelessWidget {
               color: textStyle.color,
               textMaxLines: null,
               textScaleFactor: textScaleFactor,
-              fontSize: textStyle.fontSize,
+              fontSize: fontSize,
               lineHeight: null,
               fontWeight: textStyle.fontWeight,
               drawNewLines: false,

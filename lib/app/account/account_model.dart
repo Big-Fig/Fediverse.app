@@ -369,7 +369,7 @@ DbAccount dbAccountFromAccount(IAccount account) {
 }
 
 extension IAccountExtension on IAccount {
-  bool get isOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
+  bool get isAcctOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
 
   String get acctRemoteHost {
     var separatorIndex = acct.lastIndexOf("@");
@@ -379,4 +379,24 @@ extension IAccountExtension on IAccount {
       return null;
     }
   }
+
+  Uri get urlRemoteHostUri {
+    var uri = Uri.parse(url);
+
+    var resultUrl = "${uri.scheme}://${uri.host}";
+    return Uri.parse(resultUrl);
+  }
+
+
+  String get acctRemoteDomainOrNull {
+    var usernameWithAt = "${username}@";
+    if (acct.contains(usernameWithAt)) {
+      return acct.replaceAll(usernameWithAt, "");
+    } else {
+      return null;
+    }
+  }
+
+  bool get isAcctRemoteDomainExist =>
+      acctRemoteDomainOrNull?.isNotEmpty == true;
 }

@@ -123,4 +123,7 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
+  @override
+  Uri get remoteInstanceUriOrNull => null;
+
 }

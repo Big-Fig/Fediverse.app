@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-22T21:53:27+00:00",
+    "@@last_modified": "2021-01-26T10:41:53+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -687,5 +687,6 @@
     "app_instance_details_field_federation_quarantinedInstances_label": "Серверы на карантине",
     "app_instance_details_field_federation_mrfObjectAge_threshold_label": "MFR Object Age Threshold",
     "app_instance_details_field_federation_mrfObjectAge_actions_label": "MFR Object Age Actions",
-    "app_instance_details_value_sizeInMb": "{sizeInMb} MB"
+    "app_instance_details_value_sizeInMb": "{sizeInMb} MB",
+    "app_account_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}"
 }

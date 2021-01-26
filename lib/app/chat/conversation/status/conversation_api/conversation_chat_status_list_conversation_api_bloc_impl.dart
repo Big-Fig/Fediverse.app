@@ -17,9 +17,6 @@ class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
   final IPleromaConversationService pleromaConversationService;
 
-  @override
-  InstanceLocation get instanceLocation => InstanceLocation.local;
-
   ConversationChatStatusListConversationApiBloc({
     @required IConversationChat conversation,
     @required this.pleromaConversationService,
@@ -77,4 +74,10 @@ class ConversationChatStatusListConversationApiBloc
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
+
+  @override
+  InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

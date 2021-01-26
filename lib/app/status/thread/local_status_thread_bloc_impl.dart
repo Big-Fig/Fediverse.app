@@ -97,4 +97,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

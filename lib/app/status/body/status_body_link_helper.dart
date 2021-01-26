@@ -14,6 +14,7 @@ Future handleStatusBodyLinkClick({
   var instanceLocation = statusBloc.instanceLocation;
   var isLocal = instanceLocation == InstanceLocation.local;
 
+  // todo: ask user open on local instance or remote
   var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: link);
 
   if (mentionedAccount != null) {

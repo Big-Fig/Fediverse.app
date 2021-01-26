@@ -17,12 +17,11 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger =
-    Logger("account_statuses_with_replies_cached_list_bloc_impl.dart");
+var _logger = Logger("account_statuses_media_only_cached_list_bloc_impl.dart");
 
-class AccountStatusesWithRepliesCachedListBloc
+class AccountStatusesMediaOnlyCachedListBloc
     extends AccountStatusesCachedListBloc {
-  AccountStatusesWithRepliesCachedListBloc({
+  AccountStatusesMediaOnlyCachedListBloc({
     @required IAccount account,
     @required IPleromaAccountService pleromaAccountService,
     @required IStatusRepository statusRepository,
@@ -41,10 +40,11 @@ class AccountStatusesWithRepliesCachedListBloc
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesWithRepliesCachedListBloc createFromContext(
-      BuildContext context,
-      {@required IAccount account}) {
-    return AccountStatusesWithRepliesCachedListBloc(
+  static AccountStatusesMediaOnlyCachedListBloc createFromContext(
+    BuildContext context, {
+    @required IAccount account,
+  }) {
+    return AccountStatusesMediaOnlyCachedListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
@@ -76,7 +76,7 @@ class AccountStatusesWithRepliesCachedListBloc
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocalCondition: null,
-      onlyWithMedia: false,
+      onlyWithMedia: true,
       withMuted: false,
       excludeVisibilities: null,
       olderThanStatus: olderThan,
@@ -106,7 +106,7 @@ class AccountStatusesWithRepliesCachedListBloc
       onlyWithHashtag: null,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocalCondition: null,
-      onlyWithMedia: false,
+      onlyWithMedia: true,
       withMuted: false,
       excludeVisibilities: null,
       olderThanStatus: null,
@@ -128,30 +128,29 @@ class AccountStatusesWithRepliesCachedListBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan,
+  }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
+      onlyWithMedia: true,
       accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
-        limit: limit,
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
+        limit: limit,
       ),
     );
 
     if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(
-        remoteStatuses,
-        listRemoteId: null,
-        conversationRemoteId: null,
-      );
+      await statusRepository.upsertRemoteStatuses(remoteStatuses,
+          listRemoteId: null, conversationRemoteId: null);
 
       return true;
     } else {
@@ -168,12 +167,17 @@ class AccountStatusesWithRepliesCachedListBloc
       {@required IAccount account, @required Widget child}) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
-          AccountStatusesWithRepliesCachedListBloc.createFromContext(context,
+          AccountStatusesMediaOnlyCachedListBloc.createFromContext(context,
               account: account),
-      child: StatusCachedListBlocProxyProvider(child: child),
+      child: StatusCachedListBlocProxyProvider(
+        child: child,
+      ),
     );
   }
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

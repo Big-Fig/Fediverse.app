@@ -11,10 +11,10 @@ import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_timeline_widget.dart';
-import 'package:fedi/app/account/statuses/media_only/account_statuses_media_only_cached_list_bloc_impl.dart';
-import 'package:fedi/app/account/statuses/pinned_only/account_statuses_pinned_only_network_only_list_bloc_impl.dart';
-import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
-import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
+import 'package:fedi/app/account/statuses/media_only/cached/account_statuses_media_only_cached_list_bloc_impl.dart';
+import 'package:fedi/app/account/statuses/pinned_only/network_only/local/local_account_statuses_pinned_only_network_only_list_bloc_impl.dart';
+import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_with_replies_cached_list_bloc_impl.dart';
+import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
@@ -359,7 +359,7 @@ class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return AccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
+    return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc.provideToContext(
       context,
       account: accountBloc.account,
       child: StatusNetworkOnlyPaginationBloc.provideToContext(

@@ -121,4 +121,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

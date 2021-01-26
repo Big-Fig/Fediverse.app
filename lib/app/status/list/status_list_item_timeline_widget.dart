@@ -15,8 +15,9 @@ import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/local_status_bloc_impl.dart';
 import 'package:fedi/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/app/status/remote_status_bloc_impl.dart';
+import 'package:fedi/app/status/reply/local_status_reply_loader_bloc_impl.dart';
+import 'package:fedi/app/status/reply/remote_status_reply_loader_bloc_impl.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
-import 'package:fedi/app/status/reply/status_reply_loader_bloc_impl.dart';
 import 'package:fedi/app/status/reply/status_reply_sub_header_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_widget.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
@@ -26,6 +27,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -168,6 +170,10 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+    var statusBloc = IStatusBloc.of(context);
+    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+    var isNeedDisplayActions =
+        statusListItemTimelineBloc.isDisplayActionsAndNotFirstReply && isLocal;
     return Column(
       children: [
         GestureDetector(
@@ -196,8 +202,8 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
             ],
           ),
         ),
-        if (statusListItemTimelineBloc.isDisplayActionsAndNotFirstReply)
-          const StatusActionsListWidget(),
+        if (isNeedDisplayActions) const StatusActionsListWidget(),
+        if (!isNeedDisplayActions) const FediSmallVerticalSpacer(),
         if (statusListItemTimelineBloc.isReplyAndFirstReplyOrDisplayAllReplies)
           Column(
             children: [
@@ -232,11 +238,20 @@ class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var statusListBloc = IStatusListBloc.of(context);
+
+    var isLocal = statusListBloc.instanceLocation == InstanceLocation.local;
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
     return DisposableProxyProvider<IStatus, IStatusReplyLoaderBloc>(
       update: (context, value, previous) {
-        var statusReplyLoaderBloc =
-            StatusReplyLoaderBloc.createFromContext(context, value);
+        IStatusReplyLoaderBloc statusReplyLoaderBloc;
+        if (isLocal) {
+          statusReplyLoaderBloc =
+              LocalStatusReplyLoaderBloc.createFromContext(context, value);
+        } else {
+          statusReplyLoaderBloc =
+              RemoteStatusReplyLoaderBloc.createFromContext(context, value);
+        }
         // don't await
         statusReplyLoaderBloc.performAsyncInit();
         return statusReplyLoaderBloc;

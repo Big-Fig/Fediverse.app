@@ -37,6 +37,9 @@ class StatusThreadWidget extends StatelessWidget {
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
+    var statusThreadBloc = IStatusThreadBloc.of(context);
+    var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
+
     return StreamBuilder<bool>(
         stream: postMessageBloc.isExpandedStream,
         builder: (context, snapshot) {
@@ -55,15 +58,17 @@ class StatusThreadWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const _StatusThreadInReplyToStatusWidget(),
-                const FediUltraLightGreyDivider(),
-                Container(
-                  decoration: BoxDecoration(
-                    color: fediUiColorTheme.white,
-                    boxShadow: [FediShadows.forBottomBar],
+                if (isLocal) ...[
+                  const _StatusThreadInReplyToStatusWidget(),
+                  const FediUltraLightGreyDivider(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: fediUiColorTheme.white,
+                      boxShadow: [FediShadows.forBottomBar],
+                    ),
+                    child: const _StatusThreadPostStatusWidget(),
                   ),
-                  child: const _StatusThreadPostStatusWidget(),
-                )
+                ]
               ],
             );
           }

@@ -639,3 +639,12 @@ DbStatus dbStatusFromStatus(IStatus status) {
     deleted: null,
   );
 }
+
+extension IStatusExtension on IStatus {
+  Uri get urlRemoteHostUri {
+    var uri = Uri.parse(url);
+
+    var resultUrl = "${uri.scheme}://${uri.host}";
+    return Uri.parse(resultUrl);
+  }
+}

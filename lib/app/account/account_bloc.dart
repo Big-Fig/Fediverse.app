@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
@@ -15,8 +16,6 @@ abstract class IAccountBloc extends DisposableOwner
   IAccount get account;
 
   Stream<IAccount> get accountStream;
-
-  String get remoteDomainOrNull;
 
   IPleromaAccountRelationship get relationship;
 
@@ -50,7 +49,35 @@ abstract class IAccountBloc extends DisposableOwner
 extension IAccountBlocExtension on IAccountBloc {
   String get acct => account.acct;
 
-  Stream<String> get acctStream => accountStream.map((account) => account.acct);
+  Stream<String> get acctStream => accountStream.map(
+        (account) => account.acct,
+      );
+
+  String get acctRemoteDomainOrNull => account.acctRemoteDomainOrNull;
+
+  bool get isAcctRemoteDomainExist => account.isAcctRemoteDomainExist;
+
+  String get acctWithForcedRemoteInstanceHost =>
+      calculateAcctOnRemoteHost(acct);
+
+  Stream<String> get acctWithForcedRemoteInstanceHostStream => acctStream.map(
+        (acct) => calculateAcctOnRemoteHost(acct),
+      );
+
+  String calculateAcctOnRemoteHost(String acct) {
+    var isLocal = instanceLocation == InstanceLocation.local;
+
+    if (isLocal) {
+      return acct;
+    } else {
+      if (acctRemoteDomainOrNull?.isNotEmpty == true) {
+        return acct;
+      } else {
+        var remoteDomain = account.urlRemoteHostUri.host;
+        return "$acct@$remoteDomain";
+      }
+    }
+  }
 
   String get avatar => account?.avatar;
 

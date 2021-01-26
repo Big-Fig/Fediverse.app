@@ -12,15 +12,6 @@ var _logger = Logger("account_bloc_impl.dart");
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;
 
-  @override
-  String get remoteDomainOrNull {
-    var usernameWithAt = "${account.username}@";
-    if (acct.contains(usernameWithAt)) {
-      return acct.replaceAll(usernameWithAt, "");
-    } else {
-      return null;
-    }
-  }
 
   final IPleromaAccountService pleromaAccountService;
 

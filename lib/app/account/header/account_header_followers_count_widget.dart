@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/follower/account_follower_account_list_page.dart';
 import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,11 @@ class AccountHeaderFollowersCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-
+    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
     return InkWell(
-      onTap: () {
+      onTap: isLocal ? () {
         goToAccountFollowerAccountListPage(context, accountBloc.account);
-      },
+      } : null,
       child: StreamBuilder<bool>(
         stream: accountBloc.pleromaHideFollowersCountStream,
         initialData: accountBloc.pleromaHideFollowersCount,

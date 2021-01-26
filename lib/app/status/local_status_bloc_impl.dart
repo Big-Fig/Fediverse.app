@@ -9,9 +9,9 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -21,12 +21,13 @@ class LocalStatusBloc extends StatusBloc {
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
+  final IPleromaAuthStatusService pleromaAuthStatusService;
 
   LocalStatusBloc({
     @required this.statusRepository,
     @required this.accountRepository,
     @required this.isNeedWatchLocalRepositoryForUpdates,
-    @required IPleromaStatusService pleromaStatusService,
+    @required this.pleromaAuthStatusService,
     @required IPleromaAccountService pleromaAccountService,
     @required
         IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService,
@@ -35,7 +36,7 @@ class LocalStatusBloc extends StatusBloc {
     @required bool isNeedRefreshFromNetworkOnInit,
     @required bool delayInit,
   }) : super(
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaStatusService: pleromaAuthStatusService,
           pleromaAccountService: pleromaAccountService,
           pleromaStatusEmojiReactionService: pleromaStatusEmojiReactionService,
           pleromaPollService: pleromaPollService,
@@ -62,7 +63,7 @@ class LocalStatusBloc extends StatusBloc {
           delayInit: delayInit,
           isNeedWatchLocalRepositoryForUpdates:
               isNeedWatchLocalRepositoryForUpdates,
-          pleromaStatusService: IPleromaStatusService.of(
+          pleromaAuthStatusService: IPleromaAuthStatusService.of(
             context,
             listen: false,
           ),
@@ -116,7 +117,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IAccount> loadAccountByMentionUrl({
     @required String url,
   }) async {
-    // todo: ask user open on local instance or remote
+
     var foundMention = reblogOrOriginalMentions?.firstWhere(
       (mention) => mention.url == url,
       orElse: () => null,
@@ -346,4 +347,7 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

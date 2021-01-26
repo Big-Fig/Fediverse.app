@@ -24,7 +24,6 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
@@ -371,6 +370,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
   }
 
   void _onLinkClick(BuildContext context, String url) {
+    // todo: improve
     UrlHelper.handleUrlClick(context, url);
     // var tagUrlPart = "/tag/";
     // var tagUrlPartIndex = url.indexOf(tagUrlPart);
@@ -845,69 +845,105 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
         if (contactAccount != null) {
           var account = mapRemoteAccountToLocalAccount(contactAccount);
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _InstanceDetailsGroupTitleWidget(
-                title: S
-                    .of(context)
-                    .app_instance_details_field_contactAccount_label,
-              ),
-              Padding(
-                padding: _InstanceDetailsRowWidget.padding,
-                child: _InstanceDetailsRowValueWidget(
-                  value:
-                      "${contactAccount.displayName} (${contactAccount.acct})",
-                ),
-              ),
-              Provider<IAccount>.value(
-                value: account,
-                child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                  update: (context, account, _) {
-                    var isNeedRefreshFromNetworkOnInit = false;
-                    if (isLocal) {
-                      return LocalAccountBloc.createFromContext(
-                        context,
-                        account: account,
-                        isNeedWatchWebSocketsEvents: false,
-                        isNeedRefreshFromNetworkOnInit:
-                            isNeedRefreshFromNetworkOnInit,
-                        isNeedPreFetchRelationship: true,
-                        isNeedWatchLocalRepositoryForUpdates: false,
-                      );
-                    } else {
-                      return RemoteAccountBloc.createFromContext(
-                        context,
-                        account: account,
-                        isNeedRefreshFromNetworkOnInit:
-                            isNeedRefreshFromNetworkOnInit,
-                      );
-                    }
-                  },
-                  child: AccountWidget(
-                    onStatusesTapCallback: (context) {
-                      if (isLocal) {
-                        goToLocalAccountDetailsPage(
-                          context,
-                          account: account,
-                        );
-                      } else {
-                        goToRemoteAccountDetailsPage(
-                          context,
-                          account: account,
-                        );
-                      }
-                    },
-                    footer: const SizedBox.shrink(),
+          return Provider<IAccount>.value(
+            value: account,
+            child: DisposableProxyProvider<IAccount, IAccountBloc>(
+              update: (context, account, _) {
+                var isNeedRefreshFromNetworkOnInit = false;
+                if (isLocal) {
+                  return LocalAccountBloc.createFromContext(
+                    context,
+                    account: account,
+                    isNeedWatchWebSocketsEvents: false,
+                    isNeedRefreshFromNetworkOnInit:
+                    isNeedRefreshFromNetworkOnInit,
+                    isNeedPreFetchRelationship: true,
+                    isNeedWatchLocalRepositoryForUpdates: false,
+                  );
+                } else {
+                  return RemoteAccountBloc.createFromContext(
+                    context,
+                    account: account,
+                    isNeedRefreshFromNetworkOnInit:
+                    isNeedRefreshFromNetworkOnInit,
+                  );
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _InstanceDetailsGroupTitleWidget(
+                    title: S
+                        .of(context)
+                        .app_instance_details_field_contactAccount_label,
                   ),
-                ),
+                  const _InstanceDetailsContactAccountDisplayNameAndAcctWidget(),
+                  InkWell(
+                    onTap: () {
+                      _goToAccount(
+                        context: context,
+                        isLocal: isLocal,
+                        account: account,
+                      );
+                    },
+                    child: AccountWidget(
+                      onStatusesTapCallback: (context) {
+                        _goToAccount(
+                          context: context,
+                          isLocal: isLocal,
+                          account: account,
+                        );
+                      },
+                      footer: const SizedBox.shrink(),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
+          
+            
           );
         } else {
           return const SizedBox.shrink();
         }
       },
+    );
+  }
+
+  void _goToAccount({
+    @required BuildContext context,
+    @required bool isLocal,
+    @required DbAccountWrapper account,
+  }) {
+    if (isLocal) {
+      goToLocalAccountDetailsPage(
+        context,
+        account: account,
+      );
+    } else {
+      goToRemoteAccountDetailsPage(
+        context,
+        account: account,
+      );
+    }
+  }
+}
+
+class _InstanceDetailsContactAccountDisplayNameAndAcctWidget extends StatelessWidget {
+  const _InstanceDetailsContactAccountDisplayNameAndAcctWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    var accountBloc = IAccountBloc.of(context);
+    return Padding(
+      padding: _InstanceDetailsRowWidget.padding,
+      child: _InstanceDetailsRowValueWidget(
+        value:
+        "${accountBloc.displayName} (${accountBloc.acctWithForcedRemoteInstanceHost})",
+      ),
     );
   }
 }
