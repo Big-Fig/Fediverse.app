@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-26T10:41:53+00:00",
+    "@@last_modified": "2021-01-26T18:53:36+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -688,5 +688,8 @@
     "app_instance_details_field_federation_mrfObjectAge_threshold_label": "MFR Object Age Threshold",
     "app_instance_details_field_federation_mrfObjectAge_actions_label": "MFR Object Age Actions",
     "app_instance_details_value_sizeInMb": "{sizeInMb} MB",
-    "app_account_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}"
+    "app_account_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}",
+    "app_status_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}",
+    "app_instance_remote_error_failed_dialog_title": "Не удалось загрузить",
+    "app_instance_remote_error_failed_dialog_content": "Удаленный сервер не поддерживает или проблемы с соединением"
 }

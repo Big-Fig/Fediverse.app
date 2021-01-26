@@ -106,7 +106,7 @@ abstract class StatusThreadBloc extends DisposableOwner
     try {
       _logger.finest(() => "refresh");
 
-      var filters = await loadFilters();
+      List<IFilter> filters = await loadFilters();
 
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
@@ -237,7 +237,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   bool isNotFiltered({
     @required IPleromaStatus remoteStatus,
-    @required List<DbFilterPopulatedWrapper> filters,
+    @required List<IFilter> filters,
   }) {
     var spoilerText = remoteStatus.spoilerText;
     var content = remoteStatus.content;
