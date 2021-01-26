@@ -34,7 +34,7 @@ class StatusThreadPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: const _StatusThreadStarterAccountWidget(),
+        child: const _StatusThreadAppBarStarterAccountWidget(),
       ),
       body: const SafeArea(
         child: StatusThreadWidget(),
@@ -45,8 +45,8 @@ class StatusThreadPage extends StatelessWidget {
   const StatusThreadPage();
 }
 
-class _StatusThreadStarterAccountWidget extends StatelessWidget {
-  const _StatusThreadStarterAccountWidget({
+class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
+  const _StatusThreadAppBarStarterAccountWidget({
     Key key,
   }) : super(key: key);
 
@@ -59,7 +59,7 @@ class _StatusThreadStarterAccountWidget extends StatelessWidget {
       stream: statusThreadBloc.firstStatusInThreadStream,
       builder: (context, snapshot) {
         var status = snapshot.data;
-        var account = status?.account;
+        var account = status?.reblog?.account ?? status?.account;
 
         if (status == null) {
           return Text(
