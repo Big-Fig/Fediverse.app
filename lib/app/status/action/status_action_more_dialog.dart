@@ -121,10 +121,10 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       label: S.of(context).app_status_action_openOnRemoteInstance(
           statusBloc.account.acctRemoteDomainOrNull),
       onAction: (context) async {
-        goToRemoteStatusThreadPage(
+        await goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           context,
-          status: statusBloc.status,
-          initialMediaAttachment: null,
+          localInstanceRemoteStatus: statusBloc.status,
+          localInstanceRemoteInitialMediaAttachment: null,
         );
       },
     );

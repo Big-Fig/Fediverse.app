@@ -921,9 +921,9 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
         account: account,
       );
     } else {
-      goToRemoteAccountDetailsPage(
+      goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
         context,
-        account: account,
+        remoteInstanceAccount: account,
       );
     }
   }

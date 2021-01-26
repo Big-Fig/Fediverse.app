@@ -24,10 +24,10 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
             initialMediaAttachment: null,
           );
         } else {
-          goToRemoteStatusThreadPage(
+          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
             context,
-            status: statusBloc.status,
-            initialMediaAttachment: null,
+            remoteInstanceStatus: statusBloc.status,
+            remoteInstanceInitialMediaAttachment: null,
           );
         }
       },

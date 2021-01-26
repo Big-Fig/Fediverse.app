@@ -63,30 +63,28 @@ class AccountActionMoreDialog extends StatelessWidget {
         var accountRelationship = snapshot.data;
         var loadingActions = accountRelationship == null;
         return FediChooserDialogBody(
-          title: S
-              .of(context)
-              .app_account_action_popup_title,
+          title: S.of(context).app_account_action_popup_title,
           content: "${accountBloc.acct}",
           actions: loadingActions
               ? []
               : [
-            if(isLocal && accountBloc.isAcctRemoteDomainExist)
-              AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(
-                  context),
-            AccountActionMoreDialog.buildAccountOpenInBrowserAction(
-                context),
-            AccountActionMoreDialog.buildAccountMuteAction(context),
-            AccountActionMoreDialog.buildAccountBlockAction(context),
-            if (!isLocal)
-              AccountActionMoreDialog.buildAccountBlockDomainAction(
-                  context),
-            if (showReportAction)
-              AccountActionMoreDialog.buildAccountReportAction(context),
-            if (currentInstance.isSubscribeToAccountFeatureSupported)
-              AccountActionMoreDialog.buildAccountSubscribeAction(
-                  context),
-            buildAccountInstanceInfoAction(context),
-          ],
+                  if (isLocal && accountBloc.isAcctRemoteDomainExist)
+                    AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(
+                        context),
+                  AccountActionMoreDialog.buildAccountOpenInBrowserAction(
+                      context),
+                  AccountActionMoreDialog.buildAccountMuteAction(context),
+                  AccountActionMoreDialog.buildAccountBlockAction(context),
+                  if (!isLocal)
+                    AccountActionMoreDialog.buildAccountBlockDomainAction(
+                        context),
+                  if (showReportAction)
+                    AccountActionMoreDialog.buildAccountReportAction(context),
+                  if (currentInstance.isSubscribeToAccountFeatureSupported)
+                    AccountActionMoreDialog.buildAccountSubscribeAction(
+                        context),
+                  buildAccountInstanceInfoAction(context),
+                ],
           loadingActions: loadingActions,
           cancelable: cancelable,
         );
@@ -99,9 +97,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.report,
-      label: S
-          .of(context)
-          .app_account_action_report_label,
+      label: S.of(context).app_account_action_report_label,
       onAction: (context) async {
         goToAccountReportPage(
           context,
@@ -121,12 +117,8 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? FediIcons.unblock
           : FediIcons.block,
       label: accountBloc.relationship?.blocking == true
-          ? S
-          .of(context)
-          .app_account_action_unblock
-          : S
-          .of(context)
-          .app_account_action_block,
+          ? S.of(context).app_account_action_unblock
+          : S.of(context).app_account_action_block,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
@@ -145,12 +137,10 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? FediIcons.domain_block
           : FediIcons.domain_unblock,
       label: accountBloc.relationship.domainBlocking == true
-          ? S
-          .of(context)
-          .app_account_action_unblockDomain(accountBloc.acctRemoteDomainOrNull)
-          : S
-          .of(context)
-          .app_account_action_blockDomain(accountBloc.acctRemoteDomainOrNull),
+          ? S.of(context).app_account_action_unblockDomain(
+              accountBloc.acctRemoteDomainOrNull)
+          : S.of(context).app_account_action_blockDomain(
+              accountBloc.acctRemoteDomainOrNull),
       onAction: (context) async {
         await accountBloc.toggleBlockDomain();
         Navigator.of(context).pop();
@@ -163,8 +153,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     var remoteDomainOrNull = accountBloc.acctRemoteDomainOrNull;
     var currentInstanceUrlHost =
-        ICurrentAuthInstanceBloc
-            .of(context, listen: false)
+        ICurrentAuthInstanceBloc.of(context, listen: false)
             .currentInstance
             .urlHost;
 
@@ -172,8 +161,8 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_instanceDetails(
-        isLocal ? currentInstanceUrlHost : remoteDomainOrNull,
-      ),
+            isLocal ? currentInstanceUrlHost : remoteDomainOrNull,
+          ),
       onAction: (context) async {
         if (isLocal) {
           goToLocalInstanceDetailsPage(context);
@@ -197,12 +186,8 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: muting ? FediIcons.unmute : FediIcons.mute,
       label: muting
-          ? S
-          .of(context)
-          .app_account_action_unmute
-          : S
-          .of(context)
-          .app_account_action_mute,
+          ? S.of(context).app_account_action_unmute
+          : S.of(context).app_account_action_mute,
       onAction: (context) async {
         if (muting) {
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
@@ -223,12 +208,8 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: muting ? FediIcons.unsubscribe : FediIcons.subscribe,
       label: muting
-          ? S
-          .of(context)
-          .app_account_action_unsubscribe
-          : S
-          .of(context)
-          .app_account_action_subscribe,
+          ? S.of(context).app_account_action_unsubscribe
+          : S.of(context).app_account_action_subscribe,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context, asyncCode: () => accountBloc.toggleSubscribe());
@@ -245,12 +226,8 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? FediIcons.unfollow
           : FediIcons.follow,
       label: accountBloc.relationship?.following == true
-          ? S
-          .of(context)
-          .app_account_action_unfollow
-          : S
-          .of(context)
-          .app_account_action_follow,
+          ? S.of(context).app_account_action_unfollow
+          : S.of(context).app_account_action_follow,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context, asyncCode: () => accountBloc.toggleFollow());
@@ -264,12 +241,10 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.message,
-      label: S
-          .of(context)
-          .app_account_action_message,
+      label: S.of(context).app_account_action_message,
       onAction: (context) async {
         var authInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+            ICurrentAuthInstanceBloc.of(context, listen: false);
         var account = accountBloc.account;
 
         if (authInstanceBloc.currentInstance.isSupportChats) {
@@ -293,9 +268,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.browser,
-      label: S
-          .of(context)
-          .app_account_action_openInBrowser,
+      label: S.of(context).app_account_action_openInBrowser,
       onAction: (context) async {
         var url = accountBloc.account.url;
         await UrlHelper.handleUrlClick(context, url);
@@ -308,11 +281,13 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.instance,
-      label: S
-          .of(context)
-          .app_account_action_openOnRemoteInstance(accountBloc.acctRemoteDomainOrNull),
+      label: S.of(context).app_account_action_openOnRemoteInstance(
+          accountBloc.acctRemoteDomainOrNull),
       onAction: (context) async {
-        goToRemoteAccountDetailsPage(context, account: accountBloc.account);
+        await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
+          context,
+          localInstanceRemoteAccount: accountBloc.account,
+        );
       },
     );
   }

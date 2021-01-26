@@ -11,8 +11,12 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 
-typedef StatusAndContextCallback = Function(BuildContext context, IStatus status);
+final _logger = Logger("status_model.dart");
+
+typedef StatusAndContextCallback = Function(
+    BuildContext context, IStatus status);
 typedef StatusCallback = Function(IStatus status);
 
 abstract class IStatus {
@@ -646,5 +650,41 @@ extension IStatusExtension on IStatus {
 
     var resultUrl = "${uri.scheme}://${uri.host}";
     return Uri.parse(resultUrl);
+  }
+
+  String get urlRemoteId {
+    try {
+      // todo: perhaps need improvements
+      var splitResult = url.split("/");
+
+      var isHaveEndingSlash = splitResult.last.isNotEmpty;
+      if (isHaveEndingSlash) {
+        return splitResult.last;
+      } else {
+        return splitResult[splitResult.length - 2];
+      }
+    } catch (e, stackTrace) {
+      var exception = CantExtractStatusRemoteIdFromStatusUrlException(
+        e: e,
+        status: this,
+      );
+      _logger.shout(() => "$exception", stackTrace);
+      throw exception;
+    }
+  }
+}
+
+class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
+  final IStatus status;
+  final Exception e;
+
+  CantExtractStatusRemoteIdFromStatusUrlException({
+    @required this.status,
+    this.e,
+  });
+
+  @override
+  String toString() {
+    return 'CantExtractStatusRemoteIdFromStatusUrlException{status: $status, e: $e}';
   }
 }
