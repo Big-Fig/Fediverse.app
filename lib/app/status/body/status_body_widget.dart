@@ -62,34 +62,35 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
     return StreamBuilder<StatusSensitiveWarningState>(
-        stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
-        builder: (context, snapshot) {
-          var statusWarningState = snapshot.data;
+      stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
+      builder: (context, snapshot) {
+        var statusWarningState = snapshot.data;
 
-          _logger.finest(
-              () => "StreamBuilder statusWarningState $statusWarningState");
+        _logger.finest(
+            () => "StreamBuilder statusWarningState $statusWarningState");
 
-          if (statusWarningState == null) {
-            return const SizedBox.shrink();
-          }
+        if (statusWarningState == null) {
+          return const SizedBox.shrink();
+        }
 
-          Widget child;
-          if (statusWarningState.containsSpoilerAndDisplayEnabled) {
-            child = const _StatusBodyContentWidget(
-              showSpoiler: true,
-            );
-          } else {
-            child = const _StatusBodyWithoutContentWidget();
-          }
+        Widget child;
+        if (statusWarningState.containsSpoilerAndDisplayEnabled) {
+          child = const _StatusBodyContentWidget(
+            showSpoiler: true,
+          );
+        } else {
+          child = const _StatusBodyWithoutContentWidget();
+        }
 
-          if (statusWarningState.nsfwSensitiveAndDisplayEnabled) {
-            return child;
-          } else {
-            return StatusSensitiveNsfwWarningOverlayWidget(
-              child: child,
-            );
-          }
-        });
+        if (statusWarningState.nsfwSensitiveAndDisplayEnabled) {
+          return child;
+        } else {
+          return StatusSensitiveNsfwWarningOverlayWidget(
+            child: child,
+          );
+        }
+      },
+    );
   }
 }
 
@@ -171,12 +172,16 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return DisposableProvider<IMediaAttachmentListBloc>(
-            create: (context) => MediaAttachmentListBloc(
-              mediaAttachments: snapshot.data,
-              initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+          return Provider<List<IPleromaMediaAttachment>>.value(
+            value: mediaAttachments,
+            child: DisposableProxyProvider<List<IPleromaMediaAttachment>,
+                IMediaAttachmentListBloc>(
+              update: (context, value, _) => MediaAttachmentListBloc(
+                mediaAttachments: value,
+                initialMediaAttachment: statusBodyBloc.initialMediaAttachment,
+              ),
+              child: const MediaAttachmentListCarouselWidget(),
             ),
-            child: const MediaAttachmentListCarouselWidget(),
           );
         } else {
           return SizedBox.shrink();
