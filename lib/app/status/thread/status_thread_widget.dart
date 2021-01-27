@@ -306,7 +306,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                 },
                 collapsible: false,
                 displayAccountHeader: !firstStatusInThread,
-                displayActions: firstStatusInThread || isInFocus,
+                displayActions: true,
                 accountMentionCallback:
                     (BuildContext context, IAccount account) {
                   IPostStatusBloc.of(context, listen: false)
