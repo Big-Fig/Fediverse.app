@@ -15,7 +15,10 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        UrlHelper.handleUrlClick(context, mediaAttachment.url);
+        UrlHelper.handleUrlClick(
+          context: context,
+          url: mediaAttachment.url,
+        );
       },
       child: const Padding(
         padding: FediPadding.allSmallPadding,

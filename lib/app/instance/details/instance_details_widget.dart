@@ -355,7 +355,11 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                 htmlTextBloc.addDisposable(
                   streamSubscription: htmlTextBloc.linkClickedStream.listen(
                     (url) {
-                      _onLinkClick(context, url);
+                      UrlHelper.handleUrlClickWithInstanceLocation(
+                        context: context,
+                        url: url,
+                        instanceLocationBloc: instanceDetailsBloc,
+                      );
                     },
                   ),
                 );
@@ -371,26 +375,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
     );
   }
 
-  void _onLinkClick(BuildContext context, String url) {
-    // todo: improve
-    UrlHelper.handleUrlClick(context, url);
-    // var tagUrlPart = "/tag/";
-    // var tagUrlPartIndex = url.indexOf(tagUrlPart);
-    // if (tagUrlPartIndex > 0) {
-    //   var tag = url.substring(tagUrlPartIndex + tagUrlPart.length);
-    //
-    //   if (noteEmojiText.text.contains("#$tag")) {
-    //     goToHashtagPage(
-    //       context: context,
-    //       hashtag: Hashtag(name: tag, url: url, history: []),
-    //     );
-    //   } else {
-    //     UrlHelper.handleUrlClick(context, url);
-    //   }
-    // } else {
-    //   UrlHelper.handleUrlClick(context, url);
-    // }
-  }
+
 }
 
 class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
@@ -468,7 +453,10 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
                 Flexible(
                   child: InkWell(
                     onTap: () {
-                      UrlHelper.handleUrlClick(context, "mailto:$email");
+                      UrlHelper.handleUrlClick(
+                        context: context,
+                        url: "mailto:$email",
+                      );
                     },
                     child: _InstanceDetailsRowValueWidget(
                       value: email,

@@ -59,7 +59,11 @@ class AccountNoteWidget extends StatelessWidget {
             htmlTextBloc.addDisposable(
               streamSubscription: htmlTextBloc.linkClickedStream.listen(
                 (url) {
-                  _onLinkClick(url, noteEmojiText, context);
+                  _onLinkClick(
+                    url: url,
+                    noteEmojiText: noteEmojiText,
+                    context: context,
+                  );
                 },
               ),
             );
@@ -71,7 +75,12 @@ class AccountNoteWidget extends StatelessWidget {
     );
   }
 
-  void _onLinkClick(String url, EmojiText noteEmojiText, BuildContext context) {
+  void _onLinkClick({
+    @required BuildContext context,
+    @required String url,
+    @required EmojiText noteEmojiText,
+  }) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
     var tagUrlPart = "/tag/";
     var tagUrlPartIndex = url.indexOf(tagUrlPart);
     if (tagUrlPartIndex > 0) {
@@ -83,10 +92,18 @@ class AccountNoteWidget extends StatelessWidget {
           hashtag: Hashtag(name: tag, url: url, history: []),
         );
       } else {
-        UrlHelper.handleUrlClick(context, url);
+        UrlHelper.handleUrlClickWithInstanceLocation(
+          context: context,
+          url: url,
+          instanceLocationBloc: accountBloc,
+        );
       }
     } else {
-      UrlHelper.handleUrlClick(context, url);
+      UrlHelper.handleUrlClickWithInstanceLocation(
+        context: context,
+        url: url,
+        instanceLocationBloc: accountBloc,
+      );
     }
   }
 }

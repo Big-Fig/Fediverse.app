@@ -146,53 +146,59 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
 
   Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
       StreamBuilder<EmojiText>(
-          stream: statusBloc.contentWithEmojisStream,
-          initialData: statusBloc.contentWithEmojis,
-          builder: (context, snapshot) {
-            var contentWithEmojis = snapshot.data;
+        stream: statusBloc.contentWithEmojisStream,
+        initialData: statusBloc.contentWithEmojis,
+        builder: (context, snapshot) {
+          var contentWithEmojis = snapshot.data;
 
-            if (contentWithEmojis?.text?.isNotEmpty == true) {
-              var fediUiColorTheme = IFediUiColorTheme.of(context);
-              var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-              return Provider<EmojiText>.value(
-                value: contentWithEmojis,
-                child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-                  update: (context, emojiText, _) {
-                    var htmlTextBloc = HtmlTextBloc(
-                      inputData: HtmlTextInputData(
-                        input: emojiText.text,
-                        emojis: emojiText.emojis,
-                      ),
-                      settings: HtmlTextSettings(
-                        shrinkWrap: true,
-                        color: isStatusFromMe
-                            ? fediUiColorTheme.white
-                            : fediUiColorTheme.darkGrey,
-                        linkColor: isStatusFromMe
-                            ? fediUiColorTheme.white
-                            : fediUiColorTheme.primary,
-                        fontSize: 16.0,
-                        lineHeight: 1.5,
-                        drawNewLines: false,
-                        textMaxLines: 1,
-                        textOverflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w300,
-                        textScaleFactor: textScaleFactor,
-                      ),
-                    );
-                    htmlTextBloc.addDisposable(
-                      streamSubscription:
-                          htmlTextBloc.linkClickedStream.listen((url) {
-                        UrlHelper.handleUrlClick(context, url);
-                      }),
-                    );
-                    return htmlTextBloc;
-                  },
-                  child: const HtmlTextWidget(),
-                ),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          });
+          if (contentWithEmojis?.text?.isNotEmpty == true) {
+            var fediUiColorTheme = IFediUiColorTheme.of(context);
+            var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+            return Provider<EmojiText>.value(
+              value: contentWithEmojis,
+              child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+                update: (context, emojiText, _) {
+                  var htmlTextBloc = HtmlTextBloc(
+                    inputData: HtmlTextInputData(
+                      input: emojiText.text,
+                      emojis: emojiText.emojis,
+                    ),
+                    settings: HtmlTextSettings(
+                      shrinkWrap: true,
+                      color: isStatusFromMe
+                          ? fediUiColorTheme.white
+                          : fediUiColorTheme.darkGrey,
+                      linkColor: isStatusFromMe
+                          ? fediUiColorTheme.white
+                          : fediUiColorTheme.primary,
+                      fontSize: 16.0,
+                      lineHeight: 1.5,
+                      drawNewLines: false,
+                      textMaxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w300,
+                      textScaleFactor: textScaleFactor,
+                    ),
+                  );
+                  htmlTextBloc.addDisposable(
+                    streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                      (url) {
+                        UrlHelper.handleUrlClickWithInstanceLocation(
+                          context: context,
+                          url: url,
+                          instanceLocationBloc: statusBloc,
+                        );
+                      },
+                    ),
+                  );
+                  return htmlTextBloc;
+                },
+                child: const HtmlTextWidget(),
+              ),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        },
+      );
 }

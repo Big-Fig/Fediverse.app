@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -18,8 +19,13 @@ class AccountFieldListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        String link = UrlHelper.extractUrl(field.valueAsRawUrl);
-        UrlHelper.handleUrlClick(context, link);
+        String url = UrlHelper.extractUrl(field.valueAsRawUrl);
+        var accountBloc = IAccountBloc.of(context, listen: false);
+        UrlHelper.handleUrlClickWithInstanceLocation(
+          context: context,
+          url: url,
+          instanceLocationBloc: accountBloc,
+        );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -39,11 +45,12 @@ class AccountFieldListItemWidget extends StatelessWidget {
                 : IFediUiTextTheme.of(context).mediumTallWhite,
           ),
           Flexible(
-              child: Text(
-            field.valueAsRawUrlWithoutSchema,
-            overflow: TextOverflow.ellipsis,
-            style: IFediUiTextTheme.of(context).mediumTallPrimary,
-          )),
+            child: Text(
+              field.valueAsRawUrlWithoutSchema,
+              overflow: TextOverflow.ellipsis,
+              style: IFediUiTextTheme.of(context).mediumTallPrimary,
+            ),
+          ),
         ],
       ),
     );

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
     extends StatelessWidget {
-  final Uri instanceBaseUrl;
+  final Uri instanceBaseUri;
 
   @override
   Widget build(BuildContext context) => BoolValueFormFieldBlocProxyProvider(
@@ -24,15 +24,15 @@ class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
           description: InkWell(
             onTap: () {
               UrlHelper.handleUrlClick(
-                context,
-                instanceBaseUrl.toString(),
+                context: context,
+                url: instanceBaseUri.toString(),
               );
             },
             child: FediFormColumnDesc(
               S
                   .of(context)
                   .app_auth_instance_register_field_acceptTermsOfService_description(
-                    instanceBaseUrl.host,
+                    instanceBaseUri.host,
                   ),
               textStyle: IFediUiTextTheme.of(context).bigTallPrimary,
             ),
@@ -43,6 +43,6 @@ class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
       );
 
   const RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget({
-    @required this.instanceBaseUrl,
+    @required this.instanceBaseUri,
   });
 }

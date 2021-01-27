@@ -291,10 +291,14 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                   ),
                 );
                 htmlTextBloc.addDisposable(
-                  streamSubscription:
-                      htmlTextBloc.linkClickedStream.listen((url) {
-                    UrlHelper.handleUrlClick(context, url);
-                  }),
+                  streamSubscription: htmlTextBloc.linkClickedStream.listen(
+                    (url) {
+                      UrlHelper.handleUrlClickOnLocalInstanceLocation(
+                        context: context,
+                        url: url,
+                      );
+                    },
+                  ),
                 );
                 return htmlTextBloc;
               },

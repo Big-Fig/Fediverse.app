@@ -108,7 +108,7 @@ void _handleLinkTap(context, url) async {
       context,
       listen: false,
     ),
-    link: url,
+    url: url,
     context: context,
   );
 }
