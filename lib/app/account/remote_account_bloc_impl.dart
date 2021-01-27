@@ -157,9 +157,10 @@ class RemoteAccountBloc extends AccountBloc {
 
   @override
   IPleromaAccountRelationship get relationship =>
-      throw UnsupportedOnRemoteInstanceLocationException();
+      null;
 
   @override
   Stream<IPleromaAccountRelationship> get relationshipStream =>
-      throw UnsupportedOnRemoteInstanceLocationException();
+      null;
+
 }
