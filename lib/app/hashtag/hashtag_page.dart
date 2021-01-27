@@ -4,6 +4,7 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
+import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
@@ -92,7 +93,10 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       icon: Icon(FediIcons.external_icon),
       onPressed: () {
-        UrlHelper.handleUrlClick(context, hashtag.url);
+        UrlHelper.handleUrlClickOnLocalInstanceLocation(
+          context: context,
+          url: hashtag.url,
+        );
       },
     );
   }
@@ -173,21 +177,23 @@ MaterialPageRoute createHashtagPageRoute({
                   );
                   return hashtagTimelineStatusCachedListBloc;
                 },
-                child: ProxyProvider<IStatusCachedListBloc,
-                    IPleromaCachedListBloc<IStatus>>(
-                  update: (context, value, previous) => value,
-                  child: StatusCachedListBlocLoadingWidget(
-                    child: StatusCachedPaginationBloc.provideToContext(
-                      context,
-                      child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(
+                child: StatusCachedListBlocProxyProvider(
+                  child: ProxyProvider<IStatusCachedListBloc,
+                      IPleromaCachedListBloc<IStatus>>(
+                    update: (context, value, previous) => value,
+                    child: StatusCachedListBlocLoadingWidget(
+                      child: StatusCachedPaginationBloc.provideToContext(
                         context,
-                        mergeNewItemsImmediately: false,
-                        child: Provider<IHashtag>.value(
-                          value: hashtag,
-                          child: const HashtagPage(),
+                        child: StatusCachedPaginationListWithNewItemsBloc
+                            .provideToContext(
+                          context,
+                          mergeNewItemsImmediately: false,
+                          child: Provider<IHashtag>.value(
+                            value: hashtag,
+                            child: const HashtagPage(),
+                          ),
+                          mergeOwnStatusesImmediately: false,
                         ),
-                        mergeOwnStatusesImmediately: false,
                       ),
                     ),
                   ),
