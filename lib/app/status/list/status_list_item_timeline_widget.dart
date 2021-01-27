@@ -170,10 +170,9 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
-    var statusBloc = IStatusBloc.of(context);
-    var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
     var isNeedDisplayActions =
-        statusListItemTimelineBloc.isDisplayActionsAndNotFirstReply && isLocal;
+        statusListItemTimelineBloc.isDisplayActionsAndNotFirstReply;
     return Column(
       children: [
         GestureDetector(

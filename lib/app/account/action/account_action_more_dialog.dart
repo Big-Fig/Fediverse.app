@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
 import 'package:fedi/app/account/details/remote_account_details_page.dart';
+import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_page.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -52,6 +53,7 @@ class AccountActionMoreDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
+    var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     var currentInstance = currentAuthInstanceBloc.currentInstance;
 
@@ -61,31 +63,28 @@ class AccountActionMoreDialog extends StatelessWidget {
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;
-        var loadingActions = accountRelationship == null;
+        var isRelationshipLoaded = accountRelationship != null;
         return FediChooserDialogBody(
           title: S.of(context).app_account_action_popup_title,
           content: "${accountBloc.acct}",
-          actions: loadingActions
-              ? []
-              : [
-                  if (isLocal && accountBloc.isAcctRemoteDomainExist)
-                    AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(
-                        context),
-                  AccountActionMoreDialog.buildAccountOpenInBrowserAction(
-                      context),
-                  AccountActionMoreDialog.buildAccountMuteAction(context),
-                  AccountActionMoreDialog.buildAccountBlockAction(context),
-                  if (!isLocal)
-                    AccountActionMoreDialog.buildAccountBlockDomainAction(
-                        context),
-                  if (showReportAction)
-                    AccountActionMoreDialog.buildAccountReportAction(context),
-                  if (currentInstance.isSubscribeToAccountFeatureSupported)
-                    AccountActionMoreDialog.buildAccountSubscribeAction(
-                        context),
-                  buildAccountInstanceInfoAction(context),
-                ],
-          loadingActions: loadingActions,
+          actions: [
+            if (isLocal && accountBloc.isAcctRemoteDomainExist)
+              AccountActionMoreDialog.buildAccountOpenOnRemoteInstance(context),
+            AccountActionMoreDialog.buildAccountOpenInBrowserAction(context),
+            if (isLocal && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountMuteAction(context),
+            if (isLocal && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountBlockAction(context),
+            if (isLocal && isAcctRemoteDomainExist && isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountBlockDomainAction(context),
+            if (isLocal && showReportAction)
+              AccountActionMoreDialog.buildAccountReportAction(context),
+            if (isLocal &&
+                currentInstance.isSubscribeToAccountFeatureSupported &&
+                isRelationshipLoaded)
+              AccountActionMoreDialog.buildAccountSubscribeAction(context),
+            buildAccountInstanceInfoAction(context),
+          ],
           cancelable: cancelable,
         );
       },
@@ -152,12 +151,19 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: false);
 
     var remoteDomainOrNull = accountBloc.acctRemoteDomainOrNull;
+
+    // todo: remove hack
+    if(accountBloc is RemoteAccountBloc) {
+      remoteDomainOrNull ??= accountBloc.instanceUri.host;
+    }
+
     var currentInstanceUrlHost =
         ICurrentAuthInstanceBloc.of(context, listen: false)
             .currentInstance
             .urlHost;
 
     var isLocal = remoteDomainOrNull == null;
+
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_instanceDetails(

@@ -1,11 +1,8 @@
-import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/account_action_list_widget.dart';
 import 'package:fedi/app/account/field/account_field_list_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/info/account_info_widget.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
-import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
@@ -22,11 +19,6 @@ class AccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context);
-    var myAccountBloc = IMyAccountBloc.of(context);
-
-    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
-    var isMyAccount = myAccountBloc.checkAccountIsMe(accountBloc.account);
     return Stack(
       children: <Widget>[
         const Positioned.fill(
@@ -47,7 +39,7 @@ class AccountWidget extends StatelessWidget {
                 child: AccountInfoWidget(
                     onStatusesTapCallback: onStatusesTapCallback),
               ),
-              if (!isMyAccount && isLocal) const AccountActionListWidget(),
+              const AccountActionListWidget(),
               const _AccountNoteWidget(),
               const _AccountFieldListWidget(),
               footer
