@@ -8,14 +8,13 @@ import 'package:flutter/widgets.dart';
 
 Future handleStatusBodyLinkClick({
   @required IStatusBloc statusBloc,
-  @required String link,
+  @required String url,
   @required BuildContext context,
 }) async {
   var instanceLocation = statusBloc.instanceLocation;
   var isLocal = instanceLocation == InstanceLocation.local;
 
-  // todo: ask user open on local instance or remote
-  var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: link);
+  var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: url);
 
   if (mentionedAccount != null) {
     if (isLocal) {
@@ -30,11 +29,15 @@ Future handleStatusBodyLinkClick({
       );
     }
   } else {
-    var hashtag = await statusBloc.loadHashtagByUrl(url: link);
-    if (hashtag != null && !isLocal) {
+    var hashtag = await statusBloc.loadHashtagByUrl(url: url);
+    if (hashtag != null && isLocal) {
       goToHashtagPage(context: context, hashtag: hashtag);
     } else {
-      await UrlHelper.handleUrlClick(context, link);
+      await UrlHelper.handleUrlClickWithInstanceLocation(
+        context: context,
+        url: url,
+        instanceLocationBloc: statusBloc,
+      );
     }
   }
 }

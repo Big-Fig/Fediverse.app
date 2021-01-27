@@ -321,7 +321,7 @@ void _onLinkTap(
   await handleStatusBodyLinkClick(
     context: context,
     statusBloc: IStatusBloc.of(context, listen: false),
-    link: url,
+    url: url,
   );
 }
 

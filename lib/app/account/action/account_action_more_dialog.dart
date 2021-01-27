@@ -271,7 +271,11 @@ class AccountActionMoreDialog extends StatelessWidget {
       label: S.of(context).app_account_action_openInBrowser,
       onAction: (context) async {
         var url = accountBloc.account.url;
-        await UrlHelper.handleUrlClick(context, url);
+        await UrlHelper.handleUrlClickWithInstanceLocation(
+          context: context,
+          url: url,
+          instanceLocationBloc: accountBloc,
+        );
         Navigator.of(context).pop();
       },
     );

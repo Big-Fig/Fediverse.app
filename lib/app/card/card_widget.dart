@@ -31,7 +31,10 @@ class CardWidget extends StatelessWidget {
           child: InkWell(
             onTap: () async {
               var url = card.url;
-              await UrlHelper.handleUrlClick(context, url);
+              await UrlHelper.handleUrlClick(
+                context: context,
+                url: url,
+              );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

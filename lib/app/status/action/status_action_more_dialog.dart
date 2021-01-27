@@ -103,15 +103,19 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildOpenInBrowserAction(BuildContext context) =>
       DialogAction(
-          icon: FediIcons.browser,
-          label: S.of(context).app_status_action_openInBrowser,
-          onAction: (context) async {
-            var statusBloc = IStatusBloc.of(context, listen: false);
-            var status = statusBloc.status;
-            var url = status.url;
-            await UrlHelper.handleUrlClick(context, url);
-            Navigator.of(context).pop();
-          });
+        icon: FediIcons.browser,
+        label: S.of(context).app_status_action_openInBrowser,
+        onAction: (context) async {
+          var statusBloc = IStatusBloc.of(context, listen: false);
+          var status = statusBloc.status;
+          var url = status.url;
+          await UrlHelper.handleUrlClick(
+            context: context,
+            url: url,
+          );
+          Navigator.of(context).pop();
+        },
+      );
 
   static DialogAction buildAccountOpenOnRemoteInstance(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);

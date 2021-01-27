@@ -196,7 +196,7 @@ class _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget
       update: (context, value, previous) => value.agreeTermsOfServiceFieldBloc,
       builder: (context, snapshot) =>
           RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget(
-        instanceBaseUrl: registerAuthInstanceFormBloc.instanceBaseUri,
+        instanceBaseUri: registerAuthInstanceFormBloc.instanceBaseUri,
       ),
     );
   }
