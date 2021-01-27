@@ -27,12 +27,20 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
   BuildContext context, {
   @required IAccount remoteInstanceAccount,
 }) {
-  Navigator.push(
-    context,
-    createRemoteAccountDetailsPageRoute(
-      account: remoteInstanceAccount,
-    ),
-  );
+  var isAcctRemoteDomainExist = remoteInstanceAccount.isAcctRemoteDomainExist;
+
+  if (isAcctRemoteDomainExist) {
+    // jumping from instance to instance
+    goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(context,
+        localInstanceRemoteAccount: remoteInstanceAccount);
+  } else {
+    Navigator.push(
+      context,
+      createRemoteAccountDetailsPageRoute(
+        account: remoteInstanceAccount,
+      ),
+    );
+  }
 }
 
 Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
