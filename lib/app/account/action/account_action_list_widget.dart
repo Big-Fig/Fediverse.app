@@ -158,10 +158,10 @@ class _AccountActionListFollowWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var relationship = accountBloc.relationship;
 
-        if (relationship == null) {
+        if (relationship?.following == null) {
           return const SizedBox.shrink();
         }
-        if (relationship.requested && !relationship.following) {
+        if (relationship?.requested == true && !(relationship?.following == true)) {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
