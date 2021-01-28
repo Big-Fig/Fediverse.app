@@ -270,7 +270,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
     var status = statusAtIndex.status;
     var isFirstInList = index == 0;
     var isInFocus = index == statusThreadBloc.initialStatusToFetchThreadIndex;
-    var firstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
+    var isFirstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
     return Padding(
       padding: isFirstInList
           ? const EdgeInsets.only(bottom: 3.0)
@@ -305,7 +305,8 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                   }
                 },
                 collapsible: false,
-                displayAccountHeader: !firstStatusInThread,
+                displayAccountHeader: !isFirstStatusInThread,
+                isCommentsActionEnabled: !isInFocus,
                 displayActions: true,
                 accountMentionCallback:
                     (BuildContext context, IAccount account) {

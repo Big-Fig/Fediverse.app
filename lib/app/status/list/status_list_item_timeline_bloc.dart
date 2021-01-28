@@ -16,6 +16,8 @@ abstract class IStatusListItemTimelineBloc implements IDisposable {
 
   bool get isReplyAndNotDisplayReplyOrFirstReply;
 
+  bool get isCommentsActionEnabled;
+
   StatusAndContextCallback get statusCallback;
 
   AccountCallback get accountMentionCallback;

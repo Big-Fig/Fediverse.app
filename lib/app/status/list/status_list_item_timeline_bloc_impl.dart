@@ -38,6 +38,9 @@ class StatusListItemTimelineBloc extends DisposableOwner
   final IPleromaMediaAttachment initialMediaAttachment;
 
   @override
+  final bool isCommentsActionEnabled;
+
+  @override
   bool get isReplyAndFirstReplyOrDisplayAllReplies =>
       isReply && displayThisThreadAction && isFirstReplyAndDisplayReplyToStatus;
 
@@ -60,6 +63,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     @required this.accountMentionCallback,
     @required this.statusCallback,
     @required this.initialMediaAttachment,
+    @required this.isCommentsActionEnabled,
   }) : super();
 
   StatusListItemTimelineBloc.list({
@@ -79,6 +83,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
           displayThisThreadAction: true,
           displayAccountHeader: true,
           accountMentionCallback: null,
+          isCommentsActionEnabled: true,
           initialMediaAttachment: initialMediaAttachment,
         );
 
@@ -90,6 +95,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     @required StatusAndContextCallback statusCallback,
     @required AccountCallback accountMentionCallback,
     @required IPleromaMediaAttachment initialMediaAttachment,
+    @required bool isCommentsActionEnabled,
   }) : this._private(
           status: status,
           collapsible: collapsible,
@@ -101,6 +107,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
           accountMentionCallback: accountMentionCallback,
           displayAccountHeader: displayAccountHeader,
           initialMediaAttachment: initialMediaAttachment,
+          isCommentsActionEnabled: isCommentsActionEnabled,
         );
 
   @override
