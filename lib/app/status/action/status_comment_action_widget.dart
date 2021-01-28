@@ -1,5 +1,6 @@
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
+import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
@@ -33,21 +34,26 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<int>(
-        stream: statusBloc.repliesCountStream,
-        builder: (context, snapshot) {
-          var repliesCount = snapshot.data;
-          if (repliesCount == null) {
-            return const SizedBox.shrink();
-          }
 
-          return Provider<int>.value(
-            value: repliesCount,
-            child: StatusActionCounterWidget(
-              onClick: _onActionClick,
-            ),
-          );
-        });
+    var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+    return StreamBuilder<int>(
+      stream: statusBloc.repliesCountStream,
+      builder: (context, snapshot) {
+        var repliesCount = snapshot.data;
+        if (repliesCount == null) {
+          return const SizedBox.shrink();
+        }
+
+        return Provider<int>.value(
+          value: repliesCount,
+          child: StatusActionCounterWidget(
+            onClick: statusListItemTimelineBloc.isCommentsActionEnabled
+                ? _onActionClick
+                : null,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -76,12 +82,19 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediIconButton(
-        color: IFediUiColorTheme.of(context).darkGrey,
-        iconSize: FediSizes.bigIconSize,
-        icon: Icon(FediIcons.message),
-        onPressed: () {
-          _onActionClick(context);
-        },
-      );
+  Widget build(BuildContext context) {
+    var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
+    return FediIconButton(
+      color: statusListItemTimelineBloc.isCommentsActionEnabled
+          ? IFediUiColorTheme.of(context).darkGrey
+          : IFediUiColorTheme.of(context).lightGrey,
+      iconSize: FediSizes.bigIconSize,
+      icon: Icon(FediIcons.message),
+      onPressed: statusListItemTimelineBloc.isCommentsActionEnabled
+          ? () {
+              _onActionClick(context);
+            }
+          : null,
+    );
+  }
 }
