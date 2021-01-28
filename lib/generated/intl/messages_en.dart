@@ -651,6 +651,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_post_dialog_error_title_post" : MessageLookupByLibrary.simpleMessage("Failed to post status"),
     "app_status_post_dialog_error_title_schedule" : MessageLookupByLibrary.simpleMessage("Failed to schedule status"),
     "app_status_post_error_empty_dialog_title" : MessageLookupByLibrary.simpleMessage("Can\'t send empty message"),
+    "app_status_post_error_pollBodyIsEmpty_desc" : MessageLookupByLibrary.simpleMessage("Poll body shouldn\'t be empty"),
     "app_status_post_error_poll_dialog_title" : MessageLookupByLibrary.simpleMessage("Enter at least two poll options"),
     "app_status_post_field_message_hint" : MessageLookupByLibrary.simpleMessage("What’s going on today?"),
     "app_status_post_field_subject" : MessageLookupByLibrary.simpleMessage("Subject (optional)"),

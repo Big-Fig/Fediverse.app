@@ -651,6 +651,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_post_dialog_error_title_post" : MessageLookupByLibrary.simpleMessage("Невозможно опубликовать запись"),
     "app_status_post_dialog_error_title_schedule" : MessageLookupByLibrary.simpleMessage("Невозможно запланировать запись"),
     "app_status_post_error_empty_dialog_title" : MessageLookupByLibrary.simpleMessage("Не возможно отправить пустое сообщение"),
+    "app_status_post_error_pollBodyIsEmpty_desc" : MessageLookupByLibrary.simpleMessage("Описание опроса не может быть пустым"),
     "app_status_post_error_poll_dialog_title" : MessageLookupByLibrary.simpleMessage("Введите минимум два ответа"),
     "app_status_post_field_message_hint" : MessageLookupByLibrary.simpleMessage("Что произошло сегодня?"),
     "app_status_post_field_subject" : MessageLookupByLibrary.simpleMessage("Тема (опционально)"),

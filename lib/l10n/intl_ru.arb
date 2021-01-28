@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-26T18:53:36+00:00",
+    "@@last_modified": "2021-01-28T14:00:20+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -691,5 +691,6 @@
     "app_account_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}",
     "app_status_action_openOnRemoteInstance": "Открыть на {remoteInstanceDomain}",
     "app_instance_remote_error_failed_dialog_title": "Не удалось загрузить",
-    "app_instance_remote_error_failed_dialog_content": "Удаленный сервер не поддерживает или проблемы с соединением"
+    "app_instance_remote_error_failed_dialog_content": "Удаленный сервер не поддерживает или проблемы с соединением",
+    "app_status_post_error_pollBodyIsEmpty_desc": "Описание опроса не может быть пустым"
 }

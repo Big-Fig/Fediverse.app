@@ -6761,6 +6761,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Poll body shouldn't be empty`
+  String get app_status_post_error_pollBodyIsEmpty_desc {
+    return Intl.message(
+      'Poll body shouldn\'t be empty',
+      name: 'app_status_post_error_pollBodyIsEmpty_desc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
