@@ -79,9 +79,13 @@ class ConversationChatWithLastMessageListWidget
 
 void _goToChatPage(BuildContext context) {
   var chatBloc = IConversationChatBloc.of(context, listen: false);
+  var paginationListBloc = IPaginationListBloc.of(context, listen: false);
   goToConversationChatPage(
     context,
     chat: chatBloc.chat,
     lastChatMessage: chatBloc.lastChatMessage,
+    onDeletedCallback: () {
+      paginationListBloc.refreshWithController();
+    },
   );
 }

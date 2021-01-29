@@ -21,6 +21,8 @@ abstract class IConversationChatRepository
   Future upsertRemoteConversations(
       List<IPleromaConversation> remoteConversations);
 
+  Future deleteByRemoteId(String remoteId);
+
   Stream<DbConversationChatWrapper> watchByRemoteId(String remoteId);
 
   Future upsertRemoteConversation(IPleromaConversation remoteConversation);

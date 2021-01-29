@@ -30,6 +30,9 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
+  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
+
+  @override
   Future internalAsyncInit() async {
     // nothing to init now
     return null;
@@ -298,11 +301,9 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
     );
   }
 
-
   @override
   Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
 
   @override
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
-
 }

@@ -182,4 +182,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       await chatMessageRepository.deleteByRemoteId(remoteId);
     }
   }
+
+  @override
+  Future performActualDelete() {
+    throw UnsupportedError("It is not possible to delete pleroma chat");
+  }
 }

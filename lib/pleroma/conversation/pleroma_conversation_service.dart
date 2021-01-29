@@ -15,13 +15,17 @@ abstract class IPleromaConversationService implements IPleromaApi {
     IPleromaPaginationRequest pagination,
   });
 
-  Future<IPleromaConversation> getConversation(
-      {@required String conversationRemoteId});
+  Future<IPleromaConversation> getConversation({
+    @required String conversationRemoteId,
+  });
 
-  Future<IPleromaConversation> markConversationAsRead(
-      {@required String conversationRemoteId});
+  Future<IPleromaConversation> markConversationAsRead({
+    @required String conversationRemoteId,
+  });
 
-  Future<bool> deleteConversation({@required String conversationRemoteId});
+  Future<bool> deleteConversation({
+    @required String conversationRemoteId,
+  });
 
   Future<List<IPleromaConversation>> getConversations({
     IPleromaPaginationRequest pagination,

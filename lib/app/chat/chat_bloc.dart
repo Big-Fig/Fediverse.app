@@ -41,4 +41,8 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
   Future markAsRead();
 
   Future deleteMessages(List<IChatMessage> chatMessages);
+
+  Future delete();
+
+  Stream<bool> get chatDeletedStream;
 }

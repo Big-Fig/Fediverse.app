@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -6,6 +8,12 @@ import 'package:flutter/widgets.dart';
 abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final bool isNeedWatchLocalRepositoryForUpdates;
 
+  final StreamController<bool> chatDeletedStreamController =
+      StreamController.broadcast();
+
+  @override
+  Stream<bool> get chatDeletedStream => chatDeletedStreamController.stream;
+
   ChatBloc({
     @required bool needRefreshFromNetworkOnInit,
     @required this.isNeedWatchLocalRepositoryForUpdates,
@@ -13,6 +21,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
     //  improve performance in timeline unnecessary recreations
     @required bool delayInit,
   }) {
+    addDisposable(streamController: chatDeletedStreamController);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(needRefreshFromNetworkOnInit);
@@ -64,4 +73,13 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 
   @override
   Stream<int> get unreadCountStream => chatStream.map((chat) => chat.unread);
+
+  @override
+  Future delete() async {
+    await performActualDelete();
+
+    chatDeletedStreamController.add(true);
+  }
+
+  Future performActualDelete();
 }
