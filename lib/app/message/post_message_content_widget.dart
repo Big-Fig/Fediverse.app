@@ -6,9 +6,6 @@ import 'package:fedi/form/form_item_validation.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
-
-final _logger = Logger("post_message_content_widget.dart");
 
 class PostMessageContentWidget extends StatelessWidget {
   final String hintText;

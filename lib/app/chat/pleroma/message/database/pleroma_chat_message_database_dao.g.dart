@@ -29,6 +29,15 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_chat_messages WHERE remote_id = :remoteId;',
+      variables: [Variable.withString(remoteId)],
+      updates: {dbChatMessages},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_chat_messages',

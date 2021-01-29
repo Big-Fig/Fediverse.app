@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/selection/chat_selection_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -6,9 +7,10 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatWidgetBody extends StatelessWidget {
+class ChatBodyWrapperWidget extends StatelessWidget {
   final Widget child;
-  const ChatWidgetBody({@required this.child});
+
+  const ChatBodyWrapperWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class ChatWidgetBody extends StatelessWidget {
         } else {
           return Column(
             children: <Widget>[
+              const ChatSelectionWidget(),
               Expanded(
                 child: UnfocusOnScrollAreaWidget(
                   child: Padding(

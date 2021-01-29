@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-28T13:59:55+00:00",
+    "@@last_modified": "2021-01-29T16:15:33+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -308,7 +308,7 @@
     "app_status_deleted_desc": "Status deleted",
     "app_status_spoiler_chip": "Spoilers!",
     "app_status_spoiler_action_view": "Tap to view",
-    "app_status_copyLink_toast": "Copied",
+    "app_status_copyLink_toast": "Copied in clipboard",
     "app_status_favouritedBy_title": "Favourited by",
     "app_status_rebloggedBy_title": "Reblogged by",
     "app_status_post_poll_field_option_hint": "Option {optionNumber}",
@@ -692,5 +692,9 @@
     "app_status_action_openOnRemoteInstance": "Open on {remoteInstanceDomain}",
     "app_instance_remote_error_failed_dialog_title": "Failed to load data from remote host",
     "app_instance_remote_error_failed_dialog_content": "Remote host don't support this feature or network error",
-    "app_status_post_error_pollBodyIsEmpty_desc": "Poll body shouldn't be empty"
+    "app_status_post_error_pollBodyIsEmpty_desc": "Poll body shouldn't be empty",
+    "app_chat_selection_action_copyAsRawText_toast_success": "Copied in clipboard",
+    "app_chat_selection_action_delete_confirm_dialog_title": "Delete messages",
+    "app_chat_selection_action_delete_confirm_dialog_content": "Are you sure?",
+    "app_chat_selection_action_delete_confirm_dialog_action_delete": "Delete"
 }

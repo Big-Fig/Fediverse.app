@@ -4,13 +4,13 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediConfirmAlertDialog extends FediBaseAlertDialog {
-  FediConfirmAlertDialog(
-      {@required BuildContext context,
-      @required DialogActionCallback onAction,
-      String title,
-      String contentText,
-      String okActionLabel})
-      : super(
+  FediConfirmAlertDialog({
+    @required BuildContext context,
+    @required DialogActionCallback onAction,
+    String title,
+    String contentText,
+    String okActionLabel,
+  }) : super(
             title: title,
             contentText: contentText,
             actions: [
