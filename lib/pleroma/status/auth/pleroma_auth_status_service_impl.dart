@@ -25,9 +25,11 @@ class PleromaAuthStatusService extends PleromaStatusService
   Future deleteStatus({
     @required String statusRemoteId,
   }) async {
-    await restService.sendHttpRequest(RestRequest.delete(
-      relativePath: join(statusRelativeUrlPath, statusRemoteId),
-    ));
+    await restService.sendHttpRequest(
+      RestRequest.delete(
+        relativePath: join(statusRelativeUrlPath, statusRemoteId),
+      ),
+    );
   }
 
   @override

@@ -47,6 +47,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
+  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
+
+  @override
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
       {@required String listRemoteId,
       @required String conversationRemoteId,

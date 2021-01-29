@@ -25,6 +25,7 @@ import 'package:moor/ffi.dart';
 
 import '../../pleroma/account/my/pleroma_my_account_service_mock.dart';
 import '../../pleroma/conversation/pleroma_conversation_service_mock.dart';
+import '../../pleroma/status/pleroma_status_service_mock.dart';
 import '../account/account_model_helper.dart';
 import '../account/my/my_account_model_helper.dart';
 import '../status/status_model_helper.dart';
@@ -34,6 +35,7 @@ void main() {
   IConversationChat conversation;
   IConversationChatBloc conversationBloc;
   PleromaConversationServiceMock pleromaConversationServiceMock;
+  PleromaAuthStatusServiceMock pleromaAuthStatusServiceMock;
   PleromaMyAccountServiceMock pleromaMyAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
@@ -46,54 +48,57 @@ void main() {
   ILocalPreferencesService preferencesService;
   IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
 
-  setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
-    accountRepository = AccountRepository(appDatabase: database);
-    statusRepository = StatusRepository(
-        appDatabase: database, accountRepository: accountRepository);
-    conversationRepository = ConversationChatRepository(
-        appDatabase: database,
+  setUp(
+    () async {
+      database = AppDatabase(VmDatabase.memory());
+      accountRepository = AccountRepository(appDatabase: database);
+      statusRepository = StatusRepository(
+          appDatabase: database, accountRepository: accountRepository);
+      conversationRepository = ConversationChatRepository(
+          appDatabase: database,
+          accountRepository: accountRepository,
+          statusRepository: statusRepository);
+
+      pleromaConversationServiceMock = PleromaConversationServiceMock();
+      pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
+
+      preferencesService = MemoryLocalPreferencesService();
+
+      myAccount = await createTestMyAccount(seed: "myAccount");
+      authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
+
+      myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
+        preferencesService,
+        userAtHost: authInstance.userAtHost,
+      );
+
+      await myAccountLocalPreferenceBloc.setValue(myAccount);
+      // hack to execute notify callbacks
+      await Future.delayed(Duration(milliseconds: 1));
+
+      myAccountBloc = MyAccountBloc(
+          pleromaMyAccountService: pleromaMyAccountServiceMock,
+          accountRepository: accountRepository,
+          myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
+          instance: authInstance);
+
+      when(pleromaConversationServiceMock.isApiReadyToUse).thenReturn(true);
+
+      conversation = await createTestConversation(seed: "seed1");
+
+      conversationBloc = ConversationChatBloc(
+        conversation: conversation,
+        pleromaConversationService: pleromaConversationServiceMock,
         accountRepository: accountRepository,
-        statusRepository: statusRepository);
-
-    pleromaConversationServiceMock = PleromaConversationServiceMock();
-    pleromaMyAccountServiceMock = PleromaMyAccountServiceMock();
-
-    preferencesService = MemoryLocalPreferencesService();
-
-    myAccount = await createTestMyAccount(seed: "myAccount");
-    authInstance = AuthInstance(urlHost: "fedi.app", acct: myAccount.acct);
-
-    myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
-      preferencesService,
-      userAtHost: authInstance.userAtHost,
-    );
-
-    await myAccountLocalPreferenceBloc.setValue(myAccount);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    myAccountBloc = MyAccountBloc(
-        pleromaMyAccountService: pleromaMyAccountServiceMock,
-        accountRepository: accountRepository,
-        myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
-        instance: authInstance);
-
-    when(pleromaConversationServiceMock.isApiReadyToUse).thenReturn(true);
-
-    conversation = await createTestConversation(seed: "seed1");
-
-    conversationBloc = ConversationChatBloc(
-      conversation: conversation,
-      pleromaConversationService: pleromaConversationServiceMock,
-      accountRepository: accountRepository,
-      statusRepository: statusRepository,
-      conversationRepository: conversationRepository,
-      delayInit: false,
-      myAccountBloc: myAccountBloc,
-      lastChatMessage: null,
-    );
-  });
+        statusRepository: statusRepository,
+        conversationRepository: conversationRepository,
+        delayInit: false,
+        myAccountBloc: myAccountBloc,
+        lastChatMessage: null,
+        pleromaAuthStatusService: pleromaAuthStatusServiceMock,
+      );
+    },
+  );
 
   tearDown(() async {
     await conversationBloc.dispose();

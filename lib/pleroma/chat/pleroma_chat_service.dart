@@ -34,4 +34,9 @@ abstract class IPleromaChatService implements IPleromaApi {
     @required String chatId,
     @required IPleromaChatMessageSendData data,
   });
+
+  Future deleteChatMessage({
+    @required String chatMessageRemoteId,
+    @required String chatId,
+  });
 }

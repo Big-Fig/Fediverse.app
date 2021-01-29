@@ -39,4 +39,6 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
   Future refreshFromNetwork();
 
   Future markAsRead();
+
+  Future deleteMessages(List<IChatMessage> chatMessages);
 }

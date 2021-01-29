@@ -25,9 +25,13 @@ class CachedPaginationListWithNewItemsBlocProxyProvider<
               ICachedPaginationListWithNewItemsBloc>(
             update: (context, value, previous) => value,
             child: ProxyProvider<
-                    ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-                    ICachedPaginationListBloc>(
-                update: (context, value, previous) => value, child: child),
+                ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+                ICachedPaginationListBloc>(
+              update: (context, value, previous) => value,
+              child: CachedPaginationListBlocProxyProvider(
+                child: child,
+              ),
+            ),
           ),
         ),
       ),

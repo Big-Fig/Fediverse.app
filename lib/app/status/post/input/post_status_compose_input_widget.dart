@@ -1,4 +1,3 @@
-import 'package:fedi/form/field/form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';

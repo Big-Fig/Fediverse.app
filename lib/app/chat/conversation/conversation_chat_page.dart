@@ -1,5 +1,5 @@
 import 'package:fedi/app/chat/chat_bloc.dart';
-import 'package:fedi/app/chat/chat_page.dart';
+import 'package:fedi/app/chat/chat_page_app_bar_body_widget.dart';
 import 'package:fedi/app/chat/conversation/accounts/conversation_chat_accounts_page.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
@@ -8,6 +8,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_widget.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/post/conversation_chat_post_message_bloc_impl.dart';
+import 'package:fedi/app/chat/selection/chat_selection_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
@@ -103,7 +104,10 @@ MaterialPageRoute createConversationChatPageRoute(
         conversation: chat,
         child: ProxyProvider<IConversationChatBloc, IChatBloc>(
           update: (context, value, _) => value,
-          child: const ConversationChatPage(),
+          child: ChatSelectionBloc.provideToContext(
+            context,
+            child: const ConversationChatPage(),
+          ),
         ),
         conversationAccountsWithoutMe: null,
       ),

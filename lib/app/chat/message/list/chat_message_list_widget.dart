@@ -1,12 +1,17 @@
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_model.dart';
+import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
+import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
+import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart';
+import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
@@ -113,8 +118,20 @@ class ChatMessageListWidget<T extends IChatMessage>
               update: (context, item, _) => item.message,
               child: ProxyProvider<ChatMessageListItem<T>, IChatMessage>(
                 update: (context, item, _) => item.message,
-                child: _ChatMessageListItemWidget(
-                  itemBuilder: itemBuilder,
+                child: DisposableProxyProvider<IChatMessage,
+                    IChatSelectionItemBloc>(
+                  update: (context, chatMessage, _) => ChatSelectionItemBloc(
+                    chatSelectionBloc: IChatSelectionBloc.of(
+                      context,
+                      listen: false,
+                    ),
+                    chatMessage: chatMessage,
+                  ),
+                  child: ChatSelectionItemWidget(
+                    child: _ChatMessageListItemWidget(
+                      itemBuilder: itemBuilder,
+                    ),
+                  ),
                 ),
               ),
             ),

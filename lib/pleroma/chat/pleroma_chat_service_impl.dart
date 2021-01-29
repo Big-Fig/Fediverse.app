@@ -201,4 +201,21 @@ class PleromaChatService extends DisposableOwner
 
     return parseChatMessageResponse(httpResponse);
   }
+
+  @override
+  Future deleteChatMessage({
+    @required String chatMessageRemoteId,
+    @required String chatId,
+  }) async {
+    await restService.sendHttpRequest(
+      RestRequest.delete(
+        relativePath: urlPath.join(
+          chatRelativeUrlPath,
+          chatId,
+          "messages",
+          chatMessageRemoteId,
+        ),
+      ),
+    );
+  }
 }

@@ -19,7 +19,10 @@ abstract class IPleromaChatMessageRepository
 
   Future<IPleromaChatMessage> findByRemoteId(String remoteId);
 
-  Future upsertRemoteChatMessages(List<pleroma_lib.IPleromaChatMessage> remoteChatMessages);
+  Future deleteByRemoteId(String remoteId);
+
+  Future upsertRemoteChatMessages(
+      List<pleroma_lib.IPleromaChatMessage> remoteChatMessages);
 
   Stream<IPleromaChatMessage> watchByRemoteId(String remoteId);
 

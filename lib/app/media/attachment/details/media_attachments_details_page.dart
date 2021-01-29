@@ -234,31 +234,38 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconButton(
-        icon: Icon(
-          FediIcons.share,
-          color: IFediUiColorTheme.of(context).darkGrey,
-          size: FediSizes.appBarIconSize,
-        ),
-        onPressed: () {
-          showShareChooserDialog(
-            context,
-            externalShareAction: () {
-              Navigator.of(context).pop();
-              goToExternalShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-            conversationsShareAction: () {
-              Navigator.of(context).pop();
-              goToConversationShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-            chatsShareAction: () {
-              Navigator.of(context).pop();
-              goToPleromaChatShareMediaPage(
-                  context: context, mediaAttachment: mediaAttachment);
-            },
-          );
-        });
+      icon: Icon(
+        FediIcons.share,
+        color: IFediUiColorTheme.of(context).darkGrey,
+        size: FediSizes.appBarIconSize,
+      ),
+      onPressed: () {
+        showShareChooserDialog(
+          context,
+          externalShareAction: () {
+            Navigator.of(context).pop();
+            goToExternalShareMediaPage(
+              context: context,
+              mediaAttachment: mediaAttachment,
+            );
+          },
+          conversationsShareAction: () {
+            Navigator.of(context).pop();
+            goToConversationShareMediaPage(
+              context: context,
+              mediaAttachment: mediaAttachment,
+            );
+          },
+          chatsShareAction: () {
+            Navigator.of(context).pop();
+            goToPleromaChatShareMediaPage(
+              context: context,
+              mediaAttachment: mediaAttachment,
+            );
+          },
+        );
+      },
+    );
   }
 }
 

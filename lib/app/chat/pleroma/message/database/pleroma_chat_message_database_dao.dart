@@ -14,6 +14,8 @@ var _accountAliasId = "account";
   "countAll": "SELECT Count(*) FROM db_chat_messages;",
   "countById": "SELECT COUNT(*) FROM db_chat_messages WHERE id = :id;",
   "deleteById": "DELETE FROM db_chat_messages WHERE id = :id;",
+  "deleteByRemoteId": "DELETE FROM db_chat_messages WHERE remote_id = "
+      ":remoteId;",
   "clear": "DELETE FROM db_chat_messages",
   "getAll": "SELECT * FROM db_chat_messages",
   "oldest": "SELECT * FROM db_chat_messages ORDER BY created_at ASC LIMIT 1;",

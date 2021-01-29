@@ -20,6 +20,8 @@ abstract class IStatusRepository
 
   Future<IStatus> findByRemoteId(String remoteId);
 
+  Future deleteByRemoteId(String remoteId);
+
   Future upsertRemoteStatuses(
     List<IPleromaStatus> remoteStatuses, {
     @required String listRemoteId,

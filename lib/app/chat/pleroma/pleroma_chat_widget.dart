@@ -1,4 +1,4 @@
-import 'package:fedi/app/chat/chat_widget.dart';
+import 'package:fedi/app/chat/chat_body_wrapper_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
@@ -33,7 +33,7 @@ class PleromaChatWidget extends StatelessWidget {
                 .provideToContext(
               context,
               mergeNewItemsImmediately: true,
-              child: const ChatWidgetBody(
+              child: const ChatBodyWrapperWidget(
                 child: ChatMessageListWidget<IPleromaChatMessage>(
                   itemBuilder: _itemBuilder,
                 ),

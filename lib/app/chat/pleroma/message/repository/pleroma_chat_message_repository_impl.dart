@@ -69,6 +69,9 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
   @override
+  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
+
+  @override
   Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
     @required List<IPleromaChat> onlyInChats,
     @required IPleromaChatMessage olderThanChatMessage,

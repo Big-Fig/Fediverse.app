@@ -3116,10 +3116,10 @@ class S {
     );
   }
 
-  /// `Copied`
+  /// `Copied in clipboard`
   String get app_status_copyLink_toast {
     return Intl.message(
-      'Copied',
+      'Copied in clipboard',
       name: 'app_status_copyLink_toast',
       desc: '',
       args: [],
@@ -6767,6 +6767,46 @@ class S {
     return Intl.message(
       'Poll body shouldn\'t be empty',
       name: 'app_status_post_error_pollBodyIsEmpty_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied in clipboard`
+  String get app_chat_selection_action_copyAsRawText_toast_success {
+    return Intl.message(
+      'Copied in clipboard',
+      name: 'app_chat_selection_action_copyAsRawText_toast_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete messages`
+  String get app_chat_selection_action_delete_confirm_dialog_title {
+    return Intl.message(
+      'Delete messages',
+      name: 'app_chat_selection_action_delete_confirm_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get app_chat_selection_action_delete_confirm_dialog_content {
+    return Intl.message(
+      'Are you sure?',
+      name: 'app_chat_selection_action_delete_confirm_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_chat_selection_action_delete_confirm_dialog_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_chat_selection_action_delete_confirm_dialog_action_delete',
       desc: '',
       args: [],
     );

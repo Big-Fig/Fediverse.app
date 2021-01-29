@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
+import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -167,4 +168,18 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   bool get isCountInUnreadSupported => true;
+
+  @override
+  Future deleteMessages(List<IChatMessage> chatMessages) async {
+    // create queue instead of parallel request to avoid throttle limit on server
+    for (var chatMessage in chatMessages) {
+      var remoteId = chatMessage.remoteId;
+      await pleromaChatService.deleteChatMessage(
+        chatId: chat.remoteId,
+        chatMessageRemoteId: remoteId,
+      );
+
+      await chatMessageRepository.deleteByRemoteId(remoteId);
+    }
+  }
 }
