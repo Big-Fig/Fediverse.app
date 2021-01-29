@@ -18,6 +18,7 @@ var _conversationAccountsAliasId = "conversationAccounts";
       "SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_conversations WHERE id = :id;",
   "deleteById": "DELETE FROM db_conversations WHERE id = :id;",
+  "deleteByRemoteId": "DELETE FROM db_conversations WHERE remote_id = :remoteId;",
   "clear": "DELETE FROM db_conversations",
   "getAll": "SELECT * FROM db_conversations",
   "findLocalIdByRemoteId": "SELECT id FROM db_conversations WHERE remote_id = "

@@ -49,6 +49,15 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String remoteId) {
+    return customUpdate(
+      'DELETE FROM db_conversations WHERE remote_id = :remoteId;',
+      variables: [Variable.withString(remoteId)],
+      updates: {dbConversations},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_conversations',

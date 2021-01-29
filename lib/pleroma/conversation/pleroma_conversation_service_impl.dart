@@ -152,7 +152,7 @@ class PleromaConversationService extends DisposableOwner
   Future<bool> deleteConversation({
     @required String conversationRemoteId,
   }) async {
-    var request = RestRequest.get(
+    var request = RestRequest.delete(
       relativePath: join(
         conversationRelativeUrlPath,
         conversationRemoteId,

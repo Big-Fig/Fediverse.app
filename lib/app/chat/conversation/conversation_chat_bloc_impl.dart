@@ -246,4 +246,14 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     }
   }
+
+  @override
+  Future performActualDelete() async {
+    var remoteId = conversation.remoteId;
+    await pleromaConversationService.deleteConversation(
+      conversationRemoteId: remoteId,
+    );
+
+    await conversationRepository.deleteByRemoteId(remoteId);
+  }
 }

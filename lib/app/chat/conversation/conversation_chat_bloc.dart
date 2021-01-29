@@ -27,6 +27,7 @@ abstract class IConversationChatBloc
 
   @override
   Stream<IConversationChatMessage> get lastChatMessageStream;
+
 }
 
 extension IConversationChatBlocExtension on IConversationChatBloc {

@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
+import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
@@ -136,14 +137,14 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
       );
 
   Widget buildMastodonBody(BuildContext context) => Center(
-        child: Text(
-          S.of(context).app_home_tab_chat_pleroma_notSupported_mastodon,
+        child: FediEmptyWidget(
+          title: S.of(context).app_home_tab_chat_pleroma_notSupported_mastodon,
         ),
       );
 
   Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
-        child: Text(
-          S.of(context).app_home_tab_chat_pleroma_notSupported_pleroma,
+        child: FediEmptyWidget(
+          title: S.of(context).app_home_tab_chat_pleroma_notSupported_pleroma,
         ),
       );
 }
@@ -194,7 +195,8 @@ class _ChatMessagesHomeTabPageHeaderAddActionWidget extends StatelessWidget {
   }
 }
 
-class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget extends StatelessWidget {
+class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget
+    extends StatelessWidget {
   const _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget({
     Key key,
   }) : super(key: key);
