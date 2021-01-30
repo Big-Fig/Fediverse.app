@@ -10,9 +10,10 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
 
 import '../../account/database/account_database_model_helper.dart';
 import '../../conversation/conversation_model_helper.dart';
@@ -223,27 +224,9 @@ void main() {
 
   test('createQuery empty', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: null,
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -262,27 +245,11 @@ void main() {
 
   test('createQuery containsBaseUrlOrIsPleromaLocal', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyLocalCondition: StatusOnlyLocalCondition("pleroma.com"),
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: StatusOnlyLocalCondition("pleroma.com"),
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -317,27 +284,11 @@ void main() {
 
   test('createQuery onlyWithMedia', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: true,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyWithMedia: true,
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -364,27 +315,11 @@ void main() {
 
   test('createQuery withMuted', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: true,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        withMuted: true,
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -438,30 +373,14 @@ void main() {
 
   test('createQuery excludeVisibilities', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: [
-        PleromaVisibility.direct,
-        PleromaVisibility.unlisted
-      ],
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        excludeVisibilities: [
+          PleromaVisibility.direct,
+          PleromaVisibility.unlisted
+        ],
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -495,28 +414,12 @@ void main() {
 
   test('createQuery newerThanStatus', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus:
-          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem:
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      ),
+      orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
     await insertDbStatus(
@@ -547,30 +450,14 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanStatus', () async {
+  test('createQuery olderThanStatus', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus:
-          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<IStatus>(
+        olderThanItem:
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      ),
+      orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
     await insertDbStatus(
@@ -603,29 +490,14 @@ void main() {
 
   test('createQuery notNewerThanStatus & newerThanStatus', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus:
-          await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus:
-          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem:
+            await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
+        olderThanItem:
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      ),
+      orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
     );
 
     await insertDbStatus(
@@ -672,29 +544,12 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: null,
+      pagination: null,
       orderingTermData: StatusRepositoryOrderingTermData(
-          orderType: StatusRepositoryOrderType.remoteId,
-          orderingMode: OrderingMode.asc),
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+        orderType: StatusRepositoryOrderType.remoteId,
+        orderingMode: OrderingMode.asc,
+      ),
     );
 
     var status2 = await insertDbStatus(
@@ -721,29 +576,12 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: null,
+      pagination: null,
       orderingTermData: StatusRepositoryOrderingTermData(
-          orderType: StatusRepositoryOrderType.remoteId,
-          orderingMode: OrderingMode.desc),
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+        orderType: StatusRepositoryOrderType.remoteId,
+        orderingMode: OrderingMode.desc,
+      ),
     );
 
     var status2 = await insertDbStatus(
@@ -770,29 +608,15 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: 1,
-      offset: 1,
+      filters: null,
+      pagination: RepositoryPagination<IStatus>(
+        limit: 1,
+        offset: 1,
+      ),
       orderingTermData: StatusRepositoryOrderingTermData(
-          orderType: StatusRepositoryOrderType.remoteId,
-          orderingMode: OrderingMode.desc),
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+        orderType: StatusRepositoryOrderType.remoteId,
+        orderingMode: OrderingMode.desc,
+      ),
     );
 
     var status2 = await insertDbStatus(
@@ -817,27 +641,11 @@ void main() {
 
   test('createQuery onlyNoNsfwSensitive', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyNoNsfwSensitive: true,
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: true,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -856,27 +664,11 @@ void main() {
 
   test('createQuery onlyNoReplies', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyNoReplies: true,
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: true,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     await insertDbStatus(
@@ -903,55 +695,47 @@ void main() {
     var accountInvalidRemoteId = "accountInvalidRemoteId";
     var followingAccountRemoteId = "followingAccountRemoteId";
 
-    await accountRepository.addAccountFollowings(accountRemoteId, [
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(
-          (await createTestDbAccount(seed: followingAccountRemoteId))
-              .copyWith(remoteId: followingAccountRemoteId)))
-    ]);
+    await accountRepository.addAccountFollowings(
+      accountRemoteId,
+      [
+        mapLocalAccountToRemoteAccount(
+          DbAccountWrapper(
+            (await createTestDbAccount(seed: followingAccountRemoteId))
+                .copyWith(
+              remoteId: followingAccountRemoteId,
+            ),
+          ),
+        )
+      ],
+    );
 
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: DbAccountWrapper(
-        DbAccount(
-          id: null,
-          remoteId: followingAccountRemoteId,
-          username: null,
-          url: null,
-          note: null,
-          locked: null,
-          headerStatic: null,
-          header: null,
-          followingCount: null,
-          followersCount: null,
-          statusesCount: null,
-          displayName: null,
-          createdAt: null,
-          avatarStatic: null,
-          avatar: null,
-          acct: null,
-          pleromaBackgroundImage: null,
-          lastStatusAt: null,
+      filters: StatusRepositoryFilters(
+        onlyFromAccountsFollowingByAccount: DbAccountWrapper(
+          DbAccount(
+            id: null,
+            remoteId: followingAccountRemoteId,
+            username: null,
+            url: null,
+            note: null,
+            locked: null,
+            headerStatic: null,
+            header: null,
+            followingCount: null,
+            followersCount: null,
+            statusesCount: null,
+            displayName: null,
+            createdAt: null,
+            avatarStatic: null,
+            avatar: null,
+            acct: null,
+            pleromaBackgroundImage: null,
+            lastStatusAt: null,
+          ),
         ),
       ),
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      isFromHomeTimeline: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
+      pagination: null,
+      orderingTermData: null,
     );
 
     await insertDbStatus(
@@ -976,33 +760,18 @@ void main() {
 
   test('createQuery withHashtag', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyWithHashtag: "#cats",
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: "#cats",
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     var dbStatus1 =
         (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
             .copyWith(tags: null);
-    await statusRepository.updateStatusTags(dbStatus1.remoteId, dbStatus1.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus1.remoteId, tags: dbStatus1.tags);
     await insertDbStatus(statusRepository, dbStatus1);
 
     expect((await query.get()).length, 0);
@@ -1010,7 +779,8 @@ void main() {
     var dbStatus2 =
         (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
             .copyWith(tags: []);
-    await statusRepository.updateStatusTags(dbStatus2.remoteId, dbStatus2.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus2.remoteId, tags: dbStatus2.tags);
     await insertDbStatus(statusRepository, dbStatus2);
 
     expect((await query.get()).length, 0);
@@ -1018,7 +788,8 @@ void main() {
     var dbStatus3 =
         (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
             .copyWith(tags: [PleromaTag(name: "#dogs")]);
-    await statusRepository.updateStatusTags(dbStatus3.remoteId, dbStatus3.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus3.remoteId, tags: dbStatus3.tags);
     await insertDbStatus(statusRepository, dbStatus3);
 
     expect((await query.get()).length, 0);
@@ -1028,7 +799,8 @@ void main() {
             .copyWith(tags: [
       PleromaTag(name: "#cats"),
     ]);
-    await statusRepository.updateStatusTags(dbStatus4.remoteId, dbStatus4.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus4.remoteId, tags: dbStatus4.tags);
     await insertDbStatus(statusRepository, dbStatus4);
 
     expect((await query.get()).length, 1);
@@ -1039,7 +811,8 @@ void main() {
       PleromaTag(name: "#dogs"),
       PleromaTag(name: "#cats"),
     ]);
-    await statusRepository.updateStatusTags(dbStatus5.remoteId, dbStatus5.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus5.remoteId, tags: dbStatus5.tags);
     await insertDbStatus(statusRepository, dbStatus5);
 
     expect((await query.get()).length, 2);
@@ -1049,7 +822,8 @@ void main() {
             .copyWith(tags: [
       PleromaTag(name: "#ca"),
     ]);
-    await statusRepository.updateStatusTags(dbStatus6.remoteId, dbStatus6.tags);
+    await statusRepository.updateStatusTags(
+        statusRemoteId: dbStatus6.remoteId, tags: dbStatus6.tags);
     await insertDbStatus(statusRepository, dbStatus6);
 
     expect((await query.get()).length, 2);
@@ -1058,27 +832,11 @@ void main() {
   test('createQuery onlyInListWithRemoteId', () async {
     var listWithRemoteId = "listRemoteId";
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyInListWithRemoteId: listWithRemoteId,
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: listWithRemoteId,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     var dbStatus1 =
@@ -1092,8 +850,9 @@ void main() {
         (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus2);
-    await statusRepository
-        .addStatusesToList([dbStatus2.remoteId], "invalidStatusRemoteId");
+    await statusRepository.addStatusesToList(
+        statusRemoteIds: [dbStatus2.remoteId],
+        listRemoteId: "invalidStatusRemoteId");
 
     expect((await query.get()).length, 0);
 
@@ -1101,22 +860,22 @@ void main() {
         (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus3);
-    await statusRepository
-        .addStatusesToList([dbStatus3.remoteId], listWithRemoteId);
+    await statusRepository.addStatusesToList(
+        statusRemoteIds: [dbStatus3.remoteId], listRemoteId: listWithRemoteId);
 
     expect((await query.get()).length, 1);
 
     // duplicate adding. Should be skipped
-    await statusRepository
-        .addStatusesToList([dbStatus3.remoteId], listWithRemoteId);
+    await statusRepository.addStatusesToList(
+        statusRemoteIds: [dbStatus3.remoteId], listRemoteId: listWithRemoteId);
     expect((await query.get()).length, 1);
 
     var dbStatus4 =
         (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus4);
-    await statusRepository
-        .addStatusesToList([dbStatus4.remoteId], listWithRemoteId);
+    await statusRepository.addStatusesToList(
+        statusRemoteIds: [dbStatus4.remoteId], listRemoteId: listWithRemoteId);
 
     expect((await query.get()).length, 2);
   });
@@ -1124,28 +883,17 @@ void main() {
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
     var query = statusRepository.createQuery(
-      onlyInConversation: DbConversationChatWrapper(DbConversation(
-          remoteId: conversationRemoteId, unread: false, id: null)),
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyInConversation: DbConversationChatWrapper(
+          DbConversation(
+            remoteId: conversationRemoteId,
+            unread: false,
+            id: null,
+          ),
+        ),
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     var dbStatus1 =
@@ -1160,7 +908,8 @@ void main() {
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus2);
     await statusRepository.addStatusesToConversation(
-        [dbStatus2.remoteId], "invalidConversationId");
+        statusRemoteIds: [dbStatus2.remoteId],
+        conversationRemoteId: "invalidConversationId");
 
     expect((await query.get()).length, 0);
 
@@ -1168,49 +917,36 @@ void main() {
         (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus3);
-    await statusRepository
-        .addStatusesToConversation([dbStatus3.remoteId], conversationRemoteId);
+    await statusRepository.addStatusesToConversation(
+        statusRemoteIds: [dbStatus3.remoteId],
+        conversationRemoteId: conversationRemoteId);
 
     expect((await query.get()).length, 1);
 
     // duplicate adding. Should be skipped
-    await statusRepository
-        .addStatusesToConversation([dbStatus3.remoteId], conversationRemoteId);
+    await statusRepository.addStatusesToConversation(
+        statusRemoteIds: [dbStatus3.remoteId],
+        conversationRemoteId: conversationRemoteId);
     expect((await query.get()).length, 1);
 
     var dbStatus4 =
         (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
             .copyWith();
     await insertDbStatus(statusRepository, dbStatus4);
-    await statusRepository
-        .addStatusesToConversation([dbStatus4.remoteId], conversationRemoteId);
+    await statusRepository.addStatusesToConversation(
+        statusRemoteIds: [dbStatus4.remoteId],
+        conversationRemoteId: conversationRemoteId);
 
     expect((await query.get()).length, 2);
   });
 
   test('createQuery onlyFromAccount', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: DbAccountWrapper(dbAccount),
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyFromAccount: DbAccountWrapper(dbAccount),
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: null,
     );
 
     expect((await query.get()).length, 0);
@@ -1231,7 +967,7 @@ void main() {
         statusRepository,
         (await createTestDbStatus(
                 seed: "seed3",
-                dbAccount: dbAccount.copyWith(remoteId: "newAccountRetmotId")))
+                dbAccount: dbAccount.copyWith(remoteId: "newAccountRemoteId")))
             .copyWith());
     expect((await query.get()).length, 2);
   });
@@ -1303,14 +1039,16 @@ void main() {
         0);
 
     await statusRepository.addStatusesToConversation(
-        ["statusRemoteId1"], "conversationRemoteId1");
+        statusRemoteIds: ["statusRemoteId1"],
+        conversationRemoteId: "conversationRemoteId1");
 
     expect(
         (await statusRepository.conversationStatusesDao.getAll().get()).length,
         1);
 
     await statusRepository.addStatusesToConversation(
-        ["statusRemoteId1"], "conversationRemoteId1");
+        statusRemoteIds: ["statusRemoteId1"],
+        conversationRemoteId: "conversationRemoteId1");
 
     expect(
         (await statusRepository.conversationStatusesDao.getAll().get()).length,
@@ -1363,27 +1101,14 @@ void main() {
         1);
     expect(
         (await statusRepository.getStatuses(
-          onlyInListWithRemoteId: null,
-          onlyWithHashtag: null,
-          onlyFromAccountsFollowingByAccount: null,
-          isFromHomeTimeline: null,
-          onlyFromAccount: null,
-          onlyInConversation: await createTestConversation(
-              seed: "seed5", remoteId: conversationRemoteId),
-          onlyLocalCondition: null,
-          onlyWithMedia: null,
-          withMuted: null,
-          excludeVisibilities: null,
-          olderThanStatus: null,
-          newerThanStatus: null,
-          onlyNoNsfwSensitive: null,
-          onlyNoReplies: null,
+          filters: StatusRepositoryFilters(
+            onlyInConversation: await createTestConversation(
+              seed: "seed5",
+              remoteId: conversationRemoteId,
+            ),
+          ),
+          pagination: null,
           orderingTermData: null,
-          offset: null,
-          limit: null,
-          onlyBookmarked: null,
-          onlyFavourited: null,
-          excludeTextConditions: null,
         ))
             .length,
         1);
@@ -1412,29 +1137,17 @@ void main() {
     List<IStatus> watchedStatuses;
     var subscription = statusRepository
         .watchStatuses(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus:
-          await statusRepository.findByRemoteId(dbStatus1.remoteId),
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        onlyInListWithRemoteId: listRemoteId,
+      ),
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem:
+            await statusRepository.findByRemoteId(dbStatus1.remoteId),
+      ),
       orderingTermData: StatusRepositoryOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: StatusRepositoryOrderType.remoteId),
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: listRemoteId,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      excludeTextConditions: null,
+        orderingMode: OrderingMode.desc,
+        orderType: StatusRepositoryOrderType.remoteId,
+      ),
     )
         .listen((statuses) {
       watchedStatuses = statuses;
@@ -1483,29 +1196,13 @@ void main() {
 
   test('createQuery excludeTextConditions wholeWord = false', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        excludeTextConditions: [
+          StatusTextCondition(phrase: "test", wholeWord: false),
+        ],
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: [
-        StatusTextCondition(phrase: "test", wholeWord: false),
-      ],
     );
 
     var dbStatus1 =
@@ -1549,38 +1246,20 @@ void main() {
     expect((await query.get()).length, 1);
   });
 
-
-
   test('createQuery excludeTextConditions wholeWord = true', () async {
     var query = statusRepository.createQuery(
-      onlyInConversation: null,
-      onlyFromAccount: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      newerThanStatus: null,
-      limit: null,
-      offset: null,
+      filters: StatusRepositoryFilters(
+        excludeTextConditions: [
+          StatusTextCondition(phrase: "test", wholeWord: true),
+        ],
+      ),
+      pagination: null,
       orderingTermData: null,
-      onlyNoNsfwSensitive: null,
-      onlyLocalCondition: null,
-      onlyNoReplies: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      isFromHomeTimeline: null,
-      olderThanStatus: null,
-      onlyInListWithRemoteId: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      onlyNotDeleted: null,
-      excludeTextConditions: [
-        StatusTextCondition(phrase: "test", wholeWord: true),
-      ],
     );
 
     var dbStatus1 =
-    (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
-        .copyWith(
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(
       spoilerText: "test",
       content: "",
     );
@@ -1589,8 +1268,8 @@ void main() {
     expect((await query.get()).length, 0);
 
     var dbStatus2 =
-    (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
-        .copyWith(
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(
       spoilerText: "",
       content: "test",
     );
@@ -1599,8 +1278,8 @@ void main() {
     expect((await query.get()).length, 0);
 
     var dbStatus3 =
-    (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
-        .copyWith(
+        (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(
       spoilerText: "",
       content: "testing",
     );
@@ -1609,8 +1288,8 @@ void main() {
     expect((await query.get()).length, 1);
 
     var dbStatus4 =
-    (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
-        .copyWith(
+        (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+            .copyWith(
       spoilerText: "",
       content: "aaaa",
     );
@@ -1619,8 +1298,8 @@ void main() {
     expect((await query.get()).length, 2);
 
     var dbStatus5 =
-    (await createTestDbStatus(seed: "seed5", dbAccount: dbAccount))
-        .copyWith(
+        (await createTestDbStatus(seed: "seed5", dbAccount: dbAccount))
+            .copyWith(
       spoilerText: "",
       content: "one test one",
     );
@@ -1628,7 +1307,6 @@ void main() {
 
     expect((await query.get()).length, 2);
   });
-
 
   // TODO: test fails but logic is valid
   // fails due to limitation in native sql library. Actually works good on iOS/Android

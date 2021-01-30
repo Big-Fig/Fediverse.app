@@ -1,12 +1,11 @@
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/repository/repository.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -45,95 +44,29 @@ abstract class IStatusRepository
   });
 
   Future<List<IStatus>> getStatuses({
-    @required String onlyInListWithRemoteId,
-    @required String onlyWithHashtag,
-    @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IAccount onlyFromAccount,
-    @required IConversationChat onlyInConversation,
-    @required StatusOnlyLocalCondition onlyLocalCondition,
-    @required bool onlyWithMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required IStatus olderThanStatus,
-    @required IStatus newerThanStatus,
-    @required bool onlyNoNsfwSensitive,
-    @required bool onlyNoReplies,
-    @required int limit,
-    @required int offset,
-    @required StatusRepositoryOrderingTermData orderingTermData,
-    @required bool isFromHomeTimeline,
-    @required bool onlyFavourited,
-    @required bool onlyBookmarked,
-    @required List<StatusTextCondition> excludeTextConditions,
-    bool onlyNotDeleted = true,
+    @required StatusRepositoryFilters filters,
+    @required RepositoryPagination<IStatus> pagination,
+    StatusRepositoryOrderingTermData orderingTermData =
+        StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<IStatus>> watchStatuses({
-    @required String onlyInListWithRemoteId,
-    @required String onlyWithHashtag,
-    @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IAccount onlyFromAccount,
-    @required IConversationChat onlyInConversation,
-    @required StatusOnlyLocalCondition onlyLocalCondition,
-    @required bool onlyWithMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required IStatus olderThanStatus,
-    @required IStatus newerThanStatus,
-    @required bool onlyNoNsfwSensitive,
-    @required bool onlyNoReplies,
-    @required int limit,
-    @required int offset,
-    @required StatusRepositoryOrderingTermData orderingTermData,
-    @required bool isFromHomeTimeline,
-    @required bool onlyFavourited,
-    @required bool onlyBookmarked,
-    @required List<StatusTextCondition> excludeTextConditions,
-    bool onlyNotDeleted = true,
+    @required StatusRepositoryFilters filters,
+    @required RepositoryPagination<IStatus> pagination,
+    StatusRepositoryOrderingTermData orderingTermData =
+        StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Future<IStatus> getStatus({
-    @required String onlyInListWithRemoteId,
-    @required String onlyWithHashtag,
-    @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IAccount onlyFromAccount,
-    @required IConversationChat onlyInConversation,
-    @required StatusOnlyLocalCondition onlyLocalCondition,
-    @required bool onlyWithMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required IStatus olderThanStatus,
-    @required IStatus newerThanStatus,
-    @required bool onlyNoNsfwSensitive,
-    @required bool onlyNoReplies,
-    @required StatusRepositoryOrderingTermData orderingTermData,
-    @required bool isFromHomeTimeline,
-    @required bool onlyFavourited,
-    @required bool onlyBookmarked,
-    @required List<StatusTextCondition> excludeTextConditions,
-    bool onlyNotDeleted = true,
+    @required StatusRepositoryFilters filters,
+    StatusRepositoryOrderingTermData orderingTermData =
+        StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<IStatus> watchStatus({
-    @required String onlyInListWithRemoteId,
-    @required String onlyWithHashtag,
-    @required IAccount onlyFromAccountsFollowingByAccount,
-    @required IAccount onlyFromAccount,
-    @required IConversationChat onlyInConversation,
-    @required StatusOnlyLocalCondition onlyLocalCondition,
-    @required bool onlyWithMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required IStatus olderThanStatus,
-    @required IStatus newerThanStatus,
-    @required bool onlyNoNsfwSensitive,
-    @required bool onlyNoReplies,
-    @required StatusRepositoryOrderingTermData orderingTermData,
-    @required bool isFromHomeTimeline,
-    @required bool onlyFavourited,
-    @required bool onlyBookmarked,
-    @required List<StatusTextCondition> excludeTextConditions,
-    bool onlyNotDeleted = true,
+    @required StatusRepositoryFilters filters,
+    StatusRepositoryOrderingTermData orderingTermData =
+        StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Future incrementRepliesCount({
@@ -154,16 +87,13 @@ abstract class IStatusRepository
 
   Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
     @required List<IConversationChat> conversations,
-    bool onlyNotDeleted = true,
   });
 
   Stream<IStatus> watchConversationLastStatus({
     @required IConversationChat conversation,
-    bool onlyNotDeleted = true,
   });
 
   Future<IStatus> getConversationLastStatus({
     @required IConversationChat conversation,
-    bool onlyNotDeleted = true,
   });
 }
