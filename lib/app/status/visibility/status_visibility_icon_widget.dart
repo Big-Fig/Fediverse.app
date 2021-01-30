@@ -42,6 +42,9 @@ class StatusVisibilityIconWidget extends StatelessWidget {
       case PleromaVisibility.public:
         return FediIcons.world;
         break;
+      case PleromaVisibility.local:
+        return FediIcons.instance;
+        break;
       case PleromaVisibility.unlisted:
         return FediIcons.unlisted;
         break;

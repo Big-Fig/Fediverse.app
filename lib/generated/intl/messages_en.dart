@@ -681,6 +681,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_post_toast_success_schedule" : MessageLookupByLibrary.simpleMessage("Status scheduled"),
     "app_status_post_visibility_state_direct" : MessageLookupByLibrary.simpleMessage("Direct"),
     "app_status_post_visibility_state_list" : MessageLookupByLibrary.simpleMessage("List"),
+    "app_status_post_visibility_state_local" : MessageLookupByLibrary.simpleMessage("Local"),
     "app_status_post_visibility_state_private" : MessageLookupByLibrary.simpleMessage("Private"),
     "app_status_post_visibility_state_public" : MessageLookupByLibrary.simpleMessage("Public"),
     "app_status_post_visibility_state_unlisted" : MessageLookupByLibrary.simpleMessage("Unlisted"),

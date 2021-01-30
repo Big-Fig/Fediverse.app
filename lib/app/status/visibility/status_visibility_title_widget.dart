@@ -48,6 +48,9 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
       case PleromaVisibility.unlisted:
         return S.of(context).app_status_post_visibility_state_unlisted;
         break;
+      case PleromaVisibility.local:
+        return S.of(context).app_status_post_visibility_state_local;
+        break;
       case PleromaVisibility.direct:
         return S.of(context).app_status_post_visibility_state_direct;
         break;
