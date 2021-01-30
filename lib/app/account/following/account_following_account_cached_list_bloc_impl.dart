@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -22,6 +23,11 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   final IAccountRepository accountRepository;
   final IAccount account;
 
+  AccountRepositoryFilters get _accountRepositoryFilters =>
+      AccountRepositoryFilters(
+        onlyInAccountFollowing: account,
+      );
+
   AccountFollowingAccountCachedListBloc({
     @required this.pleromaAccountService,
     @required this.accountRepository,
@@ -32,10 +38,11 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IAccount newerThan,
+    @required IAccount olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
@@ -52,11 +59,16 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     );
 
     if (remoteAccounts != null) {
-      await accountRepository.upsertRemoteAccounts(remoteAccounts,
-          conversationRemoteId: null, chatRemoteId: null);
+      await accountRepository.upsertRemoteAccounts(
+        remoteAccounts,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+      );
 
       await accountRepository.addAccountFollowings(
-          account.remoteId, remoteAccounts);
+        accountRemoteId: account.remoteId,
+        followings: remoteAccounts,
+      );
 
       return true;
     } else {
@@ -67,29 +79,23 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<List<IAccount>> loadLocalItems({
+    @required int limit,
+    @required IAccount newerThan,
+    @required IAccount olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
 
     var accounts = await accountRepository.getAccounts(
-      olderThanAccount: olderThan,
-      newerThanAccount: newerThan,
-      limit: limit,
-      offset: null,
-      orderingTermData: AccountOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: AccountOrderByType.remoteId),
-      onlyInConversation: null,
-      onlyInAccountFollowers: null,
-      onlyInStatusFavouritedBy: null,
-      onlyInAccountFollowing: account,
-      searchQuery: null,
-      onlyInChat: null,
-      onlyInStatusRebloggedBy: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      filters: _accountRepositoryFilters,
     );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
@@ -119,7 +125,6 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       child: AccountCachedListBlocProxyProvider(child: child),
     );
   }
-
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

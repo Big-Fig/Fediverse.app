@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -21,6 +22,11 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
   final IAccount account;
+
+  AccountRepositoryFilters get _accountRepositoryFilters =>
+      AccountRepositoryFilters(
+        onlyInAccountFollowers: account,
+      );
 
   AccountFollowerAccountCachedListBloc({
     @required this.pleromaAccountService,
@@ -52,11 +58,16 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     );
 
     if (remoteAccounts != null) {
-      await accountRepository.upsertRemoteAccounts(remoteAccounts,
-          conversationRemoteId: null, chatRemoteId: null);
+      await accountRepository.upsertRemoteAccounts(
+        remoteAccounts,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+      );
 
       await accountRepository.addAccountFollowers(
-          account.remoteId, remoteAccounts);
+        accountRemoteId: account.remoteId,
+        followers: remoteAccounts,
+      );
 
       return true;
     } else {
@@ -67,29 +78,23 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<List<IAccount>> loadLocalItems({
+    @required int limit,
+    @required IAccount newerThan,
+    @required IAccount olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
 
     var accounts = await accountRepository.getAccounts(
-      olderThanAccount: olderThan,
-      newerThanAccount: newerThan,
-      limit: limit,
-      offset: null,
-      orderingTermData: AccountOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: AccountOrderByType.remoteId),
-      onlyInConversation: null,
-      onlyInAccountFollowers: account,
-      onlyInStatusFavouritedBy: null,
-      onlyInAccountFollowing: null,
-      searchQuery: null,
-      onlyInChat: null,
-      onlyInStatusRebloggedBy: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      filters: _accountRepositoryFilters,
     );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
@@ -97,21 +102,28 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
   }
 
   static AccountFollowerAccountCachedListBloc createFromContext(
-          BuildContext context,
-          {@required IAccount account}) =>
+    BuildContext context, {
+    @required IAccount account,
+  }) =>
       AccountFollowerAccountCachedListBloc(
-          accountRepository: IAccountRepository.of(context, listen: false),
-          pleromaAccountService:
-              IPleromaAccountService.of(context, listen: false),
-          account: account);
+        accountRepository: IAccountRepository.of(context, listen: false),
+        pleromaAccountService:
+            IPleromaAccountService.of(context, listen: false),
+        account: account,
+      );
 
-  static Widget provideToContext(BuildContext context,
-      {@required IAccount account, @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required IAccount account,
+    @required Widget child,
+  }) {
     return DisposableProvider<IAccountCachedListBloc>(
       create: (context) =>
           AccountFollowerAccountCachedListBloc.createFromContext(context,
               account: account),
-      child: AccountCachedListBlocProxyProvider(child: child),
+      child: AccountCachedListBlocProxyProvider(
+        child: child,
+      ),
     );
   }
 

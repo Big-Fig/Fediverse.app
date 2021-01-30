@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
@@ -93,18 +94,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     addDisposable(
       streamSubscription: accountRepository
           .watchAccounts(
-              olderThanAccount: null,
-              newerThanAccount: null,
-              onlyInConversation: conversation,
-              onlyInChat: null,
-              onlyInStatusRebloggedBy: null,
-              onlyInStatusFavouritedBy: null,
-              onlyInAccountFollowers: null,
-              onlyInAccountFollowing: null,
-              searchQuery: null,
-              limit: null,
-              offset: null,
-              orderingTermData: null)
+        filters: AccountRepositoryFilters.createForOnlyInConversation(
+          conversation: conversation,
+        ),
+        pagination: null,
+      )
           .listen(
         (accounts) {
           var accountsWithoutMe = IAccount.excludeAccountFromList(
@@ -184,7 +178,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   Future _updateByRemoteChat(IPleromaConversation remoteChat) =>
       conversationRepository.updateLocalConversationByRemoteConversation(
-          oldLocalConversation: chat, newRemoteConversation: remoteChat);
+        oldLocalConversation: chat,
+        newRemoteConversation: remoteChat,
+      );
 
   static ConversationChatBloc createFromContext(
     BuildContext context, {

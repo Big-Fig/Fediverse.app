@@ -547,7 +547,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: StatusRepositoryOrderingTermData(
-        orderType: StatusRepositoryOrderType.remoteId,
+        orderByType: StatusRepositoryOrderType.remoteId,
         orderingMode: OrderingMode.asc,
       ),
     );
@@ -579,7 +579,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData: StatusRepositoryOrderingTermData(
-        orderType: StatusRepositoryOrderType.remoteId,
+        orderByType: StatusRepositoryOrderType.remoteId,
         orderingMode: OrderingMode.desc,
       ),
     );
@@ -614,7 +614,7 @@ void main() {
         offset: 1,
       ),
       orderingTermData: StatusRepositoryOrderingTermData(
-        orderType: StatusRepositoryOrderType.remoteId,
+        orderByType: StatusRepositoryOrderType.remoteId,
         orderingMode: OrderingMode.desc,
       ),
     );
@@ -696,8 +696,8 @@ void main() {
     var followingAccountRemoteId = "followingAccountRemoteId";
 
     await accountRepository.addAccountFollowings(
-      accountRemoteId,
-      [
+      accountRemoteId: accountRemoteId,
+      followings: [
         mapLocalAccountToRemoteAccount(
           DbAccountWrapper(
             (await createTestDbAccount(seed: followingAccountRemoteId))
@@ -1146,7 +1146,7 @@ void main() {
       ),
       orderingTermData: StatusRepositoryOrderingTermData(
         orderingMode: OrderingMode.desc,
-        orderType: StatusRepositoryOrderType.remoteId,
+        orderByType: StatusRepositoryOrderType.remoteId,
       ),
     )
         .listen((statuses) {
