@@ -10,6 +10,7 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart'
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
@@ -77,9 +78,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                   account: statusBloc.account,
                   isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
                   isNeedRefreshFromNetworkOnInit:
-                  isNeedRefreshFromNetworkOnInit,
+                      isNeedRefreshFromNetworkOnInit,
                   isNeedWatchLocalRepositoryForUpdates:
-                  isNeedWatchLocalRepositoryForUpdates,
+                      isNeedWatchLocalRepositoryForUpdates,
                   isNeedPreFetchRelationship: isNeedPreFetchRelationship,
                 );
               } else {
@@ -108,9 +109,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildOpenInBrowserAction(BuildContext context) =>
       DialogAction(
         icon: FediIcons.browser,
-        label: S
-            .of(context)
-            .app_status_action_openInBrowser,
+        label: S.of(context).app_status_action_openInBrowser,
         onAction: (context) async {
           var statusBloc = IStatusBloc.of(context, listen: false);
           var status = statusBloc.status;
@@ -140,12 +139,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     );
   }
 
-  static DialogAction buildCopyAction(BuildContext context) =>
-      DialogAction(
+  static DialogAction buildCopyAction(BuildContext context) => DialogAction(
         icon: FediIcons.link,
-        label: S
-            .of(context)
-            .app_status_action_copyLink,
+        label: S.of(context).app_status_action_copyLink,
         onAction: (context) async {
           var statusBloc = IStatusBloc.of(context, listen: false);
           var status = statusBloc.status;
@@ -155,9 +151,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           Navigator.of(context).pop();
           IToastService.of(context, listen: false).showInfoToast(
             context: context,
-            title: S
-                .of(context)
-                .app_status_copyLink_toast,
+            title: S.of(context).app_status_copyLink_toast,
             content: null,
           );
         },
@@ -167,9 +161,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
         icon: FediIcons.delete,
-        label: S
-            .of(context)
-            .app_status_action_delete,
+        label: S.of(context).app_status_action_delete,
         onAction: (context) async {
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
@@ -186,12 +178,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     return DialogAction(
       icon: statusBloc.pinned == true ? FediIcons.pin : FediIcons.unpin,
       label: statusBloc.pinned == true
-          ? S
-          .of(context)
-          .app_status_action_unpin
-          : S
-          .of(context)
-          .app_status_action_pin,
+          ? S.of(context).app_status_action_unpin
+          : S.of(context).app_status_action_pin,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context, asyncCode: () => statusBloc.togglePin());
@@ -206,12 +194,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     return DialogAction(
       icon: statusBloc.muted == true ? FediIcons.unmute : FediIcons.mute,
       label: statusBloc.muted == true
-          ? S
-          .of(context)
-          .app_status_action_unmute
-          : S
-          .of(context)
-          .app_status_action_mute,
+          ? S.of(context).app_status_action_unmute
+          : S.of(context).app_status_action_mute,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context, asyncCode: () => statusBloc.toggleMute());
@@ -228,12 +212,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           ? FediIcons.bookmark
           : FediIcons.unbookmark,
       label: statusBloc.bookmarked == true
-          ? S
-          .of(context)
-          .app_status_action_unbookmark
-          : S
-          .of(context)
-          .app_status_action_bookmark,
+          ? S.of(context).app_status_action_unbookmark
+          : S.of(context).app_status_action_bookmark,
       onAction: (context) async {
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context, asyncCode: () => statusBloc.toggleBookmark());
@@ -249,9 +229,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var status = statusBloc.status;
     return DialogAction(
       icon: FediIcons.share,
-      label: S
-          .of(context)
-          .app_share_action_share,
+      label: S.of(context).app_share_action_share,
       onAction: (context) async {
         showShareChooserDialog(
           context,
@@ -279,6 +257,25 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               instanceLocation: instanceLocation,
             );
           },
+          newStatusShareAction: () {
+            Navigator.of(context).pop();
+
+            var mediaAttachmentsString = status.mediaAttachments
+                ?.map(
+                  (mediaAttachment) => mediaAttachment.url,
+                )
+                ?.join(", ");
+
+            if (mediaAttachmentsString != null) {
+              mediaAttachmentsString = "[$mediaAttachmentsString]";
+            }
+            goToNewPostStatusPage(
+              context,
+              initialText:
+                  (status.content ?? "") + (mediaAttachmentsString ?? ""),
+              initialSubject: status.spoilerText,
+            );
+          },
         );
       },
     );
@@ -298,9 +295,7 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
     return FediChooserDialogBody(
-        title: S
-            .of(context)
-            .app_status_action_popup_title,
+        title: S.of(context).app_status_action_popup_title,
         actions: [
           if (isLocal && isStatusFromMe)
             StatusActionMoreDialogBody.buildDeleteAction(context),

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-29T16:15:33+00:00",
+    "@@last_modified": "2021-01-30T11:49:45+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -696,5 +696,6 @@
     "app_chat_selection_action_copyAsRawText_toast_success": "Copied in clipboard",
     "app_chat_selection_action_delete_confirm_dialog_title": "Delete messages",
     "app_chat_selection_action_delete_confirm_dialog_content": "Are you sure?",
-    "app_chat_selection_action_delete_confirm_dialog_action_delete": "Delete"
+    "app_chat_selection_action_delete_confirm_dialog_action_delete": "Delete",
+    "app_share_action_shareToNewStatus": "Share as new status"
 }

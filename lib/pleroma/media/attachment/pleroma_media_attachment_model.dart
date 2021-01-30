@@ -75,7 +75,7 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     switch (typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
-      return true;
+        return true;
       case MastodonMediaAttachmentType.video:
       case MastodonMediaAttachmentType.audio:
       case MastodonMediaAttachmentType.unknown:
@@ -120,6 +120,19 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
         ' previewUrl: $previewUrl, remoteUrl: $remoteUrl, textUrl: $textUrl,'
         ' type: $type, url: $url, pleroma: $pleroma}';
   }
+
+  static PleromaMediaAttachment fromIPleromaMediaAttachment(
+          IPleromaMediaAttachment mediaAttachment) =>
+      PleromaMediaAttachment(
+        description: mediaAttachment.description,
+        id: mediaAttachment.id,
+        previewUrl: mediaAttachment.previewUrl,
+        remoteUrl: mediaAttachment.remoteUrl,
+        textUrl: mediaAttachment.textUrl,
+        type: mediaAttachment.type,
+        url: mediaAttachment.url,
+        pleroma: mediaAttachment.pleroma,
+      );
 }
 
 @JsonSerializable()

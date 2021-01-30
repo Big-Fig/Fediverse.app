@@ -618,6 +618,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_share_action_shareToChats" : MessageLookupByLibrary.simpleMessage("Поделиться в чат"),
     "app_share_action_shareToConversations" : MessageLookupByLibrary.simpleMessage("Поделиться в беседу"),
     "app_share_action_shareToExternal" : MessageLookupByLibrary.simpleMessage("Поделиться в другое приложение"),
+    "app_share_action_shareToNewStatus" : MessageLookupByLibrary.simpleMessage("Поделиться"),
     "app_share_external_field_shareAsLink" : MessageLookupByLibrary.simpleMessage("Поделиться ссылкой"),
     "app_share_external_title" : MessageLookupByLibrary.simpleMessage("Поделиться в другое приложение"),
     "app_share_title" : MessageLookupByLibrary.simpleMessage("Поделиться"),

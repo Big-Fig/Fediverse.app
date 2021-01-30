@@ -5,6 +5,7 @@ import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -96,12 +97,20 @@ class NewPostStatusPageAppBar extends StatelessWidget
   Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
 }
 
-void goToNewPostStatusPage(BuildContext context) {
+void goToNewPostStatusPage(
+  BuildContext context, {
+  String initialText,
+  String initialSubject,
+  List<PleromaMediaAttachment> initialMediaAttachments,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => NewPostStatusBloc.provideToContext(
         context,
+        initialText: initialText,
+        initialSubject: initialSubject,
+        initialMediaAttachments: initialMediaAttachments,
         child: const NewPostStatusPage(),
       ),
     ),

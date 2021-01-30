@@ -6,6 +6,7 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -20,8 +21,11 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required PleromaVisibility initialVisibility,
+    @required String initialText,
+    @required String initialSubject,
+    @required List<PleromaMediaAttachment> initialMediaAttachments,
     @required bool markMediaAsNsfwOnAttach,
-    @required String language,
+    @required String initialLanguage,
   }) : super(
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -29,14 +33,22 @@ class NewPostStatusBloc extends PostStatusBloc {
           maximumMessageLength: maximumMessageLength,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: initialVisibility.toJsonValue(),
-            language: language,
+            language: initialLanguage,
+            text: initialText,
+            subject: initialSubject,
+            mediaAttachments: initialMediaAttachments,
           ),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
         );
 
-  static NewPostStatusBloc createFromContext(BuildContext context) {
+  static NewPostStatusBloc createFromContext(
+    BuildContext context, {
+    @required String initialText,
+    @required String initialSubject,
+    @required List<PleromaMediaAttachment> initialMediaAttachments,
+  }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
@@ -49,21 +61,31 @@ class NewPostStatusBloc extends PostStatusBloc {
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
+      initialLanguage: postStatusSettingsBloc.defaultStatusLocale?.localeString,
+      initialVisibility: postStatusSettingsBloc.defaultVisibility,
+      initialText:initialText,
+      initialSubject:initialSubject,
+      initialMediaAttachments:initialMediaAttachments,
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      initialVisibility: postStatusSettingsBloc.defaultVisibility,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-      language: postStatusSettingsBloc
-          .defaultStatusLocale?.localeString,
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+    @required String initialText,
+    @required String initialSubject,
+    @required List<PleromaMediaAttachment> initialMediaAttachments,
+  }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => NewPostStatusBloc.createFromContext(
         context,
+        initialText:initialText,
+        initialSubject:initialSubject,
+        initialMediaAttachments:initialMediaAttachments,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );

@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-29T16:15:41+00:00",
+    "@@last_modified": "2021-01-30T11:49:56+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -696,5 +696,6 @@
     "app_chat_selection_action_copyAsRawText_toast_success": "Скопировано в буфер",
     "app_chat_selection_action_delete_confirm_dialog_title": "Удалить сообщения",
     "app_chat_selection_action_delete_confirm_dialog_content": "Вы уверены?",
-    "app_chat_selection_action_delete_confirm_dialog_action_delete": "Удалить"
+    "app_chat_selection_action_delete_confirm_dialog_action_delete": "Удалить",
+    "app_share_action_shareToNewStatus": "Поделиться"
 }
