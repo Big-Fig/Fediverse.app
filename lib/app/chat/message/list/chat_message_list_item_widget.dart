@@ -162,20 +162,21 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
     return StreamBuilder<IPleromaCard>(
-        stream: messageBloc.cardStream,
-        initialData: messageBloc.card,
-        builder: (context, snapshot) {
-          var card = snapshot.data;
+      stream: messageBloc.cardStream,
+      initialData: messageBloc.card,
+      builder: (context, snapshot) {
+        var card = snapshot.data;
 
-          if (card != null) {
-            return Provider.value(
-              value: card,
-              child: const CardWidget(),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (card != null) {
+          return Provider.value(
+            value: card,
+            child: const CardWidget(),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
@@ -212,34 +213,34 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
     return StreamBuilder<List<IPleromaMediaAttachment>>(
-        stream: messageBloc.mediaAttachmentsStream,
-        builder: (context, snapshot) {
-          var mediaAttachments = snapshot.data;
-          if (mediaAttachments?.isNotEmpty != true) {
-            return const SizedBox.shrink();
-          }
+      stream: messageBloc.mediaAttachmentsStream,
+      builder: (context, snapshot) {
+        var mediaAttachments = snapshot.data;
+        if (mediaAttachments?.isNotEmpty != true) {
+          return const SizedBox.shrink();
+        }
 
-          return Provider<List<IPleromaMediaAttachment>>.value(
-            value: mediaAttachments,
-            child: InkWell(
-              onTap: () {
-                goToMultiMediaAttachmentDetailsPage(
-                  context,
-                  mediaAttachments: mediaAttachments,
+        return Provider<List<IPleromaMediaAttachment>>.value(
+          value: mediaAttachments,
+          child: InkWell(
+            onTap: () {
+              goToMultiMediaAttachmentDetailsPage(
+                context,
+                mediaAttachments: mediaAttachments,
+                initialMediaAttachment: null,
+              );
+            },
+            child: ProxyProvider<List<IPleromaMediaAttachment>,
+                IMediaAttachmentListBloc>(
+              update: (context, mediaAttachments, _) => MediaAttachmentListBloc(
                   initialMediaAttachment: null,
-                );
-              },
-              child: ProxyProvider<List<IPleromaMediaAttachment>,
-                  IMediaAttachmentListBloc>(
-                update: (context, mediaAttachments, _) =>
-                    MediaAttachmentListBloc(
-                        initialMediaAttachment: null,
-                        mediaAttachments: mediaAttachments),
-                child: const MediaAttachmentListCarouselWidget(),
-              ),
+                  mediaAttachments: mediaAttachments),
+              child: const MediaAttachmentListCarouselWidget(),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc_proxy_provider.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/share/status/share_status_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -38,9 +39,36 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
         );
 
   @override
-  PleromaChatMessageSendData createSendData() {
-    var url = status.url ?? "";
-    var content = message == null ? url : "${message ?? ""} $url";
+  PleromaChatMessageSendData createPleromaChatMessageSendData() {
+    String accountAcctAndDisplayName;
+    if (status.account != null) {
+      accountAcctAndDisplayName =
+          status.account.acct + " (${status.account.displayName})";
+    }
+    var statusSpoiler = status.spoilerText;
+    var statusContent = status.content?.isNotEmpty == true
+        ? HtmlTextHelper.extractRawStringFromHtmlString(status.content)
+        : null;
+    var statusUrl = status.url;
+    var statusMediaAttachmentsString = status.mediaAttachments
+        ?.map((mediaAttachment) => mediaAttachment.url)
+        ?.join(", ");
+
+    if (statusMediaAttachmentsString != null) {
+      statusMediaAttachmentsString = "[$statusMediaAttachmentsString]";
+    }
+    var additionalMessage = message;
+
+    var contentParts = <String>[
+      accountAcctAndDisplayName,
+      statusSpoiler,
+      statusContent,
+      statusMediaAttachmentsString,
+      additionalMessage,
+      statusUrl,
+    ].where((element) => element?.isNotEmpty == true).toList();
+
+    var content = contentParts.join("\n\n");
     var messageSendData = PleromaChatMessageSendData(
       content: content?.trim(),
     );
@@ -88,5 +116,4 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),
       );
-
 }

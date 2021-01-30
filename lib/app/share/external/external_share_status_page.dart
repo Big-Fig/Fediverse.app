@@ -18,7 +18,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareStatusPage extends StatelessWidget {
-  const ExternalShareStatusPage();
+  final bool isShareAsLinkPossible;
+
+  const ExternalShareStatusPage({
+    @required this.isShareAsLinkPossible,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -28,11 +32,13 @@ class ExternalShareStatusPage extends StatelessWidget {
             const SharePageAppBarSendTextActionWidget(),
           ],
         ),
-        body: const ShareStatusWithMessageWidget(
-          footer: Padding(
-            padding: FediPadding.horizontalSmallPadding,
-            child: ExternalShareAsLinkFieldWidget(),
-          ),
+        body: ShareStatusWithMessageWidget(
+          footer: isShareAsLinkPossible
+              ? const Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: ExternalShareAsLinkFieldWidget(),
+                )
+              : null,
         ),
       );
 }
@@ -41,6 +47,7 @@ void goToExternalShareStatusPage({
   @required BuildContext context,
   @required IStatus status,
   @required InstanceLocation instanceLocation,
+  @required bool isShareAsLinkPossible,
 }) {
   Navigator.push(
     context,
@@ -48,6 +55,7 @@ void goToExternalShareStatusPage({
       context: context,
       status: status,
       instanceLocation: instanceLocation,
+      isShareAsLinkPossible: isShareAsLinkPossible,
     ),
   );
 }
@@ -56,6 +64,7 @@ MaterialPageRoute createExternalShareStatusPageRoute({
   @required BuildContext context,
   @required IStatus status,
   @required InstanceLocation instanceLocation,
+  @required bool isShareAsLinkPossible,
 }) {
   return MaterialPageRoute(
     builder: (context) => ExternalShareStatusBloc.provideToContext(
@@ -85,7 +94,9 @@ MaterialPageRoute createExternalShareStatusPageRoute({
               statusBloc: statusBloc,
               initialDisplayEnabled: true,
             ),
-            child: const ExternalShareStatusPage(),
+            child: ExternalShareStatusPage(
+              isShareAsLinkPossible: isShareAsLinkPossible,
+            ),
           ),
         ),
       ),

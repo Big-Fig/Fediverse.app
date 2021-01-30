@@ -40,7 +40,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
 
 
   @override
-  PleromaChatMessageSendData createSendData() {
+  PleromaChatMessageSendData createPleromaChatMessageSendData() {
     var messageSendData = PleromaChatMessageSendData(
       content: "${mediaAttachment.url} ${message ?? ""}".trim(),
     );

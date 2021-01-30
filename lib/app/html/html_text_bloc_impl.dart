@@ -89,8 +89,9 @@ HtmlTextResultData _calculateHtmlData({
       }
     }
 
+    var hasHtmlMatch = findHtmlFragmentsRegex.hasMatch(text);
     var isActuallyHaveHtmlInData =
-        alreadyHaveHtmlInText || findHtmlFragmentsRegex.hasMatch(text);
+        alreadyHaveHtmlInText || hasHtmlMatch;
 
     if (settings.drawNewLines) {
       if (isActuallyHaveHtmlInData) {
