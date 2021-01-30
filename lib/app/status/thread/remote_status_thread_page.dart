@@ -85,7 +85,9 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
     if (localInstanceRemoteInitialMediaAttachment != null) {
       remoteInstanceInitialMediaAttachment =
-          remoteInstanceStatus.mediaAttachments.firstWhere(
+          (remoteInstanceStatus.reblog?.mediaAttachments ??
+                  remoteInstanceStatus.mediaAttachments)
+              .firstWhere(
         (mediaAttachment) =>
             mediaAttachment.url ==
             localInstanceRemoteInitialMediaAttachment.url,

@@ -148,7 +148,7 @@ class _StatusBodyContentWidget extends StatelessWidget {
           ),
         ),
         if (statusBloc.poll != null) const _StatusBodyPollWidget(),
-        if (statusBloc.mediaAttachments?.isNotEmpty == true &&
+        if (statusBloc.reblogOrOriginalMediaAttachments?.isNotEmpty == true &&
             (statusBloc.content?.isNotEmpty == true || statusBloc.poll != null))
           const FediSmallVerticalSpacer(),
         const _StatusBodyContentMediaAttachmentsWidget(),
@@ -167,7 +167,7 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
     return StreamBuilder<List<IPleromaMediaAttachment>>(
-      stream: statusBloc.mediaAttachmentsStream,
+      stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
 
@@ -184,7 +184,7 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
             ),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );
