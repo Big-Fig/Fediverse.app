@@ -229,11 +229,17 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaStatus> postStatus({@required IPleromaPostStatus data}) async {
+  Future<IPleromaStatus> postStatus({
+    @required IPleromaPostStatus data,
+  }) async {
     var json = data.toJson();
 
     var request = RestRequest.post(
       relativePath: statusRelativeUrlPath,
+      headers: {
+        if (data.idempotencyKey?.isNotEmpty == true)
+          "Idempotency-Key": data.idempotencyKey,
+      },
       bodyJson: json,
     );
 

@@ -45,10 +45,16 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
     }
 
-    var data = PleromaChatMessageSendData(content: inputText, mediaId: mediaId);
+    var data = PleromaChatMessageSendData(
+      content: inputText,
+      mediaId: mediaId,
+      idempotencyKey: idempotencyKey,
+    );
     _logger.finest(() => "postMessage data=$data");
-    var remoteChatMessage =
-        await pleromaChatService.sendMessage(chatId: chatRemoteId, data: data);
+    var remoteChatMessage = await pleromaChatService.sendMessage(
+      chatId: chatRemoteId,
+      data: data,
+    );
 
     _logger.finest(() => "postMessage remoteChatMessage=$remoteChatMessage");
     if (remoteChatMessage != null) {
@@ -71,14 +77,17 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return success;
   }
 
-  static PleromaChatPostMessageBloc createFromContext(BuildContext context,
-      {@required String chatRemoteId}) {
+  static PleromaChatPostMessageBloc createFromContext(
+    BuildContext context, {
+    @required String chatRemoteId,
+  }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
     return PleromaChatPostMessageBloc(
       chatRemoteId: chatRemoteId,
-      chatMessageRepository: IPleromaChatMessageRepository.of(context, listen: false),
+      chatMessageRepository:
+          IPleromaChatMessageRepository.of(context, listen: false),
       pleromaChatService: IPleromaChatService.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),

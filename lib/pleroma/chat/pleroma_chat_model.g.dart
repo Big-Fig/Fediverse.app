@@ -72,6 +72,7 @@ PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(
   return PleromaChatMessageSendData(
     content: json['content'] as String,
     mediaId: json['media_id'] as String,
+    idempotencyKey: json['idempotency_key'] as String,
   );
 }
 
@@ -80,4 +81,5 @@ Map<String, dynamic> _$PleromaChatMessageSendDataToJson(
     <String, dynamic>{
       'content': instance.content,
       'media_id': instance.mediaId,
+      'idempotency_key': instance.idempotencyKey,
     };

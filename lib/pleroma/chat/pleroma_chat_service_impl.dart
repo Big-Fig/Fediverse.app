@@ -194,7 +194,15 @@ class PleromaChatService extends DisposableOwner
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(chatRelativeUrlPath, chatId, "messages"),
+        relativePath: urlPath.join(
+          chatRelativeUrlPath,
+          chatId,
+          "messages",
+        ),
+        headers: {
+          if (data.idempotencyKey?.isNotEmpty == true)
+            "Idempotency-Key": data.idempotencyKey,
+        },
         bodyJson: data.toJson(),
       ),
     );

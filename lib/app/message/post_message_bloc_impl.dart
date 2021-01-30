@@ -29,6 +29,12 @@ abstract class PostMessageBloc extends DisposableOwner
   BehaviorSubject<List<FormItemValidationError>> inputTextErrorsSubject =
       BehaviorSubject.seeded([]);
 
+  void regenerateIdempotencyKey() {
+    idempotencyKey = DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
+  String idempotencyKey;
+
   PostMessageBloc({
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMediaAttachmentCount,
@@ -50,6 +56,15 @@ abstract class PostMessageBloc extends DisposableOwner
     addDisposable(subject: selectedActionSubject);
     addDisposable(textEditingController: inputTextController);
 
+    addDisposable(
+      streamSubscription:
+          mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+        (_) {
+          regenerateIdempotencyKey();
+        },
+      ),
+    );
+
     var editTextListener = () {
       onInputTextChanged();
     };
@@ -62,6 +77,8 @@ abstract class PostMessageBloc extends DisposableOwner
         },
       ),
     );
+
+    regenerateIdempotencyKey();
   }
 
   @override
@@ -103,6 +120,8 @@ abstract class PostMessageBloc extends DisposableOwner
     if (inputText != text) {
       inputTextSubject.add(text);
     }
+
+    regenerateIdempotencyKey();
   }
 
   void clear() {
@@ -111,6 +130,7 @@ abstract class PostMessageBloc extends DisposableOwner
     inputFocusNode.unfocus();
     clearSelectedAction();
     isExpandedSubject.add(false);
+    regenerateIdempotencyKey();
   }
 
   bool calculateIsReadyToPost({

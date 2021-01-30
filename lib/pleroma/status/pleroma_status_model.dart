@@ -657,22 +657,23 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   @override
   DateTime scheduledAt;
 
-  PleromaScheduleStatus(
-      {this.contentType,
-      this.expiresInSeconds,
-      this.idempotencyKey,
-      this.inReplyToConversationId,
-      this.inReplyToId,
-      this.language,
-      this.visibility,
-      this.mediaIds,
-      this.poll,
-      this.preview,
-      this.sensitive,
-      this.spoilerText,
-      this.status,
-      this.to,
-      @required this.scheduledAt}) {
+  PleromaScheduleStatus({
+    this.contentType,
+    this.expiresInSeconds,
+    this.idempotencyKey,
+    this.inReplyToConversationId,
+    this.inReplyToId,
+    this.language,
+    this.visibility,
+    this.mediaIds,
+    this.poll,
+    this.preview,
+    this.sensitive,
+    this.spoilerText,
+    this.status,
+    this.to,
+    @required this.scheduledAt,
+  }) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
