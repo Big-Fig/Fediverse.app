@@ -145,6 +145,15 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       reblogOrOriginalStream.map((status) => status.account);
 
   @override
+  List<IPleromaMediaAttachment> get reblogOrOriginalMediaAttachments =>
+      reblogOrOriginal?.mediaAttachments;
+
+  @override
+  Stream<List<IPleromaMediaAttachment>>
+      get reblogOrOriginalMediaAttachmentsStream =>
+          reblogOrOriginalStream.map((status) => status.mediaAttachments);
+
+  @override
   DateTime get createdAt => status?.createdAt;
 
   @override

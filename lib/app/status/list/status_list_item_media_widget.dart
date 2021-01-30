@@ -43,7 +43,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
     _logger.finest(() =>
-        "build ${statusBloc.remoteId} media ${statusBloc.mediaAttachments?.length}");
+        "build ${statusBloc.remoteId} media ${statusBloc.reblogOrOriginalMediaAttachments?.length}");
 
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;

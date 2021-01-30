@@ -72,6 +72,11 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
+  List<IPleromaMediaAttachment> get reblogOrOriginalMediaAttachments;
+
+  Stream<List<IPleromaMediaAttachment>>
+      get reblogOrOriginalMediaAttachmentsStream;
+
   IPleromaPoll get poll;
 
   Stream<IPleromaPoll> get pollStream;

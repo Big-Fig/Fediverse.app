@@ -53,8 +53,8 @@ class StatusCachedPaginationListMediaWidget
 
     // all statuses should be already with media attachments
     items = items
-        .where((status) =>
-            status.mediaAttachments
+        .where((IStatus status) =>
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
                 ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
                 ?.isNotEmpty ==
             true)
@@ -64,8 +64,9 @@ class StatusCachedPaginationListMediaWidget
 
     items.forEach(
       (status) {
-        var mediaAttachments = status.mediaAttachments
-            ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        var mediaAttachments =
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
+                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
         mediaAttachments.forEach(
           (mediaAttachment) {
             statusesWithMediaAttachment.add(
@@ -144,7 +145,8 @@ class StatusCachedPaginationListMediaWidget
                       } else {
                         goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
                           context,
-                          remoteInstanceStatus: statusWithMediaAttachment.status,
+                          remoteInstanceStatus:
+                              statusWithMediaAttachment.status,
                           remoteInstanceInitialMediaAttachment:
                               statusWithMediaAttachment.mediaAttachment,
                         );
