@@ -7,6 +7,7 @@ import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/share/external/external_share_media_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -261,6 +262,14 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
             goToPleromaChatShareMediaPage(
               context: context,
               mediaAttachment: mediaAttachment,
+            );
+          },
+          newStatusShareAction: () {
+            Navigator.of(context).pop();
+
+            goToNewPostStatusPage(
+              context,
+              initialText: mediaAttachment.url,
             );
           },
         );

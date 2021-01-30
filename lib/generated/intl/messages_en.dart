@@ -618,6 +618,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_share_action_shareToChats" : MessageLookupByLibrary.simpleMessage("Share to Chats"),
     "app_share_action_shareToConversations" : MessageLookupByLibrary.simpleMessage("Share to Conversations"),
     "app_share_action_shareToExternal" : MessageLookupByLibrary.simpleMessage("Share to external app"),
+    "app_share_action_shareToNewStatus" : MessageLookupByLibrary.simpleMessage("Share as new status"),
     "app_share_external_field_shareAsLink" : MessageLookupByLibrary.simpleMessage("Share as link"),
     "app_share_external_title" : MessageLookupByLibrary.simpleMessage("Share to external app"),
     "app_share_title" : MessageLookupByLibrary.simpleMessage("Share"),

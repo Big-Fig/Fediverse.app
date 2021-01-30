@@ -10,6 +10,7 @@ void showShareChooserDialog(
   @required VoidCallback externalShareAction,
   @required VoidCallback conversationsShareAction,
   @required VoidCallback chatsShareAction,
+  @required VoidCallback newStatusShareAction,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -31,6 +32,7 @@ void showShareChooserDialog(
           conversationsShareAction();
         },
       ),
+
       if (currentAuthInstanceBloc.currentInstance.isSupportChats)
         DialogAction(
           icon: FediIcons.chat,
@@ -39,6 +41,13 @@ void showShareChooserDialog(
             chatsShareAction();
           },
         ),
+      DialogAction(
+        icon: FediIcons.send,
+        label: S.of(context).app_share_action_shareToNewStatus,
+        onAction: (context) {
+          newStatusShareAction();
+        },
+      ),
     ],
   );
 }

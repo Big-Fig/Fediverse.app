@@ -6811,6 +6811,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Share as new status`
+  String get app_share_action_shareToNewStatus {
+    return Intl.message(
+      'Share as new status',
+      name: 'app_share_action_shareToNewStatus',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

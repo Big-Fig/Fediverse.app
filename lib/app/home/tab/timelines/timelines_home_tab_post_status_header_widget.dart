@@ -16,6 +16,9 @@ class TimelinesHomeTabPostStatusHeaderWidget extends StatelessWidget {
         showPostAction: true,
         displaySubjectField: false,
       ),
+      initialMediaAttachments: null,
+      initialText: null,
+      initialSubject: null,
     );
   }
 
