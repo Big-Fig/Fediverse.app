@@ -116,13 +116,13 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
           SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-          List<AccountOrderingTermData> orderTerms) =>
+          List<AccountRepositoryOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case AccountOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case AccountOrderType.remoteId:
                       expression = item.remoteId;
                       break;
                   }

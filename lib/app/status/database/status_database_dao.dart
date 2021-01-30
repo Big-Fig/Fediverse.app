@@ -325,7 +325,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderType) {
+                  switch (orderTerm.orderByType) {
                     case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
                       break;

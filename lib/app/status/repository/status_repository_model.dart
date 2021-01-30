@@ -129,29 +129,31 @@ enum StatusRepositoryOrderType {
 }
 
 class StatusRepositoryOrderingTermData {
-  final StatusRepositoryOrderType orderType;
+  final StatusRepositoryOrderType orderByType;
   final OrderingMode orderingMode;
 
   static const StatusRepositoryOrderingTermData remoteIdDesc =
       StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
-    orderType: StatusRepositoryOrderType.remoteId,
+    orderByType: StatusRepositoryOrderType.remoteId,
   );
   static const StatusRepositoryOrderingTermData remoteIdAsc =
       StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
-    orderType: StatusRepositoryOrderType.remoteId,
+    orderByType: StatusRepositoryOrderType.remoteId,
   );
 
   const StatusRepositoryOrderingTermData({
-    @required this.orderType,
+    @required this.orderByType,
     @required this.orderingMode,
   });
 
   @override
   String toString() {
-    return 'StatusRepositoryOrderingTermData{orderType: $orderType,'
-        ' orderingMode: $orderingMode}';
+    return 'StatusRepositoryOrderingTermData{'
+        'orderType: $orderByType, '
+        'orderingMode: $orderingMode'
+        '}';
   }
 }
 

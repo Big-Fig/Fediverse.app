@@ -16,6 +16,7 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -94,7 +95,9 @@ class SelectAccountListBloc extends DisposableOwner
 
       if (following) {
         await accountRepository.addAccountFollowings(
-            myAccountBloc.account.remoteId, remoteAccounts);
+          accountRemoteId: myAccountBloc.account.remoteId,
+          followings: remoteAccounts,
+        );
       }
     } else {
       if (customEmptySearchRemoteAccountListLoader != null) {
@@ -110,7 +113,9 @@ class SelectAccountListBloc extends DisposableOwner
           newerThan: newerThan,
         );
         await accountRepository.addAccountFollowings(
-            myAccountBloc.account.remoteId, remoteAccounts);
+          accountRemoteId: myAccountBloc.account.remoteId,
+          followings: remoteAccounts,
+        );
       }
     }
 
@@ -143,10 +148,11 @@ class SelectAccountListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<List<IAccount>> loadLocalItems({
+    @required int limit,
+    @required IAccount newerThan,
+    @required IAccount olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -159,20 +165,17 @@ class SelectAccountListBloc extends DisposableOwner
         onlyInAccountFollowing = myAccountBloc.account;
       }
       accounts = await accountRepository.getAccounts(
-          olderThanAccount: olderThan,
-          newerThanAccount: newerThan,
-          limit: limit,
-          offset: null,
-          orderingTermData: AccountOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: AccountOrderByType.remoteId),
-          onlyInConversation: null,
-          onlyInAccountFollowers: null,
-          onlyInStatusFavouritedBy: null,
+        filters: AccountRepositoryFilters(
           onlyInAccountFollowing: onlyInAccountFollowing,
-          onlyInStatusRebloggedBy: null,
           searchQuery: searchText,
-          onlyInChat: null);
+        ),
+        pagination: RepositoryPagination<IAccount>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+      );
     } else {
       if (customEmptySearchLocalAccountListLoader != null) {
         accounts = await customEmptySearchLocalAccountListLoader(
@@ -215,20 +218,16 @@ class SelectAccountListBloc extends DisposableOwner
     @required int limit,
   }) async {
     return await accountRepository.getAccounts(
-        olderThanAccount: olderThan,
-        newerThanAccount: newerThan,
-        limit: limit,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: AccountOrderByType.remoteId),
+      filters: AccountRepositoryFilters(
         onlyInAccountFollowing: myAccountBloc.account,
-        onlyInConversation: null,
-        onlyInAccountFollowers: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: null,
-        searchQuery: null,
-        onlyInChat: null);
+      ),
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
   }
 
   static SelectAccountListBloc createFromContext(

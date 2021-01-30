@@ -721,7 +721,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTermData.orderType == StatusRepositoryOrderType.remoteId);
+      assert(orderingTermData.orderByType == StatusRepositoryOrderType.remoteId);
       dao.addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,

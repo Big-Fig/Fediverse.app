@@ -5,8 +5,8 @@ import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
 
 import '../../conversation/conversation_model_helper.dart';
@@ -120,18 +120,10 @@ void main() {
 
   test('createQuery empty', () async {
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -153,18 +145,12 @@ void main() {
 
   test('createQuery searchQuery', () async {
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
+      filters: AccountRepositoryFilters(
         searchQuery: "qu",
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -192,18 +178,12 @@ void main() {
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
     var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
+      filters: AccountRepositoryFilters(
         onlyInStatusFavouritedBy: DbStatusPopulatedWrapper(status),
-        onlyInStatusRebloggedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -240,26 +220,23 @@ void main() {
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
     var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
+      filters: AccountRepositoryFilters(
         onlyInStatusRebloggedBy: DbStatusPopulatedWrapper(status),
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
     await accountRepository.updateStatusRebloggedBy(
-        statusRemoteId: dbStatus.remoteId,
-        rebloggedByAccounts: [
-          mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1))
-        ]);
+      statusRemoteId: dbStatus.remoteId,
+      rebloggedByAccounts: [
+        mapLocalAccountToRemoteAccount(
+          DbAccountWrapper(dbAccount1),
+        ),
+      ],
+    );
 
     expect((await query.get()).length, 1);
 
@@ -285,29 +262,28 @@ void main() {
     await accountRepository.insert(dbAccount2);
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: null,
+      filters: AccountRepositoryFilters(
         onlyInAccountFollowers: DbAccountWrapper(dbAccount1),
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.addAccountFollowers(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
+    await accountRepository.addAccountFollowers(
+      accountRemoteId: dbAccount1.remoteId,
+      followers: [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))],
+    );
     expect((await query.get()).length, 1);
 
-    await accountRepository.addAccountFollowers(dbAccount1.remoteId, [
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-    ]);
+    await accountRepository.addAccountFollowers(
+      accountRemoteId: dbAccount1.remoteId,
+      followers: [
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
+      ],
+    );
     expect((await query.get()).length, 2);
   });
 
@@ -316,29 +292,32 @@ void main() {
     await accountRepository.insert(dbAccount2);
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInAccountFollowers: null,
+      filters: AccountRepositoryFilters(
         onlyInAccountFollowing: DbAccountWrapper(dbAccount1),
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.addAccountFollowings(dbAccount1.remoteId,
-        [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: dbAccount1.remoteId,
+      followings: [
+        mapLocalAccountToRemoteAccount(
+          DbAccountWrapper(dbAccount2),
+        ),
+      ],
+    );
     expect((await query.get()).length, 1);
 
-    await accountRepository.addAccountFollowings(dbAccount1.remoteId, [
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
-      mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
-    ]);
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: dbAccount1.remoteId,
+      followings: [
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
+      ],
+    );
     expect((await query.get()).length, 2);
   });
 
@@ -348,18 +327,12 @@ void main() {
         id: null, remoteId: conversationRemoteId, unread: false));
 
     var query = accountRepository.createQuery(
-        olderThanAccount: null,
-        newerThanAccount: null,
+      filters: AccountRepositoryFilters(
         onlyInConversation: conversation,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyInChat: null);
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
 
     // not associated with conversation
     await accountRepository.upsertRemoteAccount(
@@ -394,19 +367,12 @@ void main() {
 
   test('createQuery newerThanAccount', () async {
     var query = accountRepository.createQuery(
-      onlyInConversation: null,
-      onlyInStatusRebloggedBy: null,
-      onlyInStatusFavouritedBy: null,
-      onlyInAccountFollowers: null,
-      onlyInAccountFollowing: null,
-      searchQuery: null,
-      newerThanAccount:
-          await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanAccount: null,
-      onlyInChat: null,
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        newerThanItem:
+            await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
     await insertDbAccount(
@@ -437,21 +403,15 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanAccount', () async {
+  test('createQuery olderThanItem', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanAccount:
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem:
             await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-        onlyInChat: null);
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
     await insertDbAccount(
         accountRepository,
@@ -483,20 +443,15 @@ void main() {
 
   test('createQuery notNewerThanAccount & newerThanAccount', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount:
-            await createTestAccount(seed: "seed2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThanAccount:
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem:
             await createTestAccount(seed: "seed5", remoteId: "remoteId5"),
-        onlyInChat: null);
+        newerThanItem:
+            await createTestAccount(seed: "seed2", remoteId: "remoteId2"),
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
     await insertDbAccount(
         accountRepository,
@@ -542,20 +497,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
+    );
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -583,20 +528,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
-        limit: null,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -624,20 +559,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = accountRepository.createQuery(
-        onlyInConversation: null,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        searchQuery: null,
-        newerThanAccount: null,
+      filters: null,
+      pagination: RepositoryPagination<IAccount>(
         limit: 1,
         offset: 1,
-        orderingTermData: AccountOrderingTermData(
-            orderByType: AccountOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThanAccount: null,
-        onlyInChat: null);
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
 
     var account2 = await insertDbAccount(
         accountRepository,
@@ -676,38 +604,25 @@ void main() {
 
     expect(await accountRepository.countAll(), 1);
     expect(
-        (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: null,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
-            .length,
-        1);
+      (await accountRepository.getAccounts(
+        pagination: null,
+        filters: null,
+      ))
+          .length,
+      1,
+    );
     expect(
-        (await accountRepository.conversationAccountsDao.getAll().get()).length, 1);
+      (await accountRepository.conversationAccountsDao.getAll().get()).length,
+      1,
+    );
 
     expect(
         (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: conversation,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
+          filters: AccountRepositoryFilters.createForOnlyInConversation(
+            conversation: conversation,
+          ),
+          pagination: null,
+        ))
             .length,
         1);
 
@@ -722,18 +637,9 @@ void main() {
     expect(await accountRepository.countAll(), 1);
     expect(
         (await accountRepository.getAccounts(
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: null,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                searchQuery: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null,
-                onlyInChat: null))
+          pagination: null,
+          filters: null,
+        ))
             .length,
         1);
     expect(

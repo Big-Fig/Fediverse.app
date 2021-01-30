@@ -12,6 +12,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -23,6 +24,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   final IPleromaAuthStatusService pleromaAuthStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
+
+  AccountRepositoryFilters get _accountRepositoryFilters =>
+      AccountRepositoryFilters(
+        onlyInStatusRebloggedBy: status,
+      );
 
   StatusReblogAccountCachedListBloc({
     @required this.pleromaAuthStatusService,
@@ -76,22 +82,15 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
-
     var accounts = await accountRepository.getAccounts(
-        olderThanAccount: olderThan,
-        newerThanAccount: newerThan,
+      filters: _accountRepositoryFilters,
+      pagination: RepositoryPagination<IAccount>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
         limit: limit,
-        offset: null,
-        orderingTermData: AccountOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: AccountOrderByType.remoteId),
-        onlyInConversation: null,
-        onlyInAccountFollowers: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowing: null,
-        onlyInStatusRebloggedBy: status,
-        searchQuery: null,
-        onlyInChat: null);
+      ),
+      orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
+    );
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;
