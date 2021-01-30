@@ -233,15 +233,16 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       onAction: (context) async {
         showShareChooserDialog(
           context,
-          externalShareAction: () {
+          externalShareAction: (context) {
             Navigator.of(context).pop();
             goToExternalShareStatusPage(
               context: context,
               status: status,
               instanceLocation: instanceLocation,
+              isShareAsLinkPossible: true,
             );
           },
-          conversationsShareAction: () {
+          conversationsShareAction: (context) {
             Navigator.of(context).pop();
             goToConversationShareStatusPage(
               context: context,
@@ -249,7 +250,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               instanceLocation: instanceLocation,
             );
           },
-          chatsShareAction: () {
+          chatsShareAction: (context) {
             Navigator.of(context).pop();
             goToPleromaChatShareStatusPage(
               context: context,
@@ -257,7 +258,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               instanceLocation: instanceLocation,
             );
           },
-          newStatusShareAction: () {
+          newStatusShareAction: (context) {
             Navigator.of(context).pop();
 
             var mediaAttachmentsString = status.mediaAttachments

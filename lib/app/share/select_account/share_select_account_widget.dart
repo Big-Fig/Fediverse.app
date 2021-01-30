@@ -97,7 +97,7 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
                 var isRecentSelectAccountListEmpty = snapshot.data;
 
                 if (isRecentSelectAccountListEmpty == null) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
                 if (isRecentSelectAccountListEmpty) {
                   return DisposableProvider<ISuggestionSelectAccountBloc>(

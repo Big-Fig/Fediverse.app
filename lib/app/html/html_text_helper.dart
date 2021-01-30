@@ -1,5 +1,3 @@
-//import 'package:html/parser.dart';
-
 import 'package:html/parser.dart';
 
 class HtmlTextHelper {

@@ -52,14 +52,16 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    var messageSendData = createSendData();
+    var messageSendData = createPleromaChatMessageSendData();
 
     var targetAccounts = [account];
     List<IPleromaChat> pleromaChatsByAccounts;
     if (targetAccounts?.isNotEmpty == true) {
-      var chatsByAccountsFuture = targetAccounts.map((account) =>
-          pleromaChatService.getOrCreateChatByAccountId(
-              accountId: account.remoteId));
+      var chatsByAccountsFuture = targetAccounts.map(
+        (account) => pleromaChatService.getOrCreateChatByAccountId(
+          accountId: account.remoteId,
+        ),
+      );
 
       pleromaChatsByAccounts = await Future.wait(chatsByAccountsFuture);
       await chatRepository.upsertRemoteChats(pleromaChatsByAccounts);
@@ -67,13 +69,20 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       pleromaChatsByAccounts = [];
     }
 
-    var allChatsId =
-        pleromaChatsByAccounts.map((pleromaChat) => pleromaChat.id).toList();
+    var allChatsIds = pleromaChatsByAccounts
+        .map(
+          (pleromaChat) => pleromaChat.id,
+        )
+        .toList();
 
-    var pleromaChatMessagesFuture = allChatsId.map((chatId) {
-      return pleromaChatService.sendMessage(
-          chatId: chatId, data: messageSendData);
-    });
+    var pleromaChatMessagesFuture = allChatsIds.map(
+      (chatId) {
+        return pleromaChatService.sendMessage(
+          chatId: chatId,
+          data: messageSendData,
+        );
+      },
+    );
 
     var pleromaChatMessages = await Future.wait(pleromaChatMessagesFuture);
 
@@ -81,7 +90,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  PleromaChatMessageSendData createSendData();
+  PleromaChatMessageSendData createPleromaChatMessageSendData();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({

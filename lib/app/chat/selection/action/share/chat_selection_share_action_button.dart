@@ -1,6 +1,17 @@
+import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
+import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/share/external/external_share_status_page.dart';
+import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionShareActionButtonWidget extends StatelessWidget {
@@ -10,10 +21,65 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var instanceLocation = InstanceLocation.local;
     return FediIconButton(
       icon: Icon(FediIcons.share),
       color: IFediUiColorTheme.of(context).darkGrey,
-      onPressed: () {},
+      onPressed: () async {
+        var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);
+
+        var rawText = chatSelectionBloc.calculateSelectionAsRawText();
+
+        // todo: remove hack
+        // need rework to separate page for simple raw text share
+        var status = mapRemoteStatusToLocalStatus(
+          PleromaStatus(
+            content: rawText,
+            account: mapLocalAccountToRemoteAccount(
+              chatSelectionBloc.currentSelection.first.account,
+            ),
+            visibility: PleromaVisibility.public.toJsonValue(),
+          ),
+        );
+
+        showShareChooserDialog(
+          context,
+          externalShareAction: (context) {
+            Navigator.of(context).pop();
+            goToExternalShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+              isShareAsLinkPossible: false,
+            );
+          },
+          conversationsShareAction: (context) {
+            Navigator.of(context).pop();
+            goToConversationShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+            );
+          },
+          chatsShareAction: (context) {
+            Navigator.of(context).pop();
+            goToPleromaChatShareStatusPage(
+              context: context,
+              status: status,
+              instanceLocation: instanceLocation,
+            );
+          },
+          newStatusShareAction: (context) {
+            Navigator.of(context).pop();
+            goToNewPostStatusPage(
+              context,
+              initialText: rawText,
+            );
+          },
+        );
+
+        chatSelectionBloc.clearSelection();
+      },
     );
   }
 }

@@ -243,28 +243,29 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
       onPressed: () {
         showShareChooserDialog(
           context,
-          externalShareAction: () {
+          externalShareAction: (context) {
             Navigator.of(context).pop();
             goToExternalShareMediaPage(
               context: context,
               mediaAttachment: mediaAttachment,
+              isShareAsLinkPossible: true,
             );
           },
-          conversationsShareAction: () {
+          conversationsShareAction: (context) {
             Navigator.of(context).pop();
             goToConversationShareMediaPage(
               context: context,
               mediaAttachment: mediaAttachment,
             );
           },
-          chatsShareAction: () {
+          chatsShareAction: (context) {
             Navigator.of(context).pop();
             goToPleromaChatShareMediaPage(
               context: context,
               mediaAttachment: mediaAttachment,
             );
           },
-          newStatusShareAction: () {
+          newStatusShareAction: (context) {
             Navigator.of(context).pop();
 
             goToNewPostStatusPage(

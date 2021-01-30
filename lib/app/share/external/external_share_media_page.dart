@@ -11,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareMediaPage extends StatelessWidget {
-  const ExternalShareMediaPage();
+  final bool isShareAsLinkPossible;
+
+  const ExternalShareMediaPage({
+    @required this.isShareAsLinkPossible,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -21,23 +25,28 @@ class ExternalShareMediaPage extends StatelessWidget {
             const SharePageAppBarSendTextActionWidget(),
           ],
         ),
-        body: const ShareMediaWithMessageWidget(
-          footer: Padding(
-            padding: FediPadding.horizontalSmallPadding,
-            child: ExternalShareAsLinkFieldWidget(),
-          ),
+        body: ShareMediaWithMessageWidget(
+          footer: isShareAsLinkPossible
+              ? const Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: ExternalShareAsLinkFieldWidget(),
+                )
+              : null,
         ),
       );
 }
 
-void goToExternalShareMediaPage(
-    {@required BuildContext context,
-    @required IPleromaMediaAttachment mediaAttachment}) {
+void goToExternalShareMediaPage({
+  @required BuildContext context,
+  @required IPleromaMediaAttachment mediaAttachment,
+  @required bool isShareAsLinkPossible,
+}) {
   Navigator.push(
     context,
     createExternalShareMediaPageRoute(
       context: context,
       mediaAttachment: mediaAttachment,
+      isShareAsLinkPossible: isShareAsLinkPossible,
     ),
   );
 }
@@ -45,6 +54,7 @@ void goToExternalShareMediaPage(
 MaterialPageRoute createExternalShareMediaPageRoute({
   @required BuildContext context,
   @required IPleromaMediaAttachment mediaAttachment,
+  @required bool isShareAsLinkPossible,
 }) {
   return MaterialPageRoute(
     builder: (context) => ExternalShareMediaBloc.provideToContext(
@@ -52,7 +62,9 @@ MaterialPageRoute createExternalShareMediaPageRoute({
       mediaAttachment: mediaAttachment,
       child: Provider<IPleromaMediaAttachment>.value(
         value: mediaAttachment,
-        child: const ExternalShareMediaPage(),
+        child: ExternalShareMediaPage(
+          isShareAsLinkPossible: isShareAsLinkPossible,
+        ),
       ),
       popupTitle: S.of(context).app_share_external_title,
     ),

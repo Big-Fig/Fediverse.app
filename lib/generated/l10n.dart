@@ -6821,6 +6821,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Selected ({count})`
+  String app_chat_selection_count(Object count) {
+    return Intl.message(
+      'Selected ($count)',
+      name: 'app_chat_selection_count',
+      desc: '',
+      args: [count],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

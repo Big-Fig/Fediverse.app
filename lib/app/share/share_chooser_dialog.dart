@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 
 void showShareChooserDialog(
   BuildContext context, {
-  @required VoidCallback externalShareAction,
-  @required VoidCallback conversationsShareAction,
-  @required VoidCallback chatsShareAction,
-  @required VoidCallback newStatusShareAction,
+  @required Function(BuildContext context) externalShareAction,
+  @required Function(BuildContext context) conversationsShareAction,
+  @required Function(BuildContext context) chatsShareAction,
+  @required Function(BuildContext context) newStatusShareAction,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -22,30 +22,29 @@ void showShareChooserDialog(
         icon: FediIcons.share_native,
         label: S.of(context).app_share_action_shareToExternal,
         onAction: (context) {
-          externalShareAction();
+          externalShareAction(context);
         },
       ),
       DialogAction(
         icon: FediIcons.envelope,
         label: S.of(context).app_share_action_shareToConversations,
         onAction: (context) {
-          conversationsShareAction();
+          conversationsShareAction(context);
         },
       ),
-
       if (currentAuthInstanceBloc.currentInstance.isSupportChats)
         DialogAction(
           icon: FediIcons.chat,
           label: S.of(context).app_share_action_shareToChats,
           onAction: (context) {
-            chatsShareAction();
+            chatsShareAction(context);
           },
         ),
       DialogAction(
         icon: FediIcons.send,
         label: S.of(context).app_share_action_shareToNewStatus,
         onAction: (context) {
-          newStatusShareAction();
+          newStatusShareAction(context);
         },
       ),
     ],

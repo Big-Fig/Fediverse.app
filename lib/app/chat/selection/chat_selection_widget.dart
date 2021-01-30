@@ -1,7 +1,11 @@
 import 'package:fedi/app/chat/selection/action/chat_selection_action_list_widget.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatSelectionWidget extends StatelessWidget {
@@ -49,7 +53,7 @@ class _ChatSelectionCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatSelectionBloc = IChatSelectionBloc.of(context);
-    return StreamBuilder<Object>(
+    return StreamBuilder<int>(
       stream: chatSelectionBloc.selectedItemsCountStream,
       builder: (context, snapshot) {
         var selectedItemsCount = snapshot.data ?? 0;
@@ -57,7 +61,22 @@ class _ChatSelectionCountWidget extends StatelessWidget {
         if (selectedItemsCount == 0) {
           return const SizedBox.shrink();
         } else {
-          return Text("Selected ($selectedItemsCount)");
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FediIconButton(
+                icon: Icon(FediIcons.remove),
+                color: IFediUiColorTheme.of(context).darkGrey,
+                onPressed: () {
+                  chatSelectionBloc.clearSelection();
+                },
+              ),
+              Text(
+                S.of(context).app_chat_selection_count(selectedItemsCount),
+                style: IFediUiTextTheme.of(context).bigBoldDarkGrey,
+              ),
+            ],
+          );
         }
       },
     );
