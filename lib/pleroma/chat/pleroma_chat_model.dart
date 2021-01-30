@@ -53,13 +53,14 @@ class PleromaChat implements IPleromaChat {
     PleromaAccount account,
     DateTime updatedAt,
     PleromaChatMessage lastMessage,
-  }) => PleromaChat(
-      id: id ?? this.id,
-      unread: unread ?? this.unread,
-      account: account ?? this.account,
-      updatedAt: updatedAt ?? this.updatedAt,
-      lastMessage: lastMessage ?? this.lastMessage,
-    );
+  }) =>
+      PleromaChat(
+        id: id ?? this.id,
+        unread: unread ?? this.unread,
+        account: account ?? this.account,
+        updatedAt: updatedAt ?? this.updatedAt,
+        lastMessage: lastMessage ?? this.lastMessage,
+      );
 
   factory PleromaChat.fromJson(Map<String, dynamic> json) =>
       _$PleromaChatFromJson(json);
@@ -85,6 +86,7 @@ class PleromaChat implements IPleromaChat {
           updatedAt == other.updatedAt &&
           account == other.account &&
           lastMessage == other.lastMessage;
+
   @override
   int get hashCode =>
       id.hashCode ^
@@ -92,6 +94,7 @@ class PleromaChat implements IPleromaChat {
       updatedAt.hashCode ^
       account.hashCode ^
       lastMessage.hashCode;
+
   @override
   String toString() {
     return 'PleromaChat{id: $id, unread: $unread, updatedAt: $updatedAt,'
@@ -113,6 +116,7 @@ abstract class IPleromaChatMessage {
   List<IPleromaEmoji> get emojis;
 
   IPleromaMediaAttachment get mediaAttachment;
+
   IPleromaCard get card;
 }
 
@@ -161,7 +165,6 @@ class PleromaChatMessage extends IPleromaChatMessage {
         '}';
   }
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -175,6 +178,7 @@ class PleromaChatMessage extends IPleromaChatMessage {
           emojis == other.emojis &&
           mediaAttachment == other.mediaAttachment &&
           card == other.card;
+
   @override
   int get hashCode =>
       id.hashCode ^
@@ -206,6 +210,8 @@ abstract class IPleromaChatMessageSendData {
 
   String get mediaId;
 
+  String get idempotencyKey;
+
   Map<String, dynamic> toJson();
 }
 
@@ -216,7 +222,16 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
   @override
   @JsonKey(name: "media_id")
   final String mediaId;
-  PleromaChatMessageSendData({this.content, this.mediaId});
+
+  @override
+  @JsonKey(name: "idempotency_key")
+  final String idempotencyKey;
+
+  PleromaChatMessageSendData({
+    this.content,
+    this.mediaId,
+    this.idempotencyKey,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -225,6 +240,7 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
           runtimeType == other.runtimeType &&
           content == other.content &&
           mediaId == other.mediaId;
+
   @override
   int get hashCode => content.hashCode ^ mediaId.hashCode;
 
