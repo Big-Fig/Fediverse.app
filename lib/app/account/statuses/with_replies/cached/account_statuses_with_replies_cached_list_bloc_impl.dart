@@ -13,6 +13,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -22,6 +23,16 @@ var _logger =
 
 class AccountStatusesWithRepliesCachedListBloc
     extends AccountStatusesCachedListBloc {
+  StatusRepositoryFilters get _statusRepositoryFilters =>
+      StatusRepositoryFilters(
+        onlyNoNsfwSensitive: false,
+        onlyNoReplies: false,
+        onlyFromAccount: account,
+        excludeTextConditions: excludeTextConditions,
+        onlyWithMedia: false,
+        withMuted: false,
+      );
+
   AccountStatusesWithRepliesCachedListBloc({
     @required IAccount account,
     @required IPleromaAccountService pleromaAccountService,
@@ -67,33 +78,18 @@ class AccountStatusesWithRepliesCachedListBloc
   }
 
   @override
-  Future<List<IStatus>> loadLocalItems(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future<List<IStatus>> loadLocalItems({
+    @required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan,
+  }) async {
     var statuses = await statusRepository.getStatuses(
-      onlyInListWithRemoteId: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyLocalCondition: null,
-      onlyWithMedia: false,
-      withMuted: false,
-      excludeVisibilities: null,
-      olderThanStatus: olderThan,
-      newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: false,
-      onlyNoReplies: false,
-      onlyFromAccount: account,
-      limit: limit,
-      offset: null,
-      orderingTermData: StatusRepositoryOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: StatusRepositoryOrderType.remoteId),
-      onlyInConversation: null,
-      isFromHomeTimeline: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      excludeTextConditions: excludeTextConditions,
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
     );
 
     return statuses;
@@ -102,28 +98,10 @@ class AccountStatusesWithRepliesCachedListBloc
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
     return statusRepository.watchStatuses(
-      onlyInListWithRemoteId: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyLocalCondition: null,
-      onlyWithMedia: false,
-      withMuted: false,
-      excludeVisibilities: null,
-      olderThanStatus: null,
-      newerThanStatus: item,
-      onlyNoNsfwSensitive: false,
-      onlyNoReplies: false,
-      onlyFromAccount: account,
-      limit: null,
-      offset: null,
-      orderingTermData: StatusRepositoryOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: StatusRepositoryOrderType.remoteId),
-      onlyInConversation: null,
-      isFromHomeTimeline: null,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      excludeTextConditions: excludeTextConditions,
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem: item,
+      ),
     );
   }
 

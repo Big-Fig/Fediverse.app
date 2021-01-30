@@ -1,16 +1,22 @@
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger =
     Logger("my_account_favourited_statuses_cached_list_bloc_impl.dart");
+
+var _statusRepositoryFilters = StatusRepositoryFilters(
+  onlyFavourited: true,
+);
 
 class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IMyAccountFavouritedStatusesCachedListBloc {
@@ -35,26 +41,12 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     IStatus olderThan,
   }) {
     return statusRepository.getStatuses(
-      onlyInListWithRemoteId: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyFromAccount: null,
-      onlyInConversation: null,
-      onlyLocalCondition: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      olderThanStatus: olderThan,
-      newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: null,
-      onlyNoReplies: null,
-      limit: limit,
-      offset: null,
-      orderingTermData: null,
-      isFromHomeTimeline: null,
-      onlyFavourited: true,
-      onlyBookmarked: null,
-      excludeTextConditions: null,
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
     );
   }
 
@@ -63,26 +55,10 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     IStatus item,
   ) {
     return statusRepository.watchStatuses(
-      onlyInListWithRemoteId: null,
-      onlyWithHashtag: null,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyFromAccount: null,
-      onlyInConversation: null,
-      onlyLocalCondition: null,
-      onlyWithMedia: null,
-      withMuted: null,
-      excludeVisibilities: null,
-      olderThanStatus: null,
-      newerThanStatus: item,
-      onlyNoNsfwSensitive: null,
-      onlyNoReplies: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      isFromHomeTimeline: null,
-      onlyFavourited: true,
-      onlyBookmarked: null,
-      excludeTextConditions: null,
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem: item,
+      ),
     );
   }
 
@@ -125,5 +101,4 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Uri get remoteInstanceUriOrNull => null;
-
 }

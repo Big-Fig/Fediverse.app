@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -47,6 +48,33 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         (filter) => filter.toStatusTextCondition(),
       )
       .toList();
+
+  StatusOnlyLocalCondition get onlyLocalCondition {
+    if (timeline.onlyLocal == true) {
+      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
+      return StatusOnlyLocalCondition(localUrlHost);
+    } else {
+      return null;
+    }
+  }
+
+  StatusRepositoryFilters get _statusRepositoryFilters =>
+      StatusRepositoryFilters(
+        onlyInConversation: null,
+        onlyFromAccount: timeline.onlyFromRemoteAccount != null
+            ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
+            : null,
+        onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
+        onlyWithHashtag: timeline.withRemoteHashtag,
+        onlyLocalCondition: onlyLocalCondition,
+        onlyWithMedia: timeline.onlyWithMedia,
+        withMuted: timeline.withMuted,
+        excludeVisibilities: timeline.excludeVisibilities,
+        onlyNoNsfwSensitive: timeline.excludeNsfwSensitive,
+        onlyNoReplies: timeline.excludeReplies,
+        isFromHomeTimeline: isFromHomeTimeline,
+        excludeTextConditions: excludeTextConditions,
+      );
 
   @override
   Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
@@ -220,87 +248,31 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
-    _logger.finest(() => "watchLocalItemsNewerThanItem \n"
-        "\t item=$item");
-
-    var onlyLocalCondition;
-    if (timeline.onlyLocal == true) {
-      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalCondition = StatusOnlyLocalCondition(localUrlHost);
-    }
-    return statusRepository.watchStatuses(
-      onlyInConversation: null,
-      onlyFromAccount: timeline.onlyFromRemoteAccount != null
-          ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
-          : null,
-      onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: timeline.withRemoteHashtag,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyLocalCondition: onlyLocalCondition,
-      onlyWithMedia: timeline.onlyWithMedia,
-      withMuted: timeline.withMuted,
-      excludeVisibilities: timeline.excludeVisibilities,
-      olderThanStatus: null,
-      newerThanStatus: item,
-      onlyNoNsfwSensitive: timeline.excludeNsfwSensitive,
-      onlyNoReplies: timeline.excludeReplies,
-      limit: null,
-      offset: null,
-      orderingTermData: StatusRepositoryOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: StatusRepositoryOrderType.remoteId),
-      isFromHomeTimeline: isFromHomeTimeline,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      excludeTextConditions: excludeTextConditions,
+  Future<List<IStatus>> loadLocalItems({
+    @required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan,
+  }) async {
+    var statuses = await statusRepository.getStatuses(
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
     );
+
+    return statuses;
   }
 
   @override
-  Future<List<IStatus>> loadLocalItems(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
-    _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan");
-
-    var onlyLocalCondition;
-    if (timeline.onlyLocal == true) {
-      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
-      onlyLocalCondition = StatusOnlyLocalCondition(localUrlHost);
-    }
-    var statuses = await statusRepository.getStatuses(
-      onlyInConversation: null,
-      onlyFromAccount: timeline.onlyFromRemoteAccount != null
-          ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
-          : null,
-      onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: timeline.withRemoteHashtag,
-      onlyFromAccountsFollowingByAccount: null,
-      onlyLocalCondition: onlyLocalCondition,
-      onlyWithMedia: timeline.onlyWithMedia,
-      withMuted: timeline.withMuted,
-      excludeVisibilities: timeline.excludeVisibilities,
-      olderThanStatus: olderThan,
-      newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: timeline.excludeNsfwSensitive,
-      onlyNoReplies: timeline.excludeReplies,
-      limit: limit,
-      offset: null,
-      orderingTermData: StatusRepositoryOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: StatusRepositoryOrderType.remoteId),
-      isFromHomeTimeline: isFromHomeTimeline,
-      onlyBookmarked: null,
-      onlyFavourited: null,
-      excludeTextConditions: excludeTextConditions,
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
+    return statusRepository.watchStatuses(
+      filters: _statusRepositoryFilters,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem: item,
+      ),
     );
-
-    _logger.finer(() =>
-        "finish loadLocalItems for $timeline statuses ${statuses.length}");
-    return statuses;
   }
 
   static TimelineStatusCachedListBloc createFromContext(
