@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
@@ -14,49 +15,69 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
+    var postStatusBloc = IPostStatusBloc.of(context);
+
+    var isPleromaInstance = ICurrentAuthInstanceBloc.of(
+      context,
+      listen: false,
+    ).currentInstance.isPleromaInstance;
 
     return StreamBuilder<PleromaVisibility>(
-        stream: postStatusBloc.visibilityStream,
-        initialData: postStatusBloc.visibility,
-        builder: (context, snapshot) {
-          var visibility = snapshot.data;
-          var icon = StatusVisibilityIconWidget.buildVisibilityIcon(
-              context: context,
-              visibility: visibility,
-              isSelectedVisibility: false,
-              isPossibleToChangeVisibility: true);
+      stream: postStatusBloc.visibilityStream,
+      initialData: postStatusBloc.visibility,
+      builder: (context, snapshot) {
+        var visibility = snapshot.data;
+        var icon = StatusVisibilityIconWidget.buildVisibilityIcon(
+            context: context,
+            visibility: visibility,
+            isSelectedVisibility: false,
+            isPossibleToChangeVisibility: true);
 
-          return FediIconButton(
-              icon: icon,
-              onPressed: () {
-                showFediSingleSelectionChooserDialog(
+        return FediIconButton(
+          icon: icon,
+          onPressed: () {
+            showFediSingleSelectionChooserDialog(
+              context: context,
+              title: S.of(context).app_status_post_visibility_title,
+              actions: [
+                buildVisibilityDialogAction(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  visibility: PleromaVisibility.public,
+                ),
+                if (isPleromaInstance)
+                  buildVisibilityDialogAction(
                     context: context,
-                    title: S.of(context).app_status_post_visibility_title,
-                    actions: [
-                      buildVisibilityDialogAction(
-                        context: context,
-                        postStatusBloc: postStatusBloc,
-                        visibility: PleromaVisibility.public,
-                      ),
-                      buildVisibilityDialogAction(
-                        context: context,
-                        postStatusBloc: postStatusBloc,
-                        visibility: PleromaVisibility.direct,
-                      ),
-                      buildVisibilityDialogAction(
-                        context: context,
-                        postStatusBloc: postStatusBloc,
-                        visibility: PleromaVisibility.unlisted,
-                      ),
-                      buildVisibilityDialogAction(
-                        context: context,
-                        postStatusBloc: postStatusBloc,
-                        visibility: PleromaVisibility.private,
-                      ),
-                    ]);
-              });
-        });
+                    postStatusBloc: postStatusBloc,
+                    visibility: PleromaVisibility.local,
+                  ),
+                buildVisibilityDialogAction(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  visibility: PleromaVisibility.direct,
+                ),
+                if (isPleromaInstance)
+                  buildVisibilityDialogAction(
+                    context: context,
+                    postStatusBloc: postStatusBloc,
+                    visibility: PleromaVisibility.list,
+                  ),
+                buildVisibilityDialogAction(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  visibility: PleromaVisibility.unlisted,
+                ),
+                buildVisibilityDialogAction(
+                  context: context,
+                  postStatusBloc: postStatusBloc,
+                  visibility: PleromaVisibility.private,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   SelectionDialogAction buildVisibilityDialogAction({

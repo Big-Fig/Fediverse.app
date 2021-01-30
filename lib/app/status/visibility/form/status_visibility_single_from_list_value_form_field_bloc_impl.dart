@@ -11,14 +11,15 @@ class StatusVisibilitySingleFromListValueFormFieldBloc
   final List<PleromaVisibility> possibleValues;
 
   StatusVisibilitySingleFromListValueFormFieldBloc({
-    this.possibleValues = PleromaVisibility.values,
+    @required this.possibleValues,
     @required PleromaVisibility originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
     List<FormValueFieldValidation<PleromaVisibility>> validators = const [],
   }) : super(
-            originValue: originValue,
-            isEnabled: isEnabled,
-            validators: validators,
-            isNullValuePossible: isNullValuePossible);
+          originValue: originValue,
+          isEnabled: isEnabled,
+          validators: validators,
+          isNullValuePossible: isNullValuePossible,
+        );
 }

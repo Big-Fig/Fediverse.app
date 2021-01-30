@@ -6831,6 +6831,16 @@ class S {
       args: [count],
     );
   }
+
+  /// `Local`
+  String get app_status_post_visibility_state_local {
+    return Intl.message(
+      'Local',
+      name: 'app_status_post_visibility_state_local',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

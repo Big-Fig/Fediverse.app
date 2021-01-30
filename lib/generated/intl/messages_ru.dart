@@ -681,6 +681,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_status_post_toast_success_schedule" : MessageLookupByLibrary.simpleMessage("Запись запланирована"),
     "app_status_post_visibility_state_direct" : MessageLookupByLibrary.simpleMessage("Только беседа"),
     "app_status_post_visibility_state_list" : MessageLookupByLibrary.simpleMessage("Только в списках"),
+    "app_status_post_visibility_state_local" : MessageLookupByLibrary.simpleMessage("Локальная"),
     "app_status_post_visibility_state_private" : MessageLookupByLibrary.simpleMessage("Приватная"),
     "app_status_post_visibility_state_public" : MessageLookupByLibrary.simpleMessage("Публичная"),
     "app_status_post_visibility_state_unlisted" : MessageLookupByLibrary.simpleMessage("Не публичная"),

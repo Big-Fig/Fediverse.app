@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-30T13:48:55+00:00",
+    "@@last_modified": "2021-01-30T19:04:06+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -698,5 +698,6 @@
     "app_chat_selection_action_delete_confirm_dialog_content": "Вы уверены?",
     "app_chat_selection_action_delete_confirm_dialog_action_delete": "Удалить",
     "app_share_action_shareToNewStatus": "Поделиться",
-    "app_chat_selection_count": "Отмечено ({count})"
+    "app_chat_selection_count": "Отмечено ({count})",
+    "app_status_post_visibility_state_local": "Локальная"
 }

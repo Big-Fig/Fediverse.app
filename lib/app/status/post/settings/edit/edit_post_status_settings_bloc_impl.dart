@@ -18,6 +18,7 @@ class EditPostStatusSettingsBloc
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
+  final List<PleromaVisibility> pleromaVisibilityPossibleValues;
   @override
   IStatusVisibilitySingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;
@@ -38,6 +39,7 @@ class EditPostStatusSettingsBloc
 
   EditPostStatusSettingsBloc({
     @required this.postStatusSettingsBloc,
+    @required this.pleromaVisibilityPossibleValues,
     @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     @required bool isEnabled,
     @required bool isGlobalForced,
@@ -52,6 +54,7 @@ class EditPostStatusSettingsBloc
         StatusVisibilitySingleFromListValueFormFieldBloc(
       originValue: currentSettings.defaultVisibilityPleroma,
       isEnabled: isEnabled,
+      possibleValues: pleromaVisibilityPossibleValues,
     );
     markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.markMediaAsNsfwOnAttach,
