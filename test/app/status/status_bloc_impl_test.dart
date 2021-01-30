@@ -64,7 +64,7 @@ void main() {
       pleromaAccountService: pleromaAccountServiceMock,
       pleromaStatusEmojiReactionService: pleromaStatusEmojiReactionServiceMock,
       pleromaPollService: null,
-      isNeedWatchLocalRepositoryForUpdates: false,
+      isNeedWatchLocalRepositoryForUpdates: true,
       isNeedRefreshFromNetworkOnInit: false,
     );
   });
