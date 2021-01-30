@@ -147,22 +147,25 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future markAsRead() async {
-    if (pleromaChatService.isApiReadyToUse) {
-      var lastReadChatMessageId = lastChatMessage?.remoteId;
-      if (lastReadChatMessageId == null) {
-        var lastMessage =
-            await chatMessageRepository.getChatLastChatMessage(chat: chat);
-        lastReadChatMessageId = lastMessage?.remoteId;
-      }
-      var updatedRemoteChat = await pleromaChatService.markChatAsRead(
-        chatId: chat.remoteId,
-        lastReadChatMessageId: lastReadChatMessageId,
-      );
+    if (chat.unread != null && chat.unread > 0) {
+      if (pleromaChatService.isApiReadyToUse) {
+        var lastReadChatMessageId = lastChatMessage?.remoteId;
+        if (lastReadChatMessageId == null) {
+          var lastMessage =
+              await chatMessageRepository.getChatLastChatMessage(chat: chat);
+          lastReadChatMessageId = lastMessage?.remoteId;
+        }
 
-      await chatRepository.upsertRemoteChat(updatedRemoteChat);
-    } else {
-      // TODO: mark as read once app receive network connection
-      await chatRepository.markAsRead(chat: chat);
+        var updatedRemoteChat = await pleromaChatService.markChatAsRead(
+          chatId: chat.remoteId,
+          lastReadChatMessageId: lastReadChatMessageId,
+        );
+
+        await chatRepository.upsertRemoteChat(updatedRemoteChat);
+      } else {
+        // TODO: mark as read once app receive network connection
+        await chatRepository.markAsRead(chat: chat);
+      }
     }
   }
 

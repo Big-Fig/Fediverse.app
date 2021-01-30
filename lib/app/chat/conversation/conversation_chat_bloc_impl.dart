@@ -212,22 +212,25 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future markAsRead() async {
-    if (pleromaConversationService.isApiReadyToUse) {
-      var lastReadChatMessageId = lastChatMessage?.remoteId;
-      if (lastReadChatMessageId == null) {
-        var lastStatus = await statusRepository.getConversationLastStatus(
-            conversation: chat);
-        lastReadChatMessageId = lastStatus?.remoteId;
-      }
-      var updatedRemoteChat =
-          await pleromaConversationService.markConversationAsRead(
-        conversationRemoteId: chat.remoteId,
-      );
+    if (chat.unread != null && chat.unread > 0) {
+      if (pleromaConversationService.isApiReadyToUse) {
+        var lastReadChatMessageId = lastChatMessage?.remoteId;
+        if (lastReadChatMessageId == null) {
+          var lastStatus = await statusRepository.getConversationLastStatus(
+              conversation: chat);
+          lastReadChatMessageId = lastStatus?.remoteId;
+        }
+        var updatedRemoteChat =
+            await pleromaConversationService.markConversationAsRead(
+          conversationRemoteId: chat.remoteId,
+        );
 
-      await conversationRepository.upsertRemoteConversation(updatedRemoteChat);
-    } else {
-      // TODO: mark as read once app receive network connection
-      await conversationRepository.markAsRead(conversation: chat);
+        await conversationRepository
+            .upsertRemoteConversation(updatedRemoteChat);
+      } else {
+        // TODO: mark as read once app receive network connection
+        await conversationRepository.markAsRead(conversation: chat);
+      }
     }
   }
 
