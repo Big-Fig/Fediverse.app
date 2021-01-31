@@ -27,46 +27,6 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 
-  Selectable<int> countUnreadAll() {
-    return customSelect(
-        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed;',
-        variables: [],
-        readsFrom: {
-          dbNotifications
-        }).map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Selectable<int> countUnreadAllNotDismissed() {
-    return customSelect(
-        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed IS NULL;',
-        variables: [],
-        readsFrom: {
-          dbNotifications
-        }).map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Selectable<int> countUnreadByType(String type) {
-    return customSelect(
-        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type;',
-        variables: [
-          Variable.withString(type)
-        ],
-        readsFrom: {
-          dbNotifications
-        }).map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Selectable<int> countUnreadByTypeNotDismissed(String type) {
-    return customSelect(
-        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type AND dismissed IS NULL;',
-        variables: [
-          Variable.withString(type)
-        ],
-        readsFrom: {
-          dbNotifications
-        }).map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
   Future<int> deleteById(int id) {
     return customUpdate(
       'DELETE FROM db_notifications WHERE id = :id;',
