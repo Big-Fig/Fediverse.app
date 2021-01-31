@@ -153,19 +153,23 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
           List<PleromaChatMessageOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
-                  switch (orderTerm.orderByType) {
-                    case ChatMessageOrderByType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case ChatMessageOrderByType.createdAt:
-                      expression = item.createdAt;
-                      break;
-                  }
-                  return OrderingTerm(
-                      expression: expression, mode: orderTerm.orderingMode);
-                })
+            .map(
+              (orderTerm) => (item) {
+                var expression;
+                switch (orderTerm.orderType) {
+                  case PleromaChatMessageOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case PleromaChatMessageOrderType.createdAt:
+                    expression = item.createdAt;
+                    break;
+                }
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
             .toList());
 
   List<DbChatMessagePopulated> typedResultListToPopulated(
@@ -181,8 +185,9 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       return null;
     }
     return DbChatMessagePopulated(
-        dbChatMessage: typedResult.readTable(db.dbChatMessages),
-        dbAccount: typedResult.readTable(accountAlias));
+      dbChatMessage: typedResult.readTable(db.dbChatMessages),
+      dbAccount: typedResult.readTable(accountAlias),
+    );
   }
 
   List<Join<Table, DataClass>> populateChatMessageJoin() {

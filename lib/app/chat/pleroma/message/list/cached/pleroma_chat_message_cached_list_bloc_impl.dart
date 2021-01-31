@@ -8,6 +8,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -20,10 +21,19 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChat chat;
 
-  PleromaChatMessageCachedListBloc(
-      {@required this.chat,
-      @required this.pleromaChatService,
-      @required this.chatMessageRepository});
+  PleromaChatMessageRepositoryFilters
+      get _pleromaChatMessageRepositoryFilters =>
+          PleromaChatMessageRepositoryFilters(
+            onlyInChats: [
+              chat,
+            ],
+          );
+
+  PleromaChatMessageCachedListBloc({
+    @required this.chat,
+    @required this.pleromaChatService,
+    @required this.chatMessageRepository,
+  });
 
   @override
   IPleromaApi get pleromaApi => pleromaChatService;
@@ -59,23 +69,24 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaChatMessage>> loadLocalItems(
-      {@required int limit,
-      @required IPleromaChatMessage newerThan,
-      @required IPleromaChatMessage olderThan}) async {
+  Future<List<IPleromaChatMessage>> loadLocalItems({
+    @required int limit,
+    @required IPleromaChatMessage newerThan,
+    @required IPleromaChatMessage olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
     var messages = await chatMessageRepository.getChatMessages(
-        onlyInChats: [chat],
+      filters: _pleromaChatMessageRepositoryFilters,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
         limit: limit,
-        offset: null,
-        orderingTermData: PleromaChatMessageOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: ChatMessageOrderByType.createdAt),
-        olderThanChatMessage: olderThan,
-        newerThanChatMessage: newerThan);
+      ),
+      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+    );
 
     _logger.finer(
         () => "finish loadLocalItems for $chat messages ${messages.length}");
@@ -86,24 +97,24 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
       IPleromaChatMessage item) {
     return chatMessageRepository.watchChatMessages(
-        onlyInChats: [chat],
-        limit: null,
-        offset: null,
-        orderingTermData: PleromaChatMessageOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: ChatMessageOrderByType.createdAt),
-        olderThanChatMessage: null,
-        newerThanChatMessage: item);
+      filters: _pleromaChatMessageRepositoryFilters,
+      pagination: RepositoryPagination(
+        newerThanItem: item,
+      ),
+      orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
+    );
   }
 
   static PleromaChatMessageCachedListBloc createFromContext(
-          BuildContext context,
-          {@required IPleromaChat chat}) =>
+    BuildContext context, {
+    @required IPleromaChat chat,
+  }) =>
       PleromaChatMessageCachedListBloc(
-          chat: chat,
-          pleromaChatService: IPleromaChatService.of(context, listen: false),
-          chatMessageRepository:
-              IPleromaChatMessageRepository.of(context, listen: false));
+        chat: chat,
+        pleromaChatService: IPleromaChatService.of(context, listen: false),
+        chatMessageRepository:
+            IPleromaChatMessageRepository.of(context, listen: false),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
