@@ -1,14 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
@@ -48,7 +48,8 @@ void main() {
     dbAccount = dbAccount.copyWith(id: accountId);
 
     dbChat = await createTestDbChat(seed: "seed4", dbAccount: dbAccount);
-    dbChatPopulated = DbPleromaChatPopulated(dbChat: dbChat, dbAccount: dbAccount);
+    dbChatPopulated =
+        DbPleromaChatPopulated(dbChat: dbChat, dbAccount: dbAccount);
 
     chat = DbPleromaChatPopulatedWrapper(dbChatPopulated);
     dbChatMessage = await createTestDbChatMessage(
@@ -150,7 +151,8 @@ void main() {
     expect(await chatRepository.countAll(), 0);
 
     await chatRepository.upsertRemoteChat(
-      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(
+          DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -170,7 +172,8 @@ void main() {
     // item with same id updated
 
     await chatRepository.upsertRemoteChat(
-      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(
+          DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -189,7 +192,8 @@ void main() {
   test('upsertRemoteChates', () async {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertRemoteChats([
-      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(
+          DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -207,7 +211,8 @@ void main() {
         dbChatMessage);
 
     await chatRepository.upsertRemoteChats([
-      mapLocalPleromaChatToRemoteChat(DbPleromaChatPopulatedWrapper(dbChatPopulated),
+      mapLocalPleromaChatToRemoteChat(
+          DbPleromaChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -227,11 +232,10 @@ void main() {
 
   test('createQuery empty', () async {
     var query = chatRepository.createQuery(
-        olderThan: null,
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -262,17 +266,15 @@ void main() {
 
   test('createQuery newerThan', () async {
     var query = chatRepository.createQuery(
-      newerThan: await createTestChat(
-          seed: "remoteId5",
-          remoteId: "remoteId5"
-              "",
-          updatedAt: DateTime(2005)),
-      limit: null,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: PleromaChatOrderByType.updatedAt),
-      olderThan: null,
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem: await createTestChat(
+            seed: "remoteId5",
+            remoteId: "remoteId5"
+                "",
+            updatedAt: DateTime(2005)),
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
     );
 
     await insertDbChat(
@@ -317,16 +319,16 @@ void main() {
 
   test('createQuery notNewerThan', () async {
     var query = chatRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: PleromaChatOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: PleromaChatOrderByType.updatedAt),
-        olderThan: await createTestChat(
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: await createTestChat(
             seed: "remoteId5",
-            remoteId: "remoteId5",
-            updatedAt: DateTime(2005)));
+            remoteId: "remoteId5"
+                "",
+            updatedAt: DateTime(2005)),
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+    );
 
     await insertDbChat(
         chatRepository,
@@ -370,19 +372,21 @@ void main() {
 
   test('createQuery notNewerThan & newerThan', () async {
     var query = chatRepository.createQuery(
-        newerThan: await createTestChat(
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem: await createTestChat(
             seed: "remoteId2",
-            remoteId: "remoteId2",
+            remoteId: "remoteId2"
+                "",
             updatedAt: DateTime(2002)),
-        limit: null,
-        offset: null,
-        orderingTermData: PleromaChatOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: PleromaChatOrderByType.updatedAt),
-        olderThan: await createTestChat(
+        olderThanItem: await createTestChat(
             seed: "remoteId5",
-            remoteId: "remoteId5",
-            updatedAt: DateTime(2005)));
+            remoteId: "remoteId5"
+                "",
+            updatedAt: DateTime(2005)),
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+    );
 
     await insertDbChat(
         chatRepository,
@@ -446,13 +450,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = chatRepository.createQuery(
-      newerThan: null,
-      limit: null,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderByType: PleromaChatOrderByType.remoteId,
-          orderingMode: OrderingMode.asc),
-      olderThan: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: PleromaChatOrderingTermData.remoteIdAsc,
     );
 
     var chat2 = await insertDbChat(
@@ -479,13 +479,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = chatRepository.createQuery(
-      newerThan: null,
-      limit: null,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderByType: PleromaChatOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThan: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
     );
 
     var chat2 = await insertDbChat(
@@ -512,13 +508,12 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = chatRepository.createQuery(
-      newerThan: null,
-      limit: 1,
-      offset: 1,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderByType: PleromaChatOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThan: null,
+      filters: null,
+      pagination: RepositoryPagination(
+        limit: 1,
+        offset: 1,
+      ),
+      orderingTermData: PleromaChatOrderingTermData.remoteIdDesc,
     );
 
     var chat2 = await insertDbChat(

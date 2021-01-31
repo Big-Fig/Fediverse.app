@@ -159,11 +159,11 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case PleromaChatOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case PleromaChatOrderType.remoteId:
                       expression = item.remoteId;
                       break;
-                    case PleromaChatOrderByType.updatedAt:
+                    case PleromaChatOrderType.updatedAt:
                       expression = item.updatedAt;
                       break;
                   }
