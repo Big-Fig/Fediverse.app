@@ -79,7 +79,7 @@ class ConversationChatWithLastMessageCachedListBloc
       offset: null,
       orderingTermData: ConversationChatOrderingTermData(
         orderingMode: OrderingMode.desc,
-        orderByType: ConversationPleromaChatOrderByType.updatedAt,
+        orderType: ConversationChatOrderType.updatedAt,
       ),
     );
 
@@ -97,7 +97,7 @@ class ConversationChatWithLastMessageCachedListBloc
         offset: null,
         orderingTermData: ConversationChatOrderingTermData(
           orderingMode: OrderingMode.desc,
-          orderByType: ConversationPleromaChatOrderByType.updatedAt,
+          orderType: ConversationChatOrderType.updatedAt,
         ),
       );
 }

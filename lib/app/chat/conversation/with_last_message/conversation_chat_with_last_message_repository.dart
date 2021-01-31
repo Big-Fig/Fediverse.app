@@ -12,7 +12,8 @@ abstract class IConversationChatWithLastMessageRepository
       Provider.of<IConversationChatWithLastMessageRepository>(context,
           listen: listen);
 
-  Future<List<IConversationChatWithLastMessage>> getConversationsWithLastMessage({
+  Future<List<IConversationChatWithLastMessage>>
+      getConversationsWithLastMessage({
     @required IConversationChat olderThan,
     @required IConversationChat newerThan,
     @required int limit,
@@ -20,23 +21,12 @@ abstract class IConversationChatWithLastMessageRepository
     @required ConversationChatOrderingTermData orderingTermData,
   });
 
-  Stream<List<IConversationChatWithLastMessage>> watchConversationsWithLastMessage({
+  Stream<List<IConversationChatWithLastMessage>>
+      watchConversationsWithLastMessage({
     @required IConversationChat olderThan,
     @required IConversationChat newerThan,
     @required int limit,
     @required int offset,
-    @required ConversationChatOrderingTermData orderingTermData,
-  });
-
-  Future<IConversationChatWithLastMessage> getConversationWithLastMessage({
-    @required IConversationChat olderThan,
-    @required IConversationChat newerThan,
-    @required ConversationChatOrderingTermData orderingTermData,
-  });
-
-  Stream<IConversationChatWithLastMessage> watchConversationWithLastMessage({
-    @required IConversationChat olderThan,
-    @required IConversationChat newerThan,
     @required ConversationChatOrderingTermData orderingTermData,
   });
 }

@@ -7,8 +7,8 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
@@ -246,11 +246,10 @@ void main() {
 
   test('createQuery empty', () async {
     var query = conversationRepository.createQuery(
-        olderThan: null,
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -302,15 +301,12 @@ void main() {
     'createQuery newerThan',
     () async {
       var query = conversationRepository.createQuery(
-        newerThan: await createTestConversation(
-            seed: "remoteId5", remoteId: "remoteId5"),
-        limit: null,
-        offset: null,
-        orderingTermData: ConversationChatOrderingTermData(
-          orderByType: ConversationPleromaChatOrderByType.updatedAt,
-          orderingMode: OrderingMode.desc,
+        filters: null,
+        pagination: RepositoryPagination<IConversationChat>(
+          newerThanItem: await createTestConversation(
+              seed: "remoteId5", remoteId: "remoteId5"),
         ),
-        olderThan: null,
+        orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
       );
 
       await insertDbConversation(
@@ -344,15 +340,12 @@ void main() {
 
   test('createQuery notNewerThan', () async {
     var query = conversationRepository.createQuery(
-      newerThan: null,
-      limit: null,
-      offset: null,
-      orderingTermData: ConversationChatOrderingTermData(
-        orderByType: ConversationPleromaChatOrderByType.updatedAt,
-        orderingMode: OrderingMode.desc,
+      filters: null,
+      pagination: RepositoryPagination<IConversationChat>(
+        olderThanItem: await createTestConversation(
+            seed: "remoteId5", remoteId: "remoteId5"),
       ),
-      olderThan: await createTestConversation(
-          seed: "remoteId5", remoteId: "remoteId5"),
+      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
     );
 
     await insertDbConversation(
@@ -385,16 +378,14 @@ void main() {
 
   test('createQuery notNewerThan & newerThan', () async {
     var query = conversationRepository.createQuery(
-      newerThan: await createTestConversation(
-          seed: "remoteId2", remoteId: "remoteId2"),
-      limit: null,
-      offset: null,
-      orderingTermData: ConversationChatOrderingTermData(
-        orderByType: ConversationPleromaChatOrderByType.updatedAt,
-        orderingMode: OrderingMode.desc,
+      filters: null,
+      pagination: RepositoryPagination<IConversationChat>(
+        newerThanItem: await createTestConversation(
+            seed: "remoteId2", remoteId: "remoteId2"),
+        olderThanItem: await createTestConversation(
+            seed: "remoteId5", remoteId: "remoteId5"),
       ),
-      olderThan: await createTestConversation(
-          seed: "remoteId5", remoteId: "remoteId5"),
+      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
     );
 
     await insertDbConversation(
@@ -441,13 +432,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = conversationRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ConversationChatOrderingTermData(
-            orderByType: ConversationPleromaChatOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThan: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ConversationChatOrderingTermData.remoteIdAsc,
+    );
 
     var conversation2 = await insertDbConversation(
         conversationRepository,
@@ -476,13 +464,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = conversationRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ConversationChatOrderingTermData(
-            orderByType: ConversationPleromaChatOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ConversationChatOrderingTermData.remoteIdDesc,
+    );
 
     var conversation2 = await insertDbConversation(
         conversationRepository,
@@ -511,13 +496,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = conversationRepository.createQuery(
-        newerThan: null,
+      filters: null,
+      pagination: RepositoryPagination<IConversationChat>(
         limit: 1,
         offset: 1,
-        orderingTermData: ConversationChatOrderingTermData(
-            orderByType: ConversationPleromaChatOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null);
+      ),
+      orderingTermData: ConversationChatOrderingTermData.remoteIdDesc,
+    );
 
     var conversation2 = await insertDbConversation(
         conversationRepository,

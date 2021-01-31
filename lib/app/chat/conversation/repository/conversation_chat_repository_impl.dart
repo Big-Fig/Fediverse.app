@@ -8,11 +8,20 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("conversation_chat_repository_impl.dart");
+
+var _singleConversationChatRepositoryPagination =
+    RepositoryPagination<IConversationChat>(
+  limit: 1,
+  newerThanItem: null,
+  offset: null,
+  olderThanItem: null,
+);
 
 class ConversationChatRepository extends AsyncInitLoadingBloc
     implements IConversationChatRepository {
@@ -30,7 +39,9 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
+  Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(
+        remoteId,
+      );
 
   @override
   Future internalAsyncInit() async {
@@ -40,17 +51,24 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteConversation(
-      IPleromaConversation remoteConversation) async {
+    IPleromaConversation remoteConversation,
+  ) async {
     _logger.finer(() => "upsertRemoteConversation $remoteConversation");
     var remoteAccounts = remoteConversation.accounts;
 
-    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: remoteConversation.id, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: remoteConversation.id,
+      chatRemoteId: null,
+    );
 
     var lastStatus = remoteConversation.lastStatus;
     if (lastStatus != null) {
-      await statusRepository.upsertRemoteStatus(lastStatus,
-          conversationRemoteId: remoteConversation.id, listRemoteId: null);
+      await statusRepository.upsertRemoteStatus(
+        lastStatus,
+        conversationRemoteId: remoteConversation.id,
+        listRemoteId: null,
+      );
     }
 
     await upsert(mapRemoteConversationToDbConversationChat(remoteConversation));
@@ -58,19 +76,26 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteConversations(
-      List<IPleromaConversation> remoteConversations) async {
+    List<IPleromaConversation> remoteConversations,
+  ) async {
     _logger
         .finer(() => "upsertRemoteConversations ${remoteConversations.length}");
 
     for (var remoteConversation in remoteConversations) {
       var lastStatus = remoteConversation.lastStatus;
       if (lastStatus != null) {
-        await statusRepository.upsertRemoteStatus(lastStatus,
-            listRemoteId: null, conversationRemoteId: remoteConversation.id);
+        await statusRepository.upsertRemoteStatus(
+          lastStatus,
+          listRemoteId: null,
+          conversationRemoteId: remoteConversation.id,
+        );
       }
 
-      await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
-          conversationRemoteId: remoteConversation.id, chatRemoteId: null);
+      await accountRepository.upsertRemoteAccounts(
+        remoteConversation.accounts,
+        conversationRemoteId: remoteConversation.id,
+        chatRemoteId: null,
+      );
     }
 
     await upsertAll(remoteConversations
@@ -80,11 +105,15 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationChatWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteId(remoteId).getSingle());
+      mapDataClassToItem(
+        await dao.findByRemoteId(remoteId).getSingle(),
+      );
 
   @override
   Stream<DbConversationChatWrapper> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteId(remoteId).watchSingle().map(mapDataClassToItem);
+      dao.findByRemoteId(remoteId).watchSingle().map(
+            mapDataClassToItem,
+          );
 
   @override
   Future upsertAll(Iterable<DbConversation> items) async {
@@ -142,7 +171,10 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbConversation item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int id, DbConversation dbConversation) {
+  Future<bool> updateById(
+    int id,
+    DbConversation dbConversation,
+  ) {
     if (dbConversation.id != id) {
       dbConversation = dbConversation.copyWith(id: id);
     }
@@ -161,9 +193,10 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
       item.dbConversation;
 
   @override
-  Future updateLocalConversationByRemoteConversation(
-      {@required IConversationChat oldLocalConversation,
-      @required IPleromaConversation newRemoteConversation}) async {
+  Future updateLocalConversationByRemoteConversation({
+    @required IConversationChat oldLocalConversation,
+    @required IPleromaConversation newRemoteConversation,
+  }) async {
     _logger.finer(() => "updateLocalConversationByRemoteConversation \n"
         "\t old: $oldLocalConversation \n"
         "\t newRemoteConversation: $newRemoteConversation");
@@ -181,116 +214,133 @@ class ConversationChatRepository extends AsyncInitLoadingBloc
           conversationRemoteId: oldLocalConversation.remoteId);
     }
     if (oldLocalConversation.localId != null) {
-      await updateById(oldLocalConversation.localId,
-          mapRemoteConversationToDbConversationChat(newRemoteConversation));
+      await updateById(
+        oldLocalConversation.localId,
+        mapRemoteConversationToDbConversationChat(
+          newRemoteConversation,
+        ),
+      );
     } else {
       await upsertRemoteConversation(newRemoteConversation);
     }
   }
 
   @override
-  Future<List<DbConversationChatWrapper>> getConversations(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required int limit,
-      @required int offset,
-      @required ConversationChatOrderingTermData orderingTermData}) async {
+  Future<List<DbConversationChatWrapper>> getConversations({
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) async {
     var query = createQuery(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData);
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+    );
 
     var dbConversations = await query.get();
     return dbConversations
-        .map((dbConversation) => mapDataClassToItem(dbConversation))
+        .map(
+          (dbConversation) => mapDataClassToItem(
+            dbConversation,
+          ),
+        )
         .toList();
   }
 
   @override
-  Stream<List<DbConversationChatWrapper>> watchConversations(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required int limit,
-      @required int offset,
-      @required ConversationChatOrderingTermData orderingTermData}) {
+  Stream<List<DbConversationChatWrapper>> watchConversations({
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) {
     var query = createQuery(
-      olderThan: olderThan,
-      newerThan: newerThan,
-      limit: limit,
-      offset: offset,
+      filters: filters,
+      pagination: pagination,
       orderingTermData: orderingTermData,
     );
 
     Stream<List<DbConversation>> stream = query.watch();
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
+    return stream.map((list) => list
+        .map(
+          mapDataClassToItem,
+        )
+        .toList());
   }
 
-  SimpleSelectStatement createQuery(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required int limit,
-      @required int offset,
-      @required ConversationChatOrderingTermData orderingTermData}) {
+  SimpleSelectStatement createQuery({
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    @required ConversationChatOrderingTermData orderingTermData,
+  }) {
     _logger.fine(() => "createQuery \n"
-        "\t olderThan=$olderThan\n"
-        "\t newerThan=$newerThan\n"
-        "\t limit=$limit\n"
-        "\t offset=$offset\n"
-        "\t orderingTermData=$orderingTermData\n");
+        "\t filters=$filters\n"
+        "\t pagination=$pagination\n"
+        "\t orderingTermData=$orderingTermData");
 
     var query = dao.startSelectQuery();
 
-    if (olderThan != null || newerThan != null) {
-      assert(orderingTermData.orderByType ==
-          ConversationPleromaChatOrderByType.updatedAt);
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThan?.remoteId,
-          minimumRemoteIdExcluding: newerThan?.remoteId);
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTermData.orderType == ConversationChatOrderType.updatedAt);
+      dao.addRemoteIdBoundsWhere(
+        query,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+      );
     }
 
     if (orderingTermData != null) {
-      dao.orderBy(query, [orderingTermData]);
+      dao.orderBy(
+        query,
+        [
+          orderingTermData,
+        ],
+      );
     }
 
-    assert(!(limit == null && offset != null));
-    if (limit != null) {
-      query.limit(limit, offset: offset);
+    if (pagination?.limit != null) {
+      query.limit(
+        pagination.limit,
+        offset: pagination.offset,
+      );
     }
     return query;
   }
 
   @override
-  Future<DbConversationChatWrapper> getConversation(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required ConversationChatOrderingTermData orderingTermData}) async {
+  Future<DbConversationChatWrapper> getConversation({
+    @required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) async {
     var conversations = await getConversations(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        orderingTermData: orderingTermData,
-        limit: 1,
-        offset: null);
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+    );
     return conversations?.first;
   }
 
   @override
-  Stream<DbConversationChatWrapper> watchConversation(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required ConversationChatOrderingTermData orderingTermData}) {
+  Stream<DbConversationChatWrapper> watchConversation({
+    @required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  }) {
     var conversationsStream = watchConversations(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        orderingTermData: orderingTermData,
-        limit: 1,
-        offset: null);
+      filters: filters,
+      pagination: _singleConversationChatRepositoryPagination,
+      orderingTermData: orderingTermData,
+    );
     return conversationsStream.map((conversations) => conversations?.first);
   }
 
   @override
-  Future<bool> markAsRead({@required IConversationChat conversation}) {
+  Future<bool> markAsRead({
+    @required IConversationChat conversation,
+  }) {
     return updateById(
       conversation.localId,
       DbConversation(
