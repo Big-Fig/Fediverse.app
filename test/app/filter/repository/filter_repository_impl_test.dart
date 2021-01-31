@@ -4,9 +4,9 @@ import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
-import 'package:moor/moor.dart';
 
 import '../database/filter_database_model_helper.dart';
 import '../filter_model_helper.dart';
@@ -167,13 +167,9 @@ void main() {
 
   test('createQuery empty', () async {
     var query = filterRepository.createQuery(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
+      filters: null,
+      pagination: null,
       orderingTermData: null,
-      onlyWithContextTypes: null,
-      notExpired: null,
     );
 
     await insertDbFilter(
@@ -188,15 +184,13 @@ void main() {
 
   test('createQuery onlyWithContextTypes single', () async {
     var query = filterRepository.createQuery(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: [
-        MastodonFilterContextType.homeAndCustomLists,
-      ],
-      notExpired: null,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonFilterContextType.homeAndCustomLists,
+        ],
+      ),
+      pagination: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -234,16 +228,14 @@ void main() {
 
   test('createQuery onlyWithContextTypes several', () async {
     var query = filterRepository.createQuery(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: [
-        MastodonFilterContextType.homeAndCustomLists,
-        MastodonFilterContextType.public,
-      ],
-      notExpired: null,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonFilterContextType.homeAndCustomLists,
+          MastodonFilterContextType.public,
+        ],
+      ),
+      pagination: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -281,15 +273,14 @@ void main() {
 
   test('createQuery notExpired', () async {
     var query = filterRepository.createQuery(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: [
-        MastodonFilterContextType.homeAndCustomLists,
-      ],
-      notExpired: true,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonFilterContextType.homeAndCustomLists,
+        ],
+        notExpired: true,
+      ),
+      pagination: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -324,16 +315,14 @@ void main() {
 
   test('createQuery newerThanFilter', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: await createTestFilter(
-        seed: "remoteId5",
-        remoteId: "remoteId5",
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem: await createTestFilter(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+        ),
       ),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanFilter: null,
-      onlyWithContextTypes: null,
-      notExpired: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -374,16 +363,14 @@ void main() {
 
   test('createQuery notNewerThanFilter', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanFilter: await createTestFilter(
-        seed: "remoteId5",
-        remoteId: "remoteId5",
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: await createTestFilter(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+        ),
       ),
-      onlyWithContextTypes: null,
-      notExpired: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -424,19 +411,18 @@ void main() {
 
   test('createQuery notNewerThanFilter & newerThanFilter', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: await createTestFilter(
-        seed: "remoteId2",
-        remoteId: "remoteId2",
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: await createTestFilter(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+        ),
+        newerThanItem: await createTestFilter(
+          seed: "remoteId2",
+          remoteId: "remoteId2",
+        ),
       ),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanFilter: await createTestFilter(
-        seed: "remoteId5",
-        remoteId: "remoteId5",
-      ),
-      onlyWithContextTypes: null,
-      notExpired: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     await insertDbFilter(
@@ -498,15 +484,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: FilterOrderingTermData(
-          orderByType: FilterOrderByType.remoteId,
-          orderingMode: OrderingMode.asc),
-      olderThanFilter: null,
-      onlyWithContextTypes: null,
-      notExpired: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: FilterOrderingTermData.remoteIdAsc,
     );
 
     var filter2 = await insertDbFilter(
@@ -551,15 +531,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: FilterOrderingTermData(
-          orderByType: FilterOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThanFilter: null,
-      onlyWithContextTypes: null,
-      notExpired: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     var filter2 = await insertDbFilter(
@@ -604,15 +578,12 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = filterRepository.createQuery(
-      newerThanFilter: null,
-      limit: 1,
-      offset: 1,
-      orderingTermData: FilterOrderingTermData(
-          orderByType: FilterOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThanFilter: null,
-      onlyWithContextTypes: null,
-      notExpired: null,
+      filters: null,
+      pagination: RepositoryPagination(
+        limit: 1,
+        offset: 1,
+      ),
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
 
     var filter2 = await insertDbFilter(

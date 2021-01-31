@@ -6,6 +6,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -22,29 +23,30 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
   });
 
   @override
-  Future<List<IFilter>> loadLocalItems(
-      {@required int limit,
-      @required IFilter newerThan,
-      @required IFilter olderThan}) {
+  Future<List<IFilter>> loadLocalItems({
+    @required int limit,
+    @required IFilter newerThan,
+    @required IFilter olderThan,
+  }) {
     return filterRepository.getFilters(
-      olderThanFilter: olderThan,
-      newerThanFilter: newerThan,
-      limit: limit,
-      offset: null,
-      orderingTermData: FilterOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderByType: FilterOrderByType.remoteId,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
       ),
-      onlyWithContextTypes: null,
-      notExpired: false,
+      filters: FilterRepositoryFilters(
+        notExpired: false,
+      ),
+      orderingTermData: FilterOrderingTermData.remoteIdDesc,
     );
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IFilter newerThan,
-      @required IFilter olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IFilter newerThan,
+    @required IFilter olderThan,
+  }) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteFilters = await pleromaFilterService.getFilters(
       pagination: PleromaPaginationRequest(

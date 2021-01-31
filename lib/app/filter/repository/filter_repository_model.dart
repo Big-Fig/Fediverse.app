@@ -1,16 +1,62 @@
+import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:moor/moor.dart';
 
-enum FilterOrderByType { remoteId }
+class FilterRepositoryFilters {
+  final List<MastodonFilterContextType> onlyWithContextTypes;
+  final bool notExpired;
 
-class FilterOrderingTermData {
-  final FilterOrderByType orderByType;
-  final OrderingMode orderingMode;
+  FilterRepositoryFilters({
+    this.onlyWithContextTypes,
+    this.notExpired,
+  });
 
-  FilterOrderingTermData(
-      {@required this.orderByType, @required this.orderingMode});
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FilterRepositoryFilters &&
+          runtimeType == other.runtimeType &&
+          onlyWithContextTypes == other.onlyWithContextTypes &&
+          notExpired == other.notExpired;
+
+  @override
+  int get hashCode => onlyWithContextTypes.hashCode ^ notExpired.hashCode;
 
   @override
   String toString() {
-    return 'FilterOrderingTermData{orderByType: $orderByType, orderingMode: $orderingMode}';
+    return 'FilterRepositoryFilters{'
+        'onlyWithContextTypes: $onlyWithContextTypes, '
+        'notExpired: $notExpired'
+        '}';
+  }
+}
+
+enum FilterOrderType {
+  remoteId,
+}
+
+class FilterOrderingTermData {
+  final FilterOrderType orderType;
+  final OrderingMode orderingMode;
+
+  static const FilterOrderingTermData remoteIdDesc = FilterOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: FilterOrderType.remoteId,
+  );
+  static const FilterOrderingTermData remoteIdAsc = FilterOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: FilterOrderType.remoteId,
+  );
+
+  const FilterOrderingTermData({
+    @required this.orderType,
+    @required this.orderingMode,
+  });
+
+  @override
+  String toString() {
+    return 'FilterOrderingTermData{'
+        'orderByType: $orderType, '
+        'orderingMode: $orderingMode'
+        '}';
   }
 }

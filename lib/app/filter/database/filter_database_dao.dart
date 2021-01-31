@@ -151,8 +151,8 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case FilterOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case FilterOrderType.remoteId:
                       expression = item.remoteId;
                       break;
                   }
