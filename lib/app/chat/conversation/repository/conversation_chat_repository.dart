@@ -4,6 +4,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/repository/repository.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,8 @@ abstract class IConversationChatRepository
   Future<DbConversationChatWrapper> findByRemoteId(String remoteId);
 
   Future upsertRemoteConversations(
-      List<IPleromaConversation> remoteConversations);
+    List<IPleromaConversation> remoteConversations,
+  );
 
   Future deleteByRemoteId(String remoteId);
 
@@ -27,35 +29,40 @@ abstract class IConversationChatRepository
 
   Future upsertRemoteConversation(IPleromaConversation remoteConversation);
 
-  Future<List<DbConversationChatWrapper>> getConversations(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required int limit,
-      @required int offset,
-      @required ConversationChatOrderingTermData orderingTermData});
+  Future<List<DbConversationChatWrapper>> getConversations({
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
 
-  Stream<List<DbConversationChatWrapper>> watchConversations(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required int limit,
-      @required int offset,
-      @required ConversationChatOrderingTermData orderingTermData});
+  Stream<List<DbConversationChatWrapper>> watchConversations({
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
 
-  Future<DbConversationChatWrapper> getConversation(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required ConversationChatOrderingTermData orderingTermData});
+  Future<DbConversationChatWrapper> getConversation({
+    @required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
 
-  Stream<DbConversationChatWrapper> watchConversation(
-      {@required IConversationChat olderThan,
-      @required IConversationChat newerThan,
-      @required ConversationChatOrderingTermData orderingTermData});
+  Stream<DbConversationChatWrapper> watchConversation({
+    @required ConversationChatRepositoryFilters filters,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
+  });
 
-  Future updateLocalConversationByRemoteConversation(
-      {@required IConversationChat oldLocalConversation,
-      @required IPleromaConversation newRemoteConversation});
+  Future updateLocalConversationByRemoteConversation({
+    @required IConversationChat oldLocalConversation,
+    @required IPleromaConversation newRemoteConversation,
+  });
 
-  Future<bool> markAsRead({@required IConversationChat conversation});
+  Future<bool> markAsRead({
+    @required IConversationChat conversation,
+  });
 
   Future<int> getTotalUnreadCount();
 

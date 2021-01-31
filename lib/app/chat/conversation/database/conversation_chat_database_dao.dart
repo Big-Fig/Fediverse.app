@@ -103,11 +103,11 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case ConversationPleromaChatOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case ConversationChatOrderType.remoteId:
                       expression = item.remoteId;
                       break;
-                    case ConversationPleromaChatOrderByType.updatedAt:
+                    case ConversationChatOrderType.updatedAt:
                       expression = item.updatedAt;
                       break;
                   }

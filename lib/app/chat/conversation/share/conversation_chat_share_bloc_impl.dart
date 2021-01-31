@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -93,14 +95,11 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     }
 
     var conversations = await conversationRepository.getConversations(
-      olderThan: null,
-      newerThan: null,
-      limit: limit,
-      offset: null,
-      orderingTermData: ConversationChatOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderByType: ConversationPleromaChatOrderByType.updatedAt,
+      pagination: RepositoryPagination<IConversationChat>(
+        limit: limit,
       ),
+      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
+      filters: null,
     );
 
     var accounts = <IAccount>[];
