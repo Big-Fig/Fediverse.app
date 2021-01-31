@@ -1,18 +1,47 @@
 import 'package:moor/moor.dart';
 
-// todo : move to dao model
+class ScheduledStatusRepositoryFilters {}
+
 enum DraftStatusRepositoryOrderType {
+  localId,
   updatedAt,
 }
 
 class DraftStatusOrderingTermData {
-  final DraftStatusRepositoryOrderType orderByType;
+  final DraftStatusRepositoryOrderType orderType;
   final OrderingMode orderingMode;
-  DraftStatusOrderingTermData(
-      {@required this.orderByType, @required this.orderingMode});
+
+  const DraftStatusOrderingTermData({
+    @required this.orderType,
+    @required this.orderingMode,
+  });
+
+  static const DraftStatusOrderingTermData localIdDesc =
+      DraftStatusOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: DraftStatusRepositoryOrderType.localId,
+  );
+  static const DraftStatusOrderingTermData localIdAsc =
+      DraftStatusOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: DraftStatusRepositoryOrderType.localId,
+  );
+  static const DraftStatusOrderingTermData updatedAtDesc =
+      DraftStatusOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderType: DraftStatusRepositoryOrderType.updatedAt,
+  );
+  static const DraftStatusOrderingTermData updatedAtAsc =
+      DraftStatusOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderType: DraftStatusRepositoryOrderType.updatedAt,
+  );
 
   @override
   String toString() {
-    return 'DraftStatusOrderingTermData{orderByType: $orderByType, orderingMode: $orderingMode}';
+    return 'DraftStatusOrderingTermData{'
+        'orderByType: $orderType, '
+        'orderingMode: $orderingMode'
+        '}';
   }
 }

@@ -17,7 +17,7 @@ part 'draft_status_database_dao.g.dart';
 })
 class DraftStatusDao extends DatabaseAccessor<AppDatabase>
     with _$DraftStatusDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   DraftStatusDao(this.db) : super(db);
@@ -47,9 +47,12 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
+                  switch (orderTerm.orderType) {
                     case DraftStatusRepositoryOrderType.updatedAt:
                       expression = item.updatedAt;
+                      break;
+                    case DraftStatusRepositoryOrderType.localId:
+                      expression = item.id;
                       break;
                   }
                   return OrderingTerm(

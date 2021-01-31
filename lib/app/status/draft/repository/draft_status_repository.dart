@@ -3,6 +3,7 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/repository/repository.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,27 +20,29 @@ abstract class IDraftStatusRepository
     @required IDraftStatus draftStatus,
   });
 
-  Future<List<IDraftStatus>> getDraftStatuses(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required int limit,
-      @required int offset,
-      @required DraftStatusOrderingTermData orderingTermData});
+  Future<List<IDraftStatus>> getDraftStatuses({
+    @required ScheduledStatusRepositoryFilters filters,
+    @required RepositoryPagination<IDraftStatus> pagination,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  });
 
-  Stream<List<IDraftStatus>> watchDraftStatuses(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required int limit,
-      @required int offset,
-      @required DraftStatusOrderingTermData orderingTermData});
+  Stream<List<IDraftStatus>> watchDraftStatuses({
+    @required ScheduledStatusRepositoryFilters filters,
+    @required RepositoryPagination<IDraftStatus> pagination,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  });
 
-  Future<IDraftStatus> getDraftStatus(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required DraftStatusOrderingTermData orderingTermData});
+  Future<IDraftStatus> getDraftStatus({
+    @required ScheduledStatusRepositoryFilters filters,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  });
 
-  Stream<IDraftStatus> watchDraftStatus(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required DraftStatusOrderingTermData orderingTermData});
+  Stream<IDraftStatus> watchDraftStatus({
+    @required ScheduledStatusRepositoryFilters filters,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  });
 }
