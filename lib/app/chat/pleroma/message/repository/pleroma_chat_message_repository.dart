@@ -5,6 +5,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -22,9 +23,12 @@ abstract class IPleromaChatMessageRepository
   Future deleteByRemoteId(String remoteId);
 
   Future upsertRemoteChatMessages(
-      List<pleroma_lib.IPleromaChatMessage> remoteChatMessages);
+    List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
+  );
 
-  Stream<IPleromaChatMessage> watchByRemoteId(String remoteId);
+  Stream<IPleromaChatMessage> watchByRemoteId(
+    String remoteId,
+  );
 
   Future updateLocalChatMessageByRemoteChatMessage({
     @required IPleromaChatMessage oldLocalChatMessage,
@@ -36,35 +40,29 @@ abstract class IPleromaChatMessageRepository
   );
 
   Future<List<IPleromaChatMessage>> getChatMessages({
-    @required List<IPleromaChat> onlyInChats,
-    @required IPleromaChatMessage olderThanChatMessage,
-    @required IPleromaChatMessage newerThanChatMessage,
-    @required int limit,
-    @required int offset,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageRepositoryFilters filters,
+    @required RepositoryPagination<IPleromaChatMessage> pagination,
+    PleromaChatMessageOrderingTermData orderingTermData =
+        PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Stream<List<IPleromaChatMessage>> watchChatMessages({
-    @required List<IPleromaChat> onlyInChats,
-    @required IPleromaChatMessage olderThanChatMessage,
-    @required IPleromaChatMessage newerThanChatMessage,
-    @required int limit,
-    @required int offset,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageRepositoryFilters filters,
+    @required RepositoryPagination<IPleromaChatMessage> pagination,
+    PleromaChatMessageOrderingTermData orderingTermData =
+        PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Future<IPleromaChatMessage> getChatMessage({
-    @required List<IPleromaChat> onlyInChats,
-    @required IPleromaChatMessage olderThanChatMessage,
-    @required IPleromaChatMessage newerThanChatMessage,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageRepositoryFilters filters,
+    PleromaChatMessageOrderingTermData orderingTermData =
+        PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Stream<IPleromaChatMessage> watchChatMessage({
-    @required List<IPleromaChat> onlyInChats,
-    @required IPleromaChatMessage olderThanChatMessage,
-    @required IPleromaChatMessage newerThanChatMessage,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
+    @required PleromaChatMessageRepositoryFilters filters,
+    PleromaChatMessageOrderingTermData orderingTermData =
+        PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Stream<IPleromaChatMessage> watchChatLastChatMessage({
