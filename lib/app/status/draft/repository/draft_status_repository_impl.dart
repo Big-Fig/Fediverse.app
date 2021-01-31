@@ -5,11 +5,19 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("draftStatus_repository_impl.dart");
+
+var _singleDraftStatusRepositoryPagination = RepositoryPagination<IDraftStatus>(
+  limit: 1,
+  newerThanItem: null,
+  offset: null,
+  olderThanItem: null,
+);
 
 class DraftStatusRepository extends AsyncInitLoadingBloc
     implements IDraftStatusRepository {
@@ -31,14 +39,20 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
     // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
+    await dao.insertAll(
+      items,
+      InsertMode.insertOrReplace,
+    );
   }
 
   @override
   Future insertAll(Iterable<DbDraftStatus> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
+    return await dao.insertAll(
+      items,
+      InsertMode.insertOrRollback,
+    );
   }
 
   @override
@@ -99,39 +113,40 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
       item.dbDraftStatus;
 
   @override
-  Future<List<DbDraftStatusWrapper>> getDraftStatuses(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required int limit,
-      @required int offset,
-      @required DraftStatusOrderingTermData orderingTermData}) async {
+  Future<List<DbDraftStatusWrapper>> getDraftStatuses({
+    @required ScheduledStatusRepositoryFilters filters,
+    @required RepositoryPagination<IDraftStatus> pagination,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  }) async {
     var query = createQuery(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData);
+      filters: filters,
+      pagination: pagination,
+      orderingTermData: orderingTermData,
+    );
 
     var typedDraftStatusesList = await query.get();
 
     return dao
         .typedResultListToPopulated(typedDraftStatusesList)
-        .map((dbDraftStatus) => mapDataClassToItem(dbDraftStatus))
+        .map(
+          (dbDraftStatus) => mapDataClassToItem(
+            dbDraftStatus,
+          ),
+        )
         .toList();
   }
 
   @override
-  Stream<List<DbDraftStatusWrapper>> watchDraftStatuses(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required int limit,
-      @required int offset,
-      @required DraftStatusOrderingTermData orderingTermData}) {
+  Stream<List<DbDraftStatusWrapper>> watchDraftStatuses({
+    @required ScheduledStatusRepositoryFilters filters,
+    @required RepositoryPagination<IDraftStatus> pagination,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  }) {
     var query = createQuery(
-      olderThan: olderThan,
-      newerThan: newerThan,
-      limit: limit,
-      offset: offset,
+      filters: filters,
+      pagination: pagination,
       orderingTermData: orderingTermData,
     );
 
@@ -143,76 +158,80 @@ class DraftStatusRepository extends AsyncInitLoadingBloc
         .toList());
   }
 
-  JoinedSelectStatement createQuery(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required int limit,
-      @required int offset,
-      @required DraftStatusOrderingTermData orderingTermData}) {
+  JoinedSelectStatement createQuery({
+    @required ScheduledStatusRepositoryFilters filters,
+    @required RepositoryPagination<IDraftStatus> pagination,
+    @required DraftStatusOrderingTermData orderingTermData,
+  }) {
     _logger.fine(() => "createQuery \n"
-        "\t olderThan=$olderThan\n"
-        "\t newerThan=$newerThan\n"
-        "\t limit=$limit\n"
-        "\t offset=$offset\n"
-        "\t orderingTermData=$orderingTermData\n");
+        "\t filters=$filters\n"
+        "\t pagination=$pagination\n"
+        "\t orderingTermData=$orderingTermData");
 
     var query = dao.startSelectQuery();
 
-    if (olderThan != null || newerThan != null) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
+      assert(orderingTermData.orderType ==
+          DraftStatusRepositoryOrderType.updatedAt);
       query = dao.addUpdatedAtBoundsWhere(
         query,
-        maximumUpdatedAtExcluding: olderThan?.updatedAt,
-        minimumUpdatedAtExcluding: newerThan?.updatedAt,
+        maximumUpdatedAtExcluding: pagination?.olderThanItem?.updatedAt,
+        minimumUpdatedAtExcluding: pagination?.newerThanItem?.updatedAt,
       );
     }
 
     if (orderingTermData != null) {
-      query = dao.orderBy(query, [orderingTermData]);
+      query = dao.orderBy(
+        query,
+        [
+          orderingTermData,
+        ],
+      );
     }
 
     // nothing to join by now, just to avoid unnecessary code wrappers overhead
     var joinQuery = query.join([]);
 
-    assert(!(limit == null && offset != null));
-    if (limit != null) {
-      joinQuery.limit(limit, offset: offset);
+    if (pagination?.limit != null) {
+      joinQuery.limit(pagination?.limit, offset: pagination?.offset);
     }
     return joinQuery;
   }
 
   @override
-  Future<DbDraftStatusWrapper> getDraftStatus(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required bool excludeCanceled,
-      @required bool excludeScheduleAtExpired,
-      @required DraftStatusOrderingTermData orderingTermData}) async {
+  Future<DbDraftStatusWrapper> getDraftStatus({
+    @required ScheduledStatusRepositoryFilters filters,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  }) async {
     var draftStatuses = await getDraftStatuses(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        orderingTermData: orderingTermData,
-        limit: 1,
-        offset: null);
+      filters: filters,
+      pagination: _singleDraftStatusRepositoryPagination,
+      orderingTermData: orderingTermData,
+    );
     return draftStatuses?.first;
   }
 
   @override
-  Stream<DbDraftStatusWrapper> watchDraftStatus(
-      {@required IDraftStatus olderThan,
-      @required IDraftStatus newerThan,
-      @required DraftStatusOrderingTermData orderingTermData}) {
+  Stream<DbDraftStatusWrapper> watchDraftStatus({
+    @required ScheduledStatusRepositoryFilters filters,
+    DraftStatusOrderingTermData orderingTermData =
+        DraftStatusOrderingTermData.updatedAtDesc,
+  }) {
     var draftStatusesStream = watchDraftStatuses(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        orderingTermData: orderingTermData,
-        limit: 1,
-        offset: null);
-    return draftStatusesStream.map((draftStatuses) => draftStatuses?.first);
+      filters: filters,
+      pagination: _singleDraftStatusRepositoryPagination,
+      orderingTermData: orderingTermData,
+    );
+    return draftStatusesStream.map(
+      (draftStatuses) => draftStatuses?.first,
+    );
   }
 
   @override
   Future addDraftStatus({
     IDraftStatus draftStatus,
-  }) => insert(mapDraftStatusToDbDraftStatus(draftStatus));
-
+  }) =>
+      insert(mapDraftStatusToDbDraftStatus(draftStatus));
 }

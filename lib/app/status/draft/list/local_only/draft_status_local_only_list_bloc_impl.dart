@@ -5,6 +5,7 @@ import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
@@ -41,13 +42,13 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
     IDraftStatus newerThan,
   }) async {
     var statuses = await draftStatusRepository.getDraftStatuses(
-      olderThan: olderThan,
-      newerThan: newerThan,
-      limit: itemsCountPerPage,
-      offset: null,
-      orderingTermData: DraftStatusOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: DraftStatusRepositoryOrderType.updatedAt),
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: itemsCountPerPage,
+      ),
+      orderingTermData: DraftStatusOrderingTermData.updatedAtDesc,
     );
 
     return statuses;
