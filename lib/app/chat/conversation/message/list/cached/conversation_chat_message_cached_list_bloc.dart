@@ -12,5 +12,6 @@ abstract class IConversationChatMessageCachedListBloc
           listen: listen);
 
   Stream<List<IConversationChatMessage>> watchLocalItemsNewerThanItem(
-      IConversationChatMessage item);
+    IConversationChatMessage item,
+  );
 }
