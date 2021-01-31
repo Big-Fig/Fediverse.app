@@ -1,3 +1,5 @@
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
@@ -42,6 +44,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
     @required BuildContext context,
     @required DialogAction action,
     @required bool isSelected,
+    @required bool isCancelAction,
   }) {
     var actionExist = action.onAction != null;
     return Padding(
@@ -51,48 +54,59 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           StreamBuilder<bool>(
-              initialData: action.isActionEnabledFetcher != null
-                  ? action.isActionEnabledFetcher(context)
-                  : true,
-              stream: action.isActionEnabledStreamFetcher != null
-                  ? action.isActionEnabledStreamFetcher(context)
-                  : Stream.value(true),
-              builder: (context, snapshot) {
-                var enabled = snapshot.data;
-                var fediUiColorTheme = IFediUiColorTheme.of(context);
-                var fediUiTextTheme = IFediUiTextTheme.of(context);
-                return InkWell(
-                  onTap: enabled
-                      ? () {
-                          if (actionExist && enabled) {
-                            action.onAction(context);
-                          }
+            initialData: action.isActionEnabledFetcher != null
+                ? action.isActionEnabledFetcher(context)
+                : true,
+            stream: action.isActionEnabledStreamFetcher != null
+                ? action.isActionEnabledStreamFetcher(context)
+                : Stream.value(true),
+            builder: (context, snapshot) {
+              var enabled = snapshot.data;
+              var fediUiColorTheme = IFediUiColorTheme.of(context);
+              var fediUiTextTheme = IFediUiTextTheme.of(context);
+              var color = isSelected
+                  ? fediUiColorTheme.primary
+                  : actionExist && enabled
+                      ? IFediUiColorTheme.of(context).darkGrey
+                      : IFediUiColorTheme.of(context).lightGrey;
+              return InkWell(
+                onTap: enabled
+                    ? () {
+                        if (actionExist && enabled) {
+                          action.onAction(context);
                         }
-                      : null,
-                  child: Row(
-                    children: [
-                      if (action.icon != null)
-                        Icon(action.icon,
-                            color: isSelected
-                                ? fediUiColorTheme.primary
-                                : actionExist && enabled
-                                    ? IFediUiColorTheme.of(context).darkGrey
-                                    : IFediUiColorTheme.of(context).lightGrey),
-                      Padding(
-                        padding: FediPadding.allMediumPadding,
-                        child: Text(
-                          action.label,
-                          style: action.customTextStyle ?? isSelected
-                              ? fediUiTextTheme.bigTallPrimary
-                              : actionExist && enabled
-                                  ? fediUiTextTheme.bigTallDarkGrey
-                                  : fediUiTextTheme.bigTallLightGrey,
-                        ),
+                      }
+                    : null,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!isCancelAction)
+                      FediIconButton(
+                        icon: Icon(FediIcons.check_circle),
+                        color: color,
+                        onPressed: () {},
                       ),
-                    ],
-                  ),
-                );
-              }),
+                    if (action.icon != null)
+                      Icon(
+                        action.icon,
+                        color: color,
+                      ),
+                    Padding(
+                      padding: FediPadding.allMediumPadding,
+                      child: Text(
+                        action.label,
+                        style: action.customTextStyle ?? isSelected
+                            ? fediUiTextTheme.bigTallPrimary
+                            : actionExist && enabled
+                                ? fediUiTextTheme.bigTallDarkGrey
+                                : fediUiTextTheme.bigTallLightGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -139,6 +153,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                               context: context,
                               action: action,
                               isSelected: action.isSelected,
+                              isCancelAction: false,
                             ))
                         .toList()
                   ],
@@ -152,6 +167,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
               context: context,
             ),
             isSelected: true,
+            isCancelAction: true,
           ),
       ],
     );
