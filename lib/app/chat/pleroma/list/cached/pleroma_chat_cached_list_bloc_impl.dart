@@ -6,6 +6,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_chat;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -62,13 +63,13 @@ class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
         "\t olderThan=$olderThan");
 
     var chats = await chatRepository.getChats(
-      olderThan: olderThan,
-      newerThan: newerThan,
-      limit: limit,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: PleromaChatOrderByType.updatedAt),
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -78,11 +79,10 @@ class PleromaChatCachedListBloc extends IPleromaChatCachedListBloc {
   @override
   Stream<List<IPleromaChat>> watchLocalItemsNewerThanItem(IPleromaChat item) =>
       chatRepository.watchChats(
-          olderThan: null,
-          newerThan: item,
-          limit: null,
-          offset: null,
-          orderingTermData: PleromaChatOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: PleromaChatOrderByType.updatedAt));
+        filters: null,
+        pagination: RepositoryPagination(
+          newerThanItem: item,
+        ),
+        orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      );
 }

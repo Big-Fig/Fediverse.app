@@ -13,6 +13,7 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -102,13 +103,11 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var chats = await chatRepository.getChats(
-      olderThan: null,
-      newerThan: null,
-      limit: limit,
-      offset: null,
-      orderingTermData: PleromaChatOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: PleromaChatOrderByType.updatedAt),
+      filters: null,
+      pagination: RepositoryPagination(
+        limit: limit,
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
     );
 
     return chats.map((chat) => chat.accounts.first).toList();
@@ -131,6 +130,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     await chatRepository.upsertRemoteChats(pleromaChats);
 
-    return pleromaChats.map((pleromaChat) => pleromaChat.account).toList();
+    return pleromaChats
+        .map(
+          (pleromaChat) => pleromaChat.account,
+        )
+        .toList();
   }
 }

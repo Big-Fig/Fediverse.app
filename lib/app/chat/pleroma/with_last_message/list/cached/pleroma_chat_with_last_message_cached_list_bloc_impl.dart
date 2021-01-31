@@ -7,6 +7,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -69,13 +70,14 @@ class PleromaChatWithLastMessageCachedListBloc
         "\t olderThan=$olderThan");
 
     var chats = await chatWithLastMessageRepository.getChatsWithLastMessage(
-        olderThan: olderThan?.chat,
-        newerThan: newerThan?.chat,
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan?.chat,
+        newerThanItem: newerThan?.chat,
         limit: limit,
-        offset: null,
-        orderingTermData: PleromaChatOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: PleromaChatOrderByType.updatedAt));
+      ),
+      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+    );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
     return chats;
@@ -85,11 +87,10 @@ class PleromaChatWithLastMessageCachedListBloc
   Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
           IPleromaChatWithLastMessage item) =>
       chatWithLastMessageRepository.watchChatsWithLastMessage(
-          olderThan: null,
-          newerThan: item?.chat,
-          limit: null,
-          offset: null,
-          orderingTermData: PleromaChatOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: PleromaChatOrderByType.updatedAt));
+        filters: null,
+        pagination: RepositoryPagination(
+          newerThanItem: item?.chat,
+        ),
+        orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      );
 }
