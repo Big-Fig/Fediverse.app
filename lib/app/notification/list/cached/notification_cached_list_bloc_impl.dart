@@ -1,5 +1,6 @@
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -48,15 +49,13 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     filters = await filterRepository.getFilters(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: [
-        MastodonFilterContextType.notifications,
-      ],
-      notExpired: true,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonFilterContextType.notifications,
+        ],
+        notExpired: true,
+      ),
+      pagination: null,
     );
   }
 

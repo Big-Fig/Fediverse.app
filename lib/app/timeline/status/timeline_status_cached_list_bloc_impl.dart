@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -103,7 +104,9 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   IDisposable webSocketsListenerDisposable;
 
-  void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
+  void resubscribeWebSocketsUpdates(
+    WebSocketsListenType webSocketsListenType,
+  ) {
     webSocketsListenerDisposable?.dispose();
 
     var isWebSocketsUpdatesEnabled =
@@ -166,10 +169,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t _timeline = $timeline"
         "\t newerThan = $newerThan"
@@ -234,10 +238,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
 
     if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: timeline.onlyInRemoteList?.id,
-          conversationRemoteId: null,
-          isFromHomeTimeline: isFromHomeTimeline);
+      await statusRepository.upsertRemoteStatuses(
+        remoteStatuses,
+        listRemoteId: timeline.onlyInRemoteList?.id,
+        conversationRemoteId: null,
+        isFromHomeTimeline: isFromHomeTimeline,
+      );
 
       return true;
     } else {
@@ -340,13 +346,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     _logger.finest(() => "filterRepository countAll ${countAll}");
 
     filters = await filterRepository.getFilters(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: onlyWithContextTypes,
-      notExpired: true,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: onlyWithContextTypes,
+        notExpired: true,
+      ),
+      pagination: null,
     );
 
     _logger.finest(() => "timelineType $timelineType, "

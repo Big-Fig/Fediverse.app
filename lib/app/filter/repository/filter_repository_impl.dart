@@ -5,13 +5,20 @@ import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("filter_repository_impl.dart");
+
+var _singleFilterRepositoryPagination = RepositoryPagination<IFilter>(
+  limit: 1,
+  newerThanItem: null,
+  offset: null,
+  olderThanItem: null,
+);
 
 class FilterRepository extends AsyncInitLoadingBloc
     implements IFilterRepository {
@@ -38,38 +45,39 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertRemoteFilters(List<IPleromaFilter> remoteFilters) async {
+  Future upsertRemoteFilters(
+    List<IPleromaFilter> remoteFilters,
+  ) async {
     _logger.finer(() => "upsertRemoteFilters ${remoteFilters.length} ");
     if (remoteFilters.isEmpty) {
       return;
     }
     await upsertAll(remoteFilters
-        .map((remoteFilter) => mapRemoteFilterToDbFilter(remoteFilter))
+        .map(
+          (remoteFilter) => mapRemoteFilterToDbFilter(remoteFilter),
+        )
         .toList());
   }
 
   @override
-  Future<DbFilterPopulatedWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteId(remoteId));
+  Future<DbFilterPopulatedWrapper> findByRemoteId(
+    String remoteId,
+  ) async =>
+      mapDataClassToItem(
+        await dao.findByRemoteId(remoteId),
+      );
 
   @override
   Future<List<DbFilterPopulatedWrapper>> getFilters({
-    @required IFilter olderThanFilter,
-    @required IFilter newerThanFilter,
-    @required int limit,
-    @required int offset,
-    @required FilterOrderingTermData orderingTermData,
-    @required List<MastodonFilterContextType> onlyWithContextTypes,
-    @required bool notExpired,
+    @required FilterRepositoryFilters filters,
+    @required RepositoryPagination<IFilter> pagination,
+    FilterOrderingTermData orderingTermData =
+        FilterOrderingTermData.remoteIdDesc,
   }) async {
     var query = createQuery(
-      olderThanFilter: olderThanFilter,
-      newerThanFilter: newerThanFilter,
-      limit: limit,
-      offset: offset,
+      filters: filters,
+      pagination: pagination,
       orderingTermData: orderingTermData,
-      onlyWithContextTypes: onlyWithContextTypes,
-      notExpired: notExpired,
     );
 
     var typedResult = await query.get();
@@ -81,22 +89,15 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-    @required IFilter olderThanFilter,
-    @required IFilter newerThanFilter,
-    @required int limit,
-    @required int offset,
-    @required FilterOrderingTermData orderingTermData,
-    @required List<MastodonFilterContextType> onlyWithContextTypes,
-    @required bool notExpired,
+    @required FilterRepositoryFilters filters,
+    @required RepositoryPagination<IFilter> pagination,
+    FilterOrderingTermData orderingTermData =
+        FilterOrderingTermData.remoteIdDesc,
   }) {
     var query = createQuery(
-      olderThanFilter: olderThanFilter,
-      newerThanFilter: newerThanFilter,
-      limit: limit,
-      offset: offset,
+      filters: filters,
+      pagination: pagination,
       orderingTermData: orderingTermData,
-      onlyWithContextTypes: onlyWithContextTypes,
-      notExpired: notExpired,
     );
 
     Stream<List<DbFilterPopulated>> stream =
@@ -105,43 +106,39 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery({
-    @required IFilter olderThanFilter,
-    @required IFilter newerThanFilter,
-    @required int limit,
-    @required int offset,
+    @required FilterRepositoryFilters filters,
+    @required RepositoryPagination<IFilter> pagination,
     @required FilterOrderingTermData orderingTermData,
-    @required List<MastodonFilterContextType> onlyWithContextTypes,
-    @required bool notExpired,
   }) {
     _logger.fine(() => "createQuery \n"
-        "\t olderThanFilter=$olderThanFilter\n"
-        "\t newerThanFilter=$newerThanFilter\n"
-        "\t limit=$limit\n"
-        "\t offset=$offset\n"
-        "\t onlyWithContextTypes=$onlyWithContextTypes\n"
-        "\t notExpired=$notExpired\n"
-        "\t orderingTermData=$orderingTermData\n");
+        "\t filters=$filters\n"
+        "\t pagination=$pagination\n"
+        "\t orderingTermData=$orderingTermData");
 
     var query = dao.startSelectQuery();
 
-    if (olderThanFilter != null || newerThanFilter != null) {
+    if (pagination?.olderThanItem != null ||
+        pagination?.newerThanItem != null) {
       dao.addRemoteIdBoundsWhere(
         query,
-        maximumRemoteIdExcluding: olderThanFilter?.remoteId,
-        minimumRemoteIdExcluding: newerThanFilter?.remoteId,
+        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
       );
     }
 
-    if (onlyWithContextTypes?.isNotEmpty == true) {
-      dao.addContextTypesWhere(query, onlyWithContextTypes);
+    if (filters?.onlyWithContextTypes?.isNotEmpty == true) {
+      dao.addContextTypesWhere(query, filters?.onlyWithContextTypes);
     }
 
-    if (notExpired == true) {
+    if (filters?.notExpired == true) {
       dao.addNotExpiredWhere(query);
     }
 
     if (orderingTermData != null) {
-      dao.orderBy(query, [orderingTermData]);
+      dao.orderBy(
+        query,
+        [orderingTermData],
+      );
     }
     var joinQuery = query.join(
       dao.populateFilterJoin(),
@@ -149,9 +146,8 @@ class FilterRepository extends AsyncInitLoadingBloc
 
     var finalQuery = joinQuery;
 
-    assert(!(limit == null && offset != null));
-    if (limit != null) {
-      finalQuery.limit(limit, offset: offset);
+    if (pagination?.limit != null) {
+      finalQuery.limit(pagination?.limit, offset: pagination?.offset);
     }
     return finalQuery;
   }
@@ -162,14 +158,20 @@ class FilterRepository extends AsyncInitLoadingBloc
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
     // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(items, InsertMode.insertOrReplace);
+    await dao.insertAll(
+      items,
+      InsertMode.insertOrReplace,
+    );
   }
 
   @override
   Future insertAll(Iterable<DbFilter> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(items, InsertMode.insertOrRollback);
+    return await dao.insertAll(
+      items,
+      InsertMode.insertOrRollback,
+    );
   }
 
   @override
@@ -254,47 +256,40 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbFilterPopulatedWrapper> getFilter({
-    @required IFilter olderThanFilter,
-    @required IFilter newerThanFilter,
-    @required FilterOrderingTermData orderingTermData,
-    @required List<MastodonFilterContextType> onlyWithContextTypes,
-    @required bool notExpired,
+    @required FilterRepositoryFilters filters,
+    FilterOrderingTermData orderingTermData =
+        FilterOrderingTermData.remoteIdDesc,
   }) async {
     var query = createQuery(
-      olderThanFilter: olderThanFilter,
-      newerThanFilter: newerThanFilter,
-      limit: 1,
-      offset: null,
+      filters: filters,
+      pagination: _singleFilterRepositoryPagination,
       orderingTermData: orderingTermData,
-      onlyWithContextTypes: onlyWithContextTypes,
-      notExpired: notExpired,
     );
 
     return mapDataClassToItem(
-        dao.typedResultToPopulated(await query.getSingle()));
+      dao.typedResultToPopulated(
+        await query.getSingle(),
+      ),
+    );
   }
 
   @override
   Stream<DbFilterPopulatedWrapper> watchFilter({
-    @required IFilter olderThanFilter,
-    @required IFilter newerThanFilter,
-    @required FilterOrderingTermData orderingTermData,
-    @required List<MastodonFilterContextType> onlyWithContextTypes,
-    @required bool notExpired,
+    @required FilterRepositoryFilters filters,
+    FilterOrderingTermData orderingTermData =
+        FilterOrderingTermData.remoteIdDesc,
   }) {
     var query = createQuery(
-      olderThanFilter: olderThanFilter,
-      newerThanFilter: newerThanFilter,
-      limit: 1,
-      offset: null,
+      filters: filters,
+      pagination: _singleFilterRepositoryPagination,
       orderingTermData: orderingTermData,
-      onlyWithContextTypes: onlyWithContextTypes,
-      notExpired: notExpired,
     );
 
-    Stream<DbFilterPopulated> stream = query
-        .watchSingle()
-        .map((typedResult) => dao.typedResultToPopulated(typedResult));
-    return stream.map((dbFilter) => mapDataClassToItem(dbFilter));
+    Stream<DbFilterPopulated> stream = query.watchSingle().map(
+          (typedResult) => dao.typedResultToPopulated(typedResult),
+        );
+    return stream.map(
+      (dbFilter) => mapDataClassToItem(dbFilter),
+    );
   }
 }

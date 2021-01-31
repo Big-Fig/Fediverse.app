@@ -1,5 +1,6 @@
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -67,19 +68,16 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     );
   }
 
-
   @override
   Future<List<IFilter>> loadFilters() async {
     var filters = await filterRepository.getFilters(
-      olderThanFilter: null,
-      newerThanFilter: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyWithContextTypes: [
-        MastodonFilterContextType.thread,
-      ],
-      notExpired: true,
+      filters: FilterRepositoryFilters(
+        onlyWithContextTypes: [
+          MastodonFilterContextType.thread,
+        ],
+        notExpired: true,
+      ),
+      pagination: null,
     );
     return filters;
   }
@@ -93,7 +91,6 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
       ),
     );
   }
-
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

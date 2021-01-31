@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -60,15 +61,13 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
       filters = [];
     } else {
       filters = await filterRepository.getFilters(
-        olderThanFilter: null,
-        newerThanFilter: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        notExpired: true,
-        onlyWithContextTypes: [
-          MastodonFilterContextType.account,
-        ],
+        filters: FilterRepositoryFilters(
+          notExpired: true,
+          onlyWithContextTypes: [
+            MastodonFilterContextType.account,
+          ],
+        ),
+        pagination: null,
       );
     }
   }
