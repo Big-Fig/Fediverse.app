@@ -8,8 +8,8 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
@@ -264,14 +264,9 @@ void main() {
 
   test('createQuery empty', () async {
     var query = notificationRepository.createQuery(
-      excludeTypes: null,
-      olderThanNotification: null,
-      newerThanNotification: null,
-      limit: null,
-      offset: null,
+      pagination: null,
+      filters: null,
       orderingTermData: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
     );
 
     await insertDbNotification(
@@ -290,14 +285,13 @@ void main() {
 
   test('createQuery excludeTypes', () async {
     var query = notificationRepository.createQuery(
-      excludeTypes: [PleromaNotificationType.follow],
-      olderThanNotification: null,
-      newerThanNotification: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      pagination: null,
+      filters: NotificationRepositoryFilters(
+        excludeTypes: [
+          PleromaNotificationType.follow,
+        ],
+      ),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -319,99 +313,18 @@ void main() {
     );
     expect((await query.get()).length, 1);
   });
-  test('countUnread', () async {
-    expect(
-        (await notificationRepository.countUnreadAnyType(
-          excludeStatusTextConditions: null,
-        )),
-        0);
-    await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(
-                type: PleromaNotificationType.follow.toJsonValue(),
-                unread: true));
-
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.reblog,
-          excludeStatusTextConditions: null,
-        )),
-        0);
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.follow,
-          excludeStatusTextConditions: null,
-        )),
-        1);
-    expect(
-        (await notificationRepository.countUnreadAnyType(
-          excludeStatusTextConditions: null,
-        )),
-        1);
-
-    await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(
-                type: PleromaNotificationType.follow.toJsonValue(),
-                unread: false));
-
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.reblog,
-          excludeStatusTextConditions: null,
-        )),
-        0);
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.follow,
-          excludeStatusTextConditions: null,
-        )),
-        1);
-    expect(
-        (await notificationRepository.countUnreadAnyType(
-          excludeStatusTextConditions: null,
-        )),
-        1);
-
-    await insertDbNotification(
-        notificationRepository,
-        (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
-            .copyWith(
-                type: PleromaNotificationType.reblog.toJsonValue(),
-                unread: true));
-
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.reblog,
-          excludeStatusTextConditions: null,
-        )),
-        1);
-    expect(
-        (await notificationRepository.countUnreadByType(
-          type: PleromaNotificationType.follow,
-          excludeStatusTextConditions: null,
-        )),
-        1);
-    expect(
-        (await notificationRepository.countUnreadAnyType(
-          excludeStatusTextConditions: null,
-        )),
-        2);
-  });
 
   test('createQuery newerThanNotification', () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: await createTestNotification(
-          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanNotification: null,
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<INotification>(
+        newerThanItem: await createTestNotification(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+          createdAt: DateTime(5),
+        ),
+      ),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -444,15 +357,15 @@ void main() {
 
   test('createQuery notNewerThanNotification', () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: null,
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanNotification: await createTestNotification(
-          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<INotification>(
+        olderThanItem: await createTestNotification(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+          createdAt: DateTime(5),
+        ),
+      ),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -486,16 +399,20 @@ void main() {
   test('createQuery notNewerThanNotification & newerThanNotification',
       () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: await createTestNotification(
-          seed: "remoteId2", remoteId: "remoteId2", createdAt: DateTime(2)),
-      limit: null,
-      offset: null,
-      orderingTermData: null,
-      olderThanNotification: await createTestNotification(
-          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<INotification>(
+        newerThanItem: await createTestNotification(
+          seed: "remoteId2",
+          remoteId: "remoteId2",
+          createdAt: DateTime(2),
+        ),
+        olderThanItem: await createTestNotification(
+          seed: "remoteId5",
+          remoteId: "remoteId5",
+          createdAt: DateTime(5),
+        ),
+      ),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
 
     await insertDbNotification(
@@ -542,16 +459,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: null,
-      limit: null,
-      offset: null,
-      orderingTermData: NotificationOrderingTermData(
-          orderByType: NotificationOrderByType.remoteId,
-          orderingMode: OrderingMode.asc),
-      olderThanNotification: null,
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: NotificationOrderingTermData.remoteIdAsc,
     );
 
     var notification2 = await insertDbNotification(
@@ -579,16 +489,9 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: null,
-      limit: null,
-      offset: null,
-      orderingTermData: NotificationOrderingTermData(
-          orderByType: NotificationOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThanNotification: null,
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: null,
+      orderingTermData: NotificationOrderingTermData.remoteIdDesc,
     );
 
     var notification2 = await insertDbNotification(
@@ -616,16 +519,12 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: null,
-      limit: 1,
-      offset: 1,
-      orderingTermData: NotificationOrderingTermData(
-          orderByType: NotificationOrderByType.remoteId,
-          orderingMode: OrderingMode.desc),
-      olderThanNotification: null,
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<INotification>(
+        limit: 1,
+        offset: 1,
+      ),
+      orderingTermData: NotificationOrderingTermData.remoteIdDesc,
     );
 
     var notification2 = await insertDbNotification(
@@ -652,16 +551,12 @@ void main() {
   test('createQuery orderingTermData createdAt desc & limit & offset',
       () async {
     var query = notificationRepository.createQuery(
-      newerThanNotification: null,
-      limit: 1,
-      offset: 1,
-      orderingTermData: NotificationOrderingTermData(
-          orderByType: NotificationOrderByType.createdAt,
-          orderingMode: OrderingMode.desc),
-      olderThanNotification: null,
-      excludeTypes: null,
-      onlyNotDismissed: null,
-      excludeStatusTextConditions: null,
+      filters: null,
+      pagination: RepositoryPagination<INotification>(
+        limit: 1,
+        offset: 1,
+      ),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
 
     var notification2 = await insertDbNotification(
@@ -684,4 +579,191 @@ void main() {
 
     expect(actualList[0].dbNotification, notification2);
   });
+
+  test('countUnread', () async {
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyUnread: true,
+          ),
+        )),
+        0);
+    await insertDbNotification(
+      notificationRepository,
+      (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
+          .copyWith(
+        type: PleromaNotificationType.follow.toJsonValue(),
+        unread: true,
+      ),
+    );
+
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.reblog,
+            onlyUnread: true,
+          ),
+        )),
+        0);
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.follow,
+            onlyUnread: true,
+          ),
+        )),
+        1);
+    expect(
+        (await notificationRepository.getCount(
+          filters: NotificationRepositoryFilters(
+            onlyUnread: true,
+          ),
+        )),
+        1);
+
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(
+                type: PleromaNotificationType.follow.toJsonValue(),
+                unread: false));
+
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.reblog,
+            onlyUnread: true,
+          ),
+        )),
+        0);
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.follow,
+            onlyUnread: true,
+          ),
+        )),
+        1);
+    expect(
+        (await notificationRepository.getCount(
+          filters: NotificationRepositoryFilters(
+            onlyUnread: true,
+          ),
+        )),
+        1);
+
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(
+                type: PleromaNotificationType.reblog.toJsonValue(),
+                unread: true));
+
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.reblog,
+            onlyUnread: true,
+          ),
+        )),
+        1);
+    expect(
+        (await notificationRepository.getCount( 
+          filters: NotificationRepositoryFilters(
+            onlyWithType: PleromaNotificationType.follow,
+            onlyUnread: true,
+          ),
+        )),
+        1);
+    expect(
+        (await notificationRepository.getCount(
+          filters: NotificationRepositoryFilters(
+            onlyUnread: true,
+          ),
+        )),
+        2);
+  });
+
+  //
+  // test('countUnread', () async {
+  //   expect(
+  //       (await notificationRepository.countUnreadAnyType(
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       0);
+  //   await insertDbNotification(
+  //       notificationRepository,
+  //       (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
+  //           .copyWith(
+  //           type: PleromaNotificationType.follow.toJsonValue(),
+  //           unread: true));
+  //
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.reblog,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       0);
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.follow,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //   expect(
+  //       (await notificationRepository.countUnreadAnyType(
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //
+  //   await insertDbNotification(
+  //       notificationRepository,
+  //       (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
+  //           .copyWith(
+  //           type: PleromaNotificationType.follow.toJsonValue(),
+  //           unread: false));
+  //
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.reblog,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       0);
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.follow,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //   expect(
+  //       (await notificationRepository.countUnreadAnyType(
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //
+  //   await insertDbNotification(
+  //       notificationRepository,
+  //       (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
+  //           .copyWith(
+  //           type: PleromaNotificationType.reblog.toJsonValue(),
+  //           unread: true));
+  //
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.reblog,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //   expect(
+  //       (await notificationRepository.countUnreadByType(
+  //         type: PleromaNotificationType.follow,
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       1);
+  //   expect(
+  //       (await notificationRepository.countUnreadAnyType(
+  //         excludeStatusTextConditions: null,
+  //       )),
+  //       2);
+  // });
 }

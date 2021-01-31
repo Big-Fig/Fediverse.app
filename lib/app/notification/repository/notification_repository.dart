@@ -1,10 +1,10 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
-import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/repository/repository.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -37,83 +37,47 @@ abstract class INotificationRepository
     @required bool unread,
   });
 
-  Future<int> countUnreadAnyType({
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+  Future<int> getCount({
+    @required NotificationRepositoryFilters filters,
   });
 
-  Future<int> countUnreadByType({
-    @required PleromaNotificationType type,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
-  });
-
-  Future<int> getUnreadCountExcludeTypes({
-    @required List<PleromaNotificationType> excludeTypes,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
-  });
-
-  Stream<int> watchUnreadCountExcludeTypes({
-    @required List<PleromaNotificationType> excludeTypes,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
-  });
-
-  Stream<int> watchUnreadCountAnyType({
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
-  });
-
-  Stream<int> watchUnreadCountByType({
-    @required PleromaNotificationType type,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+  Stream<int> watchCount({
+    @required NotificationRepositoryFilters filters,
   });
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
-    @required List<PleromaNotificationType> excludeTypes,
-    @required INotification olderThanNotification,
-    @required INotification newerThanNotification,
-    @required int limit,
-    @required int offset,
-    @required NotificationOrderingTermData orderingTermData,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+    @required NotificationRepositoryFilters filters,
+    @required RepositoryPagination<INotification> pagination,
+    NotificationOrderingTermData orderingTermData =
+        NotificationOrderingTermData.createdAtDesc,
   });
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
-    @required List<PleromaNotificationType> excludeTypes,
-    @required INotification olderThanNotification,
-    @required INotification newerThanNotification,
-    @required int limit,
-    @required int offset,
-    @required NotificationOrderingTermData orderingTermData,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+    @required NotificationRepositoryFilters filters,
+    @required RepositoryPagination<INotification> pagination,
+    NotificationOrderingTermData orderingTermData =
+        NotificationOrderingTermData.createdAtDesc,
   });
 
   Future<DbNotificationPopulatedWrapper> getNotification({
-    @required List<PleromaNotificationType> excludeTypes,
-    @required INotification olderThanNotification,
-    @required INotification newerThanNotification,
-    @required NotificationOrderingTermData orderingTermData,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+    @required NotificationRepositoryFilters filters,
+    NotificationOrderingTermData orderingTermData =
+        NotificationOrderingTermData.createdAtDesc,
   });
 
   Stream<DbNotificationPopulatedWrapper> watchNotification({
-    @required List<PleromaNotificationType> excludeTypes,
-    @required INotification olderThanNotification,
-    @required INotification newerThanNotification,
-    @required NotificationOrderingTermData orderingTermData,
-    bool onlyNotDismissed = true,
-    @required List<StatusTextCondition> excludeStatusTextConditions,
+    @required NotificationRepositoryFilters filters,
+    NotificationOrderingTermData orderingTermData =
+        NotificationOrderingTermData.createdAtDesc,
   });
 
-  Future markAsRead({@required INotification notification});
+  Future markAsRead({
+    @required INotification notification,
+  });
 
-  Future dismiss({@required INotification notification});
+  Future dismiss({
+    @required INotification notification,
+  });
 
   Future dismissAll();
 }

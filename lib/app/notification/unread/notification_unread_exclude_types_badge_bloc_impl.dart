@@ -1,6 +1,7 @@
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -47,18 +48,23 @@ class NotificationUnreadBadgeExcludeTypesBloc extends AsyncInitLoadingBloc
 
     if (!isDisposed) {
       notificationRepository
-          .watchUnreadCountExcludeTypes(
-            excludeTypes: excludeTypes,
-            excludeStatusTextConditions: filters
-                .map(
-                  (filter) => filter.toStatusTextCondition(),
-                )
-                .toList(),
+          .watchCount(
+            filters: NotificationRepositoryFilters(
+              onlyUnread: true,
+              excludeTypes: excludeTypes,
+              excludeStatusTextConditions: filters
+                  .map(
+                    (filter) => filter.toStatusTextCondition(),
+                  )
+                  .toList(),
+            ),
           )
           .map((count) => count != null && count > 0)
-          .listen((unread) {
-        badgeSubject.add(unread);
-      });
+          .listen(
+        (unread) {
+          badgeSubject.add(unread);
+        },
+      );
     }
   }
 }

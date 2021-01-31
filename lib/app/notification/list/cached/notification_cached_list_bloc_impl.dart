@@ -12,6 +12,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 
@@ -21,6 +22,16 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final List<PleromaNotificationType> excludeTypes;
+
+  NotificationRepositoryFilters get _notificationRepositoryFilters =>
+      NotificationRepositoryFilters(
+        excludeTypes: excludeTypes,
+        excludeStatusTextConditions: filters
+            .map(
+              (filter) => filter.toStatusTextCondition(),
+            )
+            .toList(),
+      );
 
   @override
   IPleromaApi get pleromaApi => pleromaNotificationService;
@@ -55,20 +66,13 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       @required INotification newerThan,
       @required INotification olderThan}) {
     return notificationRepository.getNotifications(
-      excludeTypes: excludeTypes,
-      olderThanNotification: olderThan,
-      newerThanNotification: newerThan,
-      limit: limit,
-      offset: null,
-      orderingTermData: NotificationOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderByType: NotificationOrderByType.createdAt,
+      filters: _notificationRepositoryFilters,
+      pagination: RepositoryPagination<INotification>(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
+        limit: limit,
       ),
-      excludeStatusTextConditions: filters
-          .map(
-            (filter) => filter.toStatusTextCondition(),
-          )
-          .toList(),
+      orderingTermData: NotificationOrderingTermData.createdAtDesc,
     );
   }
 
@@ -132,20 +136,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   Stream<List<INotification>> watchLocalItemsNewerThanItem(
           INotification item) =>
       notificationRepository.watchNotifications(
-        excludeTypes: excludeTypes,
-        olderThanNotification: null,
-        newerThanNotification: item,
-        limit: null,
-        offset: null,
-        orderingTermData: NotificationOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderByType: NotificationOrderByType.createdAt,
+        filters: _notificationRepositoryFilters,
+        pagination: RepositoryPagination<INotification>(
+          newerThanItem: item,
         ),
-        excludeStatusTextConditions: filters
-            .map(
-              (filter) => filter.toStatusTextCondition(),
-            )
-            .toList(),
       );
 
   @override

@@ -20,14 +20,6 @@ var _statusReblogAccountAliasId = "status_reblog_account";
   "countAll": "SELECT Count(*) FROM db_notifications;",
   "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
   "oldest": "SELECT * FROM db_notifications ORDER BY created_at ASC LIMIT 1;",
-  "countUnreadAll": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1 AND dismissed;",
-  "countUnreadAllNotDismissed": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1 AND dismissed IS NULL;",
-  "countUnreadByType": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1 AND type = :type;",
-  "countUnreadByTypeNotDismissed": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1 AND type = :type AND dismissed IS NULL;",
   "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
   "clear": "DELETE FROM db_notifications",
   "getAll": "SELECT * FROM db_notifications",
@@ -147,6 +139,18 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
             );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      addOnlyWithTypeWhere(
+              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+                  query,
+              PleromaNotificationType onlyWithType) =>
+          query
+            ..where(
+              (notification) => notification.type.equals(
+                onlyWithType.toJsonValue(),
+              ),
+            );
+
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
 
   /// notification remote ids can't be compared
@@ -243,11 +247,11 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
                   var expression;
-                  switch (orderTerm.orderByType) {
-                    case NotificationOrderByType.remoteId:
+                  switch (orderTerm.orderType) {
+                    case NotificationOrderType.remoteId:
                       expression = item.remoteId;
                       break;
-                    case NotificationOrderByType.createdAt:
+                    case NotificationOrderType.createdAt:
                       expression = item.createdAt;
                       break;
                   }
@@ -298,17 +302,6 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Selectable<int> countUnreadExcludeTypes(
-    List<String> excludeTypes, {
-    @required bool onlyNotDismissed,
-  }) {
-    // asd
-    var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
-        'type NOT IN '
-        '(${excludeTypes.map((type) => "'$type'").join(", ")})';
-    return customSelect(query, readsFrom: {dbNotifications})
-        .map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
 
   Future markAsRead({@required String remoteId}) {
     var update = "UPDATE db_notifications "
@@ -366,4 +359,10 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       DbNotification> addOnlyNotDismissedWhere(
           SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
       query..where((status) => isNull(status.dismissed));
+
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
+      query
+        ..where(
+            (status) => status.unread.equals(true));
 }
