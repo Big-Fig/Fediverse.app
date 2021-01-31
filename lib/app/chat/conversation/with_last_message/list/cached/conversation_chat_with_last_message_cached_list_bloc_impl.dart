@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -73,14 +75,13 @@ class ConversationChatWithLastMessageCachedListBloc
 
     var chats =
         await chatWithLastMessageRepository.getConversationsWithLastMessage(
-      olderThan: olderThan?.chat,
-      newerThan: newerThan?.chat,
-      limit: limit,
-      offset: null,
-      orderingTermData: ConversationChatOrderingTermData(
-        orderingMode: OrderingMode.desc,
-        orderType: ConversationChatOrderType.updatedAt,
+      filters: null,
+      pagination: RepositoryPagination<IConversationChat>(
+        olderThanItem: olderThan?.chat,
+        newerThanItem: newerThan?.chat,
+        limit: limit,
       ),
+      orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -91,13 +92,10 @@ class ConversationChatWithLastMessageCachedListBloc
   Stream<List<IConversationChatWithLastMessage>> watchLocalItemsNewerThanItem(
           IConversationChatWithLastMessage item) =>
       chatWithLastMessageRepository.watchConversationsWithLastMessage(
-        olderThan: null,
-        newerThan: item?.chat,
-        limit: null,
-        offset: null,
-        orderingTermData: ConversationChatOrderingTermData(
-          orderingMode: OrderingMode.desc,
-          orderType: ConversationChatOrderType.updatedAt,
+        filters: null,
+        pagination: RepositoryPagination<IConversationChat>(
+          newerThanItem: item?.chat,
         ),
+        orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
       );
 }

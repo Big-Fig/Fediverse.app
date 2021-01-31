@@ -27,20 +27,14 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
   @override
   Future<List<IConversationChatWithLastMessage>>
       getConversationsWithLastMessage({
-    @required IConversationChat olderThan,
-    @required IConversationChat newerThan,
-    @required int limit,
-    @required int offset,
-    @required ConversationChatOrderingTermData orderingTermData,
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
   }) async {
     var chats = await conversationChatRepository.getConversations(
-      filters: null,
-      pagination: RepositoryPagination<IConversationChat>(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-        offset: offset,
-      ),
+      filters: filters,
+      pagination: pagination,
       orderingTermData: orderingTermData,
     );
 
@@ -67,21 +61,15 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
   @override
   Stream<List<IConversationChatWithLastMessage>>
       watchConversationsWithLastMessage({
-    @required IConversationChat olderThan,
-    @required IConversationChat newerThan,
-    @required int limit,
-    @required int offset,
-    @required ConversationChatOrderingTermData orderingTermData,
+    @required ConversationChatRepositoryFilters filters,
+    @required RepositoryPagination<IConversationChat> pagination,
+    ConversationChatOrderingTermData orderingTermData =
+        ConversationChatOrderingTermData.updatedAtDesc,
   }) {
     return conversationChatRepository
         .watchConversations(
-          filters: null,
-          pagination: RepositoryPagination<IConversationChat>(
-            olderThanItem: olderThan,
-            newerThanItem: newerThan,
-            limit: limit,
-            offset: offset,
-          ),
+          filters: filters,
+          pagination: pagination,
           orderingTermData: orderingTermData,
         )
         .asyncMap(
