@@ -3,8 +3,8 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model_adapter.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
 
 import '../database/scheduled_status_database_model_helper.dart';
@@ -168,13 +168,10 @@ void main() {
 
   test('createQuery empty', () async {
     var query = scheduledStatusRepository.createQuery(
-        olderThan: null,
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: null,
+    );
 
     expect((await query.get()).length, 0);
 
@@ -194,16 +191,64 @@ void main() {
     expect((await query.get()).length, 3);
   });
 
+  test('createQuery excludeCanceled', () async {
+    var query = scheduledStatusRepository.createQuery(
+      filters: ScheduledStatusRepositoryFilters(
+        excludeCanceled: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    var scheduledStatus =
+        (await createTestDbScheduledStatus(seed: "seed2", canceled: false))
+            .copyWith(remoteId: "remoteId4");
+    scheduledStatus = await insertDbScheduledStatus(
+        scheduledStatusRepository, scheduledStatus);
+
+    expect((await query.get()).length, 1);
+
+    await scheduledStatusRepository.markAsCanceled(
+        scheduledStatus: DbScheduledStatusWrapper(scheduledStatus));
+    expect((await query.get()).length, 0);
+  });
+  test('createQuery excludeScheduleAtExpired', () async {
+    var query = scheduledStatusRepository.createQuery(
+      filters: ScheduledStatusRepositoryFilters(
+        excludeScheduleAtExpired: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbScheduledStatus(
+        scheduledStatusRepository,
+        (await createTestDbScheduledStatus(
+                seed: "seed2",
+                scheduledAt: DateTime.now().add(Duration(minutes: 1))))
+            .copyWith(remoteId: "remoteId4"));
+
+    expect((await query.get()).length, 1);
+
+    await insertDbScheduledStatus(
+        scheduledStatusRepository,
+        (await createTestDbScheduledStatus(
+                seed: "seed3",
+                scheduledAt: DateTime.now().subtract(Duration(minutes: 1))))
+            .copyWith(remoteId: "remoteId5"));
+
+    expect((await query.get()).length, 1);
+  });
+
   test('createQuery newerThan', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: await createTestScheduledStatus(
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem: await createTestScheduledStatus(
             seed: "remoteId5", remoteId: "remoteId5"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      ),
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+    );
 
     await insertDbScheduledStatus(
         scheduledStatusRepository,
@@ -233,67 +278,15 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery excludeCanceled', () async {
-    var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
-        excludeCanceled: true,
-        excludeScheduleAtExpired: null);
-
-    var scheduledStatus =
-        (await createTestDbScheduledStatus(seed: "seed2", canceled: false))
-            .copyWith(remoteId: "remoteId4");
-    scheduledStatus = await insertDbScheduledStatus(
-        scheduledStatusRepository, scheduledStatus);
-
-    expect((await query.get()).length, 1);
-
-    await scheduledStatusRepository.markAsCanceled(
-        scheduledStatus: DbScheduledStatusWrapper(scheduledStatus));
-    expect((await query.get()).length, 0);
-  });
-  test('createQuery excludeScheduleAtExpired', () async {
-    var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: true);
-
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(
-                seed: "seed2",
-                scheduledAt: DateTime.now().add(Duration(minutes: 1))))
-            .copyWith(remoteId: "remoteId4"));
-
-    expect((await query.get()).length, 1);
-
-    await insertDbScheduledStatus(
-        scheduledStatusRepository,
-        (await createTestDbScheduledStatus(
-                seed: "seed3",
-                scheduledAt: DateTime.now().subtract(Duration(minutes: 1))))
-            .copyWith(remoteId: "remoteId5"));
-
-    expect((await query.get()).length, 1);
-  });
-
   test('createQuery notNewerThan', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestScheduledStatus(
+      filters: null,
+      pagination: RepositoryPagination(
+        olderThanItem: await createTestScheduledStatus(
             seed: "remoteId5", remoteId: "remoteId5"),
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      ),
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+    );
 
     await insertDbScheduledStatus(
         scheduledStatusRepository,
@@ -325,15 +318,15 @@ void main() {
 
   test('createQuery notNewerThan & newerThan', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: await createTestScheduledStatus(
+      filters: null,
+      pagination: RepositoryPagination(
+        newerThanItem: await createTestScheduledStatus(
             seed: "remoteId2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        olderThan: await createTestScheduledStatus(
+        olderThanItem: await createTestScheduledStatus(
             seed: "remoteId5", remoteId: "remoteId5"),
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      ),
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+    );
 
     await insertDbScheduledStatus(
         scheduledStatusRepository,
@@ -379,15 +372,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdAsc,
+    );
 
     var scheduledStatus2 = await insertDbScheduledStatus(
         scheduledStatusRepository,
@@ -417,15 +405,10 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      filters: null,
+      pagination: null,
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+    );
 
     var scheduledStatus2 = await insertDbScheduledStatus(
         scheduledStatusRepository,
@@ -455,15 +438,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = scheduledStatusRepository.createQuery(
-        newerThan: null,
+      filters: null,
+      pagination: RepositoryPagination(
         limit: 1,
         offset: 1,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderByType: ScheduledStatusRepositoryOrderType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null,
-        excludeCanceled: null,
-        excludeScheduleAtExpired: null);
+      ),
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdAsc,
+    );
 
     var scheduledStatus2 = await insertDbScheduledStatus(
         scheduledStatusRepository,

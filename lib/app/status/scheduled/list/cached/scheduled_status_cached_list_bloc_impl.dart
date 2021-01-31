@@ -8,6 +8,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -22,10 +23,16 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   final IScheduledStatusRepository scheduledStatusRepository;
   final IPleromaScheduledStatusService pleromaScheduledStatusService;
 
-  ScheduledStatusCachedListBloc(
-      {@required this.scheduledStatusRepository,
-      @required this.pleromaScheduledStatusService})
-      : super();
+  ScheduledStatusRepositoryFilters get _scheduledStatusRepositoryFilters =>
+      ScheduledStatusRepositoryFilters(
+        excludeCanceled: _excludeCanceled,
+        excludeScheduleAtExpired: _excludeScheduleAtExpired,
+      );
+
+  ScheduledStatusCachedListBloc({
+    @required this.scheduledStatusRepository,
+    @required this.pleromaScheduledStatusService,
+  }) : super();
 
   @override
   IPleromaApi get pleromaApi => pleromaScheduledStatusService;
@@ -51,43 +58,42 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   }
 
   @override
-  Future<List<IScheduledStatus>> loadLocalItems(
-      {@required int limit,
-      @required IScheduledStatus newerThan,
-      @required IScheduledStatus olderThan}) async {
+  Future<List<IScheduledStatus>> loadLocalItems({
+    @required int limit,
+    @required IScheduledStatus newerThan,
+    @required IScheduledStatus olderThan,
+  }) async {
     var statuses = await scheduledStatusRepository.getScheduledStatuses(
-        olderThan: olderThan,
-        newerThan: newerThan,
+      filters: _scheduledStatusRepositoryFilters,
+      pagination: RepositoryPagination(
+        olderThanItem: olderThan,
+        newerThanItem: newerThan,
         limit: limit,
-        offset: null,
-        orderingTermData: ScheduledStatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: ScheduledStatusRepositoryOrderType.remoteId),
-        excludeCanceled: _excludeCanceled,
-        excludeScheduleAtExpired: _excludeScheduleAtExpired);
+      ),
+      orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+    );
 
     return statuses;
   }
 
   @override
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-          IScheduledStatus item) =>
+    IScheduledStatus item,
+  ) =>
       scheduledStatusRepository.watchScheduledStatuses(
-          olderThan: null,
-          newerThan: item,
-          limit: null,
-          offset: null,
-          orderingTermData: ScheduledStatusOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: ScheduledStatusRepositoryOrderType.remoteId),
-          excludeCanceled: _excludeCanceled,
-          excludeScheduleAtExpired: _excludeScheduleAtExpired);
+        filters: _scheduledStatusRepositoryFilters,
+        pagination: RepositoryPagination(
+          newerThanItem: item,
+        ),
+        orderingTermData: ScheduledStatusOrderingTermData.remoteIdDesc,
+      );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IScheduledStatus newerThan,
-      @required IScheduledStatus olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IScheduledStatus newerThan,
+    @required IScheduledStatus olderThan,
+  }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
