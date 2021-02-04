@@ -26,7 +26,9 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required List<PleromaMediaAttachment> initialMediaAttachments,
     @required bool markMediaAsNsfwOnAttach,
     @required String initialLanguage,
+    @required bool isPleromaInstance,
   }) : super(
+          isExpirePossible: isPleromaInstance,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -63,13 +65,14 @@ class NewPostStatusBloc extends PostStatusBloc {
           IPleromaMediaAttachmentService.of(context, listen: false),
       initialLanguage: postStatusSettingsBloc.defaultStatusLocale?.localeString,
       initialVisibility: postStatusSettingsBloc.defaultVisibility,
-      initialText:initialText,
-      initialSubject:initialSubject,
-      initialMediaAttachments:initialMediaAttachments,
+      initialText: initialText,
+      initialSubject: initialSubject,
+      initialMediaAttachments: initialMediaAttachments,
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      isPleromaInstance: info.isPleroma,
     );
   }
 
@@ -83,9 +86,9 @@ class NewPostStatusBloc extends PostStatusBloc {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => NewPostStatusBloc.createFromContext(
         context,
-        initialText:initialText,
-        initialSubject:initialSubject,
-        initialMediaAttachments:initialMediaAttachments,
+        initialText: initialText,
+        initialSubject: initialSubject,
+        initialMediaAttachments: initialMediaAttachments,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );

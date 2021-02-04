@@ -2916,10 +2916,10 @@ class S {
     );
   }
 
-  /// `Schedule`
+  /// `Schedule at`
   String get app_status_scheduled_datetime_picker_title {
     return Intl.message(
-      'Schedule',
+      'Schedule at',
       name: 'app_status_scheduled_datetime_picker_title',
       desc: '',
       args: [],
@@ -3176,10 +3176,10 @@ class S {
     );
   }
 
-  /// `Invalid time`
+  /// `Invalid date or time`
   String get app_status_post_schedule_error_notInFuture_dialog_title {
     return Intl.message(
-      'Invalid time',
+      'Invalid date or time',
       name: 'app_status_post_schedule_error_notInFuture_dialog_title',
       desc: '',
       args: [],
@@ -6837,6 +6837,36 @@ class S {
     return Intl.message(
       'Local',
       name: 'app_status_post_visibility_state_local',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expire at`
+  String get app_status_expire_datetime_picker_title {
+    return Intl.message(
+      'Expire at',
+      name: 'app_status_expire_datetime_picker_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid date or time`
+  String get app_status_post_expire_error_notInFuture_dialog_title {
+    return Intl.message(
+      'Invalid date or time',
+      name: 'app_status_post_expire_error_notInFuture_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule time must be at least 5 minutes in the future`
+  String get app_status_post_expire_error_notInFuture_dialog_content {
+    return Intl.message(
+      'Schedule time must be at least 5 minutes in the future',
+      name: 'app_status_post_expire_error_notInFuture_dialog_content',
       desc: '',
       args: [],
     );

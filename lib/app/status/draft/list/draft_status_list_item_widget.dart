@@ -40,9 +40,10 @@ class DraftStatusListItemWidget extends StatelessWidget {
                 child: ProxyProvider<IDraftStatus, IStatus>(
                     update: (context, value, previous) =>
                         DraftStatusAdapterToStatus(
-                            draftStatus: value,
-                            account: IMyAccountBloc.of(context, listen: false)
-                                .account),
+                          draftStatus: value,
+                          account:
+                              IMyAccountBloc.of(context, listen: false).account,
+                        ),
                     child: DisposableProxyProvider<IStatus,
                         IStatusListItemTimelineBloc>(
                       update: (context, status, _) =>

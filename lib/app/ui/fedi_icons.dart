@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FediIcons {
+
+
   FediIcons._();
 
   static const _kFontFam = 'FediIcons';
@@ -121,4 +123,5 @@ class FediIcons {
   static const IconData copy = Icons.copy;
   static const IconData subscribe = unmute;
   static const IconData unsubscribe = mute;
+  static const IconData expire = Icons.auto_delete_outlined;
 }

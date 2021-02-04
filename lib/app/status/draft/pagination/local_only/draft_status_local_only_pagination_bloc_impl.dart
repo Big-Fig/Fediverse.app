@@ -62,21 +62,23 @@ class DraftStatusLocalOnlyPaginationBloc
       );
 
   @override
-  PaginationPage<IDraftStatus> createPage(
-          {int pageIndex,
-          List<IDraftStatus> loadedItems,
-          int itemsCountPerPage}) =>
+  PaginationPage<IDraftStatus> createPage({
+    int pageIndex,
+    List<IDraftStatus> loadedItems,
+    int itemsCountPerPage,
+  }) =>
       PaginationPage(
           requestedLimitPerPage: itemsCountPerPage,
           pageIndex: pageIndex,
           items: loadedItems);
 
   @override
-  Future<List<IDraftStatus>> loadItemsFromLocalForPage(
-      {int pageIndex,
-      int itemsCountPerPage,
-      PaginationPage<IDraftStatus> olderPage,
-      PaginationPage<IDraftStatus> newerPage}) {
+  Future<List<IDraftStatus>> loadItemsFromLocalForPage({
+    int pageIndex,
+    int itemsCountPerPage,
+    PaginationPage<IDraftStatus> olderPage,
+    PaginationPage<IDraftStatus> newerPage,
+  }) {
     return listService.loadItemsFromLocalForPage(
       itemsCountPerPage: itemsCountPerPage,
       pageIndex: pageIndex,

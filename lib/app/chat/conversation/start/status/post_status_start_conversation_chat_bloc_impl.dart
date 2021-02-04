@@ -41,6 +41,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     @required bool markMediaAsNsfwOnAttach,
     @required String language,
   }) : super(
+          isExpirePossible: false,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -77,7 +78,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
       language: IPostStatusSettingsBloc.of(context, listen: false)
-          .defaultStatusLocale?.localeString,
+          .defaultStatusLocale
+          ?.localeString,
     );
   }
 

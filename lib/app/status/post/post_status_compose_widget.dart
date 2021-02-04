@@ -2,7 +2,6 @@ import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_all_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
-import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
@@ -20,6 +19,8 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'action/post_status_expire_action_widget.dart';
 
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;
@@ -44,7 +45,6 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Column(
@@ -106,7 +106,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context);
+    var postStatusBloc = IPostStatusBloc.of(context);
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: Row(
@@ -122,7 +122,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     StreamBuilder<String>(
-                        stream: postMessageBloc.inputTextStream,
+                        stream: postStatusBloc.inputTextStream,
                         builder: (context, snapshot) {
                           var inputText = snapshot.data;
                           if (inputText?.trim()?.isNotEmpty == true) {
@@ -133,6 +133,8 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                         }),
                     const PostStatusVisibilityActionWidget(),
                     const PostStatusScheduleActionWidget(),
+                    if (postStatusBloc.isExpirePossible)
+                      const PostStatusExpireActionWidget(),
                     const PostStatusMentionActionWidget(),
                     const PostStatusNsfwActionWidget(),
                     const PostStatusPollActionWidget()

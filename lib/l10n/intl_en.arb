@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-01-30T19:03:13+00:00",
+    "@@last_modified": "2021-02-03T13:55:37+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -288,7 +288,7 @@
     "app_account_my_statuses_scheduled_title": "Queue",
     "app_status_scheduled_state_canceled": "Canceled",
     "app_status_scheduled_state_alreadyPosted": "Already posted",
-    "app_status_scheduled_datetime_picker_title": "Schedule",
+    "app_status_scheduled_datetime_picker_title": "Schedule at",
     "app_status_scheduled_edit_title": "Scheduled post",
     "app_status_collapsible_action_collapse": "Collapse",
     "app_status_collapsible_action_expand": "Expand",
@@ -314,7 +314,7 @@
     "app_status_post_poll_field_option_hint": "Option {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Multiple selection",
     "app_status_post_poll_field_length_label": "Poll length",
-    "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid time",
+    "app_status_post_schedule_error_notInFuture_dialog_title": "Invalid date or time",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future",
     "app_status_post_dialog_async_content": "Posting...",
     "app_status_post_dialog_error_title_post": "Failed to post status",
@@ -699,5 +699,8 @@
     "app_chat_selection_action_delete_confirm_dialog_action_delete": "Delete",
     "app_share_action_shareToNewStatus": "Share as new status",
     "app_chat_selection_count": "Selected ({count})",
-    "app_status_post_visibility_state_local": "Local"
+    "app_status_post_visibility_state_local": "Local",
+    "app_status_expire_datetime_picker_title": "Expire at",
+    "app_status_post_expire_error_notInFuture_dialog_title": "Invalid date or time",
+    "app_status_post_expire_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future"
 }

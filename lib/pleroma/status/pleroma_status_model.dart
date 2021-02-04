@@ -71,6 +71,8 @@ abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
 
 abstract class IPleromaScheduledStatusParams
     extends IMastodonScheduledStatusParams {
+
+  int get expiresInSeconds;
   PleromaVisibility get visibilityPleroma =>
       const PleromaVisibilityTypeConverter().fromJson(visibility);
 }
@@ -111,6 +113,10 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
 
 @JsonSerializable(explicitToJson: true)
 class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
+
+
+  @override
+  final int  expiresInSeconds;
   @override
   final String text;
 
@@ -162,6 +168,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
     this.inReplyToId,
     this.applicationId,
     this.language,
+    this.expiresInSeconds,
   });
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
@@ -188,7 +195,9 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
         'idempotency: $idempotency, '
         'inReplyToId: $inReplyToId, '
         'language: $language, '
-        'applicationId: $applicationId}';
+        'expiresInSeconds: $expiresInSeconds, '
+        'applicationId: $applicationId'
+        '}';
   }
 
   @override
@@ -206,6 +215,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
           poll == other.poll &&
           idempotency == other.idempotency &&
           inReplyToId == other.inReplyToId &&
+          expiresInSeconds == other.expiresInSeconds &&
           applicationId == other.applicationId;
 
   @override
@@ -220,6 +230,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       poll.hashCode ^
       idempotency.hashCode ^
       inReplyToId.hashCode ^
+      expiresInSeconds.hashCode ^
       applicationId.hashCode;
 }
 
@@ -408,16 +419,17 @@ class PleromaStatusPleromaPart {
   @JsonKey(name: "emoji_reactions")
   List<PleromaStatusEmojiReaction> emojiReactions;
 
-  PleromaStatusPleromaPart(
-      {this.content,
-      this.conversationId,
-      this.directConversationId,
-      this.inReplyToAccountAcct,
-      this.local,
-      this.spoilerText,
-      this.expiresAt,
-      this.threadMuted,
-      this.emojiReactions});
+  PleromaStatusPleromaPart({
+    this.content,
+    this.conversationId,
+    this.directConversationId,
+    this.inReplyToAccountAcct,
+    this.local,
+    this.spoilerText,
+    this.expiresAt,
+    this.threadMuted,
+    this.emojiReactions,
+  });
 
   factory PleromaStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusPleromaPartFromJson(json);

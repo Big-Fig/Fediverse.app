@@ -52,12 +52,14 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     inReplyToId: json['in_reply_to_id'] as String,
     applicationId: json['application_id'],
     language: json['language'] as String,
+    expiresInSeconds: json['expiresInSeconds'] as int,
   );
 }
 
 Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
         PleromaScheduledStatusParams instance) =>
     <String, dynamic>{
+      'expiresInSeconds': instance.expiresInSeconds,
       'text': instance.text,
       'media_ids': instance.mediaIds,
       'sensitive': instance.sensitive,

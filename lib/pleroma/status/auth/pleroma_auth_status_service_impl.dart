@@ -249,8 +249,9 @@ class PleromaAuthStatusService extends PleromaStatusService
   }
 
   @override
-  Future<IPleromaScheduledStatus> scheduleStatus(
-      {IPleromaScheduleStatus data}) async {
+  Future<IPleromaScheduledStatus> scheduleStatus({
+    IPleromaScheduleStatus data,
+  }) async {
     var json = data.toJson();
 
     assert(data.scheduledAt != null);

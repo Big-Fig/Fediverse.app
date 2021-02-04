@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-01-30T19:04:06+00:00",
+    "@@last_modified": "2021-02-03T16:08:50+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -288,7 +288,7 @@
     "app_account_my_statuses_scheduled_title": "Очередь",
     "app_status_scheduled_state_canceled": "Отменен",
     "app_status_scheduled_state_alreadyPosted": "Уже опубликован",
-    "app_status_scheduled_datetime_picker_title": "Запланировать",
+    "app_status_scheduled_datetime_picker_title": "Опубликовать позже",
     "app_status_scheduled_edit_title": "Запланированная запись",
     "app_status_collapsible_action_collapse": "Свернуть",
     "app_status_collapsible_action_expand": "Развернуть",
@@ -314,7 +314,7 @@
     "app_status_post_poll_field_option_hint": "Ответ {optionNumber}",
     "app_status_post_poll_field_multiply_label": "Мульти-выбор",
     "app_status_post_poll_field_length_label": "Истекает",
-    "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильное время",
+    "app_status_post_schedule_error_notInFuture_dialog_title": "Неправильная дата или время",
     "app_status_post_schedule_error_notInFuture_dialog_content": "Запланированная запись должна быть хотя бы через 5 минут в будущем",
     "app_status_post_dialog_async_content": "Публикация...",
     "app_status_post_dialog_error_title_post": "Невозможно опубликовать запись",
@@ -699,5 +699,6 @@
     "app_chat_selection_action_delete_confirm_dialog_action_delete": "Удалить",
     "app_share_action_shareToNewStatus": "Поделиться",
     "app_chat_selection_count": "Отмечено ({count})",
-    "app_status_post_visibility_state_local": "Локальная"
+    "app_status_post_visibility_state_local": "Локальная",
+    "app_status_expire_datetime_picker_title": "Запланировать удаление"
 }

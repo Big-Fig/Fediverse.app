@@ -30,6 +30,7 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String,
     isNsfwSensitiveEnabled: json['is_nsfw_sensitive_enabled'] as bool,
     language: json['language'] as String,
+    expiresInSeconds: json['expires_in_seconds'] as int,
   );
 }
 
@@ -53,5 +54,6 @@ Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
   writeNotNull('in_reply_to_conversation_id', instance.inReplyToConversationId);
   writeNotNull('is_nsfw_sensitive_enabled', instance.isNsfwSensitiveEnabled);
   writeNotNull('language', instance.language);
+  writeNotNull('expires_in_seconds', instance.expiresInSeconds);
   return val;
 }

@@ -29,7 +29,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             progressContentMessage:
                 S.of(context).app_status_post_dialog_async_content,
             asyncButtonAction: () async {
-              var isScheduled = postStatusBloc.isScheduled;
+              var isScheduled = postStatusBloc.isScheduledAtExist;
               var success = await postStatusBloc.post();
               if (success == true) {
                 showPostStatusPostOverlayNotification(
@@ -45,7 +45,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             },
             errorAlertDialogBuilders: [
               (context, error, stackTrace) {
-                var isScheduled = postStatusBloc.isScheduled;
+                var isScheduled = postStatusBloc.isScheduledAtExist;
                 return ErrorData(
                     error: error,
                     stackTrace: stackTrace,
