@@ -56,7 +56,7 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
         (minDuration == null || diffDuration > minDuration)) {
       resultDuration = diffDuration;
     } else {
-      if ((maxDuration == null || diffDuration > maxDuration)) {
+      if ((maxDuration != null && diffDuration > maxDuration)) {
         resultDuration = maxDuration;
       } else {
         resultDuration = minDuration;

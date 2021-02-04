@@ -20,6 +20,8 @@ abstract class IPostStatusData {
 
   String get language;
 
+  int get expiresInSeconds;
+
   List<String> get to;
 
   List<IPleromaMediaAttachment> get mediaAttachments;
@@ -44,6 +46,7 @@ abstract class IPostStatusData {
     PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
+    int expiresInSeconds,
   });
 }
 
@@ -81,6 +84,10 @@ class PostStatusData implements IPostStatusData {
   @JsonKey()
   final String language;
 
+  @override
+  @JsonKey(name: "expires_in_seconds")
+  final int expiresInSeconds;
+
   const PostStatusData({
     @required this.subject,
     @required this.text,
@@ -93,6 +100,7 @@ class PostStatusData implements IPostStatusData {
     @required this.inReplyToConversationId,
     @required this.isNsfwSensitiveEnabled,
     @required this.language,
+    @required this.expiresInSeconds,
   });
 
   PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
@@ -110,11 +118,13 @@ class PostStatusData implements IPostStatusData {
     PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
+    int expiresInSeconds,
   }) =>
       PostStatusData(
         subject: subject ?? this.subject,
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
+        expiresInSeconds: expiresInSeconds ?? this.expiresInSeconds,
         visibility: visibility ?? this.visibility,
         language: language ?? this.language,
         to: to ?? this.to,

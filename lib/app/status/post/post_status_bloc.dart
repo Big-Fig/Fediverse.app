@@ -13,7 +13,10 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
-  static final Duration requiredDurationToScheduleStatus = Duration(minutes: 5);
+  static final Duration requiredDurationToSelectDateTime = Duration(minutes: 5);
+  static final Duration minimumExpireDuration = Duration(hours: 1);
+
+  bool get isExpirePossible;
 
   List<String> get mentionedAccts;
 
@@ -47,17 +50,29 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void changeNsfwSensitive(bool nsfwSensitive);
 
-  void schedule(DateTime dateTime);
+  void setScheduledAt(DateTime dateTime);
 
-  void clearSchedule();
+  void clearScheduleAt();
 
-  bool get isScheduled;
+  bool get isScheduledAtExist;
 
-  Stream<bool> get isScheduledStream;
+  Stream<bool> get isScheduledAtExistStream;
 
   DateTime get scheduledAt;
 
   Stream<DateTime> get scheduledAtStream;
+  
+  void setExpireDuration(Duration duration);
+
+  void clearExpireDuration();
+
+  bool get isExpireDurationExist;
+
+  Stream<bool> get isExpireDurationExistStream;
+
+  Duration get expireDuration;
+
+  Stream<Duration> get expireDurationStream;
 
   String get inputWithoutMentionedAcctsText;
 

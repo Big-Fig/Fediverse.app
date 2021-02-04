@@ -60,6 +60,7 @@ void main() {
           inReplyToConversationId: null,
           isNsfwSensitiveEnabled: null,
           language: null,
+          expiresInSeconds: null,
         ),
       ),
     );

@@ -27,7 +27,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
 
   // ignore: close_sinks
   final BehaviorSubject<DraftStatusState> _stateSubject =
-  BehaviorSubject.seeded(DraftStatusState.draft);
+      BehaviorSubject.seeded(DraftStatusState.draft);
 
   @override
   DraftStatusState get state => _stateSubject.value;
@@ -66,10 +66,10 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
             streamSubscription: draftStatusRepository
                 .watchById(draftStatus.localId)
                 .listen((updatedStatus) {
-              if (updatedStatus != null) {
-                _draftStatusSubject.add(updatedStatus);
-              }
-            }));
+          if (updatedStatus != null) {
+            _draftStatusSubject.add(updatedStatus);
+          }
+        }));
       }
     }
   }
@@ -80,22 +80,24 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;
 
-  static DraftStatusBloc createFromContext(BuildContext context,
-      IDraftStatus status, {
-        bool isNeedWatchLocalRepositoryForUpdates = true,
-        bool delayInit = true,
-      }) =>
+  static DraftStatusBloc createFromContext(
+    BuildContext context,
+    IDraftStatus status, {
+    bool isNeedWatchLocalRepositoryForUpdates = true,
+    bool delayInit = true,
+  }) =>
       DraftStatusBloc(
-        pleromaAuthStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService:
+            IPleromaStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
-        IDraftStatusRepository.of(context, listen: false),
+            IDraftStatusRepository.of(context, listen: false),
         draftStatus: status,
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
-        isNeedWatchLocalRepositoryForUpdates,
+            isNeedWatchLocalRepositoryForUpdates,
         scheduledStatusRepository:
-        IScheduledStatusRepository.of(context, listen: false),
+            IScheduledStatusRepository.of(context, listen: false),
       );
 
   @override
@@ -117,7 +119,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future postDraft(PostStatusData postStatusData) async {
     if (postStatusData.scheduledAt != null) {
-      var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
+      var pleromaScheduledStatus =
+          await pleromaAuthStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
           inReplyToConversationId: postStatusData.inReplyToConversationId,
           inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
@@ -130,13 +133,14 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
           status: postStatusData.text,
           to: postStatusData.to,
           scheduledAt: postStatusData.scheduledAt,
+          expiresInSeconds: postStatusData.expiresInSeconds,
           poll: postStatusData.poll != null
               ? PleromaPostStatusPoll(
-            options: postStatusData.poll.options,
-            multiple: postStatusData.poll.multiple,
-            expiresInSeconds:
-            postStatusData.poll.durationLength.totalSeconds,
-          )
+                  options: postStatusData.poll.options,
+                  multiple: postStatusData.poll.multiple,
+                  expiresInSeconds:
+                      postStatusData.poll.durationLength.totalSeconds,
+                )
               : null,
         ),
       );
@@ -145,6 +149,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     } else {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: PleromaPostStatus(
+          expiresInSeconds: postStatusData.expiresInSeconds,
           inReplyToConversationId: postStatusData.inReplyToConversationId,
           inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
           visibility: postStatusData.visibility,
@@ -158,11 +163,11 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
           to: postStatusData.to,
           poll: postStatusData.poll != null
               ? PleromaPostStatusPoll(
-            options: postStatusData.poll.options,
-            multiple: postStatusData.poll.multiple,
-            expiresInSeconds:
-            postStatusData.poll.durationLength.totalSeconds,
-          )
+                  options: postStatusData.poll.options,
+                  multiple: postStatusData.poll.multiple,
+                  expiresInSeconds:
+                      postStatusData.poll.durationLength.totalSeconds,
+                )
               : null,
         ),
       );
@@ -180,8 +185,12 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   Future updatePostStatusData(PostStatusData postStatusData) async {
     var localId = draftStatus.localId;
     await draftStatusRepository.updateById(
-        localId,
-        DbDraftStatus(
-            id: localId, updatedAt: DateTime.now(), data: postStatusData));
+      localId,
+      DbDraftStatus(
+        id: localId,
+        updatedAt: DateTime.now(),
+        data: postStatusData,
+      ),
+    );
   }
 }

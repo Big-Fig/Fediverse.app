@@ -174,7 +174,8 @@ class ScheduledStatusBloc extends DisposableOwner
     bool delayInit = true,
   }) =>
       ScheduledStatusBloc(
-        pleromaAuthStatusService: IPleromaStatusService.of(context, listen: false),
+        pleromaAuthStatusService:
+            IPleromaStatusService.of(context, listen: false),
         pleromaScheduledStatusService:
             IPleromaScheduledStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
@@ -270,6 +271,7 @@ class ScheduledStatusBloc extends DisposableOwner
       // actually to should be extracted fro
       to: null,
       language: scheduledStatus.params?.language,
+      expiresInSeconds: scheduledStatus.params?.expiresInSeconds,
     );
   }
 }

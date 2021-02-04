@@ -46,7 +46,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
           textInputAction: TextInputAction.send,
           onSubmitted: (String value) async {
             if (postStatusBloc.isReadyToPost) {
-              var isScheduled = postStatusBloc.isScheduled;
+              var isScheduled = postStatusBloc.isScheduledAtExist;
               var dialogResult =
                   await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,

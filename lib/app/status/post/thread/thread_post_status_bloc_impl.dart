@@ -49,7 +49,9 @@ class ThreadPostStatusBloc extends PostStatusBloc
     @required int maximumFileSizeInBytes,
     @required bool markMediaAsNsfwOnAttach,
     @required String language,
+    @required bool isPleromaInstance,
   }) : super(
+          isExpirePossible: isPleromaInstance,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -88,6 +90,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
+      isPleromaInstance: info.isPleroma,
     );
   }
 

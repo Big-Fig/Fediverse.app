@@ -30,6 +30,9 @@ final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
 abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
   @override
+  final bool isExpirePossible;
+
+  @override
   bool get isAnyDataEntered {
     return inputText?.isNotEmpty == true ||
         subjectText?.isNotEmpty == true ||
@@ -52,6 +55,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required this.pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required this.markMediaAsNsfwOnAttach,
+    @required this.isExpirePossible,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -64,7 +68,6 @@ abstract class PostStatusBloc extends PostMessageBloc
     nsfwSensitiveSubject =
         BehaviorSubject.seeded(initialData.isNsfwSensitiveEnabled);
 
-
     pollBloc = PostStatusPollBloc(
       pollLimits: pleromaInstancePollLimits,
     );
@@ -73,6 +76,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: visibilitySubject);
     addDisposable(subject: scheduledAtSubject);
+    addDisposable(subject: expireAtSubject);
 
     addDisposable(disposable: pollBloc);
 
@@ -119,6 +123,13 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     if (initialData.scheduledAt != null) {
       scheduledAtSubject.add(initialData.scheduledAt);
+    }
+    if (initialData.expiresInSeconds != null) {
+      expireAtSubject.add(
+        Duration(
+          seconds: initialData.expiresInSeconds,
+        ),
+      );
     }
     if (initialData.subject != null) {
       subjectTextController.text = initialData.subject;
@@ -224,6 +235,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     isNsfwSensitiveEnabled: false,
     to: null,
     language: null,
+    expiresInSeconds: null,
   );
 
   void onFocusChange(bool hasFocus) {
@@ -251,10 +263,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   BehaviorSubject<DateTime> scheduledAtSubject = BehaviorSubject();
 
   @override
-  bool get isScheduled => scheduledAt != null;
+  bool get isScheduledAtExist => scheduledAt != null;
 
   @override
-  Stream<bool> get isScheduledStream =>
+  Stream<bool> get isScheduledAtExistStream =>
       scheduledAtStream.map((scheduledAt) => scheduledAt != null);
 
   @override
@@ -457,7 +469,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
     bool success;
-    if (isScheduled) {
+    if (isScheduledAtExist) {
       success = await _scheduleStatus();
     } else {
       success = await _postStatus();
@@ -472,18 +484,18 @@ abstract class PostStatusBloc extends PostMessageBloc
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaAuthStatusService.postStatus(
       data: PleromaPostStatus(
-        mediaIds: _calculateMediaIdsField(),
-        status: calculateStatusTextField(),
-        sensitive: isNsfwSensitiveEnabled,
-        visibility: calculateVisibilityField(),
-        inReplyToId: calculateInReplyToStatusField()?.remoteId,
-        inReplyToConversationId: initialData.inReplyToConversationId,
-        idempotencyKey: idempotencyKey,
-        to: calculateToField(),
-        poll: _calculatePleromaPostStatusPollField(),
-        spoilerText: _calculateSpoilerTextField(),
-        language: initialData.language,
-      ),
+          mediaIds: _calculateMediaIdsField(),
+          status: calculateStatusTextField(),
+          sensitive: isNsfwSensitiveEnabled,
+          visibility: calculateVisibilityField(),
+          inReplyToId: calculateInReplyToStatusField()?.remoteId,
+          inReplyToConversationId: initialData.inReplyToConversationId,
+          idempotencyKey: idempotencyKey,
+          to: calculateToField(),
+          poll: _calculatePleromaPostStatusPollField(),
+          spoilerText: _calculateSpoilerTextField(),
+          language: initialData.language,
+          expiresInSeconds: expireAtSubject.value?.totalSeconds),
     );
 
     var success;
@@ -530,25 +542,6 @@ abstract class PostStatusBloc extends PostMessageBloc
     return mediaAttachments;
   }
 
-  Future<bool> _scheduleStatus() async {
-    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
-        data: PleromaScheduleStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
-      scheduledAt: scheduledAt,
-      to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-    ));
-    var success = scheduledStatus != null;
-    return success;
-  }
-
   @override
   void clear() {
     super.clear();
@@ -557,7 +550,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
 
-    clearSchedule();
+    clearScheduleAt();
+    clearExpireDuration();
 
     pollBloc.clear();
 
@@ -568,24 +562,26 @@ abstract class PostStatusBloc extends PostMessageBloc
   String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
     var newText = inputText;
     // todo: better performance via Regex
-    mentionedAccts?.forEach((acctToRemove) {
-      newText = newText.replaceAll("@$acctToRemove, ", "");
-      newText = newText.replaceAll("@$acctToRemove,", "");
-      newText = newText.replaceAll(" @$acctToRemove ", "");
-      newText = newText.replaceAll("@$acctToRemove", "");
-    });
+    mentionedAccts?.forEach(
+      (acctToRemove) {
+        newText = newText.replaceAll("@$acctToRemove, ", "");
+        newText = newText.replaceAll("@$acctToRemove,", "");
+        newText = newText.replaceAll(" @$acctToRemove ", "");
+        newText = newText.replaceAll("@$acctToRemove", "");
+      },
+    );
 
     return newText;
   }
 
   @override
-  void schedule(DateTime dateTime) {
+  void setScheduledAt(DateTime dateTime) {
     scheduledAtSubject.add(dateTime);
   }
 
   @override
-  void clearSchedule() {
-    schedule(null);
+  void clearScheduleAt() {
+    setScheduledAt(null);
   }
 
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
@@ -683,6 +679,40 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
+  void onFileSelected() {
+    super.onFileSelected();
+    if (markMediaAsNsfwOnAttach) {
+      nsfwSensitiveSubject.add(true);
+    }
+  }
+
+  // ignore: close_sinks
+  BehaviorSubject<Duration> expireAtSubject = BehaviorSubject();
+
+  @override
+  bool get isExpireDurationExist => expireDuration != null;
+
+  @override
+  Stream<bool> get isExpireDurationExistStream =>
+      expireDurationStream.map((expireAt) => expireAt != null);
+
+  @override
+  Duration get expireDuration => expireAtSubject.value;
+
+  @override
+  Stream<Duration> get expireDurationStream => expireAtSubject.stream;
+
+  @override
+  void clearExpireDuration() {
+    setExpireDuration(null);
+  }
+
+  @override
+  void setExpireDuration(Duration duration) {
+    expireAtSubject.add(duration);
+  }
+
+  @override
   IPostStatusData calculateCurrentPostStatusData() => PostStatusData(
         subject: _calculateSpoilerTextField(),
         text: calculateStatusTextField(),
@@ -710,13 +740,27 @@ abstract class PostStatusBloc extends PostMessageBloc
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,
         to: calculateToField(),
+        expiresInSeconds: expireAtSubject.value?.totalSeconds,
       );
 
-  @override
-  void onFileSelected() {
-    super.onFileSelected();
-    if (markMediaAsNsfwOnAttach) {
-      nsfwSensitiveSubject.add(true);
-    }
+  Future<bool> _scheduleStatus() async {
+    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
+      data: PleromaScheduleStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        idempotencyKey: idempotencyKey,
+        scheduledAt: scheduledAt,
+        to: calculateToField(),
+        poll: _calculatePleromaPostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        expiresInSeconds: expireAtSubject.value?.totalSeconds,
+      ),
+    );
+    var success = scheduledStatus != null;
+    return success;
   }
 }

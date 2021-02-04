@@ -27,7 +27,9 @@ class EditPostStatusBloc extends PostStatusBloc {
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required bool markMediaAsNsfwOnAttach,
+    @required bool isPleromaInstance,
   }) : super(
+          isExpirePossible: isPleromaInstance,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -59,6 +61,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      isPleromaInstance: info.isPleroma,
     );
   }
 
