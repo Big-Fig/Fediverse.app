@@ -71,6 +71,8 @@ abstract class IAccount {
   /// boolean, nullable, true if user is a moderator
   bool get pleromaIsModerator;
 
+  bool get pleromaAcceptsChatMessages;
+
   /// boolean, true if a new user account is waiting on email confirmation to
   /// be activated
   bool get pleromaConfirmationPending;
@@ -98,39 +100,43 @@ abstract class IAccount {
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   bool get pleromaSkipThreadContainment;
 
-  IAccount copyWith(
-      {String remoteId,
-      String username,
-      String url,
-      String note,
-      bool locked,
-      String headerStatic,
-      String header,
-      int followingCount,
-      int followersCount,
-      int statusesCount,
-      String displayName,
-      DateTime createdAt,
-      bool bot,
-      String avatarStatic,
-      String avatar,
-      String acct,
-      DateTime lastStatusAt,
-      List<PleromaField> fields,
-      List<PleromaEmoji> emojis,
-      List<PleromaTag> pleromaTags,
-      PleromaAccountRelationship pleromaRelationship,
-      bool pleromaIsAdmin,
-      bool pleromaIsModerator,
-      bool pleromaConfirmationPending,
-      bool pleromaHideFavorites,
-      bool pleromaHideFollowers,
-      bool pleromaHideFollows,
-      bool pleromaHideFollowersCount,
-      bool pleromaHideFollowsCount,
-      bool pleromaDeactivated,
-      bool pleromaAllowFollowingMove,
-      bool pleromaSkipThreadContainment});
+  IAccount copyWith({
+    int id,
+    String remoteId,
+    String username,
+    String url,
+    String note,
+    bool locked,
+    String headerStatic,
+    String header,
+    int followingCount,
+    int followersCount,
+    int statusesCount,
+    String displayName,
+    DateTime createdAt,
+    bool bot,
+    String avatarStatic,
+    String avatar,
+    String acct,
+    DateTime lastStatusAt,
+    List<PleromaField> fields,
+    List<PleromaEmoji> emojis,
+    List<PleromaTag> pleromaTags,
+    PleromaAccountRelationship pleromaRelationship,
+    bool pleromaIsAdmin,
+    bool pleromaIsModerator,
+    bool pleromaConfirmationPending,
+    bool pleromaHideFavorites,
+    bool pleromaHideFollowers,
+    bool pleromaHideFollows,
+    bool pleromaHideFollowersCount,
+    bool pleromaHideFollowsCount,
+    bool pleromaDeactivated,
+    bool pleromaAllowFollowingMove,
+    bool pleromaSkipThreadContainment,
+    String pleromaBackgroundImage,
+    bool pleromaAcceptsChatMessages,
+  });
 }
 
 class DbAccountWrapper implements IAccount {
@@ -219,6 +225,9 @@ class DbAccountWrapper implements IAccount {
   bool get pleromaIsModerator => dbAccount.pleromaIsModerator;
 
   @override
+  bool get pleromaAcceptsChatMessages => dbAccount.pleromaAcceptsChatMessages;
+
+  @override
   PleromaAccountRelationship get pleromaRelationship =>
       dbAccount.pleromaRelationship;
 
@@ -285,6 +294,7 @@ class DbAccountWrapper implements IAccount {
     bool pleromaAllowFollowingMove,
     bool pleromaSkipThreadContainment,
     String pleromaBackgroundImage,
+    bool pleromaAcceptsChatMessages,
   }) =>
       DbAccountWrapper(dbAccount.copyWith(
         id: id,
@@ -307,20 +317,21 @@ class DbAccountWrapper implements IAccount {
         lastStatusAt: lastStatusAt,
         fields: fields,
         emojis: emojis,
-        pleromaTags: pleromaTags,
-        pleromaRelationship: pleromaRelationship,
-        pleromaIsAdmin: pleromaIsAdmin,
-        pleromaIsModerator: pleromaIsModerator,
-        pleromaConfirmationPending: pleromaConfirmationPending,
-        pleromaHideFavorites: pleromaHideFavorites,
-        pleromaHideFollowers: pleromaHideFollowers,
-        pleromaHideFollows: pleromaHideFollows,
-        pleromaHideFollowersCount: pleromaHideFollowersCount,
-        pleromaHideFollowsCount: pleromaHideFollowsCount,
-        pleromaDeactivated: pleromaDeactivated,
-        pleromaAllowFollowingMove: pleromaAllowFollowingMove,
-        pleromaSkipThreadContainment: pleromaSkipThreadContainment,
-        pleromaBackgroundImage: pleromaBackgroundImage,
+        pleromaTags: pleroma?.tags,
+        pleromaRelationship: pleroma?.relationship,
+        pleromaIsAdmin: pleroma?.isAdmin,
+        pleromaIsModerator: pleroma?.isModerator,
+        pleromaConfirmationPending: pleroma?.confirmationPending,
+        pleromaHideFavorites: pleroma?.hideFavorites,
+        pleromaHideFollowers: pleroma?.hideFollowers,
+        pleromaHideFollows: pleroma?.hideFollows,
+        pleromaHideFollowersCount: pleroma?.hideFollowersCount,
+        pleromaHideFollowsCount: pleroma?.hideFollowsCount,
+        pleromaDeactivated: pleroma?.deactivated,
+        pleromaAllowFollowingMove: pleroma?.allowFollowingMove,
+        pleromaSkipThreadContainment: pleroma?.skipThreadContainment,
+        pleromaBackgroundImage: pleroma?.backgroundImage,
+        pleromaAcceptsChatMessages: pleroma?.acceptsChatMessages,
       ));
 }
 
@@ -369,6 +380,24 @@ DbAccount dbAccountFromAccount(IAccount account) {
 }
 
 extension IAccountExtension on IAccount {
+  PleromaAccountPleromaPart get pleroma => PleromaAccountPleromaPart(
+        backgroundImage: pleromaBackgroundImage,
+        tags: pleromaTags,
+        relationship: pleromaRelationship,
+        isAdmin: pleromaIsAdmin,
+        isModerator: pleromaIsModerator,
+        confirmationPending: pleromaConfirmationPending,
+        hideFavorites: pleromaHideFavorites,
+        hideFollowers: pleromaHideFollowers,
+        hideFollows: pleromaHideFollows,
+        hideFollowersCount: pleromaHideFollowersCount,
+        hideFollowsCount: pleromaHideFollowsCount,
+        deactivated: pleromaDeactivated,
+        allowFollowingMove: pleromaAllowFollowingMove,
+        skipThreadContainment: pleromaSkipThreadContainment,
+        acceptsChatMessages: pleromaAcceptsChatMessages,
+      );
+
   bool get isAcctOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
 
   String get acctRemoteHost {
@@ -386,7 +415,6 @@ extension IAccountExtension on IAccount {
     var resultUrl = "${uri.scheme}://${uri.host}";
     return Uri.parse(resultUrl);
   }
-
 
   String get acctRemoteDomainOrNull {
     var usernameWithAt = "${username}@";

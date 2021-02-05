@@ -7,6 +7,7 @@ class FediIntBadgeWidget extends StatelessWidget {
   final Widget child;
   final double offset;
 
+
   static const badgeSize = 16.0;
   static const badgeDefaultOffset = 8.0;
 

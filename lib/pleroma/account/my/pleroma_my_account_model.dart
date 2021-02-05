@@ -67,6 +67,9 @@ abstract class IPleromaMyAccountEdit extends IMastodonMyAccountEdit {
   /// the type of this account.
   dynamic get actorType;
 
+  // array of ActivityPub IDs, needed for following move
+  List<String> get alsoKnownAs;
+
   Map<String, dynamic> toJson();
 }
 
@@ -151,6 +154,10 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
   @JsonKey(name: "skip_thread_containment")
   final bool skipThreadContainment;
 
+  @override
+  @JsonKey(name: "also_known_as")
+  final List<String> alsoKnownAs;
+
   PleromaMyAccountEdit({
     this.bot,
     this.discoverable,
@@ -173,6 +180,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
     this.pleromaSettingsStore,
     this.showRole,
     this.skipThreadContainment,
+    this.alsoKnownAs,
   });
 
   factory PleromaMyAccountEdit.fromJson(Map<String, dynamic> json) =>
@@ -211,6 +219,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
           pleromaBackgroundImage == other.pleromaBackgroundImage &&
           pleromaSettingsStore == other.pleromaSettingsStore &&
           showRole == other.showRole &&
+          alsoKnownAs == other.alsoKnownAs &&
           skipThreadContainment == other.skipThreadContainment;
 
   @override
@@ -235,6 +244,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
       pleromaBackgroundImage.hashCode ^
       pleromaSettingsStore.hashCode ^
       showRole.hashCode ^
+      alsoKnownAs.hashCode ^
       skipThreadContainment.hashCode;
 
   @override
@@ -249,6 +259,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
       ' hideFollowsCount: $hideFollowsCount, noRichText: $noRichText,'
       ' pleromaBackgroundImage: $pleromaBackgroundImage,'
       ' pleromaSettingsStore: $pleromaSettingsStore, showRole: $showRole,'
+      ' alsoKnownAs: $alsoKnownAs,'
       ' skipThreadContainment: $skipThreadContainment'
       '}';
 }
@@ -260,6 +271,8 @@ abstract class IPleromaMyAccount
 
   @override
   IPleromaMyAccountPleromaPart get pleroma;
+
+  int get followRequestsCount;
 }
 
 abstract class IPleromaMyAccountEditSource
@@ -354,14 +367,15 @@ class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @HiveField(7)
   final PleromaMyAccountSourcePleromaPart pleroma;
 
-  PleromaMyAccountSource(
-      {this.privacy,
-      this.sensitive,
-      this.language,
-      this.note,
-      this.fields,
-      this.followRequestsCount,
-      this.pleroma});
+  PleromaMyAccountSource({
+    this.privacy,
+    this.sensitive,
+    this.language,
+    this.note,
+    this.fields,
+    this.followRequestsCount,
+    this.pleroma,
+  });
 
   factory PleromaMyAccountSource.fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountSourceFromJson(json);
@@ -441,13 +455,43 @@ class PleromaMyAccountFilesRequest {
 
 abstract class IPleromaMyAccountPleromaPart
     implements IPleromaAccountPleromaPart {
-  dynamic get settingsStore;
+  Map<String, dynamic> get settingsStore;
 
   int get unreadConversationCount;
+
+  int get unreadNotificationsCount;
 
   String get chatToken;
 
   PleromaMyAccountPleromaPartNotificationsSettings get notificationSettings;
+
+  @override
+  IPleromaMyAccountPleromaPart copyWith({
+    String backgroundImage,
+    List<dynamic> tags,
+    PleromaAccountRelationship relationship,
+    bool isAdmin,
+    bool isModerator,
+    bool confirmationPending,
+    bool hideFavorites,
+    bool hideFollowers,
+    bool hideFollows,
+    bool hideFollowersCount,
+    bool hideFollowsCount,
+    Map<String, dynamic> settingsStore,
+    String chatToken,
+    bool deactivated,
+    bool allowFollowingMove,
+    PleromaMyAccountPleromaPartNotificationsSettings notificationSettings,
+    bool skipThreadContainment,
+    bool acceptsChatMessages,
+    bool isConfirmed,
+    String favicon,
+    String apId,
+    List<String> alsoKnownAs,
+    int unreadConversationCount,
+    int unreadNotificationsCount,
+  });
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -532,6 +576,15 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   @HiveField(22)
   final bool discoverable;
 
+  @override
+  @HiveField(23)
+  @JsonKey(name: "follow_requests_count")
+  final int followRequestsCount;
+
+  @override
+  @HiveField(24)
+  final String fqn;
+
   PleromaMyAccount({
     this.username,
     this.url,
@@ -555,6 +608,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
     this.lastStatusAt,
     this.source,
     this.discoverable,
+    this.followRequestsCount,
+    this.fqn,
   });
 
   factory PleromaMyAccount.fromJson(Map<String, dynamic> json) =>
@@ -607,6 +662,9 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
     bool pleromaSkipThreadContainment,
     PleromaMyAccountPleromaPart pleroma,
     bool discoverable,
+    int followRequestsCount,
+    String fqn,
+    PleromaMyAccountSource source,
   }) {
     return PleromaMyAccount(
       id: id ?? this.id,
@@ -630,6 +688,9 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
       emojis: emojis ?? this.emojis,
       pleroma: pleroma ?? this.pleroma,
       discoverable: discoverable ?? this.discoverable,
+      followRequestsCount: followRequestsCount ?? this.followRequestsCount,
+      fqn: fqn ?? this.fqn,
+      source: source ?? this.source,
     );
   }
 
@@ -659,6 +720,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
           pleroma == other.pleroma &&
           lastStatusAt == other.lastStatusAt &&
           source == other.source &&
+          fqn == other.fqn &&
+          followRequestsCount == other.followRequestsCount &&
           discoverable == other.discoverable;
 
   @override
@@ -684,6 +747,8 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
       pleroma.hashCode ^
       lastStatusAt.hashCode ^
       source.hashCode ^
+      fqn.hashCode ^
+      followRequestsCount.hashCode ^
       discoverable.hashCode;
 
   @override
@@ -694,7 +759,10 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
       ' followersCount: $followersCount, fields: $fields, emojis: $emojis,'
       ' displayName: $displayName, createdAt: $createdAt, bot: $bot,'
       ' avatarStatic: $avatarStatic, avatar: $avatar, acct: $acct,'
-      ' pleroma: $pleroma, lastStatusAt: $lastStatusAt, source: $source,'
+      ' pleroma: $pleroma, lastStatusAt: $lastStatusAt,'
+      ' source: $source,'
+      ' fqn: $fqn,'
+      ' followRequestsCount: $followRequestsCount,'
       ' discoverable: $discoverable'
       '}';
 }
@@ -716,9 +784,21 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
   @JsonKey(name: "non_follows")
   @HiveField(3)
   final bool nonFollows;
+  @JsonKey(name: "block_from_strangers")
+  @HiveField(4)
+  final bool blockFromStrangers;
+  @JsonKey(name: "hide_notification_contents")
+  @HiveField(5)
+  final bool hideNotificationContents;
 
-  PleromaMyAccountPleromaPartNotificationsSettings(
-      {this.followers, this.follows, this.nonFollowers, this.nonFollows});
+  PleromaMyAccountPleromaPartNotificationsSettings({
+    this.followers,
+    this.follows,
+    this.nonFollowers,
+    this.nonFollows,
+    this.blockFromStrangers,
+    this.hideNotificationContents,
+  });
 
   factory PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
           Map<String, dynamic> json) =>
@@ -742,6 +822,39 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
 
   String toJsonString() => jsonEncode(
       _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaMyAccountPleromaPartNotificationsSettings &&
+          runtimeType == other.runtimeType &&
+          followers == other.followers &&
+          follows == other.follows &&
+          nonFollowers == other.nonFollowers &&
+          nonFollows == other.nonFollows &&
+          blockFromStrangers == other.blockFromStrangers &&
+          hideNotificationContents == other.hideNotificationContents;
+
+  @override
+  int get hashCode =>
+      followers.hashCode ^
+      follows.hashCode ^
+      nonFollowers.hashCode ^
+      nonFollows.hashCode ^
+      blockFromStrangers.hashCode ^
+      hideNotificationContents.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaMyAccountPleromaPartNotificationsSettings{'
+        'followers: $followers,'
+        ' follows: $follows,'
+        ' nonFollowers: $nonFollowers,'
+        ' nonFollows: $nonFollows,'
+        ' blockFromStrangers: $blockFromStrangers,'
+        ' hideNotificationContents: $hideNotificationContents'
+        '}';
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -754,7 +867,7 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @override
   @HiveField(1)
   @JsonKey(name: "background_image")
-  final dynamic backgroundImage;
+  final String backgroundImage;
 
   @override
   @HiveField(2)
@@ -808,7 +921,7 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @override
   @HiveField(14)
   @JsonKey(name: "settings_store")
-  final dynamic settingsStore;
+  final Map<String, dynamic> settingsStore;
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
   @override
@@ -837,8 +950,6 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @JsonKey(name: "notifications_settings")
   final PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
 
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @HiveField(20)
   @JsonKey(name: "skip_thread_containment")
@@ -848,6 +959,28 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   @HiveField(21)
   @JsonKey(name: "accepts_chat_messages")
   final bool acceptsChatMessages;
+
+  @override
+  @HiveField(22)
+  @JsonKey(name: "is_confirmed")
+  final bool isConfirmed;
+
+  @override
+  @HiveField(23)
+  final String favicon;
+
+  @override
+  @HiveField(24)
+  final String apId;
+  @override
+  @HiveField(25)
+  @JsonKey(name: "also_known_as")
+  final List<String> alsoKnownAs;
+
+  @override
+  @HiveField(26)
+  @JsonKey(name: "unread_notifications_count")
+  final int unreadNotificationsCount;
 
   PleromaMyAccountPleromaPart({
     this.backgroundImage,
@@ -869,6 +1002,11 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
     this.skipThreadContainment,
     this.notificationSettings,
     this.acceptsChatMessages,
+    this.isConfirmed,
+    this.favicon,
+    this.apId,
+    this.alsoKnownAs,
+    this.unreadNotificationsCount,
   });
 
   factory PleromaMyAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
@@ -883,19 +1021,89 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
       jsonEncode(_$PleromaMyAccountPleromaPartToJson(this));
 
   @override
+  PleromaMyAccountPleromaPart copyWith({
+    String backgroundImage,
+    List<dynamic> tags,
+    PleromaAccountRelationship relationship,
+    bool isAdmin,
+    bool isModerator,
+    bool confirmationPending,
+    bool hideFavorites,
+    bool hideFollowers,
+    bool hideFollows,
+    bool hideFollowersCount,
+    bool hideFollowsCount,
+    Map<String, dynamic> settingsStore,
+    String chatToken,
+    bool deactivated,
+    bool allowFollowingMove,
+    int unreadConversationCount,
+    PleromaMyAccountPleromaPartNotificationsSettings notificationSettings,
+    bool skipThreadContainment,
+    bool acceptsChatMessages,
+    bool isConfirmed,
+    String favicon,
+    String apId,
+    List<String> alsoKnownAs,
+    int unreadNotificationsCount,
+  }) =>
+      PleromaMyAccountPleromaPart(
+        backgroundImage: backgroundImage ?? this.backgroundImage,
+        tags: tags ?? this.tags,
+        relationship: relationship ?? this.relationship,
+        isAdmin: isAdmin ?? this.isAdmin,
+        isModerator: isModerator ?? this.isModerator,
+        confirmationPending: confirmationPending ?? this.confirmationPending,
+        hideFavorites: hideFavorites ?? this.hideFavorites,
+        hideFollowers: hideFollowers ?? this.hideFollowers,
+        hideFollows: hideFollows ?? this.hideFollows,
+        hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+        hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+        settingsStore: settingsStore ?? this.settingsStore,
+        chatToken: chatToken ?? this.chatToken,
+        deactivated: deactivated ?? this.deactivated,
+        allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+        unreadConversationCount:
+            unreadConversationCount ?? this.unreadConversationCount,
+        notificationSettings: notificationSettings ?? this.notificationSettings,
+        skipThreadContainment:
+            skipThreadContainment ?? this.skipThreadContainment,
+        acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
+        isConfirmed: isConfirmed ?? this.isConfirmed,
+        favicon: favicon ?? this.favicon,
+        apId: apId ?? this.apId,
+        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
+        unreadNotificationsCount:
+            unreadNotificationsCount ?? this.unreadNotificationsCount,
+      );
+
+  @override
   String toString() {
-    return 'PleromaMyAccountPleromaPart{backgroundImage: $backgroundImage,'
-        ' tags: $tags, relationship: $relationship, isAdmin: $isAdmin,'
-        ' isModerator: $isModerator, confirmationPending: $confirmationPending,'
-        ' hideFavorites: $hideFavorites, hideFollowers: $hideFollowers,'
-        ' hideFollows: $hideFollows, hideFollowersCount: $hideFollowersCount,'
-        ' hideFollowsCount: $hideFollowsCount, settingsStore: $settingsStore,'
-        ' chatToken: $chatToken, deactivated: $deactivated,'
-        ' allowFollowingMove: $allowFollowingMove,'
-        ' unreadConversationCount: $unreadConversationCount,'
-        ' skipThreadContainment: $skipThreadContainment,'
-        ' acceptsChatMessages: $acceptsChatMessages,'
-        ' notificationSettings: $notificationSettings'
+    return 'PleromaMyAccountPleromaPart{'
+        'backgroundImage: $backgroundImage, '
+        'tags: $tags, '
+        'relationship: $relationship, '
+        'isAdmin: $isAdmin, '
+        'isModerator: $isModerator, '
+        'confirmationPending: $confirmationPending, '
+        'hideFavorites: $hideFavorites, '
+        'hideFollowers: $hideFollowers, '
+        'hideFollows: $hideFollows, '
+        'hideFollowersCount: $hideFollowersCount, '
+        'hideFollowsCount: $hideFollowsCount, '
+        'settingsStore: $settingsStore, '
+        'chatToken: $chatToken, '
+        'deactivated: $deactivated, '
+        'allowFollowingMove: $allowFollowingMove, '
+        'unreadConversationCount: $unreadConversationCount, '
+        'notificationSettings: $notificationSettings, '
+        'skipThreadContainment: $skipThreadContainment, '
+        'acceptsChatMessages: $acceptsChatMessages, '
+        'isConfirmed: $isConfirmed, '
+        'favicon: $favicon, '
+        'apId: $apId, '
+        'alsoKnownAs: $alsoKnownAs, '
+        'unreadNotificationsCount: $unreadNotificationsCount'
         '}';
   }
 
@@ -922,7 +1130,12 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
           unreadConversationCount == other.unreadConversationCount &&
           notificationSettings == other.notificationSettings &&
           skipThreadContainment == other.skipThreadContainment &&
-          acceptsChatMessages == other.acceptsChatMessages;
+          acceptsChatMessages == other.acceptsChatMessages &&
+          isConfirmed == other.isConfirmed &&
+          favicon == other.favicon &&
+          apId == other.apId &&
+          alsoKnownAs == other.alsoKnownAs &&
+          unreadNotificationsCount == other.unreadNotificationsCount;
 
   @override
   int get hashCode =>
@@ -944,5 +1157,10 @@ class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
       unreadConversationCount.hashCode ^
       notificationSettings.hashCode ^
       skipThreadContainment.hashCode ^
-      acceptsChatMessages.hashCode;
+      acceptsChatMessages.hashCode ^
+      isConfirmed.hashCode ^
+      favicon.hashCode ^
+      apId.hashCode ^
+      alsoKnownAs.hashCode ^
+      unreadNotificationsCount.hashCode;
 }

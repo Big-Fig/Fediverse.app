@@ -2056,6 +2056,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final bool pleromaDeactivated;
   final bool pleromaAllowFollowingMove;
   final bool pleromaSkipThreadContainment;
+  final bool pleromaAcceptsChatMessages;
   DbAccount(
       {@required this.id,
       @required this.remoteId,
@@ -2090,7 +2091,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.pleromaHideFollowsCount,
       this.pleromaDeactivated,
       this.pleromaAllowFollowingMove,
-      this.pleromaSkipThreadContainment});
+      this.pleromaSkipThreadContainment,
+      this.pleromaAcceptsChatMessages});
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2163,6 +2165,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           data['${effectivePrefix}pleroma_allow_following_move']),
       pleromaSkipThreadContainment: boolType.mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_skip_thread_containment']),
+      pleromaAcceptsChatMessages: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_accepts_chat_messages']),
     );
   }
   @override
@@ -2281,6 +2285,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       map['pleroma_skip_thread_containment'] =
           Variable<bool>(pleromaSkipThreadContainment);
     }
+    if (!nullToAbsent || pleromaAcceptsChatMessages != null) {
+      map['pleroma_accepts_chat_messages'] =
+          Variable<bool>(pleromaAcceptsChatMessages);
+    }
     return map;
   }
 
@@ -2377,6 +2385,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           pleromaSkipThreadContainment == null && nullToAbsent
               ? const Value.absent()
               : Value(pleromaSkipThreadContainment),
+      pleromaAcceptsChatMessages:
+          pleromaAcceptsChatMessages == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaAcceptsChatMessages),
     );
   }
 
@@ -2427,6 +2439,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           serializer.fromJson<bool>(json['pleromaAllowFollowingMove']),
       pleromaSkipThreadContainment:
           serializer.fromJson<bool>(json['pleromaSkipThreadContainment']),
+      pleromaAcceptsChatMessages:
+          serializer.fromJson<bool>(json['pleromaAcceptsChatMessages']),
     );
   }
   @override
@@ -2474,6 +2488,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           serializer.toJson<bool>(pleromaAllowFollowingMove),
       'pleromaSkipThreadContainment':
           serializer.toJson<bool>(pleromaSkipThreadContainment),
+      'pleromaAcceptsChatMessages':
+          serializer.toJson<bool>(pleromaAcceptsChatMessages),
     };
   }
 
@@ -2511,7 +2527,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           bool pleromaHideFollowsCount,
           bool pleromaDeactivated,
           bool pleromaAllowFollowingMove,
-          bool pleromaSkipThreadContainment}) =>
+          bool pleromaSkipThreadContainment,
+          bool pleromaAcceptsChatMessages}) =>
       DbAccount(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -2553,6 +2570,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
             pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
         pleromaSkipThreadContainment:
             pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
+        pleromaAcceptsChatMessages:
+            pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
       );
   @override
   String toString() {
@@ -2590,7 +2609,9 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
           ..write('pleromaDeactivated: $pleromaDeactivated, ')
           ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
-          ..write('pleromaSkipThreadContainment: $pleromaSkipThreadContainment')
+          ..write(
+              'pleromaSkipThreadContainment: $pleromaSkipThreadContainment, ')
+          ..write('pleromaAcceptsChatMessages: $pleromaAcceptsChatMessages')
           ..write(')'))
         .toString();
   }
@@ -2638,7 +2659,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, $mrjc(pleromaSkipThreadContainment.hashCode, pleromaAcceptsChatMessages.hashCode)))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2677,7 +2698,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.pleromaDeactivated == this.pleromaDeactivated &&
           other.pleromaAllowFollowingMove == this.pleromaAllowFollowingMove &&
           other.pleromaSkipThreadContainment ==
-              this.pleromaSkipThreadContainment);
+              this.pleromaSkipThreadContainment &&
+          other.pleromaAcceptsChatMessages == this.pleromaAcceptsChatMessages);
 }
 
 class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
@@ -2715,6 +2737,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<bool> pleromaDeactivated;
   final Value<bool> pleromaAllowFollowingMove;
   final Value<bool> pleromaSkipThreadContainment;
+  final Value<bool> pleromaAcceptsChatMessages;
   const DbAccountsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -2750,6 +2773,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.pleromaDeactivated = const Value.absent(),
     this.pleromaAllowFollowingMove = const Value.absent(),
     this.pleromaSkipThreadContainment = const Value.absent(),
+    this.pleromaAcceptsChatMessages = const Value.absent(),
   });
   DbAccountsCompanion.insert({
     this.id = const Value.absent(),
@@ -2786,6 +2810,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.pleromaDeactivated = const Value.absent(),
     this.pleromaAllowFollowingMove = const Value.absent(),
     this.pleromaSkipThreadContainment = const Value.absent(),
+    this.pleromaAcceptsChatMessages = const Value.absent(),
   })  : remoteId = Value(remoteId),
         username = Value(username),
         url = Value(url),
@@ -2836,6 +2861,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<bool> pleromaDeactivated,
     Expression<bool> pleromaAllowFollowingMove,
     Expression<bool> pleromaSkipThreadContainment,
+    Expression<bool> pleromaAcceptsChatMessages,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2883,6 +2909,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
         'pleroma_allow_following_move': pleromaAllowFollowingMove,
       if (pleromaSkipThreadContainment != null)
         'pleroma_skip_thread_containment': pleromaSkipThreadContainment,
+      if (pleromaAcceptsChatMessages != null)
+        'pleroma_accepts_chat_messages': pleromaAcceptsChatMessages,
     });
   }
 
@@ -2920,7 +2948,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<bool> pleromaHideFollowsCount,
       Value<bool> pleromaDeactivated,
       Value<bool> pleromaAllowFollowingMove,
-      Value<bool> pleromaSkipThreadContainment}) {
+      Value<bool> pleromaSkipThreadContainment,
+      Value<bool> pleromaAcceptsChatMessages}) {
     return DbAccountsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -2962,6 +2991,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
           pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
       pleromaSkipThreadContainment:
           pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
+      pleromaAcceptsChatMessages:
+          pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
     );
   }
 
@@ -3084,6 +3115,10 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       map['pleroma_skip_thread_containment'] =
           Variable<bool>(pleromaSkipThreadContainment.value);
     }
+    if (pleromaAcceptsChatMessages.present) {
+      map['pleroma_accepts_chat_messages'] =
+          Variable<bool>(pleromaAcceptsChatMessages.value);
+    }
     return map;
   }
 
@@ -3123,7 +3158,9 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
           ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
           ..write('pleromaDeactivated: $pleromaDeactivated, ')
           ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
-          ..write('pleromaSkipThreadContainment: $pleromaSkipThreadContainment')
+          ..write(
+              'pleromaSkipThreadContainment: $pleromaSkipThreadContainment, ')
+          ..write('pleromaAcceptsChatMessages: $pleromaAcceptsChatMessages')
           ..write(')'))
         .toString();
   }
@@ -3579,6 +3616,20 @@ class $DbAccountsTable extends DbAccounts
     );
   }
 
+  final VerificationMeta _pleromaAcceptsChatMessagesMeta =
+      const VerificationMeta('pleromaAcceptsChatMessages');
+  GeneratedBoolColumn _pleromaAcceptsChatMessages;
+  @override
+  GeneratedBoolColumn get pleromaAcceptsChatMessages =>
+      _pleromaAcceptsChatMessages ??= _constructPleromaAcceptsChatMessages();
+  GeneratedBoolColumn _constructPleromaAcceptsChatMessages() {
+    return GeneratedBoolColumn(
+      'pleroma_accepts_chat_messages',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3614,7 +3665,8 @@ class $DbAccountsTable extends DbAccounts
         pleromaHideFollowsCount,
         pleromaDeactivated,
         pleromaAllowFollowingMove,
-        pleromaSkipThreadContainment
+        pleromaSkipThreadContainment,
+        pleromaAcceptsChatMessages
       ];
   @override
   $DbAccountsTable get asDslTable => this;
@@ -3823,6 +3875,13 @@ class $DbAccountsTable extends DbAccounts
           pleromaSkipThreadContainment.isAcceptableOrUnknown(
               data['pleroma_skip_thread_containment'],
               _pleromaSkipThreadContainmentMeta));
+    }
+    if (data.containsKey('pleroma_accepts_chat_messages')) {
+      context.handle(
+          _pleromaAcceptsChatMessagesMeta,
+          pleromaAcceptsChatMessages.isAcceptableOrUnknown(
+              data['pleroma_accepts_chat_messages'],
+              _pleromaAcceptsChatMessagesMeta));
     }
     return context;
   }

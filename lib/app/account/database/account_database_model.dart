@@ -78,4 +78,6 @@ class DbAccounts extends Table {
   BoolColumn get pleromaAllowFollowingMove => boolean().nullable()();
 
   BoolColumn get pleromaSkipThreadContainment => boolean().nullable()();
+
+  BoolColumn get pleromaAcceptsChatMessages => boolean().nullable()();
 }

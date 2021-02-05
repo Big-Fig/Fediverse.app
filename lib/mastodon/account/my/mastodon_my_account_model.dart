@@ -3,6 +3,7 @@ import 'package:fedi/mastodon/field/mastodon_field_model.dart';
 import 'package:fedi/mastodon/visibility/mastodon_visibility_model.dart';
 
 abstract class IMastodonMyAccountEdit {
+
   /// Whether the account should be shown in the profile directory.
   bool get discoverable;
 

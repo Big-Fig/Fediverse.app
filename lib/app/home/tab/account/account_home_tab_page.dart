@@ -18,6 +18,7 @@ import 'package:fedi/app/account/statuses/without_replies/cached/account_statuse
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
+import 'package:fedi/app/home/tab/account/menu/badge/account_home_tab_menu_int_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
@@ -29,6 +30,7 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_wi
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -510,12 +512,18 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                   },
                 ),
                 const FediBigHorizontalSpacer(),
-                FediIconInCircleBlurredButton(
-                  FediIcons.menu_list,
-                  iconSize: 15.0,
-                  onPressed: () {
-                    showAccountHomeTabMenuDialog(context);
-                  },
+                AccountHomeTabMenuIntBadgeBloc.provideToContext(
+                  context,
+                  child: FediIntBadgeWidget(
+                    offset: 0.0,
+                    child: FediIconInCircleBlurredButton(
+                      FediIcons.menu_list,
+                      iconSize: 15.0,
+                      onPressed: () {
+                        showAccountHomeTabMenuDialog(context);
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

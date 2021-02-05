@@ -30,6 +30,8 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   IMyAccount get myAccount;
 
+  Stream<IMyAccount> get myAccountStream;
+
   AuthInstance get instance;
 
   bool get isLocalCacheExist;
@@ -38,7 +40,17 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkIsStatusFromMe(IStatus status);
 
-  void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
+  Future updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
+
+  Future decreaseFollowingRequestCount();
 
   bool checkIsChatMessageFromMe(IChatMessage chatMessage);
+}
+
+extension IMyAccountBlocExtension on IMyAccountBloc {
+  int get followRequestsCount => myAccount.followRequestsCount;
+
+  Stream<int> get followRequestsCountStream => myAccountStream.map(
+        (myAccount) => myAccount.followRequestsCount,
+      );
 }
