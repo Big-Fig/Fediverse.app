@@ -39,9 +39,10 @@ class MyAccountBloc extends IMyAccountBloc {
         (myAccount) {
           if (myAccount != null) {
             accountRepository.upsertRemoteAccount(
-                mapLocalAccountToRemoteAccount(myAccount),
-                conversationRemoteId: null,
-                chatRemoteId: null);
+              mapLocalAccountToRemoteAccount(myAccount),
+              conversationRemoteId: null,
+              chatRemoteId: null,
+            );
           }
         },
       ),
@@ -49,10 +50,13 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
+  Stream<IMyAccount> get myAccountStream => myAccountLocalPreferenceBloc.stream;
+
+  @override
   IMyAccount get myAccount => myAccountLocalPreferenceBloc.value;
 
   @override
-  Stream<IAccount> get accountStream => myAccountLocalPreferenceBloc.stream;
+  Stream<IAccount> get accountStream => myAccountStream;
 
   @override
   IAccount get account => myAccount;
@@ -75,7 +79,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
     var success = remoteMyAccount != null;
     if (success) {
-      updateMyAccountByRemote(remoteMyAccount);
+      await updateMyAccountByRemote(remoteMyAccount);
     }
     return success;
   }
@@ -105,10 +109,20 @@ class MyAccountBloc extends IMyAccountBloc {
       throw selfActionError;
 
   @override
-  void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
-    myAccountLocalPreferenceBloc.setValue(
+  Future updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) async {
+    await myAccountLocalPreferenceBloc.setValue(
       MyAccountRemoteWrapper(
         remoteAccount: remoteMyAccount,
+      ),
+    );
+  }
+
+  @override
+  Future decreaseFollowingRequestCount() async {
+    assert(followRequestsCount > 0);
+    await myAccountLocalPreferenceBloc.setValue(
+      myAccountLocalPreferenceBloc.value.copyWith(
+        followRequestsCount: followRequestsCount - 1,
       ),
     );
   }

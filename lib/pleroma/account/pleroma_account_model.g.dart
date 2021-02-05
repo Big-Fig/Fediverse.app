@@ -37,13 +37,14 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
       acct: fields[17] as String,
       pleroma: fields[19] as PleromaAccountPleromaPart,
       lastStatusAt: fields[20] as DateTime,
+      fqn: fields[21] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaAccount obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(21)
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
@@ -83,7 +84,9 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
       ..writeByte(19)
       ..write(obj.pleroma)
       ..writeByte(20)
-      ..write(obj.lastStatusAt);
+      ..write(obj.lastStatusAt)
+      ..writeByte(21)
+      ..write(obj.fqn);
   }
 
   @override
@@ -109,7 +112,7 @@ class PleromaAccountPleromaPartAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaAccountPleromaPart(
-      backgroundImage: fields[1] as dynamic,
+      backgroundImage: fields[1] as String,
       tags: (fields[2] as List)?.cast<dynamic>(),
       relationship: fields[3] as PleromaAccountRelationship,
       isAdmin: fields[4] as bool,
@@ -120,18 +123,21 @@ class PleromaAccountPleromaPartAdapter
       hideFollows: fields[11] as bool,
       hideFollowersCount: fields[12] as bool,
       hideFollowsCount: fields[13] as bool,
-      settingsStore: fields[14] as dynamic,
       deactivated: fields[16] as bool,
       allowFollowingMove: fields[17] as bool,
       skipThreadContainment: fields[18] as bool,
       acceptsChatMessages: fields[19] as bool,
+      isConfirmed: fields[20] as bool,
+      favicon: fields[21] as String,
+      apId: fields[22] as String,
+      alsoKnownAs: (fields[23] as List)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaAccountPleromaPart obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(19)
       ..writeByte(1)
       ..write(obj.backgroundImage)
       ..writeByte(2)
@@ -154,8 +160,6 @@ class PleromaAccountPleromaPartAdapter
       ..write(obj.hideFollowersCount)
       ..writeByte(13)
       ..write(obj.hideFollowsCount)
-      ..writeByte(14)
-      ..write(obj.settingsStore)
       ..writeByte(16)
       ..write(obj.deactivated)
       ..writeByte(17)
@@ -163,7 +167,15 @@ class PleromaAccountPleromaPartAdapter
       ..writeByte(18)
       ..write(obj.skipThreadContainment)
       ..writeByte(19)
-      ..write(obj.acceptsChatMessages);
+      ..write(obj.acceptsChatMessages)
+      ..writeByte(20)
+      ..write(obj.isConfirmed)
+      ..writeByte(21)
+      ..write(obj.favicon)
+      ..writeByte(22)
+      ..write(obj.apId)
+      ..writeByte(23)
+      ..write(obj.alsoKnownAs);
   }
 
   @override
@@ -287,6 +299,7 @@ PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
     lastStatusAt: json['last_status_at'] == null
         ? null
         : DateTime.parse(json['last_status_at'] as String),
+    fqn: json['fqn'] as String,
   );
 }
 
@@ -312,12 +325,13 @@ Map<String, dynamic> _$PleromaAccountToJson(PleromaAccount instance) =>
       'acct': instance.acct,
       'pleroma': instance.pleroma?.toJson(),
       'last_status_at': instance.lastStatusAt?.toIso8601String(),
+      'fqn': instance.fqn,
     };
 
 PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaAccountPleromaPart(
-    backgroundImage: json['background_image'],
+    backgroundImage: json['background_image'] as String,
     tags: json['tags'] as List,
     relationship: json['relationship'] == null
         ? null
@@ -331,11 +345,15 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     hideFollows: json['hide_follows'] as bool,
     hideFollowersCount: json['hide_followers_count'] as bool,
     hideFollowsCount: json['hide_follows_count'] as bool,
-    settingsStore: json['settings_store'],
     deactivated: json['deactivated'] as bool,
     allowFollowingMove: json['allow_following_move'] as bool,
     skipThreadContainment: json['skip_thread_containment'] as bool,
     acceptsChatMessages: json['accepts_chat_messages'] as bool,
+    isConfirmed: json['is_confirmed'] as bool,
+    favicon: json['favicon'] as String,
+    apId: json['apId'] as String,
+    alsoKnownAs:
+        (json['also_known_as'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -353,11 +371,14 @@ Map<String, dynamic> _$PleromaAccountPleromaPartToJson(
       'hide_follows': instance.hideFollows,
       'hide_followers_count': instance.hideFollowersCount,
       'hide_follows_count': instance.hideFollowsCount,
-      'settings_store': instance.settingsStore,
       'deactivated': instance.deactivated,
       'allow_following_move': instance.allowFollowingMove,
       'skip_thread_containment': instance.skipThreadContainment,
       'accepts_chat_messages': instance.acceptsChatMessages,
+      'is_confirmed': instance.isConfirmed,
+      'favicon': instance.favicon,
+      'apId': instance.apId,
+      'also_known_as': instance.alsoKnownAs,
     };
 
 PleromaAccountRelationship _$PleromaAccountRelationshipFromJson(

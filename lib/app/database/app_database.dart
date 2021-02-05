@@ -107,49 +107,57 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-      onCreate: (Migrator m) => m.createAll(),
-      onUpgrade: (Migrator m, int from, int to) async {
-        var currentVersion = from;
+        onCreate: (Migrator m) => m.createAll(),
+        onUpgrade: (Migrator m, int from, int to) async {
+          var currentVersion = from;
 
-        while (currentVersion < to) {
-          switch (currentVersion) {
-            case 1:
-              await _migrate1to2(m);
-              break;
-            case 2:
-              await _migrate2to3(m);
-              break;
-            case 3:
-              await _migrate3to4(m);
-              break;
-            case 4:
-              await _migrate4to5(m);
-              break;
-            case 5:
-              await _migrate5to6(m);
-              break;
-            case 6:
-              await _migrate6to7(m);
-              break;
-            case 7:
-              await _migrate7to8(m);
-              break;
-            case 8:
-              await _migrate8to9(m);
-              break;
-            default:
-              throw "invalid currentVersion $currentVersion";
+          while (currentVersion < to) {
+            switch (currentVersion) {
+              case 1:
+                await _migrate1to2(m);
+                break;
+              case 2:
+                await _migrate2to3(m);
+                break;
+              case 3:
+                await _migrate3to4(m);
+                break;
+              case 4:
+                await _migrate4to5(m);
+                break;
+              case 5:
+                await _migrate5to6(m);
+                break;
+              case 6:
+                await _migrate6to7(m);
+                break;
+              case 7:
+                await _migrate7to8(m);
+                break;
+              case 8:
+                await _migrate8to9(m);
+                break;
+              case 9:
+                await _migrate9to10(m);
+                break;
+              default:
+                throw "invalid currentVersion $currentVersion";
+            }
+            currentVersion++;
           }
-          currentVersion++;
-        }
-      });
+        },
+      );
+
+  Future<void> _migrate9to10(Migrator m) async {
+    await m.addColumn(dbAccounts, dbAccounts.pleromaAcceptsChatMessages);
+  }
 
   Future<void> _migrate8to9(Migrator m) async {
-    // rework schema
+    // after schema rework we need re-create table
     await m.deleteTable(dbFilters.actualTableName);
     await m.createTable(dbFilters);
   }

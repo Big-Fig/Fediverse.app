@@ -8,11 +8,13 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_bloc_impl.dart';
+import 'package:fedi/app/home/tab/account/badge/account_home_tab_int_badge_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_bloc_impl.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc_bool_adapter_proxy_provider.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -160,9 +162,17 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           onLongPress: () {
             showMyAccountActionListBottomSheetDialog(context);
           },
-          child: Padding(
-            padding: insets,
-            child: const MyAccountAvatarWidget(),
+          child: AccountHomeTabIntBadgeBloc.provideToContext(
+            context,
+            child: FediIntBadgeBlocBoolAdapterProxyProvider(
+              child: FediBoolBadgeWidget(
+                offset: badgeOffset,
+                child: Padding(
+                  padding: insets,
+                  child: const MyAccountAvatarWidget(),
+                ),
+              ),
+            ),
           ),
         );
         break;

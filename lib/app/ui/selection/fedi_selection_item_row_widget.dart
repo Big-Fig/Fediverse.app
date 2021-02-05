@@ -23,13 +23,29 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
         ending: FediSelectionItemIconWidget(
           onClick: onClick,
         ),
-        title: Padding(
-          padding: FediPadding.horizontalSmallPadding,
-          child: Text(
-            title,
-            style: IFediUiTextTheme.of(context).bigTallMediumGrey,
-          ),
+        title: SimpleFediSelectionItemRowTitleWidget(
+          title: title,
         ),
+      ),
+    );
+  }
+}
+
+class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
+  const SimpleFediSelectionItemRowTitleWidget({
+    Key key,
+    @required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allSmallPadding,
+      child: Text(
+        title,
+        style: IFediUiTextTheme.of(context).bigTallMediumGrey,
       ),
     );
   }

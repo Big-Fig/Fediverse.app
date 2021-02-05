@@ -2,11 +2,13 @@ import 'package:fedi/app/account/my/account_block/my_account_account_block_list_
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/list/my_account_domain_block_list_page.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
+import 'package:fedi/app/account/my/follow_request/badge/my_account_follow_request_count_int_badge_bloc_impl.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
 import 'package:fedi/app/filter/list/filter_list_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
@@ -14,7 +16,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AccountHomeTabMenuAccountSubPage extends StatelessWidget {
+class AccountHomeTabMenuActionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,16 +25,16 @@ class AccountHomeTabMenuAccountSubPage extends StatelessWidget {
       ),
       body: Padding(
         padding: FediPadding.verticalSmallPadding,
-        child: const _AccountHomeTabMenuAccountSubPageBody(),
+        child: const _AccountHomeTabMenuActionsBody(),
       ),
     );
   }
 
-  const AccountHomeTabMenuAccountSubPage();
+  const AccountHomeTabMenuActionsPage();
 }
 
-class _AccountHomeTabMenuAccountSubPageBody extends StatelessWidget {
-  const _AccountHomeTabMenuAccountSubPageBody({
+class _AccountHomeTabMenuActionsBody extends StatelessWidget {
+  const _AccountHomeTabMenuActionsBody({
     Key key,
   }) : super(key: key);
 
@@ -126,11 +128,26 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_followRequests,
-      onClick: () {
-        goToMyAccountFollowRequestListPage(context);
-      },
+    var onClick = () {
+      goToMyAccountFollowRequestListPage(context);
+    };
+    return InkWell(
+      onTap: onClick,
+      child: FediSelectionItemRowWidget(
+        leading: null,
+        ending: FediSelectionItemIconWidget(
+          onClick: onClick,
+        ),
+        title: MyAccountFollowRequestCountIntBadgeBloc.provideToContext(
+          context,
+          child: FediIntBadgeWidget(
+            offset: 0.0,
+            child: SimpleFediSelectionItemRowTitleWidget(
+              title: S.of(context).app_account_my_action_followRequests,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -182,6 +199,7 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
     );
   }
 }
+
 class _MyAccountSettingsFiltersButton extends StatelessWidget {
   const _MyAccountSettingsFiltersButton({
     Key key,
@@ -198,15 +216,15 @@ class _MyAccountSettingsFiltersButton extends StatelessWidget {
   }
 }
 
-void goAccountHomeTabMenuAccountSubPage(BuildContext context) {
+void goAccountHomeTabMenuActionsPage(BuildContext context) {
   Navigator.push(
     context,
-    createAccountHomeTabMenuAccountSubPageRoute(),
+    createAccountHomeTabMenuActionsPageRoute(),
   );
 }
 
-MaterialPageRoute createAccountHomeTabMenuAccountSubPageRoute() {
+MaterialPageRoute createAccountHomeTabMenuActionsPageRoute() {
   return MaterialPageRoute(
-    builder: (context) => const AccountHomeTabMenuAccountSubPage(),
+    builder: (context) => const AccountHomeTabMenuActionsPage(),
   );
 }

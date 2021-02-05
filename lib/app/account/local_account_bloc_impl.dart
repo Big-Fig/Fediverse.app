@@ -217,19 +217,25 @@ class LocalAccountBloc extends AccountBloc {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
       await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account,
-          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
-              followersCount: account.followersCount - 1,
-              pleromaRelationship: newRelationship)));
+        oldLocalAccount: account,
+        newRemoteAccount: mapLocalAccountToRemoteAccount(
+          account.copyWith(
+            followersCount: account.followersCount - 1,
+            pleromaRelationship: newRelationship,
+          ),
+        ),
+      );
 
       if (myAccount != null) {
         await accountRepository.removeAccountFollower(
-            accountRemoteId: account.remoteId,
-            followerAccountId: myAccount.remoteId);
+          accountRemoteId: account.remoteId,
+          followerAccountId: myAccount.remoteId,
+        );
 
         await accountRepository.removeAccountFollowing(
-            accountRemoteId: myAccount.remoteId,
-            followingAccountId: account.remoteId);
+          accountRemoteId: myAccount.remoteId,
+          followingAccountId: account.remoteId,
+        );
       }
 
       await statusRepository.removeAccountStatusesFromHome(
