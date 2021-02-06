@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,13 +33,15 @@ Future<DbStatus> createTestDbStatus({
   @required DbAccount dbAccount,
   bool pleromaThreadMuted = false,
   String remoteId,
+  String inReplyToAccountRemoteId = "inReplyToAccountRemoteId",
 }) async {
   DbStatus dbStatus = DbStatus(
       id: null,
       remoteId: remoteId ?? seed + "remoteId",
       createdAt: createdAt ?? DateTime(1),
       inReplyToRemoteId: seed + "inReplyToRemoteId",
-      inReplyToAccountRemoteId: seed + "inReplyToAccountRemoteId",
+      inReplyToAccountRemoteId:
+          inReplyToAccountRemoteId,
       sensitive: true,
       spoilerText: seed + "spoilerText",
       visibility: PleromaVisibility.public,
@@ -72,6 +76,30 @@ Future<DbStatus> createTestDbStatus({
       pleromaThreadMuted: pleromaThreadMuted,
       pleromaEmojiReactions: null);
   return dbStatus;
+}
+
+Future<PleromaStatus> createTestRemoteStatus({
+  @required String seed,
+  DateTime createdAt,
+  @required DbAccount dbAccount,
+  bool pleromaThreadMuted = false,
+  String remoteId,
+  @required AccountRepository accountRepository,
+}) async {
+  DbStatus dbStatus = await createTestDbStatus(
+    seed: seed,
+    dbAccount: dbAccount,
+    createdAt: createdAt,
+    pleromaThreadMuted: pleromaThreadMuted,
+    remoteId: remoteId,
+  );
+  var dbStatusPopulated = await createTestDbStatusPopulated(
+    dbStatus,
+    accountRepository,
+  );
+  return mapLocalStatusToRemoteStatus(
+    DbStatusPopulatedWrapper(dbStatusPopulated),
+  );
 }
 
 void expectDbStatusPopulated(IStatus actual, DbStatusPopulated expected) {

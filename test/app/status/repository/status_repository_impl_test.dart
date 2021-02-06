@@ -9,6 +9,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -243,7 +244,7 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery containsBaseUrlOrIsPleromaLocal', () async {
+  test('createQuery onlyLocalCondition', () async {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
         onlyLocalCondition: StatusOnlyLocalCondition("pleroma.com"),
@@ -1308,151 +1309,441 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  // TODO: test fails but logic is valid
-  // fails due to limitation in native sql library. Actually works good on iOS/Android
-  //
-  // test('createQuery onlyWithMedia + isFromHomeTimeline', () async {
-  //   var query = statusRepository.createQuery(
-  //     onlyInConversation: null,
-  //     onlyFromAccount: null,
-  //     onlyWithMedia: true,
-  //     withMuted: null,
-  //     excludeVisibilities: null,
-  //     newerThanStatus: null,
-  //     limit: null,
-  //     offset: null,
-  //     orderingTermData: null,
-  //     onlyNoNsfwSensitive: null,
-  //     onlyLocalCondition: null,
-  //     onlyNoReplies: null,
-  //     onlyWithHashtag: null,
-  //     onlyFromAccountsFollowingByAccount: null,
-  //     isFromHomeTimeline: true,
-  //     olderThanStatus: null,
-  //     onlyInListWithRemoteId: null,
-  //     onlyBookmarked: null,
-  //     onlyFavourited: null,
-  //     onlyNotDeleted: null,
-  //   );
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: null),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: false,
-  //   );
-  //
-  //   expect((await query.get()).length, 0);
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: []),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: false,
-  //   );
-  //
-  //   expect((await query.get()).length, 0);
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: [PleromaMediaAttachment()]),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: false,
-  //   );
-  //
-  //   expect((await query.get()).length, 0);
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: null),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: true,
-  //   );
-  //
-  //   expect((await query.get()).length, 0);
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed5", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: []),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: true,
-  //   );
-  //
-  //   expect((await query.get()).length, 0);
-  //
-  //   await statusRepository.upsertRemoteStatus(
-  //     mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed6", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: [PleromaMediaAttachment()]),
-  //             accountRepository))),
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: true,
-  //   );
-  //
-  //   expect((await query.get()).length, 1);
-  //
-  //
-  //   await statusRepository.upsertRemoteStatuses(
-  //     [mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed7", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: [PleromaMediaAttachment()]),
-  //             accountRepository)))],
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: false,
-  //   );
-  //
-  //   expect((await query.get()).length, 1);
-  //
-  //
-  //   await statusRepository.upsertRemoteStatuses(
-  //     [mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed8", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: [PleromaMediaAttachment()]),
-  //             accountRepository)))],
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: true,
-  //   );
-  //
-  //   expect((await query.get()).length, 2);
-  //
-  //
-  //   await statusRepository.upsertRemoteStatuses(
-  //     [mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-  //         await createTestDbStatusPopulated(
-  //             (await createTestDbStatus(seed: "seed9", dbAccount: dbAccount))
-  //                 .copyWith(mediaAttachments: null),
-  //             accountRepository)))],
-  //     listRemoteId: null,
-  //     conversationRemoteId: null,
-  //     isFromHomeTimeline: true,
-  //   );
-  //
-  //   expect((await query.get()).length, 2);
-  // });
+  test('createQuery isFromHomeTimeline', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        isFromHomeTimeline: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await statusRepository.upsertRemoteStatus(
+      (await createTestRemoteStatus(
+        seed: "seed1",
+        dbAccount: dbAccount,
+        accountRepository: accountRepository,
+      )),
+      listRemoteId: null,
+      conversationRemoteId: null,
+      isFromHomeTimeline: false,
+    );
+
+    expect((await query.get()).length, 0);
+
+    await statusRepository.upsertRemoteStatus(
+      (await createTestRemoteStatus(
+        seed: "seed2",
+        dbAccount: dbAccount,
+        accountRepository: accountRepository,
+      )),
+      listRemoteId: null,
+      conversationRemoteId: null,
+      isFromHomeTimeline: true,
+    );
+
+    expect((await query.get()).length, 1);
+
+    await statusRepository.upsertRemoteStatus(
+      (await createTestRemoteStatus(
+        seed: "seed3",
+        dbAccount: dbAccount,
+        accountRepository: accountRepository,
+      )),
+      listRemoteId: null,
+      conversationRemoteId: null,
+      isFromHomeTimeline: true,
+    );
+
+    expect((await query.get()).length, 2);
+
+    await statusRepository.upsertRemoteStatus(
+      (await createTestRemoteStatus(
+        seed: "seed3",
+        dbAccount: dbAccount,
+        accountRepository: accountRepository,
+      )),
+      listRemoteId: null,
+      conversationRemoteId: null,
+      isFromHomeTimeline: true,
+    );
+
+    expect((await query.get()).length, 2);
+
+    await statusRepository.upsertRemoteStatus(
+      (await createTestRemoteStatus(
+        seed: "seed2",
+        dbAccount: dbAccount,
+        accountRepository: accountRepository,
+      )),
+      listRemoteId: null,
+      conversationRemoteId: null,
+      isFromHomeTimeline: true,
+    );
+
+    expect((await query.get()).length, 2);
+  });
+
+  test('createQuery onlyRemoteCondition', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyRemoteCondition: StatusOnlyRemoteCondition("pleroma.com"),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://pleroma.com/one"));
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://google.com/one"));
+
+    expect((await query.get()).length, 1);
+
+    // check several with seed
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://pleroma.com/two"));
+
+    // check local flag
+    expect((await query.get()).length, 1);
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: true, url: "https://google.com/one"));
+
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery onlyRemoteCondition', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyRemoteCondition: StatusOnlyRemoteCondition("pleroma.com"),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://pleroma.com/one"));
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://google.com/one"));
+
+    expect((await query.get()).length, 1);
+
+    // check several with seed
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: false, url: "https://pleroma.com/two"));
+
+    // check local flag
+    expect((await query.get()).length, 1);
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+            .copyWith(pleromaLocal: true, url: "https://google.com/one"));
+
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery onlyRemoteCondition + onlyLocalCondition error', () async {
+    expect(() {
+      statusRepository.createQuery(
+        filters: StatusRepositoryFilters(
+          onlyRemoteCondition: StatusOnlyRemoteCondition("pleroma.com"),
+          onlyLocalCondition: StatusOnlyLocalCondition("pleroma.com"),
+        ),
+        pagination: null,
+        orderingTermData: null,
+      );
+    }, throwsA(isA<AssertionError>()));
+  });
+
+  test('createQuery onlyFromInstance + no onlyRemoteCondition error', () async {
+    expect(() {
+      statusRepository.createQuery(
+        filters: StatusRepositoryFilters(
+          onlyFromInstance: "pleroma.com",
+        ),
+        pagination: null,
+        orderingTermData: null,
+      );
+    }, throwsA(isA<AssertionError>()));
+  });
+
+  test('createQuery onlyFromInstance', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+          onlyRemoteCondition: StatusOnlyRemoteCondition("pleroma.com"),
+          onlyFromInstance: "google.com"),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(url: "https://pleroma.com/"));
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(url: "https://google.com/"));
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery onlyFavourited', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyFavourited: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(favourited: false));
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(favourited: true));
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery onlyBookmarked', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyBookmarked: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(bookmarked: false));
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(bookmarked: true));
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery replyVisibilityFilterCondition self', () async {
+    var myDbAccount = await createTestDbAccount(seed: "myAccount");
+    var dbAccount3 = await createTestDbAccount(seed: "seed3");
+
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        replyVisibilityFilterCondition: PleromaReplyVisibilityFilterCondition(
+          replyVisibilityFilter: PleromaReplyVisibilityFilter.self,
+          myAccountRemoteId: myDbAccount.remoteId,
+        ),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    var dbStatus1 = (await createTestDbStatus(
+      seed: "seed1",
+      dbAccount: dbAccount,
+      inReplyToAccountRemoteId: null,
+    ));
+    await insertDbStatus(
+      statusRepository,
+      dbStatus1,
+    );
+
+    expect((await query.get()).length, 1);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed2",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: myDbAccount.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed3",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: dbAccount3.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: myDbAccount.remoteId,
+      followings: [
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount))
+      ],
+    );
+
+    expect((await query.get()).length, 2);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed4",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: dbAccount3.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+
+  });
+
+  test('createQuery replyVisibilityFilterCondition following', () async {
+    var myDbAccount = await createTestDbAccount(seed: "myAccount");
+    var dbAccount3 = await createTestDbAccount(seed: "seed3");
+    var dbAccount4 = await createTestDbAccount(seed: "seed4");
+
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        replyVisibilityFilterCondition: PleromaReplyVisibilityFilterCondition(
+          replyVisibilityFilter: PleromaReplyVisibilityFilter.following,
+          myAccountRemoteId: myDbAccount.remoteId,
+        ),
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    var dbStatus1 = (await createTestDbStatus(
+      seed: "seed1",
+      dbAccount: dbAccount,
+      inReplyToAccountRemoteId: null,
+    ));
+    await insertDbStatus(
+      statusRepository,
+      dbStatus1,
+    );
+
+    expect((await query.get()).length, 1);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed2",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: myDbAccount.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed3",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: dbAccount3.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 2);
+
+    await accountRepository.addAccountFollowings(
+      accountRemoteId: myDbAccount.remoteId,
+      followings: [
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount3))
+      ],
+    );
+
+    expect((await query.get()).length, 3);
+
+    await insertDbStatus(
+      statusRepository,
+      (await createTestDbStatus(
+        seed: "seed4",
+        dbAccount: dbAccount,
+        inReplyToAccountRemoteId: dbAccount4.remoteId,
+      )),
+    );
+
+    expect((await query.get()).length, 3);
+  });
+
+  test('createQuery onlyNotDeleted', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyNotDeleted: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(deleted: false));
+
+    expect((await query.get()).length, 1);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(deleted: true));
+    expect((await query.get()).length, 1);
+  });
+
+  test('createQuery mustBeConversationItem', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        mustBeConversationItem: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    var dbStatus1 =
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount));
+    await insertDbStatus(
+      statusRepository,
+      dbStatus1,
+    );
+
+    expect((await query.get()).length, 0);
+
+    await statusRepository.addStatusesToConversation(
+        statusRemoteIds: [dbStatus1.remoteId],
+        conversationRemoteId: "conversationRemoteId1");
+
+    expect((await query.get()).length, 1);
+  });
 }
