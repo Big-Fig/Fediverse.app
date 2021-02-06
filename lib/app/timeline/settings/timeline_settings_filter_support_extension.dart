@@ -65,13 +65,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
         return true;
         break;
       case TimelineType.customList:
-        return false;
+        return authInstance.isPleromaInstance;
         break;
       case TimelineType.home:
-        return false;
+        return authInstance.isPleromaInstance;
         break;
       case TimelineType.hashtag:
-        return false;
+        return authInstance.isPleromaInstance;
         break;
       case TimelineType.account:
         return false;
@@ -87,13 +87,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
         return true;
         break;
       case TimelineType.customList:
-        return false;
+        return authInstance.isPleromaInstance;
         break;
       case TimelineType.home:
         return true;
         break;
       case TimelineType.hashtag:
-        return false;
+        return authInstance.isPleromaInstance;
         break;
       case TimelineType.account:
         return false;
@@ -210,6 +210,27 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
         break;
       case TimelineType.account:
         return true;
+        break;
+    }
+
+    throw Exception("Invalid TimelineType $this");
+  }
+  bool isOnlyFromInstanceFilterSupportedOnInstance(AuthInstance authInstance) {
+    switch (this) {
+      case TimelineType.public:
+        return authInstance.isPleromaInstance;
+        break;
+      case TimelineType.customList:
+        return false;
+        break;
+      case TimelineType.home:
+        return false;
+        break;
+      case TimelineType.hashtag:
+        return false;
+        break;
+      case TimelineType.account:
+        return false;
         break;
     }
 

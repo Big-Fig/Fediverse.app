@@ -62,8 +62,10 @@ void main() {
     expect(
         pleromaWebSocketsService
             .getPublicChannel(
-              local: true,
+              onlyLocal: true,
               onlyMedia: false,
+              onlyFromInstance: null,
+              onlyRemote: null,
             )
             .config
             .calculateWebSocketsUrl()
@@ -72,8 +74,10 @@ void main() {
     expect(
         pleromaWebSocketsService
             .getPublicChannel(
-              local: false,
+              onlyLocal: false,
               onlyMedia: false,
+              onlyFromInstance: null,
+              onlyRemote: null,
             )
             .config
             .calculateWebSocketsUrl()
@@ -82,8 +86,10 @@ void main() {
     expect(
         pleromaWebSocketsService
             .getPublicChannel(
-              local: true,
+              onlyLocal: true,
               onlyMedia: true,
+              onlyFromInstance: null,
+              onlyRemote: null,
             )
             .config
             .calculateWebSocketsUrl()
@@ -92,13 +98,16 @@ void main() {
     expect(
         pleromaWebSocketsService
             .getPublicChannel(
-              local: false,
+              onlyLocal: false,
               onlyMedia: true,
+              onlyFromInstance: null,
+              onlyRemote: null,
             )
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:media");
+    // todo: test more arguments
   });
 
   test('getListChannel', () async {

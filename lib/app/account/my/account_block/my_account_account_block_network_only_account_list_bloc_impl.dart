@@ -34,24 +34,35 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         accountRemoteId: account.remoteId);
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      account.copyWith(
+        pleromaRelationship: accountRelationship,
+      ),
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccount(
+      remoteAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
   }
 
   @override
   Future addAccountBlock({@required IAccount account}) async {
     var accountRelationship = await pleromaAuthAccountService.blockAccount(
-        accountRemoteId: account.remoteId);
-
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      accountRemoteId: account.remoteId,
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    var remoteAccount = mapLocalAccountToRemoteAccount(
+      account.copyWith(
+        pleromaRelationship: accountRelationship,
+      ),
+    );
+
+    await accountRepository.upsertRemoteAccount(
+      remoteAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
   }
 
   @override

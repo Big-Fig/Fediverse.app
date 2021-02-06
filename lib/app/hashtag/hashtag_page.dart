@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
@@ -171,6 +172,10 @@ MaterialPageRoute createHashtagPageRoute({
                       listen: false,
                     ),
                     filterRepository: IFilterRepository.of(
+                      context,
+                      listen: false,
+                    ),
+                    myAccountBloc: IMyAccountBloc.of(
                       context,
                       listen: false,
                     ),

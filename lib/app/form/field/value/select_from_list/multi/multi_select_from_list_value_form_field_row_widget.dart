@@ -7,6 +7,7 @@ import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_l
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 // todo: refactor with single selection
 typedef MultiSelectFromListValueIconMapper<T> = IconData Function(
@@ -94,10 +95,11 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
         children: [
           if (displayIconInRow)
             _MultiSelectFromListValueFormFieldRowValueIconWidget<T>(
-                label: label,
-                valueIconMapper: valueIconMapper,
-                valueTitleMapper: valueTitleMapper,
-                displayIconInDialog: displayIconInDialog),
+              label: label,
+              valueIconMapper: valueIconMapper,
+              valueTitleMapper: valueTitleMapper,
+              displayIconInDialog: displayIconInDialog,
+            ),
           _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>(
             valueTitleMapper: valueTitleMapper,
           ),
@@ -214,45 +216,75 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
   }
 }
 
-void _showDialog<T>({
+Future<T> _showDialog<T>({
   @required BuildContext context,
   @required String label,
   @required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
   @required MultiSelectFromListValueIconMapper<T> valueIconMapper,
   @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
   @required bool displayIconInDialog,
-}) {
-  var actionsStream = fieldBloc.currentValueStream.map((event) {
-    return <SelectionDialogAction>[
-      if (fieldBloc.isNullValuePossible)
-        _buildDialogAction(
-          context: context,
-          fieldBloc: fieldBloc,
-          value: null,
-          selectedValues: fieldBloc.currentValue,
-          valueIconMapper: valueIconMapper,
-          valueTitleMapper: valueTitleMapper,
-          displayIconInDialog: displayIconInDialog,
-        ),
-      ...fieldBloc.possibleValues.map(
-        (value) => _buildDialogAction(
-          context: context,
-          fieldBloc: fieldBloc,
-          value: value,
-          selectedValues: fieldBloc.currentValue,
-          valueIconMapper: valueIconMapper,
-          valueTitleMapper: valueTitleMapper,
-          displayIconInDialog: displayIconInDialog,
-        ),
-      ),
-    ].toList();
-  });
+}) async {
+  var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
-  showFediMultiSelectionChooserDialog(
+  BehaviorSubject<List<SelectionDialogAction>> actionsSubject =
+      BehaviorSubject.seeded(
+    _calculateActions(
+      fieldBloc: fieldBloc,
+      context: context,
+      valueIconMapper: valueIconMapper,
+      valueTitleMapper: valueTitleMapper,
+      displayIconInDialog: displayIconInDialog,
+    ),
+  );
+
+  var subscription = isNeedRebuildActionsStream.listen(
+    (_) {
+      actionsSubject.add(
+        _calculateActions(
+          fieldBloc: fieldBloc,
+          context: context,
+          valueIconMapper: valueIconMapper,
+          valueTitleMapper: valueTitleMapper,
+          displayIconInDialog: displayIconInDialog,
+        ),
+      );
+    },
+  );
+
+  var result = await showFediMultiSelectionChooserDialog<T>(
     context: context,
     title: label,
-    rebuildActionsStream: actionsStream,
+    isNeedRebuildActionsStream: actionsSubject.stream,
   );
+
+  await subscription.cancel();
+
+  await actionsSubject.close();
+
+  return result;
+}
+
+List<SelectionDialogAction> _calculateActions<T>({
+  @required BuildContext context,
+  @required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
+  @required MultiSelectFromListValueIconMapper<T> valueIconMapper,
+  @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  @required bool displayIconInDialog,
+}) {
+  var result = <SelectionDialogAction>[
+    ...fieldBloc.possibleValues.map(
+      (value) => _buildDialogAction(
+        context: context,
+        fieldBloc: fieldBloc,
+        value: value,
+        selectedValues: fieldBloc.currentValue,
+        valueIconMapper: valueIconMapper,
+        valueTitleMapper: valueTitleMapper,
+        displayIconInDialog: displayIconInDialog,
+      ),
+    ),
+  ];
+  return result;
 }
 
 SelectionDialogAction _buildDialogAction<T>({

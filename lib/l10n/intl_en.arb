@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-03T13:55:37+00:00",
+    "@@last_modified": "2021-02-06T15:19:18+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -226,10 +226,9 @@
     "app_timeline_settings_title": "Settings:",
     "app_timeline_settings_content": "{timeline} Timeline",
     "app_timeline_settings_replyVisibilityFilter_self": "Self",
-    "app_timeline_settings_replyVisibilityFilter_following": "Following",
+    "app_timeline_settings_replyVisibilityFilter_following": "Following & Self",
     "app_timeline_settings_replyVisibilityFilter_field_label": "Reply visibility filter",
     "app_timeline_settings_replyVisibilityFilter_field_null": "Not selected",
-    "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Choose reply visibility filter",
     "app_timeline_settings_onlyFromRemoteAccount_field_label": "Only from account",
     "app_timeline_settings_onlyFromRemoteAccount_field_null": "Not selected",
     "app_timeline_settings_withRemoteHashtag_field_label": "With hashtag",
@@ -701,6 +700,7 @@
     "app_chat_selection_count": "Selected ({count})",
     "app_status_post_visibility_state_local": "Local",
     "app_status_expire_datetime_picker_title": "Expire at",
-    "app_status_post_expire_error_notInFuture_dialog_title": "Invalid date or time",
-    "app_status_post_expire_error_notInFuture_dialog_content": "Schedule time must be at least 5 minutes in the future"
+    "app_timeline_settings_onlyFromInstance_field_hint": "pleroma.com",
+    "app_timeline_settings_onlyFromInstance_field_label": "Only from instance",
+    "app_timeline_settings_field_excludeVisibilites_label": "Exclude visibilities"
 }

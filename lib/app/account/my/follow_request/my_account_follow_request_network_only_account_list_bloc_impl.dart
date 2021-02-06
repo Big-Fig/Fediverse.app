@@ -47,7 +47,9 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     IPleromaAccountRelationship accountRelationship,
   ) async {
     var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      account.copyWith(
+        pleromaRelationship: accountRelationship,
+      ),
     );
 
     await myAccountBloc.decreaseFollowingRequestCount();

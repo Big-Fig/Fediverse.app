@@ -9,19 +9,20 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void showFediMultiSelectionChooserDialog(
-    {@required BuildContext context,
-    @required String title,
-    String content,
-    @required Stream<List<SelectionDialogAction>> rebuildActionsStream,
-    bool cancelable = true}) {
+Future<T> showFediMultiSelectionChooserDialog<T>({
+  @required BuildContext context,
+  @required String title,
+  String content,
+  @required Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream,
+  bool cancelable = true,
+}) {
   return showFediModalBottomSheetDialog(
     context: context,
     child: FediMultiSelectChooserDialogBody(
       title: title,
       cancelable: cancelable,
       content: content,
-      rebuildActionsStream: rebuildActionsStream,
+      isNeedRebuildActionsStream: isNeedRebuildActionsStream,
     ),
   );
 }
@@ -31,13 +32,13 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
   final String content;
   final bool cancelable;
 
-  final Stream<List<SelectionDialogAction>> rebuildActionsStream;
+  final Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream;
 
   FediMultiSelectChooserDialogBody({
     @required this.title,
     @required this.content,
     @required this.cancelable,
-    @required this.rebuildActionsStream,
+    @required this.isNeedRebuildActionsStream,
   });
 
   Widget _buildAction({
@@ -137,11 +138,12 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: StreamBuilder(
-              stream: rebuildActionsStream,
+              stream: isNeedRebuildActionsStream,
+              initialData: [],
               builder: (context, snapshot) {
                 var actions = snapshot.data;
                 if (actions == null) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
 
                 return Column(
@@ -149,12 +151,14 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     ...actions
-                        .map((action) => _buildAction(
-                              context: context,
-                              action: action,
-                              isSelected: action.isSelected,
-                              isCancelAction: false,
-                            ))
+                        .map(
+                          (action) => _buildAction(
+                            context: context,
+                            action: action,
+                            isSelected: action.isSelected,
+                            isCancelAction: false,
+                          ),
+                        )
                         .toList()
                   ],
                 );

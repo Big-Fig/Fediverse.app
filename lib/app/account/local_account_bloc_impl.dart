@@ -239,15 +239,20 @@ class LocalAccountBloc extends AccountBloc {
       }
 
       await statusRepository.removeAccountStatusesFromHome(
-          accountRemoteId: account.remoteId);
+        accountRemoteId: account.remoteId,
+      );
     } else {
       newRelationship = await pleromaAuthAccountService.followAccount(
           accountRemoteId: account.remoteId);
       await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account,
-          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
-              followersCount: account.followersCount + 1,
-              pleromaRelationship: newRelationship)));
+        oldLocalAccount: account,
+        newRemoteAccount: mapLocalAccountToRemoteAccount(
+          account.copyWith(
+            followersCount: account.followersCount + 1,
+            pleromaRelationship: newRelationship,
+          ),
+        ),
+      );
     }
 
     return newRelationship;
@@ -362,12 +367,17 @@ class LocalAccountBloc extends AccountBloc {
         "${newRemoteAccount?.pleroma?.relationship}");
     if (account.localId != null) {
       await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
+        oldLocalAccount: account,
+        newRemoteAccount: newRemoteAccount,
+      );
     } else {
       // sometimes we don't have local account id, for example go from search
       // to account page
-      await accountRepository.upsertRemoteAccount(newRemoteAccount,
-          conversationRemoteId: null, chatRemoteId: null);
+      await accountRepository.upsertRemoteAccount(
+        newRemoteAccount,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+      );
     }
   }
 
@@ -409,17 +419,24 @@ class LocalAccountBloc extends AccountBloc {
               () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
 
           remoteAccount = mapLocalAccountToRemoteAccount(
-              mapRemoteAccountToLocalAccount(remoteAccount)
-                  .copyWith(pleromaRelationship: relationship));
+            mapRemoteAccountToLocalAccount(remoteAccount).copyWith(
+              pleromaRelationship: relationship,
+            ),
+          );
 
           if (account.localId != null) {
             await accountRepository.updateLocalAccountByRemoteAccount(
-                oldLocalAccount: account, newRemoteAccount: remoteAccount);
+              oldLocalAccount: account,
+              newRemoteAccount: remoteAccount,
+            );
           } else {
             // sometimes we don't have local account id, for example go from search
             // to account page
-            await accountRepository.upsertRemoteAccount(remoteAccount,
-                conversationRemoteId: null, chatRemoteId: null);
+            await accountRepository.upsertRemoteAccount(
+              remoteAccount,
+              conversationRemoteId: null,
+              chatRemoteId: null,
+            );
           }
         } else {
           _logger.severe(

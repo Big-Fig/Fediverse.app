@@ -10,6 +10,8 @@ abstract class IMultiSelectFromListValueFormFieldBloc<T>
           listen: listen);
 
   List<T> get possibleValues;
+  
+  Stream<bool> get isNeedRebuildActionsStream;
 
   void toggleValue(T value);
 }

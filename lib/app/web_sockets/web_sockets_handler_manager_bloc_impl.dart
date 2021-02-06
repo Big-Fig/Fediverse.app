@@ -107,13 +107,17 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   @override
   IDisposable listenPublicChannel({
     @required WebSocketsListenType listenType,
-    @required bool local,
+    @required bool onlyLocal,
     @required bool onlyMedia,
+    @required bool onlyRemote,
+    @required String onlyFromInstance,
   }) =>
       PublicTimelineWebSocketsHandler(
         listenType: listenType,
-        local: local,
-        onlyMedia: local,
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        onlyRemote: onlyRemote,
+        onlyFromInstance: onlyFromInstance,
         pleromaWebSocketsService: pleromaWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,

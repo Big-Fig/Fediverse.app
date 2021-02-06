@@ -51,9 +51,10 @@ void showEditTimelineSettingsDialog({
                   timelineType: timeline.type,
                   isEnabled: true,
                   isNullableValuesPossible: false,
-                  authInstance:
-                      ICurrentAuthInstanceBloc.of(context, listen: false)
-                          .currentInstance,
+                  authInstance: ICurrentAuthInstanceBloc.of(
+                    context,
+                    listen: false,
+                  ).currentInstance,
                   settingsBloc: timelineSettingsBloc,
                   webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
                     context,

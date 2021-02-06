@@ -16,7 +16,9 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
+    bool onlyRemote = false,
     bool withMuted = false,
+    String onlyFromInstance,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],

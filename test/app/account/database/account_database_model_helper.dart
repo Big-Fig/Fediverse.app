@@ -5,8 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../account_model_helper.dart';
 
-Future<DbAccount> createTestDbAccount(
-        {@required String seed, String remoteId}) async =>
+Future<DbAccount> createTestDbAccount({
+  @required String seed,
+  String remoteId,
+  String acct,
+}) async =>
     DbAccount(
       id: null,
       remoteId: remoteId ?? seed + "remoteId1",
@@ -23,7 +26,7 @@ Future<DbAccount> createTestDbAccount(
       createdAt: DateTime(11),
       avatarStatic: seed + "avatarStatic1",
       avatar: seed + "avatar1",
-      acct: seed + "acct1",
+      acct: acct ?? (seed + "acct1"),
       lastStatusAt: DateTime(12),
       bot: false,
       fields: null,

@@ -62,6 +62,8 @@ class PleromaTimelineService extends DisposableOwner
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       pleromaReplyVisibilityFilter: null,
+      onlyFromInstance: null,
+      onlyRemote: null,
     );
   }
 
@@ -83,6 +85,8 @@ class PleromaTimelineService extends DisposableOwner
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+      onlyFromInstance: null,
+      onlyRemote: null,
     );
   }
 
@@ -105,6 +109,8 @@ class PleromaTimelineService extends DisposableOwner
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       pleromaReplyVisibilityFilter: null,
+      onlyFromInstance: null,
+      onlyRemote: null,
     );
   }
 
@@ -113,7 +119,9 @@ class PleromaTimelineService extends DisposableOwner
     IPleromaPaginationRequest pagination,
     bool onlyWithMedia = false,
     bool onlyLocal = false,
+    bool onlyRemote = false,
     bool withMuted = false,
+    String onlyFromInstance,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],
@@ -127,6 +135,8 @@ class PleromaTimelineService extends DisposableOwner
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+      onlyFromInstance: onlyFromInstance,
+      onlyRemote: onlyRemote,
     );
   }
 
@@ -136,17 +146,21 @@ class PleromaTimelineService extends DisposableOwner
     @required bool onlyWithMedia,
     @required bool onlyLocal,
     @required bool withMuted,
+    @required bool onlyRemote,
     @required List<PleromaVisibility> excludeVisibilities,
     @required PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+    @required String onlyFromInstance,
   }) async {
     var request = RestRequest.get(
       relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
       queryArgs: [
-        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
-        RestRequestQueryArg("local", onlyLocal.toString()),
+        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+        if (onlyLocal == true) RestRequestQueryArg("local", "true"),
+        if (onlyRemote == true) RestRequestQueryArg("remote", "true"),
         if (onlyWithMedia != null)
           RestRequestQueryArg("only_media", onlyWithMedia.toString()),
-        RestRequestQueryArg("with_muted", withMuted.toString()),
+        if (onlyFromInstance != null)
+          RestRequestQueryArg("instance", onlyFromInstance),
         if (pleromaReplyVisibilityFilter != null)
           RestRequestQueryArg(
               "reply_visibility", pleromaReplyVisibilityFilter.toJsonValue()),

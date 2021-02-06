@@ -14,6 +14,7 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -37,8 +38,10 @@ class StatusRepository extends AsyncInitLoadingBloc
   ConversationStatusesDao conversationStatusesDao;
   IAccountRepository accountRepository;
 
-  StatusRepository(
-      {@required AppDatabase appDatabase, @required this.accountRepository}) {
+  StatusRepository({
+    @required AppDatabase appDatabase,
+    @required this.accountRepository,
+  }) {
     dao = appDatabase.statusDao;
     hashtagsDao = appDatabase.statusHashtagsDao;
     listsDao = appDatabase.statusListsDao;
@@ -656,6 +659,28 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     var query = dao.startSelectQuery();
 
+    assert(
+        !(filters?.onlyLocalCondition != null &&
+            filters?.onlyRemoteCondition != null),
+        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+
+    if (filters?.onlyFromInstance != null) {
+      assert(filters?.onlyRemoteCondition != null,
+          "onlyRemoteCondition should be notNull if onlyFromInstance was set");
+
+      dao.addOnlyFromInstanceWhere(
+        query,
+        filters?.onlyFromInstance,
+      );
+    } else {
+      if (filters?.onlyRemoteCondition != null) {
+        dao.addOnlyRemoteWhere(
+          query,
+          filters?.onlyRemoteCondition?.localUrlHost,
+        );
+      }
+    }
+
     if (filters?.onlyLocalCondition != null) {
       assert(filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true);
 
@@ -704,6 +729,22 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyNotDeletedWhere(query);
     }
 
+    var includeReplyToAccountFollowing = false;
+
+    var replyVisibilityFilter =
+        filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.self) {
+        dao.addOnlyInReplyToAccountRemoteIdOrNotReply(
+          query,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      } else if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+        includeReplyToAccountFollowing = true;
+      }
+    }
+
     if (filters?.excludeTextConditions?.isNotEmpty == true) {
       for (var textCondition in filters?.excludeTextConditions) {
         dao.addExcludeContentWhere(
@@ -721,7 +762,8 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTermData.orderByType == StatusRepositoryOrderType.remoteId);
+      assert(
+          orderingTermData.orderByType == StatusRepositoryOrderType.remoteId);
       dao.addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
@@ -746,15 +788,28 @@ class StatusRepository extends AsyncInitLoadingBloc
     var needFilterByHomeTimeline = filters?.isFromHomeTimeline == true;
     var joinQuery = query.join(
       dao.populateStatusJoin(
-          includeAccountFollowing: needFilterByFollowing,
-          includeStatusLists: needFilterByList,
-          includeStatusHashtags: needFilterByTag,
-          includeConversations: needFilterByConversation ||
-              filters?.forceJoinConversation == true,
-          includeHomeTimeline: needFilterByHomeTimeline),
+        includeAccountFollowing: needFilterByFollowing,
+        includeStatusLists: needFilterByList,
+        includeStatusHashtags: needFilterByTag,
+        includeConversations:
+            needFilterByConversation || filters?.forceJoinConversation == true,
+        includeHomeTimeline: needFilterByHomeTimeline,
+        includeReplyToAccountFollowing: includeReplyToAccountFollowing,
+      ),
     );
 
     var finalQuery = joinQuery;
+
+    if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
+        null) {
+      if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+        finalQuery = dao.addReplyToAccountSelfOrFollowingWhere(
+          joinQuery,
+            filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+        );
+      }
+    }
+
     if (needFilterByFollowing) {
       finalQuery = dao.addFollowingWhere(
         joinQuery,

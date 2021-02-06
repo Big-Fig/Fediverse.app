@@ -117,7 +117,7 @@ class _MultiMediaPickerPageFoldersWidget extends StatelessWidget {
                             IPaginationListBloc>(
                           update: (context, value, previous) => value,
                           child:
-                          const _MultiMediaPickerPageGalleryFolderWidget(),
+                              const _MultiMediaPickerPageGalleryFolderWidget(),
                         ),
                       ),
                     ),
@@ -141,9 +141,7 @@ class _MultiMediaPickerPageNoFoldersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        S
-            .of(context)
-            .file_picker_empty,
+        S.of(context).file_picker_empty,
       ),
     );
   }
@@ -183,8 +181,7 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
 }
 
 class _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc
-    extends DisposableOwner
-    implements IFediIntBadgeBloc {
+    extends DisposableOwner implements IFediIntBadgeBloc {
   final IMultiMediaPickerBloc multiMediaPickerBloc;
 
   _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc({
@@ -213,8 +210,8 @@ class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
         return DisposableProvider<IFediIntBadgeBloc>(
           create: (context) =>
               _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc(
-                multiMediaPickerBloc: multiMediaPickerBloc,
-              ),
+            multiMediaPickerBloc: multiMediaPickerBloc,
+          ),
           child: FediIntBadgeWidget(
             child: FediIconButton(
               color: isSomethingSelected
@@ -223,8 +220,8 @@ class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
               icon: Icon(FediIcons.check),
               onPressed: isSomethingSelected
                   ? () {
-                multiMediaPickerBloc.acceptSelectedFilesMetadata();
-              }
+                      multiMediaPickerBloc.acceptSelectedFilesMetadata();
+                    }
                   : null,
             ),
           ),
@@ -274,7 +271,7 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
 
         if (pickedFile != null) {
           var multiMediaPickerBloc =
-          IMultiMediaPickerBloc.of(context, listen: false);
+              IMultiMediaPickerBloc.of(context, listen: false);
 
           await multiMediaPickerBloc.toggleFileMetadataSelection(
             FileMediaDeviceFileMetadata(
@@ -291,16 +288,15 @@ class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
           height: double.infinity,
           child: Icon(
             FediIcons.camera,
-            color: IFediUiColorTheme
-                .of(context)
-                .darkGrey,
+            color: IFediUiColorTheme.of(context).darkGrey,
             size: 40.0,
           )),
     );
   }
 }
 
-Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(BuildContext context, {
+Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(
+  BuildContext context, {
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,
     MediaDeviceFileType.video
@@ -315,7 +311,7 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(BuildContext context, {
           return PhotoManagerMediaDeviceGalleryBloc(
             typesToPick: typesToPick,
             storagePermissionBloc:
-            IStoragePermissionBloc.of(context, listen: false),
+                IStoragePermissionBloc.of(context, listen: false),
             paginationSettingsBloc: IPaginationSettingsBloc.of(
               context,
               listen: false,
@@ -324,14 +320,13 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(BuildContext context, {
         }, // provide parent abstract implementation by type
         child: DisposableProvider<IMultiMediaPickerBloc>(
           create: (context) {
-
-            var multiMediaPickerBloc = MultiMediaPickerBloc(
-                selectionCountLimit: selectionCountLimit);
+            var multiMediaPickerBloc =
+                MultiMediaPickerBloc(selectionCountLimit: selectionCountLimit);
 
             multiMediaPickerBloc.addDisposable(
               streamSubscription:
-              multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
-                    (List<IMediaDeviceFile> acceptedFiles) {
+                  multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
+                (List<IMediaDeviceFile> acceptedFiles) {
                   Navigator.pop(context, acceptedFiles);
                 },
               ),
@@ -339,8 +334,8 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(BuildContext context, {
 
             multiMediaPickerBloc.addDisposable(
               streamSubscription:
-              multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
-                    (_) {
+                  multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
+                (_) {
                   var toastService = IToastService.of(context, listen: false);
 
                   toastService.showInfoToast(
@@ -351,7 +346,7 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(BuildContext context, {
                     content: S
                         .of(context)
                         .file_picker_multi_selectionCountLimitReached_notification_content(
-                        selectionCountLimit),
+                            selectionCountLimit),
                   );
                 },
               ),
@@ -409,9 +404,7 @@ class _MultiMediaPickerPageAppBarTitle extends StatelessWidget {
                       const FediSmallHorizontalSpacer(),
                       Icon(
                         FediIcons.chevron_down,
-                        color: IFediUiColorTheme
-                            .of(context)
-                            .darkGrey,
+                        color: IFediUiColorTheme.of(context).darkGrey,
                         size: 14.0,
                       )
                     ],
@@ -420,9 +413,7 @@ class _MultiMediaPickerPageAppBarTitle extends StatelessWidget {
               });
         } else {
           return Text(
-            S
-                .of(context)
-                .file_picker_multi_title,
+            S.of(context).file_picker_multi_title,
           );
         }
       },
@@ -430,10 +421,12 @@ class _MultiMediaPickerPageAppBarTitle extends StatelessWidget {
   }
 }
 
-void _showFolderChooserModalBottomSheet(BuildContext context,
-    IMediaDeviceGalleryBloc mediaDeviceGalleryBloc) {
+Future<T> _showFolderChooserModalBottomSheet<T>(
+  BuildContext context,
+  IMediaDeviceGalleryBloc mediaDeviceGalleryBloc,
+) {
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
-  return showFediModalBottomSheetDialog(
+  return showFediModalBottomSheetDialog<T>(
     context: context,
     child: Provider.value(
       value: mediaDeviceGalleryBloc,
@@ -450,9 +443,9 @@ void _showFolderChooserModalBottomSheet(BuildContext context,
               title: Text(
                 _calculateFolderTitle(folder),
                 style:
-                folder == mediaDeviceGalleryBloc.selectedFolderData?.folder
-                    ? fediUiTextTheme.mediumShortBoldDarkGrey
-                    : fediUiTextTheme.mediumShortDarkGrey,
+                    folder == mediaDeviceGalleryBloc.selectedFolderData?.folder
+                        ? fediUiTextTheme.mediumShortBoldDarkGrey
+                        : fediUiTextTheme.mediumShortDarkGrey,
               ),
             );
           }).toList(),

@@ -30,6 +30,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         withMuted: false,
         excludeVisibilities: [],
         websocketsUpdates: true,
+        onlyFromInstance: null,
       );
 
   static TimelineSettings createDefaultHomeSettings() => TimelineSettings.home(
@@ -129,6 +130,10 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   @JsonKey(name: "web_sockets_updates")
   final bool webSocketsUpdates;
 
+  @HiveField(17)
+  @JsonKey(name: "instance")
+  final String onlyFromInstance;
+
   TimelineSettings({
     @required this.onlyWithMedia,
     @required this.excludeReplies,
@@ -144,6 +149,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     @required this.onlyPinned,
     @required this.excludeReblogs,
     @required this.webSocketsUpdates,
+    @required this.onlyFromInstance,
   });
 
   TimelineSettings.home({
@@ -168,6 +174,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyPinned: null,
           excludeReblogs: null,
           webSocketsUpdates: websocketsUpdates,
+          onlyFromInstance: null,
         );
 
   TimelineSettings.public({
@@ -177,6 +184,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required bool websocketsUpdates,
+    @required String onlyFromInstance,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,
@@ -194,6 +202,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyPinned: null,
           excludeReblogs: null,
           webSocketsUpdates: websocketsUpdates,
+          onlyFromInstance: onlyFromInstance,
         );
 
   TimelineSettings.hashtag({
@@ -220,6 +229,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyPinned: null,
           excludeReblogs: null,
           webSocketsUpdates: websocketsUpdates,
+          onlyFromInstance: null,
         );
 
   TimelineSettings.list({
@@ -244,6 +254,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyPinned: null,
           excludeReblogs: null,
           webSocketsUpdates: websocketsUpdates,
+          onlyFromInstance: null,
         );
 
   TimelineSettings.account({
@@ -268,6 +279,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
           webSocketsUpdates: websocketsUpdates,
+          onlyFromInstance: null,
         );
 
   @override
@@ -288,6 +300,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyFromRemoteAccount == other.onlyFromRemoteAccount &&
           onlyPinned == other.onlyPinned &&
           excludeReblogs == other.excludeReblogs &&
+          onlyFromInstance == other.onlyFromInstance &&
           webSocketsUpdates == other.webSocketsUpdates;
 
   @override
@@ -305,6 +318,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       onlyFromRemoteAccount.hashCode ^
       onlyPinned.hashCode ^
       excludeReblogs.hashCode ^
+      onlyFromInstance.hashCode ^
       webSocketsUpdates.hashCode;
 
   @override
@@ -321,6 +335,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         ' PleromaReplyVisibilityFilterString:'
         ' $replyVisibilityFilterString,'
         ' onlyFromAccountWithRemoteId: $onlyFromRemoteAccount,'
+        ' onlyFromInstance: $onlyFromInstance,'
         ' websocketsUpdates: $webSocketsUpdates,'
         ' onlyPinned: $onlyPinned, excludeReblogs: $excludeReblogs}';
   }
@@ -369,6 +384,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     bool onlyPinned,
     bool excludeReblogs,
     bool webSocketsUpdates,
+    String onlyFromInstance,
   }) =>
       TimelineSettings(
         onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
@@ -388,6 +404,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         onlyPinned: onlyPinned ?? this.onlyPinned,
         excludeReblogs: excludeReblogs ?? this.excludeReblogs,
         webSocketsUpdates: webSocketsUpdates ?? this.webSocketsUpdates,
+        onlyFromInstance: onlyFromInstance ?? this.onlyFromInstance,
       );
 
   static TimelineSettings createDefaultSettings(TimelineType timelineType) {

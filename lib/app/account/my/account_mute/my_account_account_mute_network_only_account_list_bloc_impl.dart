@@ -49,11 +49,16 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      account.copyWith(
+        pleromaRelationship: accountRelationship,
+      ),
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccount(
+      remoteAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
   }
 
   @override
@@ -136,7 +141,9 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      account.copyWith(
+        pleromaRelationship: accountRelationship,
+      ),
     );
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
