@@ -54,7 +54,7 @@ class StatusRepositoryFilters {
   final List<StatusTextCondition> excludeTextConditions;
   final bool onlyNotDeleted;
   final StatusOnlyRemoteCondition onlyRemoteCondition;
-  final bool forceJoinConversation;
+  final bool mustBeConversationItem;
   final String onlyFromInstance;
   final PleromaReplyVisibilityFilterCondition replyVisibilityFilterCondition;
 
@@ -78,7 +78,7 @@ class StatusRepositoryFilters {
     this.replyVisibilityFilterCondition,
     this.onlyRemoteCondition,
     this.onlyNotDeleted = true,
-    this.forceJoinConversation = false,
+    this.mustBeConversationItem = false,
   });
 
   static StatusRepositoryFilters createForOnlyInConversation({
@@ -88,9 +88,9 @@ class StatusRepositoryFilters {
         onlyInConversation: conversation,
       );
 
-  static StatusRepositoryFilters createForForceJoinConversations() =>
+  static StatusRepositoryFilters createForMustBeConversationItem() =>
       StatusRepositoryFilters(
-        forceJoinConversation: true,
+        mustBeConversationItem: true,
       );
 
   @override
@@ -114,7 +114,7 @@ class StatusRepositoryFilters {
           onlyFavourited == other.onlyFavourited &&
           onlyBookmarked == other.onlyBookmarked &&
           eq(excludeTextConditions, other.excludeTextConditions) &&
-          forceJoinConversation == other.forceJoinConversation &&
+          mustBeConversationItem == other.mustBeConversationItem &&
           onlyFromInstance == other.onlyFromInstance &&
           replyVisibilityFilterCondition == other.replyVisibilityFilterCondition &&
           onlyRemoteCondition == other.onlyRemoteCondition &&
@@ -139,7 +139,7 @@ class StatusRepositoryFilters {
       excludeTextConditions.hashCode ^
       onlyFromInstance.hashCode ^
       replyVisibilityFilterCondition.hashCode ^
-      forceJoinConversation.hashCode ^
+      mustBeConversationItem.hashCode ^
       onlyRemoteCondition.hashCode ^
       onlyNotDeleted.hashCode;
 
@@ -160,7 +160,7 @@ class StatusRepositoryFilters {
         ' isFromHomeTimeline: $isFromHomeTimeline,'
         ' onlyFavourited: $onlyFavourited,'
         ' onlyBookmarked: $onlyBookmarked,'
-        ' forceJoinConversation: $forceJoinConversation,'
+        ' forceJoinConversation: $mustBeConversationItem,'
         ' excludeTextConditions: $excludeTextConditions,'
         ' onlyFromInstance: $onlyFromInstance,'
         ' onlyRemoteCondition: $onlyRemoteCondition,'

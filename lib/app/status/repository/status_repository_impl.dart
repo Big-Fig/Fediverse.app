@@ -599,7 +599,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   }) async {
     var query = createQuery(
       orderingTermData: StatusRepositoryOrderingTermData.remoteIdDesc,
-      filters: StatusRepositoryFilters.createForForceJoinConversations(),
+      filters: StatusRepositoryFilters.createForMustBeConversationItem(),
       pagination: null,
     );
 
@@ -792,7 +792,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         includeStatusLists: needFilterByList,
         includeStatusHashtags: needFilterByTag,
         includeConversations:
-            needFilterByConversation || filters?.forceJoinConversation == true,
+            needFilterByConversation || filters?.mustBeConversationItem == true,
         includeHomeTimeline: needFilterByHomeTimeline,
         includeReplyToAccountFollowing: includeReplyToAccountFollowing,
       ),
