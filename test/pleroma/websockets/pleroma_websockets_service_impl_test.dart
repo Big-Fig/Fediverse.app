@@ -107,7 +107,32 @@ void main() {
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:media");
-    // todo: test more arguments
+
+    expect(
+        pleromaWebSocketsService
+            .getPublicChannel(
+          onlyLocal: false,
+          onlyMedia: true,
+          onlyFromInstance: null,
+          onlyRemote: true,
+        )
+            .config
+            .calculateWebSocketsUrl()
+            .toString(),
+        "$wssHost?access_token=$accessToken&stream=public:remote:media");
+      expect(
+        pleromaWebSocketsService
+            .getPublicChannel(
+          onlyLocal: false,
+          onlyMedia: true,
+          onlyFromInstance: "lain.com",
+          onlyRemote: true,
+        )
+            .config
+            .calculateWebSocketsUrl()
+            .toString(),
+        "$wssHost?access_token=$accessToken&stream=public:remote:media?instance=lain.com");
+
   });
 
   test('getListChannel', () async {
