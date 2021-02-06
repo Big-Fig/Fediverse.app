@@ -196,7 +196,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
           String localDomain) =>
       query
-        ..where((status) => (status.pleromaLocal.equals(true) |
+        ..where((status) => (status.pleromaLocal.equals(true).not() &
             status.url.like("%$localDomain%").not()));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
