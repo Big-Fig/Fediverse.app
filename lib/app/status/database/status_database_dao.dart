@@ -272,15 +272,18 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           JoinedSelectStatement query, String myAccountRemoteId) =>
       query
         ..where(
-          CustomExpression<bool>("("
-              "$_statusAliasId.in_reply_to_account_remote_id = IS NULL"
-              " OR "
-              "$_statusAliasId.in_reply_to_account_remote_id = $myAccountRemoteId"
-              ")"
-              " OR "
-              "$_replyToAccountFollowingsAliasId.account_remote_id = "
-              "'$myAccountRemoteId'"),
-        );
+          CustomExpression<bool>(
+                  "db_statuses.in_reply_to_account_remote_id IS NULL")
+            |
+              CustomExpression<bool>(
+                  "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'")
+              |
+              CustomExpression<bool>(
+                  "$_replyToAccountFollowingsAliasId.account_remote_id = "
+                  // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
+                  "'$myAccountRemoteId'"),
+        )
+  ;
 
   //
   // query
@@ -316,7 +319,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => isNull(status.deleted));
+      query
+        ..where(
+            (status) => isNull(status.deleted) | status.deleted.equals(false));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyInReplyToAccountRemoteIdOrNotReply(
