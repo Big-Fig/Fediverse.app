@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-03T16:08:50+00:00",
+    "@@last_modified": "2021-02-06T15:18:53+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -226,10 +226,9 @@
     "app_timeline_settings_title": "Настройки:",
     "app_timeline_settings_content": "Лента {timeline}",
     "app_timeline_settings_replyVisibilityFilter_self": "Свои",
-    "app_timeline_settings_replyVisibilityFilter_following": "Подписки",
+    "app_timeline_settings_replyVisibilityFilter_following": "Только ко мне & к моим подпискам",
     "app_timeline_settings_replyVisibilityFilter_field_label": "Фильтр видимости ответов",
     "app_timeline_settings_replyVisibilityFilter_field_null": "Не выбрано",
-    "app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title": "Выберите фильтер",
     "app_timeline_settings_onlyFromRemoteAccount_field_label": "Только от аккаунта",
     "app_timeline_settings_onlyFromRemoteAccount_field_null": "Не выбрано",
     "app_timeline_settings_withRemoteHashtag_field_label": "С хэштэгом",
@@ -700,5 +699,8 @@
     "app_share_action_shareToNewStatus": "Поделиться",
     "app_chat_selection_count": "Отмечено ({count})",
     "app_status_post_visibility_state_local": "Локальная",
-    "app_status_expire_datetime_picker_title": "Запланировать удаление"
+    "app_status_expire_datetime_picker_title": "Запланировать удаление",
+    "app_timeline_settings_onlyFromInstance_field_hint": "pleroma.com",
+    "app_timeline_settings_onlyFromInstance_field_label": "Только от сервера",
+    "app_timeline_settings_field_excludeVisibilites_label": "Исключить видимости"
 }

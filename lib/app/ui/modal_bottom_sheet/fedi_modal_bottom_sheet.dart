@@ -5,12 +5,12 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 
-void showFediModalBottomSheetDialog({
+Future<T> showFediModalBottomSheetDialog<T>({
   @required BuildContext context,
   @required Widget child,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
-  showModalBottomSheet(
+  return showModalBottomSheet<T>(
     context: context,
     backgroundColor: fediUiColorTheme.transparent,
     barrierColor: fediUiColorTheme.modalBottomSheetDarkOverlay,

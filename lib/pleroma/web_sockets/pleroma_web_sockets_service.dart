@@ -29,8 +29,10 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
 
   /// Returns all public events
   IWebSocketsChannel<PleromaWebSocketsEvent> getPublicChannel({
-    @required bool local,
+    @required bool onlyLocal,
+    @required bool onlyRemote,
     @required bool onlyMedia,
+    @required String onlyFromInstance,
   });
 
   /// Returns all public events for a particular hashtag

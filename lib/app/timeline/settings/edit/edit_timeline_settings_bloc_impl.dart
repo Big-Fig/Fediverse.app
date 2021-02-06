@@ -1,5 +1,9 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl.dart';
+import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
+import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc_impl.dart';
+import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc_impl.dart';
@@ -12,12 +16,9 @@ import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/list/list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/validation/value_form_field_non_null_validation.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -65,11 +66,12 @@ class EditTimelineSettingsBloc
       onlyInCustomListFieldBloc;
 
   @override
-  final IValueFormFieldBloc<PleromaReplyVisibilityFilter>
+  final ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc
       replyVisibilityFilterFieldBloc;
 
   @override
-  ListValueFormFieldBloc<PleromaVisibility> excludeVisibilitiesFieldBloc;
+  IStatusVisibilityMultiSelectFromListFormFieldBloc
+      excludeVisibilitiesFieldBloc;
 
   @override
   final IBoolValueFormFieldBloc webSocketsUpdatesFieldBloc;
@@ -77,6 +79,9 @@ class EditTimelineSettingsBloc
   @override
   final ITimelineSettingsBloc settingsBloc;
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
+
+  @override
+  final IStringValueFormFieldBloc onlyFromInstanceFieldBloc;
 
   EditTimelineSettingsBloc({
     @required this.settingsBloc,
@@ -127,7 +132,8 @@ class EditTimelineSettingsBloc
         ),
         onlyFromAccountFieldBloc = TimelineSettingsOnlyFromAccountFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromRemoteAccount,
-          isNullValuePossible: isNullableValuesPossible || timelineType != TimelineType.account,
+          isNullValuePossible:
+              isNullableValuesPossible || timelineType != TimelineType.account,
           isEnabled: timelineType
               .isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
                   authInstance),
@@ -157,14 +163,16 @@ class EditTimelineSettingsBloc
               ValueFormFieldNonNullValidationError.createValidator(),
           ],
         ),
-        replyVisibilityFilterFieldBloc = ValueFormFieldBloc(
+        replyVisibilityFilterFieldBloc =
+            TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.replyVisibilityFilter,
           isEnabled: timelineType
               .isReplyVisibilityFilterSupportedOnInstance(authInstance),
           validators: [],
           isNullValuePossible: true,
         ),
-        excludeVisibilitiesFieldBloc = ListValueFormFieldBloc(
+        excludeVisibilitiesFieldBloc =
+            StatusVisibilityMultiSelectFromListFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeVisibilities,
           isEnabled: timelineType
               .isExcludeVisibilitiesFilterSupportedOnInstance(authInstance),
@@ -177,6 +185,13 @@ class EditTimelineSettingsBloc
           isEnabled: timelineType
                   .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance) &&
               webSocketsSettingsBloc.handlingType.isEnabled,
+        ),
+        onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
+          originValue: settingsBloc.settingsData?.onlyFromInstance,
+          maxLength: 50,
+          isEnabled: timelineType
+              .isOnlyFromInstanceFilterSupportedOnInstance(authInstance),
+          validators: [],
         ),
         super(
           isEnabled: isEnabled,
@@ -196,6 +211,7 @@ class EditTimelineSettingsBloc
     addDisposable(disposable: onlyInCustomListFieldBloc);
     addDisposable(disposable: replyVisibilityFilterFieldBloc);
     addDisposable(disposable: excludeVisibilitiesFieldBloc);
+    addDisposable(disposable: onlyFromInstanceFieldBloc);
   }
 
   @override
@@ -213,11 +229,15 @@ class EditTimelineSettingsBloc
         onlyInCustomListFieldBloc,
         replyVisibilityFilterFieldBloc,
         excludeVisibilitiesFieldBloc,
+        onlyFromInstanceFieldBloc
       ];
 
   @override
   TimelineSettings calculateCurrentFormFieldsSettings() {
     var oldPreferences = settingsBloc.settingsData;
+
+    var onlyFromInstanceExist =
+        onlyFromInstanceFieldBloc.currentValue?.isNotEmpty == true;
 
     var oldOnlyRemote = oldPreferences?.onlyRemote;
     var oldOnlyLocal = oldPreferences?.onlyLocal;
@@ -225,34 +245,44 @@ class EditTimelineSettingsBloc
     var newOnlyRemote = onlyRemoteFieldBloc.currentValue;
     var newOnlyLocal = onlyLocalFieldBloc.currentValue;
 
+    if (newOnlyLocal == true && oldOnlyLocal == false) {
+      onlyFromInstanceExist = false;
+      onlyFromInstanceFieldBloc.textEditingController.text = "";
+      newOnlyRemote = false;
+      onlyRemoteFieldBloc.changeCurrentValue(newOnlyRemote);
+    }
+    if (newOnlyRemote != true) {
+      if (onlyFromInstanceExist) {
+        newOnlyRemote = true;
+        onlyRemoteFieldBloc.changeCurrentValue(newOnlyRemote);
+      }
+    }
+
     if (newOnlyRemote == true && oldOnlyRemote == false) {
       newOnlyLocal = false;
       onlyLocalFieldBloc.changeCurrentValue(newOnlyLocal);
     }
 
-    if (newOnlyLocal == true && oldOnlyLocal == false) {
-      newOnlyRemote = false;
-      onlyRemoteFieldBloc.changeCurrentValue(newOnlyRemote);
-    }
-
     return TimelineSettings(
-        onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
-        excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
-        excludeReplies: excludeRepliesFieldBloc.currentValue,
-        onlyRemote: newOnlyRemote,
-        onlyLocal: newOnlyLocal,
-        withMuted: withMutedFieldBloc.currentValue,
-        excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-            ?.map((visibility) => visibility.toJsonValue())
-            ?.toList(),
-        onlyInRemoteList: onlyInCustomListFieldBloc.currentValue,
-        withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
-        replyVisibilityFilterString:
-            replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
-        onlyFromRemoteAccount: onlyFromAccountFieldBloc.currentValue,
-        excludeReblogs: excludeReblogsFieldBloc.currentValue,
-        onlyPinned: onlyPinnedFieldBloc.currentValue,
-        webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue);
+      onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
+      excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
+      excludeReplies: excludeRepliesFieldBloc.currentValue,
+      onlyRemote: newOnlyRemote,
+      onlyLocal: newOnlyLocal,
+      withMuted: withMutedFieldBloc.currentValue,
+      excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
+          ?.map((visibility) => visibility.toJsonValue())
+          ?.toList(),
+      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue,
+      withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
+      replyVisibilityFilterString:
+          replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
+      onlyFromRemoteAccount: onlyFromAccountFieldBloc.currentValue,
+      excludeReblogs: excludeReblogsFieldBloc.currentValue,
+      onlyPinned: onlyPinnedFieldBloc.currentValue,
+      webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue,
+      onlyFromInstance: onlyFromInstanceFieldBloc.currentValue,
+    );
   }
 
   @override

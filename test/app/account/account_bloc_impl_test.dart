@@ -111,7 +111,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listenedValue, account.acct);
 
-    await _update(account.copyWith(acct: newValue));
+    await _update(
+      account.copyWith(
+        acct: newValue,
+      ),
+    );
 
     expect(accountBloc.acct, newValue);
     expect(listenedValue, newValue);
@@ -420,15 +424,25 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    when(pleromaAuthAccountServiceMock.blockAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship.copyWith(blocking: true));
+    when(
+      pleromaAuthAccountServiceMock.blockAccount(
+        accountRemoteId: account.remoteId,
+      ),
+    ).thenAnswer(
+      (_) async => account.pleromaRelationship.copyWith(
+        blocking: true,
+      ),
+    );
 
-    when(pleromaAuthAccountServiceMock.unBlockAccount(
-            accountRemoteId: account.remoteId))
-        .thenAnswer(
-            (_) async => account.pleromaRelationship.copyWith(blocking: false));
+    when(
+      pleromaAuthAccountServiceMock.unBlockAccount(
+        accountRemoteId: account.remoteId,
+      ),
+    ).thenAnswer(
+      (_) async => account.pleromaRelationship.copyWith(
+        blocking: false,
+      ),
+    );
 
     var initialValue = account.pleromaRelationship.blocking;
 

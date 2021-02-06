@@ -9,13 +9,14 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void showFediChooserDialog(
-    {@required BuildContext context,
-    @required String title,
-    String content,
-    @required List<DialogAction> actions,
-    bool cancelable = true}) {
-  return showFediModalBottomSheetDialog(
+Future<T> showFediChooserDialog<T>({
+  @required BuildContext context,
+  @required String title,
+  String content,
+  @required List<DialogAction> actions,
+  bool cancelable = true,
+}) {
+  return showFediModalBottomSheetDialog<T>(
     context: context,
     child: FediChooserDialogBody(
       title: title,

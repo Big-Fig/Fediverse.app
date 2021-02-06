@@ -16,10 +16,11 @@ typedef ValueToIconMapper<T> = IconData Function(T value);
 typedef ValueChangedCallback<T> = Function(T oldValue, T newValue);
 
 class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
-  final bool enabled;
+  final bool isEnabled;
   final bool nullable;
   final String label;
-  final String desc;
+  final String description;
+  final String descriptionOnDisabled;
   final String error;
   final String chooserTitle;
   final T value;
@@ -29,10 +30,11 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final ValueChangedCallback<T> onChanged;
 
   FediFormSingleChooseFromListFieldRow({
-    @required this.enabled,
+    @required this.isEnabled,
     @required this.nullable,
     @required this.label,
-    @required this.desc,
+    @required this.description,
+    @required this.descriptionOnDisabled,
     @required this.error,
     @required this.chooserTitle,
     @required this.value,
@@ -57,7 +59,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InkWell(
-                    onTap: enabled
+                    onTap: isEnabled
                         ? () {
                             showFediSingleSelectionChooserDialog(
                               context: context,
@@ -90,7 +92,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                             padding: FediPadding.horizontalSmallPadding,
                             child: Icon(
                               valueToIconMapper(value),
-                              color: enabled
+                              color: isEnabled
                                   ? IFediUiColorTheme.of(context).darkGrey
                                   : IFediUiColorTheme.of(context).lightGrey,
                             ),
@@ -100,7 +102,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                             padding: FediPadding.horizontalSmallPadding,
                             child: Text(
                               valueToTextMapper(value),
-                              style: enabled
+                              style: isEnabled
                                   ? IFediUiTextTheme.of(context).mediumShortDarkGrey
                                   : IFediUiTextTheme.of(context).mediumShortLightGrey,
                             ),
@@ -109,7 +111,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                           padding: FediPadding.horizontalSmallPadding,
                           child: Icon(
                             FediIcons.pen,
-                            color: enabled
+                            color: isEnabled
                                 ? IFediUiColorTheme.of(context).darkGrey
                                 : IFediUiColorTheme.of(context).lightGrey,
                           ),
@@ -126,7 +128,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                         padding: FediPadding.horizontalSmallPadding,
                         child: Icon(
                           FediIcons.delete,
-                          color: enabled
+                          color: isEnabled
                               ? IFediUiColorTheme.of(context).darkGrey
                               : IFediUiColorTheme.of(context).lightGrey,
                         ),
@@ -136,10 +138,31 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
               ),
             ],
           ),
-          if (desc != null) FediFormColumnDesc(desc),
+          if (description != null) _buildDescription(),
           if (error != null) FediFormColumnError(error),
         ],
       ),
     );
+  }
+
+
+  Widget _buildDescription() {
+    if (isEnabled) {
+      if (description != null) {
+        return FediFormColumnDesc(description);
+      } else {
+        return const SizedBox.shrink();
+      }
+    } else {
+      if (descriptionOnDisabled != null) {
+        return FediFormColumnDesc(descriptionOnDisabled);
+      } else {
+        if (description != null) {
+          return FediFormColumnDesc(description);
+        } else {
+          return const SizedBox.shrink();
+        }
+      }
+    }
   }
 }

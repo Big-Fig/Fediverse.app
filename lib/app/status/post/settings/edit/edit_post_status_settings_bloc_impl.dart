@@ -5,8 +5,8 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
-import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/app/status/visibility/form/status_visibility_single_from_list_value_form_field_bloc_impl.dart';
+import 'package:fedi/app/status/visibility/form/single_from_list/status_visibility_single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/status/visibility/form/single_from_list/status_visibility_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
@@ -20,7 +20,7 @@ class EditPostStatusSettingsBloc
 
   final List<PleromaVisibility> pleromaVisibilityPossibleValues;
   @override
-  IStatusVisibilitySingleFromListValueFormFieldBloc
+  IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;
 
   @override
@@ -51,7 +51,7 @@ class EditPostStatusSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     defaultVisibilityFormFieldBloc =
-        StatusVisibilitySingleFromListValueFormFieldBloc(
+        StatusVisibilitySelectSingleFromListValueFormFieldBloc(
       originValue: currentSettings.defaultVisibilityPleroma,
       isEnabled: isEnabled,
       possibleValues: pleromaVisibilityPossibleValues,

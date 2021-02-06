@@ -197,6 +197,8 @@ class Timeline implements IJsonObject {
 
   PleromaAccount get onlyFromRemoteAccount => settings?.onlyFromRemoteAccount;
 
+  String get onlyFromInstance => settings?.onlyFromInstance;
+
   bool get onlyPinned => settings?.onlyPinned;
 
   bool get excludeReblogs => settings?.excludeReblogs;

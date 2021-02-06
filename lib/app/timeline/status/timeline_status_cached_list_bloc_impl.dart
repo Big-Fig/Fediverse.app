@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
@@ -37,6 +38,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
+  final IMyAccountBloc myAccountBloc;
 
   Timeline get timeline => timelineLocalPreferencesBloc.value;
 
@@ -59,6 +61,15 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
   }
 
+  StatusOnlyRemoteCondition get onlyRemoteCondition {
+    if (timeline.onlyRemote == true) {
+      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
+      return StatusOnlyRemoteCondition(localUrlHost);
+    } else {
+      return null;
+    }
+  }
+
   StatusRepositoryFilters get _statusRepositoryFilters =>
       StatusRepositoryFilters(
         onlyInConversation: null,
@@ -75,15 +86,21 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         onlyNoReplies: timeline.excludeReplies,
         isFromHomeTimeline: isFromHomeTimeline,
         excludeTextConditions: excludeTextConditions,
+        replyVisibilityFilterCondition: timeline.replyVisibilityFilter != null
+            ? PleromaReplyVisibilityFilterCondition(
+                myAccountRemoteId: myAccountBloc.myAccount.remoteId,
+                replyVisibilityFilter: timeline.replyVisibilityFilter,
+              )
+            : null,
+        onlyFromInstance: timeline.onlyFromInstance,
+        onlyRemoteCondition: onlyRemoteCondition,
       );
 
   @override
   Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
-          .map((timeline) => timeline?.settings)
-          .distinct()
-          .map((_) {
-        return true;
-      }).distinct();
+      .map((timeline) => timeline?.settings)
+      .map((_) => true)
+      .distinct();
 
   TimelineStatusCachedListBloc({
     @required this.pleromaAccountService,
@@ -93,6 +110,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
     @required this.webSocketsHandlerManagerBloc,
+    @required this.myAccountBloc,
     @required WebSocketsListenType webSocketsListenType,
   }) {
     resubscribeWebSocketsUpdates(webSocketsListenType);
@@ -121,10 +139,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenPublicChannel(
             listenType: webSocketsListenType,
-            local: timeline.onlyLocal,
+            onlyLocal: timeline.onlyLocal,
             onlyMedia: timeline.onlyWithMedia,
+            onlyRemote: timeline.onlyRemote,
+            onlyFromInstance: timeline.onlyFromInstance,
           );
-
           break;
         case TimelineType.home:
           webSocketsListenerDisposable =
@@ -181,6 +200,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
     List<IPleromaStatus> remoteStatuses;
     var onlyLocal = timeline.onlyLocal == true;
+    var onlyRemote = timeline.onlyRemote == true;
+    var onlyFromInstance = timeline.onlyFromInstance;
     var withMuted = timeline.withMuted == true;
     var onlyWithMedia = timeline.onlyWithMedia;
     var excludeVisibilities = timeline.excludeVisibilities;
@@ -195,6 +216,8 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         remoteStatuses = await pleromaTimelineService.getPublicTimeline(
           pagination: pagination,
           onlyLocal: onlyLocal,
+          onlyRemote: onlyRemote,
+          onlyFromInstance: onlyFromInstance,
           onlyWithMedia: onlyWithMedia,
           withMuted: withMuted,
           excludeVisibilities: excludeVisibilities,
@@ -311,6 +334,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         ),
         webSocketsListenType: webSocketsListenType,
         filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+        myAccountBloc: IMyAccountBloc.of(
           context,
           listen: false,
         ),

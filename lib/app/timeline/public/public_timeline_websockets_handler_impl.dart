@@ -18,12 +18,16 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
-    @required bool local,
+    @required bool onlyLocal,
+    @required bool onlyRemote,
     @required bool onlyMedia,
     @required WebSocketsListenType listenType,
+    @required String onlyFromInstance,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
-            local: local,
+            onlyLocal: onlyLocal,
+            onlyRemote: onlyRemote,
+            onlyFromInstance: onlyFromInstance,
             onlyMedia: onlyMedia,
           ),
           listenType: listenType,

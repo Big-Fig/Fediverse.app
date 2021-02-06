@@ -2,6 +2,10 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
+import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
+import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_widget.dart';
+import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc.dart';
+import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_widget.dart';
 import 'package:fedi/app/timeline/settings/edit/edit_timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_row_widget.dart';
@@ -36,50 +40,67 @@ class EditTimelineSettingsWidget extends StatelessWidget {
     switch (timelineType) {
       case TimelineType.home:
         children = [
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildOnlyLocalField(context, editSettingsBloc, authInstance),
+          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          buildOnlyMediaField(context, editSettingsBloc, authInstance),
+          buildWithMutedField(context, editSettingsBloc, authInstance),
+          buildReplyVisibilityFilterField(
+              context, editSettingsBloc, authInstance),
+          buildExcludeVisibilitiesField(
+              context, editSettingsBloc, authInstance),
         ];
         break;
       case TimelineType.public:
         children = [
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildOnlyLocalField(context, editSettingsBloc, authInstance),
           buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+          buildOnlyFromInstanceField(context, editSettingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          // buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+          buildOnlyMediaField(context, editSettingsBloc, authInstance),
+          buildWithMutedField(context, editSettingsBloc, authInstance),
+          buildReplyVisibilityFilterField(
+              context, editSettingsBloc, authInstance),
+          buildExcludeVisibilitiesField(
+              context, editSettingsBloc, authInstance),
         ];
         break;
       case TimelineType.customList:
         children = [
+          buildOnlyLocalField(context, editSettingsBloc, authInstance),
+          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
           buildCustomListField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+          buildOnlyMediaField(context, editSettingsBloc, authInstance),
+          buildWithMutedField(context, editSettingsBloc, authInstance),
+          buildExcludeVisibilitiesField(
+              context, editSettingsBloc, authInstance),
         ];
         break;
 
       case TimelineType.hashtag:
         children = [
-          buildHashtagField(context, editSettingsBloc, authInstance),
-          buildWithMutedField(context, editSettingsBloc, authInstance),
-          buildOnlyMediaField(context, editSettingsBloc, authInstance),
           buildOnlyLocalField(context, editSettingsBloc, authInstance),
+          buildOnlyRemoteField(context, editSettingsBloc, authInstance),
+          buildHashtagField(context, editSettingsBloc, authInstance),
           buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
+          buildOnlyMediaField(context, editSettingsBloc, authInstance),
+          buildWithMutedField(context, editSettingsBloc, authInstance),
+          buildExcludeVisibilitiesField(
+              context, editSettingsBloc, authInstance),
         ];
         break;
       case TimelineType.account:
         children = [
           buildAccountField(context, editSettingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
           buildOnlyMediaField(context, editSettingsBloc, authInstance),
-          buildOnlyPinnedField(context, editSettingsBloc, authInstance),
+          buildHashtagField(context, editSettingsBloc, authInstance),
           buildExcludeReblogsField(context, editSettingsBloc, authInstance),
           buildExcludeRepliesField(context, editSettingsBloc, authInstance),
-          buildWebSocketsUpdatesField(context, editSettingsBloc, authInstance),
-          buildHashtagField(context, editSettingsBloc, authInstance),
+          buildOnlyPinnedField(context, editSettingsBloc, authInstance),
+          buildExcludeVisibilitiesField(
+              context, editSettingsBloc, authInstance),
         ];
         break;
 
@@ -87,10 +108,15 @@ class EditTimelineSettingsWidget extends StatelessWidget {
         throw "Invalid timelineType $timelineType";
     }
 
-    return ListView(
-      shrinkWrap: shrinkWrap,
-      children: children,
-    );
+    if (shrinkWrap) {
+      return Column(
+        children: children,
+      );
+    } else {
+      return ListView(
+        children: children,
+      );
+    }
   }
 
   Widget buildWithMutedField(
@@ -207,24 +233,41 @@ class EditTimelineSettingsWidget extends StatelessWidget {
     );
   }
 
-  // Widget buildReplyVisibilityFilterField(
-  //   BuildContext context,
-  //   ITimelineSettingsFormBloc settingsBloc,
-  //   AuthInstance authInstance,
-  // ) {
-  //   // TODO: not supported in local repository yet
-  //   return SizedBox.shrink();
-  //   var isSupported =
-  //       type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
-  //
-  //   return TimelineSettingsReplyVisibilityFormFieldRowWidget(
-  //     formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
-  //     enabled: isSupported,
-  //     desc: isSupported
-  //         ? null
-  //         : "app.timeline.settings.field.not_supported.desc".tr(),
-  //   );
-  // }
+  Widget buildReplyVisibilityFilterField(
+    BuildContext context,
+    IEditTimelineSettingsBloc editSettingsBloc,
+    AuthInstance authInstance,
+  ) {
+    return ProxyProvider<IEditTimelineSettingsBloc,
+        ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc>(
+      update: (context, value, previous) =>
+          value.replyVisibilityFilterFieldBloc,
+      child:
+          TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget(
+        description: null,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
+    );
+  }
+
+  Widget buildExcludeVisibilitiesField(
+    BuildContext context,
+    IEditTimelineSettingsBloc editSettingsBloc,
+    AuthInstance authInstance,
+  ) {
+    return ProxyProvider<IEditTimelineSettingsBloc,
+        IStatusVisibilityMultiSelectFromListFormFieldBloc>(
+      update: (context, value, previous) => value.excludeVisibilitiesFieldBloc,
+      child: StatusVisibilityMultiSelectFromListFormFieldWidget(
+        label:
+            S.of(context).app_timeline_settings_field_excludeVisibilites_label,
+        description: null,
+        descriptionOnDisabled:
+            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
+      ),
+    );
+  }
 
   Widget buildCustomListField(
     BuildContext context,
@@ -271,6 +314,23 @@ class EditTimelineSettingsWidget extends StatelessWidget {
           autocorrect: false,
           hint:
               S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
+          onSubmitted: null,
+          textInputAction: TextInputAction.done,
+        ),
+      );
+
+  Widget buildOnlyFromInstanceField(
+    BuildContext context,
+    IEditTimelineSettingsBloc settingsBloc,
+    AuthInstance authInstance,
+  ) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyFromInstanceFieldBloc,
+        child: StringValueFormFieldRowWidget(
+          label:
+              S.of(context).app_timeline_settings_onlyFromInstance_field_label,
+          autocorrect: false,
+          hint: S.of(context).app_timeline_settings_onlyFromInstance_field_hint,
           onSubmitted: null,
           textInputAction: TextInputAction.done,
         ),

@@ -61,6 +61,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
         return S.of(context).app_status_post_visibility_state_private;
         break;
     }
+
     throw "Not supported visibility $visibility";
   }
 }

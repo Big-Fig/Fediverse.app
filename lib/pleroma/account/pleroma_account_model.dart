@@ -518,19 +518,19 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 abstract class IPleromaAccountRelationship
     implements IMastodonAccountRelationship {
   IPleromaAccountRelationship copyWith({
-    int id,
     bool blocking,
     bool domainBlocking,
     bool endorsed,
     bool followedBy,
     bool following,
+    String id,
     bool muting,
     bool mutingNotifications,
     bool requested,
     bool showingReblogs,
     bool subscribing,
     bool blockedBy,
-    bool note,
+    String note,
   });
 }
 
@@ -607,35 +607,34 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
 
   @override
   PleromaAccountRelationship copyWith({
-    int id,
     bool blocking,
     bool domainBlocking,
     bool endorsed,
     bool followedBy,
     bool following,
+    String id,
     bool muting,
     bool mutingNotifications,
     bool requested,
     bool showingReblogs,
     bool subscribing,
     bool blockedBy,
-    bool note,
-  }) =>
-      PleromaAccountRelationship(
-        id: id ?? this.id,
-        blocking: blocking ?? this.blocking,
-        domainBlocking: domainBlocking ?? this.domainBlocking,
-        endorsed: endorsed ?? this.endorsed,
-        followedBy: followedBy ?? this.followedBy,
-        following: following ?? this.following,
-        muting: muting ?? this.muting,
-        mutingNotifications: mutingNotifications ?? this.mutingNotifications,
-        requested: requested ?? this.requested,
-        showingReblogs: showingReblogs ?? this.showingReblogs,
-        subscribing: subscribing ?? this.subscribing,
-        blockedBy: blockedBy ?? this.blockedBy,
-        note: note ?? this.note,
-      );
+    String note,
+  }) => PleromaAccountRelationship(
+      blocking: blocking ?? this.blocking,
+      domainBlocking: domainBlocking ?? this.domainBlocking,
+      endorsed: endorsed ?? this.endorsed,
+      followedBy: followedBy ?? this.followedBy,
+      following: following ?? this.following,
+      id: id ?? this.id,
+      muting: muting ?? this.muting,
+      mutingNotifications: mutingNotifications ?? this.mutingNotifications,
+      requested: requested ?? this.requested,
+      showingReblogs: showingReblogs ?? this.showingReblogs,
+      subscribing: subscribing ?? this.subscribing,
+      blockedBy: blockedBy ?? this.blockedBy,
+      note: note ?? this.note,
+    );
 
   @override
   bool operator ==(Object other) =>
@@ -652,9 +651,9 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
           mutingNotifications == other.mutingNotifications &&
           requested == other.requested &&
           showingReblogs == other.showingReblogs &&
+          subscribing == other.subscribing &&
           blockedBy == other.blockedBy &&
-          note == other.note &&
-          subscribing == other.subscribing;
+          note == other.note;
 
   @override
   int get hashCode =>
@@ -668,9 +667,9 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
       mutingNotifications.hashCode ^
       requested.hashCode ^
       showingReblogs.hashCode ^
+      subscribing.hashCode ^
       blockedBy.hashCode ^
-      note.hashCode ^
-      subscribing.hashCode;
+      note.hashCode;
 
   @override
   String toString() {

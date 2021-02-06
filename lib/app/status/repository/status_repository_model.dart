@@ -1,8 +1,40 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
+
+Function eq = const ListEquality().equals;
+
+class PleromaReplyVisibilityFilterCondition {
+  final String myAccountRemoteId;
+  final PleromaReplyVisibilityFilter replyVisibilityFilter;
+
+  PleromaReplyVisibilityFilterCondition({
+    @required this.myAccountRemoteId,
+    @required this.replyVisibilityFilter,
+  });
+
+  @override
+  String toString() => 'PleromaReplyVisibilityFilterCondition{'
+      'myAccountRemoteId: $myAccountRemoteId, '
+      'replyVisibilityFilter: $replyVisibilityFilter'
+      '}';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaReplyVisibilityFilterCondition &&
+          runtimeType == other.runtimeType &&
+          myAccountRemoteId == other.myAccountRemoteId &&
+          replyVisibilityFilter == other.replyVisibilityFilter;
+
+  @override
+  int get hashCode =>
+      myAccountRemoteId.hashCode ^ replyVisibilityFilter.hashCode;
+}
 
 class StatusRepositoryFilters {
   final String onlyInListWithRemoteId;
@@ -21,7 +53,10 @@ class StatusRepositoryFilters {
   final bool onlyBookmarked;
   final List<StatusTextCondition> excludeTextConditions;
   final bool onlyNotDeleted;
+  final StatusOnlyRemoteCondition onlyRemoteCondition;
   final bool forceJoinConversation;
+  final String onlyFromInstance;
+  final PleromaReplyVisibilityFilterCondition replyVisibilityFilterCondition;
 
   StatusRepositoryFilters({
     this.onlyInListWithRemoteId,
@@ -39,6 +74,9 @@ class StatusRepositoryFilters {
     this.onlyFavourited,
     this.onlyBookmarked,
     this.excludeTextConditions,
+    this.onlyFromInstance,
+    this.replyVisibilityFilterCondition,
+    this.onlyRemoteCondition,
     this.onlyNotDeleted = true,
     this.forceJoinConversation = false,
   });
@@ -69,14 +107,17 @@ class StatusRepositoryFilters {
           onlyLocalCondition == other.onlyLocalCondition &&
           onlyWithMedia == other.onlyWithMedia &&
           withMuted == other.withMuted &&
-          excludeVisibilities == other.excludeVisibilities &&
+          eq(excludeVisibilities, other.excludeVisibilities) &&
           onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
           onlyNoReplies == other.onlyNoReplies &&
           isFromHomeTimeline == other.isFromHomeTimeline &&
           onlyFavourited == other.onlyFavourited &&
           onlyBookmarked == other.onlyBookmarked &&
-          excludeTextConditions == other.excludeTextConditions &&
+          eq(excludeTextConditions, other.excludeTextConditions) &&
           forceJoinConversation == other.forceJoinConversation &&
+          onlyFromInstance == other.onlyFromInstance &&
+          replyVisibilityFilterCondition == other.replyVisibilityFilterCondition &&
+          onlyRemoteCondition == other.onlyRemoteCondition &&
           onlyNotDeleted == other.onlyNotDeleted;
 
   @override
@@ -96,12 +137,14 @@ class StatusRepositoryFilters {
       onlyFavourited.hashCode ^
       onlyBookmarked.hashCode ^
       excludeTextConditions.hashCode ^
+      onlyFromInstance.hashCode ^
+      replyVisibilityFilterCondition.hashCode ^
       forceJoinConversation.hashCode ^
+      onlyRemoteCondition.hashCode ^
       onlyNotDeleted.hashCode;
 
   @override
-  String toString() {
-    return 'StatusRepositoryFilters{'
+  String toString() => 'StatusRepositoryFilters{'
         'onlyInListWithRemoteId: $onlyInListWithRemoteId,'
         ' onlyWithHashtag: $onlyWithHashtag,'
         ' onlyFromAccountsFollowingByAccount:'
@@ -119,9 +162,11 @@ class StatusRepositoryFilters {
         ' onlyBookmarked: $onlyBookmarked,'
         ' forceJoinConversation: $forceJoinConversation,'
         ' excludeTextConditions: $excludeTextConditions,'
+        ' onlyFromInstance: $onlyFromInstance,'
+        ' onlyRemoteCondition: $onlyRemoteCondition,'
+        ' replyVisibilityFilterCondition: $replyVisibilityFilterCondition,'
         ' onlyNotDeleted: $onlyNotDeleted'
         '}';
-  }
 }
 
 enum StatusRepositoryOrderType {
@@ -171,6 +216,27 @@ class StatusOnlyLocalCondition {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StatusOnlyLocalCondition &&
+          runtimeType == other.runtimeType &&
+          localUrlHost == other.localUrlHost;
+
+  @override
+  int get hashCode => localUrlHost.hashCode;
+}
+
+class StatusOnlyRemoteCondition {
+  final String localUrlHost;
+
+  StatusOnlyRemoteCondition(this.localUrlHost);
+
+  @override
+  String toString() {
+    return 'StatusOnlyRemoteCondition{localUrlHost: $localUrlHost}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StatusOnlyRemoteCondition &&
           runtimeType == other.runtimeType &&
           localUrlHost == other.localUrlHost;
 

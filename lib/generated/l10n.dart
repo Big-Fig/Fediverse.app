@@ -2294,10 +2294,10 @@ class S {
     );
   }
 
-  /// `Following`
+  /// `Following & Self`
   String get app_timeline_settings_replyVisibilityFilter_following {
     return Intl.message(
-      'Following',
+      'Following & Self',
       name: 'app_timeline_settings_replyVisibilityFilter_following',
       desc: '',
       args: [],
@@ -2319,16 +2319,6 @@ class S {
     return Intl.message(
       'Not selected',
       name: 'app_timeline_settings_replyVisibilityFilter_field_null',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose reply visibility filter`
-  String get app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title {
-    return Intl.message(
-      'Choose reply visibility filter',
-      name: 'app_timeline_settings_replyVisibilityFilter_field_chooser_dialog_title',
       desc: '',
       args: [],
     );
@@ -6852,21 +6842,31 @@ class S {
     );
   }
 
-  /// `Invalid date or time`
-  String get app_status_post_expire_error_notInFuture_dialog_title {
+  /// `pleroma.com`
+  String get app_timeline_settings_onlyFromInstance_field_hint {
     return Intl.message(
-      'Invalid date or time',
-      name: 'app_status_post_expire_error_notInFuture_dialog_title',
+      'pleroma.com',
+      name: 'app_timeline_settings_onlyFromInstance_field_hint',
       desc: '',
       args: [],
     );
   }
 
-  /// `Schedule time must be at least 5 minutes in the future`
-  String get app_status_post_expire_error_notInFuture_dialog_content {
+  /// `Only from instance`
+  String get app_timeline_settings_onlyFromInstance_field_label {
     return Intl.message(
-      'Schedule time must be at least 5 minutes in the future',
-      name: 'app_status_post_expire_error_notInFuture_dialog_content',
+      'Only from instance',
+      name: 'app_timeline_settings_onlyFromInstance_field_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exclude visibilities`
+  String get app_timeline_settings_field_excludeVisibilites_label {
+    return Intl.message(
+      'Exclude visibilities',
+      name: 'app_timeline_settings_field_excludeVisibilites_label',
       desc: '',
       args: [],
     );

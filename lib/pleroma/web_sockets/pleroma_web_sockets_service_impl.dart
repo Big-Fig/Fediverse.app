@@ -77,12 +77,36 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getPublicChannel({
-    @required bool local,
+    @required bool onlyLocal,
+    @required bool onlyRemote,
     @required bool onlyMedia,
+    @required String onlyFromInstance,
   }) {
-    var stream = local ? "public:local" : "public";
-    if (onlyMedia) {
+    var stream = "public";
+
+    assert(
+      !(onlyLocal == true && onlyRemote == true),
+      "it is not possible to set onlyLocal and onlyRemote at same time",
+    );
+
+    if (onlyFromInstance != null) {
+      assert(
+        onlyRemote == true,
+        "onlyRemote should be true if instance != null",
+      );
+    }
+
+    if (onlyLocal == true) {
+      stream += ":local";
+    }
+    if (onlyRemote == true) {
+      stream += ":remote";
+    }
+    if (onlyMedia == true) {
       stream += ":media";
+    }
+    if (onlyFromInstance != null) {
+      stream += "?instance=$onlyFromInstance";
     }
     return getOrCreateNewChannel(
       stream: stream,

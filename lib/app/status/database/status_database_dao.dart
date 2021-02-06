@@ -16,6 +16,7 @@ var _replyReblogAliasId = "replyReblog";
 var _replyReblogAccountAliasId = "replyReblogAccount";
 var _statusAliasId = "status";
 var _accountFollowingsAliasId = "accountFollowings";
+var _replyToAccountFollowingsAliasId = "replyToAccountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
 var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
@@ -38,7 +39,8 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
       "DELETE FROM db_statuses WHERE created_at < :createdAt",
   "deleteOlderThanLocalId": "DELETE FROM db_statuses WHERE id = "
       ":localId;",
-  "getNewestByLocalIdWithOffset": "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
+  "getNewestByLocalIdWithOffset":
+      "SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset",
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
@@ -53,6 +55,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   $DbStatusHashtagsTable statusHashtagsAlias;
   $DbStatusListsTable statusListsAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;
+  $DbAccountFollowingsTable replyToAccountFollowingsAlias;
   $DbConversationStatusesTable conversationStatusesAlias;
   $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
@@ -68,6 +71,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     statusAlias = alias(db.dbStatuses, _statusAliasId);
     accountFollowingsAlias =
         alias(db.dbAccountFollowings, _accountFollowingsAliasId);
+    replyToAccountFollowingsAlias =
+        alias(db.dbAccountFollowings, _replyToAccountFollowingsAliasId);
     statusHashtagsAlias = alias(db.dbStatusHashtags, _statusHashtagsAliasId);
     statusListsAlias = alias(db.dbStatusLists, _statusListsAliasId);
     conversationStatusesAlias =
@@ -108,6 +113,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         includeStatusHashtags: false,
         includeConversations: false,
         includeHomeTimeline: false,
+        includeReplyToAccountFollowing: false,
       ),
     ));
     return sqlQuery;
@@ -121,6 +127,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         includeStatusHashtags: false,
         includeConversations: false,
         includeHomeTimeline: false,
+        includeReplyToAccountFollowing: false,
       ));
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
@@ -131,6 +138,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         includeStatusHashtags: false,
         includeConversations: false,
         includeHomeTimeline: false,
+        includeReplyToAccountFollowing: false,
       ));
 
   Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
@@ -182,6 +190,20 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..where((status) =>
             status.pleromaLocal.equals(true) |
             status.url.like("%$localDomain%"));
+
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+          String localDomain) =>
+      query
+        ..where((status) => (status.pleromaLocal.equals(true) |
+            status.url.like("%$localDomain%").not()));
+
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+          String instance) =>
+      query..where((status) => status.url.like("%$instance%"));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeContentWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
@@ -246,6 +268,26 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
             "$_conversationStatusesAliasId.conversation_remote_id"
             " = '$conversationRemoteId'"));
 
+  JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
+          JoinedSelectStatement query, String myAccountRemoteId) =>
+      query
+        ..where(
+          CustomExpression<bool>("("
+              "$_statusAliasId.in_reply_to_account_remote_id = IS NULL"
+              " OR "
+              "$_statusAliasId.in_reply_to_account_remote_id = $myAccountRemoteId"
+              ")"
+              " OR "
+              "$_replyToAccountFollowingsAliasId.account_remote_id = "
+              "'$myAccountRemoteId'"),
+        );
+
+  //
+  // query
+  // ..where((status) =>
+  // isNull(status.inReplyToAccountRemoteId) |
+  // status.inReplyToAccountRemoteId.equals(accountRemoteId));
+
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotMutedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
@@ -275,6 +317,16 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.deleted));
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyInReplyToAccountRemoteIdOrNotReply(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String accountRemoteId,
+  ) =>
+          query
+            ..where((status) =>
+                isNull(status.inReplyToAccountRemoteId) |
+                status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
@@ -369,6 +421,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   List<Join<Table, DataClass>> populateStatusJoin({
     @required includeAccountFollowing,
+    @required includeReplyToAccountFollowing,
     @required includeStatusHashtags,
     @required includeStatusLists,
     @required includeConversations,
@@ -418,6 +471,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                   accountFollowingsAlias,
                   accountFollowingsAlias.followingAccountRemoteId
                       .equalsExp(dbStatuses.accountRemoteId))
+            ]
+          : []),
+      ...(includeReplyToAccountFollowing
+          ? [
+              leftOuterJoin(
+                  replyToAccountFollowingsAlias,
+                  replyToAccountFollowingsAlias.followingAccountRemoteId
+                      .equalsExp(dbStatuses.inReplyToAccountRemoteId))
             ]
           : []),
       ...(includeStatusHashtags

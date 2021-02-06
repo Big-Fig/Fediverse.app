@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
@@ -243,6 +244,10 @@ MaterialPageRoute createCustomListPageRoute({
                         context,
                         listen: false,
                       ),
+                      myAccountBloc: IMyAccountBloc.of(
+                        context,
+                        listen: false,
+                      ),
                     );
                     return customListTimelineStatusCachedListBloc;
                   },
@@ -272,8 +277,9 @@ MaterialPageRoute createCustomListPageRoute({
 
                                   if (onChanged != null) {
                                     customListBloc.addDisposable(
-                                      streamSubscription:
-                                          customListBloc.customListStream.listen(
+                                      streamSubscription: customListBloc
+                                          .customListStream
+                                          .listen(
                                         (customList) {
                                           onChanged(customList);
                                         },

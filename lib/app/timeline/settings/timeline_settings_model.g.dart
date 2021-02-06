@@ -31,13 +31,14 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyPinned: fields[14] as bool,
       excludeReblogs: fields[15] as bool,
       webSocketsUpdates: fields[16] as bool,
+      onlyFromInstance: fields[17] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, TimelineSettings obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(1)
       ..write(obj.onlyWithMedia)
       ..writeByte(2)
@@ -65,7 +66,9 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..writeByte(15)
       ..write(obj.excludeReblogs)
       ..writeByte(16)
-      ..write(obj.webSocketsUpdates);
+      ..write(obj.webSocketsUpdates)
+      ..writeByte(17)
+      ..write(obj.onlyFromInstance);
   }
 
   @override
@@ -107,6 +110,7 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
     onlyPinned: json['only_pinned'] as bool,
     excludeReblogs: json['exclude_reblogs'] as bool,
     webSocketsUpdates: json['web_sockets_updates'] as bool,
+    onlyFromInstance: json['instance'] as String,
   );
 }
 
@@ -126,4 +130,5 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'only_pinned': instance.onlyPinned,
       'exclude_reblogs': instance.excludeReblogs,
       'web_sockets_updates': instance.webSocketsUpdates,
+      'instance': instance.onlyFromInstance,
     };

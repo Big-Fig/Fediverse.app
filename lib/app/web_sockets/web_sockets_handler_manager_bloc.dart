@@ -30,8 +30,10 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
 
   IDisposable listenPublicChannel({
     @required WebSocketsListenType listenType,
-    @required bool local,
+    @required bool onlyLocal,
     @required bool onlyMedia,
+    @required bool onlyRemote,
+    @required String onlyFromInstance,
   });
 
   IDisposable listenHashtagChannel({

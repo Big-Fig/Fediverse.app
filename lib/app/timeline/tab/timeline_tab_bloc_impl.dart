@@ -90,6 +90,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         webSocketsListenType: webSocketsListenType,
         filterRepository: filterRepository,
+        myAccountBloc: myAccountBloc,
       );
 
   @override
