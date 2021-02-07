@@ -6,6 +6,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
@@ -58,36 +59,37 @@ class LocalStatusBloc extends StatusBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       LocalStatusBloc(
-          status: status,
-          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-          delayInit: delayInit,
-          isNeedWatchLocalRepositoryForUpdates:
-              isNeedWatchLocalRepositoryForUpdates,
-          pleromaAuthStatusService: IPleromaAuthStatusService.of(
-            context,
-            listen: false,
-          ),
-          pleromaAccountService: IPleromaAccountService.of(
-            context,
-            listen: false,
-          ),
-          pleromaStatusEmojiReactionService:
-              IPleromaStatusEmojiReactionService.of(
-            context,
-            listen: false,
-          ),
-          pleromaPollService: IPleromaPollService.of(
-            context,
-            listen: false,
-          ),
-          accountRepository: IAccountRepository.of(
-            context,
-            listen: false,
-          ),
-          statusRepository: IStatusRepository.of(
-            context,
-            listen: false,
-          ));
+        status: status,
+        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+        delayInit: delayInit,
+        isNeedWatchLocalRepositoryForUpdates:
+            isNeedWatchLocalRepositoryForUpdates,
+        pleromaAuthStatusService: IPleromaAuthStatusService.of(
+          context,
+          listen: false,
+        ),
+        pleromaAccountService: IPleromaAccountService.of(
+          context,
+          listen: false,
+        ),
+        pleromaStatusEmojiReactionService:
+            IPleromaStatusEmojiReactionService.of(
+          context,
+          listen: false,
+        ),
+        pleromaPollService: IPleromaPollService.of(
+          context,
+          listen: false,
+        ),
+        accountRepository: IAccountRepository.of(
+          context,
+          listen: false,
+        ),
+        statusRepository: IStatusRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
@@ -135,7 +137,9 @@ class LocalStatusBloc extends StatusBloc {
           chatRemoteId: null,
         );
       }
-      account = await accountRepository.findByRemoteId(accountRemoteId);
+      account = await accountRepository.findByRemoteId(
+        accountRemoteId,
+      );
     }
 
     return account;
@@ -144,13 +148,17 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future<IAccount> getInReplyToAccount() {
     assert(status.inReplyToAccountRemoteId != null);
-    return accountRepository.findByRemoteId(status.inReplyToAccountRemoteId);
+    return accountRepository.findByRemoteId(
+      status.inReplyToAccountRemoteId,
+    );
   }
 
   @override
   Stream<IAccount> watchInReplyToAccount() {
     assert(status.inReplyToAccountRemoteId != null);
-    return accountRepository.watchByRemoteId(status.inReplyToAccountRemoteId);
+    return accountRepository.watchByRemoteId(
+      status.inReplyToAccountRemoteId,
+    );
   }
 
   @override
@@ -159,13 +167,17 @@ class LocalStatusBloc extends StatusBloc {
     if (status.inReplyToStatus != null) {
       return status.inReplyToStatus;
     }
-    return await statusRepository.findByRemoteId(status.inReplyToRemoteId);
+    return await statusRepository.findByRemoteId(
+      status.inReplyToRemoteId,
+    );
   }
 
   @override
   Stream<IStatus> watchInReplyToStatus() {
     assert(status.inReplyToRemoteId != null);
-    return statusRepository.watchByRemoteId(status.inReplyToRemoteId);
+    return statusRepository.watchByRemoteId(
+      status.inReplyToRemoteId,
+    );
   }
 
   @override
@@ -209,14 +221,18 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.favourited == true) {
       remoteStatus = await pleromaAuthStatusService.unFavouriteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     } else {
       remoteStatus = await pleromaAuthStatusService.favouriteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
+      oldLocalStatus: reblogOrOriginal,
+      newRemoteStatus: remoteStatus,
+    );
 
     return statusRepository.findByRemoteId(remoteStatus.id);
   }
@@ -228,21 +244,51 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.reblogged == true) {
       remoteStatus = await pleromaAuthStatusService.unReblogStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     } else {
       remoteStatus = await pleromaAuthStatusService.reblogStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(
+      remoteStatus,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
 
     return statusRepository.findByRemoteId(remoteStatus.id);
   }
 
   @override
+  Future<IStatus> mute({
+    @required Duration duration,
+  }) async {
+    if (duration != null) {
+      assert(
+        pleromaAuthStatusService.isPleromaInstance,
+        "Muting with duration supported only on pleroma",
+      );
+    }
+
+    return await _actualMuteUnmute(
+      expireDurationInSeconds: duration?.totalSeconds,
+    );
+  }
+
+  @override
   Future<IStatus> toggleMute() async {
+    return await _actualMuteUnmute(
+      expireDurationInSeconds: null,
+    );
+  }
+
+  Future<IStatus> _actualMuteUnmute({
+    @required int expireDurationInSeconds,
+  }) async {
     IPleromaStatus remoteStatus;
+
     if (reblogOrOriginal.muted == true) {
       remoteStatus = await pleromaAuthStatusService.unMuteStatus(
         statusRemoteId: reblogOrOriginal.remoteId,
@@ -250,13 +296,18 @@ class LocalStatusBloc extends StatusBloc {
     } else {
       remoteStatus = await pleromaAuthStatusService.muteStatus(
         statusRemoteId: reblogOrOriginal.remoteId,
+        expireDurationInSeconds: expireDurationInSeconds,
       );
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
+      oldLocalStatus: reblogOrOriginal,
+      newRemoteStatus: remoteStatus,
+    );
 
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
+    return statusRepository.findByRemoteId(
+      reblogOrOriginal.remoteId,
+    );
   }
 
   @override
@@ -264,16 +315,22 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.bookmarked == true) {
       remoteStatus = await pleromaAuthStatusService.unBookmarkStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     } else {
       remoteStatus = await pleromaAuthStatusService.bookmarkStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
+      oldLocalStatus: reblogOrOriginal,
+      newRemoteStatus: remoteStatus,
+    );
 
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
+    return statusRepository.findByRemoteId(
+      reblogOrOriginal.remoteId,
+    );
   }
 
   @override
@@ -281,22 +338,29 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.pinned == true) {
       remoteStatus = await pleromaAuthStatusService.unPinStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     } else {
       // reblogged don't support pin
       if (reblogOrOriginal.reblogged) {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-            statusRemoteId: reblogOrOriginal.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId,
+        );
       } else {
         remoteStatus = await pleromaAuthStatusService.pinStatus(
-            statusRemoteId: reblogOrOriginal.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId,
+        );
       }
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
+      oldLocalStatus: reblogOrOriginal,
+      newRemoteStatus: remoteStatus,
+    );
 
-    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
+    return statusRepository.findByRemoteId(
+      reblogOrOriginal.remoteId,
+    );
   }
 
   @override
@@ -304,11 +368,15 @@ class LocalStatusBloc extends StatusBloc {
     await pleromaAuthStatusService.deleteStatus(
         statusRemoteId: status.remoteId);
 
-    await statusRepository.markStatusAsDeleted(statusRemoteId: status.remoteId);
+    await statusRepository.markStatusAsDeleted(
+      statusRemoteId: status.remoteId,
+    );
   }
 
   @override
-  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji}) async {
+  Future<IPleromaStatus> toggleEmojiReaction({
+    @required String emoji,
+  }) async {
     var alreadyAdded;
     var foundEmojiReaction = pleromaEmojiReactions?.firstWhere(
         (emojiReaction) => emojiReaction.name == emoji,
@@ -323,21 +391,30 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (alreadyAdded) {
       remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
-          statusRemoteId: status.remoteId, emoji: emoji);
+        statusRemoteId: status.remoteId,
+        emoji: emoji,
+      );
     } else {
       remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
-          statusRemoteId: status.remoteId, emoji: emoji);
+        statusRemoteId: status.remoteId,
+        emoji: emoji,
+      );
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(
+      remoteStatus,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
 
     return remoteStatus;
   }
 
   Future _updateByRemoteStatus(IPleromaStatus remoteStatus) {
     return statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+      oldLocalStatus: status,
+      newRemoteStatus: remoteStatus,
+    );
   }
 
   @override
@@ -352,4 +429,7 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Uri get remoteInstanceUriOrNull => null;
+
+  @override
+  bool get isPleromaInstance => pleromaAuthStatusService.isPleromaInstance;
 }

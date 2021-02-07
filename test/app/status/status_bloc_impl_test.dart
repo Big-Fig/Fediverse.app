@@ -1155,7 +1155,7 @@ void main() {
 
     when(pleromaAuthStatusServiceMock.muteStatus(
       statusRemoteId: status.remoteId,
-      // expireDurationInSeconds: null,
+      expireDurationInSeconds: null,
     )).thenAnswer((_) async =>
         mapLocalStatusToRemoteStatus(status.copyWith(muted: true)));
 

@@ -215,7 +215,9 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IStatus> toggleMute() {
+  Future<IStatus> toggleMute({
+    @required Duration duration,
+  }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
@@ -231,4 +233,12 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   Uri get remoteInstanceUriOrNull => instanceUri;
+
+  @override
+  Future<IStatus> mute({@required Duration duration}) {
+    throw UnsupportedOnRemoteInstanceLocationException();
+  }
+
+  @override
+  bool get isPleromaInstance => null;
 }

@@ -26,7 +26,7 @@ abstract class IPleromaAuthStatusService
 
   Future<IPleromaStatus> muteStatus({
     @required String statusRemoteId,
-    // @required Duration expireDurationInSeconds,
+    @required int expireDurationInSeconds,
   });
 
   Future<IPleromaStatus> unMuteStatus({

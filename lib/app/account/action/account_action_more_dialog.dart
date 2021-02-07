@@ -202,10 +202,11 @@ class AccountActionMoreDialog extends StatelessWidget {
           );
           Navigator.of(context).pop();
         } else {
-          showAccountActionMuteDialog(
+          await showAccountActionMuteDialog(
             context: context,
             accountBloc: accountBloc,
           );
+          Navigator.of(context).pop();
         }
       },
     );
