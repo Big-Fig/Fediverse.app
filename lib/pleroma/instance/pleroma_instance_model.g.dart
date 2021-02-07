@@ -285,7 +285,7 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
       contactAccount: fields[4] as PleromaAccount,
       email: fields[5] as String,
       languages: (fields[6] as List)?.cast<String>(),
-      maxTootChars: fields[7] as int,
+      maxTootChars: fields[7] as dynamic,
       pleroma: fields[8] as PleromaInstancePleromaPart,
       pollLimits: fields[9] as PleromaInstancePollLimits,
       registrations: fields[10] as bool,
@@ -536,7 +536,7 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
             json['contact_account'] as Map<String, dynamic>),
     email: json['email'] as String,
     languages: (json['languages'] as List)?.map((e) => e as String)?.toList(),
-    maxTootChars: json['max_toot_chars'] as int,
+    maxTootChars: json['max_toot_chars'],
     pleroma: json['pleroma'] == null
         ? null
         : PleromaInstancePleromaPart.fromJson(

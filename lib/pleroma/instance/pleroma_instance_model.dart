@@ -91,7 +91,8 @@ class PleromaInstanceHistory extends IPleromaInstanceHistory {
 }
 
 abstract class IPleromaInstance extends IMastodonInstance {
-  int get maxTootChars;
+  // int or String
+  dynamic get maxTootChars;
 
   PleromaInstancePollLimits get pollLimits;
 
@@ -502,7 +503,7 @@ class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(7)
   @JsonKey(name: "max_toot_chars")
-  final int maxTootChars;
+  final dynamic maxTootChars;
 
   @override
   @HiveField(8)

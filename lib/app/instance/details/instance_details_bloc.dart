@@ -104,10 +104,14 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<bool> get invitesEnabledStream =>
       instanceStream.map((instance) => instance?.invitesEnabled);
 
-  int get maxTootChars => instance?.maxTootChars;
+  int get maxTootChars => instance?.maxTootChars != null
+      ? int.parse(instance?.maxTootChars?.toString())
+      : null;
 
   Stream<int> get maxTootCharsStream =>
-      instanceStream.map((instance) => instance?.maxTootChars);
+      instanceStream.map((instance) => instance?.maxTootChars != null
+          ? int.parse(instance?.maxTootChars?.toString())
+          : null);
 
   PleromaInstancePollLimits get pollLimits => instance?.pollLimits;
 
