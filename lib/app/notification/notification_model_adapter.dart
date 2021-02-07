@@ -23,20 +23,27 @@ INotification mapRemoteNotificationToLocalNotification(
 }
 
 DbNotification mapRemoteNotificationToDbNotification(
-    IPleromaNotification remoteNotification,
-    {@required bool unread}) {
+  IPleromaNotification remoteNotification, {
+  @required bool unread,
+}) {
+
+  if(remoteNotification.pleroma?.isSeen == true) {
+    unread = false;
+  }
+
   return DbNotification(
-      id: null,
-      remoteId: remoteNotification.id,
-      createdAt: remoteNotification.createdAt,
-      accountRemoteId: remoteNotification.account.id,
-      statusRemoteId: remoteNotification.status?.id,
-      chatRemoteId: remoteNotification.chatMessage?.chatId,
-      chatMessageRemoteId: remoteNotification.chatMessage?.id,
-      emoji: remoteNotification.emoji,
-      pleroma: remoteNotification.pleroma,
-      type: remoteNotification.type,
-      unread: unread);
+    id: null,
+    remoteId: remoteNotification.id,
+    createdAt: remoteNotification.createdAt,
+    accountRemoteId: remoteNotification.account.id,
+    statusRemoteId: remoteNotification.status?.id,
+    chatRemoteId: remoteNotification.chatMessage?.chatId,
+    chatMessageRemoteId: remoteNotification.chatMessage?.id,
+    emoji: remoteNotification.emoji,
+    pleroma: remoteNotification.pleroma,
+    type: remoteNotification.type,
+    unread: unread,
+  );
 }
 
 PleromaNotification mapLocalNotificationToRemoteNotification(
