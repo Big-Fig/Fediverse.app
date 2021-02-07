@@ -9,6 +9,7 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("notification_bloc_impl.dart");
@@ -169,6 +170,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Future markAsRead() async {
     await notificationRepository.markAsRead(notification: notification);
+    if (pleromaNotificationService.isPleromaInstance) {
+      unawaited(
+        pleromaNotificationService.markAsReadSingle(
+          notificationRemoteId: notification.remoteId,
+        ),
+      );
+    }
   }
 
   @override

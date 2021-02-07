@@ -14,6 +14,7 @@ import 'package:path/path.dart';
 class PleromaNotificationService extends DisposableOwner
     implements IPleromaNotificationService {
   final notificationRelativeUrlPath = "api/v1/notifications";
+  final pleromaNotificationRelativeUrlPath = "api/v1/pleroma/notifications";
   @override
   final IPleromaAuthRestService restService;
 
@@ -59,6 +60,51 @@ class PleromaNotificationService extends DisposableOwner
     return parseNotificationResponse(httpResponse);
   }
 
+  @override
+  Future<IPleromaNotification> markAsReadSingle({
+    @required String notificationRemoteId,
+  }) async {
+    assert(restService.isPleromaInstance,
+        "markAsRead notification works only on pleroma");
+
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: join(
+          pleromaNotificationRelativeUrlPath,
+          "read",
+        ),
+        bodyJson: <String, dynamic>{
+          "id": notificationRemoteId,
+        },
+      ),
+    );
+
+    return parseNotificationResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaNotification>> markAsReadList({
+    @required String maxNotificationRemoteId,
+  }) async {
+    assert(restService.isPleromaInstance,
+        "markAsRead notification works only on pleroma");
+
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: join(
+          pleromaNotificationRelativeUrlPath,
+          "read",
+        ),
+        bodyJson: <String, dynamic>{
+          if (maxNotificationRemoteId != null)
+            "max_id": maxNotificationRemoteId,
+        },
+      ),
+    );
+
+    return parseNotificationListResponse(httpResponse);
+  }
+
   static const validTypes = {"follow", "favourite", "reblog", "mention"};
 
   // only default set of types (follow, favourite, reblog, mention, poll)
@@ -82,7 +128,7 @@ class PleromaNotificationService extends DisposableOwner
       RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
           ...excludeTypes?.map(
             (excludeType) => RestRequestQueryArg(
               "exclude_types[]",
@@ -181,4 +227,7 @@ class PleromaNotificationService extends DisposableOwner
       );
     }
   }
+
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
 }

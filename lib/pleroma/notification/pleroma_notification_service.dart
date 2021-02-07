@@ -4,7 +4,7 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaNotificationService implements IPleromaApi {
+abstract class IPleromaNotificationService implements IPleromaAuthApi {
   static IPleromaNotificationService of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IPleromaNotificationService>(context, listen: listen);
@@ -16,6 +16,14 @@ abstract class IPleromaNotificationService implements IPleromaApi {
 
   Future<IPleromaNotification> getNotification({
     @required String notificationRemoteId,
+  });
+
+  Future<IPleromaNotification> markAsReadSingle({
+    @required String notificationRemoteId,
+  });
+
+  Future<List<IPleromaNotification>> markAsReadList({
+    @required String maxNotificationRemoteId,
   });
 
   Future dismissNotification({
