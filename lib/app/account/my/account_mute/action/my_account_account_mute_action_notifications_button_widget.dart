@@ -65,6 +65,7 @@ class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
             await listBloc.changeAccountMute(
               account: accountBloc.account,
               notifications: newMutingNotifications,
+              duration: null,
             );
 
             var toastService = IToastService.of(context, listen: false);

@@ -153,7 +153,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     var remoteDomainOrNull = accountBloc.acctRemoteDomainOrNull;
 
     // todo: remove hack
-    if(accountBloc is RemoteAccountBloc) {
+    if (accountBloc is RemoteAccountBloc) {
       remoteDomainOrNull ??= accountBloc.instanceUri.host;
     }
 
@@ -202,7 +202,10 @@ class AccountActionMoreDialog extends StatelessWidget {
           );
           Navigator.of(context).pop();
         } else {
-          showAccountActionMuteDialog(context, accountBloc);
+          showAccountActionMuteDialog(
+            context: context,
+            accountBloc: accountBloc,
+          );
         }
       },
     );

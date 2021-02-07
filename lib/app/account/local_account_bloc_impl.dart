@@ -8,6 +8,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
@@ -202,6 +203,7 @@ class LocalAccountBloc extends AccountBloc {
       newRelationship = await pleromaAuthAccountService.muteAccount(
         accountRemoteId: account.remoteId,
         notifications: false,
+        expireDurationInSeconds: null,
       );
     }
     await _updateRelationship(account, newRelationship);
@@ -259,14 +261,17 @@ class LocalAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> mute(
-      {@required bool notifications}) async {
+  Future<IPleromaAccountRelationship> mute({
+    @required bool notifications,
+    @required Duration duration,
+  }) async {
     assert(relationship != null);
     assert(relationship.muting != true);
 
     var newRelationship = await pleromaAuthAccountService.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: notifications,
+      expireDurationInSeconds: duration?.totalSeconds,
     );
 
     await _updateRelationship(account, newRelationship);

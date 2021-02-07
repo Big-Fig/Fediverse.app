@@ -87,15 +87,25 @@ class PleromaAuthAccountService extends PleromaAccountService
   Future<IPleromaAccountRelationship> muteAccount({
     @required String accountRemoteId,
     @required bool notifications,
+    @required int expireDurationInSeconds,
   }) async {
     assert(accountRemoteId?.isNotEmpty == true);
+
+    var bodyJson = <String, dynamic>{
+      if (notifications != null) "notifications": notifications.toString(),
+    };
+    if (expireDurationInSeconds != null) {
+      if (isPleromaInstance) {
+        bodyJson["expire_in"] = expireDurationInSeconds.toString();
+      } else {
+        bodyJson["duration"] = expireDurationInSeconds;
+      }
+    }
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "mute"),
-        bodyJson: {
-          "notifications": notifications.toString(),
-        },
+        bodyJson: bodyJson,
       ),
     );
 

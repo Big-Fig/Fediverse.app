@@ -4452,10 +4452,10 @@ class S {
     );
   }
 
-  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.`
+  /// `Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n The user has no way of knowing they have been muted.`
   String get app_account_mute_description {
     return Intl.message(
-      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n If you choose to also mute notifications from them, you will additionally not see notifications from that user.\n The user has no way of knowing they have been muted.',
+      'Muting hides the user from your view: public and home feeds, boosting and mentioning the user.\n The user has no way of knowing they have been muted.',
       name: 'app_account_mute_description',
       desc: '',
       args: [],
@@ -4797,26 +4797,6 @@ class S {
     return Intl.message(
       'Muting',
       name: 'app_account_mute_dialog_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mute without notifications`
-  String get app_account_mute_dialog_action_mute_without_notifications {
-    return Intl.message(
-      'Mute without notifications',
-      name: 'app_account_mute_dialog_action_mute_without_notifications',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mute with notifications`
-  String get app_account_mute_dialog_action_mute_with_notifications {
-    return Intl.message(
-      'Mute with notifications',
-      name: 'app_account_mute_dialog_action_mute_with_notifications',
       desc: '',
       args: [],
     );
@@ -6867,6 +6847,46 @@ class S {
     return Intl.message(
       'Exclude visibilities',
       name: 'app_timeline_settings_field_excludeVisibilites_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get app_account_mute_dialog_action_mute {
+    return Intl.message(
+      'Mute',
+      name: 'app_account_mute_dialog_action_mute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get app_account_mute_dialog_field_notifications_label {
+    return Intl.message(
+      'Notifications',
+      name: 'app_account_mute_dialog_field_notifications_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expire`
+  String get app_account_mute_dialog_field_expire_label {
+    return Intl.message(
+      'Expire',
+      name: 'app_account_mute_dialog_field_expire_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Additionally mute notifications`
+  String get app_account_mute_dialog_field_notifications_description {
+    return Intl.message(
+      'Additionally mute notifications',
+      name: 'app_account_mute_dialog_field_notifications_description',
       desc: '',
       args: [],
     );

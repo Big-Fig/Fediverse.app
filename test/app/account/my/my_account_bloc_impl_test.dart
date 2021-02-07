@@ -397,7 +397,11 @@ void main() {
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
   test('mute', () async {
-    expect(() => myAccountBloc.mute(notifications: false),
+    expect(
+        () => myAccountBloc.mute(
+              notifications: false,
+              duration: null,
+            ),
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
   test('unMute', () async {
@@ -408,8 +412,6 @@ void main() {
     expect(() => myAccountBloc.togglePin(),
         throwsA(isInstanceOf<SelfActionNotPossibleException>()));
   });
-
-
 
   test('isLocalCacheExist', () async {
     expect(myAccountBloc.isLocalCacheExist, true);

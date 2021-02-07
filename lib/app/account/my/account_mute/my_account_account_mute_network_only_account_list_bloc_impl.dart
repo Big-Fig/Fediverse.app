@@ -8,6 +8,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -45,7 +46,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   Future addAccountMute({@required IAccount account}) async {
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
       accountRemoteId: account.remoteId,
-      notifications: false,
+      notifications: false, expireDurationInSeconds: null,
     );
 
     var remoteAccount = mapLocalAccountToRemoteAccount(
@@ -130,14 +131,17 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   Future changeAccountMute({
     @required IAccount account,
     @required bool notifications,
+    @required Duration duration,
   }) async {
     await pleromaAuthAccountService.unMuteAccount(
       accountRemoteId: account.remoteId,
     );
 
+
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: notifications,
+      expireDurationInSeconds: duration?.totalSeconds,
     );
 
     var remoteAccount = mapLocalAccountToRemoteAccount(

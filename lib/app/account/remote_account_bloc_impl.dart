@@ -106,7 +106,10 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaAccountRelationship> mute({@required bool notifications}) {
+  Future<IPleromaAccountRelationship> mute({
+    @required bool notifications,
+    @required Duration duration,
+  }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
@@ -156,11 +159,8 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  IPleromaAccountRelationship get relationship =>
-      null;
+  IPleromaAccountRelationship get relationship => null;
 
   @override
-  Stream<IPleromaAccountRelationship> get relationshipStream =>
-      null;
-
+  Stream<IPleromaAccountRelationship> get relationshipStream => null;
 }
