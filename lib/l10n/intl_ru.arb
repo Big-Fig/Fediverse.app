@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-07T13:42:30+00:00",
+    "@@last_modified": "2021-02-07T14:44:22+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -704,5 +704,8 @@
     "app_account_mute_dialog_action_mute": "Скрыть обновления",
     "app_account_mute_dialog_field_notifications_label": "Оповещения",
     "app_account_mute_dialog_field_expire_label": "Истекает",
-    "app_account_mute_dialog_field_notifications_description": "Также скрыть оповещения"
+    "app_account_mute_dialog_field_notifications_description": "Также скрыть оповещения",
+    "app_status_mute_dialog_title": "Не уведомлять о ответах",
+    "app_status_mute_dialog_action_mute": "Не уведомлять",
+    "app_status_mute_dialog_field_expire_label": "Истекает"
 }

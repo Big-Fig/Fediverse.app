@@ -13,11 +13,10 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-void showAccountActionMuteDialog({
+Future<T> showAccountActionMuteDialog<T>({
   @required BuildContext context,
   @required IAccountBloc accountBloc,
-}) {
-  AccountActionMuteDialog(
+}) => AccountActionMuteDialog(
     accountBloc: accountBloc,
     actionsBorderVisible: false,
     title: S.of(context).app_account_mute_dialog_title,
@@ -40,7 +39,6 @@ void showAccountActionMuteDialog({
       ),
     ],
   ).show(context);
-}
 
 class AccountActionMuteDialog extends FediDialog {
   final IAccountActionMuteBloc accountActionMuteBloc;

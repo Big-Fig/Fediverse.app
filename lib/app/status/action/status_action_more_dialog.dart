@@ -10,6 +10,7 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart'
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/action/mute/status_action_mute_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -191,16 +192,27 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
+    var isPleromaInstance = statusBloc.isPleromaInstance;
     return DialogAction(
       icon: statusBloc.muted == true ? FediIcons.unmute : FediIcons.mute,
       label: statusBloc.muted == true
           ? S.of(context).app_status_action_unmute
           : S.of(context).app_status_action_mute,
       onAction: (context) async {
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context, asyncCode: () => statusBloc.toggleMute());
+        if (statusBloc.muted == true || isPleromaInstance != true) {
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () => statusBloc.toggleMute(),
+          );
 
-        Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        } else {
+          await showStatusActionMuteDialog(
+            context: context,
+            statusBloc: statusBloc,
+          );
+          Navigator.of(context).pop();
+        }
       },
     );
   }

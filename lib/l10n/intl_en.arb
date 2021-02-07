@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-07T13:42:22+00:00",
+    "@@last_modified": "2021-02-07T14:43:24+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -704,5 +704,8 @@
     "app_account_mute_dialog_action_mute": "Mute",
     "app_account_mute_dialog_field_notifications_label": "Notifications",
     "app_account_mute_dialog_field_expire_label": "Expire",
-    "app_account_mute_dialog_field_notifications_description": "Additionally mute notifications"
+    "app_account_mute_dialog_field_notifications_description": "Additionally mute notifications",
+    "app_status_mute_dialog_title": "Muting conversation",
+    "app_status_mute_dialog_action_mute": "Mute",
+    "app_status_mute_dialog_field_expire_label": "Expire"
 }

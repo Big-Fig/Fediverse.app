@@ -18,6 +18,8 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
+  bool get isPleromaInstance;
+
   IStatus get status;
 
   Stream<IStatus> get statusStream;
@@ -187,6 +189,10 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   Future<IStatus> toggleReblog();
 
   Future<IStatus> toggleFavourite();
+
+  Future<IStatus> mute({
+    @required Duration duration,
+  });
 
   Future<IStatus> toggleMute();
 

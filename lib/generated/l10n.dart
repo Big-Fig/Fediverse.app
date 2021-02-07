@@ -6891,6 +6891,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Muting conversation`
+  String get app_status_mute_dialog_title {
+    return Intl.message(
+      'Muting conversation',
+      name: 'app_status_mute_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get app_status_mute_dialog_action_mute {
+    return Intl.message(
+      'Mute',
+      name: 'app_status_mute_dialog_action_mute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expire`
+  String get app_status_mute_dialog_field_expire_label {
+    return Intl.message(
+      'Expire',
+      name: 'app_status_mute_dialog_field_expire_label',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
