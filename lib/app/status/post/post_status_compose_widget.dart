@@ -133,11 +133,11 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                         }),
                     const PostStatusVisibilityActionWidget(),
                     const PostStatusScheduleActionWidget(),
-                    if (postStatusBloc.isExpirePossible)
-                      const PostStatusExpireActionWidget(),
                     const PostStatusMentionActionWidget(),
                     const PostStatusNsfwActionWidget(),
-                    const PostStatusPollActionWidget()
+                    const PostStatusPollActionWidget(),
+                    if (postStatusBloc.isExpirePossible)
+                      const PostStatusExpireActionWidget(),
                   ],
                 ),
               ),
