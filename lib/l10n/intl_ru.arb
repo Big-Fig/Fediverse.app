@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-06T15:18:53+00:00",
+    "@@last_modified": "2021-02-07T13:42:30+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -461,7 +461,7 @@
     "app_account_my_accountBlock_action_block": "Заблокировать",
     "app_account_my_accountBlock_action_unblock": "Разблокировать",
     "app_account_my_accountMute_action_add": "Добавить аккаунт",
-    "app_account_mute_description": "При скрытии пользователя будет скрыто: в публичных и домашней ленте, его упоминания и записи, которыми поделились.\n При скрытие, вы можите дополнительно скрыть оповещения.\n Пользователь не будет знать о том, что вы его скрыли.",
+    "app_account_mute_description": "При скрытии пользователя будет скрыто: в публичных и домашней ленте, его упоминания и записи, которыми поделились.\n Пользователь не будет знать о том, что вы его скрыли.",
     "app_account_my_accountMute_action_mute": "Скрыть",
     "app_account_my_accountMute_action_unmute": "Показывать",
     "app_account_my_statuses_favourited_empty_title": "У вас нет записей в избранном.",
@@ -496,8 +496,6 @@
     "app_account_select_recent_empty": "Вы еще не выбирали аккаунты",
     "app_share_action_sent": "Отправлено",
     "app_account_mute_dialog_title": "Скрытие пользователя",
-    "app_account_mute_dialog_action_mute_without_notifications": "Скрыть (и в оповещениях)",
-    "app_account_mute_dialog_action_mute_with_notifications": "Скрыть (не влияя на оповещения)",
     "app_account_mute_toast_mute_with_notifications": "Скрытия оповещений включено",
     "app_account_mute_toast_mute_without_notifications": "Скрытия оповещений выключено",
     "app_account_report_description": "Жалоба будет отправлена модераторам сервера",
@@ -702,5 +700,9 @@
     "app_status_expire_datetime_picker_title": "Запланировать удаление",
     "app_timeline_settings_onlyFromInstance_field_hint": "pleroma.com",
     "app_timeline_settings_onlyFromInstance_field_label": "Только от сервера",
-    "app_timeline_settings_field_excludeVisibilites_label": "Исключить видимости"
+    "app_timeline_settings_field_excludeVisibilites_label": "Исключить видимости",
+    "app_account_mute_dialog_action_mute": "Скрыть обновления",
+    "app_account_mute_dialog_field_notifications_label": "Оповещения",
+    "app_account_mute_dialog_field_expire_label": "Истекает",
+    "app_account_mute_dialog_field_notifications_description": "Также скрыть оповещения"
 }

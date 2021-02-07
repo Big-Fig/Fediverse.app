@@ -117,7 +117,6 @@ class LocalStatusBloc extends StatusBloc {
   Future<IAccount> loadAccountByMentionUrl({
     @required String url,
   }) async {
-
     var foundMention = reblogOrOriginalMentions?.firstWhere(
       (mention) => mention.url == url,
       orElse: () => null,
@@ -246,10 +245,12 @@ class LocalStatusBloc extends StatusBloc {
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.muted == true) {
       remoteStatus = await pleromaAuthStatusService.unMuteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     } else {
       remoteStatus = await pleromaAuthStatusService.muteStatus(
-          statusRemoteId: reblogOrOriginal.remoteId);
+        statusRemoteId: reblogOrOriginal.remoteId,
+      );
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
@@ -300,7 +301,8 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future delete() async {
-    await pleromaAuthStatusService.deleteStatus(statusRemoteId: status.remoteId);
+    await pleromaAuthStatusService.deleteStatus(
+        statusRemoteId: status.remoteId);
 
     await statusRepository.markStatusAsDeleted(statusRemoteId: status.remoteId);
   }

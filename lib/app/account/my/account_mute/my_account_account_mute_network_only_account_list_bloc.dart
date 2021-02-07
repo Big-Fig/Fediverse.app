@@ -15,6 +15,7 @@ abstract class IMyAccountAccountMuteNetworkOnlyAccountListBloc
   Future changeAccountMute({
     @required IAccount account,
     @required bool notifications,
+    @required Duration duration,
   });
 
   Future removeAccountMute({@required IAccount account});

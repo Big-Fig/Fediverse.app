@@ -45,7 +45,7 @@ class DurationDateTimeValueFormFieldBloc
     changeCurrentValue(
       DurationDateTime(
         duration: newValue,
-        dateTime: currentValue.dateTime,
+        dateTime: currentValue?.dateTime,
       ),
     );
   }

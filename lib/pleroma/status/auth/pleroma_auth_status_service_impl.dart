@@ -35,13 +35,27 @@ class PleromaAuthStatusService extends PleromaStatusService
   @override
   Future<IPleromaStatus> muteStatus({
     @required String statusRemoteId,
+    // @required Duration expireDurationInSeconds,
+
   }) async {
+
+    var bodyJson = <String, String>{
+    };
+    // if (expireDurationInSeconds != null) {
+    //   if (isPleromaInstance) {
+    //     bodyJson["expire_in"] = expireDurationInSeconds.toString();
+    //   } else {
+    //     bodyJson["duration"] = expireDurationInSeconds.toString();
+    //   }
+    // }
+
     var request = RestRequest.post(
       relativePath: join(
         statusRelativeUrlPath,
         statusRemoteId,
         "mute",
       ),
+      bodyJson: bodyJson,
     );
     var httpResponse = await restService.sendHttpRequest(request);
 

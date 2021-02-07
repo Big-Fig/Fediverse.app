@@ -59,6 +59,7 @@ abstract class IPleromaAuthAccountService
   Future<IPleromaAccountRelationship> muteAccount({
     @required String accountRemoteId,
     @required bool notifications,
+    @required int expireDurationInSeconds,
   });
 
   Future<IPleromaAccountRelationship> unMuteAccount({

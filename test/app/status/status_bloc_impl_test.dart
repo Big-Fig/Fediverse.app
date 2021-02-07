@@ -984,7 +984,8 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expectStatus(listenedValue, status);
 
-    when(pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.getStatus(
+            statusRemoteId: status.remoteId))
         .thenAnswer((_) async => mapLocalStatusToRemoteStatus(newValue));
 
     await statusBloc.refreshFromNetwork();
@@ -1058,7 +1059,8 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.reblogged, status.reblogged);
 
-    when(pleromaAuthStatusServiceMock.reblogStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.reblogStatus(
+            statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(reblogged: true)));
 
@@ -1151,11 +1153,14 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.muted, status.muted);
 
-    when(pleromaAuthStatusServiceMock.muteStatus(statusRemoteId: status.remoteId))
-        .thenAnswer((_) async =>
-            mapLocalStatusToRemoteStatus(status.copyWith(muted: true)));
+    when(pleromaAuthStatusServiceMock.muteStatus(
+      statusRemoteId: status.remoteId,
+      // expireDurationInSeconds: null,
+    )).thenAnswer((_) async =>
+        mapLocalStatusToRemoteStatus(status.copyWith(muted: true)));
 
-    when(pleromaAuthStatusServiceMock.unMuteStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.unMuteStatus(
+            statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(muted: false)));
 
@@ -1243,11 +1248,13 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.pinned, status.pinned);
 
-    when(pleromaAuthStatusServiceMock.pinStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.pinStatus(
+            statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(pinned: true)));
 
-    when(pleromaAuthStatusServiceMock.unPinStatus(statusRemoteId: status.remoteId))
+    when(pleromaAuthStatusServiceMock.unPinStatus(
+            statusRemoteId: status.remoteId))
         .thenAnswer((_) async =>
             mapLocalStatusToRemoteStatus(status.copyWith(pinned: false)));
 

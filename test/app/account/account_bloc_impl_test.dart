@@ -519,6 +519,7 @@ void main() {
     when(pleromaAuthAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: true,
+      expireDurationInSeconds: null,
     )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
           muting: true,
           mutingNotifications: true,
@@ -527,6 +528,7 @@ void main() {
     when(pleromaAuthAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: false,
+      expireDurationInSeconds: null,
     )).thenAnswer((_) async => account.pleromaRelationship.copyWith(
           muting: true,
           mutingNotifications: false,
@@ -537,13 +539,19 @@ void main() {
         .thenAnswer(
             (_) async => account.pleromaRelationship.copyWith(muting: false));
 
-    await accountBloc.mute(notifications: false);
+    await accountBloc.mute(
+      notifications: false,
+      duration: null,
+    );
 
     await accountBloc.unMute();
 
     var initialValue = account.pleromaRelationship.muting;
 
-    await accountBloc.mute(notifications: false);
+    await accountBloc.mute(
+      notifications: false,
+      duration: null,
+    );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
