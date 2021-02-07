@@ -740,23 +740,9 @@ class StatusRepository extends AsyncInitLoadingBloc
           query,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
         );
-      } else if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
+      } else if (replyVisibilityFilter ==
+          PleromaReplyVisibilityFilter.following) {
         includeReplyToAccountFollowing = true;
-      }
-    }
-
-    if (filters?.excludeTextConditions?.isNotEmpty == true) {
-      for (var textCondition in filters?.excludeTextConditions) {
-        dao.addExcludeContentWhere(
-          query,
-          phrase: textCondition.phrase,
-          wholeWord: textCondition.wholeWord,
-        );
-        dao.addExcludeSpoilerTextWhere(
-          query,
-          phrase: textCondition.phrase,
-          wholeWord: textCondition.wholeWord,
-        );
       }
     }
 
@@ -805,8 +791,19 @@ class StatusRepository extends AsyncInitLoadingBloc
       if (replyVisibilityFilter == PleromaReplyVisibilityFilter.following) {
         finalQuery = dao.addReplyToAccountSelfOrFollowingWhere(
           joinQuery,
-            filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
+          filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
         );
+      }
+    }
+
+    if (filters?.excludeTextConditions?.isNotEmpty == true) {
+      for (var textCondition in filters?.excludeTextConditions) {
+        dao.addExcludeTextWhere(
+          joinQuery,
+          phrase: textCondition.phrase,
+          wholeWord: textCondition.wholeWord,
+        );
+
       }
     }
 

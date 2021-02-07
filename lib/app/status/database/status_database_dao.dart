@@ -205,42 +205,65 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           String instance) =>
       query..where((status) => status.url.like("%$instance%"));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeContentWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+  void addExcludeTextWhere(
+    JoinedSelectStatement<Table, DataClass> query, {
     @required String phrase,
     @required bool wholeWord,
   }) {
-    final regex = r"\b" + phrase + r"\b";
-    if (wholeWord) {
-      return query
-        ..where(
-          (status) => status.content.regexp(regex).not(),
-        );
-    } else {
-      return query
-        ..where(
-          (status) => status.content.like("%$phrase%").not(),
-        );
-    }
+    addExcludeTextConditionWhere(
+      query,
+      tableName: "db_statuses",
+      fieldName: dbStatuses.content.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: "db_statuses",
+      fieldName: dbStatuses.spoilerText.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: _reblogAliasId,
+      fieldName: reblogAlias.content.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
+    addExcludeTextConditionWhere(
+      query,
+      tableName: _reblogAliasId,
+      fieldName: reblogAlias.spoilerText.$name,
+      phrase: phrase,
+      wholeWord: wholeWord,
+    );
   }
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeSpoilerTextWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+  // todo: improve performance: remove url.like filter. Add local flag on insert
+  JoinedSelectStatement addExcludeTextConditionWhere(
+    JoinedSelectStatement query, {
+    @required String tableName,
+    @required String fieldName,
     @required String phrase,
     @required bool wholeWord,
   }) {
-    final regex = r"\b" + phrase + r"\b";
+    String expressionCondition;
     if (wholeWord) {
-      return query
-        ..where(
-          (status) => status.spoilerText.regexp(regex).not(),
-        );
+      final regex = r"\b" + phrase + r"\b";
+      expressionCondition = "NOT REGEXP '$regex'";
     } else {
-      return query
-        ..where(
-          (status) => status.spoilerText.like("%$phrase%").not(),
-        );
+      expressionCondition = "NOT LIKE '%$phrase%'";
     }
+    String expressionContent = "$tableName.$fieldName $expressionCondition";
+
+    return query
+      ..where(
+        CustomExpression<bool>(expressionContent)
+        |
+            CustomExpression<bool>("$tableName.$fieldName IS NULL")
+        ,
+      );
   }
 
   JoinedSelectStatement addFollowingWhere(
@@ -273,17 +296,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       query
         ..where(
           CustomExpression<bool>(
-                  "db_statuses.in_reply_to_account_remote_id IS NULL")
-            |
+                  "db_statuses.in_reply_to_account_remote_id IS NULL") |
               CustomExpression<bool>(
-                  "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'")
-              |
+                  "db_statuses.in_reply_to_account_remote_id = '$myAccountRemoteId'") |
               CustomExpression<bool>(
                   "$_replyToAccountFollowingsAliasId.account_remote_id = "
                   // "$_replyToAccountFollowingsAliasId.following_account_remote_id = "
                   "'$myAccountRemoteId'"),
-        )
-  ;
+        );
 
   //
   // query

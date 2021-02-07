@@ -1309,6 +1309,67 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
+  test('createQuery excludeTextConditions reblog', () async {
+    var query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        excludeTextConditions: [
+          StatusTextCondition(phrase: "test", wholeWord: false),
+        ],
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
+    var dbStatus1 =
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "test",
+      content: "",
+    );
+    await insertDbStatus(statusRepository, dbStatus1);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus2 =
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "aaa",
+      content: "bbb",
+    );
+    await insertDbStatus(statusRepository, dbStatus2);
+
+    expect((await query.get()).length, 1);
+
+    var dbStatus3 =
+        (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "aaa",
+      content: "bbb",
+    );
+
+    dbStatus3 = await insertDbStatus(statusRepository, dbStatus3);
+
+    var dbStatus4 =
+        (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
+            .copyWith(
+      spoilerText: "aaa",
+      content: "bbb",
+      reblogStatusRemoteId: dbStatus3.remoteId,
+    );
+    await insertDbStatus(statusRepository, dbStatus4);
+
+    expect((await query.get()).length, 3);
+
+    dbStatus3 = dbStatus3.copyWith(
+      spoilerText: "test",
+      content: "",
+    );
+
+    await statusRepository.updateById(dbStatus3.id, dbStatus3);
+
+    expect((await query.get()).length, 1);
+  });
+
   test('createQuery isFromHomeTimeline', () async {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
@@ -1607,9 +1668,7 @@ void main() {
 
     await accountRepository.addAccountFollowings(
       accountRemoteId: myDbAccount.remoteId,
-      followings: [
-        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount))
-      ],
+      followings: [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount))],
     );
 
     expect((await query.get()).length, 2);
@@ -1624,8 +1683,6 @@ void main() {
     );
 
     expect((await query.get()).length, 2);
-
-
   });
 
   test('createQuery replyVisibilityFilterCondition following', () async {
