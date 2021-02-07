@@ -1,6 +1,7 @@
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
@@ -97,7 +98,7 @@ class NewPostStatusPageAppBar extends StatelessWidget
   Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
 }
 
-void goToNewPostStatusPage(
+void goToNewPostStatusPageWithInitial(
   BuildContext context, {
   String initialText,
   String initialSubject,
@@ -106,11 +107,27 @@ void goToNewPostStatusPage(
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => NewPostStatusBloc.provideToContext(
+      builder: (context) => NewPostStatusBloc.provideToContextWithInitial(
         context,
         initialText: initialText,
         initialSubject: initialSubject,
         initialMediaAttachments: initialMediaAttachments,
+        child: const NewPostStatusPage(),
+      ),
+    ),
+  );
+}
+
+void goToNewPostStatusPage(
+  BuildContext context, {
+  @required PostStatusData initialData,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => NewPostStatusBloc.provideToContext(
+        context,
+        initialData: initialData,
         child: const NewPostStatusPage(),
       ),
     ),

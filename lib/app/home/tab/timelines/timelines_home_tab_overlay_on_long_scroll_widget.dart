@@ -12,7 +12,7 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            goToNewPostStatusPage(context);
+            goToNewPostStatusPageWithInitial(context);
           },
           child: Container(
             color: IFediUiColorTheme.of(context).white,

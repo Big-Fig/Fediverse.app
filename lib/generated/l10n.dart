@@ -6921,6 +6921,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete actions`
+  String get app_status_delete_dialog_title {
+    return Intl.message(
+      'Delete actions',
+      name: 'app_status_delete_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_status_delete_dialog_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_status_delete_dialog_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete and save to drafts`
+  String get app_status_delete_dialog_action_deleteAndSaveToDrafts {
+    return Intl.message(
+      'Delete and save to drafts',
+      name: 'app_status_delete_dialog_action_deleteAndSaveToDrafts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete and start new status`
+  String get app_status_delete_dialog_action_deleteAndStartNew {
+    return Intl.message(
+      'Delete and start new status',
+      name: 'app_status_delete_dialog_action_deleteAndStartNew',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

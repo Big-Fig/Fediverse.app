@@ -268,7 +268,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
           newStatusShareAction: (context) {
             Navigator.of(context).pop();
 
-            goToNewPostStatusPage(
+            goToNewPostStatusPageWithInitial(
               context,
               initialText: mediaAttachment.url,
             );

@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-07T14:44:22+00:00",
+    "@@last_modified": "2021-02-07T17:52:38+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -707,5 +707,9 @@
     "app_account_mute_dialog_field_notifications_description": "Также скрыть оповещения",
     "app_status_mute_dialog_title": "Не уведомлять о ответах",
     "app_status_mute_dialog_action_mute": "Не уведомлять",
-    "app_status_mute_dialog_field_expire_label": "Истекает"
+    "app_status_mute_dialog_field_expire_label": "Истекает",
+    "app_status_delete_dialog_title": "Варианты удаления",
+    "app_status_delete_dialog_action_delete": "Удалить",
+    "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Удалить и сделать черновик",
+    "app_status_delete_dialog_action_deleteAndStartNew": "Удалить и начать новую запись"
 }

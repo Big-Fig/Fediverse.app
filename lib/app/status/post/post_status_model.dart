@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -188,4 +192,65 @@ class PostStatusData implements IPostStatusData {
   Map<String, dynamic> toJson() => _$PostStatusDataToJson(this);
 
   String toJsonString() => jsonEncode(_$PostStatusDataToJson(this));
+}
+
+extension PostStatusDataStatusExtension on IStatus {
+  PostStatusData calculatePostStatusData() => PostStatusData(
+        subject: spoilerText,
+        text: content,
+        scheduledAt: null,
+        visibility: visibility.toJsonValue(),
+        to: mentions?.map((mention) => mention.acct)?.toList(),
+        mediaAttachments: mediaAttachments,
+        poll: poll != null
+            ? PostStatusPoll(
+                durationLength: poll.expiresAt != null
+                    ? _calculatePostStatusPollDurationLength(poll.expiresAt)
+                    : null,
+                hideTotals: false,
+                multiple: poll.multiple,
+                options: poll.options
+                    ?.map(
+                      (option) => option.title,
+                    )
+                    ?.toList(),
+              )
+            : null,
+        inReplyToPleromaStatus: inReplyToStatus != null
+            ? mapLocalStatusToRemoteStatus(inReplyToStatus)
+            : null,
+        inReplyToConversationId: pleromaDirectConversationId?.toString(),
+        isNsfwSensitiveEnabled: nsfwSensitive,
+        language: language,
+        expiresInSeconds: pleromaExpiresAt != null
+            ? _calculateExpiresInSeconds(pleromaExpiresAt)
+            : null,
+      );
+
+  int _calculateExpiresInSeconds(DateTime pleromaExpiresAt) {
+    var now = DateTime.now();
+
+    if (now.isAfter(pleromaExpiresAt)) {
+      var difference = now.difference(pleromaExpiresAt);
+      return difference.abs().totalSeconds;
+    } else {
+      return null;
+    }
+  }
+
+  Duration _calculatePostStatusPollDurationLength(DateTime expiresAt) {
+    var now = DateTime.now();
+
+    if (now.isAfter(pleromaExpiresAt)) {
+      var difference = now.difference(expiresAt);
+
+      if (difference > IPostStatusPollBloc.minimumPollExpiration) {
+        return difference;
+      } else {
+        return IPostStatusPollBloc.minimumPollExpiration;
+      }
+    } else {
+      return IPostStatusPollBloc.minimumPollExpiration;
+    }
+  }
 }

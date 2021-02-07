@@ -71,7 +71,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
           },
           newStatusShareAction: (context) {
             Navigator.of(context).pop();
-            goToNewPostStatusPage(
+            goToNewPostStatusPageWithInitial(
               context,
               initialText: rawText,
             );
