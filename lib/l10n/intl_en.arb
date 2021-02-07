@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-07T14:43:24+00:00",
+    "@@last_modified": "2021-02-07T17:52:53+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -707,5 +707,9 @@
     "app_account_mute_dialog_field_notifications_description": "Additionally mute notifications",
     "app_status_mute_dialog_title": "Muting conversation",
     "app_status_mute_dialog_action_mute": "Mute",
-    "app_status_mute_dialog_field_expire_label": "Expire"
+    "app_status_mute_dialog_field_expire_label": "Expire",
+    "app_status_delete_dialog_title": "Delete actions",
+    "app_status_delete_dialog_action_delete": "Delete",
+    "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Delete and save to drafts",
+    "app_status_delete_dialog_action_deleteAndStartNew": "Delete and start new status"
 }

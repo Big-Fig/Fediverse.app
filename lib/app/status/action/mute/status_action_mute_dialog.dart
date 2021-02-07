@@ -23,12 +23,12 @@ Future<T> showStatusActionMuteDialog<T>({
       DialogAction(
         label: S.of(context).app_status_mute_dialog_action_mute,
         onAction: (context) async {
-          var StatusActionMuteBloc =
+          var statusActionMuteBloc =
               IStatusActionMuteBloc.of(context, listen: false);
 
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            asyncCode: () => StatusActionMuteBloc.mute(),
+            asyncCode: () => statusActionMuteBloc.mute(),
           );
 
           Navigator.pop(context);

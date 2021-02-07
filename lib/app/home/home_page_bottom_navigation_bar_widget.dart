@@ -57,7 +57,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
   Widget buildNewMessageNavBarItem(BuildContext context) => InkWell(
       onTap: () {
-        goToNewPostStatusPage(context);
+        goToNewPostStatusPageWithInitial(context);
       },
       child: Padding(
         padding: FediPadding.allBigPadding,

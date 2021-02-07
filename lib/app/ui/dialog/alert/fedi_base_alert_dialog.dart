@@ -10,7 +10,7 @@ class FediBaseAlertDialog extends FediDialog {
 
   FediBaseAlertDialog({
     String title,
-    this.contentText,
+    @required this.contentText,
     List<DialogAction> actions,
     Axis actionsAxis = Axis.horizontal,
     bool cancelable = true,

@@ -366,7 +366,8 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future delete() async {
     await pleromaAuthStatusService.deleteStatus(
-        statusRemoteId: status.remoteId);
+      statusRemoteId: status.remoteId,
+    );
 
     await statusRepository.markStatusAsDeleted(
       statusRemoteId: status.remoteId,

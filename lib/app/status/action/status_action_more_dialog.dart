@@ -10,6 +10,7 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart'
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/action/delete/status_action_delete_dialog.dart';
 import 'package:fedi/app/status/action/mute/status_action_mute_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -161,16 +162,17 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   static DialogAction buildDeleteAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return DialogAction(
-        icon: FediIcons.delete,
-        label: S.of(context).app_status_action_delete,
-        onAction: (context) async {
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () => statusBloc.delete(),
-          );
+      icon: FediIcons.delete,
+      label: S.of(context).app_status_action_delete,
+      onAction: (context) async {
+        await showStatusActionDeleteDialog(
+          context: context,
+          statusBloc: statusBloc,
+        );
 
-          Navigator.of(context).pop();
-        });
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   static DialogAction buildPinAction(BuildContext context) {
@@ -282,7 +284,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             if (mediaAttachmentsString != null) {
               mediaAttachmentsString = "[$mediaAttachmentsString]";
             }
-            goToNewPostStatusPage(
+            goToNewPostStatusPageWithInitial(
               context,
               initialText:
                   (status.content ?? "") + (mediaAttachmentsString ?? ""),
