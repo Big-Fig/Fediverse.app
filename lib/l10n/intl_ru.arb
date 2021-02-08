@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-07T17:52:38+00:00",
+    "@@last_modified": "2021-02-08T14:45:19+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -445,8 +445,8 @@
     "app_push_settings_update_fail_dialog_title": "Не удалось изменить настройки",
     "app_account_my_action_edit": "Редактировать профиль",
     "app_toast_handling_type_always": "Всегда",
-    "app_toast_handling_type_onlyWhenInstanceNotSelected": "Когда аккаунт не активен",
-    "app_toast_handling_type_onlyWhenInstanceSelected": "Когда аккаунт активен",
+    "app_toast_handling_type_onlyWhenInstanceNotSelected": "Когда аккаунт в активен",
+    "app_toast_handling_type_onlyWhenInstanceSelected": "Когда аккаунт в фоне",
     "app_toast_settings_field_handling_type_label": "Когда",
     "app_timeline_settings_field_enableWebSockets_description_instance_disabled": "Отключено в настройках аккаунта",
     "app_status_post_new_unsaved_dialog_content": "Вы потеряете данные если откажетесь",
