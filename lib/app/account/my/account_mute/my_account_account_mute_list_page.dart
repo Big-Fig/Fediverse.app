@@ -36,7 +36,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
           children: [
             const _MyAccountAccountMuteListPageWarningWidget(),
             const FediMediumVerticalSpacer(),
-            const _MyAccountAccountBlockListPageAddButton(),
+            const _MyAccountAccountMuteListPageAddButton(),
             const FediMediumVerticalSpacer(),
             const FediBigVerticalSpacer(),
             const FediUltraLightGreyDivider(),
@@ -54,8 +54,8 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
   const MyAccountAccountMuteListPage();
 }
 
-class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
-  const _MyAccountAccountBlockListPageAddButton({
+class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
+  const _MyAccountAccountMuteListPageAddButton({
     Key key,
   }) : super(key: key);
 
