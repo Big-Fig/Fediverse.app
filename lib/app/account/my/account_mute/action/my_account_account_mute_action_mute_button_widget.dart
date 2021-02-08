@@ -32,33 +32,36 @@ class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return PleromaAsyncOperationButtonBuilderWidget(
-          asyncButtonAction: () async {
-            if (relationshipMuting) {
+        if (relationshipMuting) {
+          return PleromaAsyncOperationButtonBuilderWidget(
+            asyncButtonAction: () async {
               await listBloc.removeAccountMute(
                 account: accountBloc.account,
               );
               await paginationListBloc.refreshWithController();
-            } else {
+            },
+            builder: (context, onPressed) =>
+                FediTransparentTextButtonWithBorder(
+              S.of(context).app_account_my_accountMute_action_unmute,
+              onPressed: onPressed,
+              color: fediUiColorTheme.mediumGrey,
+              expanded: false,
+            ),
+          );
+        } else {
+          return FediTransparentTextButtonWithBorder(
+            S.of(context).app_account_my_accountMute_action_mute,
+            onPressed: () async {
               await showAccountActionMuteDialog(
                 context: context,
                 accountBloc: accountBloc,
               );
               await paginationListBloc.refreshWithoutController();
-            }
-
-          },
-          builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
-            relationshipMuting
-                ? S.of(context).app_account_my_accountMute_action_unmute
-                : S.of(context).app_account_my_accountMute_action_mute,
-            onPressed: onPressed,
-            color: relationshipMuting
-                ? fediUiColorTheme.mediumGrey
-                : fediUiColorTheme.error,
+            },
+            color: fediUiColorTheme.error,
             expanded: false,
-          ),
-        );
+          );
+        }
       },
     );
   }
