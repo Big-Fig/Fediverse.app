@@ -80,4 +80,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
 
     return success;
   }
+
+  @override
+  Uri get remoteInstanceUriOrNull => null;
 }

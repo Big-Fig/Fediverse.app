@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/report/account_report_bloc.dart';
 import 'package:fedi/app/account/report/account_report_bloc_impl.dart';
+import 'package:fedi/app/account/report/account_report_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/report/account_report_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -119,7 +120,9 @@ MaterialPageRoute createAccountReportPageRoute({
           listen: false,
         ),
       ),
-      child: const AccountReportPage(),
+      child: AccountReportBlocProxyProvider(
+        child: const AccountReportPage(),
+      ),
     ),
   );
 }
