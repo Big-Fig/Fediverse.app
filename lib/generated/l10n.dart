@@ -4292,20 +4292,20 @@ class S {
     );
   }
 
-  /// `When instance not selected`
+  /// `When app with account in foreground`
   String get app_toast_handling_type_onlyWhenInstanceNotSelected {
     return Intl.message(
-      'When instance not selected',
+      'When app with account in foreground',
       name: 'app_toast_handling_type_onlyWhenInstanceNotSelected',
       desc: '',
       args: [],
     );
   }
 
-  /// `When instance selected`
+  /// `When app or account in background`
   String get app_toast_handling_type_onlyWhenInstanceSelected {
     return Intl.message(
-      'When instance selected',
+      'When app or account in background',
       name: 'app_toast_handling_type_onlyWhenInstanceSelected',
       desc: '',
       args: [],
