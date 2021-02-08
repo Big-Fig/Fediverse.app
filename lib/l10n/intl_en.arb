@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-08T14:44:59+00:00",
+    "@@last_modified": "2021-02-08T14:53:57+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -490,7 +490,7 @@
     "app_account_my_statuses_draft_status_action_edit": "Edit",
     "app_account_my_statuses_draft_status_action_delete": "Delete",
     "app_acccount_my_customList_edit_action_delete_list": "Delete list",
-    "app_acccount_my_customList_edit_description": "Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.",
+    "app_acccount_my_customList_edit_description": "Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow.",
     "app_account_select_recent_header": "Recent",
     "app_share_action_send": "Send",
     "app_account_select_recent_empty": "You don’t have recent accounts selection",

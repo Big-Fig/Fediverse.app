@@ -156,7 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_acccount_my_customList_edit_action_delete_list" : MessageLookupByLibrary.simpleMessage("Delete list"),
     "app_acccount_my_customList_edit_action_save" : MessageLookupByLibrary.simpleMessage("Save"),
     "app_acccount_my_customList_edit_added_header" : MessageLookupByLibrary.simpleMessage("Added accounts"),
-    "app_acccount_my_customList_edit_description" : MessageLookupByLibrary.simpleMessage("Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever."),
+    "app_acccount_my_customList_edit_description" : MessageLookupByLibrary.simpleMessage("Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow."),
     "app_acccount_my_customList_edit_search_header" : MessageLookupByLibrary.simpleMessage("Add to your List"),
     "app_acccount_my_customList_edit_search_hint" : MessageLookupByLibrary.simpleMessage("Search for people you follow"),
     "app_acccount_my_customList_list_action_add" : MessageLookupByLibrary.simpleMessage("Create a list"),

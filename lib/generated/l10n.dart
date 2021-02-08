@@ -4742,10 +4742,10 @@ class S {
     );
   }
 
-  /// `Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.`
+  /// `Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow.`
   String get app_acccount_my_customList_edit_description {
     return Intl.message(
-      'Posts in the list are cached on the server. Adding or Removing accounts will affect only new posts. All old posts will remain on the list forever.',
+      'Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow.',
       name: 'app_acccount_my_customList_edit_description',
       desc: '',
       args: [],
