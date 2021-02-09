@@ -5,8 +5,11 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'pleroma_instance_model.g.dart';
+
+final _logger = Logger("pleroma_instance_model.dart");
 
 abstract class IPleromaInstanceHistory extends IMastodonInstanceHistory {}
 
@@ -91,8 +94,7 @@ class PleromaInstanceHistory extends IPleromaInstanceHistory {
 }
 
 abstract class IPleromaInstance extends IMastodonInstance {
-  // int or String
-  dynamic get maxTootChars;
+  int get maxTootChars;
 
   PleromaInstancePollLimits get pollLimits;
 
@@ -362,7 +364,6 @@ class PleromaInstancePleromaPartMetadata {
   @HiveField(5)
   final PleromaInstancePleromaPartMetadataFederation federation;
 
-
   PleromaInstancePleromaPartMetadata({
     @required this.features,
     @required this.federation,
@@ -503,8 +504,27 @@ class PleromaInstance extends IPleromaInstance {
 
   @override
   @HiveField(7)
-  @JsonKey(name: "max_toot_chars")
-  final dynamic maxTootChars;
+  @JsonKey(
+    name: "max_toot_chars",
+    fromJson: PleromaInstance.parseMaxTootChars,
+  )
+  final int maxTootChars;
+
+  static int parseMaxTootChars(json) {
+    if (json == null) {
+      return null;
+    }
+    if (json is int) {
+      return json;
+    } else {
+      try {
+        return int.parse(json.toString());
+      } catch (e, stackTrace) {
+        _logger.warning(() => "error during parseMaxTootChars", e, stackTrace);
+        return null;
+      }
+    }
+  }
 
   @override
   @HiveField(8)
