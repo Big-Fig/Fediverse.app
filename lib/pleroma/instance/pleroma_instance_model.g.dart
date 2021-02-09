@@ -189,7 +189,7 @@ class PleromaInstancePleromaPartMetadataAdapter
     };
     return PleromaInstancePleromaPartMetadata(
       features: (fields[0] as List)?.cast<String>(),
-      federation: fields[1] as PleromaInstancePleromaPartMetadataFederation,
+      federation: fields[5] as PleromaInstancePleromaPartMetadataFederation,
       postFormats: (fields[2] as List)?.cast<String>(),
       accountActivationRequired: fields[3] as bool,
       fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits,
@@ -202,14 +202,14 @@ class PleromaInstancePleromaPartMetadataAdapter
       ..writeByte(5)
       ..writeByte(0)
       ..write(obj.features)
-      ..writeByte(1)
-      ..write(obj.federation)
       ..writeByte(2)
       ..write(obj.postFormats)
       ..writeByte(3)
       ..write(obj.accountActivationRequired)
       ..writeByte(4)
-      ..write(obj.fieldsLimits);
+      ..write(obj.fieldsLimits)
+      ..writeByte(5)
+      ..write(obj.federation);
   }
 
   @override
@@ -499,10 +499,10 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
         PleromaInstancePleromaPartMetadata instance) =>
     <String, dynamic>{
       'features': instance.features,
-      'federation': instance.federation?.toJson(),
       'post_formats': instance.postFormats,
       'account_activation_required': instance.accountActivationRequired,
       'fields_limits': instance.fieldsLimits?.toJson(),
+      'federation': instance.federation?.toJson(),
     };
 
 PleromaInstancePollLimits _$PleromaInstancePollLimitsFromJson(
