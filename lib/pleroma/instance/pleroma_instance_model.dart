@@ -349,8 +349,6 @@ class PleromaInstancePleromaPartMetadataFederation {
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
   final List<String> features;
-  @HiveField(1)
-  final PleromaInstancePleromaPartMetadataFederation federation;
 
   @HiveField(2)
   @JsonKey(name: "post_formats")
@@ -361,6 +359,9 @@ class PleromaInstancePleromaPartMetadata {
   @HiveField(4)
   @JsonKey(name: "fields_limits")
   final PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
+  @HiveField(5)
+  final PleromaInstancePleromaPartMetadataFederation federation;
+
 
   PleromaInstancePleromaPartMetadata({
     @required this.features,
