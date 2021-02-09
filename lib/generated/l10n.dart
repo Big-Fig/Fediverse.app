@@ -1599,12 +1599,12 @@ class S {
   }
 
   /// `{count,plural, =1{1 new chat. Tap to load.} other{{count} new chats. Tap to load.}}`
-  String app_chat_pleroma_list_newItems_action_tapToLoadNew(num count) {
+  String app_chat_list_newItems_action_tapToLoadNew(num count) {
     return Intl.plural(
       count,
       one: '1 new chat. Tap to load.',
       other: '$count new chats. Tap to load.',
-      name: 'app_chat_pleroma_list_newItems_action_tapToLoadNew',
+      name: 'app_chat_list_newItems_action_tapToLoadNew',
       desc: '',
       args: [count],
     );

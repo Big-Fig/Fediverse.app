@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-08T14:57:19+00:00",
+    "@@last_modified": "2021-02-09T10:59:09+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -157,7 +157,7 @@
     "app_auth_instance_register_field_confirmPassword_hint": "Пароль",
     "app_auth_instance_register_action_createAccount": "Регистрация",
     "app_chat_pleroma_share_title": "Поделится в чаты",
-    "app_chat_pleroma_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новый чат. Нажмите для загрузки.} other{{count} новых чатов. Нажмите для загрузки.}}",
+    "app_chat_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новый чат. Нажмите для загрузки.} other{{count} новых чатов. Нажмите для загрузки.}}",
     "app_chat_pleroma_accounts_title": "Аккаунты чата",
     "app_chat_preview_you": "Вы: {message}",
     "app_chat_post_field_content_hint": "Начните сообщение",
