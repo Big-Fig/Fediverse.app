@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-09T10:59:09+00:00",
+    "@@last_modified": "2021-02-11T10:27:11+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -630,7 +630,6 @@
     "app_auth_instance_register_cantLogin_notification_content": "Error during login: {errorDescription}",
     "app_auth_instance_register_field_reason_label": "Reason (optional)",
     "app_auth_instance_register_field_reason_hint": "Will be reviewed by moderators",
-    "file_picker_multi_title": "Choose medias",
     "file_picker_selectionFolder_title": "Selection",
     "file_picker_multi_selectionCountLimitReached_notification_title": "Selection count limit reached",
     "file_picker_multi_selectionCountLimitReached_notification_content": "Maximum {selectionCountLimit}",
@@ -711,5 +710,7 @@
     "app_status_delete_dialog_title": "Delete actions",
     "app_status_delete_dialog_action_delete": "Delete",
     "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Delete and save to drafts",
-    "app_status_delete_dialog_action_deleteAndStartNew": "Delete and start new status"
+    "app_status_delete_dialog_action_deleteAndStartNew": "Delete and start new status",
+    "file_picker_multi_title": "Choose media files",
+    "file_picker_multi_selectionCount_selected": "Selected ({selectionCount})"
 }

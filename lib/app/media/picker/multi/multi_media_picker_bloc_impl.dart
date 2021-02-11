@@ -150,4 +150,9 @@ class MultiMediaPickerBloc extends MediaPickerBloc
           mediaDeviceFileMetadata: mediaDeviceFileMetadata,
         ),
       );
+
+  @override
+  Future clearSelection() async {
+    currentFilesMetadataSelectionSubject.add([]);
+  }
 }

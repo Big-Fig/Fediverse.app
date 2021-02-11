@@ -6142,16 +6142,6 @@ class S {
     );
   }
 
-  /// `Choose medias`
-  String get file_picker_multi_title {
-    return Intl.message(
-      'Choose medias',
-      name: 'file_picker_multi_title',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Selection`
   String get file_picker_selectionFolder_title {
     return Intl.message(
@@ -6959,6 +6949,26 @@ class S {
       name: 'app_status_delete_dialog_action_deleteAndStartNew',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Choose media files`
+  String get file_picker_multi_title {
+    return Intl.message(
+      'Choose media files',
+      name: 'file_picker_multi_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected ({selectionCount})`
+  String file_picker_multi_selectionCount_selected(Object selectionCount) {
+    return Intl.message(
+      'Selected ($selectionCount)',
+      name: 'file_picker_multi_selectionCount_selected',
+      desc: '',
+      args: [selectionCount],
     );
   }
 }
