@@ -5,48 +5,46 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-Future<File> cropImageToSquare(File file, BuildContext context) {
-  var fediUiColorTheme = IFediUiColorTheme.of(
-    context,
-    listen: false,
-  );
-  return ImageCropper.cropImage(
-      sourcePath: file.path,
-      aspectRatio: CropAspectRatio(ratioY: 1, ratioX: 1),
-      aspectRatioPresets: [CropAspectRatioPreset.square],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: S.of(context).app_file_image_crop_title,
-          toolbarColor: fediUiColorTheme.primary,
-          toolbarWidgetColor: fediUiColorTheme.white,
-          initAspectRatio: CropAspectRatioPreset.square,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        minimumAspectRatio: 1.0,
-      ));
-}
-
-Future<File> cropImage(File file, BuildContext context) {
+Future<File> goToCropImagePage({
+  @required BuildContext context,
+  @required File file,
+  @required isForceCropToSquare,
+}) {
   var fediUiColorTheme = IFediUiColorTheme.of(
     context,
     listen: false,
   );
 
   return ImageCropper.cropImage(
-      sourcePath: file.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: S.of(context).app_file_image_crop_title,
-          toolbarColor: fediUiColorTheme.primary,
-          toolbarWidgetColor: fediUiColorTheme.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        minimumAspectRatio: 1.0,
-      ));
+    sourcePath: file.path,
+    aspectRatio: isForceCropToSquare
+        ? const CropAspectRatio(
+            ratioY: 1,
+            ratioX: 1,
+          )
+        : null,
+    aspectRatioPresets: isForceCropToSquare
+        ? [
+            CropAspectRatioPreset.square,
+          ]
+        : [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+    androidUiSettings: AndroidUiSettings(
+      toolbarTitle: S.of(context).app_file_image_crop_title,
+      toolbarColor: fediUiColorTheme.primary,
+      toolbarWidgetColor: fediUiColorTheme.white,
+      initAspectRatio: isForceCropToSquare
+          ? CropAspectRatioPreset.square
+          : CropAspectRatioPreset.original,
+      lockAspectRatio: isForceCropToSquare,
+    ),
+    iosUiSettings: IOSUiSettings(
+      minimumAspectRatio: 1.0,
+    ),
+  );
 }
