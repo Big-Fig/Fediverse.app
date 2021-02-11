@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
+import 'package:fedi/app/account/action/message/account_action_message.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -108,17 +109,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
     return FediBlurredTextButtonWithBorder(
       S.of(context).app_account_action_message,
       onPressed: () async {
-        var authInstanceBloc =
-            ICurrentAuthInstanceBloc.of(context, listen: false);
-        var accountBloc = IAccountBloc.of(context, listen: false);
-        var account = accountBloc.account;
-
-        if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToPleromaChatWithAccount(context: context, account: account);
-        } else {
-          goToPostStatusStartConversationPage(context,
-              conversationAccountsWithoutMe: <IAccount>[account]);
-        }
+        goToMessagesPageAccountAction(context);
       },
       expanded: false,
     );
@@ -161,7 +152,8 @@ class _AccountActionListFollowWidget extends StatelessWidget {
         if (relationship?.following == null) {
           return const SizedBox.shrink();
         }
-        if (relationship?.requested == true && !(relationship?.following == true)) {
+        if (relationship?.requested == true &&
+            !(relationship?.following == true)) {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,

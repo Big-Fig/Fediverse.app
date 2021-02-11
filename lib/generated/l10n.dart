@@ -968,16 +968,6 @@ class S {
     );
   }
 
-  /// `Cancel`
-  String get app_account_my_edit_field_avatar_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_account_my_edit_field_avatar_dialog_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Confirm selection?`
   String get app_account_my_edit_field_header_dialog_title {
     return Intl.message(
@@ -1003,16 +993,6 @@ class S {
     return Intl.message(
       'Crop',
       name: 'app_account_my_edit_field_header_dialog_action_crop',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel`
-  String get app_account_my_edit_field_header_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_account_my_edit_field_header_dialog_action_cancel',
       desc: '',
       args: [],
     );
@@ -2689,16 +2669,6 @@ class S {
     return Intl.message(
       'Remove',
       name: 'app_media_attachment_upload_remove_dialog_action_remove',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel`
-  String get app_media_attachment_upload_remove_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_media_attachment_upload_remove_dialog_action_cancel',
       desc: '',
       args: [],
     );
@@ -5742,16 +5712,6 @@ class S {
     );
   }
 
-  /// `Cancel`
-  String get app_account_my_edit_field_pleroma_background_dialog_action_cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'app_account_my_edit_field_pleroma_background_dialog_action_cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pleroma background`
   String get app_account_my_edit_field_pleroma_background_dialog_title {
     return Intl.message(
@@ -6969,6 +6929,16 @@ class S {
       name: 'file_picker_multi_selectionCount_selected',
       desc: '',
       args: [selectionCount],
+    );
+  }
+
+  /// `User disabled chat feature`
+  String get app_chat_pleroma_account_notAcceptsChatMessages_toast {
+    return Intl.message(
+      'User disabled chat feature',
+      name: 'app_chat_pleroma_account_notAcceptsChatMessages_toast',
+      desc: '',
+      args: [],
     );
   }
 }

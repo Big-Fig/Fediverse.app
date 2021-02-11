@@ -7,7 +7,7 @@ DbAccountWrapper mapRemoteAccountToLocalAccount(IPleromaAccount remoteAccount) {
 }
 
 DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
-  if(remoteAccount == null) {
+  if (remoteAccount == null) {
     return null;
   }
   assert(remoteAccount.id != null);
@@ -48,44 +48,47 @@ DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
     pleromaAllowFollowingMove: remoteAccount.pleroma?.allowFollowingMove,
     pleromaSkipThreadContainment: remoteAccount.pleroma?.skipThreadContainment,
     pleromaBackgroundImage: remoteAccount.pleroma?.backgroundImage,
+    pleromaAcceptsChatMessages: remoteAccount.pleroma?.acceptsChatMessages,
   );
 }
 
 PleromaAccount mapLocalAccountToRemoteAccount(IAccount localAccount) {
   return PleromaAccount(
-      pleroma: PleromaAccountPleromaPart(
-        backgroundImage: null,
-        tags: localAccount.pleromaTags,
-        relationship: localAccount.pleromaRelationship,
-        isAdmin: localAccount.pleromaIsAdmin,
-        isModerator: localAccount.pleromaIsModerator,
-        confirmationPending: localAccount.pleromaConfirmationPending,
-        hideFavorites: localAccount.pleromaHideFavorites,
-        hideFollowers: localAccount.pleromaHideFollowers,
-        hideFollows: localAccount.pleromaHideFollows,
-        hideFollowersCount: localAccount.pleromaHideFollowersCount,
-        hideFollowsCount: localAccount.pleromaHideFollowsCount,
-        deactivated: localAccount.pleromaDeactivated,
-        allowFollowingMove: localAccount.pleromaAllowFollowingMove,
-        skipThreadContainment: localAccount.pleromaSkipThreadContainment,
-      ),
-      id: localAccount.remoteId,
-      username: localAccount.username,
-      url: localAccount.url,
-      note: localAccount.note,
-      locked: localAccount.locked,
-      headerStatic: localAccount.headerStatic,
-      header: localAccount.header,
-      followingCount: localAccount.followingCount,
-      followersCount: localAccount.followersCount,
-      statusesCount: localAccount.statusesCount,
-      displayName: localAccount.displayName,
-      createdAt: localAccount.createdAt,
-      bot: localAccount.bot,
-      avatarStatic: localAccount.avatarStatic,
-      avatar: localAccount.avatar,
-      acct: localAccount.acct,
-      lastStatusAt: localAccount.lastStatusAt,
-      fields: localAccount.fields,
-      emojis: localAccount.emojis);
+    pleroma: PleromaAccountPleromaPart(
+      backgroundImage: localAccount.pleromaBackgroundImage,
+      tags: localAccount.pleromaTags,
+      relationship: localAccount.pleromaRelationship,
+      isAdmin: localAccount.pleromaIsAdmin,
+      isModerator: localAccount.pleromaIsModerator,
+      confirmationPending: localAccount.pleromaConfirmationPending,
+      hideFavorites: localAccount.pleromaHideFavorites,
+      hideFollowers: localAccount.pleromaHideFollowers,
+      hideFollows: localAccount.pleromaHideFollows,
+      hideFollowersCount: localAccount.pleromaHideFollowersCount,
+      hideFollowsCount: localAccount.pleromaHideFollowsCount,
+      deactivated: localAccount.pleromaDeactivated,
+      allowFollowingMove: localAccount.pleromaAllowFollowingMove,
+      skipThreadContainment: localAccount.pleromaSkipThreadContainment,
+      acceptsChatMessages: localAccount.pleromaAcceptsChatMessages,
+    ),
+    id: localAccount.remoteId,
+    username: localAccount.username,
+    url: localAccount.url,
+    note: localAccount.note,
+    locked: localAccount.locked,
+    headerStatic: localAccount.headerStatic,
+    header: localAccount.header,
+    followingCount: localAccount.followingCount,
+    followersCount: localAccount.followersCount,
+    statusesCount: localAccount.statusesCount,
+    displayName: localAccount.displayName,
+    createdAt: localAccount.createdAt,
+    bot: localAccount.bot,
+    avatarStatic: localAccount.avatarStatic,
+    avatar: localAccount.avatar,
+    acct: localAccount.acct,
+    lastStatusAt: localAccount.lastStatusAt,
+    fields: localAccount.fields,
+    emojis: localAccount.emojis,
+  );
 }

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-11T10:27:11+00:00",
+    "@@last_modified": "2021-02-11T18:24:13+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -94,11 +94,9 @@
     "app_account_my_edit_unsaved_dialog_action_discard": "Discard",
     "app_account_my_edit_field_avatar_dialog_title": "Confirm selection?",
     "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Select & crop",
-    "app_account_my_edit_field_avatar_dialog_action_cancel": "Cancel",
     "app_account_my_edit_field_header_dialog_title": "Confirm selection?",
     "app_account_my_edit_field_header_dialog_action_select": "Select",
     "app_account_my_edit_field_header_dialog_action_crop": "Crop",
-    "app_account_my_edit_field_header_dialog_action_cancel": "Cancel",
     "app_account_my_edit_field_backgroundImage_label": "Background image",
     "app_account_my_edit_field_backgroundImage_action_add": "Add",
     "app_account_my_edit_field_displayName_label": "Display name*",
@@ -266,7 +264,6 @@
     "app_media_attachment_details_notSupported_type": "Not supported type {mediaType}",
     "app_media_attachment_upload_remove_dialog_content": "Are you sure you want to remove the attachment?",
     "app_media_attachment_upload_remove_dialog_action_remove": "Remove",
-    "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
     "app_search_title": "Search",
     "app_search_recent_title": "Recent",
     "app_search_recent_empty": "No recent searches",
@@ -590,7 +587,6 @@
     "app_account_info_value_hidden": "Hidden",
     "app_account_my_edit_field_pleroma_background_dialog_action_select": "Select",
     "app_account_my_edit_field_pleroma_background_dialog_action_crop": "Crop",
-    "app_account_my_edit_field_pleroma_background_dialog_action_cancel": "Cancel",
     "app_account_my_edit_field_pleroma_background_dialog_title": "Pleroma background",
     "app_account_my_edit_field_locked_description": "You should manually approve follow requests",
     "app_account_my_edit_field_note_hint": "Your bio and links to your pages",
@@ -712,5 +708,6 @@
     "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Delete and save to drafts",
     "app_status_delete_dialog_action_deleteAndStartNew": "Delete and start new status",
     "file_picker_multi_title": "Choose media files",
-    "file_picker_multi_selectionCount_selected": "Selected ({selectionCount})"
+    "file_picker_multi_selectionCount_selected": "Selected ({selectionCount})",
+    "app_chat_pleroma_account_notAcceptsChatMessages_toast": "User disabled chat feature"
 }
