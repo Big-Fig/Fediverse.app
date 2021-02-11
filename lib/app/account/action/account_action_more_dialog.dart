@@ -1,13 +1,12 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/message/account_action_message.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
 import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_page.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -248,28 +247,11 @@ class AccountActionMoreDialog extends StatelessWidget {
   }
 
   static DialogAction buildAccountMessageAction(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
       icon: FediIcons.message,
       label: S.of(context).app_account_action_message,
-      onAction: (context) async {
-        var authInstanceBloc =
-            ICurrentAuthInstanceBloc.of(context, listen: false);
-        var account = accountBloc.account;
-
-        if (authInstanceBloc.currentInstance.isSupportChats) {
-          goToPleromaChatWithAccount(
-            context: context,
-            account: account,
-          );
-        } else {
-          goToPostStatusStartConversationPage(
-            context,
-            conversationAccountsWithoutMe: <IAccount>[
-              account,
-            ],
-          );
-        }
+      onAction: (context) {
+        goToMessagesPageAccountAction(context);
       },
     );
   }

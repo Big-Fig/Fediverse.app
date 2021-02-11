@@ -112,6 +112,11 @@ extension IAccountBlocExtension on IAccountBloc {
   Stream<bool> get pleromaHideFollowsStream =>
       accountStream.map((account) => account.pleromaHideFollows);
 
+  bool get pleromaAcceptsChatMessages => account?.pleromaAcceptsChatMessages;
+
+  Stream<bool> get pleromaAcceptsChatMessagesStream =>
+      accountStream.map((account) => account.pleromaAcceptsChatMessages);
+
   bool get pleromaHideFollowsCount => account?.pleromaHideFollowsCount;
 
   Stream<bool> get pleromaHideFollowsCountStream =>

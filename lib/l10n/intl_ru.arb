@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-11T10:27:05+00:00",
+    "@@last_modified": "2021-02-11T18:24:34+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -94,11 +94,9 @@
     "app_account_my_edit_unsaved_dialog_action_discard": "Удалить изменения",
     "app_account_my_edit_field_avatar_dialog_title": "Подтвердить?",
     "app_account_my_edit_field_avatar_dialog_action_selectAndCrop": "Выбрать и обрезать",
-    "app_account_my_edit_field_avatar_dialog_action_cancel": "Отменитьт",
     "app_account_my_edit_field_header_dialog_title": "Подтвердить?",
     "app_account_my_edit_field_header_dialog_action_select": "Выбрать",
     "app_account_my_edit_field_header_dialog_action_crop": "Обрезать",
-    "app_account_my_edit_field_header_dialog_action_cancel": "Отменить",
     "app_account_my_edit_field_backgroundImage_label": "Фон",
     "app_account_my_edit_field_backgroundImage_action_add": "Добавить",
     "app_account_my_edit_field_displayName_label": "Имя*",
@@ -266,7 +264,6 @@
     "app_media_attachment_details_notSupported_type": "Не поддерживается {mediaType}",
     "app_media_attachment_upload_remove_dialog_content": "Вы действительно хотите убрать прикрепленный файл",
     "app_media_attachment_upload_remove_dialog_action_remove": "Убрать",
-    "app_media_attachment_upload_remove_dialog_action_cancel": "Cancel",
     "app_search_title": "Поиск",
     "app_search_recent_title": "Последнии",
     "app_search_recent_empty": "Нет истории поиска",
@@ -590,7 +587,6 @@
     "app_account_info_value_hidden": "Скрыто",
     "app_account_my_edit_field_pleroma_background_dialog_action_select": "Выбрать",
     "app_account_my_edit_field_pleroma_background_dialog_action_crop": "Обрезать",
-    "app_account_my_edit_field_pleroma_background_dialog_action_cancel": "Отменить",
     "app_account_my_edit_field_pleroma_background_dialog_title": "Фон Pleroma ",
     "app_account_my_edit_field_locked_description": "Вручную подтверждать подписчиков",
     "app_account_my_edit_field_note_hint": "Ваша биография и ссылки на социальные сети",
@@ -712,5 +708,6 @@
     "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Удалить и сделать черновик",
     "app_status_delete_dialog_action_deleteAndStartNew": "Удалить и начать новую запись",
     "file_picker_multi_title": "Выберите файлы",
-    "file_picker_multi_selectionCount_selected": "Выбрано ({selectionCount})"
+    "file_picker_multi_selectionCount_selected": "Выбрано ({selectionCount})",
+    "app_chat_pleroma_account_notAcceptsChatMessages_toast": "Пользователь отключил прием сообщений"
 }

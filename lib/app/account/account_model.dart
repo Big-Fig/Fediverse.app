@@ -376,6 +376,7 @@ DbAccount dbAccountFromAccount(IAccount account) {
     pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
     pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment,
     pleromaBackgroundImage: account?.pleromaBackgroundImage,
+    pleromaAcceptsChatMessages: account?.pleromaAcceptsChatMessages,
   );
 }
 
