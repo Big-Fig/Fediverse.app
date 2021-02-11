@@ -133,11 +133,11 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         clientName: "Fedi",
         redirectUris: redirectUri,
         scopes: scopes,
-        website: "https://fediverse.app",
+        website: "https://www.fediapp.com/",
       ),
     );
 
-    _logger.finest(() => "registerApplication application =$application");
+    _logger.finest(() => "registerApplication application = $application");
     if (application != null) {
       await hostApplicationLocalPreferenceBloc.setValue(application);
       return true;
