@@ -1,142 +1,80 @@
 import 'dart:io';
 
+import 'package:fedi/app/account/my/edit/field/image/edit_my_acccount_image_confirm_dialog.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 Future<IMediaDeviceFile> showEditMyAccountHeaderFieldPicker(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
-) =>
-    showDialog(
-      context: context,
-      child: Provider<IMediaDeviceFile>.value(
-        value: mediaDeviceFile,
-        child: const _EditMyAccountHeaderFieldPickerBody(),
+) {
+  return showEditMyAccountImageConfirmDialog(
+    title: S.of(context).app_account_my_edit_field_header_dialog_title,
+    context: context,
+    mediaDeviceFile: mediaDeviceFile,
+    actions: [
+      DialogAction(
+        label:
+            S.of(context).app_account_my_edit_field_header_dialog_action_select,
+        onAction: (context) {
+          _select(
+            context,
+            mediaDeviceFile,
+          );
+        },
       ),
-    );
-
-class _EditMyAccountHeaderFieldPickerBody extends StatelessWidget {
-  const _EditMyAccountHeaderFieldPickerBody({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => AlertDialog(
-        title: Text(
-          S.of(context).app_account_my_edit_field_header_dialog_title,
-        ),
-        content: const _EditMyAccountHeaderFieldPickerContent(),
-        actions: <Widget>[
-          const _EditMyAccountHeaderFieldPickerSelectAction(),
-          const _EditMyAccountHeaderFieldPickerSelectAndCropAction(),
-          const _EditMyAccountHeaderFieldPickerCancelAction(),
-        ],
-      );
-}
-
-class _EditMyAccountHeaderFieldPickerSelectAndCropAction
-    extends StatelessWidget {
-  const _EditMyAccountHeaderFieldPickerSelectAndCropAction({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => FlatButton(
-        onPressed: () async {
-          var mediaDeviceFile = Provider.of<IMediaDeviceFile>(
+      DialogAction(
+        label:
+            S.of(context).app_account_my_edit_field_header_dialog_action_crop,
+        onAction: (context) async {
+          await _cropAndSelect(
             context,
-            listen: false,
+            mediaDeviceFile,
           );
-          File croppedFile =
-              await cropImage(await mediaDeviceFile.loadFile(), context);
-
-          if (croppedFile != null) {
-            if (mediaDeviceFile.isNeedDeleteAfterUsage) {
-              await mediaDeviceFile.delete();
-            }
-
-            var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
-              originalFile: croppedFile,
-              type: mediaDeviceFile.metadata.type,
-              isNeedDeleteAfterUsage: true,
-            );
-            var resultMediaDeviceFile =
-                await mediaDeviceFileMetadata.loadMediaDeviceFile();
-
-            Navigator.of(context).pop(
-              resultMediaDeviceFile,
-            );
-          } else {
-            Navigator.of(context).pop(mediaDeviceFile);
-          }
         },
-        child: Text(
-          S.of(context).app_account_my_edit_field_header_dialog_action_crop,
-        ),
-      );
+      ),
+    ],
+  );
 }
 
-class _EditMyAccountHeaderFieldPickerSelectAction extends StatelessWidget {
-  const _EditMyAccountHeaderFieldPickerSelectAction({
-    Key key,
-  }) : super(key: key);
+Future _cropAndSelect(
+  BuildContext context,
+  IMediaDeviceFile mediaDeviceFile,
+) async {
+  File croppedFile = await cropImage(
+    await mediaDeviceFile.loadFile(),
+    context,
+  );
 
-  @override
-  Widget build(BuildContext context) => FlatButton(
-        onPressed: () {
-          var mediaDeviceFile = Provider.of<IMediaDeviceFile>(
-            context,
-            listen: false,
-          );
-          Navigator.of(context).pop(mediaDeviceFile);
-        },
-        child: Text(S
-            .of(context)
-            .app_account_my_edit_field_header_dialog_action_select),
-      );
-}
+  if (croppedFile != null) {
+    if (mediaDeviceFile.isNeedDeleteAfterUsage) {
+      await mediaDeviceFile.delete();
+    }
 
-class _EditMyAccountHeaderFieldPickerContent extends StatelessWidget {
-  const _EditMyAccountHeaderFieldPickerContent({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaDeviceFile = Provider.of<IMediaDeviceFile>(context);
-    return FutureBuilder(
-      future: mediaDeviceFile.loadFile(),
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        var file = snapshot.data;
-        if (file != null) {
-          return Image.file(file);
-        } else {
-          return const FediCircularProgressIndicator();
-        }
-      },
+    var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
+      originalFile: croppedFile,
+      type: mediaDeviceFile.metadata.type,
+      isNeedDeleteAfterUsage: true,
     );
+    var resultMediaDeviceFile =
+        await mediaDeviceFileMetadata.loadMediaDeviceFile();
+
+    Navigator.of(context).pop(
+      resultMediaDeviceFile,
+    );
+  } else {
+    Navigator.of(context).pop(mediaDeviceFile);
   }
 }
 
-class _EditMyAccountHeaderFieldPickerCancelAction extends StatelessWidget {
-  const _EditMyAccountHeaderFieldPickerCancelAction({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: () {
-        Navigator.of(context).pop(null);
-      },
-      child: Text(
-          S.of(context).app_account_my_edit_field_header_dialog_action_cancel),
-    );
-  }
+void _select(
+  BuildContext context,
+  IMediaDeviceFile mediaDeviceFile,
+) {
+  Navigator.of(context).pop(mediaDeviceFile);
 }
