@@ -27,4 +27,6 @@ abstract class IMultiMediaPickerBloc implements IMediaPickerBloc {
   Stream<bool> get selectionCountLimitReachedStream;
 
   Future acceptSelectedFilesMetadata();
+
+  Future clearSelection();
 }

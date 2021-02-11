@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-02-09T10:59:09+00:00",
+    "@@last_modified": "2021-02-11T10:27:05+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -630,7 +630,6 @@
     "app_auth_instance_register_cantLogin_notification_content": "Ошибка при входе: {errorDescription}",
     "app_auth_instance_register_field_reason_label": "Причина (необязательно)",
     "app_auth_instance_register_field_reason_hint": "Будет проверено модераторами",
-    "file_picker_multi_title": "Выберите файлы",
     "file_picker_selectionFolder_title": "Выбрано",
     "file_picker_multi_selectionCountLimitReached_notification_title": "Достигнут лимит",
     "file_picker_multi_selectionCountLimitReached_notification_content": "Максимум {selectionCountLimit}",
@@ -711,5 +710,7 @@
     "app_status_delete_dialog_title": "Варианты удаления",
     "app_status_delete_dialog_action_delete": "Удалить",
     "app_status_delete_dialog_action_deleteAndSaveToDrafts": "Удалить и сделать черновик",
-    "app_status_delete_dialog_action_deleteAndStartNew": "Удалить и начать новую запись"
+    "app_status_delete_dialog_action_deleteAndStartNew": "Удалить и начать новую запись",
+    "file_picker_multi_title": "Выберите файлы",
+    "file_picker_multi_selectionCount_selected": "Выбрано ({selectionCount})"
 }
