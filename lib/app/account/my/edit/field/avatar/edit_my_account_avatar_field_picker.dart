@@ -37,9 +37,10 @@ Future _selectAndCrop(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {
-  File croppedFile = await cropImageToSquare(
-    await mediaDeviceFile.loadFile(),
-    context,
+  File croppedFile = await goToCropImagePage(
+    context: context,
+    file: await mediaDeviceFile.loadFile(),
+    isForceCropToSquare: true,
   );
 
   if (croppedFile != null) {
