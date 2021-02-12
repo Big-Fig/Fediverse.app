@@ -1,12 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/action/message/account_action_message.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/conversation/start/status/post_status_start_conversation_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
@@ -108,7 +104,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediBlurredTextButtonWithBorder(
       S.of(context).app_account_action_message,
-      onPressed: () async {
+      onPressed: () {
         goToMessagesPageAccountAction(context);
       },
       expanded: false,
