@@ -45,7 +45,8 @@ class ConversationChatWithLastMessageRepository extends AsyncInitLoadingBloc
       _createConversationWithLastMessageList(
           List<DbConversationChatWrapper> conversations) async {
     var chatLastStatusesMap = await statusRepository.getConversationsLastStatus(
-        conversations: conversations);
+      conversations: conversations,
+    );
     return chatLastStatusesMap.entries.map((entry) {
       var chat = entry.key;
       var lastChatStatus = entry.value;

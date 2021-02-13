@@ -53,6 +53,8 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     applicationId: json['application_id'],
     language: json['language'] as String,
     expiresInSeconds: json['expiresInSeconds'] as int,
+    to: (json['to'] as List)?.map((e) => e as String)?.toList(),
+    inReplyToConversationId: json['in_reply_to_conversation_id'] as String,
   );
 }
 
@@ -71,6 +73,8 @@ Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
       'idempotency': instance.idempotency,
       'in_reply_to_id': instance.inReplyToId,
       'application_id': instance.applicationId,
+      'in_reply_to_conversation_id': instance.inReplyToConversationId,
+      'to': instance.to,
     };
 
 PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {

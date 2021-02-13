@@ -1,16 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/pleroma/content/pleroma_content_model.dart';
-import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IScheduledStatus {
@@ -26,13 +21,31 @@ abstract class IScheduledStatus {
 
   bool get canceled;
 
-  IScheduledStatus copyWith(
-      {int localId,
-      String remoteId,
-      DateTime scheduledAt,
-      IPleromaScheduledStatusParams params,
-      bool canceled,
-      List<PleromaMediaAttachment> mediaAttachments});
+  IScheduledStatus copyWith({
+    int localId,
+    String remoteId,
+    DateTime scheduledAt,
+    IPleromaScheduledStatusParams params,
+    bool canceled,
+    List<PleromaMediaAttachment> mediaAttachments,
+  });
+}
+
+extension IScheduledStatusExtension on IScheduledStatus {
+  IPostStatusData get postStatusData => PostStatusData(
+        subject: params.spoilerText,
+        text: params.text,
+        scheduledAt: scheduledAt,
+        visibility: params.visibility,
+        mediaAttachments: mediaAttachments,
+        poll: params.poll.toPostStatusPoll(),
+        to: params.to,
+        inReplyToPleromaStatus: params.inReplyToPleromaStatus,
+        inReplyToConversationId: params.inReplyToConversationId,
+        isNsfwSensitiveEnabled: params.sensitive,
+        language: params.language,
+        expiresInSeconds: params.expiresInSeconds,
+      );
 }
 
 class DbScheduledStatusWrapper implements IScheduledStatus {
@@ -41,20 +54,24 @@ class DbScheduledStatusWrapper implements IScheduledStatus {
   DbScheduledStatusWrapper(this.dbScheduledStatus);
 
   @override
-  IScheduledStatus copyWith(
-          {int localId,
-          String remoteId,
-          DateTime scheduledAt,
-          IPleromaScheduledStatusParams params,
-          bool canceled,
-          List<PleromaMediaAttachment> mediaAttachments}) =>
-      DbScheduledStatusWrapper(dbScheduledStatus.copyWith(
+  IScheduledStatus copyWith({
+    int localId,
+    String remoteId,
+    DateTime scheduledAt,
+    IPleromaScheduledStatusParams params,
+    bool canceled,
+    List<PleromaMediaAttachment> mediaAttachments,
+  }) =>
+      DbScheduledStatusWrapper(
+        dbScheduledStatus.copyWith(
           id: localId,
           remoteId: remoteId,
           scheduledAt: scheduledAt,
           params: params,
           canceled: canceled,
-          mediaAttachments: mediaAttachments));
+          mediaAttachments: mediaAttachments,
+        ),
+      );
 
   @override
   int get localId => dbScheduledStatus.id;
@@ -76,192 +93,20 @@ class DbScheduledStatusWrapper implements IScheduledStatus {
   bool get canceled => dbScheduledStatus.canceled;
 }
 
-class ScheduledStatusAdapterToStatus implements IStatus {
-  final notSupportedError = Exception("Not supported for scheduled status");
-  @override
-  final IAccount account;
+class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
   final IScheduledStatus scheduledStatus;
 
-  ScheduledStatusAdapterToStatus(
-      {@required this.account, @required this.scheduledStatus});
-
-  @override
-  PleromaApplication get application => null;
-
-  @override
-  bool get bookmarked => throw notSupportedError;
-
-  @override
-  PleromaCard get card => null;
-
-  @override
-  String get content => scheduledStatus.params.text;
-
-  @override
-  IStatus copyWith({
-    IAccount account,
-    IStatus reblog,
-    int id,
-    String remoteId,
-    DateTime createdAt,
-    IStatus inReplyToStatus,
-    String inReplyToRemoteId,
-    String inReplyToAccountRemoteId,
-    bool nsfwSensitive,
-    String spoilerText,
-    PleromaVisibility visibility,
-    String uri,
-    String url,
-    int repliesCount,
-    int reblogsCount,
-    int favouritesCount,
-    bool favourited,
-    bool reblogged,
-    bool muted,
-    bool bookmarked,
-    bool pinned,
-    String content,
-    String reblogStatusRemoteId,
-    PleromaApplication application,
-    String accountRemoteId,
-    List<PleromaMediaAttachment> mediaAttachments,
-    List<PleromaMention> mentions,
-    List<PleromaTag> tags,
-    List<PleromaEmoji> emojis,
-    PleromaPoll poll,
-    PleromaCard card,
-    String language,
-    PleromaContent pleromaContent,
-    int pleromaConversationId,
-    int pleromaDirectConversationId,
-    String pleromaInReplyToAccountAcct,
-    bool pleromaLocal,
-    PleromaContent pleromaSpoilerText,
-    DateTime pleromaExpiresAt,
-    bool pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-    bool deleted,
-  }) {
-    throw notSupportedError;
-  }
-
-  @override
-  DateTime get createdAt => scheduledStatus.scheduledAt;
-
-  @override
-  List<PleromaEmoji> get emojis => [];
-
-  @override
-  bool get favourited => throw notSupportedError;
-
-  @override
-  int get favouritesCount => throw notSupportedError;
-
-  @override
-  String get inReplyToAccountRemoteId => null;
-
-  @override
-  String get inReplyToRemoteId => scheduledStatus.params.inReplyToId;
-
-  @override
-  String get language => null;
-
-  @override
-  int get localId => scheduledStatus.localId;
-
-  @override
-  List<PleromaMediaAttachment> get mediaAttachments =>
-      scheduledStatus.mediaAttachments;
-
-  @override
-  List<PleromaMention> get mentions => [];
-
-  @override
-  bool get muted => throw notSupportedError;
-
-  @override
-  bool get nsfwSensitive => scheduledStatus.params.sensitive;
-
-  @override
-  bool get pinned => throw notSupportedError;
-
-  @override
-  PleromaContent get pleromaContent => null;
-
-  @override
-  int get pleromaConversationId => null;
-
-  @override
-  int get pleromaDirectConversationId => null;
-
-  @override
-  List<PleromaStatusEmojiReaction> get pleromaEmojiReactions => null;
-
-  @override
-  DateTime get pleromaExpiresAt => null;
-
-  @override
-  String get pleromaInReplyToAccountAcct => null;
-
-  @override
-  bool get pleromaLocal => null;
-
-  @override
-  PleromaContent get pleromaSpoilerText => null;
-
-  @override
-  bool get pleromaThreadMuted => null;
-
-  @override
-  PleromaPoll get poll => scheduledStatus.params?.poll?.toPleromaPoll();
-
-  @override
-  IStatus get reblog => null;
-
-  @override
-  String get reblogStatusRemoteId => null;
-
-  @override
-  bool get reblogged => null;
-
-  @override
-  int get reblogsCount => null;
-
-  @override
-  String get remoteId => scheduledStatus.remoteId;
-
-  @override
-  int get repliesCount => null;
-
-  @override
-  String get spoilerText => scheduledStatus.params.spoilerText;
-
-  @override
-  List<PleromaTag> get tags => [];
-
-  @override
-  String get uri => null;
-
-  @override
-  String get url => null;
-
-  @override
-  PleromaVisibility get visibility => scheduledStatus.params.visibilityPleroma;
-
-  // todo: fix this, sometimes it may be reblog
-  @override
-  bool get isHaveReblog => false;
-
-  // todo: fix this, sometimes it may be reply
-  @override
-  bool get isReply => false;
-
-  @override
-  // todo: fix this, sometimes it may be reply
-  IStatus get inReplyToStatus => null;
-
-  @override
-  bool get deleted => false;
+  ScheduledStatusAdapterToStatus({
+    @required IAccount account,
+    @required this.scheduledStatus,
+  }) : super(
+          localId: scheduledStatus.localId,
+          account: account,
+          postStatusData: scheduledStatus.postStatusData,
+          createdAt: scheduledStatus.scheduledAt,
+          pendingState: PendingState.notSentYet,
+          oldPendingRemoteId: null,
+        );
 }
 
 enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

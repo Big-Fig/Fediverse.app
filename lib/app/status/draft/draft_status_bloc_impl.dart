@@ -108,7 +108,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       draftStatusStream.map((draftStatus) => draftStatus.updatedAt);
 
   @override
-  IPostStatusData calculatePostStatusData() => draftStatus.data;
+  IPostStatusData calculatePostStatusData() => draftStatus.postStatusData;
 
   @override
   Future cancelDraft() {

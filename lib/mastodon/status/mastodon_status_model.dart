@@ -93,14 +93,13 @@ abstract class IMastodonScheduledStatusParams {
 
   DateTime get scheduledAt;
 
-  // request or result type?
-  // IMastodonPostStatusRequestPoll
-  // IMastodonPoll
   PleromaPostStatusPoll get poll;
 
   String get idempotency;
 
   String get inReplyToId;
+
+  IPleromaStatus get inReplyToPleromaStatus;
 
   String get language;
 
@@ -108,6 +107,7 @@ abstract class IMastodonScheduledStatusParams {
 
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibility);
+
 }
 
 abstract class IMastodonPostStatusBaseRequest {

@@ -70,10 +70,9 @@ abstract class CachedPaginationListWithNewItemsBloc<
         actuallyNew = removeDuplicates(actuallyNew);
 
         _logger.finest(() => "watchItemsNewerThanItem "
-            // "\n"
-            // "\t newItems ${newItems.length} \n"
-            // "\t actuallyNew = ${actuallyNew.length}"
-            );
+            "\n"
+            "\t newItems ${newItems.length} \n"
+            "\t actuallyNew = ${actuallyNew.length}");
 
         if (items?.isNotEmpty != true &&
             mergeNewItemsImmediatelyWhenItemsIsEmpty) {
@@ -101,8 +100,10 @@ abstract class CachedPaginationListWithNewItemsBloc<
       actuallyNew.where((a) {
         bool isAlreadyExist;
         if (items?.isNotEmpty == true) {
-          var found =
-              items.firstWhere((b) => isItemsEqual(a, b), orElse: () => null);
+          var found = items.firstWhere(
+            (b) => isItemsEqual(a, b),
+            orElse: () => null,
+          );
 
           isAlreadyExist = found != null;
         } else {

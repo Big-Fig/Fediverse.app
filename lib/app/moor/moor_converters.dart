@@ -1,3 +1,4 @@
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
@@ -25,6 +26,17 @@ class PleromaVisibilityDatabaseConverter
 
   @override
   String mapToSql(PleromaVisibility value) => value.toJsonValue();
+}
+
+class PendingStateDatabaseConverter
+    extends TypeConverter<PendingState, String> {
+  const PendingStateDatabaseConverter();
+
+  @override
+  PendingState mapToDart(String fromDb) => fromDb.toPendingState();
+
+  @override
+  String mapToSql(PendingState value) => value.toJsonValue();
 }
 
 class PleromaApplicationDatabaseConverter

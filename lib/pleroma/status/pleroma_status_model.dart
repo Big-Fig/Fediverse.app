@@ -71,8 +71,12 @@ abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
 
 abstract class IPleromaScheduledStatusParams
     extends IMastodonScheduledStatusParams {
+  List<String> get to;
+
+  String get inReplyToConversationId;
 
   int get expiresInSeconds;
+
   PleromaVisibility get visibilityPleroma =>
       const PleromaVisibilityTypeConverter().fromJson(visibility);
 }
@@ -113,10 +117,8 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
 
 @JsonSerializable(explicitToJson: true)
 class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
-
-
   @override
-  final int  expiresInSeconds;
+  final int expiresInSeconds;
   @override
   final String text;
 
@@ -156,19 +158,36 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   // int or String
   final dynamic applicationId;
 
+  @override
+  @JsonKey(name: "in_reply_to_conversation_id")
+  final String inReplyToConversationId;
+
+  @override
+  IPleromaStatus get inReplyToPleromaStatus => inReplyToId != null
+      ? PleromaStatus(
+          id: inReplyToId,
+        )
+      : null;
+
+  @override
+  @JsonKey(name: "to")
+  final List<String> to;
+
   PleromaScheduledStatusParams({
-    this.text,
-    this.mediaIds,
-    this.sensitive,
-    this.spoilerText,
-    this.visibility,
-    this.scheduledAt,
-    this.poll,
-    this.idempotency,
-    this.inReplyToId,
-    this.applicationId,
-    this.language,
-    this.expiresInSeconds,
+    @required this.text,
+    @required this.mediaIds,
+    @required this.sensitive,
+    @required this.spoilerText,
+    @required this.visibility,
+    @required this.scheduledAt,
+    @required this.poll,
+    @required this.idempotency,
+    @required this.inReplyToId,
+    @required this.applicationId,
+    @required this.language,
+    @required this.expiresInSeconds,
+    @required this.to,
+    @required this.inReplyToConversationId,
   });
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
@@ -188,23 +207,11 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       jsonEncode(_$PleromaScheduledStatusParamsToJson(this));
 
   @override
-  String toString() {
-    return 'PleromaScheduledStatusParams{text: $text, mediaIds: $mediaIds,'
-        ' sensitive: $sensitive, spoilerText: $spoilerText,'
-        ' visibility: $visibility, scheduledAt: $scheduledAt, poll: $poll, '
-        'idempotency: $idempotency, '
-        'inReplyToId: $inReplyToId, '
-        'language: $language, '
-        'expiresInSeconds: $expiresInSeconds, '
-        'applicationId: $applicationId'
-        '}';
-  }
-
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PleromaScheduledStatusParams &&
           runtimeType == other.runtimeType &&
+          expiresInSeconds == other.expiresInSeconds &&
           text == other.text &&
           eq(mediaIds, other.mediaIds) &&
           sensitive == other.sensitive &&
@@ -215,11 +222,13 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
           poll == other.poll &&
           idempotency == other.idempotency &&
           inReplyToId == other.inReplyToId &&
-          expiresInSeconds == other.expiresInSeconds &&
-          applicationId == other.applicationId;
+          applicationId == other.applicationId &&
+          inReplyToConversationId == other.inReplyToConversationId &&
+          eq(to, other.to);
 
   @override
   int get hashCode =>
+      expiresInSeconds.hashCode ^
       text.hashCode ^
       mediaIds.hashCode ^
       sensitive.hashCode ^
@@ -230,8 +239,14 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       poll.hashCode ^
       idempotency.hashCode ^
       inReplyToId.hashCode ^
-      expiresInSeconds.hashCode ^
-      applicationId.hashCode;
+      applicationId.hashCode ^
+      inReplyToConversationId.hashCode ^
+      to.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaScheduledStatusParams{expiresInSeconds: $expiresInSeconds, text: $text, mediaIds: $mediaIds, sensitive: $sensitive, spoilerText: $spoilerText, visibility: $visibility, language: $language, scheduledAt: $scheduledAt, poll: $poll, idempotency: $idempotency, inReplyToId: $inReplyToId, applicationId: $applicationId, inReplyToConversationId: $inReplyToConversationId, to: $to}';
+  }
 }
 
 @JsonSerializable()

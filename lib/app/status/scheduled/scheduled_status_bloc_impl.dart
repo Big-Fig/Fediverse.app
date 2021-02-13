@@ -256,20 +256,11 @@ class ScheduledStatusBloc extends DisposableOwner
       scheduledAt: scheduledStatus.scheduledAt,
       visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
-      poll: scheduledStatus.params?.poll != null
-          ? PostStatusPoll(
-              durationLength: Duration(
-                  seconds: scheduledStatus.params.poll.expiresInSeconds),
-              hideTotals: scheduledStatus.params.poll.hideTotals,
-              multiple: scheduledStatus.params.poll.multiple,
-              options: scheduledStatus.params.poll.options,
-            )
-          : null,
-      inReplyToPleromaStatus: null,
-      inReplyToConversationId: null,
-      isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
-      // actually to should be extracted fro
-      to: null,
+      poll: scheduledStatus.params?.poll?.toPostStatusPoll(),
+      inReplyToPleromaStatus: scheduledStatus.params?.inReplyToPleromaStatus,
+      inReplyToConversationId: scheduledStatus.params?.inReplyToConversationId,
+      isNsfwSensitiveEnabled: scheduledStatus.params?.sensitive,
+      to: scheduledStatus.params?.to,
       language: scheduledStatus.params?.language,
       expiresInSeconds: scheduledStatus.params?.expiresInSeconds,
     );

@@ -3,9 +3,11 @@ import 'package:moor/moor.dart';
 
 class PleromaChatMessageRepositoryFilters {
   final List<IPleromaChat> onlyInChats;
+  final bool onlyPendingStatePublishedOrNull;
 
   PleromaChatMessageRepositoryFilters({
     this.onlyInChats,
+    @required this.onlyPendingStatePublishedOrNull,
   });
 
   @override
@@ -13,6 +15,8 @@ class PleromaChatMessageRepositoryFilters {
       identical(this, other) ||
       other is PleromaChatMessageRepositoryFilters &&
           runtimeType == other.runtimeType &&
+          onlyPendingStatePublishedOrNull ==
+              other.onlyPendingStatePublishedOrNull &&
           onlyInChats == other.onlyInChats;
 
   @override
@@ -22,6 +26,7 @@ class PleromaChatMessageRepositoryFilters {
   String toString() {
     return 'PleromaChatMessageRepositoryFilters{'
         'onlyInChats: $onlyInChats'
+        'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull'
         '}';
   }
 }

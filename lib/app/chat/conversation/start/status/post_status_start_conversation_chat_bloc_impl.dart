@@ -5,6 +5,7 @@ import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -34,6 +35,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     @required this.successCallback,
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
+    @required IScheduledStatusRepository scheduledStatusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
@@ -44,6 +46,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           isExpirePossible: false,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.direct.toJsonValue(),
@@ -80,6 +83,10 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 

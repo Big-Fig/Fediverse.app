@@ -20,28 +20,30 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
         IConversationChatMessage> {
   final IConversationChatMessageCachedListBloc chatMessageCachedListService;
 
-  ConversationChatMessageCachedPaginationListWithNewItemsBloc(
-      {@required
-          bool mergeNewItemsImmediately,
-      @required
-          this.chatMessageCachedListService,
-      @required
-          ICachedPaginationBloc<TPage, IConversationChatMessage>
-              cachedPaginationBloc})
-      : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: cachedPaginationBloc);
+  ConversationChatMessageCachedPaginationListWithNewItemsBloc({
+    @required bool mergeNewItemsImmediately,
+    @required this.chatMessageCachedListService,
+    @required
+        ICachedPaginationBloc<TPage, IConversationChatMessage>
+            cachedPaginationBloc,
+  }) : super(
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: cachedPaginationBloc,
+        );
 
   @override
   Stream<List<IConversationChatMessage>> watchItemsNewerThanItem(
-      IConversationChatMessage item) {
+    IConversationChatMessage item,
+  ) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }
 
   @override
   int compareItemsToSort(
-      IConversationChatMessage a, IConversationChatMessage b) {
+    IConversationChatMessage a,
+    IConversationChatMessage b,
+  ) {
     if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
     }
@@ -56,12 +58,25 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  bool isItemsEqual(IConversationChatMessage a, IConversationChatMessage b) =>
-      a.remoteId == b.remoteId;
+  bool isItemsEqual(
+    IConversationChatMessage a,
+    IConversationChatMessage b,
+  ) {
+    if (a.oldPendingRemoteId != null || b.oldPendingRemoteId != null) {
+      return a.remoteId == b.remoteId ||
+          a.oldPendingRemoteId == b.oldPendingRemoteId ||
+          a.remoteId == b.oldPendingRemoteId ||
+          a.oldPendingRemoteId == b.remoteId;
+    } else {
+      return a.remoteId == b.remoteId;
+    }
+  }
 
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc
-      createFromContext(BuildContext context,
-          {@required bool mergeNewItemsImmediately}) {
+      createFromContext(
+    BuildContext context, {
+    @required bool mergeNewItemsImmediately,
+  }) {
     return ConversationChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
       chatMessageCachedListService:

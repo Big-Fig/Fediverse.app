@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -18,6 +19,8 @@ abstract class IPleromaChatMessage extends IChatMessage {
     List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   });
 }
 
@@ -66,6 +69,14 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
           : null;
 
   @override
+  PendingState get pendingState =>
+      dbChatMessagePopulated.dbChatMessage.pendingState;
+
+  @override
+  String get oldPendingRemoteId =>
+      dbChatMessagePopulated.dbChatMessage.oldPendingRemoteId;
+
+  @override
   DbChatMessagePopulatedWrapper copyWith({
     int localId,
     String remoteId,
@@ -76,20 +87,26 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
     List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   }) =>
-      DbChatMessagePopulatedWrapper(dbChatMessagePopulated.copyWith(
-        localId: localId,
-        remoteId: remoteId,
-        chatRemoteId: chatRemoteId,
-        account: account,
-        content: content,
-        createdAt: createdAt,
-        mediaAttachment: mediaAttachments?.isNotEmpty == true
-            ? mediaAttachments.first
-            : null,
-        emojis: emojis,
-        card: card,
-      ));
+      DbChatMessagePopulatedWrapper(
+        dbChatMessagePopulated.copyWith(
+          localId: localId,
+          remoteId: remoteId,
+          chatRemoteId: chatRemoteId,
+          account: account,
+          content: content,
+          createdAt: createdAt,
+          mediaAttachment: mediaAttachments?.isNotEmpty == true
+              ? mediaAttachments.first
+              : null,
+          emojis: emojis,
+          card: card,
+          pendingState: pendingState,
+          oldPendingRemoteId: oldPendingRemoteId,
+        ),
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -121,9 +138,11 @@ class DbChatMessagePopulated {
     IPleromaMediaAttachment mediaAttachment,
     List<IPleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   }) =>
       DbChatMessagePopulated(
-          dbChatMessage: DbChatMessage(
+        dbChatMessage: DbChatMessage(
             id: localId ?? dbChatMessage.id,
             remoteId: remoteId ?? dbChatMessage.remoteId,
             chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
@@ -133,9 +152,11 @@ class DbChatMessagePopulated {
             card: card ?? dbChatMessage.card,
             mediaAttachment: mediaAttachment ?? dbChatMessage.mediaAttachment,
             accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
-          ),
-          dbAccount:
-              account != null ? dbAccountFromAccount(account) : dbAccount);
+            pendingState: pendingState ?? dbChatMessage.pendingState,
+            oldPendingRemoteId:
+                oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId),
+        dbAccount: account != null ? dbAccountFromAccount(account) : dbAccount,
+      );
 
   @override
   bool operator ==(Object other) =>

@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -22,6 +23,10 @@ abstract class IChatMessage {
 
   IPleromaCard get card;
 
+  PendingState get pendingState;
+
+  String get oldPendingRemoteId;
+
   IChatMessage copyWith({
     int localId,
     String remoteId,
@@ -32,5 +37,7 @@ abstract class IChatMessage {
     List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   });
 }

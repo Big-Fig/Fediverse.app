@@ -30,6 +30,11 @@ class PleromaChatWithLastMessageCachedListBloc
   @override
   IPleromaApi get pleromaApi => pleromaChatService;
 
+  PleromaChatRepositoryFilters get filters => null;
+
+  PleromaChatOrderingTermData get orderingTermData =>
+      PleromaChatOrderingTermData.updatedAtDesc;
+
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
@@ -70,13 +75,13 @@ class PleromaChatWithLastMessageCachedListBloc
         "\t olderThan=$olderThan");
 
     var chats = await chatWithLastMessageRepository.getChatsWithLastMessage(
-      filters: null,
+      filters: filters,
       pagination: RepositoryPagination(
         olderThanItem: olderThan?.chat,
         newerThanItem: newerThan?.chat,
         limit: limit,
       ),
-      orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+      orderingTermData: orderingTermData,
     );
 
     _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
@@ -87,10 +92,10 @@ class PleromaChatWithLastMessageCachedListBloc
   Stream<List<IPleromaChatWithLastMessage>> watchLocalItemsNewerThanItem(
           IPleromaChatWithLastMessage item) =>
       chatWithLastMessageRepository.watchChatsWithLastMessage(
-        filters: null,
+        filters: filters,
         pagination: RepositoryPagination(
           newerThanItem: item?.chat,
         ),
-        orderingTermData: PleromaChatOrderingTermData.updatedAtDesc,
+        orderingTermData: orderingTermData,
       );
 }

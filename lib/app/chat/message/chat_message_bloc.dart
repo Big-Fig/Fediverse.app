@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -44,6 +45,10 @@ abstract class IChatMessageBloc implements IDisposable {
   String get accountAvatar;
 
   Stream<String> get accountAvatarStream;
+
+  PendingState get pendingState;
+
+  Stream<PendingState> get pendingStateStream;
 
   Future refreshFromNetwork();
 }

@@ -99,7 +99,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       );
     }
     if (conversationRemoteId != null) {
-      await addStatusesToConversation(
+      await addStatusesToConversationWithDuplicatePreCheck(
         statusRemoteIds: [remoteStatus.id],
         conversationRemoteId: conversationRemoteId,
       );
@@ -174,7 +174,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       );
     }
     if (conversationRemoteId != null) {
-      await addStatusesToConversation(
+      await addStatusesToConversationWithDuplicatePreCheck(
         statusRemoteIds:
             remoteStatuses.map((remoteStatus) => remoteStatus.id).toList(),
         conversationRemoteId: conversationRemoteId,
@@ -238,7 +238,8 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
   }
 
-  Future addStatusesToConversation({
+  @override
+  Future addStatusesToConversationWithDuplicatePreCheck({
     @required List<String> statusRemoteIds,
     @required String conversationRemoteId,
   }) async {
@@ -578,8 +579,9 @@ class StatusRepository extends AsyncInitLoadingBloc
       getStatus(
         filters: StatusRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
+          onlyPendingStatePublishedOrNull: false,
         ),
-        orderingTermData: StatusRepositoryOrderingTermData.remoteIdDesc,
+        orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
       );
 
   @override
@@ -589,8 +591,9 @@ class StatusRepository extends AsyncInitLoadingBloc
       watchStatus(
         filters: StatusRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
+          onlyPendingStatePublishedOrNull: false,
         ),
-        orderingTermData: StatusRepositoryOrderingTermData.remoteIdDesc,
+        orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
       );
 
   @override
@@ -598,8 +601,10 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required List<IConversationChat> conversations,
   }) async {
     var query = createQuery(
-      orderingTermData: StatusRepositoryOrderingTermData.remoteIdDesc,
-      filters: StatusRepositoryFilters.createForMustBeConversationItem(),
+      orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
+      filters: StatusRepositoryFilters.createForMustBeConversationItem(
+        onlyPendingStatePublishedOrNull: false,
+      ),
       pagination: null,
     );
 
@@ -729,6 +734,10 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyNotDeletedWhere(query);
     }
 
+    if (filters?.onlyPendingStatePublishedOrNull == true) {
+      dao.addOnlyPendingStatePublishedOrNull(query);
+    }
+
     var includeReplyToAccountFollowing = false;
 
     var replyVisibilityFilter =
@@ -748,13 +757,24 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(
-          orderingTermData.orderByType == StatusRepositoryOrderType.remoteId);
-      dao.addRemoteIdBoundsWhere(
-        query,
-        maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
-        minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
-      );
+      var isRemoteIdOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.remoteId;
+      var isCreatedAtOrdering =
+          orderingTermData.orderByType == StatusRepositoryOrderType.createdAt;
+      assert(isRemoteIdOrdering || isCreatedAtOrdering);
+      if (isRemoteIdOrdering) {
+        dao.addRemoteIdBoundsWhere(
+          query,
+          maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
+          minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
+        );
+      } else if (isCreatedAtOrdering) {
+        dao.addCreatedAtBoundsWhere(
+          query,
+          maximumDateTimeExcluding: pagination?.olderThanItem?.createdAt,
+          minimumDateTimeExcluding: pagination?.newerThanItem?.createdAt,
+        );
+      }
     }
 
     if (orderingTermData != null) {
@@ -803,7 +823,6 @@ class StatusRepository extends AsyncInitLoadingBloc
           phrase: textCondition.phrase,
           wholeWord: textCondition.wholeWord,
         );
-
       }
     }
 
@@ -846,4 +865,43 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     return finalQuery;
   }
+
+  @override
+  Future<IStatus> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) async {
+    _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+    return mapDataClassToItem(
+        await dao.findByOldPendingRemoteId(oldPendingRemoteId));
+  }
+
+  @override
+  Stream<IStatus> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) {
+    _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+    return (dao.watchByOldPendingRemoteId(oldPendingRemoteId))
+        .map(mapDataClassToItem);
+  }
+
+  @override
+  Future addStatusToConversation({
+    @required String statusRemoteId,
+    @required String conversationRemoteId,
+  }) =>
+      conversationStatusesDao.insert(
+        DbConversationStatus(
+          id: null,
+          conversationRemoteId: conversationRemoteId,
+          statusRemoteId: statusRemoteId,
+        ),
+      );
+
+  @override
+  Future removeStatusToConversation({
+    @required String statusRemoteId,
+    @required String conversationRemoteId,
+  }) =>
+      conversationStatusesDao
+          .deleteByConversationRemoteId(conversationRemoteId);
 }

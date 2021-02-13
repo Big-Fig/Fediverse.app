@@ -1,4 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -96,14 +97,25 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   Future<DbStatusPopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
-
   Stream<DbStatusPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
+  Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
+      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+
   Stream<DbStatusPopulated> watchByRemoteId(String remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+
+  Future<DbStatusPopulated> findByOldPendingRemoteId(
+          String oldPendingRemoteId) async =>
+      typedResultToPopulated(
+          await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle());
+
+  Stream<DbStatusPopulated> watchByOldPendingRemoteId(
+          String oldPendingRemoteId) =>
+      (_findByOldPendingRemoteId(oldPendingRemoteId)
+          .watchSingle()
+          .map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbStatuses).join(
@@ -120,26 +132,59 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbStatuses)..where((status) => status.id.equals(id)))
-          .join(populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-        includeReplyToAccountFollowing: false,
-      ));
+      (select(db.dbStatuses)
+            ..where(
+              (status) => status.id.equals(
+                id,
+              ),
+            ))
+          .join(
+        populateStatusJoin(
+          includeAccountFollowing: false,
+          includeStatusLists: false,
+          includeStatusHashtags: false,
+          includeConversations: false,
+          includeHomeTimeline: false,
+          includeReplyToAccountFollowing: false,
+        ),
+      );
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbStatuses)..where((status) => status.remoteId.like(remoteId)))
-          .join(populateStatusJoin(
-        includeAccountFollowing: false,
-        includeStatusLists: false,
-        includeStatusHashtags: false,
-        includeConversations: false,
-        includeHomeTimeline: false,
-        includeReplyToAccountFollowing: false,
-      ));
+      (select(db.dbStatuses)
+            ..where(
+              (status) => status.remoteId.like(
+                remoteId,
+              ),
+            ))
+          .join(
+        populateStatusJoin(
+          includeAccountFollowing: false,
+          includeStatusLists: false,
+          includeStatusHashtags: false,
+          includeConversations: false,
+          includeHomeTimeline: false,
+          includeReplyToAccountFollowing: false,
+        ),
+      );
+
+  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
+          String oldPendingRemoteId) =>
+      (select(db.dbStatuses)
+            ..where(
+              (status) => status.oldPendingRemoteId.like(
+                oldPendingRemoteId,
+              ),
+            ))
+          .join(
+        populateStatusJoin(
+          includeAccountFollowing: false,
+          includeStatusLists: false,
+          includeStatusHashtags: false,
+          includeConversations: false,
+          includeHomeTimeline: false,
+          includeReplyToAccountFollowing: false,
+        ),
+      );
 
   Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
       into(db.dbStatuses).insert(entity, mode: mode);
@@ -259,10 +304,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query
       ..where(
-        CustomExpression<bool>(expressionContent)
-        |
-            CustomExpression<bool>("$tableName.$fieldName IS NULL")
-        ,
+        CustomExpression<bool>(expressionContent) |
+            CustomExpression<bool>("$tableName.$fieldName IS NULL"),
       );
   }
 
@@ -344,6 +387,18 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
             (status) => isNull(status.deleted) | status.deleted.equals(false));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyPendingStatePublishedOrNull(
+              SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+          query
+            ..where(
+              (status) =>
+                  isNull(status.pendingState) |
+                  status.pendingState.equals(
+                    PendingState.published.toJsonValue(),
+                  ),
+            );
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyInReplyToAccountRemoteIdOrNotReply(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String accountRemoteId,
@@ -382,6 +437,29 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return query;
   }
 
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addCreatedAtBoundsWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+    @required DateTime minimumDateTimeExcluding,
+    @required DateTime maximumDateTimeExcluding,
+  }) {
+    var minimumExist = minimumDateTimeExcluding != null;
+    var maximumExist = maximumDateTimeExcluding != null;
+    assert(minimumExist || maximumExist);
+
+    if (minimumExist) {
+      query = query
+        ..where((status) =>
+            status.createdAt.isBiggerThanValue(minimumDateTimeExcluding));
+    }
+    if (maximumExist) {
+      query = query
+        ..where((status) =>
+            status.createdAt.isSmallerThanValue(maximumDateTimeExcluding));
+    }
+
+    return query;
+  }
+
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
       SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
       List<PleromaVisibility> excludeVisibilities) {
@@ -405,6 +483,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                   switch (orderTerm.orderByType) {
                     case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
+                      break;
+                    case StatusRepositoryOrderType.createdAt:
+                      expression = item.createdAt;
                       break;
                   }
                   return OrderingTerm(

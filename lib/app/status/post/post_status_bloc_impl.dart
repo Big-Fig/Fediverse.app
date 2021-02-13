@@ -9,6 +9,7 @@ import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -47,6 +48,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   PostStatusBloc({
     @required this.pleromaAuthStatusService,
     @required this.statusRepository,
+    @required this.scheduledStatusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
     @required int maximumMessageLength,
@@ -184,8 +186,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   void _checkPollEmptyInputError() {
     var isSomethingChangedPollBloc = pollBloc.isSomethingChanged;
 
-    _logger.finest(() => "_checkPollEmptyInputError "
-        "isSomethingChangedPollBloc $isSomethingChangedPollBloc");
+    // _logger.finest(() => "_checkPollEmptyInputError "
+    //     "isSomethingChangedPollBloc $isSomethingChangedPollBloc");
     var currentInputTextErrors = inputTextErrors;
     if (isSomethingChangedPollBloc) {
       var textIsNotEmpty = inputText?.isNotEmpty == true;
@@ -211,6 +213,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   final IPleromaAuthStatusService pleromaAuthStatusService;
   final IStatusRepository statusRepository;
+  final IScheduledStatusRepository scheduledStatusRepository;
 
   @override
   IStatus get originInReplyToStatus =>
@@ -470,55 +473,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
     bool success;
     if (isScheduledAtExist) {
-      success = await _scheduleStatus();
+      success = await actualScheduleStatus();
     } else {
-      success = await _postStatus();
+      success = await actualPostStatus();
     }
 
     if (success) {
       clear();
-    }
-    return success;
-  }
-
-  Future<bool> _postStatus() async {
-    var remoteStatus = await pleromaAuthStatusService.postStatus(
-      data: PleromaPostStatus(
-          mediaIds: _calculateMediaIdsField(),
-          status: calculateStatusTextField(),
-          sensitive: isNsfwSensitiveEnabled,
-          visibility: calculateVisibilityField(),
-          inReplyToId: calculateInReplyToStatusField()?.remoteId,
-          inReplyToConversationId: initialData.inReplyToConversationId,
-          idempotencyKey: idempotencyKey,
-          to: calculateToField(),
-          poll: _calculatePleromaPostStatusPollField(),
-          spoilerText: _calculateSpoilerTextField(),
-          language: initialData.language,
-          expiresInSeconds: expireAtSubject.value?.totalSeconds),
-    );
-
-    var success;
-    if (remoteStatus != null) {
-      await statusRepository.upsertRemoteStatus(remoteStatus,
-          listRemoteId: null,
-          conversationRemoteId: initialData.inReplyToConversationId);
-      await onStatusPosted(remoteStatus);
-      if (inReplyToStatusRemoteId != null) {}
-      success = true;
-    } else {
-      success = false;
-    }
-    if (success) {
-      try {
-        await statusRepository.incrementRepliesCount(
-            remoteId: inReplyToStatusRemoteId);
-      } catch (e, stackTrace) {
-        _logger.warning(
-            () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
-            e,
-            stackTrace);
-      }
     }
     return success;
   }
@@ -712,6 +673,53 @@ abstract class PostStatusBloc extends PostMessageBloc
     expireAtSubject.add(duration);
   }
 
+  Future<bool> actualPostStatus() async {
+    var remoteStatus = await pleromaAuthStatusService.postStatus(
+      data: calculatePleromaPostStatus(),
+    );
+
+    var success;
+    if (remoteStatus != null) {
+      await statusRepository.upsertRemoteStatus(
+        remoteStatus,
+        listRemoteId: null,
+        conversationRemoteId: initialData.inReplyToConversationId,
+      );
+      await onStatusPosted(remoteStatus);
+      success = true;
+    } else {
+      success = false;
+    }
+    if (success) {
+      if (inReplyToStatusRemoteId != null) {
+        try {
+          await statusRepository.incrementRepliesCount(
+            remoteId: inReplyToStatusRemoteId,
+          );
+        } catch (e, stackTrace) {
+          _logger.warning(
+            () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
+            e,
+            stackTrace,
+          );
+        }
+      }
+    }
+    return success;
+  }
+
+  Future<bool> actualScheduleStatus() async {
+    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
+      data: calculateScheduleStatus(),
+    );
+    var success = scheduledStatus != null;
+    if (success) {
+      await scheduledStatusRepository
+          .upsertRemoteScheduledStatus(scheduledStatus);
+    }
+    return success;
+  }
+
   @override
   IPostStatusData calculateCurrentPostStatusData() => PostStatusData(
         subject: _calculateSpoilerTextField(),
@@ -733,9 +741,11 @@ abstract class PostStatusBloc extends PostMessageBloc
             )
             ?.toList(),
         poll: _calculatePostStatusPoll(),
-        inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
-          calculateInReplyToStatusField(),
-        ),
+        inReplyToPleromaStatus: initialData.inReplyToPleromaStatus != null
+            ? mapLocalStatusToRemoteStatus(
+                calculateInReplyToStatusField(),
+              )
+            : null,
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,
@@ -743,24 +753,37 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.value?.totalSeconds,
       );
 
-  Future<bool> _scheduleStatus() async {
-    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
-      data: PleromaScheduleStatus(
-        mediaIds: _calculateMediaIdsField(),
-        status: calculateStatusTextField(),
-        sensitive: isNsfwSensitiveEnabled,
-        visibility: calculateVisibilityField(),
-        inReplyToId: calculateInReplyToStatusField()?.remoteId,
-        inReplyToConversationId: initialData.inReplyToConversationId,
-        idempotencyKey: idempotencyKey,
-        scheduledAt: scheduledAt,
-        to: calculateToField(),
-        poll: _calculatePleromaPostStatusPollField(),
-        spoilerText: _calculateSpoilerTextField(),
-        expiresInSeconds: expireAtSubject.value?.totalSeconds,
-      ),
+  PleromaScheduleStatus calculateScheduleStatus() {
+    return PleromaScheduleStatus(
+      mediaIds: _calculateMediaIdsField(),
+      status: calculateStatusTextField(),
+      sensitive: isNsfwSensitiveEnabled,
+      visibility: calculateVisibilityField(),
+      inReplyToId: calculateInReplyToStatusField()?.remoteId,
+      inReplyToConversationId: initialData.inReplyToConversationId,
+      idempotencyKey: idempotencyKey,
+      scheduledAt: scheduledAt,
+      to: calculateToField(),
+      poll: _calculatePleromaPostStatusPollField(),
+      spoilerText: _calculateSpoilerTextField(),
+      expiresInSeconds: expireAtSubject.value?.totalSeconds,
     );
-    var success = scheduledStatus != null;
-    return success;
+  }
+
+  PleromaPostStatus calculatePleromaPostStatus() {
+    return PleromaPostStatus(
+      mediaIds: _calculateMediaIdsField(),
+      status: calculateStatusTextField(),
+      sensitive: isNsfwSensitiveEnabled,
+      visibility: calculateVisibilityField(),
+      inReplyToId: calculateInReplyToStatusField()?.remoteId,
+      inReplyToConversationId: initialData.inReplyToConversationId,
+      idempotencyKey: idempotencyKey,
+      to: calculateToField(),
+      poll: _calculatePleromaPostStatusPollField(),
+      spoilerText: _calculateSpoilerTextField(),
+      language: initialData.language,
+      expiresInSeconds: expireAtSubject.value?.totalSeconds,
+    );
   }
 }

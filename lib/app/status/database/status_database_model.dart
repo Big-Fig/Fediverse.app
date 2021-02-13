@@ -95,4 +95,9 @@ class DbStatuses extends Table {
       text().map(PleromaEmojiReactionsListDatabaseConverter()).nullable()();
 
   BoolColumn get deleted => boolean().nullable()();
+
+  TextColumn get pendingState =>
+      text().nullable().map(PendingStateDatabaseConverter())();
+
+  TextColumn get oldPendingRemoteId => text().nullable()();
 }

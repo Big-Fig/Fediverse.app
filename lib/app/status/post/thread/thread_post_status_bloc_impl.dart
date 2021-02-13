@@ -5,6 +5,7 @@ import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
@@ -43,6 +44,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     @required this.statusThreadBloc,
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
+    @required IScheduledStatusRepository scheduledStatusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
@@ -54,6 +56,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           isExpirePossible: isPleromaInstance,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.public.toJsonValue(),
@@ -91,6 +94,10 @@ class ThreadPostStatusBloc extends PostStatusBloc
           .defaultStatusLocale
           ?.localeString,
       isPleromaInstance: info.isPleroma,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 

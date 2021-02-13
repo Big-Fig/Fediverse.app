@@ -72,12 +72,33 @@ class ConversationChatMessageBloc extends ChatMessageBloc
           statusRepository.watchByRemoteId(chatMessage.remoteId).listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
-            _chatMessageSubject
-                .add(ConversationChatMessageStatusAdapter(updatedChatMessage));
+            _chatMessageSubject.add(
+              ConversationChatMessageStatusAdapter(
+                updatedChatMessage,
+              ),
+            );
           }
         },
       ),
     );
+
+    if (chatMessage.oldPendingRemoteId != null) {
+      addDisposable(
+        streamSubscription: statusRepository
+            .watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId)
+            .listen(
+          (updatedChatMessage) {
+            if (updatedChatMessage != null) {
+              _chatMessageSubject.add(
+                ConversationChatMessageStatusAdapter(
+                  updatedChatMessage,
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
   }
 
   @override

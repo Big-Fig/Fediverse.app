@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 
 abstract class IConversationChatMessage extends IChatMessage {
   IStatus get status;
+
   @override
   IConversationChatMessage copyWith({
     int localId,
@@ -18,6 +20,8 @@ abstract class IConversationChatMessage extends IChatMessage {
     List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   });
 }
 
@@ -55,6 +59,12 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   List<IPleromaMediaAttachment> get mediaAttachments => status.mediaAttachments;
 
   @override
+  PendingState get pendingState => status.pendingState;
+
+  @override
+  String get oldPendingRemoteId => status.oldPendingRemoteId;
+
+  @override
   IConversationChatMessage copyWith({
     int localId,
     String remoteId,
@@ -65,6 +75,8 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
     List<IPleromaMediaAttachment> mediaAttachments,
     List<PleromaEmoji> emojis,
     IPleromaCard card,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   }) {
     return ConversationChatMessageStatusAdapter(
       status.copyWith(
@@ -78,6 +90,8 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
         mediaAttachments: mediaAttachments,
         emojis: emojis,
         card: card,
+        pendingState: pendingState,
+        oldPendingRemoteId: oldPendingRemoteId,
       ),
     );
   }
@@ -88,6 +102,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
       other is ConversationChatMessageStatusAdapter &&
           runtimeType == other.runtimeType &&
           status == other.status;
+
   @override
   int get hashCode => status.hashCode;
 }
