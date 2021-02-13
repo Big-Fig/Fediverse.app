@@ -4,5 +4,5 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 DbDraftStatus mapDraftStatusToDbDraftStatus(IDraftStatus draftStatus) =>
     DbDraftStatus(
         id: draftStatus.localId,
-        data: draftStatus.data,
+        data: draftStatus.postStatusData,
         updatedAt: draftStatus.updatedAt);

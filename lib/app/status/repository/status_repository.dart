@@ -21,6 +21,11 @@ abstract class IStatusRepository
 
   Future deleteByRemoteId(String remoteId);
 
+  Future addStatusesToConversationWithDuplicatePreCheck({
+    @required List<String> statusRemoteIds,
+    @required String conversationRemoteId,
+  });
+
   Future upsertRemoteStatuses(
     List<IPleromaStatus> remoteStatuses, {
     @required String listRemoteId,
@@ -95,5 +100,23 @@ abstract class IStatusRepository
 
   Future<IStatus> getConversationLastStatus({
     @required IConversationChat conversation,
+  });
+
+  Future<IStatus> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  );
+
+  Stream<IStatus> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  );
+
+  Future addStatusToConversation({
+    @required String statusRemoteId,
+    @required String conversationRemoteId,
+  });
+
+  Future removeStatusToConversation({
+    @required String statusRemoteId,
+    @required String conversationRemoteId,
   });
 }

@@ -57,6 +57,7 @@ class StatusRepositoryFilters {
   final bool mustBeConversationItem;
   final String onlyFromInstance;
   final PleromaReplyVisibilityFilterCondition replyVisibilityFilterCondition;
+  final bool onlyPendingStatePublishedOrNull;
 
   StatusRepositoryFilters({
     this.onlyInListWithRemoteId,
@@ -79,18 +80,24 @@ class StatusRepositoryFilters {
     this.onlyRemoteCondition,
     this.onlyNotDeleted = true,
     this.mustBeConversationItem = false,
+    this.onlyPendingStatePublishedOrNull = true,
   });
 
   static StatusRepositoryFilters createForOnlyInConversation({
     @required IConversationChat conversation,
+    bool onlyPendingStatePublishedOrNull = true,
   }) =>
       StatusRepositoryFilters(
         onlyInConversation: conversation,
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
       );
 
-  static StatusRepositoryFilters createForMustBeConversationItem() =>
+  static StatusRepositoryFilters createForMustBeConversationItem({
+    bool onlyPendingStatePublishedOrNull = true,
+  }) =>
       StatusRepositoryFilters(
         mustBeConversationItem: true,
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
       );
 
   @override
@@ -116,7 +123,8 @@ class StatusRepositoryFilters {
           eq(excludeTextConditions, other.excludeTextConditions) &&
           mustBeConversationItem == other.mustBeConversationItem &&
           onlyFromInstance == other.onlyFromInstance &&
-          replyVisibilityFilterCondition == other.replyVisibilityFilterCondition &&
+          replyVisibilityFilterCondition ==
+              other.replyVisibilityFilterCondition &&
           onlyRemoteCondition == other.onlyRemoteCondition &&
           onlyNotDeleted == other.onlyNotDeleted;
 
@@ -141,36 +149,39 @@ class StatusRepositoryFilters {
       replyVisibilityFilterCondition.hashCode ^
       mustBeConversationItem.hashCode ^
       onlyRemoteCondition.hashCode ^
+      onlyPendingStatePublishedOrNull.hashCode ^
       onlyNotDeleted.hashCode;
 
   @override
   String toString() => 'StatusRepositoryFilters{'
-        'onlyInListWithRemoteId: $onlyInListWithRemoteId,'
-        ' onlyWithHashtag: $onlyWithHashtag,'
-        ' onlyFromAccountsFollowingByAccount:'
-        ' $onlyFromAccountsFollowingByAccount,'
-        ' onlyFromAccount: $onlyFromAccount,'
-        ' onlyInConversation: $onlyInConversation,'
-        ' onlyLocalCondition: $onlyLocalCondition,'
-        ' onlyWithMedia: $onlyWithMedia,'
-        ' withMuted: $withMuted,'
-        ' excludeVisibilities: $excludeVisibilities,'
-        ' onlyNoNsfwSensitive: $onlyNoNsfwSensitive,'
-        ' onlyNoReplies: $onlyNoReplies,'
-        ' isFromHomeTimeline: $isFromHomeTimeline,'
-        ' onlyFavourited: $onlyFavourited,'
-        ' onlyBookmarked: $onlyBookmarked,'
-        ' forceJoinConversation: $mustBeConversationItem,'
-        ' excludeTextConditions: $excludeTextConditions,'
-        ' onlyFromInstance: $onlyFromInstance,'
-        ' onlyRemoteCondition: $onlyRemoteCondition,'
-        ' replyVisibilityFilterCondition: $replyVisibilityFilterCondition,'
-        ' onlyNotDeleted: $onlyNotDeleted'
-        '}';
+      'onlyInListWithRemoteId: $onlyInListWithRemoteId,'
+      ' onlyWithHashtag: $onlyWithHashtag,'
+      ' onlyFromAccountsFollowingByAccount:'
+      ' $onlyFromAccountsFollowingByAccount,'
+      ' onlyFromAccount: $onlyFromAccount,'
+      ' onlyInConversation: $onlyInConversation,'
+      ' onlyLocalCondition: $onlyLocalCondition,'
+      ' onlyWithMedia: $onlyWithMedia,'
+      ' withMuted: $withMuted,'
+      ' excludeVisibilities: $excludeVisibilities,'
+      ' onlyNoNsfwSensitive: $onlyNoNsfwSensitive,'
+      ' onlyNoReplies: $onlyNoReplies,'
+      ' isFromHomeTimeline: $isFromHomeTimeline,'
+      ' onlyFavourited: $onlyFavourited,'
+      ' onlyBookmarked: $onlyBookmarked,'
+      ' forceJoinConversation: $mustBeConversationItem,'
+      ' excludeTextConditions: $excludeTextConditions,'
+      ' onlyFromInstance: $onlyFromInstance,'
+      ' onlyRemoteCondition: $onlyRemoteCondition,'
+      ' replyVisibilityFilterCondition: $replyVisibilityFilterCondition,'
+      ' onlyNotDeleted: $onlyNotDeleted'
+      ' onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull'
+      '}';
 }
 
 enum StatusRepositoryOrderType {
   remoteId,
+  createdAt,
 }
 
 class StatusRepositoryOrderingTermData {
@@ -186,6 +197,17 @@ class StatusRepositoryOrderingTermData {
       StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderByType: StatusRepositoryOrderType.remoteId,
+  );
+
+  static const StatusRepositoryOrderingTermData createdAtDesc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.desc,
+    orderByType: StatusRepositoryOrderType.createdAt,
+  );
+  static const StatusRepositoryOrderingTermData createdAtAsc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: OrderingMode.asc,
+    orderByType: StatusRepositoryOrderType.createdAt,
   );
 
   const StatusRepositoryOrderingTermData({

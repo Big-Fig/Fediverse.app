@@ -7,30 +7,38 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<DbScheduledStatus> createTestDbScheduledStatus(
-        {@required String seed, String remoteId, bool canceled, DateTime scheduledAt})
-async =>
+        {@required String seed,
+        String remoteId,
+        bool canceled,
+        DateTime scheduledAt}) async =>
     DbScheduledStatus(
-        id: null,
-        canceled: canceled ?? seed.hashCode % 2 == 0,
-        remoteId: remoteId ?? seed + "remoteId1",
-        scheduledAt: scheduledAt ?? DateTime(seed.hashCode % 10),
-        mediaAttachments: [
-          PleromaMediaAttachment(remoteUrl: seed + "remoteUrl1")
-        ],
-        params: PleromaScheduledStatusParams(
-            text: seed + "text1",
-            mediaIds: [seed + "mediaIds1"],
-            sensitive: seed.hashCode % 2 == 0,
-            spoilerText: seed + "spoilerText1",
-            visibility: PleromaVisibility.public.toJsonValue(),
-            scheduledAt: DateTime(seed.hashCode % 10),
-            poll: null,
-            idempotency: seed + "idempotency1",
-            inReplyToId: seed + "inReplyToId1",
-            applicationId: seed + "textId1"));
+      id: null,
+      canceled: canceled ?? seed.hashCode % 2 == 0,
+      remoteId: remoteId ?? seed + "remoteId1",
+      scheduledAt: scheduledAt ?? DateTime(seed.hashCode % 10),
+      mediaAttachments: [
+        PleromaMediaAttachment(remoteUrl: seed + "remoteUrl1")
+      ],
+      params: PleromaScheduledStatusParams(
+        text: seed + "text1",
+        mediaIds: [seed + "mediaIds1"],
+        sensitive: seed.hashCode % 2 == 0,
+        spoilerText: seed + "spoilerText1",
+        visibility: PleromaVisibility.public.toJsonValue(),
+        scheduledAt: DateTime(seed.hashCode % 10),
+        poll: null,
+        idempotency: seed + "idempotency1",
+        inReplyToId: seed + "inReplyToId1",
+        applicationId: seed + "textId1",
+        to: null,
+        expiresInSeconds: null,
+        language: null,
+        inReplyToConversationId: null,
+      ),
+    );
 
-void expectDbScheduledStatus(IScheduledStatus actual, DbScheduledStatus
-expected) {
+void expectDbScheduledStatus(
+    IScheduledStatus actual, DbScheduledStatus expected) {
   if (actual == null && expected == null) {
     return;
   }

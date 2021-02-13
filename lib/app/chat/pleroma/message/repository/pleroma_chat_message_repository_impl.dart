@@ -143,6 +143,10 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
     var query = dao.startSelectQuery();
 
+    if (filters?.onlyPendingStatePublishedOrNull == true) {
+      dao.addOnlyPendingStatePublishedOrNull(query);
+    }
+
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
       assert(
@@ -234,6 +238,24 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   Stream<IPleromaChatMessage> watchByRemoteId(String remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
     return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+  }
+
+  @override
+  Future<IPleromaChatMessage> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) async {
+    _logger.finest(() => "findByOldPendingRemoteId $oldPendingRemoteId");
+    return mapDataClassToItem(
+        await dao.findByOldPendingRemoteId(oldPendingRemoteId));
+  }
+
+  @override
+  Stream<IPleromaChatMessage> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  ) {
+    _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
+    return (dao.watchByOldPendingRemoteId(oldPendingRemoteId))
+        .map(mapDataClassToItem);
   }
 
   @override
@@ -352,17 +374,24 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }) =>
       getChatMessage(
         filters: PleromaChatMessageRepositoryFilters(
-          onlyInChats: [chat],
+          onlyInChats: [
+            chat,
+          ],
+          onlyPendingStatePublishedOrNull: false,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
 
   @override
-  Stream<IPleromaChatMessage> watchChatLastChatMessage(
-      {@required IPleromaChat chat}) =>
+  Stream<IPleromaChatMessage> watchChatLastChatMessage({
+    @required IPleromaChat chat,
+  }) =>
       watchChatMessage(
         filters: PleromaChatMessageRepositoryFilters(
-          onlyInChats: [chat],
+          onlyInChats: [
+            chat,
+          ],
+          onlyPendingStatePublishedOrNull: false,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
@@ -372,7 +401,9 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     @required List<IPleromaChat> chats,
   }) async {
     var query = createQuery(
-      filters: null,
+      filters: PleromaChatMessageRepositoryFilters(
+        onlyPendingStatePublishedOrNull: false,
+      ),
       pagination: null,
       orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
     );
@@ -412,6 +443,4 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
     return result;
   }
-
-
 }

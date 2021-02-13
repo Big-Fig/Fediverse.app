@@ -5,6 +5,7 @@ import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -17,6 +18,7 @@ class NewPostStatusBloc extends PostStatusBloc {
   NewPostStatusBloc({
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
+    @required IScheduledStatusRepository scheduledStatusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
@@ -28,6 +30,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           isExpirePossible: isPleromaInstance,
           pleromaAuthStatusService: pleromaStatusService,
           statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
           initialData: initialData,
@@ -39,6 +42,7 @@ class NewPostStatusBloc extends PostStatusBloc {
   NewPostStatusBloc.withInitial({
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
+    @required IScheduledStatusRepository scheduledStatusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
@@ -53,6 +57,7 @@ class NewPostStatusBloc extends PostStatusBloc {
   }) : this(
           isPleromaInstance: isPleromaInstance,
           pleromaStatusService: pleromaStatusService,
+          scheduledStatusRepository: scheduledStatusRepository,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
@@ -96,6 +101,10 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
       isPleromaInstance: info.isPleroma,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 
@@ -139,6 +148,10 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
       isPleromaInstance: info.isPleroma,
+      scheduledStatusRepository: IScheduledStatusRepository.of(
+        context,
+        listen: false,
+      ),
     );
   }
 

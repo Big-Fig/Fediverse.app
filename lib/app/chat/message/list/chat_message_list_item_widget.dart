@@ -12,7 +12,12 @@ import 'package:fedi/app/media/attachment/details/media_attachments_details_page
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_widget.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -50,24 +55,84 @@ class ChatMessageListItemWidget<T extends IChatMessage>
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 4.0,
-          ),
-          Container(
-            constraints: maxWidthConstraints,
-            child: const _ChatMessageListItemContentContainerWidget(),
-          ),
-          Container(
-            constraints: maxWidthConstraints,
-            child: const _ChatMessageListItemCardWidget(),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const _ChatMessageListItemMetadataPendingStateWidget(),
+              Column(
+                crossAxisAlignment: isChatMessageFromMe
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 4.0,
+                  ),
+                  Container(
+                    constraints: maxWidthConstraints,
+                    child: const _ChatMessageListItemContentContainerWidget(),
+                  ),
+                  Container(
+                    constraints: maxWidthConstraints,
+                    child: const _ChatMessageListItemCardWidget(),
+                  ),
+                ],
+              ),
+            ],
           ),
           if (isFirstInMinuteGroup)
             Align(
               alignment: alignment,
-              child: _ChatMessageListItemCreatedAtWidget(),
-            )
+              child: const _ChatMessageListItemMetadataCreatedAtWidget(),
+            ),
         ],
       ),
+    );
+  }
+}
+
+class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
+  const _ChatMessageListItemMetadataPendingStateWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var chatMessageBloc = IChatMessageBloc.of(context);
+    return StreamBuilder<PendingState>(
+      stream: chatMessageBloc.pendingStateStream,
+      builder: (context, snapshot) {
+        var pendingState = snapshot.data;
+
+        if (pendingState == null) {
+          return const SizedBox.shrink();
+        }
+
+        switch (pendingState) {
+          case PendingState.notSentYet:
+          case PendingState.published:
+            return const SizedBox.shrink();
+            break;
+          case PendingState.pending:
+            return Padding(
+              padding: FediPadding.horizontalSmallPadding,
+              child: const FediCircularProgressIndicator(
+                size: 24.0,
+              ),
+            );
+            break;
+          case PendingState.fail:
+            return FediIconButton(
+              icon: Icon(
+                FediIcons.warning,
+              ),
+              color: IFediUiColorTheme.of(context).error,
+              onPressed: () {},
+            );
+            break;
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }
@@ -135,8 +200,8 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
   }
 }
 
-class _ChatMessageListItemCreatedAtWidget extends StatelessWidget {
-  const _ChatMessageListItemCreatedAtWidget({
+class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
+  const _ChatMessageListItemMetadataCreatedAtWidget({
     Key key,
   }) : super(key: key);
 

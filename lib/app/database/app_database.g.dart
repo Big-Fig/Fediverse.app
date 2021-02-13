@@ -47,6 +47,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final bool pleromaThreadMuted;
   final List<PleromaStatusEmojiReaction> pleromaEmojiReactions;
   final bool deleted;
+  final PendingState pendingState;
+  final String oldPendingRemoteId;
   DbStatus(
       {@required this.id,
       @required this.remoteId,
@@ -86,7 +88,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaExpiresAt,
       this.pleromaThreadMuted,
       this.pleromaEmojiReactions,
-      this.deleted});
+      this.deleted,
+      this.pendingState,
+      this.oldPendingRemoteId});
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -172,6 +176,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
               data['${effectivePrefix}pleroma_emoji_reactions'])),
       deleted:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      pendingState: $DbStatusesTable.$converter11.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
+      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}old_pending_remote_id']),
     );
   }
   @override
@@ -312,6 +320,13 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
     if (!nullToAbsent || deleted != null) {
       map['deleted'] = Variable<bool>(deleted);
     }
+    if (!nullToAbsent || pendingState != null) {
+      final converter = $DbStatusesTable.$converter11;
+      map['pending_state'] = Variable<String>(converter.mapToSql(pendingState));
+    }
+    if (!nullToAbsent || oldPendingRemoteId != null) {
+      map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId);
+    }
     return map;
   }
 
@@ -421,6 +436,12 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
+      pendingState: pendingState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pendingState),
+      oldPendingRemoteId: oldPendingRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oldPendingRemoteId),
     );
   }
 
@@ -477,6 +498,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.fromJson<List<PleromaStatusEmojiReaction>>(
               json['pleromaEmojiReactions']),
       deleted: serializer.fromJson<bool>(json['deleted']),
+      pendingState: serializer.fromJson<PendingState>(json['pendingState']),
+      oldPendingRemoteId:
+          serializer.fromJson<String>(json['oldPendingRemoteId']),
     );
   }
   @override
@@ -528,6 +552,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'pleromaEmojiReactions': serializer
           .toJson<List<PleromaStatusEmojiReaction>>(pleromaEmojiReactions),
       'deleted': serializer.toJson<bool>(deleted),
+      'pendingState': serializer.toJson<PendingState>(pendingState),
+      'oldPendingRemoteId': serializer.toJson<String>(oldPendingRemoteId),
     };
   }
 
@@ -570,7 +596,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           DateTime pleromaExpiresAt,
           bool pleromaThreadMuted,
           List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-          bool deleted}) =>
+          bool deleted,
+          PendingState pendingState,
+          String oldPendingRemoteId}) =>
       DbStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -616,6 +644,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         pleromaEmojiReactions:
             pleromaEmojiReactions ?? this.pleromaEmojiReactions,
         deleted: deleted ?? this.deleted,
+        pendingState: pendingState ?? this.pendingState,
+        oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
       );
   @override
   String toString() {
@@ -658,7 +688,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
           ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
-          ..write('deleted: $deleted')
+          ..write('deleted: $deleted, ')
+          ..write('pendingState: $pendingState, ')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId')
           ..write(')'))
         .toString();
   }
@@ -706,7 +738,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, deleted.hashCode)))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(pendingState.hashCode, oldPendingRemoteId.hashCode)))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -751,7 +783,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.pleromaExpiresAt == this.pleromaExpiresAt &&
           other.pleromaThreadMuted == this.pleromaThreadMuted &&
           other.pleromaEmojiReactions == this.pleromaEmojiReactions &&
-          other.deleted == this.deleted);
+          other.deleted == this.deleted &&
+          other.pendingState == this.pendingState &&
+          other.oldPendingRemoteId == this.oldPendingRemoteId);
 }
 
 class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
@@ -794,6 +828,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<bool> pleromaThreadMuted;
   final Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions;
   final Value<bool> deleted;
+  final Value<PendingState> pendingState;
+  final Value<String> oldPendingRemoteId;
   const DbStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -834,6 +870,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.pendingState = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
   });
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
@@ -875,6 +913,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.pendingState = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
   })  : remoteId = Value(remoteId),
         createdAt = Value(createdAt),
         sensitive = Value(sensitive),
@@ -924,6 +964,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<bool> pleromaThreadMuted,
     Expression<String> pleromaEmojiReactions,
     Expression<bool> deleted,
+    Expression<String> pendingState,
+    Expression<String> oldPendingRemoteId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -973,6 +1015,9 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       if (pleromaEmojiReactions != null)
         'pleroma_emoji_reactions': pleromaEmojiReactions,
       if (deleted != null) 'deleted': deleted,
+      if (pendingState != null) 'pending_state': pendingState,
+      if (oldPendingRemoteId != null)
+        'old_pending_remote_id': oldPendingRemoteId,
     });
   }
 
@@ -1015,7 +1060,9 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<DateTime> pleromaExpiresAt,
       Value<bool> pleromaThreadMuted,
       Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions,
-      Value<bool> deleted}) {
+      Value<bool> deleted,
+      Value<PendingState> pendingState,
+      Value<String> oldPendingRemoteId}) {
     return DbStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -1061,6 +1108,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       pleromaEmojiReactions:
           pleromaEmojiReactions ?? this.pleromaEmojiReactions,
       deleted: deleted ?? this.deleted,
+      pendingState: pendingState ?? this.pendingState,
+      oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
     );
   }
 
@@ -1206,6 +1255,14 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     if (deleted.present) {
       map['deleted'] = Variable<bool>(deleted.value);
     }
+    if (pendingState.present) {
+      final converter = $DbStatusesTable.$converter11;
+      map['pending_state'] =
+          Variable<String>(converter.mapToSql(pendingState.value));
+    }
+    if (oldPendingRemoteId.present) {
+      map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId.value);
+    }
     return map;
   }
 
@@ -1250,7 +1307,9 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
           ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
           ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
-          ..write('deleted: $deleted')
+          ..write('deleted: $deleted, ')
+          ..write('pendingState: $pendingState, ')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId')
           ..write(')'))
         .toString();
   }
@@ -1752,6 +1811,34 @@ class $DbStatusesTable extends DbStatuses
     );
   }
 
+  final VerificationMeta _pendingStateMeta =
+      const VerificationMeta('pendingState');
+  GeneratedTextColumn _pendingState;
+  @override
+  GeneratedTextColumn get pendingState =>
+      _pendingState ??= _constructPendingState();
+  GeneratedTextColumn _constructPendingState() {
+    return GeneratedTextColumn(
+      'pending_state',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _oldPendingRemoteIdMeta =
+      const VerificationMeta('oldPendingRemoteId');
+  GeneratedTextColumn _oldPendingRemoteId;
+  @override
+  GeneratedTextColumn get oldPendingRemoteId =>
+      _oldPendingRemoteId ??= _constructOldPendingRemoteId();
+  GeneratedTextColumn _constructOldPendingRemoteId() {
+    return GeneratedTextColumn(
+      'old_pending_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1792,7 +1879,9 @@ class $DbStatusesTable extends DbStatuses
         pleromaExpiresAt,
         pleromaThreadMuted,
         pleromaEmojiReactions,
-        deleted
+        deleted,
+        pendingState,
+        oldPendingRemoteId
       ];
   @override
   $DbStatusesTable get asDslTable => this;
@@ -1981,6 +2070,13 @@ class $DbStatusesTable extends DbStatuses
       context.handle(_deletedMeta,
           deleted.isAcceptableOrUnknown(data['deleted'], _deletedMeta));
     }
+    context.handle(_pendingStateMeta, const VerificationResult.success());
+    if (data.containsKey('old_pending_remote_id')) {
+      context.handle(
+          _oldPendingRemoteIdMeta,
+          oldPendingRemoteId.isAcceptableOrUnknown(
+              data['old_pending_remote_id'], _oldPendingRemoteIdMeta));
+    }
     return context;
   }
 
@@ -2019,6 +2115,8 @@ class $DbStatusesTable extends DbStatuses
       PleromaContentDatabaseConverter();
   static TypeConverter<List<PleromaStatusEmojiReaction>, String> $converter10 =
       PleromaEmojiReactionsListDatabaseConverter();
+  static TypeConverter<PendingState, String> $converter11 =
+      PendingStateDatabaseConverter();
 }
 
 class DbAccount extends DataClass implements Insertable<DbAccount> {
@@ -7676,6 +7774,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final List<PleromaEmoji> emojis;
   final PleromaMediaAttachment mediaAttachment;
   final PleromaCard card;
+  final PendingState pendingState;
+  final String oldPendingRemoteId;
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -7685,7 +7785,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       @required this.createdAt,
       this.emojis,
       this.mediaAttachment,
-      this.card});
+      this.card,
+      this.pendingState,
+      this.oldPendingRemoteId});
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -7711,6 +7813,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           .mapFromDatabaseResponse(data['${effectivePrefix}media_attachment'])),
       card: $DbChatMessagesTable.$converter2.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
+      pendingState: $DbChatMessagesTable.$converter3.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
+      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}old_pending_remote_id']),
     );
   }
   @override
@@ -7747,6 +7853,13 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       final converter = $DbChatMessagesTable.$converter2;
       map['card'] = Variable<String>(converter.mapToSql(card));
     }
+    if (!nullToAbsent || pendingState != null) {
+      final converter = $DbChatMessagesTable.$converter3;
+      map['pending_state'] = Variable<String>(converter.mapToSql(pendingState));
+    }
+    if (!nullToAbsent || oldPendingRemoteId != null) {
+      map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId);
+    }
     return map;
   }
 
@@ -7774,6 +7887,12 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ? const Value.absent()
           : Value(mediaAttachment),
       card: card == null && nullToAbsent ? const Value.absent() : Value(card),
+      pendingState: pendingState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pendingState),
+      oldPendingRemoteId: oldPendingRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oldPendingRemoteId),
     );
   }
 
@@ -7791,6 +7910,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       mediaAttachment:
           serializer.fromJson<PleromaMediaAttachment>(json['mediaAttachment']),
       card: serializer.fromJson<PleromaCard>(json['card']),
+      pendingState: serializer.fromJson<PendingState>(json['pendingState']),
+      oldPendingRemoteId:
+          serializer.fromJson<String>(json['oldPendingRemoteId']),
     );
   }
   @override
@@ -7807,6 +7929,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'mediaAttachment':
           serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
       'card': serializer.toJson<PleromaCard>(card),
+      'pendingState': serializer.toJson<PendingState>(pendingState),
+      'oldPendingRemoteId': serializer.toJson<String>(oldPendingRemoteId),
     };
   }
 
@@ -7819,7 +7943,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           DateTime createdAt,
           List<PleromaEmoji> emojis,
           PleromaMediaAttachment mediaAttachment,
-          PleromaCard card}) =>
+          PleromaCard card,
+          PendingState pendingState,
+          String oldPendingRemoteId}) =>
       DbChatMessage(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -7830,6 +7956,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         emojis: emojis ?? this.emojis,
         mediaAttachment: mediaAttachment ?? this.mediaAttachment,
         card: card ?? this.card,
+        pendingState: pendingState ?? this.pendingState,
+        oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
       );
   @override
   String toString() {
@@ -7842,7 +7970,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ..write('createdAt: $createdAt, ')
           ..write('emojis: $emojis, ')
           ..write('mediaAttachment: $mediaAttachment, ')
-          ..write('card: $card')
+          ..write('card: $card, ')
+          ..write('pendingState: $pendingState, ')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId')
           ..write(')'))
         .toString();
   }
@@ -7862,8 +7992,14 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
                           createdAt.hashCode,
                           $mrjc(
                               emojis.hashCode,
-                              $mrjc(mediaAttachment.hashCode,
-                                  card.hashCode)))))))));
+                              $mrjc(
+                                  mediaAttachment.hashCode,
+                                  $mrjc(
+                                      card.hashCode,
+                                      $mrjc(
+                                          pendingState.hashCode,
+                                          oldPendingRemoteId
+                                              .hashCode)))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -7876,7 +8012,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           other.createdAt == this.createdAt &&
           other.emojis == this.emojis &&
           other.mediaAttachment == this.mediaAttachment &&
-          other.card == this.card);
+          other.card == this.card &&
+          other.pendingState == this.pendingState &&
+          other.oldPendingRemoteId == this.oldPendingRemoteId);
 }
 
 class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
@@ -7889,6 +8027,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<List<PleromaEmoji>> emojis;
   final Value<PleromaMediaAttachment> mediaAttachment;
   final Value<PleromaCard> card;
+  final Value<PendingState> pendingState;
+  final Value<String> oldPendingRemoteId;
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -7899,6 +8039,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.emojis = const Value.absent(),
     this.mediaAttachment = const Value.absent(),
     this.card = const Value.absent(),
+    this.pendingState = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
   });
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -7910,6 +8052,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.emojis = const Value.absent(),
     this.mediaAttachment = const Value.absent(),
     this.card = const Value.absent(),
+    this.pendingState = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
@@ -7924,6 +8068,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     Expression<String> emojis,
     Expression<String> mediaAttachment,
     Expression<String> card,
+    Expression<String> pendingState,
+    Expression<String> oldPendingRemoteId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -7935,6 +8081,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       if (emojis != null) 'emojis': emojis,
       if (mediaAttachment != null) 'media_attachment': mediaAttachment,
       if (card != null) 'card': card,
+      if (pendingState != null) 'pending_state': pendingState,
+      if (oldPendingRemoteId != null)
+        'old_pending_remote_id': oldPendingRemoteId,
     });
   }
 
@@ -7947,7 +8096,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<DateTime> createdAt,
       Value<List<PleromaEmoji>> emojis,
       Value<PleromaMediaAttachment> mediaAttachment,
-      Value<PleromaCard> card}) {
+      Value<PleromaCard> card,
+      Value<PendingState> pendingState,
+      Value<String> oldPendingRemoteId}) {
     return DbChatMessagesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -7958,6 +8109,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       emojis: emojis ?? this.emojis,
       mediaAttachment: mediaAttachment ?? this.mediaAttachment,
       card: card ?? this.card,
+      pendingState: pendingState ?? this.pendingState,
+      oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
     );
   }
 
@@ -7995,6 +8148,14 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       final converter = $DbChatMessagesTable.$converter2;
       map['card'] = Variable<String>(converter.mapToSql(card.value));
     }
+    if (pendingState.present) {
+      final converter = $DbChatMessagesTable.$converter3;
+      map['pending_state'] =
+          Variable<String>(converter.mapToSql(pendingState.value));
+    }
+    if (oldPendingRemoteId.present) {
+      map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId.value);
+    }
     return map;
   }
 
@@ -8009,7 +8170,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
           ..write('createdAt: $createdAt, ')
           ..write('emojis: $emojis, ')
           ..write('mediaAttachment: $mediaAttachment, ')
-          ..write('card: $card')
+          ..write('card: $card, ')
+          ..write('pendingState: $pendingState, ')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId')
           ..write(')'))
         .toString();
   }
@@ -8128,6 +8291,34 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
+  final VerificationMeta _pendingStateMeta =
+      const VerificationMeta('pendingState');
+  GeneratedTextColumn _pendingState;
+  @override
+  GeneratedTextColumn get pendingState =>
+      _pendingState ??= _constructPendingState();
+  GeneratedTextColumn _constructPendingState() {
+    return GeneratedTextColumn(
+      'pending_state',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _oldPendingRemoteIdMeta =
+      const VerificationMeta('oldPendingRemoteId');
+  GeneratedTextColumn _oldPendingRemoteId;
+  @override
+  GeneratedTextColumn get oldPendingRemoteId =>
+      _oldPendingRemoteId ??= _constructOldPendingRemoteId();
+  GeneratedTextColumn _constructOldPendingRemoteId() {
+    return GeneratedTextColumn(
+      'old_pending_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -8138,7 +8329,9 @@ class $DbChatMessagesTable extends DbChatMessages
         createdAt,
         emojis,
         mediaAttachment,
-        card
+        card,
+        pendingState,
+        oldPendingRemoteId
       ];
   @override
   $DbChatMessagesTable get asDslTable => this;
@@ -8189,6 +8382,13 @@ class $DbChatMessagesTable extends DbChatMessages
     context.handle(_emojisMeta, const VerificationResult.success());
     context.handle(_mediaAttachmentMeta, const VerificationResult.success());
     context.handle(_cardMeta, const VerificationResult.success());
+    context.handle(_pendingStateMeta, const VerificationResult.success());
+    if (data.containsKey('old_pending_remote_id')) {
+      context.handle(
+          _oldPendingRemoteIdMeta,
+          oldPendingRemoteId.isAcceptableOrUnknown(
+              data['old_pending_remote_id'], _oldPendingRemoteIdMeta));
+    }
     return context;
   }
 
@@ -8211,6 +8411,8 @@ class $DbChatMessagesTable extends DbChatMessages
       PleromaMediaAttachmentDatabaseConverter();
   static TypeConverter<PleromaCard, String> $converter2 =
       PleromaCardDatabaseConverter();
+  static TypeConverter<PendingState, String> $converter3 =
+      PendingStateDatabaseConverter();
 }
 
 class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {

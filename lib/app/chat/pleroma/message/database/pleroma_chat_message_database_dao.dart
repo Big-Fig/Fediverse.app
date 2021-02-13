@@ -2,6 +2,7 @@ import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_data
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_message_database_dao.g.dart';
@@ -53,14 +54,25 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
   Future<DbChatMessagePopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbChatMessagePopulated> findByRemoteId(String remoteId) async =>
-      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
-
   Stream<DbChatMessagePopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
+  Future<DbChatMessagePopulated> findByRemoteId(String remoteId) async =>
+      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+
   Stream<DbChatMessagePopulated> watchByRemoteId(String remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+
+  Future<DbChatMessagePopulated> findByOldPendingRemoteId(
+          String oldPendingRemoteId) async =>
+      typedResultToPopulated(
+          await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle());
+
+  Stream<DbChatMessagePopulated> watchByOldPendingRemoteId(
+          String oldPendingRemoteId) =>
+      (_findByOldPendingRemoteId(oldPendingRemoteId)
+          .watchSingle()
+          .map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbChatMessages).join(
@@ -69,15 +81,41 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     return sqlQuery;
   }
 
+  SimpleSelectStatement<$DbChatMessagesTable,
+      DbChatMessage> addOnlyPendingStatePublishedOrNull(
+          SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
+      query
+        ..where((chatMessage) =>
+            isNull(chatMessage.pendingState) |
+            chatMessage.pendingState.equals(
+              PendingState.published.toJsonValue(),
+            ));
+
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
       (select(db.dbChatMessages)
             ..where((chatMessage) => chatMessage.id.equals(id)))
-          .join(populateChatMessageJoin());
+          .join(
+        populateChatMessageJoin(),
+      );
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
       (select(db.dbChatMessages)
             ..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
-          .join(populateChatMessageJoin());
+          .join(
+        populateChatMessageJoin(),
+      );
+
+  JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
+          String oldPendingRemoteId) =>
+      (select(db.dbChatMessages)
+            ..where(
+              (chatMessage) => chatMessage.oldPendingRemoteId.like(
+                oldPendingRemoteId,
+              ),
+            ))
+          .join(
+        populateChatMessageJoin(),
+      );
 
   Future<int> insert(Insertable<DbChatMessage> entity,
           {InsertMode mode}) async =>

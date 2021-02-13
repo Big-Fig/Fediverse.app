@@ -1,20 +1,29 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc_proxy_provider.dart';
+import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger("chat_post_message_bloc_impl.dart");
 
 class PleromaChatPostMessageBloc extends PostMessageBloc
     implements IPleromaChatPostMessageBloc {
+  final IMyAccount myAccount;
   final IPleromaChatService pleromaChatService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final String chatRemoteId;
@@ -23,6 +32,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
+    @required this.myAccount,
     @required int maximumMessageLength,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumFileSizeInBytes,
@@ -35,46 +45,103 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
 
   @override
   Future<bool> post() async {
-    bool success;
+    var data = calculateSendData();
 
-    var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
-        (bloc) =>
-            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded);
-    var mediaId;
-    if (mediaAttachmentBlocs?.isNotEmpty == true) {
-      mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
-    }
+    var createdAt = DateTime.now();
+    var uniquePleromaFakeId = generateUniquePleromaFakeId();
+    var dbChatMessage = DbChatMessage(
+      id: null,
+      remoteId: uniquePleromaFakeId,
+      chatRemoteId: chatRemoteId,
+      accountRemoteId: myAccount.remoteId,
+      createdAt: createdAt,
+      content: data.content,
+      emojis: null,
+      mediaAttachment: calculateMediaAttachment(),
+      card: null,
+      pendingState: PendingState.pending,
+      oldPendingRemoteId: uniquePleromaFakeId,
+    );
+    var localId = await chatMessageRepository.insert(
+      dbChatMessage,
+    );
+
+    clear();
+
+    unawaited(
+      pleromaChatService
+          .sendMessage(
+        chatId: chatRemoteId,
+        data: data,
+      )
+          .then(
+        (remoteChatMessage) async {
+          if (remoteChatMessage != null) {
+            await chatMessageRepository.updateById(
+              localId,
+              mapRemoteChatMessageToDbPleromaChatMessage(
+                remoteChatMessage,
+              ).copyWith(
+                oldPendingRemoteId: uniquePleromaFakeId,
+              ),
+            );
+
+            // todo: remove hack
+            // backend shouldn't mark chat as unread if message from me
+            await pleromaChatService.markChatAsRead(
+              chatId: chatRemoteId,
+              lastReadChatMessageId: remoteChatMessage.id,
+            );
+          } else {
+            await chatMessageRepository.updateById(
+              localId,
+              dbChatMessage.copyWith(
+                pendingState: PendingState.fail,
+              ),
+            );
+          }
+        },
+      ).catchError(
+        (error) {
+          chatMessageRepository.updateById(
+            localId,
+            dbChatMessage.copyWith(
+              pendingState: PendingState.fail,
+            ),
+          );
+        },
+      ),
+    );
+
+    return true;
+  }
+
+  PleromaChatMessageSendData calculateSendData() {
+    var mediaId = calculateMediaAttachmentId();
 
     var data = PleromaChatMessageSendData(
       content: inputText,
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
     );
-    _logger.finest(() => "postMessage data=$data");
-    var remoteChatMessage = await pleromaChatService.sendMessage(
-      chatId: chatRemoteId,
-      data: data,
-    );
+    _logger.finest(() => "calculateSendData data=$data");
 
-    _logger.finest(() => "postMessage remoteChatMessage=$remoteChatMessage");
-    if (remoteChatMessage != null) {
-      success = true;
-      await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
+    return data;
+  }
 
-      // todo: remove hack
-      // backend shouldn't mark chat as unread after message from me
-      await pleromaChatService.markChatAsRead(
-        chatId: chatRemoteId,
-        lastReadChatMessageId: remoteChatMessage.id,
-      );
-    } else {
-      success = false;
+  String calculateMediaAttachmentId() {
+    return calculateMediaAttachment()?.id;
+  }
+
+  IPleromaMediaAttachment calculateMediaAttachment() {
+    var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
+        (bloc) =>
+            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded);
+    IPleromaMediaAttachment mediaAttachment;
+    if (mediaAttachmentBlocs?.isNotEmpty == true) {
+      mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
     }
-
-    if (success) {
-      clear();
-    }
-    return success;
+    return mediaAttachment;
   }
 
   static PleromaChatPostMessageBloc createFromContext(
@@ -93,11 +160,18 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
           IPleromaMediaAttachmentService.of(context, listen: false),
       maximumMessageLength: info.chatLimit,
       maximumFileSizeInBytes: info.uploadLimit,
+      myAccount: IMyAccountBloc.of(
+        context,
+        listen: false,
+      ).myAccount,
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required String chatRemoteId, @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    @required String chatRemoteId,
+    @required Widget child,
+  }) {
     return DisposableProvider<IPleromaChatPostMessageBloc>(
       create: (context) => PleromaChatPostMessageBloc.createFromContext(context,
           chatRemoteId: chatRemoteId),

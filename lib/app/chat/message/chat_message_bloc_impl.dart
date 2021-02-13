@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -46,8 +47,8 @@ abstract class ChatMessageBloc extends DisposableOwner
   }
 
   @override
-  List<IPleromaMediaAttachment> get mediaAttachments => chatMessage
-      .mediaAttachments;
+  List<IPleromaMediaAttachment> get mediaAttachments =>
+      chatMessage.mediaAttachments;
 
   @override
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
@@ -111,4 +112,12 @@ abstract class ChatMessageBloc extends DisposableOwner
       .distinct();
 
   void watchLocalRepositoryChanges();
+
+  @override
+  PendingState get pendingState => chatMessage.pendingState;
+
+  @override
+  Stream<PendingState> get pendingStateStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.pendingState,
+      );
 }

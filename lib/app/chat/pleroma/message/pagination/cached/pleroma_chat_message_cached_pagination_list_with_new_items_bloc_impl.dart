@@ -1,5 +1,5 @@
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/list/cached/pleroma_chat_message_cached_list_bloc.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -11,8 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger =
-    Logger("pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger(
+    "pleroma_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart");
 
 class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IPleromaChatMessage>>
@@ -25,13 +25,15 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       @required
           this.chatMessageCachedListService,
       @required
-          ICachedPaginationBloc<TPage, IPleromaChatMessage> cachedPaginationBloc})
+          ICachedPaginationBloc<TPage, IPleromaChatMessage>
+              cachedPaginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
             paginationBloc: cachedPaginationBloc);
 
   @override
-  Stream<List<IPleromaChatMessage>> watchItemsNewerThanItem(IPleromaChatMessage item) {
+  Stream<List<IPleromaChatMessage>> watchItemsNewerThanItem(
+      IPleromaChatMessage item) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return chatMessageCachedListService.watchLocalItemsNewerThanItem(item);
   }
@@ -52,11 +54,20 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) => a.remoteId == b.remoteId;
+  bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) {
+    if (a.oldPendingRemoteId != null || b.oldPendingRemoteId != null) {
+      return a.remoteId == b.remoteId ||
+          a.oldPendingRemoteId == b.oldPendingRemoteId ||
+          a.remoteId == b.oldPendingRemoteId ||
+          a.oldPendingRemoteId == b.remoteId;
+    } else {
+      return a.remoteId == b.remoteId;
+    }
+  }
 
-  static PleromaChatMessageCachedPaginationListWithNewItemsBloc createFromContext(
-      BuildContext context,
-      {@required bool mergeNewItemsImmediately}) {
+  static PleromaChatMessageCachedPaginationListWithNewItemsBloc
+      createFromContext(BuildContext context,
+          {@required bool mergeNewItemsImmediately}) {
     return PleromaChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
       chatMessageCachedListService:
@@ -76,12 +87,14 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
         ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
       create: (context) =>
-          PleromaChatMessageCachedPaginationListWithNewItemsBloc.createFromContext(
+          PleromaChatMessageCachedPaginationListWithNewItemsBloc
+              .createFromContext(
         context,
         mergeNewItemsImmediately: mergeNewItemsImmediately,
       ),
       child: CachedPaginationListWithNewItemsBlocProxyProvider<
-          CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(child: child),
+          CachedPaginationPage<IPleromaChatMessage>,
+          IPleromaChatMessage>(child: child),
     );
   }
 }

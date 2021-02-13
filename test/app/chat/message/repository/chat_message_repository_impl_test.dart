@@ -40,7 +40,7 @@ void main() {
     dbAccount = dbAccount.copyWith(id: accountId);
 
     dbChatMessage =
-    await createTestDbChatMessage(seed: "seed3", dbAccount: dbAccount);
+        await createTestDbChatMessage(seed: "seed3", dbAccount: dbAccount);
 
     dbChatMessagePopulated = await createTestDbChatMessagePopulated(
         dbChatMessage, accountRepository);
@@ -119,12 +119,12 @@ void main() {
 
   test('upsertAll', () async {
     var dbChatMessage1 =
-    (await createTestDbChatMessage(seed: "seed5", dbAccount: dbAccount))
-        .copyWith(remoteId: "remoteId1");
+        (await createTestDbChatMessage(seed: "seed5", dbAccount: dbAccount))
+            .copyWith(remoteId: "remoteId1");
     // same remote id
     var dbChatMessage2 =
-    (await createTestDbChatMessage(seed: "seed6", dbAccount: dbAccount))
-        .copyWith(remoteId: "remoteId1");
+        (await createTestDbChatMessage(seed: "seed6", dbAccount: dbAccount))
+            .copyWith(remoteId: "remoteId1");
 
     await chatMessageRepository.upsertAll([dbChatMessage1]);
 
@@ -449,27 +449,28 @@ void main() {
             ),
           )
         ],
+        onlyPendingStatePublishedOrNull: true,
       ),
       pagination: null,
       orderingTermData: null,
     );
 
     var dbChatMessage1 = (await createTestDbChatMessage(
-        seed: "seed1", dbAccount: dbAccount, chatRemoteId: "invalidChatId"))
+            seed: "seed1", dbAccount: dbAccount, chatRemoteId: "invalidChatId"))
         .copyWith();
     await insertDbChatMessage(chatMessageRepository, dbChatMessage1);
 
     expect((await query.get()).length, 0);
 
     var dbChatMessage2 = (await createTestDbChatMessage(
-        seed: "seed2", dbAccount: dbAccount, chatRemoteId: "invalidChatId"))
+            seed: "seed2", dbAccount: dbAccount, chatRemoteId: "invalidChatId"))
         .copyWith();
     await insertDbChatMessage(chatMessageRepository, dbChatMessage2);
 
     expect((await query.get()).length, 0);
 
     var dbChatMessage3 = (await createTestDbChatMessage(
-        seed: "seed3", dbAccount: dbAccount, chatRemoteId: chatRemoteId))
+            seed: "seed3", dbAccount: dbAccount, chatRemoteId: chatRemoteId))
         .copyWith();
     await insertDbChatMessage(chatMessageRepository, dbChatMessage3);
 
@@ -488,7 +489,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     var dbChatMessage4 = (await createTestDbChatMessage(
-        seed: "seed4", dbAccount: dbAccount, chatRemoteId: chatRemoteId))
+            seed: "seed4", dbAccount: dbAccount, chatRemoteId: chatRemoteId))
         .copyWith();
     await insertDbChatMessage(chatMessageRepository, dbChatMessage4);
 
@@ -611,6 +612,7 @@ void main() {
             onlyInChats: [
               await createTestChat(seed: "seed5", remoteId: chatRemoteId)
             ],
+            onlyPendingStatePublishedOrNull: true,
           ),
           pagination: null,
         ))

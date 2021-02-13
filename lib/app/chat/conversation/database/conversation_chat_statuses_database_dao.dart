@@ -15,6 +15,11 @@ part 'conversation_chat_statuses_database_dao.g.dart';
   "deleteById": "DELETE FROM db_conversation_statuses WHERE id = :id;",
   "deleteByConversationRemoteId": "DELETE FROM db_conversation_statuses WHERE "
       "conversation_remote_id = :conversationRemoteId;",
+  "deleteByConversationRemoteIdAndStatusRemoteId":
+  "DELETE FROM db_conversation_statuses WHERE "
+      "conversation_remote_id = :conversationRemoteId "
+      "AND "
+      "status_remote_id = :statusRemoteId;",
   "clear": "DELETE FROM db_conversation_statuses",
   "getAll": "SELECT * FROM db_conversation_statuses"
 })

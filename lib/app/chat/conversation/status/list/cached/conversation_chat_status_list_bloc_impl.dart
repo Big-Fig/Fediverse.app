@@ -13,13 +13,19 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
   StatusRepositoryFilters get _statusRepositoryFilters =>
       StatusRepositoryFilters(
         onlyInConversation: conversation,
+        onlyPendingStatePublishedOrNull: false,
       );
+
+  StatusRepositoryOrderingTermData get orderingTermData =>
+      StatusRepositoryOrderingTermData.createdAtDesc;
 
   final IStatusRepository statusRepository;
   final IConversationChat conversation;
 
-  ConversationChatStatusListBloc(
-      {@required this.conversation, @required this.statusRepository}) {
+  ConversationChatStatusListBloc({
+    @required this.conversation,
+    @required this.statusRepository,
+  }) {
     assert(conversation != null);
   }
 
@@ -41,6 +47,7 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
         newerThanItem: newerThan,
         limit: limit,
       ),
+      orderingTermData: orderingTermData,
     );
 
     return statuses;
@@ -53,6 +60,7 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
       pagination: RepositoryPagination<IStatus>(
         newerThanItem: item,
       ),
+      orderingTermData: orderingTermData,
     );
   }
 }

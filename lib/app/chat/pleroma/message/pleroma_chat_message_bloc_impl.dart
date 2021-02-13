@@ -73,6 +73,19 @@ class PleromaChatMessageBloc extends ChatMessageBloc
         },
       ),
     );
+
+    if(chatMessage.oldPendingRemoteId != null) {
+      addDisposable(
+        streamSubscription:
+        chatMessageRepository.watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId).listen(
+              (updatedChatMessage) {
+            if (updatedChatMessage != null) {
+              _chatMessageSubject.add(updatedChatMessage);
+            }
+          },
+        ),
+      );
+    }
   }
 
   @override

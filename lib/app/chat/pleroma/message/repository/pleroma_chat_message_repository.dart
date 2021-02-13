@@ -30,6 +30,14 @@ abstract class IPleromaChatMessageRepository
     String remoteId,
   );
 
+  Future<IPleromaChatMessage> findByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  );
+
+  Stream<IPleromaChatMessage> watchByOldPendingRemoteId(
+    String oldPendingRemoteId,
+  );
+
   Future updateLocalChatMessageByRemoteChatMessage({
     @required IPleromaChatMessage oldLocalChatMessage,
     @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,

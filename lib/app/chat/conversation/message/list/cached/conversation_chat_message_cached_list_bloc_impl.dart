@@ -30,10 +30,11 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => conversationChatStatusListBloc.pleromaApi;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IConversationChatMessage newerThan,
-      @required IConversationChatMessage olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required IConversationChatMessage newerThan,
+    @required IConversationChatMessage olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t chat = $chat"
         "\t newerThan = $newerThan"
@@ -56,10 +57,11 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IConversationChatMessage>> loadLocalItems(
-      {@required int limit,
-      @required IConversationChatMessage newerThan,
-      @required IConversationChatMessage olderThan}) async {
+  Future<List<IConversationChatMessage>> loadLocalItems({
+    @required int limit,
+    @required IConversationChatMessage newerThan,
+    @required IConversationChatMessage olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -81,17 +83,17 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 
   @override
   Stream<List<IConversationChatMessage>> watchLocalItemsNewerThanItem(
-      IConversationChatMessage item) {
-    return conversationChatStatusListBloc
-        .watchLocalItemsNewerThanItem(item?.status)
-        .map(
-          (statuses) => statuses
-              ?.map(
-                (status) => ConversationChatMessageStatusAdapter(status),
-              )
-              ?.toList(),
-        );
-  }
+    IConversationChatMessage item,
+  ) =>
+      conversationChatStatusListBloc
+          .watchLocalItemsNewerThanItem(item?.status)
+          .map(
+            (statuses) => statuses
+                ?.map(
+                  (status) => ConversationChatMessageStatusAdapter(status),
+                )
+                ?.toList(),
+          );
 
   static ConversationChatMessageCachedListBloc createFromContext(
     BuildContext context, {

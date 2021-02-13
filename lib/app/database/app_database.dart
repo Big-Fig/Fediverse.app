@@ -21,6 +21,7 @@ import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/home_timeline_statuses_database_model.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
@@ -107,7 +108,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 12;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -144,6 +145,12 @@ class AppDatabase extends _$AppDatabase {
               case 9:
                 await _migrate9to10(m);
                 break;
+              case 10:
+                await _migrate10to11(m);
+                break;
+              case 11:
+                await _migrate11to12(m);
+                break;
               default:
                 throw "invalid currentVersion $currentVersion";
             }
@@ -151,6 +158,16 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate11to12(Migrator m) async {
+    await m.addColumn(dbStatuses, dbStatuses.oldPendingRemoteId);
+    await m.addColumn(dbChatMessages, dbChatMessages.oldPendingRemoteId);
+  }
+
+  Future<void> _migrate10to11(Migrator m) async {
+    await m.addColumn(dbStatuses, dbStatuses.pendingState);
+    await m.addColumn(dbChatMessages, dbChatMessages.pendingState);
+  }
 
   Future<void> _migrate9to10(Migrator m) async {
     await m.addColumn(dbAccounts, dbAccounts.pleromaAcceptsChatMessages);

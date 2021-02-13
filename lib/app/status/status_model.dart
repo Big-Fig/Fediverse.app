@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/content/pleroma_content_model.dart';
@@ -127,6 +128,10 @@ abstract class IStatus {
 
   bool get deleted;
 
+  PendingState get pendingState;
+
+  String get oldPendingRemoteId;
+
   IStatus copyWith({
     IAccount account,
     IStatus reblog,
@@ -170,6 +175,8 @@ abstract class IStatus {
     bool pleromaThreadMuted,
     List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
     bool deleted,
+    PendingState pendingState,
+    String oldPendingRemoteId,
   });
 }
 
@@ -340,6 +347,13 @@ class DbStatusPopulatedWrapper extends IStatus {
   @override
   bool get deleted => dbStatusPopulated.dbStatus.deleted;
 
+
+  @override
+  PendingState get pendingState => dbStatusPopulated.dbStatus.pendingState;
+
+  @override
+  String get oldPendingRemoteId => dbStatusPopulated.dbStatus.oldPendingRemoteId;
+
   @override
   IStatus get reblog {
     if (dbStatusPopulated.reblogDbStatus != null &&
@@ -360,49 +374,52 @@ class DbStatusPopulatedWrapper extends IStatus {
   }
 
   @override
-  DbStatusPopulatedWrapper copyWith(
-      {IAccount account,
-      IStatus reblog,
-      int id,
-      String remoteId,
-      DateTime createdAt,
-      IStatus inReplyToStatus,
-      String inReplyToRemoteId,
-      String inReplyToAccountRemoteId,
-      bool nsfwSensitive,
-      String spoilerText,
-      PleromaVisibility visibility,
-      String uri,
-      String url,
-      int repliesCount,
-      int reblogsCount,
-      int favouritesCount,
-      bool favourited,
-      bool reblogged,
-      bool muted,
-      bool bookmarked,
-      bool pinned,
-      String content,
-      String reblogStatusRemoteId,
-      PleromaApplication application,
-      String accountRemoteId,
-      List<PleromaMediaAttachment> mediaAttachments,
-      List<PleromaMention> mentions,
-      List<PleromaTag> tags,
-      List<PleromaEmoji> emojis,
-      PleromaPoll poll,
-      PleromaCard card,
-      String language,
-      PleromaContent pleromaContent,
-      int pleromaConversationId,
-      int pleromaDirectConversationId,
-      String pleromaInReplyToAccountAcct,
-      bool pleromaLocal,
-      PleromaContent pleromaSpoilerText,
-      DateTime pleromaExpiresAt,
-      bool pleromaThreadMuted,
-      List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-      bool deleted}) {
+  DbStatusPopulatedWrapper copyWith({
+    IAccount account,
+    IStatus reblog,
+    int id,
+    String remoteId,
+    DateTime createdAt,
+    IStatus inReplyToStatus,
+    String inReplyToRemoteId,
+    String inReplyToAccountRemoteId,
+    bool nsfwSensitive,
+    String spoilerText,
+    PleromaVisibility visibility,
+    String uri,
+    String url,
+    int repliesCount,
+    int reblogsCount,
+    int favouritesCount,
+    bool favourited,
+    bool reblogged,
+    bool muted,
+    bool bookmarked,
+    bool pinned,
+    String content,
+    String reblogStatusRemoteId,
+    PleromaApplication application,
+    String accountRemoteId,
+    List<PleromaMediaAttachment> mediaAttachments,
+    List<PleromaMention> mentions,
+    List<PleromaTag> tags,
+    List<PleromaEmoji> emojis,
+    PleromaPoll poll,
+    PleromaCard card,
+    String language,
+    PleromaContent pleromaContent,
+    int pleromaConversationId,
+    int pleromaDirectConversationId,
+    String pleromaInReplyToAccountAcct,
+    bool pleromaLocal,
+    PleromaContent pleromaSpoilerText,
+    DateTime pleromaExpiresAt,
+    bool pleromaThreadMuted,
+    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+    bool deleted,
+    PendingState pendingState,
+    String oldPendingRemoteId,
+  }) {
     DbStatus reblogStatus;
     DbAccount reblogStatusAccount;
 
@@ -432,90 +449,97 @@ class DbStatusPopulatedWrapper extends IStatus {
       }
     }
 
-    return DbStatusPopulatedWrapper(dbStatusPopulated.copyWith(
-      status: dbStatusPopulated.dbStatus.copyWith(
-        id: id,
-        remoteId: remoteId,
-        createdAt: createdAt,
-        inReplyToRemoteId: inReplyToRemoteId,
-        inReplyToAccountRemoteId: inReplyToAccountRemoteId,
-        sensitive: nsfwSensitive,
-        spoilerText: spoilerText,
-        visibility: visibility,
-        uri: uri,
-        url: url,
-        repliesCount: repliesCount,
-        reblogsCount: reblogsCount,
-        favouritesCount: favouritesCount,
-        favourited: favourited,
-        reblogged: reblogged,
-        muted: muted,
-        bookmarked: bookmarked,
-        pinned: pinned,
-        content: content,
-        reblogStatusRemoteId: reblogStatusRemoteId,
-        application: application,
-        accountRemoteId: accountRemoteId,
-        mediaAttachments: mediaAttachments,
-        mentions: mentions,
-        tags: tags,
-        emojis: emojis,
-        poll: poll,
-        card: card,
-        language: language,
-        pleromaContent: pleromaContent,
-        pleromaConversationId: pleromaConversationId,
-        pleromaDirectConversationId: pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
-        pleromaLocal: pleromaLocal,
-        pleromaSpoilerText: pleromaSpoilerText,
-        pleromaExpiresAt: pleromaExpiresAt,
-        pleromaThreadMuted: pleromaThreadMuted,
-        pleromaEmojiReactions: pleromaEmojiReactions,
-        deleted: deleted,
+    return DbStatusPopulatedWrapper(
+      dbStatusPopulated.copyWith(
+        status: dbStatusPopulated.dbStatus.copyWith(
+          id: id,
+          remoteId: remoteId,
+          createdAt: createdAt,
+          inReplyToRemoteId: inReplyToRemoteId,
+          inReplyToAccountRemoteId: inReplyToAccountRemoteId,
+          sensitive: nsfwSensitive,
+          spoilerText: spoilerText,
+          visibility: visibility,
+          uri: uri,
+          url: url,
+          repliesCount: repliesCount,
+          reblogsCount: reblogsCount,
+          favouritesCount: favouritesCount,
+          favourited: favourited,
+          reblogged: reblogged,
+          muted: muted,
+          bookmarked: bookmarked,
+          pinned: pinned,
+          content: content,
+          reblogStatusRemoteId: reblogStatusRemoteId,
+          application: application,
+          accountRemoteId: accountRemoteId,
+          mediaAttachments: mediaAttachments,
+          mentions: mentions,
+          tags: tags,
+          emojis: emojis,
+          poll: poll,
+          card: card,
+          language: language,
+          pleromaContent: pleromaContent,
+          pleromaConversationId: pleromaConversationId,
+          pleromaDirectConversationId: pleromaDirectConversationId,
+          pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
+          pleromaLocal: pleromaLocal,
+          pleromaSpoilerText: pleromaSpoilerText,
+          pleromaExpiresAt: pleromaExpiresAt,
+          pleromaThreadMuted: pleromaThreadMuted,
+          pleromaEmojiReactions: pleromaEmojiReactions,
+          deleted: deleted,
+          pendingState: pendingState,
+          oldPendingRemoteId: oldPendingRemoteId,
+        ),
+        account: dbStatusPopulated.dbAccount.copyWith(
+            id: account?.localId,
+            remoteId: account?.remoteId,
+            username: account?.username,
+            url: account?.url,
+            note: account?.note,
+            locked: account?.locked,
+            headerStatic: account?.headerStatic,
+            header: account?.header,
+            followingCount: account?.followingCount,
+            followersCount: account?.followersCount,
+            statusesCount: account?.statusesCount,
+            displayName: account?.displayName,
+            createdAt: account?.createdAt,
+            bot: account?.bot,
+            avatarStatic: account?.avatarStatic,
+            avatar: account?.avatar,
+            acct: account?.acct,
+            lastStatusAt: account?.lastStatusAt,
+            fields: account?.fields,
+            emojis: account?.emojis,
+            pleromaRelationship: account?.pleromaRelationship,
+            pleromaTags: account?.pleromaTags,
+            pleromaIsAdmin: account?.pleromaIsAdmin,
+            pleromaIsModerator: account?.pleromaIsModerator,
+            pleromaConfirmationPending: account?.pleromaConfirmationPending,
+            pleromaHideFavorites: account?.pleromaHideFavorites,
+            pleromaHideFollowers: account?.pleromaHideFollowers,
+            pleromaHideFollows: account?.pleromaHideFollows,
+            pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+            pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+            pleromaDeactivated: account?.pleromaDeactivated,
+            pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+            pleromaSkipThreadContainment:
+                account?.pleromaSkipThreadContainment),
+        reblogDbStatus: reblogStatus,
+        reblogDbStatusAccount: reblogStatusAccount,
+        replyDbStatus: replyStatus,
+        replyDbStatusAccount: replyStatusAccount,
+        replyReblogDbStatus: replyReblogStatus,
+        replyReblogDbStatusAccount: replyReblogStatusAccount,
       ),
-      account: dbStatusPopulated.dbAccount.copyWith(
-          id: account?.localId,
-          remoteId: account?.remoteId,
-          username: account?.username,
-          url: account?.url,
-          note: account?.note,
-          locked: account?.locked,
-          headerStatic: account?.headerStatic,
-          header: account?.header,
-          followingCount: account?.followingCount,
-          followersCount: account?.followersCount,
-          statusesCount: account?.statusesCount,
-          displayName: account?.displayName,
-          createdAt: account?.createdAt,
-          bot: account?.bot,
-          avatarStatic: account?.avatarStatic,
-          avatar: account?.avatar,
-          acct: account?.acct,
-          lastStatusAt: account?.lastStatusAt,
-          fields: account?.fields,
-          emojis: account?.emojis,
-          pleromaRelationship: account?.pleromaRelationship,
-          pleromaTags: account?.pleromaTags,
-          pleromaIsAdmin: account?.pleromaIsAdmin,
-          pleromaIsModerator: account?.pleromaIsModerator,
-          pleromaConfirmationPending: account?.pleromaConfirmationPending,
-          pleromaHideFavorites: account?.pleromaHideFavorites,
-          pleromaHideFollowers: account?.pleromaHideFollowers,
-          pleromaHideFollows: account?.pleromaHideFollows,
-          pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
-          pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
-          pleromaDeactivated: account?.pleromaDeactivated,
-          pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
-          pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment),
-      reblogDbStatus: reblogStatus,
-      reblogDbStatusAccount: reblogStatusAccount,
-      replyDbStatus: replyStatus,
-      replyDbStatusAccount: replyStatusAccount,
-      replyReblogDbStatus: replyReblogStatus,
-      replyReblogDbStatusAccount: replyReblogStatusAccount,
-    ));
+    );
   }
+
+
 }
 
 class DbStatusPopulated {
