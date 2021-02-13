@@ -195,7 +195,9 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
     return found;
   }
 
-  static ChatSelectionBloc createFromContext(BuildContext context) =>
+  static ChatSelectionBloc createFromContext(
+    BuildContext context,
+  ) =>
       ChatSelectionBloc(
         myAccountBloc: IMyAccountBloc.of(
           context,
@@ -203,8 +205,10 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
         ),
       );
 
-  static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+  }) =>
       DisposableProvider<IChatSelectionBloc>(
         create: (context) => ChatSelectionBloc.createFromContext(
           context,

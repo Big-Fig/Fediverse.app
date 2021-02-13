@@ -10,30 +10,45 @@ class ChatSelectionItemToggleButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatSelectionItemBloc = IChatSelectionItemBloc.of(context);
-    return Column(
-      children: [
-        StreamBuilder<bool>(
-          stream: chatSelectionItemBloc.isSelectedStream,
-          builder: (context, snapshot) {
-            var isSelected = snapshot.data ?? false;
-            return FediIconButton(
-              icon: Icon(
-                isSelected ?  FediIcons.remove_circle : FediIcons.check_circle ,
-              ),
-              onPressed: () {
-                if (isSelected) {
-                  chatSelectionItemBloc.unSelect();
-                } else {
-                  chatSelectionItemBloc.select();
-                }
+
+    return StreamBuilder<bool>(
+      stream: chatSelectionItemBloc.isSelectionPossibleStream,
+      initialData: chatSelectionItemBloc.isSelectionPossible,
+      builder: (context, snapshot) {
+        var isSelectionPossible = snapshot.data ?? true;
+
+        return Column(
+          children: [
+            StreamBuilder<bool>(
+              stream: chatSelectionItemBloc.isSelectedStream,
+              builder: (context, snapshot) {
+                var isSelected = snapshot.data ?? false;
+                return FediIconButton(
+                  icon: Icon(
+                    isSelected
+                        ? FediIcons.remove_circle
+                        : FediIcons.check_circle,
+                  ),
+                  onPressed: () {
+                    if (isSelectionPossible) {
+                      if (isSelected) {
+                        chatSelectionItemBloc.unSelect();
+                      } else {
+                        chatSelectionItemBloc.select();
+                      }
+                    }
+                  },
+                  color: isSelectionPossible
+                      ? isSelected
+                          ? IFediUiColorTheme.of(context).error
+                          : IFediUiColorTheme.of(context).primaryDark
+                      : IFediUiColorTheme.of(context).ultraLightGrey,
+                );
               },
-              color: isSelected
-                  ? IFediUiColorTheme.of(context).error
-                  : IFediUiColorTheme.of(context).primaryDark,
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

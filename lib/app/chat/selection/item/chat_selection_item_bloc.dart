@@ -16,4 +16,10 @@ abstract class IChatSelectionItemBloc implements IDisposable {
   void unSelect();
 
   void select();
+
+  bool get isSelectionPossible;
+
+  Stream<bool> get isSelectionPossibleStream;
+
+  void changeSelectionPossible(bool isSelectionPossible);
 }

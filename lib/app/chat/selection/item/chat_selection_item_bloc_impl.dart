@@ -4,16 +4,35 @@ import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/subjects.dart';
 
 class ChatSelectionItemBloc extends DisposableOwner
     implements IChatSelectionItemBloc {
   final IChatSelectionBloc chatSelectionBloc;
   final IChatMessage chatMessage;
 
+  final BehaviorSubject<bool> isSelectionPossibleSubject;
+
+  @override
+  bool get isSelectionPossible => isSelectionPossibleSubject.value;
+
+  @override
+  Stream<bool> get isSelectionPossibleStream =>
+      isSelectionPossibleSubject.stream;
+
+  @override
+  void changeSelectionPossible(bool isSelectionPossible) {
+    isSelectionPossibleSubject.add(isSelectionPossible);
+  }
+
   ChatSelectionItemBloc({
     @required this.chatSelectionBloc,
     @required this.chatMessage,
-  });
+    @required bool isSelectionPossible,
+  }) : isSelectionPossibleSubject =
+            BehaviorSubject.seeded(isSelectionPossible) {
+    addDisposable(subject: isSelectionPossibleSubject);
+  }
 
   @override
   bool get isSelected => chatSelectionBloc.isItemSelected(
@@ -21,8 +40,7 @@ class ChatSelectionItemBloc extends DisposableOwner
       );
 
   @override
-  Stream<bool> get isSelectedStream =>
-      chatSelectionBloc.isItemSelectedStream(
+  Stream<bool> get isSelectedStream => chatSelectionBloc.isItemSelectedStream(
         chatMessage,
       );
 
@@ -44,6 +62,7 @@ class ChatSelectionItemBloc extends DisposableOwner
   static ChatSelectionItemBloc createFromContext(
     BuildContext context, {
     @required IChatMessage chatMessage,
+    @required bool isSelectionPossible,
   }) {
     var chatSelectionBloc = IChatSelectionBloc.of(
       context,
@@ -52,6 +71,7 @@ class ChatSelectionItemBloc extends DisposableOwner
     return ChatSelectionItemBloc(
       chatSelectionBloc: chatSelectionBloc,
       chatMessage: chatMessage,
+      isSelectionPossible: isSelectionPossible,
     );
   }
 
@@ -59,11 +79,13 @@ class ChatSelectionItemBloc extends DisposableOwner
     BuildContext context, {
     @required Widget child,
     @required IChatMessage chatMessage,
+    @required bool isSelectionPossible,
   }) =>
       DisposableProvider<IChatSelectionItemBloc>(
         create: (context) => ChatSelectionItemBloc.createFromContext(
           context,
           chatMessage: chatMessage,
+          isSelectionPossible: isSelectionPossible,
         ),
         child: child,
       );
