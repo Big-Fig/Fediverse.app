@@ -36,6 +36,7 @@ class PleromaChatWidget extends StatelessWidget {
               child: const ChatBodyWrapperWidget(
                 child: ChatMessageListWidget<IPleromaChatMessage>(
                   itemBuilder: _itemBuilder,
+                  itemContextBuilder: _itemContextBuilder,
                 ),
               ),
             ),
@@ -46,7 +47,13 @@ class PleromaChatWidget extends StatelessWidget {
   }
 }
 
-Widget _itemBuilder(BuildContext context) {
+Widget _itemBuilder(BuildContext context) =>
+    const ChatMessageListItemWidget<IPleromaChatMessage>();
+
+Widget _itemContextBuilder(
+  BuildContext context, {
+  @required Widget child,
+}) {
   return DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
     update: (context, chatMessage, _) =>
         PleromaChatMessageBloc.createFromContext(
@@ -55,7 +62,7 @@ Widget _itemBuilder(BuildContext context) {
     ),
     child: ProxyProvider<IPleromaChatMessageBloc, IChatMessageBloc>(
       update: (context, value, _) => value,
-      child: const ChatMessageListItemWidget<IPleromaChatMessage>(),
+      child: child,
     ),
   );
 }

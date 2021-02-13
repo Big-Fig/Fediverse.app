@@ -37,6 +37,7 @@ class ConversationChatWidget extends StatelessWidget {
               child: const ChatBodyWrapperWidget(
                 child: ChatMessageListWidget<IConversationChatMessage>(
                   itemBuilder: _itemBuilder,
+                  itemContextBuilder: _itemContextBuilder,
                 ),
               ),
             ),
@@ -48,6 +49,13 @@ class ConversationChatWidget extends StatelessWidget {
 }
 
 Widget _itemBuilder(BuildContext context) {
+  return const ChatMessageListItemWidget<IConversationChatMessage>();
+}
+
+Widget _itemContextBuilder(
+  BuildContext context, {
+  @required Widget child,
+}) {
   return DisposableProxyProvider<IConversationChatMessage,
       IConversationChatMessageBloc>(
     update: (context, chatMessage, _) =>
@@ -57,7 +65,7 @@ Widget _itemBuilder(BuildContext context) {
     ),
     child: ProxyProvider<IConversationChatMessageBloc, IChatMessageBloc>(
       update: (context, value, _) => value,
-      child: const ChatMessageListItemWidget<IConversationChatMessage>(),
+      child: child,
     ),
   );
 }

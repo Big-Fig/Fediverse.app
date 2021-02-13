@@ -1,4 +1,5 @@
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
+import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart'
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
@@ -28,9 +30,13 @@ class ChatMessageListWidget<T extends IChatMessage>
     extends FediPaginationListWidget<T> {
   final WidgetBuilder itemBuilder;
 
+  final Function(BuildContext context, {@required Widget child})
+      itemContextBuilder;
+
   const ChatMessageListWidget({
     Key key,
     @required this.itemBuilder,
+    @required this.itemContextBuilder,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -47,7 +53,7 @@ class ChatMessageListWidget<T extends IChatMessage>
     return timelinePaginationListBloc;
   }
 
-  // override to move refresh/update features from top/bottom to bottom/top
+// override to move refresh/update features from top/bottom to bottom/top
   @override
   Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
@@ -118,18 +124,39 @@ class ChatMessageListWidget<T extends IChatMessage>
               update: (context, item, _) => item.message,
               child: ProxyProvider<ChatMessageListItem<T>, IChatMessage>(
                 update: (context, item, _) => item.message,
-                child: DisposableProxyProvider<IChatMessage,
-                    IChatSelectionItemBloc>(
-                  update: (context, chatMessage, _) => ChatSelectionItemBloc(
-                    chatSelectionBloc: IChatSelectionBloc.of(
-                      context,
-                      listen: false,
-                    ),
-                    chatMessage: chatMessage,
-                  ),
-                  child: ChatSelectionItemWidget(
-                    child: _ChatMessageListItemWidget(
-                      itemBuilder: itemBuilder,
+                child: itemContextBuilder(
+                  context,
+                  child: DisposableProxyProvider<IChatMessageBloc,
+                      IChatSelectionItemBloc>(
+                    update: (context, chatMessageBloc, _) {
+                      var chatMessage = chatMessageBloc.chatMessage;
+                      var chatSelectionItemBloc = ChatSelectionItemBloc(
+                        chatSelectionBloc: IChatSelectionBloc.of(
+                          context,
+                          listen: false,
+                        ),
+                        chatMessage: chatMessage,
+                        isSelectionPossible: _calculateIsSelectionPossible(
+                            chatMessage.pendingState),
+                      );
+
+                      chatSelectionItemBloc.addDisposable(
+                        streamSubscription:
+                            chatMessageBloc.pendingStateStream.listen(
+                          (pendingState) {
+                            chatSelectionItemBloc.changeSelectionPossible(
+                              _calculateIsSelectionPossible(pendingState),
+                            );
+                          },
+                        ),
+                      );
+
+                      return chatSelectionItemBloc;
+                    },
+                    child: ChatSelectionItemWidget(
+                      child: _ChatMessageListItemWidget(
+                        itemBuilder: itemBuilder,
+                      ),
                     ),
                   ),
                 ),
@@ -140,6 +167,9 @@ class ChatMessageListWidget<T extends IChatMessage>
       },
     );
   }
+
+  bool _calculateIsSelectionPossible(PendingState pendingState) =>
+      pendingState == null || pendingState == PendingState.published;
 }
 
 class _ChatMessageListItemWidget<T extends IChatMessage>
