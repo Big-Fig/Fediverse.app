@@ -3,8 +3,11 @@ import 'package:fedi/app/chat/conversation/current/conversation_chat_current_blo
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 
+// todo: refactor with similar pleroma chat class
 class ConversationChatCurrentBloc extends DisposableOwner
     implements IConversationChatCurrentBloc {
+  final List<IConversationChat> openedChats = [];
+
   BehaviorSubject<IConversationChat> currentChatSubject = BehaviorSubject();
 
   ConversationChatCurrentBloc() {
@@ -19,14 +22,23 @@ class ConversationChatCurrentBloc extends DisposableOwner
 
   @override
   void onChatOpened(IConversationChat chat) {
-    assert(currentChat == null);
     currentChatSubject.add(chat);
+    openedChats.add(chat);
   }
 
   @override
   void onChatClosed(IConversationChat chat) {
-    assert(currentChat != null);
-    assert(currentChat.remoteId == chat.remoteId);
-    currentChatSubject.add(null);
+    var indexToRemove = openedChats.lastIndexWhere(
+      (currentChat) => currentChat.remoteId == chat.remoteId,
+    );
+
+    if (indexToRemove >= 0) {
+      openedChats.removeAt(indexToRemove);
+    }
+    if (openedChats?.isNotEmpty == true) {
+      currentChatSubject.add(null);
+    } else {
+      currentChatSubject.add(openedChats.last);
+    }
   }
 }
