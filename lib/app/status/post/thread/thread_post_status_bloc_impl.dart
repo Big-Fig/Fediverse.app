@@ -68,6 +68,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         ) {
     addDisposable(subject: originInReplyToStatusCanceledSubject);
   }

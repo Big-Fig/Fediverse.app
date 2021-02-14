@@ -58,11 +58,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required int maximumFileSizeInBytes,
     @required this.markMediaAsNsfwOnAttach,
     @required this.isExpirePossible,
+    @required bool unfocusOnClear,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
+          unfocusOnClear: unfocusOnClear,
         ) {
     this.initialData = initialData ?? defaultInitData;
     visibilitySubject =

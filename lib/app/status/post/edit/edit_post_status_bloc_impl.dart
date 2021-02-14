@@ -41,6 +41,7 @@ class EditPostStatusBloc extends PostStatusBloc {
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         );
 
   static EditPostStatusBloc createFromContext(

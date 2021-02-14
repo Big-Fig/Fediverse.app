@@ -46,6 +46,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: false,
         );
 
   static ConversationChatPostMessageBloc createFromContext(
