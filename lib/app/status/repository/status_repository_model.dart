@@ -53,6 +53,7 @@ class StatusRepositoryFilters {
   final bool onlyBookmarked;
   final List<StatusTextCondition> excludeTextConditions;
   final bool onlyNotDeleted;
+  final bool onlyNotHiddenLocallyOnDevice;
   final StatusOnlyRemoteCondition onlyRemoteCondition;
   final bool mustBeConversationItem;
   final String onlyFromInstance;
@@ -79,6 +80,7 @@ class StatusRepositoryFilters {
     this.replyVisibilityFilterCondition,
     this.onlyRemoteCondition,
     this.onlyNotDeleted = true,
+    this.onlyNotHiddenLocallyOnDevice = true,
     this.mustBeConversationItem = false,
     this.onlyPendingStatePublishedOrNull = true,
   });
@@ -126,6 +128,7 @@ class StatusRepositoryFilters {
           replyVisibilityFilterCondition ==
               other.replyVisibilityFilterCondition &&
           onlyRemoteCondition == other.onlyRemoteCondition &&
+          onlyNotHiddenLocallyOnDevice == other.onlyNotHiddenLocallyOnDevice &&
           onlyNotDeleted == other.onlyNotDeleted;
 
   @override
@@ -150,6 +153,7 @@ class StatusRepositoryFilters {
       mustBeConversationItem.hashCode ^
       onlyRemoteCondition.hashCode ^
       onlyPendingStatePublishedOrNull.hashCode ^
+      onlyNotHiddenLocallyOnDevice.hashCode ^
       onlyNotDeleted.hashCode;
 
   @override
@@ -175,6 +179,7 @@ class StatusRepositoryFilters {
       ' onlyRemoteCondition: $onlyRemoteCondition,'
       ' replyVisibilityFilterCondition: $replyVisibilityFilterCondition,'
       ' onlyNotDeleted: $onlyNotDeleted'
+      ' onlyNotHiddenLocallyOnDevice: $onlyNotHiddenLocallyOnDevice'
       ' onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull'
       '}';
 }

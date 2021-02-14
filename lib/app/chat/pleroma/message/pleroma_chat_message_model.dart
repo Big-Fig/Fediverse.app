@@ -22,6 +22,8 @@ abstract class IPleromaChatMessage extends IChatMessage {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   });
 }
 
@@ -78,6 +80,10 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
       dbChatMessagePopulated.dbChatMessage.oldPendingRemoteId;
 
   @override
+  String get wasSentWithIdempotencyKey =>
+      dbChatMessagePopulated.dbChatMessage.wasSentWithIdempotencyKey;
+
+  @override
   DbChatMessagePopulatedWrapper copyWith({
     int localId,
     String remoteId,
@@ -91,6 +97,8 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   }) =>
       DbChatMessagePopulatedWrapper(
         dbChatMessagePopulated.copyWith(
@@ -108,6 +116,8 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
           pendingState: pendingState,
           oldPendingRemoteId: oldPendingRemoteId,
           deleted: deleted,
+          hiddenLocallyOnDevice: hiddenLocallyOnDevice,
+          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
         ),
       );
 
@@ -122,7 +132,11 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   int get hashCode => dbChatMessagePopulated.hashCode;
 
   @override
-  bool get deleted => dbChatMessagePopulated.dbChatMessage.deleted;
+  bool get isDeleted => dbChatMessagePopulated.dbChatMessage.deleted;
+
+  @override
+  bool get isHiddenLocallyOnDevice =>
+      dbChatMessagePopulated.dbChatMessage.hiddenLocallyOnDevice;
 }
 
 class DbChatMessagePopulated {
@@ -147,6 +161,8 @@ class DbChatMessagePopulated {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   }) =>
       DbChatMessagePopulated(
         dbChatMessage: DbChatMessage(
@@ -163,6 +179,10 @@ class DbChatMessagePopulated {
           oldPendingRemoteId:
               oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId,
           deleted: deleted ?? dbChatMessage.deleted,
+          hiddenLocallyOnDevice:
+              hiddenLocallyOnDevice ?? dbChatMessage.hiddenLocallyOnDevice,
+          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey ??
+              dbChatMessage.wasSentWithIdempotencyKey,
         ),
         dbAccount: account != null ? dbAccountFromAccount(account) : dbAccount,
       );

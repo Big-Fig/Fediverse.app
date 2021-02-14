@@ -132,6 +132,10 @@ abstract class IStatus {
 
   String get oldPendingRemoteId;
 
+  bool get hiddenLocallyOnDevice;
+
+  String get wasSentWithIdempotencyKey;
+
   IStatus copyWith({
     IAccount account,
     IStatus reblog,
@@ -177,6 +181,8 @@ abstract class IStatus {
     bool deleted,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   });
 }
 
@@ -347,27 +353,33 @@ class DbStatusPopulatedWrapper extends IStatus {
   @override
   bool get deleted => dbStatusPopulated.dbStatus.deleted;
 
+  @override
+  bool get hiddenLocallyOnDevice =>
+      dbStatusPopulated.dbStatus.hiddenLocallyOnDevice;
 
   @override
   PendingState get pendingState => dbStatusPopulated.dbStatus.pendingState;
 
   @override
-  String get oldPendingRemoteId => dbStatusPopulated.dbStatus.oldPendingRemoteId;
+  String get oldPendingRemoteId =>
+      dbStatusPopulated.dbStatus.oldPendingRemoteId;
 
   @override
   IStatus get reblog {
     if (dbStatusPopulated.reblogDbStatus != null &&
         dbStatusPopulated.reblogDbStatusAccount != null) {
-      return DbStatusPopulatedWrapper(DbStatusPopulated(
-        dbStatus: dbStatusPopulated.reblogDbStatus,
-        dbAccount: dbStatusPopulated.reblogDbStatusAccount,
-        reblogDbStatus: null,
-        reblogDbStatusAccount: null,
-        replyDbStatus: null,
-        replyReblogDbStatusAccount: null,
-        replyDbStatusAccount: null,
-        replyReblogDbStatus: null,
-      ));
+      return DbStatusPopulatedWrapper(
+        DbStatusPopulated(
+          dbStatus: dbStatusPopulated.reblogDbStatus,
+          dbAccount: dbStatusPopulated.reblogDbStatusAccount,
+          reblogDbStatus: null,
+          reblogDbStatusAccount: null,
+          replyDbStatus: null,
+          replyReblogDbStatusAccount: null,
+          replyDbStatusAccount: null,
+          replyReblogDbStatus: null,
+        ),
+      );
     } else {
       return null;
     }
@@ -419,6 +431,8 @@ class DbStatusPopulatedWrapper extends IStatus {
     bool deleted,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   }) {
     DbStatus reblogStatus;
     DbAccount reblogStatusAccount;
@@ -493,42 +507,44 @@ class DbStatusPopulatedWrapper extends IStatus {
           deleted: deleted,
           pendingState: pendingState,
           oldPendingRemoteId: oldPendingRemoteId,
+          hiddenLocallyOnDevice: hiddenLocallyOnDevice,
+          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
         ),
         account: dbStatusPopulated.dbAccount.copyWith(
-            id: account?.localId,
-            remoteId: account?.remoteId,
-            username: account?.username,
-            url: account?.url,
-            note: account?.note,
-            locked: account?.locked,
-            headerStatic: account?.headerStatic,
-            header: account?.header,
-            followingCount: account?.followingCount,
-            followersCount: account?.followersCount,
-            statusesCount: account?.statusesCount,
-            displayName: account?.displayName,
-            createdAt: account?.createdAt,
-            bot: account?.bot,
-            avatarStatic: account?.avatarStatic,
-            avatar: account?.avatar,
-            acct: account?.acct,
-            lastStatusAt: account?.lastStatusAt,
-            fields: account?.fields,
-            emojis: account?.emojis,
-            pleromaRelationship: account?.pleromaRelationship,
-            pleromaTags: account?.pleromaTags,
-            pleromaIsAdmin: account?.pleromaIsAdmin,
-            pleromaIsModerator: account?.pleromaIsModerator,
-            pleromaConfirmationPending: account?.pleromaConfirmationPending,
-            pleromaHideFavorites: account?.pleromaHideFavorites,
-            pleromaHideFollowers: account?.pleromaHideFollowers,
-            pleromaHideFollows: account?.pleromaHideFollows,
-            pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
-            pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
-            pleromaDeactivated: account?.pleromaDeactivated,
-            pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
-            pleromaSkipThreadContainment:
-                account?.pleromaSkipThreadContainment),
+          id: account?.localId,
+          remoteId: account?.remoteId,
+          username: account?.username,
+          url: account?.url,
+          note: account?.note,
+          locked: account?.locked,
+          headerStatic: account?.headerStatic,
+          header: account?.header,
+          followingCount: account?.followingCount,
+          followersCount: account?.followersCount,
+          statusesCount: account?.statusesCount,
+          displayName: account?.displayName,
+          createdAt: account?.createdAt,
+          bot: account?.bot,
+          avatarStatic: account?.avatarStatic,
+          avatar: account?.avatar,
+          acct: account?.acct,
+          lastStatusAt: account?.lastStatusAt,
+          fields: account?.fields,
+          emojis: account?.emojis,
+          pleromaRelationship: account?.pleromaRelationship,
+          pleromaTags: account?.pleromaTags,
+          pleromaIsAdmin: account?.pleromaIsAdmin,
+          pleromaIsModerator: account?.pleromaIsModerator,
+          pleromaConfirmationPending: account?.pleromaConfirmationPending,
+          pleromaHideFavorites: account?.pleromaHideFavorites,
+          pleromaHideFollowers: account?.pleromaHideFollowers,
+          pleromaHideFollows: account?.pleromaHideFollows,
+          pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+          pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+          pleromaDeactivated: account?.pleromaDeactivated,
+          pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+          pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment,
+        ),
         reblogDbStatus: reblogStatus,
         reblogDbStatusAccount: reblogStatusAccount,
         replyDbStatus: replyStatus,
@@ -539,7 +555,9 @@ class DbStatusPopulatedWrapper extends IStatus {
     );
   }
 
-
+  @override
+  String get wasSentWithIdempotencyKey =>
+      dbStatusPopulated.dbStatus.wasSentWithIdempotencyKey;
 }
 
 class DbStatusPopulated {

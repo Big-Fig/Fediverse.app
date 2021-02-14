@@ -88,4 +88,8 @@ abstract class IPleromaChatMessageRepository
   Future markChatMessageAsDeleted({
     @required String chatMessageRemoteId,
   });
+
+  Future markChatMessageAsHiddenLocallyOnDevice({
+    @required int chatMessageLocalId,
+  });
 }

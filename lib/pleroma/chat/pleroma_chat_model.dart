@@ -212,6 +212,12 @@ abstract class IPleromaChatMessageSendData {
 
   String get idempotencyKey;
 
+  IPleromaChatMessageSendData copyWith({
+    String content,
+    String mediaId,
+    String idempotencyKey,
+  });
+
   Map<String, dynamic> toJson();
 }
 
@@ -232,6 +238,18 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
     @required this.mediaId,
     @required this.idempotencyKey,
   });
+
+  @override
+  PleromaChatMessageSendData copyWith({
+    String content,
+    String mediaId,
+    String idempotencyKey,
+  }) =>
+      PleromaChatMessageSendData(
+        content: content ?? this.content,
+        mediaId: mediaId ?? this.mediaId,
+        idempotencyKey: idempotencyKey ?? this.idempotencyKey,
+      );
 
   @override
   bool operator ==(Object other) =>

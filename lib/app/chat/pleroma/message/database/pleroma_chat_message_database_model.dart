@@ -29,7 +29,11 @@ class DbChatMessages extends Table {
   TextColumn get pendingState =>
       text().nullable().map(PendingStateDatabaseConverter())();
 
+  BoolColumn get deleted => boolean().nullable()();
+
+  BoolColumn get hiddenLocallyOnDevice => boolean().nullable()();
+
   TextColumn get oldPendingRemoteId => text().nullable()();
 
-  BoolColumn get deleted => boolean().nullable()();
+  TextColumn get wasSentWithIdempotencyKey => text().nullable()();
 }

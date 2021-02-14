@@ -3,12 +3,17 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -191,5 +196,119 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future performActualDelete() {
     throw UnsupportedError("It is not possible to delete pleroma chat");
+  }
+
+  @override
+  Future postMessage({
+    @required
+        pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
+    @required
+    IPleromaMediaAttachment pleromaChatMessageSendDataMediaAttachment,
+    @required IPleromaChatMessage oldPendingFailedPleromaChatMessage,
+  }) async {
+    DbChatMessage dbChatMessage;
+    int localChatMessageId;
+
+    var oldMessageExist = oldPendingFailedPleromaChatMessage != null;
+    if (oldMessageExist) {
+      localChatMessageId = oldPendingFailedPleromaChatMessage.localId;
+      dbChatMessage = mapRemoteChatMessageToDbPleromaChatMessage(
+        mapLocalPleromaChatMessageToRemoteChatMessage(
+          oldPendingFailedPleromaChatMessage,
+        ),
+      ).copyWith(id: localChatMessageId);
+
+      pleromaChatMessageSendData = pleromaChatMessageSendData.copyWith(
+        idempotencyKey: dbChatMessage.wasSentWithIdempotencyKey,
+      );
+
+      await chatMessageRepository.updateById(
+        localChatMessageId,
+        dbChatMessage.copyWith(
+          pendingState: PendingState.pending,
+        ),
+      );
+    } else {
+
+      var createdAt = DateTime.now();
+      var fakeUniqueRemoteRemoteId = generateUniquePleromaFakeId();
+
+      dbChatMessage  = DbChatMessage(
+        id: null,
+        remoteId: fakeUniqueRemoteRemoteId,
+        chatRemoteId: chat.remoteId,
+        accountRemoteId: myAccountBloc.account.remoteId,
+        createdAt: createdAt,
+        content: pleromaChatMessageSendData.content,
+        emojis: null,
+        mediaAttachment: pleromaChatMessageSendDataMediaAttachment,
+        card: null,
+        pendingState: PendingState.pending,
+        oldPendingRemoteId: fakeUniqueRemoteRemoteId,
+      );
+      localChatMessageId = await chatMessageRepository.insert(
+        dbChatMessage,
+      );
+
+      pleromaChatMessageSendData = pleromaChatMessageSendData.copyWith(
+        idempotencyKey: fakeUniqueRemoteRemoteId,
+      );
+    }
+
+    try {
+      var pleromaChatMessage = await pleromaChatService.sendMessage(
+        chatId: chat.remoteId,
+        data: pleromaChatMessageSendData,
+      );
+      if (pleromaChatMessage != null) {
+        await chatMessageRepository.updateById(
+          localChatMessageId,
+          dbChatMessage.copyWith(
+            hiddenLocallyOnDevice: true,
+            pendingState: PendingState.published,
+          ),
+        );
+
+        await chatMessageRepository.upsertRemoteChatMessage(
+          pleromaChatMessage,
+        );
+      } else {
+        await chatMessageRepository.updateById(
+          localChatMessageId,
+          dbChatMessage.copyWith(
+            pendingState: PendingState.fail,
+          ),
+        );
+      }
+    } catch (e, stackTrace) {
+      _logger.warning(() => "postMessage error", e, stackTrace);
+      await chatMessageRepository.updateById(
+        localChatMessageId,
+        dbChatMessage.copyWith(
+          pendingState: PendingState.fail,
+        ),
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future deleteMessage({
+    @required IPleromaChatMessage pleromaChatMessage,
+  }) async {
+    if (pleromaChatMessage.isPendingStatePublishedOrNull) {
+      await pleromaChatService.deleteChatMessage(
+        chatMessageRemoteId: pleromaChatMessage.remoteId,
+        chatId: pleromaChatMessage.chatRemoteId,
+      );
+
+      await chatMessageRepository.markChatMessageAsDeleted(
+        chatMessageRemoteId: pleromaChatMessage.remoteId,
+      );
+    } else {
+      await chatMessageRepository.markChatMessageAsHiddenLocallyOnDevice(
+        chatMessageLocalId: pleromaChatMessage.localId,
+      );
+    }
   }
 }

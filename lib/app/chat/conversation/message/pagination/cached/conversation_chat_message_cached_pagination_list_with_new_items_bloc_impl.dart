@@ -61,13 +61,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   bool isItemsEqual(
     IConversationChatMessage a,
     IConversationChatMessage b,
-  ) {
-    return a.remoteId == b.remoteId ||
-        (a.oldPendingRemoteId == b.oldPendingRemoteId &&
-            a.oldPendingRemoteId != null) ||
-        a.remoteId == b.oldPendingRemoteId ||
-        a.oldPendingRemoteId == b.remoteId;
-  }
+  ) => a.remoteId == b.remoteId;
 
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(

@@ -54,9 +54,13 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<bool> get isDeletedStream;
 
-  bool get isPublishedAndNotDeleted;
+  bool get isHiddenLocallyOnDevice;
 
-  Stream<bool> get isPublishedAndNotDeletedStream;
+  Stream<bool> get isHiddenLocallyOnDeviceStream;
+
+  bool get isPublishedAndNotDeletedAndNotLocallyHidden;
+
+  Stream<bool> get isPublishedAndNotDeletedAndNotLocallyHiddenStream;
 
   Future refreshFromNetwork();
 
@@ -64,3 +68,4 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Future resendPendingFailed();
 }
+

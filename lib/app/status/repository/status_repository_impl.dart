@@ -563,6 +563,15 @@ class StatusRepository extends AsyncInitLoadingBloc
         remoteId: statusRemoteId,
       );
 
+
+  @override
+  Future markStatusAsHiddenLocallyOnDevice({
+    @required int localId,
+  }) => dao.markAsHiddenLocallyOnDevice(
+      localId: localId,
+    );
+
+
   @override
   Future clearListStatusesConnection({
     @required String listRemoteId,
@@ -732,6 +741,9 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (filters?.onlyNotDeleted == true) {
       dao.addOnlyNotDeletedWhere(query);
+    }
+    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
+      dao.addOnlyNotHiddenLocallyOnDeviceWhere(query);
     }
 
     if (filters?.onlyPendingStatePublishedOrNull == true) {

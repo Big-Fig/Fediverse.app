@@ -106,7 +106,10 @@ class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
           createdAt: scheduledStatus.scheduledAt,
           pendingState: PendingState.notSentYet,
           oldPendingRemoteId: null,
+    wasSentWithIdempotencyKey: null,
         );
+  @override
+  bool get hiddenLocallyOnDevice => false;
 }
 
 enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

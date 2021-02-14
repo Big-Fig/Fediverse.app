@@ -9,15 +9,25 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 Function eq = const ListEquality().equals;
+
+final _logger = Logger("conversation_chat_bloc_impl.dart");
 
 class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
@@ -254,5 +264,116 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     );
 
     await conversationRepository.deleteByRemoteId(remoteId);
+  }
+
+  @override
+  Future postMessage({
+    @required IPostStatusData postStatusData,
+    @required IConversationChatMessage oldPendingFailedConversationChatMessage,
+  }) async {
+    DbStatus dbStatus;
+    int localStatusId;
+
+    PleromaPostStatus pleromaPostStatus;
+    var oldMessageExist = oldPendingFailedConversationChatMessage != null;
+    if (oldMessageExist) {
+      localStatusId = oldPendingFailedConversationChatMessage.status.localId;
+      dbStatus = mapRemoteStatusToDbStatus(
+        mapLocalStatusToRemoteStatus(
+          oldPendingFailedConversationChatMessage.status,
+        ),
+      ).copyWith(id: localStatusId);
+
+      pleromaPostStatus = postStatusData.toPleromaPostStatus(
+        idempotencyKey: dbStatus.wasSentWithIdempotencyKey,
+      );
+
+      await statusRepository.updateById(
+        localStatusId,
+        dbStatus.copyWith(
+          pendingState: PendingState.pending,
+        ),
+      );
+    } else {
+      var createdAt = DateTime.now();
+      var fakeUniqueRemoteRemoteId = generateUniquePleromaFakeId();
+      var localStatusAdapter = PostStatusDataStatusStatusAdapter(
+        account: myAccountBloc.myAccount,
+        postStatusData: postStatusData,
+        localId: null,
+        createdAt: createdAt,
+        pendingState: PendingState.pending,
+        oldPendingRemoteId: fakeUniqueRemoteRemoteId,
+        wasSentWithIdempotencyKey: fakeUniqueRemoteRemoteId,
+      );
+
+      dbStatus = localStatusAdapter.toDbStatus(
+        fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
+      );
+      localStatusId = await statusRepository.insert(
+        dbStatus,
+      );
+
+      await statusRepository.addStatusToConversation(
+        statusRemoteId: fakeUniqueRemoteRemoteId,
+        conversationRemoteId: chat.remoteId,
+      );
+
+      pleromaPostStatus = postStatusData.toPleromaPostStatus(
+        idempotencyKey: fakeUniqueRemoteRemoteId,
+      );
+    }
+
+    try {
+      var pleromaStatus = await pleromaAuthStatusService.postStatus(
+        data: pleromaPostStatus,
+      );
+      if (pleromaStatus != null) {
+        await statusRepository.markStatusAsHiddenLocallyOnDevice(
+          localId: localStatusId,
+        );
+
+        await statusRepository.upsertRemoteStatus(
+          pleromaStatus,
+          listRemoteId: null,
+          conversationRemoteId: chat.remoteId,
+        );
+      } else {
+        await statusRepository.updateById(
+          localStatusId,
+          dbStatus.copyWith(
+            pendingState: PendingState.fail,
+          ),
+        );
+      }
+    } catch (e, stackTrace) {
+      _logger.warning(() => "postMessage error", e, stackTrace);
+      await statusRepository.updateById(
+        localStatusId,
+        dbStatus.copyWith(
+          pendingState: PendingState.fail,
+        ),
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future deleteMessage({
+    @required IConversationChatMessage conversationChatMessage,
+  }) async {
+    if (conversationChatMessage.isPendingStatePublishedOrNull) {
+      await pleromaAuthStatusService.deleteStatus(
+        statusRemoteId: conversationChatMessage.status.remoteId,
+      );
+
+      await statusRepository.markStatusAsDeleted(
+        statusRemoteId: conversationChatMessage.status.remoteId,
+      );
+    } else {
+      await statusRepository.markStatusAsHiddenLocallyOnDevice(
+        localId: conversationChatMessage.status.localId,
+      );
+    }
   }
 }

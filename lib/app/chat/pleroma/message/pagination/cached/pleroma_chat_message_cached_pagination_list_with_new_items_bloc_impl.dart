@@ -54,13 +54,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) {
-    return a.remoteId == b.remoteId ||
-        (a.oldPendingRemoteId == b.oldPendingRemoteId &&
-            a.oldPendingRemoteId != null) ||
-        a.remoteId == b.oldPendingRemoteId ||
-        a.oldPendingRemoteId == b.remoteId;
-  }
+  bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) => a.remoteId == b.remoteId;
 
   static PleromaChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(BuildContext context,

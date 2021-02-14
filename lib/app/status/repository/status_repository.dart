@@ -86,6 +86,10 @@ abstract class IStatusRepository
     @required String statusRemoteId,
   });
 
+  Future markStatusAsHiddenLocallyOnDevice({
+    @required int localId,
+  });
+
   Future clearListStatusesConnection({
     @required String listRemoteId,
   });

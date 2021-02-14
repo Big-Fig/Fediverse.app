@@ -451,6 +451,7 @@ void main() {
         ],
         onlyPendingStatePublishedOrNull: true,
         onlyNotDeleted: false,
+        onlyNotHiddenLocallyOnDevice: false,
       ),
       pagination: null,
       orderingTermData: null,
@@ -615,6 +616,7 @@ void main() {
             ],
             onlyPendingStatePublishedOrNull: true,
             onlyNotDeleted: false,
+            onlyNotHiddenLocallyOnDevice: false,
           ),
           pagination: null,
         ))

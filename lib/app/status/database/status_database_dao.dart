@@ -394,6 +394,20 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
+      addOnlyNotHiddenLocallyOnDeviceWhere(
+              SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+          query
+            ..where(
+              (status) =>
+                  isNull(
+                    status.hiddenLocallyOnDevice,
+                  ) |
+                  status.hiddenLocallyOnDevice.equals(
+                    false,
+                  ),
+            );
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyPendingStatePublishedOrNull(
               SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
           query
@@ -634,6 +648,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     var update = "UPDATE db_statuses "
         "SET deleted = 1 "
         "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbStatuses});
+
+    return query;
+  }
+  Future markAsHiddenLocallyOnDevice({@required int localId}) {
+    var update = "UPDATE db_statuses "
+        "SET hidden_locally_on_device = 1 "
+        "WHERE id = '$localId'";
     var query = db.customUpdate(update, updates: {dbStatuses});
 
     return query;

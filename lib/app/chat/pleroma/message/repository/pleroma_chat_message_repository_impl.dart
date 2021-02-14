@@ -151,6 +151,10 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       dao.addOnlyNotDeletedWhere(query);
     }
 
+    if (filters?.onlyNotHiddenLocallyOnDevice == true) {
+      dao.addOnlyNotHiddenLocallyOnDevice(query);
+    }
+
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
       assert(
@@ -383,6 +387,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
           ],
           onlyPendingStatePublishedOrNull: false,
           onlyNotDeleted: true,
+          onlyNotHiddenLocallyOnDevice: true,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
@@ -398,6 +403,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
           ],
           onlyPendingStatePublishedOrNull: false,
           onlyNotDeleted: true,
+          onlyNotHiddenLocallyOnDevice: true,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
@@ -410,6 +416,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       filters: PleromaChatMessageRepositoryFilters(
         onlyPendingStatePublishedOrNull: false,
         onlyNotDeleted: true,
+        onlyNotHiddenLocallyOnDevice: true,
       ),
       pagination: null,
       orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -457,5 +464,13 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   }) =>
       dao.markAsDeleted(
         remoteId: chatMessageRemoteId,
+      );
+
+  @override
+  Future markChatMessageAsHiddenLocallyOnDevice({
+    @required int chatMessageLocalId,
+  }) =>
+      dao.markAsHiddenLocallyOnDevice(
+        localId: chatMessageLocalId,
       );
 }

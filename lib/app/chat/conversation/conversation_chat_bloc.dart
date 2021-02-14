@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -28,12 +29,21 @@ abstract class IConversationChatBloc
   @override
   Stream<IConversationChatMessage> get lastChatMessageStream;
 
+  Future postMessage({
+    @required IPostStatusData postStatusData,
+    @required IConversationChatMessage oldPendingFailedConversationChatMessage,
+  });
+
+  Future deleteMessage({
+    @required IConversationChatMessage conversationChatMessage,
+  });
 }
 
 extension IConversationChatBlocExtension on IConversationChatBloc {
   IConversationChat get conversation => chat;
 
   Stream<IConversationChat> get conversationStream => chatStream;
+
   IStatus get lastStatus => lastChatMessage?.status;
 
   Stream<IStatus> get lastStatusStream => lastChatMessageStream.map(
