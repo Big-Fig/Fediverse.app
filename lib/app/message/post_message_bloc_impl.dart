@@ -15,6 +15,7 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
+  final bool unfocusOnClear;
   @override
   final int maximumMessageLength;
 
@@ -40,6 +41,7 @@ abstract class PostMessageBloc extends DisposableOwner
     @required int maximumMediaAttachmentCount,
     @required this.maximumMessageLength,
     @required int maximumFileSizeInBytes,
+    @required this.unfocusOnClear,
   }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -127,7 +129,9 @@ abstract class PostMessageBloc extends DisposableOwner
   void clear() {
     inputTextController.clear();
     mediaAttachmentsBloc.clear();
-    inputFocusNode.unfocus();
+    if (unfocusOnClear) {
+      inputFocusNode.unfocus();
+    }
     clearSelectedAction();
     isExpandedSubject.add(false);
     regenerateIdempotencyKey();

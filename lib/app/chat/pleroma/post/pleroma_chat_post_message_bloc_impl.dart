@@ -28,6 +28,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
           maximumMediaAttachmentCount: 1,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
+          unfocusOnClear: false,
         );
 
   @override

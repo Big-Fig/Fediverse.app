@@ -57,6 +57,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         );
 
   static PostStatusStartConversationChatBloc createFromContext(

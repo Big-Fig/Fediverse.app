@@ -37,6 +37,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
         );
 
   NewPostStatusBloc.withInitial({
