@@ -29,6 +29,8 @@ abstract class IConversationChatBloc
   @override
   Stream<IConversationChatMessage> get lastChatMessageStream;
 
+  Stream<IConversationChatMessage> get onMessageLocallyHiddenStream;
+
   Future postMessage({
     @required IPostStatusData postStatusData,
     @required IConversationChatMessage oldPendingFailedConversationChatMessage,

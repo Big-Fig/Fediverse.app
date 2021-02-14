@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -10,6 +13,7 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger(
     "conversation_chat_message_cached_pagination_list_with_new_items_bloc_impl.dart");
@@ -20,16 +24,73 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
         IConversationChatMessage> {
   final IConversationChatMessageCachedListBloc chatMessageCachedListService;
 
+  final IConversationChatBloc conversationChatBloc;
+
   ConversationChatMessageCachedPaginationListWithNewItemsBloc({
     @required bool mergeNewItemsImmediately,
     @required this.chatMessageCachedListService,
+    @required this.conversationChatBloc,
     @required
         ICachedPaginationBloc<TPage, IConversationChatMessage>
             cachedPaginationBloc,
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
           paginationBloc: cachedPaginationBloc,
-        );
+        ) {
+    addDisposable(
+      streamSubscription:
+          conversationChatBloc.onMessageLocallyHiddenStream.listen(
+        (hiddenMessage) {
+          hideItem(hiddenMessage);
+        },
+      ),
+    );
+
+    addDisposable(subject: hiddenItemsSubject);
+  }
+
+  final BehaviorSubject<List<IConversationChatMessage>> hiddenItemsSubject =
+      BehaviorSubject.seeded([]);
+
+  List<IConversationChatMessage> get hiddenItems => hiddenItemsSubject.value;
+
+  Stream<List<IConversationChatMessage>> get hiddenItemsStream =>
+      hiddenItemsSubject.stream;
+
+  void hideItem(IConversationChatMessage itemToHide) {
+    hiddenItems.add(itemToHide);
+    hiddenItemsSubject.add(hiddenItems);
+  }
+
+  // todo: rework copy-paste
+  @override
+  List<IConversationChatMessage> get items {
+    return excludeHiddenItems(super.items, hiddenItems);
+  }
+
+  @override
+  Stream<List<IConversationChatMessage>> get itemsStream => Rx.combineLatest2(
+    super.itemsStream,
+    hiddenItemsStream,
+    excludeHiddenItems,
+  );
+
+  List<IConversationChatMessage> excludeHiddenItems(
+      List<IConversationChatMessage> superItems,
+      List<IConversationChatMessage> hiddenItems,
+      ) {
+    if (hiddenItems.isEmpty) {
+      return superItems;
+    }
+    superItems.removeWhere((currentItem) =>
+    hiddenItems.firstWhere(
+            (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
+        orElse: () => null) !=
+        null);
+
+    return superItems;
+  }
+  
 
   @override
   Stream<List<IConversationChatMessage>> watchItemsNewerThanItem(
@@ -61,7 +122,8 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   bool isItemsEqual(
     IConversationChatMessage a,
     IConversationChatMessage b,
-  ) => a.remoteId == b.remoteId;
+  ) =>
+      a.remoteId == b.remoteId;
 
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(
@@ -70,11 +132,20 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   }) {
     return ConversationChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
-      chatMessageCachedListService:
-          IConversationChatMessageCachedListBloc.of(context, listen: false),
+      chatMessageCachedListService: IConversationChatMessageCachedListBloc.of(
+        context,
+        listen: false,
+      ),
       cachedPaginationBloc: Provider.of<
           IPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
-              IConversationChatMessage>>(context, listen: false),
+              IConversationChatMessage>>(
+        context,
+        listen: false,
+      ),
+      conversationChatBloc: IConversationChatBloc.of(
+        context,
+        listen: false,
+      ),
     );
   }
 

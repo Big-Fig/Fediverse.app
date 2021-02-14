@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
@@ -14,6 +16,7 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
@@ -58,6 +61,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Stream<IConversationChatMessage> get lastChatMessageStream =>
       _lastMessageSubject.stream;
 
+  final StreamController<IConversationChatMessage>
+      onMessageLocallyHiddenStreamController = StreamController.broadcast();
+
+  @override
+  Stream<IConversationChatMessage> get onMessageLocallyHiddenStream =>
+      onMessageLocallyHiddenStreamController.stream;
+
   final IMyAccountBloc myAccountBloc;
   final IPleromaConversationService pleromaConversationService;
   final IPleromaAuthStatusService pleromaAuthStatusService;
@@ -96,6 +106,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
     addDisposable(subject: _accountsSubject);
+
+    addDisposable(streamController: onMessageLocallyHiddenStreamController);
 
     listenForAccounts(conversation);
   }
@@ -329,8 +341,29 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         data: pleromaPostStatus,
       );
       if (pleromaStatus != null) {
-        await statusRepository.markStatusAsHiddenLocallyOnDevice(
-          localId: localStatusId,
+        await statusRepository.updateById(
+          localStatusId,
+          dbStatus.copyWith(
+            hiddenLocallyOnDevice: true,
+            pendingState: PendingState.published,
+          ),
+        );
+        onMessageLocallyHiddenStreamController.add(
+          ConversationChatMessageStatusAdapter(
+            DbStatusPopulatedWrapper(
+              // todo: rework
+              DbStatusPopulated(
+                dbStatus: dbStatus,
+                dbAccount: null,
+                replyDbStatus: null,
+                replyReblogDbStatusAccount: null,
+                replyReblogDbStatus: null,
+                replyDbStatusAccount: null,
+                reblogDbStatusAccount: null,
+                reblogDbStatus: null,
+              ),
+            ),
+          ),
         );
 
         await statusRepository.upsertRemoteStatus(
@@ -374,6 +407,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       await statusRepository.markStatusAsHiddenLocallyOnDevice(
         localId: conversationChatMessage.status.localId,
       );
+
+      onMessageLocallyHiddenStreamController.add(conversationChatMessage);
     }
   }
 }

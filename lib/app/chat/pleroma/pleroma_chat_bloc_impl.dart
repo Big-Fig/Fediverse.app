@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
@@ -47,6 +49,13 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
 
+  final StreamController<IPleromaChatMessage>
+      onMessageLocallyHiddenStreamController = StreamController.broadcast();
+
+  @override
+  Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream =>
+      onMessageLocallyHiddenStreamController.stream;
+
   PleromaChatBloc({
     @required this.pleromaChatService,
     @required this.myAccountBloc,
@@ -74,6 +83,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
+
+    addDisposable(streamController: onMessageLocallyHiddenStreamController);
   }
 
   @override
@@ -202,8 +213,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   Future postMessage({
     @required
         pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
-    @required
-    IPleromaMediaAttachment pleromaChatMessageSendDataMediaAttachment,
+    @required IPleromaMediaAttachment pleromaChatMessageSendDataMediaAttachment,
     @required IPleromaChatMessage oldPendingFailedPleromaChatMessage,
   }) async {
     DbChatMessage dbChatMessage;
@@ -229,11 +239,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         ),
       );
     } else {
-
       var createdAt = DateTime.now();
       var fakeUniqueRemoteRemoteId = generateUniquePleromaFakeId();
 
-      dbChatMessage  = DbChatMessage(
+      dbChatMessage = DbChatMessage(
         id: null,
         remoteId: fakeUniqueRemoteRemoteId,
         chatRemoteId: chat.remoteId,
@@ -266,6 +275,15 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           dbChatMessage.copyWith(
             hiddenLocallyOnDevice: true,
             pendingState: PendingState.published,
+          ),
+        );
+        onMessageLocallyHiddenStreamController.add(
+          DbChatMessagePopulatedWrapper(
+            DbChatMessagePopulated(
+              dbChatMessage: dbChatMessage,
+              // todo: rework
+              dbAccount: null,
+            ),
           ),
         );
 
@@ -309,6 +327,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       await chatMessageRepository.markChatMessageAsHiddenLocallyOnDevice(
         chatMessageLocalId: pleromaChatMessage.localId,
       );
+      onMessageLocallyHiddenStreamController.add(pleromaChatMessage);
     }
   }
 }
