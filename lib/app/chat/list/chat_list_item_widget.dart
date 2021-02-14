@@ -9,10 +9,12 @@ import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -155,30 +157,45 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-        return Provider<EmojiText>.value(
-          value: EmojiText(text: content, emojis: lastMessage.emojis),
-          child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-            update: (context, emojiText, _) {
-              return HtmlTextBloc(
-                inputData: HtmlTextInputData(
-                  input: emojiText.text,
-                  emojis: emojiText.emojis,
+        return Row(
+          children: [
+            if (lastMessage.pendingState == PendingState.pending)
+              FediCircularProgressIndicator(size: 16.0),
+            if (lastMessage.pendingState == PendingState.fail)
+              Padding(
+                padding: FediPadding.horizontalSmallPadding,
+                child: Icon(
+                  FediIcons.warning,
+                  color: IFediUiColorTheme.of(context).error,
+                  size: 16.0,
                 ),
-                settings: HtmlTextSettings(
-                  drawNewLines: false,
-                  textMaxLines: 1,
-                  textOverflow: TextOverflow.ellipsis,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w300,
-                  color: fediUiColorTheme.mediumGrey,
-                  linkColor: fediUiColorTheme.primary,
-                  textScaleFactor: textScaleFactor,
-                  lineHeight: null,
-                ),
-              );
-            },
-            child: const HtmlTextWidget(),
-          ),
+              ),
+            Provider<EmojiText>.value(
+              value: EmojiText(text: content, emojis: lastMessage.emojis),
+              child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+                update: (context, emojiText, _) {
+                  return HtmlTextBloc(
+                    inputData: HtmlTextInputData(
+                      input: emojiText.text,
+                      emojis: emojiText.emojis,
+                    ),
+                    settings: HtmlTextSettings(
+                      drawNewLines: false,
+                      textMaxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w300,
+                      color: fediUiColorTheme.mediumGrey,
+                      linkColor: fediUiColorTheme.primary,
+                      textScaleFactor: textScaleFactor,
+                      lineHeight: null,
+                    ),
+                  );
+                },
+                child: const HtmlTextWidget(),
+              ),
+            ),
+          ],
         );
       },
     );
