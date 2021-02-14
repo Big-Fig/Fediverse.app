@@ -160,7 +160,6 @@ MaterialPageRoute createConversationChatPageRoute({
             child: const ConversationChatPage(),
           ),
         ),
-        conversationAccountsWithoutMe: null,
       ),
     ),
   );

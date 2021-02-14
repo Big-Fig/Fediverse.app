@@ -1,4 +1,3 @@
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
@@ -41,16 +40,18 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
             language: language,
             inReplyToConversationId: conversationChatBloc.conversation.remoteId,
           ),
-          initialAccountsToMention: conversationChatBloc.accountsWithoutMe,
+          // we don't need mentions if we have inReplyToConversationId
+          initialAccountsToMention: null,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
         );
 
-  static ConversationChatPostMessageBloc createFromContext(BuildContext context,
-      {@required IConversationChat conversation,
-      @required List<IAccount> conversationAccountsWithoutMe}) {
+  static ConversationChatPostMessageBloc createFromContext(
+    BuildContext context, {
+    @required IConversationChat conversation,
+  }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
@@ -82,14 +83,12 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required List<IAccount> conversationAccountsWithoutMe,
     @required IConversationChat conversation,
     @required Widget child,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => ConversationChatPostMessageBloc.createFromContext(
         context,
-        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
         conversation: conversation,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),
