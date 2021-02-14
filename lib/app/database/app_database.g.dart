@@ -47,8 +47,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final bool pleromaThreadMuted;
   final List<PleromaStatusEmojiReaction> pleromaEmojiReactions;
   final bool deleted;
+  final bool hiddenLocallyOnDevice;
   final PendingState pendingState;
   final String oldPendingRemoteId;
+  final String wasSentWithIdempotencyKey;
   DbStatus(
       {@required this.id,
       @required this.remoteId,
@@ -89,8 +91,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaThreadMuted,
       this.pleromaEmojiReactions,
       this.deleted,
+      this.hiddenLocallyOnDevice,
       this.pendingState,
-      this.oldPendingRemoteId});
+      this.oldPendingRemoteId,
+      this.wasSentWithIdempotencyKey});
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -176,10 +180,14 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
               data['${effectivePrefix}pleroma_emoji_reactions'])),
       deleted:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      hiddenLocallyOnDevice: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}hidden_locally_on_device']),
       pendingState: $DbStatusesTable.$converter11.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
       oldPendingRemoteId: stringType.mapFromDatabaseResponse(
           data['${effectivePrefix}old_pending_remote_id']),
+      wasSentWithIdempotencyKey: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}was_sent_with_idempotency_key']),
     );
   }
   @override
@@ -320,12 +328,19 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
     if (!nullToAbsent || deleted != null) {
       map['deleted'] = Variable<bool>(deleted);
     }
+    if (!nullToAbsent || hiddenLocallyOnDevice != null) {
+      map['hidden_locally_on_device'] = Variable<bool>(hiddenLocallyOnDevice);
+    }
     if (!nullToAbsent || pendingState != null) {
       final converter = $DbStatusesTable.$converter11;
       map['pending_state'] = Variable<String>(converter.mapToSql(pendingState));
     }
     if (!nullToAbsent || oldPendingRemoteId != null) {
       map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId);
+    }
+    if (!nullToAbsent || wasSentWithIdempotencyKey != null) {
+      map['was_sent_with_idempotency_key'] =
+          Variable<String>(wasSentWithIdempotencyKey);
     }
     return map;
   }
@@ -436,12 +451,19 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
+      hiddenLocallyOnDevice: hiddenLocallyOnDevice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hiddenLocallyOnDevice),
       pendingState: pendingState == null && nullToAbsent
           ? const Value.absent()
           : Value(pendingState),
       oldPendingRemoteId: oldPendingRemoteId == null && nullToAbsent
           ? const Value.absent()
           : Value(oldPendingRemoteId),
+      wasSentWithIdempotencyKey:
+          wasSentWithIdempotencyKey == null && nullToAbsent
+              ? const Value.absent()
+              : Value(wasSentWithIdempotencyKey),
     );
   }
 
@@ -498,9 +520,13 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.fromJson<List<PleromaStatusEmojiReaction>>(
               json['pleromaEmojiReactions']),
       deleted: serializer.fromJson<bool>(json['deleted']),
+      hiddenLocallyOnDevice:
+          serializer.fromJson<bool>(json['hiddenLocallyOnDevice']),
       pendingState: serializer.fromJson<PendingState>(json['pendingState']),
       oldPendingRemoteId:
           serializer.fromJson<String>(json['oldPendingRemoteId']),
+      wasSentWithIdempotencyKey:
+          serializer.fromJson<String>(json['wasSentWithIdempotencyKey']),
     );
   }
   @override
@@ -552,8 +578,11 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'pleromaEmojiReactions': serializer
           .toJson<List<PleromaStatusEmojiReaction>>(pleromaEmojiReactions),
       'deleted': serializer.toJson<bool>(deleted),
+      'hiddenLocallyOnDevice': serializer.toJson<bool>(hiddenLocallyOnDevice),
       'pendingState': serializer.toJson<PendingState>(pendingState),
       'oldPendingRemoteId': serializer.toJson<String>(oldPendingRemoteId),
+      'wasSentWithIdempotencyKey':
+          serializer.toJson<String>(wasSentWithIdempotencyKey),
     };
   }
 
@@ -597,8 +626,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           bool pleromaThreadMuted,
           List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
           bool deleted,
+          bool hiddenLocallyOnDevice,
           PendingState pendingState,
-          String oldPendingRemoteId}) =>
+          String oldPendingRemoteId,
+          String wasSentWithIdempotencyKey}) =>
       DbStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -644,8 +675,12 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         pleromaEmojiReactions:
             pleromaEmojiReactions ?? this.pleromaEmojiReactions,
         deleted: deleted ?? this.deleted,
+        hiddenLocallyOnDevice:
+            hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
         pendingState: pendingState ?? this.pendingState,
         oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
+        wasSentWithIdempotencyKey:
+            wasSentWithIdempotencyKey ?? this.wasSentWithIdempotencyKey,
       );
   @override
   String toString() {
@@ -689,8 +724,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
           ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
           ..write('deleted: $deleted, ')
+          ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('pendingState: $pendingState, ')
-          ..write('oldPendingRemoteId: $oldPendingRemoteId')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId, ')
+          ..write('wasSentWithIdempotencyKey: $wasSentWithIdempotencyKey')
           ..write(')'))
         .toString();
   }
@@ -738,7 +775,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(pendingState.hashCode, oldPendingRemoteId.hashCode)))))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(hiddenLocallyOnDevice.hashCode, $mrjc(pendingState.hashCode, $mrjc(oldPendingRemoteId.hashCode, wasSentWithIdempotencyKey.hashCode)))))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -784,8 +821,10 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.pleromaThreadMuted == this.pleromaThreadMuted &&
           other.pleromaEmojiReactions == this.pleromaEmojiReactions &&
           other.deleted == this.deleted &&
+          other.hiddenLocallyOnDevice == this.hiddenLocallyOnDevice &&
           other.pendingState == this.pendingState &&
-          other.oldPendingRemoteId == this.oldPendingRemoteId);
+          other.oldPendingRemoteId == this.oldPendingRemoteId &&
+          other.wasSentWithIdempotencyKey == this.wasSentWithIdempotencyKey);
 }
 
 class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
@@ -828,8 +867,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<bool> pleromaThreadMuted;
   final Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions;
   final Value<bool> deleted;
+  final Value<bool> hiddenLocallyOnDevice;
   final Value<PendingState> pendingState;
   final Value<String> oldPendingRemoteId;
+  final Value<String> wasSentWithIdempotencyKey;
   const DbStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -870,8 +911,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.hiddenLocallyOnDevice = const Value.absent(),
     this.pendingState = const Value.absent(),
     this.oldPendingRemoteId = const Value.absent(),
+    this.wasSentWithIdempotencyKey = const Value.absent(),
   });
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
@@ -913,8 +956,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.hiddenLocallyOnDevice = const Value.absent(),
     this.pendingState = const Value.absent(),
     this.oldPendingRemoteId = const Value.absent(),
+    this.wasSentWithIdempotencyKey = const Value.absent(),
   })  : remoteId = Value(remoteId),
         createdAt = Value(createdAt),
         sensitive = Value(sensitive),
@@ -964,8 +1009,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<bool> pleromaThreadMuted,
     Expression<String> pleromaEmojiReactions,
     Expression<bool> deleted,
+    Expression<bool> hiddenLocallyOnDevice,
     Expression<String> pendingState,
     Expression<String> oldPendingRemoteId,
+    Expression<String> wasSentWithIdempotencyKey,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1015,9 +1062,13 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       if (pleromaEmojiReactions != null)
         'pleroma_emoji_reactions': pleromaEmojiReactions,
       if (deleted != null) 'deleted': deleted,
+      if (hiddenLocallyOnDevice != null)
+        'hidden_locally_on_device': hiddenLocallyOnDevice,
       if (pendingState != null) 'pending_state': pendingState,
       if (oldPendingRemoteId != null)
         'old_pending_remote_id': oldPendingRemoteId,
+      if (wasSentWithIdempotencyKey != null)
+        'was_sent_with_idempotency_key': wasSentWithIdempotencyKey,
     });
   }
 
@@ -1061,8 +1112,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<bool> pleromaThreadMuted,
       Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions,
       Value<bool> deleted,
+      Value<bool> hiddenLocallyOnDevice,
       Value<PendingState> pendingState,
-      Value<String> oldPendingRemoteId}) {
+      Value<String> oldPendingRemoteId,
+      Value<String> wasSentWithIdempotencyKey}) {
     return DbStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -1108,8 +1161,12 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       pleromaEmojiReactions:
           pleromaEmojiReactions ?? this.pleromaEmojiReactions,
       deleted: deleted ?? this.deleted,
+      hiddenLocallyOnDevice:
+          hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
       pendingState: pendingState ?? this.pendingState,
       oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
+      wasSentWithIdempotencyKey:
+          wasSentWithIdempotencyKey ?? this.wasSentWithIdempotencyKey,
     );
   }
 
@@ -1255,6 +1312,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     if (deleted.present) {
       map['deleted'] = Variable<bool>(deleted.value);
     }
+    if (hiddenLocallyOnDevice.present) {
+      map['hidden_locally_on_device'] =
+          Variable<bool>(hiddenLocallyOnDevice.value);
+    }
     if (pendingState.present) {
       final converter = $DbStatusesTable.$converter11;
       map['pending_state'] =
@@ -1262,6 +1323,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     }
     if (oldPendingRemoteId.present) {
       map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId.value);
+    }
+    if (wasSentWithIdempotencyKey.present) {
+      map['was_sent_with_idempotency_key'] =
+          Variable<String>(wasSentWithIdempotencyKey.value);
     }
     return map;
   }
@@ -1308,8 +1373,10 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
           ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
           ..write('deleted: $deleted, ')
+          ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('pendingState: $pendingState, ')
-          ..write('oldPendingRemoteId: $oldPendingRemoteId')
+          ..write('oldPendingRemoteId: $oldPendingRemoteId, ')
+          ..write('wasSentWithIdempotencyKey: $wasSentWithIdempotencyKey')
           ..write(')'))
         .toString();
   }
@@ -1811,6 +1878,20 @@ class $DbStatusesTable extends DbStatuses
     );
   }
 
+  final VerificationMeta _hiddenLocallyOnDeviceMeta =
+      const VerificationMeta('hiddenLocallyOnDevice');
+  GeneratedBoolColumn _hiddenLocallyOnDevice;
+  @override
+  GeneratedBoolColumn get hiddenLocallyOnDevice =>
+      _hiddenLocallyOnDevice ??= _constructHiddenLocallyOnDevice();
+  GeneratedBoolColumn _constructHiddenLocallyOnDevice() {
+    return GeneratedBoolColumn(
+      'hidden_locally_on_device',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _pendingStateMeta =
       const VerificationMeta('pendingState');
   GeneratedTextColumn _pendingState;
@@ -1834,6 +1915,20 @@ class $DbStatusesTable extends DbStatuses
   GeneratedTextColumn _constructOldPendingRemoteId() {
     return GeneratedTextColumn(
       'old_pending_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _wasSentWithIdempotencyKeyMeta =
+      const VerificationMeta('wasSentWithIdempotencyKey');
+  GeneratedTextColumn _wasSentWithIdempotencyKey;
+  @override
+  GeneratedTextColumn get wasSentWithIdempotencyKey =>
+      _wasSentWithIdempotencyKey ??= _constructWasSentWithIdempotencyKey();
+  GeneratedTextColumn _constructWasSentWithIdempotencyKey() {
+    return GeneratedTextColumn(
+      'was_sent_with_idempotency_key',
       $tableName,
       true,
     );
@@ -1880,8 +1975,10 @@ class $DbStatusesTable extends DbStatuses
         pleromaThreadMuted,
         pleromaEmojiReactions,
         deleted,
+        hiddenLocallyOnDevice,
         pendingState,
-        oldPendingRemoteId
+        oldPendingRemoteId,
+        wasSentWithIdempotencyKey
       ];
   @override
   $DbStatusesTable get asDslTable => this;
@@ -2070,12 +2167,25 @@ class $DbStatusesTable extends DbStatuses
       context.handle(_deletedMeta,
           deleted.isAcceptableOrUnknown(data['deleted'], _deletedMeta));
     }
+    if (data.containsKey('hidden_locally_on_device')) {
+      context.handle(
+          _hiddenLocallyOnDeviceMeta,
+          hiddenLocallyOnDevice.isAcceptableOrUnknown(
+              data['hidden_locally_on_device'], _hiddenLocallyOnDeviceMeta));
+    }
     context.handle(_pendingStateMeta, const VerificationResult.success());
     if (data.containsKey('old_pending_remote_id')) {
       context.handle(
           _oldPendingRemoteIdMeta,
           oldPendingRemoteId.isAcceptableOrUnknown(
               data['old_pending_remote_id'], _oldPendingRemoteIdMeta));
+    }
+    if (data.containsKey('was_sent_with_idempotency_key')) {
+      context.handle(
+          _wasSentWithIdempotencyKeyMeta,
+          wasSentWithIdempotencyKey.isAcceptableOrUnknown(
+              data['was_sent_with_idempotency_key'],
+              _wasSentWithIdempotencyKeyMeta));
     }
     return context;
   }
@@ -7775,8 +7885,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final PleromaMediaAttachment mediaAttachment;
   final PleromaCard card;
   final PendingState pendingState;
-  final String oldPendingRemoteId;
   final bool deleted;
+  final bool hiddenLocallyOnDevice;
+  final String oldPendingRemoteId;
+  final String wasSentWithIdempotencyKey;
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -7788,8 +7900,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       this.mediaAttachment,
       this.card,
       this.pendingState,
+      this.deleted,
+      this.hiddenLocallyOnDevice,
       this.oldPendingRemoteId,
-      this.deleted});
+      this.wasSentWithIdempotencyKey});
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -7818,10 +7932,14 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
       pendingState: $DbChatMessagesTable.$converter3.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pending_state'])),
-      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}old_pending_remote_id']),
       deleted:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      hiddenLocallyOnDevice: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}hidden_locally_on_device']),
+      oldPendingRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}old_pending_remote_id']),
+      wasSentWithIdempotencyKey: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}was_sent_with_idempotency_key']),
     );
   }
   @override
@@ -7862,11 +7980,18 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       final converter = $DbChatMessagesTable.$converter3;
       map['pending_state'] = Variable<String>(converter.mapToSql(pendingState));
     }
+    if (!nullToAbsent || deleted != null) {
+      map['deleted'] = Variable<bool>(deleted);
+    }
+    if (!nullToAbsent || hiddenLocallyOnDevice != null) {
+      map['hidden_locally_on_device'] = Variable<bool>(hiddenLocallyOnDevice);
+    }
     if (!nullToAbsent || oldPendingRemoteId != null) {
       map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId);
     }
-    if (!nullToAbsent || deleted != null) {
-      map['deleted'] = Variable<bool>(deleted);
+    if (!nullToAbsent || wasSentWithIdempotencyKey != null) {
+      map['was_sent_with_idempotency_key'] =
+          Variable<String>(wasSentWithIdempotencyKey);
     }
     return map;
   }
@@ -7898,12 +8023,19 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       pendingState: pendingState == null && nullToAbsent
           ? const Value.absent()
           : Value(pendingState),
-      oldPendingRemoteId: oldPendingRemoteId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(oldPendingRemoteId),
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
+      hiddenLocallyOnDevice: hiddenLocallyOnDevice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hiddenLocallyOnDevice),
+      oldPendingRemoteId: oldPendingRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oldPendingRemoteId),
+      wasSentWithIdempotencyKey:
+          wasSentWithIdempotencyKey == null && nullToAbsent
+              ? const Value.absent()
+              : Value(wasSentWithIdempotencyKey),
     );
   }
 
@@ -7922,9 +8054,13 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           serializer.fromJson<PleromaMediaAttachment>(json['mediaAttachment']),
       card: serializer.fromJson<PleromaCard>(json['card']),
       pendingState: serializer.fromJson<PendingState>(json['pendingState']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      hiddenLocallyOnDevice:
+          serializer.fromJson<bool>(json['hiddenLocallyOnDevice']),
       oldPendingRemoteId:
           serializer.fromJson<String>(json['oldPendingRemoteId']),
-      deleted: serializer.fromJson<bool>(json['deleted']),
+      wasSentWithIdempotencyKey:
+          serializer.fromJson<String>(json['wasSentWithIdempotencyKey']),
     );
   }
   @override
@@ -7942,8 +8078,11 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
       'card': serializer.toJson<PleromaCard>(card),
       'pendingState': serializer.toJson<PendingState>(pendingState),
-      'oldPendingRemoteId': serializer.toJson<String>(oldPendingRemoteId),
       'deleted': serializer.toJson<bool>(deleted),
+      'hiddenLocallyOnDevice': serializer.toJson<bool>(hiddenLocallyOnDevice),
+      'oldPendingRemoteId': serializer.toJson<String>(oldPendingRemoteId),
+      'wasSentWithIdempotencyKey':
+          serializer.toJson<String>(wasSentWithIdempotencyKey),
     };
   }
 
@@ -7958,8 +8097,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           PleromaMediaAttachment mediaAttachment,
           PleromaCard card,
           PendingState pendingState,
+          bool deleted,
+          bool hiddenLocallyOnDevice,
           String oldPendingRemoteId,
-          bool deleted}) =>
+          String wasSentWithIdempotencyKey}) =>
       DbChatMessage(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -7971,8 +8112,12 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         mediaAttachment: mediaAttachment ?? this.mediaAttachment,
         card: card ?? this.card,
         pendingState: pendingState ?? this.pendingState,
-        oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
         deleted: deleted ?? this.deleted,
+        hiddenLocallyOnDevice:
+            hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
+        oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
+        wasSentWithIdempotencyKey:
+            wasSentWithIdempotencyKey ?? this.wasSentWithIdempotencyKey,
       );
   @override
   String toString() {
@@ -7987,8 +8132,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ..write('mediaAttachment: $mediaAttachment, ')
           ..write('card: $card, ')
           ..write('pendingState: $pendingState, ')
+          ..write('deleted: $deleted, ')
+          ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('oldPendingRemoteId: $oldPendingRemoteId, ')
-          ..write('deleted: $deleted')
+          ..write('wasSentWithIdempotencyKey: $wasSentWithIdempotencyKey')
           ..write(')'))
         .toString();
   }
@@ -8014,8 +8161,16 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
                                       card.hashCode,
                                       $mrjc(
                                           pendingState.hashCode,
-                                          $mrjc(oldPendingRemoteId.hashCode,
-                                              deleted.hashCode))))))))))));
+                                          $mrjc(
+                                              deleted.hashCode,
+                                              $mrjc(
+                                                  hiddenLocallyOnDevice
+                                                      .hashCode,
+                                                  $mrjc(
+                                                      oldPendingRemoteId
+                                                          .hashCode,
+                                                      wasSentWithIdempotencyKey
+                                                          .hashCode))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -8030,8 +8185,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           other.mediaAttachment == this.mediaAttachment &&
           other.card == this.card &&
           other.pendingState == this.pendingState &&
+          other.deleted == this.deleted &&
+          other.hiddenLocallyOnDevice == this.hiddenLocallyOnDevice &&
           other.oldPendingRemoteId == this.oldPendingRemoteId &&
-          other.deleted == this.deleted);
+          other.wasSentWithIdempotencyKey == this.wasSentWithIdempotencyKey);
 }
 
 class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
@@ -8045,8 +8202,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<PleromaMediaAttachment> mediaAttachment;
   final Value<PleromaCard> card;
   final Value<PendingState> pendingState;
-  final Value<String> oldPendingRemoteId;
   final Value<bool> deleted;
+  final Value<bool> hiddenLocallyOnDevice;
+  final Value<String> oldPendingRemoteId;
+  final Value<String> wasSentWithIdempotencyKey;
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -8058,8 +8217,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.mediaAttachment = const Value.absent(),
     this.card = const Value.absent(),
     this.pendingState = const Value.absent(),
-    this.oldPendingRemoteId = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.hiddenLocallyOnDevice = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
+    this.wasSentWithIdempotencyKey = const Value.absent(),
   });
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -8072,8 +8233,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.mediaAttachment = const Value.absent(),
     this.card = const Value.absent(),
     this.pendingState = const Value.absent(),
-    this.oldPendingRemoteId = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.hiddenLocallyOnDevice = const Value.absent(),
+    this.oldPendingRemoteId = const Value.absent(),
+    this.wasSentWithIdempotencyKey = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
@@ -8089,8 +8252,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     Expression<String> mediaAttachment,
     Expression<String> card,
     Expression<String> pendingState,
-    Expression<String> oldPendingRemoteId,
     Expression<bool> deleted,
+    Expression<bool> hiddenLocallyOnDevice,
+    Expression<String> oldPendingRemoteId,
+    Expression<String> wasSentWithIdempotencyKey,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -8103,9 +8268,13 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       if (mediaAttachment != null) 'media_attachment': mediaAttachment,
       if (card != null) 'card': card,
       if (pendingState != null) 'pending_state': pendingState,
+      if (deleted != null) 'deleted': deleted,
+      if (hiddenLocallyOnDevice != null)
+        'hidden_locally_on_device': hiddenLocallyOnDevice,
       if (oldPendingRemoteId != null)
         'old_pending_remote_id': oldPendingRemoteId,
-      if (deleted != null) 'deleted': deleted,
+      if (wasSentWithIdempotencyKey != null)
+        'was_sent_with_idempotency_key': wasSentWithIdempotencyKey,
     });
   }
 
@@ -8120,8 +8289,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<PleromaMediaAttachment> mediaAttachment,
       Value<PleromaCard> card,
       Value<PendingState> pendingState,
+      Value<bool> deleted,
+      Value<bool> hiddenLocallyOnDevice,
       Value<String> oldPendingRemoteId,
-      Value<bool> deleted}) {
+      Value<String> wasSentWithIdempotencyKey}) {
     return DbChatMessagesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -8133,8 +8304,12 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       mediaAttachment: mediaAttachment ?? this.mediaAttachment,
       card: card ?? this.card,
       pendingState: pendingState ?? this.pendingState,
-      oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
       deleted: deleted ?? this.deleted,
+      hiddenLocallyOnDevice:
+          hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
+      oldPendingRemoteId: oldPendingRemoteId ?? this.oldPendingRemoteId,
+      wasSentWithIdempotencyKey:
+          wasSentWithIdempotencyKey ?? this.wasSentWithIdempotencyKey,
     );
   }
 
@@ -8177,11 +8352,19 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       map['pending_state'] =
           Variable<String>(converter.mapToSql(pendingState.value));
     }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (hiddenLocallyOnDevice.present) {
+      map['hidden_locally_on_device'] =
+          Variable<bool>(hiddenLocallyOnDevice.value);
+    }
     if (oldPendingRemoteId.present) {
       map['old_pending_remote_id'] = Variable<String>(oldPendingRemoteId.value);
     }
-    if (deleted.present) {
-      map['deleted'] = Variable<bool>(deleted.value);
+    if (wasSentWithIdempotencyKey.present) {
+      map['was_sent_with_idempotency_key'] =
+          Variable<String>(wasSentWithIdempotencyKey.value);
     }
     return map;
   }
@@ -8199,8 +8382,10 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
           ..write('mediaAttachment: $mediaAttachment, ')
           ..write('card: $card, ')
           ..write('pendingState: $pendingState, ')
+          ..write('deleted: $deleted, ')
+          ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('oldPendingRemoteId: $oldPendingRemoteId, ')
-          ..write('deleted: $deleted')
+          ..write('wasSentWithIdempotencyKey: $wasSentWithIdempotencyKey')
           ..write(')'))
         .toString();
   }
@@ -8333,6 +8518,32 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
+  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  GeneratedBoolColumn _deleted;
+  @override
+  GeneratedBoolColumn get deleted => _deleted ??= _constructDeleted();
+  GeneratedBoolColumn _constructDeleted() {
+    return GeneratedBoolColumn(
+      'deleted',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _hiddenLocallyOnDeviceMeta =
+      const VerificationMeta('hiddenLocallyOnDevice');
+  GeneratedBoolColumn _hiddenLocallyOnDevice;
+  @override
+  GeneratedBoolColumn get hiddenLocallyOnDevice =>
+      _hiddenLocallyOnDevice ??= _constructHiddenLocallyOnDevice();
+  GeneratedBoolColumn _constructHiddenLocallyOnDevice() {
+    return GeneratedBoolColumn(
+      'hidden_locally_on_device',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _oldPendingRemoteIdMeta =
       const VerificationMeta('oldPendingRemoteId');
   GeneratedTextColumn _oldPendingRemoteId;
@@ -8347,13 +8558,15 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
-  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
-  GeneratedBoolColumn _deleted;
+  final VerificationMeta _wasSentWithIdempotencyKeyMeta =
+      const VerificationMeta('wasSentWithIdempotencyKey');
+  GeneratedTextColumn _wasSentWithIdempotencyKey;
   @override
-  GeneratedBoolColumn get deleted => _deleted ??= _constructDeleted();
-  GeneratedBoolColumn _constructDeleted() {
-    return GeneratedBoolColumn(
-      'deleted',
+  GeneratedTextColumn get wasSentWithIdempotencyKey =>
+      _wasSentWithIdempotencyKey ??= _constructWasSentWithIdempotencyKey();
+  GeneratedTextColumn _constructWasSentWithIdempotencyKey() {
+    return GeneratedTextColumn(
+      'was_sent_with_idempotency_key',
       $tableName,
       true,
     );
@@ -8371,8 +8584,10 @@ class $DbChatMessagesTable extends DbChatMessages
         mediaAttachment,
         card,
         pendingState,
+        deleted,
+        hiddenLocallyOnDevice,
         oldPendingRemoteId,
-        deleted
+        wasSentWithIdempotencyKey
       ];
   @override
   $DbChatMessagesTable get asDslTable => this;
@@ -8424,15 +8639,28 @@ class $DbChatMessagesTable extends DbChatMessages
     context.handle(_mediaAttachmentMeta, const VerificationResult.success());
     context.handle(_cardMeta, const VerificationResult.success());
     context.handle(_pendingStateMeta, const VerificationResult.success());
+    if (data.containsKey('deleted')) {
+      context.handle(_deletedMeta,
+          deleted.isAcceptableOrUnknown(data['deleted'], _deletedMeta));
+    }
+    if (data.containsKey('hidden_locally_on_device')) {
+      context.handle(
+          _hiddenLocallyOnDeviceMeta,
+          hiddenLocallyOnDevice.isAcceptableOrUnknown(
+              data['hidden_locally_on_device'], _hiddenLocallyOnDeviceMeta));
+    }
     if (data.containsKey('old_pending_remote_id')) {
       context.handle(
           _oldPendingRemoteIdMeta,
           oldPendingRemoteId.isAcceptableOrUnknown(
               data['old_pending_remote_id'], _oldPendingRemoteIdMeta));
     }
-    if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta,
-          deleted.isAcceptableOrUnknown(data['deleted'], _deletedMeta));
+    if (data.containsKey('was_sent_with_idempotency_key')) {
+      context.handle(
+          _wasSentWithIdempotencyKeyMeta,
+          wasSentWithIdempotencyKey.isAcceptableOrUnknown(
+              data['was_sent_with_idempotency_key'],
+              _wasSentWithIdempotencyKeyMeta));
     }
     return context;
   }

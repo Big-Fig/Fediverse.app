@@ -5,12 +5,15 @@ class PleromaChatMessageRepositoryFilters {
   final List<IPleromaChat> onlyInChats;
   final bool onlyPendingStatePublishedOrNull;
   final bool onlyNotDeleted;
+  final bool onlyNotHiddenLocallyOnDevice;
 
   PleromaChatMessageRepositoryFilters({
     this.onlyInChats,
     @required this.onlyPendingStatePublishedOrNull,
     @required this.onlyNotDeleted,
+    @required this.onlyNotHiddenLocallyOnDevice,
   });
+
 
   @override
   bool operator ==(Object other) =>
@@ -20,19 +23,22 @@ class PleromaChatMessageRepositoryFilters {
           onlyInChats == other.onlyInChats &&
           onlyPendingStatePublishedOrNull ==
               other.onlyPendingStatePublishedOrNull &&
-          onlyNotDeleted == other.onlyNotDeleted;
+          onlyNotDeleted == other.onlyNotDeleted &&
+          onlyNotHiddenLocallyOnDevice == other.onlyNotHiddenLocallyOnDevice;
 
   @override
   int get hashCode =>
       onlyInChats.hashCode ^
       onlyPendingStatePublishedOrNull.hashCode ^
-      onlyNotDeleted.hashCode;
+      onlyNotDeleted.hashCode ^
+      onlyNotHiddenLocallyOnDevice.hashCode;
 
   @override
   String toString() => 'PleromaChatMessageRepositoryFilters{'
         'onlyInChats: $onlyInChats, '
         'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull, '
         'onlyNotDeleted: $onlyNotDeleted'
+        'onlyNotHiddenLocallyOnDevice: $onlyNotHiddenLocallyOnDevice'
         '}';
 }
 

@@ -3,9 +3,8 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
@@ -32,6 +31,10 @@ class PleromaChatMessageBloc extends ChatMessageBloc
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
+        pleromaChatBloc: IPleromaChatBloc.of(
+          context,
+          listen: false,
+        ),
       );
 
   final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
@@ -40,12 +43,14 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   final IPleromaAccountService pleromaAccountService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
+  final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatMessageBloc({
     @required this.pleromaChatService,
     @required this.pleromaAccountService,
     @required this.chatMessageRepository,
     @required this.accountRepository,
+    @required this.pleromaChatBloc,
     @required
         IPleromaChatMessage chatMessage, // for better performance we don't
     // update
@@ -109,89 +114,30 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  Future actuallyDeleteNotPublishedOnLocal() {
-    var remoteId = chatMessage.remoteId;
-    return chatMessageRepository.markChatMessageAsDeleted(
-      chatMessageRemoteId: remoteId,
-    );
-  }
+  Future delete() => pleromaChatBloc.deleteMessage(
+        pleromaChatMessage: chatMessage,
+      );
 
   @override
-  Future actuallyDeletePublishedOnRemoteAndLocal() async {
-    var remoteId = chatMessage.remoteId;
-    var chatRemoteId = chatMessage.chatRemoteId;
-    await pleromaChatService.deleteChatMessage(
-      chatMessageRemoteId: remoteId,
-      chatId: chatRemoteId,
-    );
-    await chatMessageRepository.markChatMessageAsDeleted(
-      chatMessageRemoteId: remoteId,
-    );
-  }
-
-  @override
-  Future actuallyResendPendingFailed() async {
-    var oldDbChatMessage = mapRemoteChatMessageToDbPleromaChatMessage(
-      mapLocalPleromaChatMessageToRemoteChatMessage(
-        chatMessage,
-      ),
-    ).copyWith(
-      oldPendingRemoteId: chatMessage.oldPendingRemoteId,
-    );
-
-    await chatMessageRepository.updateById(
-      chatMessage.localId,
-      oldDbChatMessage.copyWith(
-        pendingState: PendingState.pending,
-      ),
-    );
-
-    String mediaId;
-
+  Future resendPendingFailed() {
+    var mediaId;
     if (chatMessage.mediaAttachments?.isNotEmpty == true) {
       mediaId = chatMessage.mediaAttachments.first.id;
     }
 
-    // todo: use old idempotencyKey
     var pleromaChatMessageSendData = pleroma_lib.PleromaChatMessageSendData(
       content: chatMessage.content,
       mediaId: mediaId,
-      idempotencyKey: null,
+      idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
     );
 
-    await pleromaChatService
-        .sendMessage(
-      chatId: chatMessage.chatRemoteId,
-      data: pleromaChatMessageSendData,
-    )
-        .then(
-      (pleroma_lib.IPleromaChatMessage pleromaChatMessage) {
-        if (pleromaChatMessage != null) {
-          chatMessageRepository.updateById(
-            chatMessage.localId,
-            mapRemoteChatMessageToDbPleromaChatMessage(pleromaChatMessage)
-                .copyWith(
-              oldPendingRemoteId: chatMessage.oldPendingRemoteId,
-            ),
-          );
-        } else {
-          chatMessageRepository.updateById(
-            chatMessage.localId,
-            oldDbChatMessage.copyWith(
-              pendingState: PendingState.fail,
-            ),
-          );
-        }
-      },
-    ).catchError(
-      (error) {
-        chatMessageRepository.updateById(
-          chatMessage.localId,
-          oldDbChatMessage.copyWith(
-            pendingState: PendingState.fail,
-          ),
-        );
-      },
+    return pleromaChatBloc.postMessage(
+      pleromaChatMessageSendData: pleromaChatMessageSendData,
+      oldPendingFailedPleromaChatMessage: chatMessage,
+      pleromaChatMessageSendDataMediaAttachment:
+          chatMessage.mediaAttachments?.isNotEmpty == true
+              ? chatMessage.mediaAttachments.first
+              : null,
     );
   }
 }

@@ -136,12 +136,12 @@ class ChatMessageListWidget<T extends IChatMessage>
                         ),
                         chatMessage: chatMessage,
                         isSelectionPossible:
-                            chatMessageBloc.isPublishedAndNotDeleted,
+                            chatMessageBloc.isPublishedAndNotDeletedAndNotLocallyHidden,
                       );
 
                       chatSelectionItemBloc.addDisposable(
                         streamSubscription: chatMessageBloc
-                            .isPublishedAndNotDeletedStream
+                            .isPublishedAndNotDeletedAndNotLocallyHiddenStream
                             .listen(
                           (isPublishedAndNotDeleted) {
                             chatSelectionItemBloc.changeSelectionPossible(

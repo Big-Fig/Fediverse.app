@@ -35,7 +35,8 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   @override
   final String oldPendingRemoteId;
 
-
+  @override
+  final String wasSentWithIdempotencyKey;
 
   PostStatusDataStatusStatusAdapter({
     @required this.account,
@@ -44,6 +45,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     @required this.localId,
     @required this.pendingState,
     @required this.oldPendingRemoteId,
+    @required this.wasSentWithIdempotencyKey,
   });
 
   // we need unique not-null remoteId, because database schema require it
@@ -218,6 +220,9 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
 
 
   @override
+  bool get hiddenLocallyOnDevice => null;
+
+  @override
   IStatus copyWith({
     IAccount account,
     IStatus reblog,
@@ -263,7 +268,11 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     bool deleted,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   }) {
     throw UnsupportedError("Not supported for non-published statuses");
   }
+
+
 }

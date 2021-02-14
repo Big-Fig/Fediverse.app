@@ -27,7 +27,11 @@ abstract class IChatMessage {
 
   String get oldPendingRemoteId;
 
-  bool get deleted;
+  bool get isDeleted;
+
+  bool get isHiddenLocallyOnDevice;
+
+  String get wasSentWithIdempotencyKey;
 
   IChatMessage copyWith({
     int localId,
@@ -42,5 +46,19 @@ abstract class IChatMessage {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   });
+}
+
+extension IChatMessageExtension on IChatMessage {
+  bool get isPendingStatePublishedOrNull =>
+      pendingState == null || pendingState == PendingState.published;
+
+  bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
+      isDeleted != true &&
+          isHiddenLocallyOnDevice != true &&
+          isPendingStatePublishedOrNull;
+
+  bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
 }

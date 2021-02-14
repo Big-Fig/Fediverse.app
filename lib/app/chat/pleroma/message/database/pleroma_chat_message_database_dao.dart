@@ -162,18 +162,32 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
         ..where(CustomExpression<bool>("db_chat_messages.chat_remote_id IN ("
             "${chatRemoteIds.join(", ")})"));
 
-
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addOnlyNotDeletedWhere(
-      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
+  SimpleSelectStatement<$DbChatMessagesTable,
+      DbChatMessage> addOnlyNotDeletedWhere(
+          SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
       query
         ..where(
-              (chatMessage) =>
-          isNull(
-            chatMessage.deleted,
-          ) |
-          chatMessage.deleted.equals(
-            false,
-          ),
+          (chatMessage) =>
+              isNull(
+                chatMessage.deleted,
+              ) |
+              chatMessage.deleted.equals(
+                false,
+              ),
+        );
+
+  SimpleSelectStatement<$DbChatMessagesTable,
+      DbChatMessage> addOnlyNotHiddenLocallyOnDevice(
+          SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
+      query
+        ..where(
+          (chatMessage) =>
+              isNull(
+                chatMessage.hiddenLocallyOnDevice,
+              ) |
+              chatMessage.hiddenLocallyOnDevice.equals(
+                false,
+              ),
         );
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
@@ -258,11 +272,19 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-
   Future markAsDeleted({@required String remoteId}) {
     var update = "UPDATE db_chat_messages "
         "SET deleted = 1 "
         "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbChatMessages});
+
+    return query;
+  }
+
+  Future markAsHiddenLocallyOnDevice({@required int localId}) {
+    var update = "UPDATE db_chat_messages "
+        "SET hidden_locally_on_device = 1 "
+        "WHERE id = '$localId'";
     var query = db.customUpdate(update, updates: {dbChatMessages});
 
     return query;

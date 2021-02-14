@@ -53,6 +53,7 @@ void main() {
       isNeedWatchLocalRepositoryForUpdates: true,
       accountRepository: accountRepository,
       pleromaAccountService: pleromaAccountServiceMock,
+      pleromaChatBloc: null,
     );
   });
 

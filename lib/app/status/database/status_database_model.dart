@@ -96,8 +96,12 @@ class DbStatuses extends Table {
 
   BoolColumn get deleted => boolean().nullable()();
 
+  BoolColumn get hiddenLocallyOnDevice => boolean().nullable()();
+
   TextColumn get pendingState =>
       text().nullable().map(PendingStateDatabaseConverter())();
 
   TextColumn get oldPendingRemoteId => text().nullable()();
+
+  TextColumn get wasSentWithIdempotencyKey => text().nullable()();
 }

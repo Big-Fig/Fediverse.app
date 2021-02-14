@@ -41,7 +41,11 @@ class DraftStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
           createdAt: draftStatus.updatedAt,
           pendingState: PendingState.notSentYet,
           oldPendingRemoteId: null,
+          wasSentWithIdempotencyKey: null,
         );
+
+  @override
+  bool get hiddenLocallyOnDevice => false;
 }
 
 enum DraftStatusState { draft, canceled, alreadyPosted }

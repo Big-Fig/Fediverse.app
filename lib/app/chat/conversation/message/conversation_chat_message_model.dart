@@ -23,6 +23,8 @@ abstract class IConversationChatMessage extends IChatMessage {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   });
 }
 
@@ -79,6 +81,8 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
     PendingState pendingState,
     String oldPendingRemoteId,
     bool deleted,
+    bool hiddenLocallyOnDevice,
+    String wasSentWithIdempotencyKey,
   }) {
     return ConversationChatMessageStatusAdapter(
       status.copyWith(
@@ -95,6 +99,8 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
         deleted: deleted,
+        hiddenLocallyOnDevice: hiddenLocallyOnDevice,
+        wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
       ),
     );
   }
@@ -110,5 +116,11 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   int get hashCode => status.hashCode;
 
   @override
-  bool get deleted => status.deleted;
+  bool get isDeleted => status.deleted;
+
+  @override
+  bool get isHiddenLocallyOnDevice => status.hiddenLocallyOnDevice;
+
+  @override
+  String get wasSentWithIdempotencyKey => status.wasSentWithIdempotencyKey;
 }

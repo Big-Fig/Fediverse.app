@@ -40,6 +40,31 @@ class ChatMessageListItemWidget<T extends IChatMessage>
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
     return StreamBuilder<bool>(
+      stream: chatMessageBloc.isHiddenLocallyOnDeviceStream,
+      initialData: chatMessageBloc.isHiddenLocallyOnDevice,
+      builder: (context, snapshot) {
+        var isHiddenLocallyOnDevice = snapshot.data ?? false;
+
+        if (isHiddenLocallyOnDevice) {
+          return const SizedBox.shrink();
+        } else {
+          return _ChatMessageListItemDeletedWrapperWidget<T>();
+        }
+      },
+    );
+  }
+}
+
+class _ChatMessageListItemDeletedWrapperWidget<T extends IChatMessage>
+    extends StatelessWidget {
+  const _ChatMessageListItemDeletedWrapperWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var chatMessageBloc = IChatMessageBloc.of(context);
+    return StreamBuilder<bool>(
       stream: chatMessageBloc.isDeletedStream,
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
