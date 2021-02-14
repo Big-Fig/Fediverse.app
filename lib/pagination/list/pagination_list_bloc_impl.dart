@@ -42,7 +42,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       refreshStateSubject.stream;
 
   @override
-  FediListSmartRefresherLoadingState get refreshState => refreshStateSubject.value;
+  FediListSmartRefresherLoadingState get refreshState =>
+      refreshStateSubject.value;
 
   BehaviorSubject<FediListSmartRefresherLoadingState> loadMoreStateSubject =
       BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
@@ -52,7 +53,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       loadMoreStateSubject.stream;
 
   @override
-  FediListSmartRefresherLoadingState get loadMoreState => loadMoreStateSubject.value;
+  FediListSmartRefresherLoadingState get loadMoreState =>
+      loadMoreStateSubject.value;
 
   @override
   final RefreshController refreshController =
