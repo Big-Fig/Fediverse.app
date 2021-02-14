@@ -21,6 +21,7 @@ abstract class IPleromaChatMessage extends IChatMessage {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   });
 }
 
@@ -89,6 +90,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   }) =>
       DbChatMessagePopulatedWrapper(
         dbChatMessagePopulated.copyWith(
@@ -105,6 +107,7 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
           card: card,
           pendingState: pendingState,
           oldPendingRemoteId: oldPendingRemoteId,
+          deleted: deleted,
         ),
       );
 
@@ -117,6 +120,9 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
 
   @override
   int get hashCode => dbChatMessagePopulated.hashCode;
+
+  @override
+  bool get deleted => dbChatMessagePopulated.dbChatMessage.deleted;
 }
 
 class DbChatMessagePopulated {
@@ -140,21 +146,24 @@ class DbChatMessagePopulated {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   }) =>
       DbChatMessagePopulated(
         dbChatMessage: DbChatMessage(
-            id: localId ?? dbChatMessage.id,
-            remoteId: remoteId ?? dbChatMessage.remoteId,
-            chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
-            content: content ?? dbChatMessage.content,
-            createdAt: createdAt ?? dbChatMessage.createdAt,
-            emojis: emojis ?? dbChatMessage.emojis,
-            card: card ?? dbChatMessage.card,
-            mediaAttachment: mediaAttachment ?? dbChatMessage.mediaAttachment,
-            accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
-            pendingState: pendingState ?? dbChatMessage.pendingState,
-            oldPendingRemoteId:
-                oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId),
+          id: localId ?? dbChatMessage.id,
+          remoteId: remoteId ?? dbChatMessage.remoteId,
+          chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
+          content: content ?? dbChatMessage.content,
+          createdAt: createdAt ?? dbChatMessage.createdAt,
+          emojis: emojis ?? dbChatMessage.emojis,
+          card: card ?? dbChatMessage.card,
+          mediaAttachment: mediaAttachment ?? dbChatMessage.mediaAttachment,
+          accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
+          pendingState: pendingState ?? dbChatMessage.pendingState,
+          oldPendingRemoteId:
+              oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId,
+          deleted: deleted ?? dbChatMessage.deleted,
+        ),
         dbAccount: account != null ? dbAccountFromAccount(account) : dbAccount,
       );
 

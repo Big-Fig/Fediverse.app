@@ -8,7 +8,6 @@ import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart'
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
-import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
@@ -136,16 +135,17 @@ class ChatMessageListWidget<T extends IChatMessage>
                           listen: false,
                         ),
                         chatMessage: chatMessage,
-                        isSelectionPossible: _calculateIsSelectionPossible(
-                            chatMessage.pendingState),
+                        isSelectionPossible:
+                            chatMessageBloc.isPublishedAndNotDeleted,
                       );
 
                       chatSelectionItemBloc.addDisposable(
-                        streamSubscription:
-                            chatMessageBloc.pendingStateStream.listen(
-                          (pendingState) {
+                        streamSubscription: chatMessageBloc
+                            .isPublishedAndNotDeletedStream
+                            .listen(
+                          (isPublishedAndNotDeleted) {
                             chatSelectionItemBloc.changeSelectionPossible(
-                              _calculateIsSelectionPossible(pendingState),
+                              isPublishedAndNotDeleted,
                             );
                           },
                         ),
@@ -167,9 +167,6 @@ class ChatMessageListWidget<T extends IChatMessage>
       },
     );
   }
-
-  bool _calculateIsSelectionPossible(PendingState pendingState) =>
-      pendingState == null || pendingState == PendingState.published;
 }
 
 class _ChatMessageListItemWidget<T extends IChatMessage>

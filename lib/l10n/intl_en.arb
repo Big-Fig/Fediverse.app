@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-11T18:24:13+00:00",
+    "@@last_modified": "2021-02-13T18:15:09+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -709,5 +709,9 @@
     "app_status_delete_dialog_action_deleteAndStartNew": "Delete and start new status",
     "file_picker_multi_title": "Choose media files",
     "file_picker_multi_selectionCount_selected": "Selected ({selectionCount})",
-    "app_chat_pleroma_account_notAcceptsChatMessages_toast": "User disabled chat feature"
+    "app_chat_pleroma_account_notAcceptsChatMessages_toast": "User disabled chat feature",
+    "app_chat_message_pending_actions_dialog_title": "Pending message",
+    "app_chat_message_pending_actions_dialog_action_delete": "Delete",
+    "app_chat_message_pending_actions_dialog_action_resend": "Send again",
+    "app_chat_message_deleted_desc": "Message deleted"
 }

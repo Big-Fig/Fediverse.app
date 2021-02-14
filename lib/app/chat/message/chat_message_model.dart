@@ -27,6 +27,8 @@ abstract class IChatMessage {
 
   String get oldPendingRemoteId;
 
+  bool get deleted;
+
   IChatMessage copyWith({
     int localId,
     String remoteId,
@@ -39,5 +41,6 @@ abstract class IChatMessage {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   });
 }

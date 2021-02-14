@@ -28,6 +28,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
               chat,
             ],
             onlyPendingStatePublishedOrNull: false,
+            onlyNotDeleted: true,
           );
 
   PleromaChatMessageCachedListBloc({

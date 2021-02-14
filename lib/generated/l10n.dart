@@ -6941,6 +6941,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Pending message`
+  String get app_chat_message_pending_actions_dialog_title {
+    return Intl.message(
+      'Pending message',
+      name: 'app_chat_message_pending_actions_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_chat_message_pending_actions_dialog_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_chat_message_pending_actions_dialog_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send again`
+  String get app_chat_message_pending_actions_dialog_action_resend {
+    return Intl.message(
+      'Send again',
+      name: 'app_chat_message_pending_actions_dialog_action_resend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message deleted`
+  String get app_chat_message_deleted_desc {
+    return Intl.message(
+      'Message deleted',
+      name: 'app_chat_message_deleted_desc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

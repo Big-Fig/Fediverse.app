@@ -56,62 +56,71 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
       newItemsSubscription = watchItemsNewerThanItem(newerItem)
           .skipWhile((newItems) => newItems?.isNotEmpty != true)
-          .listen((newItems) {
-        // we need to filter again to be sure that newerItem is no
-        // changed during sql request execute time
-        List<TItem> actuallyNew = newItems
-            .where((newItem) => compareItemsToSort(newItem, newerItem) > 0)
-            .toList();
+          .listen(
+        (newItems) {
+          // we need to filter again to be sure that newerItem is no
+          // changed during sql request execute time
+          List<TItem> actuallyNew = newItems
+              .where((newItem) => compareItemsToSort(newItem, newerItem) > 0)
+              .toList();
 
-        // remove duplicates
-        // sometimes local storage sqlite returns duplicated items
-        // sometimes item is newer but already exist
-        // for example chat updateAt updated
-        actuallyNew = removeDuplicates(actuallyNew);
+          // remove duplicates
+          // sometimes local storage sqlite returns duplicated items
+          // sometimes item is newer but already exist
+          // for example chat updateAt updated
+          actuallyNew = removeDuplicatesAndUpdate(actuallyNew);
 
-        _logger.finest(() => "watchItemsNewerThanItem "
-            "\n"
-            "\t newItems ${newItems.length} \n"
-            "\t actuallyNew = ${actuallyNew.length}");
+          _logger.finest(() => "watchItemsNewerThanItem "
+              "\n"
+              "\t newItems ${newItems.length} \n"
+              "\t actuallyNew = ${actuallyNew.length}");
 
-        if (items?.isNotEmpty != true &&
-            mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-          // merge immediately
-          mergedNewItemsSubject.add(actuallyNew);
-        } else {
-          unmergedNewItemsSubject.add(actuallyNew);
-        }
-      });
+          if (actuallyNew?.isNotEmpty == true) {
+            if (items?.isNotEmpty != true &&
+                mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+              // merge immediately
+              mergedNewItemsSubject.add(actuallyNew);
+            } else {
+              unmergedNewItemsSubject.add(actuallyNew);
+            }
+          }
+        },
+      );
 
       addDisposable(streamSubscription: newItemsSubscription);
     }));
 
     if (mergeNewItemsImmediately) {
       addDisposable(
-          streamSubscription: unmergedNewItemsStream.listen((unmergedNewItems) {
-        if (unmergedNewItems?.isNotEmpty == true) {
-          mergeNewItems();
-        }
-      }));
+        streamSubscription: unmergedNewItemsStream.listen(
+          (unmergedNewItems) {
+            if (unmergedNewItems?.isNotEmpty == true) {
+              mergeNewItems();
+            }
+          },
+        ),
+      );
     }
   }
 
-  List<TItem> removeDuplicates(List<TItem> actuallyNew) =>
-      actuallyNew.where((a) {
-        bool isAlreadyExist;
-        if (items?.isNotEmpty == true) {
-          var found = items.firstWhere(
-            (b) => isItemsEqual(a, b),
-            orElse: () => null,
-          );
+  List<TItem> removeDuplicatesAndUpdate(List<TItem> actuallyNew) =>
+      actuallyNew.where(
+        (newItem) {
+          bool isAlreadyExist;
+          if (items?.isNotEmpty == true) {
+            var found = items.firstWhere(
+              (oldItem) => isItemsEqual(newItem, oldItem),
+              orElse: () => null,
+            );
 
-          isAlreadyExist = found != null;
-        } else {
-          isAlreadyExist = false;
-        }
-        var isNeedToAdd = !isAlreadyExist;
-        return isNeedToAdd;
-      }).toList();
+            isAlreadyExist = found != null;
+          } else {
+            isAlreadyExist = false;
+          }
+          var isNeedToAdd = !isAlreadyExist;
+          return isNeedToAdd;
+        },
+      ).toList();
 
   @override
   List<TItem> get items => _calculateNewItems(super.items, mergedNewItems);

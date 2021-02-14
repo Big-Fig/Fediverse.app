@@ -228,9 +228,9 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
   final String idempotencyKey;
 
   PleromaChatMessageSendData({
-    this.content,
-    this.mediaId,
-    this.idempotencyKey,
+    @required this.content,
+    @required this.mediaId,
+    @required this.idempotencyKey,
   });
 
   @override

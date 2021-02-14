@@ -30,4 +30,6 @@ class DbChatMessages extends Table {
       text().nullable().map(PendingStateDatabaseConverter())();
 
   TextColumn get oldPendingRemoteId => text().nullable()();
+
+  BoolColumn get deleted => boolean().nullable()();
 }

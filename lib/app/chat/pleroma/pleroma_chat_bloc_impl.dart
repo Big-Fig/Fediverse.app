@@ -182,7 +182,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         chatMessageRemoteId: remoteId,
       );
 
-      await chatMessageRepository.deleteByRemoteId(remoteId);
+      await chatMessageRepository.markChatMessageAsDeleted(
+        chatMessageRemoteId: remoteId,
+      );
     }
   }
 

@@ -71,6 +71,8 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
     var content = contentParts.join("\n\n");
     var messageSendData = PleromaChatMessageSendData(
       content: content?.trim(),
+      mediaId: null,
+      idempotencyKey: null,
     );
     return messageSendData;
   }

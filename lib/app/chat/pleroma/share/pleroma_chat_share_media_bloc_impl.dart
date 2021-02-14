@@ -37,12 +37,12 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           pleromaAccountService: pleromaAccountService,
         );
 
-
-
   @override
   PleromaChatMessageSendData createPleromaChatMessageSendData() {
     var messageSendData = PleromaChatMessageSendData(
       content: "${mediaAttachment.url} ${message ?? ""}".trim(),
+      idempotencyKey: null,
+      mediaId: null,
     );
     return messageSendData;
   }
@@ -91,6 +91,4 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
           listen: false,
         ),
       );
-
-
 }

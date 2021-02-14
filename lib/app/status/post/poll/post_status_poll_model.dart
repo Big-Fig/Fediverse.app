@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
@@ -75,7 +76,13 @@ class PostStatusPoll implements IPostStatusPoll {
   String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
 }
 
-extension PostStatusPollExtension on PostStatusPoll {
+extension PostStatusPollExtension on IPostStatusPoll {
+  PleromaPostStatusPoll toPleromaPostStatusPoll() => PleromaPostStatusPoll(
+      options: options,
+      multiple: multiple,
+      expiresInSeconds: durationLength.totalSeconds,
+    );
+
   PleromaPoll toPleromaPoll() {
     return PleromaPoll(
       id: null,
