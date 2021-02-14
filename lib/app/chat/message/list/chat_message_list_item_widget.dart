@@ -3,6 +3,7 @@ import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_model.dart';
+import 'package:fedi/app/chat/message/pending/chat_message_pending_actions_dialog.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -17,10 +18,12 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,11 +38,55 @@ class ChatMessageListItemWidget<T extends IChatMessage>
 
   @override
   Widget build(BuildContext context) {
+    var chatMessageBloc = IChatMessageBloc.of(context);
+    return StreamBuilder<bool>(
+      stream: chatMessageBloc.isDeletedStream,
+      builder: (context, snapshot) {
+        var deleted = snapshot.data ?? false;
+        if (deleted) {
+          return Stack(
+            children: [
+              _ChatMessageListItemBodyWidget<T>(),
+              const Positioned.fill(
+                child: _ChatMessageListItemDeletedOverlayWidget(),
+              ),
+            ],
+          );
+        } else {
+          return _ChatMessageListItemBodyWidget<T>();
+        }
+      },
+    );
+  }
+}
+
+class _ChatMessageListItemDeletedOverlayWidget extends StatelessWidget {
+  const _ChatMessageListItemDeletedOverlayWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediBlurredOverlayWarningWidget(
+      descriptionText: S.of(context).app_chat_message_deleted_desc,
+    );
+  }
+}
+
+class _ChatMessageListItemBodyWidget<T extends IChatMessage>
+    extends StatelessWidget {
+  const _ChatMessageListItemBodyWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var chatMessageListItem = ChatMessageListItem.of<T>(context);
-    var messageBloc = IChatMessageBloc.of(context);
+    var chatMessageBloc = IChatMessageBloc.of(context);
     var myAccountBloc = IMyAccountBloc.of(context);
+    var chatMessage = chatMessageBloc.chatMessage;
     var isChatMessageFromMe =
-        myAccountBloc.checkIsChatMessageFromMe(messageBloc.chatMessage);
+        myAccountBloc.checkIsChatMessageFromMe(chatMessage);
 
     var isFirstInMinuteGroup = chatMessageListItem.isFirstInMinuteGroup;
 
@@ -126,7 +173,12 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                 FediIcons.warning,
               ),
               color: IFediUiColorTheme.of(context).error,
-              onPressed: () {},
+              onPressed: () {
+                showChatMessagePendingActionsDialog(
+                  context: context,
+                  chatMessageBloc: chatMessageBloc,
+                );
+              },
             );
             break;
         }

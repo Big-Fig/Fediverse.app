@@ -38,6 +38,8 @@ abstract class IPostStatusData {
 
   bool get isNsfwSensitiveEnabled;
 
+  bool get isScheduled;
+
   PostStatusData copyWith({
     String subject,
     String text,
@@ -56,6 +58,9 @@ abstract class IPostStatusData {
 
 @JsonSerializable(includeIfNull: false)
 class PostStatusData implements IPostStatusData {
+  @override
+  bool get isScheduled => scheduledAt != null;
+
   @override
   @JsonKey()
   final String subject;
@@ -192,6 +197,52 @@ class PostStatusData implements IPostStatusData {
   Map<String, dynamic> toJson() => _$PostStatusDataToJson(this);
 
   String toJsonString() => jsonEncode(_$PostStatusDataToJson(this));
+}
+
+extension IPostStatusDataExtension on IPostStatusData {
+  PleromaScheduleStatus toPleromaScheduleStatus({
+    @required String idempotencyKey,
+  }) {
+    assert(isScheduled);
+    return PleromaScheduleStatus(
+      inReplyToConversationId: inReplyToConversationId,
+      inReplyToId: inReplyToPleromaStatus?.id,
+      visibility: visibility,
+      mediaIds: mediaAttachments
+          ?.map((mediaAttachment) => mediaAttachment.id)
+          ?.toList(),
+      sensitive: isNsfwSensitiveEnabled,
+      spoilerText: subject,
+      status: text,
+      to: to,
+      scheduledAt: scheduledAt,
+      expiresInSeconds: expiresInSeconds,
+      poll: poll?.toPleromaPostStatusPoll(),
+    );
+  }
+
+  PleromaPostStatus toPleromaPostStatus({
+    @required String idempotencyKey,
+  }) {
+    assert(!isScheduled);
+
+    return PleromaPostStatus(
+      idempotencyKey: idempotencyKey,
+      expiresInSeconds: expiresInSeconds,
+      inReplyToConversationId: inReplyToConversationId,
+      inReplyToId: inReplyToPleromaStatus?.id,
+      visibility: visibility,
+      mediaIds: mediaAttachments
+          ?.map((mediaAttachment) => mediaAttachment.id)
+          ?.toList(),
+      sensitive: isNsfwSensitiveEnabled,
+      language: language,
+      spoilerText: subject,
+      status: text,
+      to: to,
+      poll: poll?.toPleromaPostStatusPoll(),
+    );
+  }
 }
 
 extension PostStatusDataStatusExtension on IStatus {

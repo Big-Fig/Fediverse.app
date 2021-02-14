@@ -7,12 +7,13 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future<T> showFediSingleSelectionChooserDialog<T>(
-    {@required BuildContext context,
-    @required String title,
-    String content,
-    @required List<SelectionDialogAction> actions,
-    bool cancelable = true,}) {
+Future<T> showFediSingleSelectionChooserDialog<T>({
+  @required BuildContext context,
+  @required String title,
+  String content,
+  @required List<SelectionDialogAction> actions,
+  bool cancelable = true,
+}) {
   return showFediModalBottomSheetDialog<T>(
     context: context,
     child: FediSingleSelectionChooserDialogBody(

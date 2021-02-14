@@ -62,14 +62,11 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     IConversationChatMessage a,
     IConversationChatMessage b,
   ) {
-    if (a.oldPendingRemoteId != null || b.oldPendingRemoteId != null) {
-      return a.remoteId == b.remoteId ||
-          a.oldPendingRemoteId == b.oldPendingRemoteId ||
-          a.remoteId == b.oldPendingRemoteId ||
-          a.oldPendingRemoteId == b.remoteId;
-    } else {
-      return a.remoteId == b.remoteId;
-    }
+    return a.remoteId == b.remoteId ||
+        (a.oldPendingRemoteId == b.oldPendingRemoteId &&
+            a.oldPendingRemoteId != null) ||
+        a.remoteId == b.oldPendingRemoteId ||
+        a.oldPendingRemoteId == b.remoteId;
   }
 
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc

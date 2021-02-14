@@ -55,14 +55,11 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
   @override
   bool isItemsEqual(IPleromaChatMessage a, IPleromaChatMessage b) {
-    if (a.oldPendingRemoteId != null || b.oldPendingRemoteId != null) {
-      return a.remoteId == b.remoteId ||
-          a.oldPendingRemoteId == b.oldPendingRemoteId ||
-          a.remoteId == b.oldPendingRemoteId ||
-          a.oldPendingRemoteId == b.remoteId;
-    } else {
-      return a.remoteId == b.remoteId;
-    }
+    return a.remoteId == b.remoteId ||
+        (a.oldPendingRemoteId == b.oldPendingRemoteId &&
+            a.oldPendingRemoteId != null) ||
+        a.remoteId == b.oldPendingRemoteId ||
+        a.oldPendingRemoteId == b.remoteId;
   }
 
   static PleromaChatMessageCachedPaginationListWithNewItemsBloc
@@ -70,11 +67,16 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
           {@required bool mergeNewItemsImmediately}) {
     return PleromaChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
-      chatMessageCachedListService:
-          IPleromaChatMessageCachedListBloc.of(context, listen: false),
+      chatMessageCachedListService: IPleromaChatMessageCachedListBloc.of(
+        context,
+        listen: false,
+      ),
       cachedPaginationBloc: Provider.of<
           IPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
-              IPleromaChatMessage>>(context, listen: false),
+              IPleromaChatMessage>>(
+        context,
+        listen: false,
+      ),
     );
   }
 

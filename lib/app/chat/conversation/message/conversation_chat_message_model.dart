@@ -22,6 +22,7 @@ abstract class IConversationChatMessage extends IChatMessage {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   });
 }
 
@@ -77,6 +78,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
     IPleromaCard card,
     PendingState pendingState,
     String oldPendingRemoteId,
+    bool deleted,
   }) {
     return ConversationChatMessageStatusAdapter(
       status.copyWith(
@@ -92,6 +94,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
         card: card,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
+        deleted: deleted,
       ),
     );
   }
@@ -105,4 +108,7 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
 
   @override
   int get hashCode => status.hashCode;
+
+  @override
+  bool get deleted => status.deleted;
 }

@@ -147,6 +147,10 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       dao.addOnlyPendingStatePublishedOrNull(query);
     }
 
+    if (filters?.onlyNotDeleted == true) {
+      dao.addOnlyNotDeletedWhere(query);
+    }
+
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
       assert(
@@ -378,6 +382,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
             chat,
           ],
           onlyPendingStatePublishedOrNull: false,
+          onlyNotDeleted: true,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
@@ -392,6 +397,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
             chat,
           ],
           onlyPendingStatePublishedOrNull: false,
+          onlyNotDeleted: true,
         ),
         orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
       );
@@ -403,6 +409,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     var query = createQuery(
       filters: PleromaChatMessageRepositoryFilters(
         onlyPendingStatePublishedOrNull: false,
+        onlyNotDeleted: true,
       ),
       pagination: null,
       orderingTermData: PleromaChatMessageOrderingTermData.createdAtDesc,
@@ -443,4 +450,12 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
     return result;
   }
+
+  @override
+  Future markChatMessageAsDeleted({
+    @required String chatMessageRemoteId,
+  }) =>
+      dao.markAsDeleted(
+        remoteId: chatMessageRemoteId,
+      );
 }

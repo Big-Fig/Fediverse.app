@@ -171,7 +171,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           String oldPendingRemoteId) =>
       (select(db.dbStatuses)
             ..where(
-              (status) => status.oldPendingRemoteId.like(
+              (status) => status.oldPendingRemoteId.equals(
                 oldPendingRemoteId,
               ),
             ))
@@ -384,7 +384,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where(
-            (status) => isNull(status.deleted) | status.deleted.equals(false));
+          (status) =>
+              isNull(
+                status.deleted,
+              ) |
+              status.deleted.equals(
+                false,
+              ),
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyPendingStatePublishedOrNull(

@@ -240,8 +240,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       await pleromaAuthStatusService.deleteStatus(
         statusRemoteId: chatMessage.remoteId,
       );
-      await statusRepository.deleteByRemoteId(
-        chatMessage.remoteId,
+      await statusRepository.markStatusAsDeleted(
+        statusRemoteId: chatMessage.remoteId,
       );
     }
   }

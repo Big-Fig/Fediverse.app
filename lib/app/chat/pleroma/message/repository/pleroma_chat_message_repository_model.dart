@@ -4,10 +4,12 @@ import 'package:moor/moor.dart';
 class PleromaChatMessageRepositoryFilters {
   final List<IPleromaChat> onlyInChats;
   final bool onlyPendingStatePublishedOrNull;
+  final bool onlyNotDeleted;
 
   PleromaChatMessageRepositoryFilters({
     this.onlyInChats,
     @required this.onlyPendingStatePublishedOrNull,
+    @required this.onlyNotDeleted,
   });
 
   @override
@@ -15,20 +17,23 @@ class PleromaChatMessageRepositoryFilters {
       identical(this, other) ||
       other is PleromaChatMessageRepositoryFilters &&
           runtimeType == other.runtimeType &&
+          onlyInChats == other.onlyInChats &&
           onlyPendingStatePublishedOrNull ==
               other.onlyPendingStatePublishedOrNull &&
-          onlyInChats == other.onlyInChats;
+          onlyNotDeleted == other.onlyNotDeleted;
 
   @override
-  int get hashCode => onlyInChats.hashCode;
+  int get hashCode =>
+      onlyInChats.hashCode ^
+      onlyPendingStatePublishedOrNull.hashCode ^
+      onlyNotDeleted.hashCode;
 
   @override
-  String toString() {
-    return 'PleromaChatMessageRepositoryFilters{'
-        'onlyInChats: $onlyInChats'
-        'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull'
+  String toString() => 'PleromaChatMessageRepositoryFilters{'
+        'onlyInChats: $onlyInChats, '
+        'onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull, '
+        'onlyNotDeleted: $onlyNotDeleted'
         '}';
-  }
 }
 
 enum PleromaChatMessageOrderType {

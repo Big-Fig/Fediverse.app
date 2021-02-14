@@ -84,4 +84,8 @@ abstract class IPleromaChatMessageRepository
   Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
     @required List<IPleromaChat> chats,
   });
+
+  Future markChatMessageAsDeleted({
+    @required String chatMessageRemoteId,
+  });
 }

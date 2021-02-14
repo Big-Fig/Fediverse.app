@@ -11,12 +11,13 @@ class FediConfirmAlertDialog extends FediBaseAlertDialog {
     String contentText,
     String okActionLabel,
   }) : super(
-            title: title,
-            contentText: contentText,
-            actions: [
-              DialogAction(
-                  label: okActionLabel ?? S.of(context).dialog_action_ok,
-                  onAction: onAction)
-            ],
-            cancelable: true);
+          title: title,
+          contentText: contentText,
+          actions: [
+            DialogAction(
+                label: okActionLabel ?? S.of(context).dialog_action_ok,
+                onAction: onAction)
+          ],
+          cancelable: true,
+        );
 }

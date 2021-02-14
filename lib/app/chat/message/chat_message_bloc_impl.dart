@@ -100,14 +100,18 @@ abstract class ChatMessageBloc extends DisposableOwner
       accountStream.map((account) => account.avatar).distinct();
 
   @override
-  EmojiText get contentWithEmojis =>
-      EmojiText(text: chatMessage.content, emojis: chatMessage.emojis);
+  EmojiText get contentWithEmojis => EmojiText(
+        text: chatMessage.content,
+        emojis: chatMessage.emojis,
+      );
 
   @override
   Stream<EmojiText> get contentWithEmojisStream => chatMessageStream
       .map(
-        (chatMessage) =>
-            EmojiText(text: chatMessage.content, emojis: chatMessage.emojis),
+        (chatMessage) => EmojiText(
+          text: chatMessage.content,
+          emojis: chatMessage.emojis,
+        ),
       )
       .distinct();
 
@@ -120,4 +124,50 @@ abstract class ChatMessageBloc extends DisposableOwner
   Stream<PendingState> get pendingStateStream => chatMessageStream.map(
         (chatMessage) => chatMessage.pendingState,
       );
+
+  @override
+  bool get isDeleted => chatMessage.deleted;
+
+  @override
+  Stream<bool> get isDeletedStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.deleted,
+      );
+
+  bool get isPendingStatePublishedOrNull =>
+      pendingState == null || pendingState == PendingState.published;
+
+  bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
+
+  @override
+  bool get isPublishedAndNotDeleted =>
+      isDeleted != true && isPendingStatePublishedOrNull;
+
+  @override
+  Stream<bool> get isPublishedAndNotDeletedStream => chatMessageStream.map(
+        (chatMessage) =>
+            chatMessage.deleted != true &&
+            (chatMessage.pendingState == null ||
+                chatMessage.pendingState == PendingState.published),
+      );
+
+  @override
+  Future delete() {
+    if (isPendingStatePublishedOrNull) {
+      return actuallyDeletePublishedOnRemoteAndLocal();
+    } else {
+      return actuallyDeleteNotPublishedOnLocal();
+    }
+  }
+
+  @override
+  Future resendPendingFailed() {
+    assert(isPendingStateNotPublishedOrNull);
+    return actuallyResendPendingFailed();
+  }
+
+  Future actuallyDeletePublishedOnRemoteAndLocal();
+
+  Future actuallyDeleteNotPublishedOnLocal();
+
+  Future actuallyResendPendingFailed();
 }

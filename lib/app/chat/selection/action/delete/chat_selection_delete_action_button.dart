@@ -6,7 +6,6 @@ import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
@@ -18,7 +17,6 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatSelectionBloc = IChatSelectionBloc.of(context);
     var chatBloc = IChatBloc.of(context);
-    var paginationListBloc = IPaginationListBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: chatSelectionBloc.isAllSelectedItemsFromMeStream,
@@ -57,7 +55,6 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
                         chatSelectionBloc.clearSelection();
                       }
 
-                      paginationListBloc.refreshWithController();
                       Navigator.pop(context);
                     },
                   ).show(context);

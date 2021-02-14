@@ -450,6 +450,7 @@ void main() {
           )
         ],
         onlyPendingStatePublishedOrNull: true,
+        onlyNotDeleted: false,
       ),
       pagination: null,
       orderingTermData: null,
@@ -613,6 +614,7 @@ void main() {
               await createTestChat(seed: "seed5", remoteId: chatRemoteId)
             ],
             onlyPendingStatePublishedOrNull: true,
+            onlyNotDeleted: false,
           ),
           pagination: null,
         ))

@@ -162,6 +162,20 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
         ..where(CustomExpression<bool>("db_chat_messages.chat_remote_id IN ("
             "${chatRemoteIds.join(", ")})"));
 
+
+  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addOnlyNotDeletedWhere(
+      SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
+      query
+        ..where(
+              (chatMessage) =>
+          isNull(
+            chatMessage.deleted,
+          ) |
+          chatMessage.deleted.equals(
+            false,
+          ),
+        );
+
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
       addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query, {
@@ -242,5 +256,15 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       [dbChatMessages.chatRemoteId],
       having: CustomExpression("MAX(db_chat_messages.created_at)"),
     );
+  }
+
+
+  Future markAsDeleted({@required String remoteId}) {
+    var update = "UPDATE db_chat_messages "
+        "SET deleted = 1 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbChatMessages});
+
+    return query;
   }
 }

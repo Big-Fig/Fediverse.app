@@ -108,7 +108,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 13;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -151,6 +151,9 @@ class AppDatabase extends _$AppDatabase {
               case 11:
                 await _migrate11to12(m);
                 break;
+              case 12:
+                await _migrate12to13(m);
+                break;
               default:
                 throw "invalid currentVersion $currentVersion";
             }
@@ -158,6 +161,10 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate12to13(Migrator m) async {
+    await m.addColumn(dbChatMessages, dbChatMessages.deleted);
+  }
 
   Future<void> _migrate11to12(Migrator m) async {
     await m.addColumn(dbStatuses, dbStatuses.oldPendingRemoteId);
