@@ -36,9 +36,9 @@ class ConversationChatCurrentBloc extends DisposableOwner
       openedChats.removeAt(indexToRemove);
     }
     if (openedChats?.isNotEmpty == true) {
-      currentChatSubject.add(null);
-    } else {
       currentChatSubject.add(openedChats.last);
+    } else {
+      currentChatSubject.add(null);
     }
   }
 }
