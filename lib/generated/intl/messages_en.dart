@@ -416,6 +416,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_cache_files_settings_title" : MessageLookupByLibrary.simpleMessage("Files cache"),
     "app_cache_settings_action_clear_all_now" : m20,
     "app_cache_settings_action_clear_by_limits_now" : m21,
+    "app_chat_action_delete_dialog_content" : MessageLookupByLibrary.simpleMessage("Are you sure?"),
+    "app_chat_action_delete_dialog_title" : MessageLookupByLibrary.simpleMessage("Delete conversation"),
     "app_chat_conversation_accounts_title" : MessageLookupByLibrary.simpleMessage("Conversation accounts"),
     "app_chat_conversation_list_newItems_action_tapToLoadNew" : m22,
     "app_chat_conversation_share_title" : MessageLookupByLibrary.simpleMessage("Share to conversations"),
