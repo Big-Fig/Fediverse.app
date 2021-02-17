@@ -374,8 +374,9 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
             child: ProxyProvider<List<IPleromaMediaAttachment>,
                 IMediaAttachmentListBloc>(
               update: (context, mediaAttachments, _) => MediaAttachmentListBloc(
-                  initialMediaAttachment: null,
-                  mediaAttachments: mediaAttachments),
+                initialMediaAttachment: null,
+                mediaAttachments: mediaAttachments,
+              ),
               child: const MediaAttachmentListCarouselWidget(),
             ),
           ),

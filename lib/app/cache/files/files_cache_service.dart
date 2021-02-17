@@ -10,7 +10,7 @@ abstract class IFilesCacheService implements IDisposable {
   Future clear();
 
   Widget createCachedNetworkImageWidget({
-    Key key,
+    String stringKey,
     @required String imageUrl,
     Map<String, String> httpHeaders,
     ImageWidgetBuilder imageBuilder,
