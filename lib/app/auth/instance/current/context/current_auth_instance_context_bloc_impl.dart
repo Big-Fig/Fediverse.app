@@ -905,6 +905,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IFilterRepository>(filterRepository);
 
     var filesCacheService = FilesCacheService(
+      connectionService: connectionService,
       key: userAtHost,
       stalePeriod: filesCacheSettingsBloc.filesCacheAgeLimitType?.toDuration(),
       maxNrOfCacheObjects:

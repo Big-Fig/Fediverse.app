@@ -74,6 +74,9 @@ class _MediaAttachmentImageErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(FediIcons.warning);
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Icon(FediIcons.warning),
+    );
   }
 }

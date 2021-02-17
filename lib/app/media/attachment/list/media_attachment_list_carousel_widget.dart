@@ -66,18 +66,19 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
     if (mediaAttachment.typeMastodon == MastodonMediaAttachmentType.image ||
         mediaAttachment.typeMastodon == MastodonMediaAttachmentType.gifv) {
       child = InkWell(
-          onTap: () {
-            var mediaAttachmentListBloc =
-                IMediaAttachmentListBloc.of(context, listen: false);
-            var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
+        onTap: () {
+          var mediaAttachmentListBloc =
+              IMediaAttachmentListBloc.of(context, listen: false);
+          var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-            goToMultiMediaAttachmentDetailsPage(
-              context,
-              mediaAttachments: mediaAttachments,
-              initialMediaAttachment: mediaAttachment,
-            );
-          },
-          child: child);
+          goToMultiMediaAttachmentDetailsPage(
+            context,
+            mediaAttachments: mediaAttachments,
+            initialMediaAttachment: mediaAttachment,
+          );
+        },
+        child: child,
+      );
     }
     return child;
   }

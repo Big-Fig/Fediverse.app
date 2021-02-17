@@ -293,20 +293,25 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
       progressContentMessage:
           S.of(context).app_media_attachment_addToGallery_progress_content,
       builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
-          icon: Icon(
-            FediIcons.download,
-            color: IFediUiColorTheme.of(context).darkGrey,
-            size: FediSizes.appBarIconSize,
-          ),
-          onPressed: onPressed),
+        icon: Icon(
+          FediIcons.download,
+          color: IFediUiColorTheme.of(context).darkGrey,
+          size: FediSizes.appBarIconSize,
+        ),
+        onPressed: onPressed,
+      ),
       successToastMessage:
           S.of(context).app_media_attachment_addToGallery_progress_content,
       asyncButtonAction: () async {
         var saved = await addMediaAttachmentToGallery(
-            context: context, mediaAttachment: mediaAttachment);
+          context: context,
+          mediaAttachment: mediaAttachment,
+        );
 
         if (!saved) {
-          throw MediaAttachmentCantAddToGalleryException(mediaAttachment);
+          throw MediaAttachmentCantAddToGalleryException(
+            mediaAttachment,
+          );
         }
       },
       errorAlertDialogBuilders: [
@@ -332,8 +337,10 @@ void goToSingleMediaAttachmentDetailsPage(BuildContext context,
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => MediaAttachmentDetailsPage.single(
-            mediaAttachment: mediaAttachment)),
+      builder: (context) => MediaAttachmentDetailsPage.single(
+        mediaAttachment: mediaAttachment,
+      ),
+    ),
   );
 }
 
@@ -343,9 +350,10 @@ void goToMultiMediaAttachmentDetailsPage(BuildContext context,
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => MediaAttachmentDetailsPage.multi(
-              mediaAttachments: mediaAttachments,
-              initialMediaAttachment: initialMediaAttachment,
-            )),
+      builder: (context) => MediaAttachmentDetailsPage.multi(
+        mediaAttachments: mediaAttachments,
+        initialMediaAttachment: initialMediaAttachment,
+      ),
+    ),
   );
 }
