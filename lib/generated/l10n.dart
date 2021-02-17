@@ -6981,6 +6981,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete conversation`
+  String get app_chat_action_delete_dialog_title {
+    return Intl.message(
+      'Delete conversation',
+      name: 'app_chat_action_delete_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get app_chat_action_delete_dialog_content {
+    return Intl.message(
+      'Are you sure?',
+      name: 'app_chat_action_delete_dialog_content',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

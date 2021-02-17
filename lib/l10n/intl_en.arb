@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-13T18:15:09+00:00",
+    "@@last_modified": "2021-02-17T14:58:45+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -713,5 +713,7 @@
     "app_chat_message_pending_actions_dialog_title": "Pending message",
     "app_chat_message_pending_actions_dialog_action_delete": "Delete",
     "app_chat_message_pending_actions_dialog_action_resend": "Send again",
-    "app_chat_message_deleted_desc": "Message deleted"
+    "app_chat_message_deleted_desc": "Message deleted",
+    "app_chat_action_delete_dialog_title": "Delete conversation",
+    "app_chat_action_delete_dialog_content": "Are you sure?"
 }
