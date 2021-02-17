@@ -170,29 +170,31 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
                   size: 16.0,
                 ),
               ),
-            Provider<EmojiText>.value(
-              value: EmojiText(text: content, emojis: lastMessage.emojis),
-              child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
-                update: (context, emojiText, _) {
-                  return HtmlTextBloc(
-                    inputData: HtmlTextInputData(
-                      input: emojiText.text,
-                      emojis: emojiText.emojis,
-                    ),
-                    settings: HtmlTextSettings(
-                      drawNewLines: false,
-                      textMaxLines: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w300,
-                      color: fediUiColorTheme.mediumGrey,
-                      linkColor: fediUiColorTheme.primary,
-                      textScaleFactor: textScaleFactor,
-                      lineHeight: null,
-                    ),
-                  );
-                },
-                child: const HtmlTextWidget(),
+            Flexible(
+              child: Provider<EmojiText>.value(
+                value: EmojiText(text: content, emojis: lastMessage.emojis),
+                child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+                  update: (context, emojiText, _) {
+                    return HtmlTextBloc(
+                      inputData: HtmlTextInputData(
+                        input: emojiText.text,
+                        emojis: emojiText.emojis,
+                      ),
+                      settings: HtmlTextSettings(
+                        drawNewLines: false,
+                        textMaxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w300,
+                        color: fediUiColorTheme.mediumGrey,
+                        linkColor: fediUiColorTheme.primary,
+                        textScaleFactor: textScaleFactor,
+                        lineHeight: null,
+                      ),
+                    );
+                  },
+                  child: const HtmlTextWidget(),
+                ),
               ),
             ),
           ],
