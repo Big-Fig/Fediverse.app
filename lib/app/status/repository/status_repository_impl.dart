@@ -584,11 +584,12 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future<IStatus> getConversationLastStatus({
     @required IConversationChat conversation,
+    bool onlyPendingStatePublishedOrNull = false,
   }) =>
       getStatus(
         filters: StatusRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
-          onlyPendingStatePublishedOrNull: false,
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
         ),
         orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
       );
@@ -596,11 +597,12 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Stream<IStatus> watchConversationLastStatus({
     @required IConversationChat conversation,
+    bool onlyPendingStatePublishedOrNull = false,
   }) =>
       watchStatus(
         filters: StatusRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
-          onlyPendingStatePublishedOrNull: false,
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
         ),
         orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
       );
@@ -608,11 +610,12 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
     @required List<IConversationChat> conversations,
+    bool onlyPendingStatePublishedOrNull = false,
   }) async {
     var query = createQuery(
       orderingTermData: StatusRepositoryOrderingTermData.createdAtDesc,
       filters: StatusRepositoryFilters.createForMustBeConversationItem(
-        onlyPendingStatePublishedOrNull: false,
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
       ),
       pagination: null,
     );

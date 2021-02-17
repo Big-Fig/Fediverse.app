@@ -379,13 +379,14 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   @override
   Future<IPleromaChatMessage> getChatLastChatMessage({
     @required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
   }) =>
       getChatMessage(
         filters: PleromaChatMessageRepositoryFilters(
           onlyInChats: [
             chat,
           ],
-          onlyPendingStatePublishedOrNull: false,
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
           onlyNotDeleted: true,
           onlyNotHiddenLocallyOnDevice: true,
         ),
@@ -395,13 +396,14 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   @override
   Stream<IPleromaChatMessage> watchChatLastChatMessage({
     @required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
   }) =>
       watchChatMessage(
         filters: PleromaChatMessageRepositoryFilters(
           onlyInChats: [
             chat,
           ],
-          onlyPendingStatePublishedOrNull: false,
+          onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
           onlyNotDeleted: true,
           onlyNotHiddenLocallyOnDevice: true,
         ),
@@ -411,10 +413,11 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   @override
   Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
     @required List<IPleromaChat> chats,
+    bool onlyPendingStatePublishedOrNull = false,
   }) async {
     var query = createQuery(
       filters: PleromaChatMessageRepositoryFilters(
-        onlyPendingStatePublishedOrNull: false,
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
         onlyNotDeleted: true,
         onlyNotHiddenLocallyOnDevice: true,
       ),

@@ -96,14 +96,17 @@ abstract class IStatusRepository
 
   Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
     @required List<IConversationChat> conversations,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Stream<IStatus> watchConversationLastStatus({
     @required IConversationChat conversation,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future<IStatus> getConversationLastStatus({
     @required IConversationChat conversation,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future<IStatus> findByOldPendingRemoteId(
