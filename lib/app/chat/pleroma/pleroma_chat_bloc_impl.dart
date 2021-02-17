@@ -30,6 +30,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // ignore: close_sinks
   final BehaviorSubject<IPleromaChatMessage> _lastMessageSubject;
 
+  // ignore: close_sinks
+  final BehaviorSubject<IPleromaChatMessage> _lastPublishedMessageSubject =
+      BehaviorSubject();
+
   @override
   IPleromaChat get chat => _chatSubject.value;
 
@@ -83,6 +87,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
+    addDisposable(subject: _lastPublishedMessageSubject);
 
     addDisposable(streamController: onMessageLocallyHiddenStreamController);
   }
@@ -112,6 +117,25 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         },
       ),
     );
+
+    addDisposable(
+      streamSubscription: chatMessageRepository
+          .watchChatLastChatMessage(
+        chat: chat,
+        onlyPendingStatePublishedOrNull: true,
+      )
+          .listen(
+        (lastMessage) {
+          _logger.finest(() => "watchChatLastChatMessage \n"
+              "onlyPendingStatePublishedOrNull: true, \n"
+              " chat ${chat.remoteId} \n"
+              " lastMessage $lastMessage");
+          if (lastMessage != null) {
+            _lastPublishedMessageSubject.add(lastMessage);
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -120,6 +144,21 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         await chatMessageRepository.getChatLastChatMessage(chat: chat);
     if (!_lastMessageSubject.isClosed) {
       _lastMessageSubject.add(message);
+    }
+
+    if (message.isPendingStatePublishedOrNull) {
+      _lastPublishedMessageSubject.add(message);
+    } else {
+      var lastPublishedChatMessage =
+          await chatMessageRepository.getChatLastChatMessage(
+        chat: chat,
+        onlyPendingStatePublishedOrNull: true,
+      );
+      if (!_lastPublishedMessageSubject.isClosed) {
+        _lastPublishedMessageSubject.add(
+          lastPublishedChatMessage,
+        );
+      }
     }
   }
 
@@ -330,4 +369,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       onMessageLocallyHiddenStreamController.add(pleromaChatMessage);
     }
   }
+
+  @override
+  IPleromaChatMessage get lastPublishedChatMessage =>
+      _lastPublishedMessageSubject.value;
 }

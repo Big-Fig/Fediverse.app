@@ -20,14 +20,16 @@ class ConversationChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var chatBloc = IConversationChatBloc.of(context, listen: true);
+    var chatBloc = IConversationChatBloc.of(context);
+
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: chatBloc,
       loadingFinishedBuilder: (context) {
+        var lastPublishedChatMessage = chatBloc.lastPublishedChatMessage;
         return ConversationChatMessageCachedListBloc.provideToContext(
           context,
           conversation: chatBloc.chat,
-          lastMessage: chatBloc.lastChatMessage,
+          lastMessage: lastPublishedChatMessage,
           child: ConversationChatMessageCachedPaginationBloc.provideToContext(
             context,
             child: ConversationChatMessageCachedPaginationListWithNewItemsBloc

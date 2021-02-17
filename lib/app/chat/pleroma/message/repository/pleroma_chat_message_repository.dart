@@ -75,14 +75,17 @@ abstract class IPleromaChatMessageRepository
 
   Stream<IPleromaChatMessage> watchChatLastChatMessage({
     @required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future<IPleromaChatMessage> getChatLastChatMessage({
     @required IPleromaChat chat,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
     @required List<IPleromaChat> chats,
+    bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future markChatMessageAsDeleted({

@@ -26,6 +26,8 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   IChatMessage get lastChatMessage;
 
+  IChatMessage get lastPublishedChatMessage;
+
   Stream<IChatMessage> get lastChatMessageStream;
 
   List<IAccount> get accounts;

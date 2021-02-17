@@ -27,6 +27,9 @@ abstract class IConversationChatBloc
   IConversationChatMessage get lastChatMessage;
 
   @override
+  IConversationChatMessage get lastPublishedChatMessage;
+
+  @override
   Stream<IConversationChatMessage> get lastChatMessageStream;
 
   Stream<IConversationChatMessage> get onMessageLocallyHiddenStream;

@@ -39,6 +39,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
   final BehaviorSubject<IConversationChatMessage> _lastMessageSubject;
 
+  // ignore: close_sinks
+  final BehaviorSubject<IConversationChatMessage> _lastPublishedMessageSubject =
+      BehaviorSubject();
+
   final BehaviorSubject<List<IAccount>> _accountsSubject = BehaviorSubject();
 
   @override
@@ -105,6 +109,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         ) {
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
+    addDisposable(subject: _lastPublishedMessageSubject);
     addDisposable(subject: _accountsSubject);
 
     addDisposable(streamController: onMessageLocallyHiddenStreamController);
@@ -151,12 +156,35 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
     addDisposable(
       streamSubscription: statusRepository
-          .watchConversationLastStatus(conversation: chat)
+          .watchConversationLastStatus(
+        conversation: chat,
+      )
           .listen(
         (lastStatus) {
           if (lastStatus != null) {
             _lastMessageSubject.add(
-              ConversationChatMessageStatusAdapter(lastStatus),
+              ConversationChatMessageStatusAdapter(
+                lastStatus,
+              ),
+            );
+          }
+        },
+      ),
+    );
+
+    addDisposable(
+      streamSubscription: statusRepository
+          .watchConversationLastStatus(
+        conversation: chat,
+        onlyPendingStatePublishedOrNull: true,
+      )
+          .listen(
+        (lastStatus) {
+          if (lastStatus != null) {
+            _lastPublishedMessageSubject.add(
+              ConversationChatMessageStatusAdapter(
+                lastStatus,
+              ),
             );
           }
         },
@@ -166,12 +194,31 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future internalAsyncInit() async {
-    var message =
+    var conversationLastStatus =
         await statusRepository.getConversationLastStatus(conversation: chat);
     if (!_lastMessageSubject.isClosed) {
       _lastMessageSubject.add(
-        ConversationChatMessageStatusAdapter(message),
+        ConversationChatMessageStatusAdapter(conversationLastStatus),
       );
+    }
+
+    var pendingStatePublishedOrNull = conversationLastStatus.pendingState == null ||
+        conversationLastStatus.pendingState == PendingState.published;
+    if (pendingStatePublishedOrNull) {
+      _lastPublishedMessageSubject.add(
+        ConversationChatMessageStatusAdapter(conversationLastStatus),
+      );
+    } else {
+      var conversationLastPublishedStatus =
+          await statusRepository.getConversationLastStatus(
+        conversation: chat,
+        onlyPendingStatePublishedOrNull: true,
+      );
+      if (!_lastPublishedMessageSubject.isClosed) {
+        _lastPublishedMessageSubject.add(
+          ConversationChatMessageStatusAdapter(conversationLastPublishedStatus),
+        );
+      }
     }
   }
 
@@ -411,4 +458,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       onMessageLocallyHiddenStreamController.add(conversationChatMessage);
     }
   }
+
+  @override
+  IConversationChatMessage get lastPublishedChatMessage =>
+      _lastPublishedMessageSubject.value;
 }
