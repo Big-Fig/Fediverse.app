@@ -127,29 +127,28 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const _ChatMessageListItemMetadataPendingStateWidget(),
-              Column(
-                crossAxisAlignment: isChatMessageFromMe
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 4.0,
+          Container(
+            constraints: maxWidthConstraints,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const _ChatMessageListItemMetadataPendingStateWidget(),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: isChatMessageFromMe
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 4.0,
+                      ),
+                      const _ChatMessageListItemContentContainerWidget(),
+                      const _ChatMessageListItemCardWidget(),
+                    ],
                   ),
-                  Container(
-                    constraints: maxWidthConstraints,
-                    child: const _ChatMessageListItemContentContainerWidget(),
-                  ),
-                  Container(
-                    constraints: maxWidthConstraints,
-                    child: const _ChatMessageListItemCardWidget(),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
           if (isFirstInMinuteGroup)
             Align(
