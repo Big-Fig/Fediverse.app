@@ -85,7 +85,11 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                       FediIconButton(
                         icon: Icon(FediIcons.check_circle),
                         color: color,
-                        onPressed: () {},
+                        onPressed: () {
+                          if (actionExist && enabled) {
+                            action.onAction(context);
+                          }
+                        },
                       ),
                     if (action.icon != null)
                       Icon(
