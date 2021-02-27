@@ -63,7 +63,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
     // only change to not-null
     var isExpiresInNullValuePossible = initialValue?.expiresAt == null;
     expiresInField = DurationDateTimeValueFormFieldBloc(
-      isEnabled: currentInstance.isMastodonInstance,
+      isEnabled: true,
       isNullValuePossible: isExpiresInNullValuePossible,
       minDuration: Duration(minutes: 30),
       maxDuration: Duration(days: 365),
