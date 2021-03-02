@@ -106,7 +106,7 @@ class MyAccountRemoteWrapper extends IMyAccount {
 
   @override
   bool get discoverable =>
-      remoteAccount.discoverable ?? source.pleroma.discoverable ?? false;
+      remoteAccount?.discoverable ?? source?.pleroma?.discoverable ?? false;
 
   @override
   String get acct => remoteAccount.acct;
