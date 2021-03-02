@@ -32,7 +32,7 @@ class CustomSwitch extends StatelessWidget {
     this.borderWidth = 1.0,
     this.indicatorSize = 25.0,
     this.backgroundBorderRadius = 20.0,
-    this.indicatorPadding = const EdgeInsets.all(4.0),
+    this.indicatorPadding = const EdgeInsets.all(8.0),
     this.enabled = true,
   }) : super(key: key);
 
@@ -40,31 +40,32 @@ class CustomSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     var customSwitchBloc = ICustomSwitchBloc.of(context, listen: false);
     return StreamBuilder<bool>(
-        stream: customSwitchBloc.currentValueStream,
-        initialData: customSwitchBloc.currentValue,
-        builder: (context, snapshot) {
-          var currentValue = snapshot.data;
-          return _CustomSwitchIndicator(
-            value: currentValue,
-            backgroundActiveColor: backgroundActiveColor,
-            backgroundInactiveColor: backgroundInactiveColor,
-            backgroundDisabledColor: backgroundDisabledColor,
-            indicatorActiveColor: indicatorActiveColor,
-            indicatorInactiveColor: indicatorInactiveColor,
-            indicatorDisabledColor: indicatorDisabledColor,
-            borderColor: borderColor,
-            width: width,
-            height: height,
-            borderWidth: borderWidth,
-            indicatorSize: indicatorSize,
-            backgroundBorderRadius: backgroundBorderRadius,
-            indicatorPadding: indicatorPadding,
-            onChanged: (bool value) {
-              customSwitchBloc.changeValue(value);
-            },
-            enabled: enabled,
-          );
-        });
+      stream: customSwitchBloc.currentValueStream,
+      initialData: customSwitchBloc.currentValue,
+      builder: (context, snapshot) {
+        var currentValue = snapshot.data;
+        return _CustomSwitchIndicator(
+          value: currentValue,
+          backgroundActiveColor: backgroundActiveColor,
+          backgroundInactiveColor: backgroundInactiveColor,
+          backgroundDisabledColor: backgroundDisabledColor,
+          indicatorActiveColor: indicatorActiveColor,
+          indicatorInactiveColor: indicatorInactiveColor,
+          indicatorDisabledColor: indicatorDisabledColor,
+          borderColor: borderColor,
+          width: width,
+          height: height,
+          borderWidth: borderWidth,
+          indicatorSize: indicatorSize,
+          backgroundBorderRadius: backgroundBorderRadius,
+          indicatorPadding: indicatorPadding,
+          onChanged: (bool value) {
+            customSwitchBloc.changeValue(value);
+          },
+          enabled: enabled,
+        );
+      },
+    );
   }
 }
 
@@ -108,23 +109,31 @@ class _CustomSwitchIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child = Container(
-      width: width,
-      height: height,
-      padding: indicatorPadding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(backgroundBorderRadius),
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
-        color: enabled
-            ? value ? backgroundActiveColor : backgroundInactiveColor
-            : backgroundDisabledColor,
+    var child = Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 6.0,
+        horizontal: 4.0,
       ),
-      child: Align(
-        alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-        child: _buildIndicator(value),
+      child: Container(
+        width: width,
+        height: height,
+        padding: indicatorPadding,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(backgroundBorderRadius),
+          border: Border.all(
+            color: borderColor,
+            width: borderWidth,
+          ),
+          color: enabled
+              ? value
+                  ? backgroundActiveColor
+                  : backgroundInactiveColor
+              : backgroundDisabledColor,
+        ),
+        child: Align(
+          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+          child: _buildIndicator(value),
+        ),
       ),
     );
 
@@ -146,7 +155,9 @@ class _CustomSwitchIndicator extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: enabled
-              ? isActive ? indicatorActiveColor : indicatorInactiveColor
+              ? isActive
+                  ? indicatorActiveColor
+                  : indicatorInactiveColor
               : Colors.transparent,
           border: enabled ? null : Border.all(color: indicatorDisabledColor),
         ),
