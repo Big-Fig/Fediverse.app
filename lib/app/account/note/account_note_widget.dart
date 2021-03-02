@@ -1,7 +1,5 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
@@ -81,29 +79,11 @@ class AccountNoteWidget extends StatelessWidget {
     @required EmojiText noteEmojiText,
   }) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    var tagUrlPart = "/tag/";
-    var tagUrlPartIndex = url.indexOf(tagUrlPart);
-    if (tagUrlPartIndex > 0) {
-      var tag = url.substring(tagUrlPartIndex + tagUrlPart.length);
 
-      if (noteEmojiText.text.contains("#$tag")) {
-        goToHashtagPage(
-          context: context,
-          hashtag: Hashtag(name: tag, url: url, history: []),
-        );
-      } else {
-        UrlHelper.handleUrlClickWithInstanceLocation(
-          context: context,
-          url: url,
-          instanceLocationBloc: accountBloc,
-        );
-      }
-    } else {
-      UrlHelper.handleUrlClickWithInstanceLocation(
-        context: context,
-        url: url,
-        instanceLocationBloc: accountBloc,
-      );
-    }
+    UrlHelper.handleUrlClickWithInstanceLocation(
+      context: context,
+      url: url,
+      instanceLocationBloc: accountBloc,
+    );
   }
 }

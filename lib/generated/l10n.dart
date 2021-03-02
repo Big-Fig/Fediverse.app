@@ -7001,6 +7001,36 @@ class S {
       args: [],
     );
   }
+
+  /// `#{hashtag}`
+  String app_hashtag_remoteInstance_dialog_title(Object hashtag) {
+    return Intl.message(
+      '#$hashtag',
+      name: 'app_hashtag_remoteInstance_dialog_title',
+      desc: '',
+      args: [hashtag],
+    );
+  }
+
+  /// `Open on {localDomain} inside app`
+  String app_hashtag_remoteInstance_dialog_action_openOnLocal(Object localDomain) {
+    return Intl.message(
+      'Open on $localDomain inside app',
+      name: 'app_hashtag_remoteInstance_dialog_action_openOnLocal',
+      desc: '',
+      args: [localDomain],
+    );
+  }
+
+  /// `Open on {remoteDomain} in browser`
+  String app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(Object remoteDomain) {
+    return Intl.message(
+      'Open on $remoteDomain in browser',
+      name: 'app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser',
+      desc: '',
+      args: [remoteDomain],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
