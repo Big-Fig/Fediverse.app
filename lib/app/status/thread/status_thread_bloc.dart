@@ -60,7 +60,7 @@ abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
 
   bool get isJumpedToStartState;
 
-  void scrollToIndex(int startStatusIndex);
+  void jumpToIndex(int startStatusIndex);
 
-  void scrollToStartIndex();
+  void jumpToStartIndex();
 }
