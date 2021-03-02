@@ -15,24 +15,28 @@ import 'package:provider/provider.dart';
 class NotificationPaginationListWidget
     extends FediPaginationListWidget<INotification> {
   final bool needWatchLocalRepositoryForUpdates;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const NotificationPaginationListWidget({
     Key key,
     @required this.needWatchLocalRepositoryForUpdates,
     ScrollController scrollController,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           scrollController: scrollController,
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<INotification> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<INotification> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
         items: items,
         header: header,
         footer: footer,

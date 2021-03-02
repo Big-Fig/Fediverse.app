@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountStatusesTimelineWidget extends AccountStatusesWidget {
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   const AccountStatusesTimelineWidget({
     Key key,
     Widget header,
@@ -21,6 +22,7 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     ScrollController scrollController,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           footer: footer,
@@ -31,13 +33,15 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<IStatus> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
         items: items,
         header: header,
         footer: footer,

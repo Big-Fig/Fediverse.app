@@ -102,8 +102,11 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   }
 
   @override
-  Widget buildSmartRefresherBody(BuildContext context, List<T> items,
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+  Widget buildSmartRefresherBody(
+    BuildContext context,
+    List<T> items,
+    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
+  ) {
     _logger.finest(() => "buildSmartRefresherBody ${items?.length}");
     if (items == null) {
       _logger.finest(() => "build loading");
@@ -116,7 +119,11 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
 
     if (items?.isNotEmpty == true) {
       return buildItemsCollectionView(
-          context: context, items: items, header: header, footer: footer);
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+      );
     } else {
       _logger.finest(() => "build empty");
       return buildNotListBody(

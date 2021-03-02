@@ -20,11 +20,14 @@ class StatusCachedPaginationListTimelineWidget
     extends StatusCachedPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
   final bool forceFirstItemPadding;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    @required bool listen,
+  }) {
     var timelinePaginationListBloc = Provider.of<
             IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
         context,
@@ -36,6 +39,7 @@ class StatusCachedPaginationListTimelineWidget
     Key key,
     Widget header,
     this.forceFirstItemPadding = false,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
@@ -66,6 +70,7 @@ class StatusCachedPaginationListTimelineWidget
     var isLocal = instanceLocation == InstanceLocation.local;
     return PaginationListWidget.buildItemsListView(
       context: context,
+      keyboardDismissBehavior:keyboardDismissBehavior,
       items: items,
       header: header,
       footer: footer,

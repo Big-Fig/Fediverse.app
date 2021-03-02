@@ -8,7 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
-  HashtagPaginationListWidget();
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
+  const HashtagPaginationListWidget({
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
+  });
 
   @override
   ScrollView buildItemsCollectionView({
@@ -18,17 +22,19 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
     Widget footer,
   }) {
     return PaginationListWidget.buildItemsListView(
-        context: context,
-        items: items,
-        header: header,
-        footer: footer,
-        itemBuilder: (context, index) {
-          var item = items[index];
-          return Provider<IHashtag>.value(
-            value: item,
-            child: const HashtagListItemWidget(),
-          );
-        });
+      context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
+      items: items,
+      header: header,
+      footer: footer,
+      itemBuilder: (context, index) {
+        var item = items[index];
+        return Provider<IHashtag>.value(
+          value: item,
+          child: const HashtagListItemWidget(),
+        );
+      },
+    );
   }
 
   @override

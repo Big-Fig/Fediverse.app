@@ -7,5 +7,5 @@ class SearchHashtagsPaginationListWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => HashtagPaginationListWidget();
+  Widget build(BuildContext context) => const HashtagPaginationListWidget();
 }

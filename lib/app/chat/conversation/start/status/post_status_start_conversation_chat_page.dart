@@ -4,7 +4,6 @@ import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart';
@@ -35,16 +34,14 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
-            child: UnfocusOnScrollAreaWidget(
-              child: PostStatusComposeWidget(
-                autofocus: true,
-                goBackOnSuccess: true,
-                expanded: true,
-                maxLines: null,
-                displayAccountAvatar: false,
-                showPostAction: true,
-                displaySubjectField: false,
-              ),
+            child: PostStatusComposeWidget(
+              autofocus: true,
+              goBackOnSuccess: true,
+              expanded: true,
+              maxLines: null,
+              displayAccountAvatar: false,
+              showPostAction: true,
+              displaySubjectField: false,
             ),
           ),
         ],

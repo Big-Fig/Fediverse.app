@@ -23,7 +23,6 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
           topSliverWidgets: topSliverWidgets,
           topSliverScrollOffsetToShowWhiteStatusBar:
               topSliverScrollOffsetToShowWhiteStatusBar,
-          unfocusOnScroll: unfocusOnScroll,
         );
 
   @override

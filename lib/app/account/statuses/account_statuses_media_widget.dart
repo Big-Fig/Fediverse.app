@@ -21,11 +21,12 @@ class AccountStatusesMediaWidget extends AccountStatusesWidget {
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<IStatus> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       StatusCachedPaginationListMediaWidget.buildStaggeredMediaGridView(
         context: context,
         items: items,

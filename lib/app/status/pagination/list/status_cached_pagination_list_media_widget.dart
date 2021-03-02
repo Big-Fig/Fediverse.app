@@ -17,6 +17,7 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -27,12 +28,16 @@ var _logger = Logger("status_cached_pagination_list_media_widget.dart");
 
 class StatusCachedPaginationListMediaWidget
     extends StatusCachedPaginationListBaseWidget {
-  const StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);
+  const StatusCachedPaginationListMediaWidget({
+    Key key,
+  }) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      retrievePaginationListBloc(
+    BuildContext context, {
+    @required bool listen,
+  }) {
     var timelinePaginationListBloc = Provider.of<
             IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
         context,
@@ -106,58 +111,60 @@ class StatusCachedPaginationListMediaWidget
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 
-        return Container(
-          color: IFediUiColorTheme.of(context).offWhite,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Provider<IStatus>.value(
-              value: statusWithMediaAttachment.status,
-              child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                update: (context, status, oldValue) {
-                  if (isLocal) {
-                    return LocalStatusBloc.createFromContext(
-                      context,
-                      status: status,
-                    );
-                  } else {
-                    return RemoteStatusBloc.createFromContext(
-                      context,
-                      status: status,
-                    );
-                  }
-                },
-                child:
-                    DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
-                  update: (context, statusBloc, _) =>
-                      StatusSensitiveBloc.createFromContext(
-                    context: context,
-                    statusBloc: statusBloc,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      if (isLocal) {
-                        goToLocalStatusThreadPage(
-                          context,
-                          status: statusWithMediaAttachment.status,
-                          initialMediaAttachment:
-                              statusWithMediaAttachment.mediaAttachment,
-                        );
-                      } else {
-                        goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
-                          context,
-                          remoteInstanceStatus:
-                              statusWithMediaAttachment.status,
-                          remoteInstanceInitialMediaAttachment:
-                              statusWithMediaAttachment.mediaAttachment,
-                        );
-                      }
-                    },
-                    child: Padding(
-                      padding: FediPadding.allSmallPadding,
-                      child: Center(
-                        child: Provider<IPleromaMediaAttachment>.value(
-                          value: statusWithMediaAttachment.mediaAttachment,
-                          child: const StatusListItemMediaWidget(),
+        return UnfocusOnScrollAreaWidget(
+          child: Container(
+            color: IFediUiColorTheme.of(context).offWhite,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Provider<IStatus>.value(
+                value: statusWithMediaAttachment.status,
+                child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                  update: (context, status, oldValue) {
+                    if (isLocal) {
+                      return LocalStatusBloc.createFromContext(
+                        context,
+                        status: status,
+                      );
+                    } else {
+                      return RemoteStatusBloc.createFromContext(
+                        context,
+                        status: status,
+                      );
+                    }
+                  },
+                  child:
+                      DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                    update: (context, statusBloc, _) =>
+                        StatusSensitiveBloc.createFromContext(
+                      context: context,
+                      statusBloc: statusBloc,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        if (isLocal) {
+                          goToLocalStatusThreadPage(
+                            context,
+                            status: statusWithMediaAttachment.status,
+                            initialMediaAttachment:
+                                statusWithMediaAttachment.mediaAttachment,
+                          );
+                        } else {
+                          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+                            context,
+                            remoteInstanceStatus:
+                                statusWithMediaAttachment.status,
+                            remoteInstanceInitialMediaAttachment:
+                                statusWithMediaAttachment.mediaAttachment,
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: FediPadding.allSmallPadding,
+                        child: Center(
+                          child: Provider<IPleromaMediaAttachment>.value(
+                            value: statusWithMediaAttachment.mediaAttachment,
+                            child: const StatusListItemMediaWidget(),
+                          ),
                         ),
                       ),
                     ),

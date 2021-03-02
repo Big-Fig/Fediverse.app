@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 
 class CustomListPaginationListWidget
     extends FediPaginationListWidget<ICustomList> {
+
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const CustomListPaginationListWidget({
     Key key,
     ScrollController scrollController,
@@ -23,6 +26,7 @@ class CustomListPaginationListWidget
     Widget customEmptyWidget,
     Widget customLoadingWidget,
     bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -44,6 +48,7 @@ class CustomListPaginationListWidget
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: items,
       header: header,
       footer: footer,
