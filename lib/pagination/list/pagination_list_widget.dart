@@ -3,6 +3,7 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -32,27 +33,32 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     this.refreshOnFirstLoad = true,
   }) : super(key: key);
 
-  ScrollView buildItemsCollectionView(
-      {@required BuildContext context,
-      @required List<T> items,
-      @required Widget header,
-      @required Widget footer});
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<T> items,
+    @required Widget header,
+    @required Widget footer,
+  });
 
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
-      BuildContext context,
-      {@required bool listen});
+    BuildContext context, {
+    @required bool listen,
+  });
 
-  static ListView buildItemsListView<T>(
-      {@required BuildContext context,
-      @required List<T> items,
-      @required Widget header,
-      @required Widget footer,
-      @required IndexedWidgetBuilder itemBuilder}) {
+  static ListView buildItemsListView<T>({
+    @required BuildContext context,
+    @required List<T> items,
+    @required Widget header,
+    @required Widget footer,
+    @required IndexedWidgetBuilder itemBuilder,
+    @required ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
+  }) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
     var itemCount =
         items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);
     return ListView.builder(
+      keyboardDismissBehavior: keyboardDismissBehavior,
       itemBuilder: (context, index) {
         var isFirst = index == 0;
         var isLast = index == (itemCount - 1);
@@ -66,8 +72,16 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           itemIndex -= 1;
         }
 
+        var widget = itemBuilder(context, itemIndex);
         _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
-        return itemBuilder(context, itemIndex);
+        if (keyboardDismissBehavior ==
+            ScrollViewKeyboardDismissBehavior.onDrag) {
+          return UnfocusOnScrollAreaWidget(
+            child: widget,
+          );
+        } else {
+          return widget;
+        }
       },
       itemCount: itemCount,
     );
@@ -80,7 +94,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     _logger.finest(() => "build "
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}");
 
-    if (paginationListBloc.refreshState != FediListSmartRefresherLoadingState.loaded &&
+    if (paginationListBloc.refreshState !=
+            FediListSmartRefresherLoadingState.loaded &&
         refreshOnFirstLoad) {
       askToRefresh(context);
     }
@@ -100,16 +115,11 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildPaginationListBody(
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
-    return AsyncInitLoadingWidget(
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) => AsyncInitLoadingWidget(
       asyncInitLoadingBloc: paginationListBloc,
-      loadingFinishedBuilder: (BuildContext context) {
-        _logger.finest(() => "build AsyncInitLoadingWidget stream");
-
-        return buildPaginationInitializedBody(context, paginationListBloc);
-      },
+      loadingFinishedBuilder: (BuildContext context) =>
+          buildPaginationInitializedBody(context, paginationListBloc),
     );
-  }
 
   Widget buildPaginationInitializedBody(BuildContext context,
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
@@ -118,41 +128,49 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // If child is StreamBuilder SmartRefresher builds all items widget
     // instead visible only
     return StreamBuilder<List<T>>(
-        stream: paginationListBloc.itemsDistinctStream,
-        builder: (context, snapshot) {
-          var items = snapshot.data;
+      stream: paginationListBloc.itemsDistinctStream,
+      builder: (context, snapshot) {
+        var items = snapshot.data;
 
-          _logger.finest(() => "build paginationListBloc.itemsStream items "
-              "${items?.length}");
+        _logger.finest(() => "build paginationListBloc.itemsStream items "
+            "${items?.length}");
 
-          return buildSmartRefresher(
-              paginationListBloc,
-              context,
-              items,
-              paginationListBloc.refreshController,
-              scrollController,
-              (context) =>
-                  buildSmartRefresherBody(context, items, paginationListBloc));
-        });
+        return buildSmartRefresher(
+          paginationListBloc,
+          context,
+          items,
+          paginationListBloc.refreshController,
+          scrollController,
+          (context) => buildSmartRefresherBody(
+            context,
+            items,
+            paginationListBloc,
+          ),
+        );
+      },
+    );
   }
 
   void askToRefresh(BuildContext context) {
     _logger.finest(() => "askToRefresh");
     // delay required to be sure that widget will be built during initial
     // refresh
-    Future.delayed(Duration(milliseconds: 1000), () {
-      _logger.finest(() => "askToRefresh delayed");
+    Future.delayed(
+      Duration(milliseconds: 1000),
+      () {
+        _logger.finest(() => "askToRefresh delayed");
 
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-          retrievePaginationListBloc(context, listen: false);
+        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+            retrievePaginationListBloc(context, listen: false);
 
-      final refreshState = paginationListBloc.refreshState;
-      _logger.finest(() => "askToRefresh refreshState $refreshState");
-      if (refreshState != FediListSmartRefresherLoadingState.loading &&
-          refreshState != FediListSmartRefresherLoadingState.loaded) {
-        paginationListBloc.refreshWithController();
-      }
-    });
+        final refreshState = paginationListBloc.refreshState;
+        _logger.finest(() => "askToRefresh refreshState $refreshState");
+        if (refreshState != FediListSmartRefresherLoadingState.loading &&
+            refreshState != FediListSmartRefresherLoadingState.loaded) {
+          paginationListBloc.refreshWithController();
+        }
+      },
+    );
   }
 
   Widget buildNotListBody(Widget child) {
@@ -163,24 +181,29 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       return child;
     } else {
       return Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            if (alwaysShowHeader == true) header,
-            Expanded(child: child),
-            if (alwaysShowFooter == true) footer,
-          ]);
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          if (alwaysShowHeader == true) header,
+          Expanded(child: child),
+          if (alwaysShowFooter == true) footer,
+        ],
+      );
     }
   }
 
-  Widget buildSmartRefresherBody(BuildContext context, List<T> items,
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc);
+  Widget buildSmartRefresherBody(
+    BuildContext context,
+    List<T> items,
+    IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
+  );
 
   Widget buildSmartRefresher(
-      IPaginationListBloc paginationListBloc,
-      BuildContext context,
-      List<T> items,
-      RefreshController refreshController,
-      ScrollController scrollController,
-      Widget Function(BuildContext context) smartRefresherBodyBuilder);
+    IPaginationListBloc paginationListBloc,
+    BuildContext context,
+    List<T> items,
+    RefreshController refreshController,
+    ScrollController scrollController,
+    Widget Function(BuildContext context) smartRefresherBodyBuilder,
+  );
 }

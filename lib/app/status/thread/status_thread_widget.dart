@@ -190,14 +190,15 @@ class _StatusThreadStatusesListWidgetState
 
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
-    newItemsJumpSubscription =
-        statusThreadBloc.onNewStatusAddedStream.listen((newItem) {
-      var index = statusThreadBloc.statuses.indexOf(newItem);
+    newItemsJumpSubscription = statusThreadBloc.onNewStatusAddedStream.listen(
+      (newItem) {
+        var index = statusThreadBloc.statuses.indexOf(newItem);
 
-      if (index > 0) {
-        statusThreadBloc.scrollToIndex(index);
-      }
-    });
+        if (index > 0) {
+          statusThreadBloc.scrollToIndex(index);
+        }
+      },
+    );
   }
 
   @override

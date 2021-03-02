@@ -44,8 +44,9 @@ class ChatMessageListWidget<T extends IChatMessage>
 
   @override
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
-      BuildContext context,
-      {@required bool listen}) {
+    BuildContext context, {
+    @required bool listen,
+  }) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(context,
             listen: listen);
@@ -107,6 +108,7 @@ class ChatMessageListWidget<T extends IChatMessage>
     assert(footer == null, "footer not supported");
 
     return ListView.builder(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
         var item = _calculateChatMessageListItem<T>(
@@ -135,8 +137,8 @@ class ChatMessageListWidget<T extends IChatMessage>
                           listen: false,
                         ),
                         chatMessage: chatMessage,
-                        isSelectionPossible:
-                            chatMessageBloc.isPublishedAndNotDeletedAndNotLocallyHidden,
+                        isSelectionPossible: chatMessageBloc
+                            .isPublishedAndNotDeletedAndNotLocallyHidden,
                       );
 
                       chatSelectionItemBloc.addDisposable(

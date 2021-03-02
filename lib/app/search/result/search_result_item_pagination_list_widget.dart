@@ -26,6 +26,8 @@ import 'package:provider/provider.dart';
 
 class SearchResultItemPaginationListWidget
     extends FediPaginationListWidget<ISearchResultItem> {
+
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   const SearchResultItemPaginationListWidget({
     Key key,
     Widget header,
@@ -33,6 +35,7 @@ class SearchResultItemPaginationListWidget
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           header: header,
@@ -43,11 +46,12 @@ class SearchResultItemPaginationListWidget
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-      {@required BuildContext context,
-      @required List<ISearchResultItem> items,
-      @required Widget header,
-      @required Widget footer}) {
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<ISearchResultItem> items,
+    @required Widget header,
+    @required Widget footer,
+  }) {
     SearchResultItemType previousType;
 
     var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
@@ -88,6 +92,7 @@ class SearchResultItemPaginationListWidget
     return PaginationListWidget.buildItemsListView<
         _ItemOrSeparator<ISearchResultItem>>(
       context: context,
+      keyboardDismissBehavior:keyboardDismissBehavior,
       items: itemWithSeparators,
       header: header,
       footer: footer,

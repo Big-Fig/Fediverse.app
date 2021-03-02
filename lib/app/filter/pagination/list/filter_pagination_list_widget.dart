@@ -14,6 +14,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const FilterPaginationListWidget({
     Key key,
     ScrollController scrollController,
@@ -24,6 +26,7 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
     Widget customEmptyWidget,
     Widget customLoadingWidget,
     bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -45,6 +48,7 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
+      keyboardDismissBehavior: keyboardDismissBehavior,
       items: items,
       header: header,
       footer: footer,

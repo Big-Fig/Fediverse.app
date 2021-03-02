@@ -4,13 +4,14 @@ import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatBodyWrapperWidget extends StatelessWidget {
   final Widget child;
 
-  const ChatBodyWrapperWidget({@required this.child});
+  const ChatBodyWrapperWidget({
+    @required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,9 @@ class ChatBodyWrapperWidget extends StatelessWidget {
             children: <Widget>[
               const ChatSelectionWidget(),
               Expanded(
-                child: UnfocusOnScrollAreaWidget(
-                  child: Padding(
-                    padding: FediPadding.horizontalBigPadding,
-                    child: child,
-                  ),
+                child: Padding(
+                  padding: FediPadding.horizontalBigPadding,
+                  child: child,
                 ),
               ),
               const FediUltraLightGreyDivider(),

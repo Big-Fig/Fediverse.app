@@ -9,7 +9,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,22 +19,21 @@ class RegisterAuthInstanceFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var registerAuthInstanceBloc = IRegisterAuthInstanceFormBloc.of(context);
-    return UnfocusOnScrollAreaWidget(
-      child: Padding(
-        padding: FediPadding.horizontalBigPadding,
-        child: ListView(
-          children: <Widget>[
-            const _RegisterAuthInstanceFormUsernameFieldWidget(),
-            const _RegisterAuthInstanceFormEmailFieldWidget(),
-            const _RegisterAuthInstanceFormPasswordFieldWidget(),
-            const _RegisterAuthInstanceFormConfirmPasswordFieldWidget(),
-            const _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget(),
-            const _RegisterAuthInstanceFormLocaleFieldWidget(),
-            const _RegisterAuthInstanceFormCaptchaFieldWidget(),
-            if (registerAuthInstanceBloc.approvalRequired)
-              const _RegisterAuthInstanceFormReasonFieldWidget(),
-          ],
-        ),
+    return Padding(
+      padding: FediPadding.horizontalBigPadding,
+      child: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        children: <Widget>[
+          const _RegisterAuthInstanceFormUsernameFieldWidget(),
+          const _RegisterAuthInstanceFormEmailFieldWidget(),
+          const _RegisterAuthInstanceFormPasswordFieldWidget(),
+          const _RegisterAuthInstanceFormConfirmPasswordFieldWidget(),
+          const _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget(),
+          const _RegisterAuthInstanceFormLocaleFieldWidget(),
+          const _RegisterAuthInstanceFormCaptchaFieldWidget(),
+          if (registerAuthInstanceBloc.approvalRequired)
+            const _RegisterAuthInstanceFormReasonFieldWidget(),
+        ],
       ),
     );
   }

@@ -24,7 +24,6 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -105,12 +104,10 @@ class _SearchTabBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var searchBloc = ISearchBloc.of(context, listen: false);
 
-    return UnfocusOnScrollAreaWidget(
-      child: buildTabBody(
-        context,
-        tab,
-        searchBloc,
-      ),
+    return buildTabBody(
+      context,
+      tab,
+      searchBloc,
     );
   }
 

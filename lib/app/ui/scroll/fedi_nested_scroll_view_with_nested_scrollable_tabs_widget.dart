@@ -43,14 +43,12 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
     @required this.tabBodyProviderBuilder,
     @required this.tabBodyContentBuilder,
     @required this.tabBodyOverlayBuilder,
-    bool unfocusOnScroll = true,
     this.tabsEmptyBuilder,
   }) : super(
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
           topSliverScrollOffsetToShowWhiteStatusBar:
               topSliverScrollOffsetToShowWhiteStatusBar,
-          unfocusOnScroll: unfocusOnScroll,
         );
 
   Key _innerScrollPositionKeyBuilder(BuildContext context) {

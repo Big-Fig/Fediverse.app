@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 
 class PleromaChatWithLastMessageListWidget
     extends FediPaginationListWidget<IPleromaChatWithLastMessage> {
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const PleromaChatWithLastMessageListWidget({
     @required Key key,
     Widget header,
@@ -22,6 +24,7 @@ class PleromaChatWithLastMessageListWidget
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           footer: footer,
@@ -32,13 +35,15 @@ class PleromaChatWithLastMessageListWidget
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IPleromaChatWithLastMessage> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<IPleromaChatWithLastMessage> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
           context: context,
+          keyboardDismissBehavior: keyboardDismissBehavior,
           items: items,
           header: header,
           footer: footer,

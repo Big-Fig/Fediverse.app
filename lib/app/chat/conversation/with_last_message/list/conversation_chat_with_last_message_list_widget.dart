@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 
 class ConversationChatWithLastMessageListWidget
     extends FediPaginationListWidget<IConversationChatWithLastMessage> {
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const ConversationChatWithLastMessageListWidget({
     @required Key key,
     Widget header,
@@ -22,6 +24,7 @@ class ConversationChatWithLastMessageListWidget
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     bool refreshOnFirstLoad = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
           footer: footer,
@@ -32,44 +35,48 @@ class ConversationChatWithLastMessageListWidget
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IConversationChatWithLastMessage> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<IConversationChatWithLastMessage> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer,
-          itemBuilder: (context, index) =>
-              Provider<IConversationChatWithLastMessage>.value(
-                value: items[index],
-                child: DisposableProxyProvider<IConversationChatWithLastMessage,
-                    IConversationChatBloc>(
-                  update: (context, chatWithLastMessage, oldValue) =>
-                      ConversationChatBloc.createFromContext(
-                    context,
-                    chat: chatWithLastMessage.chat,
-                    lastChatMessage: chatWithLastMessage.lastChatMessage,
-                  ),
-                  child: ProxyProvider<IConversationChatBloc, IChatBloc>(
-                    update: (context, value, _) => value,
-                    child: FediListTile(
-                      isFirstInList: index == 0 && header == null,
-                      child: const ChatListItemWidget(
-                        onClick: _goToChatPage,
-                      ),
-                    ),
-                  ),
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) =>
+            Provider<IConversationChatWithLastMessage>.value(
+          value: items[index],
+          child: DisposableProxyProvider<IConversationChatWithLastMessage,
+              IConversationChatBloc>(
+            update: (context, chatWithLastMessage, oldValue) =>
+                ConversationChatBloc.createFromContext(
+              context,
+              chat: chatWithLastMessage.chat,
+              lastChatMessage: chatWithLastMessage.lastChatMessage,
+            ),
+            child: ProxyProvider<IConversationChatBloc, IChatBloc>(
+              update: (context, value, _) => value,
+              child: FediListTile(
+                isFirstInList: index == 0 && header == null,
+                child: const ChatListItemWidget(
+                  onClick: _goToChatPage,
                 ),
-              ));
+              ),
+            ),
+          ),
+        ),
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-          IConversationChatWithLastMessage>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+      IConversationChatWithLastMessage> retrievePaginationListBloc(
+    BuildContext context, {
+    @required bool listen,
+  }) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
             IConversationChatWithLastMessage>>(context, listen: listen);

@@ -18,6 +18,7 @@ class MyAccountDomainBlockPaginationListWidget
 
   final bool needWatchLocalRepositoryForUpdates;
   final List<Widget> domainBlockActions;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const MyAccountDomainBlockPaginationListWidget({
     @required Key key,
@@ -30,6 +31,7 @@ class MyAccountDomainBlockPaginationListWidget
     Widget customLoadingWidget,
     Widget customEmptyWidget,
     @required this.domainBlockSelectedCallback,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -43,13 +45,15 @@ class MyAccountDomainBlockPaginationListWidget
         );
 
   @override
-  ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<DomainBlock> items,
-          @required Widget header,
-          @required Widget footer}) =>
+  ScrollView buildItemsCollectionView({
+    @required BuildContext context,
+    @required List<DomainBlock> items,
+    @required Widget header,
+    @required Widget footer,
+  }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
         items: items,
         header: header,
         footer: footer,

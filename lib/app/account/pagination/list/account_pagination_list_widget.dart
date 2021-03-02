@@ -31,6 +31,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
   final AccountPaginationListItemBuilder customItemBodyBuilder;
   final bool isNeedPreFetchRelationship;
   final EdgeInsets itemPadding;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const AccountPaginationListWidget({
     Key key,
@@ -40,6 +41,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     bool alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
     this.isNeedPreFetchRelationship = false,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.accountActions,
     this.customItemBodyBuilder,
     this.itemPadding = FediPadding.allMediumPadding,
@@ -70,6 +72,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
     var isLocal = instanceLocation == InstanceLocation.local;
 
     return PaginationListWidget.buildItemsListView(
+      keyboardDismissBehavior: keyboardDismissBehavior,
       context: context,
       items: items,
       header: header,
