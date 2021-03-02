@@ -218,26 +218,24 @@ abstract class StatusThreadBloc extends DisposableOwner
   }
 
   @override
-  void scrollToIndex(int index) {
+  void jumpToIndex(int index) {
     if (itemScrollController.isAttached) {
-      itemScrollController.scrollTo(
+      itemScrollController.jumpTo(
         index: index,
-        duration: Duration(milliseconds: 1000),
       );
     }
   }
 
   @override
-  void scrollToStartIndex() {
+  void jumpToStartIndex() {
     if (!isJumpedToStartState) {
       isJumpedToStartState = true;
-      scrollToIndex(initialStatusToFetchThreadIndex);
+      jumpToIndex(initialStatusToFetchThreadIndex);
     }
   }
 
   bool isNotFiltered({
     @required IPleromaStatus remoteStatus,
-    @required List<IFilter> filters,
   }) {
     var spoilerText = remoteStatus.spoilerText;
     var content = remoteStatus.content;

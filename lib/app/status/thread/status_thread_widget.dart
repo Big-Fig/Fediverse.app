@@ -41,38 +41,39 @@ class StatusThreadWidget extends StatelessWidget {
     var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
 
     return StreamBuilder<bool>(
-        stream: postMessageBloc.isExpandedStream,
-        builder: (context, snapshot) {
-          var isPostMessageExpanded = snapshot.data ?? false;
+      stream: postMessageBloc.isExpandedStream,
+      builder: (context, snapshot) {
+        var isPostMessageExpanded = snapshot.data ?? false;
 
-          if (isPostMessageExpanded) {
-            return const _StatusThreadPostStatusWidget();
-          } else {
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    color: IFediUiColorTheme.of(context).offWhite,
-                    child: const UnfocusOnScrollAreaWidget(
-                      child: _StatusThreadStatusesWidget(),
-                    ),
+        if (isPostMessageExpanded) {
+          return const _StatusThreadPostStatusWidget();
+        } else {
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  color: IFediUiColorTheme.of(context).offWhite,
+                  child: const UnfocusOnScrollAreaWidget(
+                    child: _StatusThreadStatusesWidget(),
                   ),
                 ),
-                if (isLocal) ...[
-                  const _StatusThreadInReplyToStatusWidget(),
-                  const FediUltraLightGreyDivider(),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: fediUiColorTheme.white,
-                      boxShadow: [FediShadows.forBottomBar],
-                    ),
-                    child: const _StatusThreadPostStatusWidget(),
+              ),
+              if (isLocal) ...[
+                const _StatusThreadInReplyToStatusWidget(),
+                const FediUltraLightGreyDivider(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: fediUiColorTheme.white,
+                    boxShadow: [FediShadows.forBottomBar],
                   ),
-                ]
-              ],
-            );
-          }
-        });
+                  child: const _StatusThreadPostStatusWidget(),
+                ),
+              ]
+            ],
+          );
+        }
+      },
+    );
   }
 
   const StatusThreadWidget();
@@ -195,7 +196,7 @@ class _StatusThreadStatusesListWidgetState
         var index = statusThreadBloc.statuses.indexOf(newItem);
 
         if (index > 0) {
-          statusThreadBloc.scrollToIndex(index);
+          statusThreadBloc.jumpToIndex(index);
         }
       },
     );
@@ -222,7 +223,7 @@ class _StatusThreadStatusesListWidgetState
         Future.delayed(
           Duration(milliseconds: 1000),
           () {
-            statusThreadBloc.scrollToStartIndex();
+            statusThreadBloc.jumpToStartIndex();
           },
         );
       }
