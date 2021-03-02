@@ -194,7 +194,7 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
                       FediSizes.bigPadding,
                       0.0),
                   child:
-                      _StatusListItemTimelineOriginalBodyReplySubHeaderWidget(),
+                      const _StatusListItemTimelineOriginalBodyReplySubHeaderWidget(),
                 ),
               buildBody(context),
               const StatusEmojiReactionListWidget(),

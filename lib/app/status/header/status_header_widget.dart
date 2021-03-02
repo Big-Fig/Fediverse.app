@@ -5,6 +5,7 @@ import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
@@ -12,16 +13,17 @@ import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 var _statusHeaderHeight = 41.0;
 
 class StatusHeaderWidget extends StatelessWidget {
   final String descText;
   final IconData icon;
-  final IAccount account;
 
   @override
   Widget build(BuildContext context) {
+    var account = Provider.of<IAccount>(context);
     return Container(
       height: _statusHeaderHeight,
       child: GestureDetector(
@@ -67,9 +69,13 @@ class StatusHeaderWidget extends StatelessWidget {
             placeholder: (context, url) => Container(
               width: FediSizes.accountAvatarSmallSize,
               height: FediSizes.accountAvatarSmallSize,
-              child: const FediCircularProgressIndicator(),
+              child: const FediCircularProgressIndicator(
+                size: FediSizes.accountAvatarSmallSize,
+              ),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => Icon(
+              FediIcons.warning,
+            ),
             height: FediSizes.accountAvatarProgressSmallSize,
             width: FediSizes.accountAvatarProgressSmallSize,
           ),
@@ -87,16 +93,17 @@ class StatusHeaderWidget extends StatelessWidget {
         ),
         const FediMediumHorizontalSpacer(),
         Flexible(
-          child: Text(descText,
-              overflow: TextOverflow.ellipsis,
-              style: IFediUiTextTheme.of(context).smallShortDarkGrey),
+          child: Text(
+            descText,
+            overflow: TextOverflow.ellipsis,
+            style: IFediUiTextTheme.of(context).smallShortDarkGrey,
+          ),
         )
       ],
     );
   }
 
   const StatusHeaderWidget({
-    @required this.account,
     @required this.descText,
     @required this.icon,
   });

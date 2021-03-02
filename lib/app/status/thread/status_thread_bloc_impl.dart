@@ -236,6 +236,7 @@ abstract class StatusThreadBloc extends DisposableOwner
 
   bool isNotFiltered({
     @required IPleromaStatus remoteStatus,
+    @required List<IFilter> filters,
   }) {
     var spoilerText = remoteStatus.spoilerText;
     var content = remoteStatus.content;
