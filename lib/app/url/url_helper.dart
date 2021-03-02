@@ -1,4 +1,6 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/hashtag/hashtag_page.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -10,22 +12,110 @@ import 'package:url_launcher/url_launcher.dart';
 final _logger = Logger("url_helper.dart");
 
 class UrlHelper {
+  static const _mastodonTagUrlParts = [
+    "/tags/",
+    "/tag/",
+  ];
+
+  static const _pleromaTagUrlParts = [
+    "/tag/",
+  ];
+
+  static const _tagUrlParts = [
+    ..._mastodonTagUrlParts,
+    ..._pleromaTagUrlParts,
+  ];
+
+  static String extractHashtagFromTagUrlIfExist(String url) {
+    String hashtag;
+
+    url = url.toLowerCase();
+
+    for (var tagUrlPart in _tagUrlParts) {
+      tagUrlPart = tagUrlPart.toLowerCase();
+
+      var indexOf = url.indexOf(tagUrlPart);
+
+      if (indexOf > 0) {
+        var startIndex = indexOf + tagUrlPart.length;
+        hashtag = url.substring(startIndex);
+        break;
+      }
+    }
+
+    return hashtag;
+  }
+
   static Future handleUrlClickWithInstanceLocation({
     @required BuildContext context,
     @required String url,
     @required IInstanceLocationBloc instanceLocationBloc,
   }) async {
+    var isLocal =
+        instanceLocationBloc.instanceLocation == InstanceLocation.local;
+
     var uri = Uri.parse(url);
 
     var host = uri.host;
     // check relative links
     if (host?.isNotEmpty != true) {
-      if (instanceLocationBloc.instanceLocation == InstanceLocation.local) {
+      if (isLocal) {
         url = _calculateLocalInstanceAbsoluteUrl(context, url);
       } else {
         url = _calculateRemoteInstanceAbsoluteUrl(instanceLocationBloc, url);
       }
     }
+
+    var hashtag = extractHashtagFromTagUrlIfExist(url);
+
+    if (hashtag != null) {
+      var currentAuthInstanceBloc =
+          ICurrentAuthInstanceBloc.of(context, listen: false);
+
+      var localInstanceDomain = currentAuthInstanceBloc.currentInstance.urlHost;
+
+      if (isLocal) {
+        // status or account note with hashtag fetched from local instance
+
+        var uri = Uri.parse(url);
+
+        var urlHost = uri.host;
+
+        if (localInstanceDomain != urlHost) {
+          return showRemoteInstanceHashtagActionsDialog(
+            context: context,
+            url: url,
+            remoteInstanceDomain: urlHost,
+            localInstanceDomain: localInstanceDomain,
+            hashtag: hashtag,
+          );
+        } else {
+          return goToHashtagPage(
+            context: context,
+            hashtag: Hashtag(
+              name: hashtag,
+              url: url,
+              history: null,
+            ),
+          );
+        }
+      } else {
+        // status or account note with hashtag fetched from remote instance
+
+        var remoteInstanceDomain =
+            instanceLocationBloc.remoteInstanceUriOrNull?.host;
+
+        return showRemoteInstanceHashtagActionsDialog(
+          context: context,
+          url: url,
+          remoteInstanceDomain: remoteInstanceDomain,
+          localInstanceDomain: localInstanceDomain,
+          hashtag: hashtag,
+        );
+      }
+    }
+
+
 
     return handleUrlClick(
       context: context,

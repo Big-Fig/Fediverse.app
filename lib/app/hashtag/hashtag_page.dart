@@ -17,13 +17,16 @@ import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
@@ -103,18 +106,60 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   }
 }
 
-void goToHashtagPage({
+Future showRemoteInstanceHashtagActionsDialog({
+  @required BuildContext context,
+  @required String url,
+  @required String remoteInstanceDomain,
+  @required String localInstanceDomain,
+  @required String hashtag,
+}) =>
+    FediActionsDialog(
+      context: context,
+      title: S.of(context).app_hashtag_remoteInstance_dialog_title(hashtag),
+      actions: [
+        DialogAction(
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnLocal(
+                  localInstanceDomain),
+          onAction: (context) {
+            Navigator.of(context).pop();
+            goToHashtagPage(
+              context: context,
+              hashtag: Hashtag(
+                name: hashtag,
+                url: url,
+                history: null,
+              ),
+            );
+          },
+        ),
+        DialogAction(
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser(remoteInstanceDomain),
+          onAction: (context) {
+            Navigator.of(context).pop();
+            UrlHelper.handleUrlClick(
+              context: context,
+              url: url,
+            );
+          },
+        ),
+      ],
+    ).show(context);
+
+Future goToHashtagPage({
   @required BuildContext context,
   @required IHashtag hashtag,
-}) {
-  Navigator.push(
-    context,
-    createHashtagPageRoute(
-      context: context,
-      hashtag: hashtag,
-    ),
-  );
-}
+}) =>
+    Navigator.push(
+      context,
+      createHashtagPageRoute(
+        context: context,
+        hashtag: hashtag,
+      ),
+    );
 
 MaterialPageRoute createHashtagPageRoute({
   @required BuildContext context,

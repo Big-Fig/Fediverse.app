@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-02-17T14:58:45+00:00",
+    "@@last_modified": "2021-03-02T20:04:46+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -715,5 +715,8 @@
     "app_chat_message_pending_actions_dialog_action_resend": "Send again",
     "app_chat_message_deleted_desc": "Message deleted",
     "app_chat_action_delete_dialog_title": "Delete conversation",
-    "app_chat_action_delete_dialog_content": "Are you sure?"
+    "app_chat_action_delete_dialog_content": "Are you sure?",
+    "app_hashtag_remoteInstance_dialog_title": "#{hashtag}",
+    "app_hashtag_remoteInstance_dialog_action_openOnLocal": "Open on {localDomain} inside app",
+    "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": "Open on {remoteDomain} in browser"
 }
