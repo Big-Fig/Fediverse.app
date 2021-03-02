@@ -14,26 +14,30 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
     if (statusBloc.isReply) {
       return StreamBuilder<IAccount>(
-          stream: statusBloc.watchInReplyToAccount(),
-          initialData: null,
-          builder: (context, snapshot) {
-            var account = snapshot.data;
+        stream: statusBloc.watchInReplyToAccount(),
+        initialData: null,
+        builder: (context, snapshot) {
+          var account = snapshot.data;
 
-            // todo: show progress
-            if (account == null) {
-              return const SizedBox.shrink();
-            }
+          // todo: show progress
+          if (account == null) {
+            return const SizedBox.shrink();
+          }
 
-            return StatusSubHeaderWidget(
-                descText: S.of(context).app_status_reply_header,
-                account: account,
-                icon: FediIcons.message,
-                accountCallback: accountCallback);
-          });
+          return StatusSubHeaderWidget(
+            descText: S.of(context).app_status_reply_header,
+            account: account,
+            icon: FediIcons.message,
+            accountCallback: accountCallback,
+          );
+        },
+      );
     } else {
       return const SizedBox.shrink();
     }
   }
 
-  const StatusReplySubHeaderWidget({this.accountCallback});
+  const StatusReplySubHeaderWidget({
+    this.accountCallback,
+  });
 }
