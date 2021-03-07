@@ -229,13 +229,15 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
-    // create queue instead of parallel request to avoid throttle limit on server
+    // create queue instead of parallel requests to avoid throttle limit on server
     for (var chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
-      await pleromaChatService.deleteChatMessage(
-        chatId: chat.remoteId,
-        chatMessageRemoteId: remoteId,
-      );
+      if (chatMessage.isPendingStatePublishedOrNull) {
+        await pleromaChatService.deleteChatMessage(
+          chatId: chat.remoteId,
+          chatMessageRemoteId: remoteId,
+        );
+      }
 
       await chatMessageRepository.markChatMessageAsDeleted(
         chatMessageRemoteId: remoteId,

@@ -143,4 +143,5 @@ class ConversationChatMessageBloc extends ChatMessageBloc
       postStatusData: chatMessage.status.calculatePostStatusData(),
       oldPendingFailedConversationChatMessage: chatMessage,
     );
+
 }

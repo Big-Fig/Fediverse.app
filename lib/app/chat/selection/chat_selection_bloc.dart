@@ -11,7 +11,6 @@ abstract class IChatSelectionBloc implements IDisposable {
 
   Stream<bool> get isSomethingSelectedStream;
 
-
   bool get isAllSelectedItemsFromMe;
 
   Stream<bool> get isAllSelectedItemsFromMeStream;

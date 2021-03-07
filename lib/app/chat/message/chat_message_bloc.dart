@@ -62,10 +62,13 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<bool> get isPublishedAndNotDeletedAndNotLocallyHiddenStream;
 
+  bool get isNotPending;
+
+  Stream<bool> get isNotPendingStream;
+
   Future refreshFromNetwork();
 
   Future delete();
 
   Future resendPendingFailed();
 }
-
