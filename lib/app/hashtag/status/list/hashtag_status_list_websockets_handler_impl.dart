@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
@@ -21,7 +22,9 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
     @required WebSocketsListenType listenType,
+    @required IMyAccountBloc myAccountBloc,
   }) : super(
+    myAccountBloc: myAccountBloc,
           webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
             hashtag: hashtag,
             local: local,

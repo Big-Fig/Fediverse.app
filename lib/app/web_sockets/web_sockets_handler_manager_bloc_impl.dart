@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
@@ -26,6 +27,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IConversationChatNewMessagesHandlerBloc
       conversationChatNewMessagesHandlerBloc;
+  final IMyAccountBloc myAccountBloc;
 
   WebSocketsHandlerManagerBloc({
     @required this.pleromaWebSocketsService,
@@ -34,6 +36,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.chatNewMessagesHandlerBloc,
     @required this.conversationChatNewMessagesHandlerBloc,
+    @required this.myAccountBloc,
   });
 
   @override
@@ -43,6 +46,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     @required bool chat,
   }) =>
       MyAccountWebSocketsHandler(
+        myAccountBloc: myAccountBloc,
         listenType: listenType,
         notification: notification,
         chat: chat,
@@ -72,22 +76,24 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
             conversationChatNewMessagesHandlerBloc,
         accountId: accountId,
         notification: notification,
+        myAccountBloc: myAccountBloc,
       );
 
   @override
   IDisposable listenPleromaChatChannel({
     @required WebSocketsListenType listenType,
-  })  => PleromaChatWebSocketsHandler(
-      listenType: listenType,
-      notificationRepository: notificationRepository,
-      conversationRepository: conversationRepository,
-      statusRepository: statusRepository,
-      pleromaWebSocketsService: pleromaWebSocketsService,
-      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-      conversationChatNewMessagesHandlerBloc:
-      conversationChatNewMessagesHandlerBloc,
-    );
-
+  }) =>
+      PleromaChatWebSocketsHandler(
+        listenType: listenType,
+        notificationRepository: notificationRepository,
+        conversationRepository: conversationRepository,
+        statusRepository: statusRepository,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        conversationChatNewMessagesHandlerBloc:
+            conversationChatNewMessagesHandlerBloc,
+        myAccountBloc: myAccountBloc,
+      );
 
   @override
   IDisposable listenConversationChannel({
@@ -103,7 +109,9 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
             conversationChatNewMessagesHandlerBloc,
         accountId: null,
         listenType: listenType,
+        myAccountBloc: myAccountBloc,
       );
+
   @override
   IDisposable listenPublicChannel({
     @required WebSocketsListenType listenType,
@@ -125,6 +133,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
+        myAccountBloc: myAccountBloc,
       );
 
   @override
@@ -144,6 +153,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
+        myAccountBloc: myAccountBloc,
       );
 
   @override
@@ -161,5 +171,6 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
+        myAccountBloc: myAccountBloc,
       );
 }

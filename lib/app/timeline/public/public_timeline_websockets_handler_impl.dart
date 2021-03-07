@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
@@ -23,7 +24,9 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required bool onlyMedia,
     @required WebSocketsListenType listenType,
     @required String onlyFromInstance,
+    @required IMyAccountBloc myAccountBloc,
   }) : super(
+          myAccountBloc: myAccountBloc,
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
             onlyLocal: onlyLocal,
             onlyRemote: onlyRemote,
