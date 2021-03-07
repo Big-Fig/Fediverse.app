@@ -202,8 +202,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     }
 
-    var pendingStatePublishedOrNull = conversationLastStatus.pendingState == null ||
-        conversationLastStatus.pendingState == PendingState.published;
+    var pendingStatePublishedOrNull =
+        conversationLastStatus.pendingState == null ||
+            conversationLastStatus.pendingState == PendingState.published;
     if (pendingStatePublishedOrNull) {
       _lastPublishedMessageSubject.add(
         ConversationChatMessageStatusAdapter(conversationLastStatus),
@@ -304,11 +305,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
-    // create queue instead of parallel request to avoid throttle limit on server
+    // create queue instead of parallel requests to avoid throttle limit on server
     for (var chatMessage in chatMessages) {
-      await pleromaAuthStatusService.deleteStatus(
-        statusRemoteId: chatMessage.remoteId,
-      );
+      if (chatMessage.isPendingStatePublishedOrNull) {
+        await pleromaAuthStatusService.deleteStatus(
+          statusRemoteId: chatMessage.remoteId,
+        );
+      }
       await statusRepository.markStatusAsDeleted(
         statusRemoteId: chatMessage.remoteId,
       );

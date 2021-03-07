@@ -148,6 +148,14 @@ abstract class ChatMessageBloc extends DisposableOwner
       chatMessage.isPendingStateNotPublishedOrNull;
 
   @override
+  bool get isNotPending => chatMessage.isNotPending;
+
+  @override
+  Stream<bool> get isNotPendingStream => chatMessageStream.map(
+        (chatMessage) => chatMessage.isNotPending,
+      );
+
+  @override
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
       chatMessage.isPublishedAndNotDeletedAndNotLocallyHidden;
 
