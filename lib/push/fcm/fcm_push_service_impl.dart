@@ -64,9 +64,13 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     _logger.finest(() => "init");
 
     _logger.finest(() => "configure");
-    addDisposable(streamSubscription: _fcm.onTokenRefresh.listen((newToken) {
-      _onNewToken(newToken);
-    }));
+    addDisposable(
+      streamSubscription: _fcm.onTokenRefresh.listen(
+        (newToken) {
+          _onNewToken(newToken);
+        },
+      ),
+    );
 
     _fcm.configure(
       onMessage: (data) async =>
