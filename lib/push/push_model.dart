@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/enum/enum_values.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -29,7 +30,11 @@ class PushMessage {
   bool get isLaunchOrResume =>
       type == PushMessageType.launch || type == PushMessageType.resume;
 
-  PushMessage({this.typeString, this.notification, this.data});
+  PushMessage({
+    @required this.typeString,
+    @required this.notification,
+    @required this.data,
+  });
 
   @override
   String toString() {
@@ -42,11 +47,12 @@ class PushMessage {
     PushNotification notification,
     Map<String, dynamic> data,
     String typeString,
-  }) => PushMessage(
-      notification: notification ?? this.notification,
-      data: data ?? this.data,
-      typeString: typeString ?? this.typeString,
-    );
+  }) =>
+      PushMessage(
+        notification: notification ?? this.notification,
+        data: data ?? this.data,
+        typeString: typeString ?? this.typeString,
+      );
 
   factory PushMessage.fromJson(Map<String, dynamic> json) =>
       _$PushMessageFromJson(json);
@@ -94,7 +100,6 @@ extension PushMessageTypeStringExtension on String {
   }
 }
 
-
 EnumValues<PushMessageType> _pushMessageTypeEnumValues = EnumValues({
   "foreground": PushMessageType.foreground,
   "launch": PushMessageType.launch,
@@ -113,7 +118,10 @@ class PushNotification {
   @HiveField(1)
   final String body;
 
-  PushNotification({this.title, this.body});
+  PushNotification({
+    @required this.title,
+    @required this.body,
+  });
 
   @override
   String toString() {
