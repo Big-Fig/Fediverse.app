@@ -99,7 +99,9 @@ class PleromaChatService extends DisposableOwner
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: chatRelativeUrlPath,
-        queryArgs: pagination?.toQueryArgs(),
+        // todo: pagination not supported yet and API send error if pagination args exist
+        // https://git.pleroma.social/pleroma/pleroma/-/issues/2140
+        // queryArgs: pagination?.toQueryArgs(),
       ),
     );
 
