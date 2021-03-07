@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
@@ -9,11 +10,13 @@ import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("notification_push_loader_bloc_impl.dart");
@@ -26,6 +29,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   final INotificationRepository notificationRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IMyAccountBloc myAccountBloc;
 
   BehaviorSubject<NotificationPushLoaderNotification>
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
@@ -52,6 +56,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     @required this.pleromaNotificationService,
     @required this.notificationRepository,
     @required this.chatNewMessagesHandlerBloc,
+    @required this.myAccountBloc,
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
@@ -69,7 +74,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
-        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+      host: pleromaPushMessage.server,
+      acct: pleromaPushMessage.account,
+    );
 
     _logger.finest(() => "handlePush \n"
         "\t isForCurrentInstance = $isForCurrentInstance"
@@ -78,7 +85,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     if (isForCurrentInstance) {
       String remoteNotificationId = pleromaPushMessage.notificationId;
       var remoteNotification = await pleromaNotificationService.getNotification(
-          notificationRemoteId: remoteNotificationId);
+        notificationRemoteId: remoteNotificationId,
+      );
 
       handled = true;
       if (remoteNotification != null) {
@@ -103,8 +111,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         if (pushHandlerMessage.pushMessage.isLaunchOrResume) {
           launchOrResumePushLoaderNotificationSubject.add(
             NotificationPushLoaderNotification(
-              notification: await notificationRepository
-                  .findByRemoteId(remoteNotification.id),
+              notification: await notificationRepository.findByRemoteId(
+                remoteNotification.id,
+              ),
               pushHandlerMessage: pushHandlerMessage,
             ),
           );
@@ -117,11 +126,24 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
 
+        var pleromaNotificationType = remoteNotification.typePleroma;
+
+        // refresh to update followRequestCount
+        if (pleromaNotificationType == PleromaNotificationType.followRequest) {
+          unawaited(
+            myAccountBloc.refreshFromNetwork(
+              isNeedPreFetchRelationship: false,
+            ),
+          );
+        }
+
         _handledNotificationsStreamController.add(
           NotificationPushLoaderNotification(
-              notification: await notificationRepository
-                  .findByRemoteId(remoteNotification.id),
-              pushHandlerMessage: pushHandlerMessage),
+            notification: await notificationRepository.findByRemoteId(
+              remoteNotification.id,
+            ),
+            pushHandlerMessage: pushHandlerMessage,
+          ),
         );
       }
     } else {

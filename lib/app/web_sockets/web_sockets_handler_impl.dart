@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
@@ -12,6 +14,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:pedantic/pedantic.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
@@ -27,6 +30,8 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final IConversationChatNewMessagesHandlerBloc
       conversationChatNewMessagesHandlerBloc;
 
+  final IMyAccountBloc myAccountBloc;
+
   final String statusListRemoteId;
   final String statusConversationRemoteId;
   final bool isFromHomeTimeline;
@@ -41,6 +46,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.conversationChatNewMessagesHandlerBloc,
     @required this.statusListRemoteId,
     @required this.statusConversationRemoteId,
+    @required this.myAccountBloc,
     @required this.isFromHomeTimeline,
     @required this.listenType,
   }) {
@@ -79,8 +85,20 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
       case PleromaWebSocketsEventType.notification:
         var notification = event.parsePayloadAsNotification();
 
-        await notificationRepository.upsertRemoteNotification(notification,
-            unread: true);
+        var pleromaNotificationType = notification.typePleroma;
+        // refresh to update followRequestCount
+        if (pleromaNotificationType == PleromaNotificationType.followRequest) {
+          unawaited(
+            myAccountBloc.refreshFromNetwork(
+              isNeedPreFetchRelationship: false,
+            ),
+          );
+        }
+
+        await notificationRepository.upsertRemoteNotification(
+          notification,
+          unread: true,
+        );
 
         var chatMessage = notification.chatMessage;
         if (chatMessage != null) {

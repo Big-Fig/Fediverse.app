@@ -556,11 +556,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
 
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
-        currentInstance: currentInstance,
-        pushHandlerBloc: pushHandlerBloc,
-        notificationRepository: notificationRepository,
-        pleromaNotificationService: pleromaNotificationService,
-        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
+      currentInstance: currentInstance,
+      pushHandlerBloc: pushHandlerBloc,
+      notificationRepository: notificationRepository,
+      pleromaNotificationService: pleromaNotificationService,
+      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      myAccountBloc: myAccountBloc,
+    );
 
     addDisposable(disposable: notificationPushLoaderBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -861,6 +863,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
       conversationChatNewMessagesHandlerBloc:
           conversationChatNewMessagesHandlerBloc,
+      myAccountBloc: myAccountBloc,
     );
 
     addDisposable(disposable: webSocketsHandlerManagerBloc);
