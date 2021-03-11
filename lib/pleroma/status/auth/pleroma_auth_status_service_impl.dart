@@ -13,7 +13,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   final IPleromaAuthRestService authRestService;
 
   @override
-  bool get isPleromaInstance => authRestService.isPleromaInstance;
+  bool get isPleroma => authRestService.isPleroma;
 
   PleromaAuthStatusService({
     @required this.authRestService,
@@ -39,7 +39,7 @@ class PleromaAuthStatusService extends PleromaStatusService
   }) async {
     var bodyJson = <String, dynamic>{};
     if (expireDurationInSeconds != null) {
-      assert(isPleromaInstance,
+      assert(isPleroma,
           "expireDurationInSeconds supported only on Pleroma");
       bodyJson["expire_in"] = expireDurationInSeconds;
     }
@@ -273,4 +273,8 @@ class PleromaAuthStatusService extends PleromaStatusService
 
     return parseScheduledStatusResponse(httpResponse);
   }
+
+
+  @override
+  bool get isMastodon => authRestService.isMastodon;
 }

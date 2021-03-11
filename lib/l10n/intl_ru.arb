@@ -1,6 +1,6 @@
 {
     "@@locale": "ru",
-    "@@last_modified": "2021-03-02T19:55:42+00:00",
+    "@@last_modified": "2021-03-11T19:35:22+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "По умолчанию",
@@ -718,5 +718,10 @@
     "app_chat_action_delete_dialog_content": "Вы уверены?",
     "app_hashtag_remoteInstance_dialog_title": "#{hashtag}",
     "app_hashtag_remoteInstance_dialog_action_openOnLocal": "Открыть на {localDomain} в приложения",
-    "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": "Открыть на {remoteDomain} в браузере"
+    "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": "Открыть на {remoteDomain} в браузере",
+    "app_notification_header_report": "Жалоба от {acct}",
+    "app_notification_all_dialog_title": "Уведомления",
+    "app_notification_all_dialog_action_pushNotifications": "Настройки Push уведомлений",
+    "app_notification_all_dialog_action_markAllAsRead": "Отметить ВСЕ как прочитанное",
+    "app_notification_all_dialog_action_dismissAll": "Очистить ВСЕ"
 }

@@ -26,12 +26,18 @@ enum MastodonNotificationType {
   followRequest,
 }
 
-final mastodonNotificationTypeValues = EnumValues({
-  "follow": MastodonNotificationType.follow,
-  "favourite": MastodonNotificationType.favourite,
-  "reblog": MastodonNotificationType.reblog,
-  "mention": MastodonNotificationType.mention,
-  "poll": MastodonNotificationType.poll,
-  "move": MastodonNotificationType.move,
-  "follow_request": MastodonNotificationType.followRequest,
-});
+extension MastodonNotificationTypeExtension on MastodonNotificationType {
+  String toJsonValue() => mastodonNotificationTypeValues.enumToValueMap[this];
+}
+
+final mastodonNotificationTypeValues = EnumValues(
+  {
+    "follow": MastodonNotificationType.follow,
+    "favourite": MastodonNotificationType.favourite,
+    "reblog": MastodonNotificationType.reblog,
+    "mention": MastodonNotificationType.mention,
+    "poll": MastodonNotificationType.poll,
+    "move": MastodonNotificationType.move,
+    "follow_request": MastodonNotificationType.followRequest,
+  },
+);

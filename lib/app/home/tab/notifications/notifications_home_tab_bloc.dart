@@ -6,4 +6,8 @@ abstract class INotificationsHomeTabBloc implements IHomeTabBloc {
   static INotificationsHomeTabBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<INotificationsHomeTabBloc>(context, listen: listen);
+
+  Future dismissAll();
+
+  Future markAllAsRead();
 }

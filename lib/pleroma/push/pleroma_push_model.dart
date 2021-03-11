@@ -310,8 +310,12 @@ class PleromaPushMessageBody {
   @HiveField(3)
   final String notificationType;
 
-  PleromaPushMessageBody(
-      {this.notificationId, this.server, this.account, this.notificationType});
+  PleromaPushMessageBody({
+    this.notificationId,
+    this.server,
+    this.account,
+    this.notificationType,
+  });
 
   factory PleromaPushMessageBody.fromJson(Map<String, dynamic> json) =>
       _$PleromaPushMessageBodyFromJson(json);

@@ -552,7 +552,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   List<String> calculateToField() {
-    if (pleromaAuthStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleroma) {
       return mentionedAccts;
     } else {
       return null;
@@ -560,7 +560,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String calculateStatusTextField() {
-    if (pleromaAuthStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleroma) {
       return inputText;
     } else {
       if (originInReplyToStatus != null) {

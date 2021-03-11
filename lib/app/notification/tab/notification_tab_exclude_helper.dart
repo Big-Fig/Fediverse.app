@@ -1,9 +1,11 @@
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
+import 'package:flutter/widgets.dart';
 
 class NotificationTabExcludeHelper {
-  static List<PleromaNotificationType> mapTabToExcludeTypes(
-      NotificationTab tab) {
+  static List<PleromaNotificationType> mapTabToExcludeTypes({
+    @required NotificationTab tab,
+  }) {
     List<PleromaNotificationType> excludeTypes;
 
     switch (tab) {
@@ -33,6 +35,3 @@ class NotificationTabExcludeHelper {
   }
 }
 
-extension NotificationTabExcludeExtension on NotificationTab {
-  List<PleromaNotificationType> asExcludeTypes() => NotificationTabExcludeHelper.mapTabToExcludeTypes(this);
-}

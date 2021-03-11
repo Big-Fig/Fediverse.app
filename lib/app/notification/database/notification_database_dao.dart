@@ -302,11 +302,17 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-
   Future markAsRead({@required String remoteId}) {
     var update = "UPDATE db_notifications "
         "SET unread = 0 "
         "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+  Future markAllAsRead() {
+    var update = "UPDATE db_notifications "
+        "SET unread = 0 ";
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
@@ -362,7 +368,5 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
           SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
-      query
-        ..where(
-            (status) => status.unread.equals(true));
+      query..where((status) => status.unread.equals(true));
 }

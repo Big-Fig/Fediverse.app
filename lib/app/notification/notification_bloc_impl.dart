@@ -170,7 +170,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Future markAsRead() async {
     await notificationRepository.markAsRead(notification: notification);
-    if (pleromaNotificationService.isPleromaInstance) {
+    if (pleromaNotificationService.isPleroma) {
       unawaited(
         pleromaNotificationService.markAsReadSingle(
           notificationRemoteId: notification.remoteId,

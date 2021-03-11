@@ -76,10 +76,11 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int limit,
+    @required INotification newerThan,
+    @required INotification olderThan,
+  }) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
       pagination: PleromaPaginationRequest(
@@ -87,11 +88,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
-      excludeTypes: excludeTypes
-          ?.map(
-            (type) => type.toJsonValue(),
-          )
-          ?.toList(),
+      excludeTypes: excludeTypes,
     );
 
     if (remoteNotifications != null) {

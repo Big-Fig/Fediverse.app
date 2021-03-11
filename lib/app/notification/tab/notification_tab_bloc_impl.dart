@@ -42,7 +42,9 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   INotificationCachedListBloc createListService() => NotificationCachedListBloc(
         notificationRepository: notificationRepository,
         pleromaNotificationService: pleromaNotificationService,
-        excludeTypes: NotificationTabExcludeHelper.mapTabToExcludeTypes(tab),
+        excludeTypes: NotificationTabExcludeHelper.mapTabToExcludeTypes(
+          tab: tab,
+        ),
         filterRepository: filterRepository,
       );
 

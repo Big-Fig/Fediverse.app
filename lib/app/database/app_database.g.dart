@@ -4410,6 +4410,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String chatMessageRemoteId;
   final String emoji;
   final PleromaNotificationPleromaPart pleroma;
+  final PleromaAccountReport report;
+  final PleromaChatMessage chatMessage;
+  final PleromaAccount target;
   final bool unread;
   final String type;
   final DateTime createdAt;
@@ -4423,6 +4426,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.chatMessageRemoteId,
       this.emoji,
       this.pleroma,
+      this.report,
+      this.chatMessage,
+      this.target,
       this.unread,
       this.type,
       @required this.createdAt,
@@ -4451,6 +4457,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emoji']),
       pleroma: $DbNotificationsTable.$converter0.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma'])),
+      report: $DbNotificationsTable.$converter1.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}report'])),
+      chatMessage: $DbNotificationsTable.$converter2.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}chat_message'])),
+      target: $DbNotificationsTable.$converter3.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}target'])),
       unread:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
       type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
@@ -4487,6 +4499,18 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
     if (!nullToAbsent || pleroma != null) {
       final converter = $DbNotificationsTable.$converter0;
       map['pleroma'] = Variable<String>(converter.mapToSql(pleroma));
+    }
+    if (!nullToAbsent || report != null) {
+      final converter = $DbNotificationsTable.$converter1;
+      map['report'] = Variable<String>(converter.mapToSql(report));
+    }
+    if (!nullToAbsent || chatMessage != null) {
+      final converter = $DbNotificationsTable.$converter2;
+      map['chat_message'] = Variable<String>(converter.mapToSql(chatMessage));
+    }
+    if (!nullToAbsent || target != null) {
+      final converter = $DbNotificationsTable.$converter3;
+      map['target'] = Variable<String>(converter.mapToSql(target));
     }
     if (!nullToAbsent || unread != null) {
       map['unread'] = Variable<bool>(unread);
@@ -4526,6 +4550,13 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       pleroma: pleroma == null && nullToAbsent
           ? const Value.absent()
           : Value(pleroma),
+      report:
+          report == null && nullToAbsent ? const Value.absent() : Value(report),
+      chatMessage: chatMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatMessage),
+      target:
+          target == null && nullToAbsent ? const Value.absent() : Value(target),
       unread:
           unread == null && nullToAbsent ? const Value.absent() : Value(unread),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
@@ -4552,6 +4583,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       emoji: serializer.fromJson<String>(json['emoji']),
       pleroma:
           serializer.fromJson<PleromaNotificationPleromaPart>(json['pleroma']),
+      report: serializer.fromJson<PleromaAccountReport>(json['report']),
+      chatMessage: serializer.fromJson<PleromaChatMessage>(json['chatMessage']),
+      target: serializer.fromJson<PleromaAccount>(json['target']),
       unread: serializer.fromJson<bool>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -4570,6 +4604,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'chatMessageRemoteId': serializer.toJson<String>(chatMessageRemoteId),
       'emoji': serializer.toJson<String>(emoji),
       'pleroma': serializer.toJson<PleromaNotificationPleromaPart>(pleroma),
+      'report': serializer.toJson<PleromaAccountReport>(report),
+      'chatMessage': serializer.toJson<PleromaChatMessage>(chatMessage),
+      'target': serializer.toJson<PleromaAccount>(target),
       'unread': serializer.toJson<bool>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -4586,6 +4623,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String chatMessageRemoteId,
           String emoji,
           PleromaNotificationPleromaPart pleroma,
+          PleromaAccountReport report,
+          PleromaChatMessage chatMessage,
+          PleromaAccount target,
           bool unread,
           String type,
           DateTime createdAt,
@@ -4599,6 +4639,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
         emoji: emoji ?? this.emoji,
         pleroma: pleroma ?? this.pleroma,
+        report: report ?? this.report,
+        chatMessage: chatMessage ?? this.chatMessage,
+        target: target ?? this.target,
         unread: unread ?? this.unread,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
@@ -4615,6 +4658,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('emoji: $emoji, ')
           ..write('pleroma: $pleroma, ')
+          ..write('report: $report, ')
+          ..write('chatMessage: $chatMessage, ')
+          ..write('target: $target, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
           ..write('createdAt: $createdAt, ')
@@ -4641,11 +4687,19 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                               $mrjc(
                                   pleroma.hashCode,
                                   $mrjc(
-                                      unread.hashCode,
+                                      report.hashCode,
                                       $mrjc(
-                                          type.hashCode,
-                                          $mrjc(createdAt.hashCode,
-                                              dismissed.hashCode))))))))))));
+                                          chatMessage.hashCode,
+                                          $mrjc(
+                                              target.hashCode,
+                                              $mrjc(
+                                                  unread.hashCode,
+                                                  $mrjc(
+                                                      type.hashCode,
+                                                      $mrjc(
+                                                          createdAt.hashCode,
+                                                          dismissed
+                                                              .hashCode)))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -4658,6 +4712,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.chatMessageRemoteId == this.chatMessageRemoteId &&
           other.emoji == this.emoji &&
           other.pleroma == this.pleroma &&
+          other.report == this.report &&
+          other.chatMessage == this.chatMessage &&
+          other.target == this.target &&
           other.unread == this.unread &&
           other.type == this.type &&
           other.createdAt == this.createdAt &&
@@ -4673,6 +4730,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String> chatMessageRemoteId;
   final Value<String> emoji;
   final Value<PleromaNotificationPleromaPart> pleroma;
+  final Value<PleromaAccountReport> report;
+  final Value<PleromaChatMessage> chatMessage;
+  final Value<PleromaAccount> target;
   final Value<bool> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
@@ -4686,6 +4746,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.chatMessageRemoteId = const Value.absent(),
     this.emoji = const Value.absent(),
     this.pleroma = const Value.absent(),
+    this.report = const Value.absent(),
+    this.chatMessage = const Value.absent(),
+    this.target = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -4700,6 +4763,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.chatMessageRemoteId = const Value.absent(),
     this.emoji = const Value.absent(),
     this.pleroma = const Value.absent(),
+    this.report = const Value.absent(),
+    this.chatMessage = const Value.absent(),
+    this.target = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     @required DateTime createdAt,
@@ -4716,6 +4782,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     Expression<String> chatMessageRemoteId,
     Expression<String> emoji,
     Expression<String> pleroma,
+    Expression<String> report,
+    Expression<String> chatMessage,
+    Expression<String> target,
     Expression<bool> unread,
     Expression<String> type,
     Expression<DateTime> createdAt,
@@ -4731,6 +4800,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
         'chat_message_remote_id': chatMessageRemoteId,
       if (emoji != null) 'emoji': emoji,
       if (pleroma != null) 'pleroma': pleroma,
+      if (report != null) 'report': report,
+      if (chatMessage != null) 'chat_message': chatMessage,
+      if (target != null) 'target': target,
       if (unread != null) 'unread': unread,
       if (type != null) 'type': type,
       if (createdAt != null) 'created_at': createdAt,
@@ -4747,6 +4819,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String> chatMessageRemoteId,
       Value<String> emoji,
       Value<PleromaNotificationPleromaPart> pleroma,
+      Value<PleromaAccountReport> report,
+      Value<PleromaChatMessage> chatMessage,
+      Value<PleromaAccount> target,
       Value<bool> unread,
       Value<String> type,
       Value<DateTime> createdAt,
@@ -4760,6 +4835,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
       emoji: emoji ?? this.emoji,
       pleroma: pleroma ?? this.pleroma,
+      report: report ?? this.report,
+      chatMessage: chatMessage ?? this.chatMessage,
+      target: target ?? this.target,
       unread: unread ?? this.unread,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
@@ -4796,6 +4874,19 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       final converter = $DbNotificationsTable.$converter0;
       map['pleroma'] = Variable<String>(converter.mapToSql(pleroma.value));
     }
+    if (report.present) {
+      final converter = $DbNotificationsTable.$converter1;
+      map['report'] = Variable<String>(converter.mapToSql(report.value));
+    }
+    if (chatMessage.present) {
+      final converter = $DbNotificationsTable.$converter2;
+      map['chat_message'] =
+          Variable<String>(converter.mapToSql(chatMessage.value));
+    }
+    if (target.present) {
+      final converter = $DbNotificationsTable.$converter3;
+      map['target'] = Variable<String>(converter.mapToSql(target.value));
+    }
     if (unread.present) {
       map['unread'] = Variable<bool>(unread.value);
     }
@@ -4822,6 +4913,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
           ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('emoji: $emoji, ')
           ..write('pleroma: $pleroma, ')
+          ..write('report: $report, ')
+          ..write('chatMessage: $chatMessage, ')
+          ..write('target: $target, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
           ..write('createdAt: $createdAt, ')
@@ -4934,6 +5028,44 @@ class $DbNotificationsTable extends DbNotifications
     );
   }
 
+  final VerificationMeta _reportMeta = const VerificationMeta('report');
+  GeneratedTextColumn _report;
+  @override
+  GeneratedTextColumn get report => _report ??= _constructReport();
+  GeneratedTextColumn _constructReport() {
+    return GeneratedTextColumn(
+      'report',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _chatMessageMeta =
+      const VerificationMeta('chatMessage');
+  GeneratedTextColumn _chatMessage;
+  @override
+  GeneratedTextColumn get chatMessage =>
+      _chatMessage ??= _constructChatMessage();
+  GeneratedTextColumn _constructChatMessage() {
+    return GeneratedTextColumn(
+      'chat_message',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _targetMeta = const VerificationMeta('target');
+  GeneratedTextColumn _target;
+  @override
+  GeneratedTextColumn get target => _target ??= _constructTarget();
+  GeneratedTextColumn _constructTarget() {
+    return GeneratedTextColumn(
+      'target',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedBoolColumn _unread;
   @override
@@ -4992,6 +5124,9 @@ class $DbNotificationsTable extends DbNotifications
         chatMessageRemoteId,
         emoji,
         pleroma,
+        report,
+        chatMessage,
+        target,
         unread,
         type,
         createdAt,
@@ -5048,6 +5183,9 @@ class $DbNotificationsTable extends DbNotifications
           _emojiMeta, emoji.isAcceptableOrUnknown(data['emoji'], _emojiMeta));
     }
     context.handle(_pleromaMeta, const VerificationResult.success());
+    context.handle(_reportMeta, const VerificationResult.success());
+    context.handle(_chatMessageMeta, const VerificationResult.success());
+    context.handle(_targetMeta, const VerificationResult.success());
     if (data.containsKey('unread')) {
       context.handle(_unreadMeta,
           unread.isAcceptableOrUnknown(data['unread'], _unreadMeta));
@@ -5084,6 +5222,12 @@ class $DbNotificationsTable extends DbNotifications
 
   static TypeConverter<PleromaNotificationPleromaPart, String> $converter0 =
       PleromaNotificationPleromaPartDatabaseConverter();
+  static TypeConverter<PleromaAccountReport, String> $converter1 =
+      PleromaAccountReportDatabaseConverter();
+  static TypeConverter<PleromaChatMessage, String> $converter2 =
+      PleromaChatMessageDatabaseConverter();
+  static TypeConverter<PleromaAccount, String> $converter3 =
+      PleromaAccountDatabaseConverter();
 }
 
 class DbConversationStatus extends DataClass

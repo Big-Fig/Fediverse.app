@@ -267,7 +267,7 @@ class LocalStatusBloc extends StatusBloc {
   }) async {
     if (duration != null) {
       assert(
-        pleromaAuthStatusService.isPleromaInstance,
+        pleromaAuthStatusService.isPleroma,
         "Muting with duration supported only on pleroma",
       );
     }
@@ -432,5 +432,5 @@ class LocalStatusBloc extends StatusBloc {
   Uri get remoteInstanceUriOrNull => null;
 
   @override
-  bool get isPleromaInstance => pleromaAuthStatusService.isPleromaInstance;
+  bool get isPleromaInstance => pleromaAuthStatusService.isPleroma;
 }

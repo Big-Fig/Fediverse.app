@@ -264,6 +264,30 @@ class PleromaAccountRelationshipAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
+PleromaAccountReport _$PleromaAccountReportFromJson(Map<String, dynamic> json) {
+  return PleromaAccountReport(
+    account: json['account'] == null
+        ? null
+        : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    statuses: (json['statuses'] as List)
+        ?.map((e) => e == null
+            ? null
+            : PleromaStatus.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    user: json['user'] == null
+        ? null
+        : PleromaAccount.fromJson(json['user'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$PleromaAccountReportToJson(
+        PleromaAccountReport instance) =>
+    <String, dynamic>{
+      'account': instance.account?.toJson(),
+      'statuses': instance.statuses?.map((e) => e?.toJson())?.toList(),
+      'user': instance.user?.toJson(),
+    };
+
 PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
   return PleromaAccount(
     username: json['username'] as String,

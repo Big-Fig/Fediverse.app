@@ -477,4 +477,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
     @required NotificationRepositoryFilters filters,
   }) =>
       createCountQuery(filters: filters).watchSingle();
+
+  @override
+  Future<DbNotificationPopulatedWrapper> getNewest() => getNotification(
+      filters: null,
+    );
+
+  @override
+  Future markAllAsRead() => dao.markAllAsRead();
 }

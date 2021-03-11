@@ -1,3 +1,4 @@
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';
@@ -10,6 +11,7 @@ import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_it
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/push/settings/edit/instance/edit_instance_push_settings_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
@@ -17,8 +19,10 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
@@ -180,6 +184,7 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var tabController = Provider.of<TabController>(context);
+    var notificationsHomeTabBloc = INotificationsHomeTabBloc.of(context);
     return FediTabMainHeaderBarWidget(
       leadingWidgets: null,
       content: NotificationTabTextTabIndicatorItemWidget(
@@ -188,11 +193,70 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
       ),
       endingWidgets: [
         FediIconInCircleBlurredButton(
-          FediIcons.filter,
+          FediIcons.menu_vertical,
           onPressed: () {
-            showEditInstancePushSettingsDialog(
+            FediActionsDialog(
               context: context,
-            );
+              title: S.of(context).app_notification_all_dialog_title,
+              actions: [
+                DialogAction(
+                  label: S
+                      .of(context)
+                      .app_notification_all_dialog_action_pushNotifications,
+                  icon: FediIcons.filter,
+                  onAction: (context) async {
+                    Navigator.of(context).pop();
+                    showEditInstancePushSettingsDialog(
+                      context: context,
+                    );
+                  },
+                ),
+                DialogAction(
+                  label: S
+                      .of(context)
+                      .app_notification_all_dialog_action_dismissAll,
+                  icon: FediIcons.delete,
+                  onAction: (contextDialog) async {
+                    Navigator.of(contextDialog).pop();
+
+                    Future.delayed(
+                      Duration(milliseconds: 100),
+                      () async {
+                        await PleromaAsyncOperationHelper
+                            .performPleromaAsyncOperation(
+                          context: context,
+                          asyncCode: () async {
+                            await notificationsHomeTabBloc.dismissAll();
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+                DialogAction(
+                  label: S
+                      .of(context)
+                      .app_notification_all_dialog_action_markAllAsRead,
+                  icon: FediIcons.check,
+                  onAction: (contextDialog) async {
+                    Navigator.of(contextDialog).pop();
+
+                    Future.delayed(
+                      Duration(milliseconds: 100),
+                      () async {
+                        await PleromaAsyncOperationHelper
+                            .performPleromaAsyncOperation(
+                          context: context,
+                          asyncCode: () async {
+                            await notificationsHomeTabBloc.markAllAsRead();
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ).show(context);
           },
         )
       ],

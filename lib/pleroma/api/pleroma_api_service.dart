@@ -26,5 +26,6 @@ bool mapIsReady(PleromaApiState pleromaState, bool isConnected) =>
 enum PleromaApiState { validAuth, brokenAuth, loggedOut }
 
 abstract class IPleromaAuthApi implements IPleromaApi {
-  bool get isPleromaInstance;
+  bool get isPleroma;
+  bool get isMastodon;
 }

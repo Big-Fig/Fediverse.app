@@ -8,16 +8,35 @@ class DbNotifications extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
+
   TextColumn get accountRemoteId => text()();
+
   TextColumn get statusRemoteId => text().nullable()();
+
   TextColumn get chatRemoteId => text().nullable()();
 
   TextColumn get chatMessageRemoteId => text().nullable()();
+
   TextColumn get emoji => text().nullable()();
+
   TextColumn get pleroma => text()
       .nullable()
       .map(PleromaNotificationPleromaPartDatabaseConverter())();
+
+  TextColumn get report => text()
+      .nullable()
+      .map(PleromaAccountReportDatabaseConverter())();
+
+  TextColumn get chatMessage => text()
+      .nullable()
+      .map(PleromaChatMessageDatabaseConverter())();
+
+  TextColumn get target => text()
+      .nullable()
+      .map(PleromaAccountDatabaseConverter())();
+
   BoolColumn get unread => boolean().nullable()();
+
   TextColumn get type => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();

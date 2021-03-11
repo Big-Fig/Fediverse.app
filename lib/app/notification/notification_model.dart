@@ -2,6 +2,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 
@@ -48,6 +50,10 @@ abstract class INotification {
 
   String get chatRemoteId;
 
+  IPleromaChatMessage get chatMessage;
+
+  IPleromaAccountReport get report;
+
   String get type;
 
   PleromaNotificationType get typePleroma;
@@ -65,6 +71,8 @@ abstract class INotification {
   bool get isContainsAccount;
 
   bool get dismissed;
+
+  IPleromaAccount get target;
 
   INotification copyWith({
     int localId,
@@ -180,11 +188,24 @@ class DbNotificationPopulatedWrapper implements INotification {
   @override
   String toString() {
     return 'DbNotificationPopulatedWrapper{'
-        'dbNotificationPopulated: $dbNotificationPopulated}';
+        'dbNotificationPopulated: $dbNotificationPopulated'
+        '}';
   }
 
   @override
   bool get dismissed => dbNotificationPopulated.dbNotification.dismissed;
+
+  @override
+  IPleromaChatMessage get chatMessage =>
+      dbNotificationPopulated.dbNotification.chatMessage;
+
+  @override
+  IPleromaAccountReport get report =>
+      dbNotificationPopulated.dbNotification.report;
+
+  @override
+  IPleromaAccount get target  =>
+      dbNotificationPopulated.dbNotification.target;
 }
 
 class DbNotificationPopulated {
@@ -192,15 +213,19 @@ class DbNotificationPopulated {
   final DbAccount dbAccount;
   final DbStatusPopulated dbStatusPopulated;
 
-  DbNotificationPopulated(
-      {@required this.dbNotification,
-      @required this.dbAccount,
-      @required this.dbStatusPopulated});
+  DbNotificationPopulated({
+    @required this.dbNotification,
+    @required this.dbAccount,
+    @required this.dbStatusPopulated,
+  });
 
   @override
   String toString() {
-    return 'DbNotificationPopulated{dbNotification: $dbNotification,'
-        ' dbAccount: $dbAccount, dbStatusPopulated: $dbStatusPopulated}';
+    return 'DbNotificationPopulated{'
+        'dbNotification: $dbNotification, '
+        'dbAccount: $dbAccount, '
+        'dbStatusPopulated: $dbStatusPopulated'
+        '}';
   }
 
   @override

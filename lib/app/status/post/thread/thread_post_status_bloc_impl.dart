@@ -199,7 +199,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   List<String> calculateToField() {
-    if (pleromaAuthStatusService.isPleromaInstance) {
+    if (pleromaAuthStatusService.isPleroma) {
       if (originInReplyToStatus != null && !originInReplyToStatusCanceled) {
         var inReplyToStatusAcct = originInReplyToStatus.account.acct;
 
