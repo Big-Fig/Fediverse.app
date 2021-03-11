@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/analytics/analytics_service.dart';
@@ -68,6 +70,12 @@ CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+void onCrash(Object exception, StackTrace stackTrace) {
+  print(exception);
+  print(stackTrace);
+  FirebaseCrashlytics.instance.recordError(exception, stackTrace);
+}
+
 void main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,86 +90,106 @@ void main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  var appTitle = await FediPackageInfoHelper.getAppName();
-  runNotInitializedSplashApp();
+  await runZonedGuarded(
+    () async {
+      var appTitle = await FediPackageInfoHelper.getAppName();
+      runNotInitializedSplashApp();
 
-  IInitBloc initBloc = InitBloc();
-  unawaited(initBloc.performAsyncInit());
+      IInitBloc initBloc = InitBloc();
+      unawaited(initBloc.performAsyncInit());
 
-  initBloc.initLoadingStateStream.listen((newState) async {
-    _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
-        "$newState");
+      initBloc.initLoadingStateStream.listen((newState) async {
+        _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
+            "$newState");
 
-    if (newState == AsyncInitLoadingState.finished) {
-      var currentInstanceBloc =
-          initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+        if (newState == AsyncInitLoadingState.finished) {
+          var currentInstanceBloc =
+              initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
-      currentInstanceBloc.currentInstanceStream
-          .distinct(
-              (previous, next) => previous?.userAtHost == next?.userAtHost)
-          .listen((currentInstance) {
-        runInitializedApp(
-          appContextBloc: initBloc.appContextBloc,
-          currentInstance: currentInstance,
-          appTitle: appTitle,
-        );
+          currentInstanceBloc.currentInstanceStream
+              .distinct(
+                  (previous, next) => previous?.userAtHost == next?.userAtHost)
+              .listen((currentInstance) {
+            runInitializedApp(
+              appContextBloc: initBloc.appContextBloc,
+              currentInstance: currentInstance,
+              appTitle: appTitle,
+            );
+          });
+        } else if (newState == AsyncInitLoadingState.failed) {
+          runInitFailedApp();
+        }
       });
-    } else if (newState == AsyncInitLoadingState.failed) {
-      runInitFailedApp();
-    }
-  });
+    },
+    onCrash,
+  );
 }
 
 void runNotInitializedSplashApp() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashPage(),
-    ),
+  runZonedGuarded(
+    () async {
+      runApp(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashPage(),
+        ),
+      );
+    },
+    onCrash,
   );
 }
 
 void runInitFailedApp() {
-  runApp(
-    MaterialApp(
-      localizationsDelegates: [
-        S.delegate,
-      ],
-      home: Scaffold(
-        backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            // todo: localization
-            child: Builder(
-              builder: (context) => Text(
-                S.of(context).app_init_fail,
-                style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+  _logger.severe(() => "failed to init App");
+  runZonedGuarded(
+    () async {
+      runApp(
+        MaterialApp(
+          localizationsDelegates: [
+            S.delegate,
+          ],
+          home: Scaffold(
+            backgroundColor: lightFediUiTheme.colorTheme.primaryDark,
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                // todo: localization
+                child: Builder(
+                  builder: (context) => Text(
+                    S.of(context).app_init_fail,
+                    style: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ),
+      );
+    },
+    onCrash,
   );
-  _logger.severe(() => "failed to init App");
 }
 
 void runInitializedSplashApp({
   @required AppContextBloc appContextBloc,
   @required String appTitle,
 }) {
-  runApp(
-    appContextBloc.provideContextToChild(
-      child: FediApp(
-        appTitle: appTitle,
-        instanceInitialized: false,
-        child: Provider<IAppContextBloc>.value(
-          value: appContextBloc,
-          child: const SplashPage(),
+  runZonedGuarded(
+    () async {
+      runApp(
+        appContextBloc.provideContextToChild(
+          child: FediApp(
+            appTitle: appTitle,
+            instanceInitialized: false,
+            child: Provider<IAppContextBloc>.value(
+              value: appContextBloc,
+              child: const SplashPage(),
+            ),
+          ),
         ),
-      ),
-    ),
+      );
+    },
+    onCrash,
   );
 }
 
@@ -169,17 +197,22 @@ void runInitializedApp({
   @required AppContextBloc appContextBloc,
   @required AuthInstance currentInstance,
   @required String appTitle,
-}) async {
+}) {
   _logger.finest(() => "runInitializedApp $runInitializedApp");
-  if (currentInstance != null) {
-    await runInitializedCurrentInstanceApp(
-      appContextBloc: appContextBloc,
-      appTitle: appTitle,
-      currentInstance: currentInstance,
-    );
-  } else {
-    runInitializedLoginApp(appContextBloc, appTitle);
-  }
+  runZonedGuarded(
+    () async {
+      if (currentInstance != null) {
+        await runInitializedCurrentInstanceApp(
+          appContextBloc: appContextBloc,
+          appTitle: appTitle,
+          currentInstance: currentInstance,
+        );
+      } else {
+        runInitializedLoginApp(appContextBloc, appTitle);
+      }
+    },
+    onCrash,
+  );
 }
 
 Future runInitializedCurrentInstanceApp({
@@ -187,41 +220,47 @@ Future runInitializedCurrentInstanceApp({
   @required String appTitle,
   @required AuthInstance currentInstance,
 }) async {
-  runInitializedSplashApp(
-    appContextBloc: appContextBloc,
-    appTitle: appTitle,
-  );
-  await currentInstanceContextBloc?.dispose();
+  await runZonedGuarded(
+    () async {
+      runInitializedSplashApp(
+        appContextBloc: appContextBloc,
+        appTitle: appTitle,
+      );
+      await currentInstanceContextBloc?.dispose();
 
-  currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
-    currentInstance: currentInstance,
-    appContextBloc: appContextBloc,
-  );
-  await currentInstanceContextBloc.performAsyncInit();
+      currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
+        currentInstance: currentInstance,
+        appContextBloc: appContextBloc,
+      );
+      await currentInstanceContextBloc.performAsyncInit();
 
-  INotificationPushLoaderBloc pushLoaderBloc = currentInstanceContextBloc.get();
+      INotificationPushLoaderBloc pushLoaderBloc =
+          currentInstanceContextBloc.get();
 
-  _logger.finest(
-      () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
-  runApp(
-    appContextBloc.provideContextToChild(
-      child: currentInstanceContextBloc.provideContextToChild(
-        child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
-          lazy: false,
-          create: (context) => createCurrentInstanceContextBloc(
-            context: context,
-            pushLoaderBloc: pushLoaderBloc,
-          ),
-          child: FediApp(
-            instanceInitialized: true,
-            appTitle: appTitle,
-            child: buildAuthInstanceContextInitWidget(
-              pushLoaderBloc: pushLoaderBloc,
+      _logger.finest(
+          () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
+      runApp(
+        appContextBloc.provideContextToChild(
+          child: currentInstanceContextBloc.provideContextToChild(
+            child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
+              lazy: false,
+              create: (context) => createCurrentInstanceContextBloc(
+                context: context,
+                pushLoaderBloc: pushLoaderBloc,
+              ),
+              child: FediApp(
+                instanceInitialized: true,
+                appTitle: appTitle,
+                child: buildAuthInstanceContextInitWidget(
+                  pushLoaderBloc: pushLoaderBloc,
+                ),
+              ),
             ),
           ),
         ),
-      ),
-    ),
+      );
+    },
+    onCrash,
   );
 }
 
@@ -339,17 +378,22 @@ Widget buildAuthInstanceContextInitWidget({
     );
 
 void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
-  runApp(
-    appContextBloc.provideContextToChild(
-      child: DisposableProvider<IJoinAuthInstanceBloc>(
-        create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
-        child: FediApp(
-          instanceInitialized: false,
-          appTitle: appTitle,
-          child: const FromScratchJoinAuthInstancePage(),
+  runZonedGuarded(
+    () async {
+      runApp(
+        appContextBloc.provideContextToChild(
+          child: DisposableProvider<IJoinAuthInstanceBloc>(
+            create: (context) => JoinAuthInstanceBloc(isFromScratch: true),
+            child: FediApp(
+              instanceInitialized: false,
+              appTitle: appTitle,
+              child: const FromScratchJoinAuthInstancePage(),
+            ),
+          ),
         ),
-      ),
-    ),
+      );
+    },
+    onCrash,
   );
 }
 
