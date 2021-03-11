@@ -327,7 +327,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       restService: restService,
       connectionService: connectionService,
       accessToken: currentInstance.token.accessToken,
-      isPleromaInstance: isPleromaInstance,
+      isPleroma: isPleromaInstance,
     );
     addDisposable(disposable: pleromaAuthRestService);
     await globalProviderService

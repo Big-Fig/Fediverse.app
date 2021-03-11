@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
@@ -64,8 +65,10 @@ class PleromaNotificationService extends DisposableOwner
   Future<IPleromaNotification> markAsReadSingle({
     @required String notificationRemoteId,
   }) async {
-    assert(restService.isPleromaInstance,
-        "markAsRead notification works only on pleroma");
+    assert(
+      restService.isPleroma,
+      "markAsRead notification works only on pleroma",
+    );
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -86,8 +89,10 @@ class PleromaNotificationService extends DisposableOwner
   Future<List<IPleromaNotification>> markAsReadList({
     @required String maxNotificationRemoteId,
   }) async {
-    assert(restService.isPleromaInstance,
-        "markAsRead notification works only on pleroma");
+    assert(
+      restService.isPleroma,
+      "markAsRead notification works only on pleroma",
+    );
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -105,36 +110,91 @@ class PleromaNotificationService extends DisposableOwner
     return parseNotificationListResponse(httpResponse);
   }
 
-  static const validTypes = {"follow", "favourite", "reblog", "mention"};
-
-  // only default set of types (follow, favourite, reblog, mention, poll)
-  // supported on all instances
-  List<String> _removeInvalidExcludeTypes(List<String> excludeTypes) {
-    return excludeTypes
-        .where((type) => validTypes.contains(type.toLowerCase()))
-        .toList();
-  }
-
   @override
   Future<List<IPleromaNotification>> getNotifications({
     IPleromaPaginationRequest pagination,
-    List<String> excludeTypes,
+    List<PleromaNotificationType> excludeTypes,
+    String onlyFromAccountRemoteId,
+    List<PleromaNotificationType> includeTypes,
+    List<PleromaVisibility> excludeVisibilities,
   }) async {
-    excludeTypes = excludeTypes?.isNotEmpty == true
-        ? _removeInvalidExcludeTypes(excludeTypes)
-        : null;
+    if (includeTypes?.isNotEmpty == true) {
+      assert(restService.isPleroma);
+      for (PleromaNotificationType includeType in includeTypes) {
+        assert(
+          IPleromaNotificationService.validPleromaTypesToInclude
+              .contains(includeType),
+          "includeType $includeType not supported on backend",
+        );
+      }
+    }
+
+    if (excludeVisibilities?.isNotEmpty == true) {
+      assert(restService.isPleroma);
+      for (PleromaVisibility excludeVisibility in excludeVisibilities) {
+        assert(
+          IPleromaNotificationService.validPleromaVisibilityToExclude
+              .contains(excludeVisibility),
+          "excludeVisibility $excludeVisibility not supported on backend",
+        );
+      }
+    }
+    if (excludeTypes?.isNotEmpty == true) {
+      if (restService.isMastodon) {
+        excludeTypes = excludeTypes
+            .where(
+              (excludeType) => IPleromaNotificationService
+                  .validMastodonTypesToExclude
+                  .contains(excludeType),
+            )
+            .toList();
+      } else if (restService.isPleroma) {
+        excludeTypes = excludeTypes
+            .where(
+              (excludeType) => IPleromaNotificationService
+                  .validPleromaTypesToExclude
+                  .contains(excludeType),
+            )
+            .toList();
+      }
+    }
+
+    if (onlyFromAccountRemoteId != null) {
+      // todo: remove when pleroma will support
+      assert(
+        restService.isMastodon,
+        "Not supported on Pleroma. "
+        "onlyFromAccountRemoteId added only in Mastodon 2.9.0 "
+        "but Pleroma targets Mastodon 2.7.2 API",
+      );
+    }
 
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: [
-          ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-          ...excludeTypes?.map(
-            (excludeType) => RestRequestQueryArg(
-              "exclude_types[]",
-              excludeType,
+          if (pagination != null) ...pagination?.toQueryArgs(),
+          if (excludeTypes?.isNotEmpty == true)
+            ...excludeTypes.map(
+              (excludeType) => RestRequestQueryArg(
+                "exclude_types[]",
+                excludeType.toJsonValue(),
+              ),
             ),
-          ),
+          if (includeTypes?.isNotEmpty == true)
+            ...includeTypes?.map(
+              (includeType) => RestRequestQueryArg(
+                "include_types[]",
+                includeType.toJsonValue(),
+              ),
+            ),
+          if (excludeVisibilities?.isNotEmpty == true)
+            ...excludeVisibilities?.map(
+              (excludeVisibility) => RestRequestQueryArg(
+                "exclude_visibilities[]",
+                excludeVisibility.toJsonValue(),
+              ),
+            ),
         ],
       ),
     );
@@ -229,5 +289,8 @@ class PleromaNotificationService extends DisposableOwner
   }
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
+  bool get isPleroma => restService.isPleroma;
+
+  @override
+  bool get isMastodon => restService.isMastodon;
 }

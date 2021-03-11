@@ -24,11 +24,12 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
-  PushHandlerBloc(
-      {@required this.unhandledLocalPreferencesBloc,
-      @required this.currentInstanceBloc,
-      @required this.instanceListBloc,
-      @required this.fcmPushService}) {
+  PushHandlerBloc({
+    @required this.unhandledLocalPreferencesBloc,
+    @required this.currentInstanceBloc,
+    @required this.instanceListBloc,
+    @required this.fcmPushService,
+  }) {
     addDisposable(
       streamSubscription: fcmPushService.messageStream.listen(
         (pushMessage) async {

@@ -43,6 +43,7 @@ import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/content/pleroma_content_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
@@ -108,7 +109,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 14;
+  int get schemaVersion => 15;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -157,6 +158,9 @@ class AppDatabase extends _$AppDatabase {
               case 13:
                 await _migrate13to14(m);
                 break;
+              case 14:
+                await _migrate14to15(m);
+                break;
               default:
                 throw "invalid currentVersion $currentVersion";
             }
@@ -164,6 +168,12 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate14to15(Migrator m) async {
+    await m.addColumn(dbNotifications, dbNotifications.chatMessage);
+    await m.addColumn(dbNotifications, dbNotifications.target);
+    await m.addColumn(dbNotifications, dbNotifications.report);
+  }
 
   Future<void> _migrate13to14(Migrator m) async {
     await m.addColumn(dbStatuses, dbStatuses.hiddenLocallyOnDevice);

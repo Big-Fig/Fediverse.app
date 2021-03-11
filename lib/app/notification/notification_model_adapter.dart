@@ -1,33 +1,16 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 
-INotification mapRemoteNotificationToLocalNotification(
-    IPleromaNotification remoteNotification,
-    {@required bool unread}) {
-  DbStatusPopulated statusPopulated;
-  if (remoteNotification.status != null) {
-    statusPopulated = mapRemoteStatusToLocalStatus(remoteNotification.status)
-        .dbStatusPopulated;
-  }
-  return DbNotificationPopulatedWrapper(DbNotificationPopulated(
-      dbNotification: mapRemoteNotificationToDbNotification(remoteNotification,
-          unread: unread),
-      dbAccount: mapRemoteAccountToDbAccount(remoteNotification.account),
-      dbStatusPopulated: statusPopulated));
-}
-
 DbNotification mapRemoteNotificationToDbNotification(
   IPleromaNotification remoteNotification, {
   @required bool unread,
 }) {
-
-  if(remoteNotification.pleroma?.isSeen == true) {
+  if (remoteNotification.pleroma?.isSeen == true) {
     unread = false;
   }
 
@@ -42,22 +25,29 @@ DbNotification mapRemoteNotificationToDbNotification(
     emoji: remoteNotification.emoji,
     pleroma: remoteNotification.pleroma,
     type: remoteNotification.type,
-    unread: unread,
+    unread:
+        remoteNotification.isSeen != null ? !remoteNotification.isSeen : unread,
   );
 }
 
 PleromaNotification mapLocalNotificationToRemoteNotification(
-    INotification localNotification) {
+  INotification localNotification,
+) {
   PleromaStatus status;
   if (localNotification.status != null) {
     status = mapLocalStatusToRemoteStatus(localNotification.status);
   }
   return PleromaNotification(
-      id: localNotification.remoteId,
-      createdAt: localNotification.createdAt,
-      account: mapLocalAccountToRemoteAccount(localNotification.account),
-      type: localNotification.type,
-      emoji: localNotification.emoji,
-      pleroma: localNotification.pleroma,
-      status: status);
+    id: localNotification.remoteId,
+    createdAt: localNotification.createdAt,
+    account: mapLocalAccountToRemoteAccount(localNotification.account),
+    type: localNotification.type,
+    emoji: localNotification.emoji,
+    pleroma: localNotification.pleroma,
+    chatMessage: localNotification.chatMessage,
+    target: localNotification.target,
+    report: localNotification.report,
+    isSeen: !localNotification.unread,
+    status: status,
+  );
 }

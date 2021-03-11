@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/content/pleroma_content_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
@@ -62,6 +63,42 @@ class PleromaNotificationPleromaPartDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaNotificationPleromaPart obj) =>
       obj.toJson();
+}
+
+class PleromaAccountReportDatabaseConverter
+    extends JsonDatabaseConverter<PleromaAccountReport> {
+  const PleromaAccountReportDatabaseConverter() : super();
+
+  @override
+  PleromaAccountReport fromJson(Map<String, dynamic> json) =>
+      PleromaAccountReport.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaAccountReport obj) => obj.toJson();
+}
+
+class PleromaChatMessageDatabaseConverter
+    extends JsonDatabaseConverter<PleromaChatMessage> {
+  const PleromaChatMessageDatabaseConverter() : super();
+
+  @override
+  PleromaChatMessage fromJson(Map<String, dynamic> json) =>
+      PleromaChatMessage.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaChatMessage obj) => obj.toJson();
+}
+
+class PleromaAccountDatabaseConverter
+    extends JsonDatabaseConverter<PleromaAccount> {
+  const PleromaAccountDatabaseConverter() : super();
+
+  @override
+  PleromaAccount fromJson(Map<String, dynamic> json) =>
+      PleromaAccount.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaAccount obj) => obj.toJson();
 }
 
 class PleromaScheduledStatusParamsDatabaseConverter
@@ -139,18 +176,6 @@ class PleromaStatusDatabaseConverter
 
   @override
   Map<String, dynamic> toJson(PleromaStatus obj) => obj.toJson();
-}
-
-class PleromaAccountDatabaseConverter
-    extends JsonDatabaseConverter<PleromaAccount> {
-  const PleromaAccountDatabaseConverter() : super();
-
-  @override
-  PleromaAccount fromJson(Map<String, dynamic> json) =>
-      PleromaAccount.fromJson(json);
-
-  @override
-  Map<String, dynamic> toJson(PleromaAccount obj) => obj.toJson();
 }
 
 class PleromaMediaAttachmentListDatabaseConverter

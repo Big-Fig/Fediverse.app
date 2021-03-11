@@ -43,22 +43,23 @@ class NotificationListItemWidget extends StatelessWidget {
 
     var bodyWidget = const _NotificationListItemBodyWidget();
     return StreamBuilder<bool>(
-        stream: notificationBloc.dismissedStream,
-        builder: (context, snapshot) {
-          var dismissed = snapshot.data;
-          if (dismissed == true) {
-            return Stack(
-              children: [
-                bodyWidget,
-                Positioned.fill(
-                  child: const _NotificationListItemBodyDismissedWidget(),
-                ),
-              ],
-            );
-          } else {
-            return bodyWidget;
-          }
-        });
+      stream: notificationBloc.dismissedStream,
+      builder: (context, snapshot) {
+        var dismissed = snapshot.data;
+        if (dismissed == true) {
+          return Stack(
+            children: [
+              bodyWidget,
+              Positioned.fill(
+                child: const _NotificationListItemBodyDismissedWidget(),
+              ),
+            ],
+          );
+        } else {
+          return bodyWidget;
+        }
+      },
+    );
   }
 }
 
@@ -92,23 +93,24 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
         isNeedPreFetchRelationship: false,
       ),
       child: StreamBuilder<NotificationState>(
-          stream: notificationBloc.stateStream,
-          builder: (context, snapshot) {
-            var notificationState = snapshot.data;
-            var unread = notificationState?.unread ?? true;
-            var dismissed = notificationState?.dismissed ?? false;
-            return Slidable(
-              actionPane: const SlidableDrawerActionPane(),
-              actionExtentRatio: 0.25,
-              secondaryActions: <Widget>[
-                if (unread == true)
-                  const _NotificationListItemBodyMarkAsReadActionWidget(),
-                if (dismissed != true)
-                  const _NotificationListItemBodyDismissActionWidget(),
-              ],
-              child: const _NotificationListItemBodySlidableChildWidget(),
-            );
-          }),
+        stream: notificationBloc.stateStream,
+        builder: (context, snapshot) {
+          var notificationState = snapshot.data;
+          var unread = notificationState?.unread ?? true;
+          var dismissed = notificationState?.dismissed ?? false;
+          return Slidable(
+            actionPane: const SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            secondaryActions: <Widget>[
+              if (unread == true)
+                const _NotificationListItemBodyMarkAsReadActionWidget(),
+              if (dismissed != true)
+                const _NotificationListItemBodyDismissActionWidget(),
+            ],
+            child: const _NotificationListItemBodySlidableChildWidget(),
+          );
+        },
+      ),
     );
   }
 }
@@ -320,6 +322,11 @@ class _NotificationListItemContentWidget extends StatelessWidget {
               _extractStatusRawContent(notificationBloc),
             );
         break;
+      case PleromaNotificationType.pleromaReport:
+        rawText = S.of(context).app_notification_header_report(
+              notificationBloc.account?.acct ?? "",
+            );
+        break;
       case PleromaNotificationType.unknown:
         var isHaveStatus = notificationBloc.status != null;
         String statusText;
@@ -439,6 +446,10 @@ class _NotificationListItemIconWidget extends StatelessWidget {
       case PleromaNotificationType.move:
         iconData = FediIcons.forward;
         iconColor = IFediUiColorTheme.of(context).primary;
+        break;
+      case PleromaNotificationType.pleromaReport:
+        iconData = FediIcons.report;
+        iconColor = IFediUiColorTheme.of(context).error;
         break;
       case PleromaNotificationType.followRequest:
         iconData = FediIcons.add_user;

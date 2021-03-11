@@ -19,7 +19,7 @@ class PleromaAuthAccountService extends PleromaAccountService
   final IPleromaAuthRestService authRestService;
 
   @override
-  bool get isPleromaInstance => authRestService.isPleromaInstance;
+  bool get isPleroma => authRestService.isPleroma;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -95,7 +95,7 @@ class PleromaAuthAccountService extends PleromaAccountService
       if (notifications != null) "notifications": notifications.toString(),
     };
     if (expireDurationInSeconds != null) {
-      if (isPleromaInstance) {
+      if (isPleroma) {
         bodyJson["expire_in"] = expireDurationInSeconds.toString();
       } else {
         bodyJson["duration"] = expireDurationInSeconds;
@@ -318,4 +318,7 @@ class PleromaAuthAccountService extends PleromaAccountService
 
     return parseAccountRelationshipResponse(httpResponse);
   }
+
+  @override
+  bool get isMastodon => authRestService.isMastodon;
 }

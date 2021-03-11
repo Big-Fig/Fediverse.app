@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -22,6 +23,67 @@ abstract class IPleromaAccount implements IMastodonAccount {
   IPleromaAccountPleromaPart get pleroma;
 
   String get fqn;
+}
+
+abstract class IPleromaAccountReport {
+  List<IPleromaStatus> get statuses;
+
+  IPleromaAccount get account;
+
+  IPleromaAccount get user;
+}
+
+@JsonSerializable(explicitToJson: true)
+class PleromaAccountReport implements IPleromaAccountReport {
+  @override
+  final PleromaAccount account;
+
+  @override
+  final List<PleromaStatus> statuses;
+
+  @override
+  final PleromaAccount user;
+
+  PleromaAccountReport({
+    @required this.account,
+    @required this.statuses,
+    @required this.user,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountReport &&
+          runtimeType == other.runtimeType &&
+          account == other.account &&
+          statuses == other.statuses &&
+          user == other.user;
+
+  @override
+  int get hashCode => account.hashCode ^ statuses.hashCode ^ user.hashCode;
+
+  @override
+  String toString() => 'PleromaAccountReport{'
+      'account: $account, '
+      'statuses: $statuses, '
+      'user: $user'
+      '}';
+
+
+  factory PleromaAccountReport.fromJson(Map<String, dynamic> json) =>
+      _$PleromaAccountReportFromJson(json);
+
+  factory PleromaAccountReport.fromJsonString(String jsonString) =>
+      _$PleromaAccountReportFromJson(jsonDecode(jsonString));
+
+  static List<PleromaAccountReport> listFromJsonString(String str) =>
+      List<PleromaAccountReport>.from(
+          json.decode(str).map((x) => PleromaAccountReport.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$PleromaAccountReportToJson(this);
+
+  String toJsonString() => jsonEncode(_$PleromaAccountReportToJson(this));
+
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -421,28 +483,29 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
     String favicon,
     String apId,
     List<String> alsoKnownAs,
-  }) => PleromaAccountPleromaPart(
-      backgroundImage: backgroundImage ?? this.backgroundImage,
-      tags: tags ?? this.tags,
-      relationship: relationship ?? this.relationship,
-      isAdmin: isAdmin ?? this.isAdmin,
-      isModerator: isModerator ?? this.isModerator,
-      confirmationPending: confirmationPending ?? this.confirmationPending,
-      hideFavorites: hideFavorites ?? this.hideFavorites,
-      hideFollowers: hideFollowers ?? this.hideFollowers,
-      hideFollows: hideFollows ?? this.hideFollows,
-      hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
-      hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
-      deactivated: deactivated ?? this.deactivated,
-      allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
-      skipThreadContainment:
-          skipThreadContainment ?? this.skipThreadContainment,
-      acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
-      isConfirmed: isConfirmed ?? this.isConfirmed,
-      favicon: favicon ?? this.favicon,
-      apId: apId ?? this.apId,
-      alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
-    );
+  }) =>
+      PleromaAccountPleromaPart(
+        backgroundImage: backgroundImage ?? this.backgroundImage,
+        tags: tags ?? this.tags,
+        relationship: relationship ?? this.relationship,
+        isAdmin: isAdmin ?? this.isAdmin,
+        isModerator: isModerator ?? this.isModerator,
+        confirmationPending: confirmationPending ?? this.confirmationPending,
+        hideFavorites: hideFavorites ?? this.hideFavorites,
+        hideFollowers: hideFollowers ?? this.hideFollowers,
+        hideFollows: hideFollows ?? this.hideFollows,
+        hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+        hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+        deactivated: deactivated ?? this.deactivated,
+        allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+        skipThreadContainment:
+            skipThreadContainment ?? this.skipThreadContainment,
+        acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
+        isConfirmed: isConfirmed ?? this.isConfirmed,
+        favicon: favicon ?? this.favicon,
+        apId: apId ?? this.apId,
+        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -620,21 +683,22 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     bool subscribing,
     bool blockedBy,
     String note,
-  }) => PleromaAccountRelationship(
-      blocking: blocking ?? this.blocking,
-      domainBlocking: domainBlocking ?? this.domainBlocking,
-      endorsed: endorsed ?? this.endorsed,
-      followedBy: followedBy ?? this.followedBy,
-      following: following ?? this.following,
-      id: id ?? this.id,
-      muting: muting ?? this.muting,
-      mutingNotifications: mutingNotifications ?? this.mutingNotifications,
-      requested: requested ?? this.requested,
-      showingReblogs: showingReblogs ?? this.showingReblogs,
-      subscribing: subscribing ?? this.subscribing,
-      blockedBy: blockedBy ?? this.blockedBy,
-      note: note ?? this.note,
-    );
+  }) =>
+      PleromaAccountRelationship(
+        blocking: blocking ?? this.blocking,
+        domainBlocking: domainBlocking ?? this.domainBlocking,
+        endorsed: endorsed ?? this.endorsed,
+        followedBy: followedBy ?? this.followedBy,
+        following: following ?? this.following,
+        id: id ?? this.id,
+        muting: muting ?? this.muting,
+        mutingNotifications: mutingNotifications ?? this.mutingNotifications,
+        requested: requested ?? this.requested,
+        showingReblogs: showingReblogs ?? this.showingReblogs,
+        subscribing: subscribing ?? this.subscribing,
+        blockedBy: blockedBy ?? this.blockedBy,
+        note: note ?? this.note,
+      );
 
   @override
   bool operator ==(Object other) =>

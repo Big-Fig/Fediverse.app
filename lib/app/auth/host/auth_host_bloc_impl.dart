@@ -227,7 +227,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         accessToken: token.accessToken,
         connectionService: connectionService,
         restService: restService,
-        isPleromaInstance: isPleromaInstance);
+        isPleroma: isPleromaInstance);
 
     var pleromaInstanceService =
         PleromaInstanceService(restService: pleromaAuthRestService);
@@ -289,7 +289,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         accessToken: token.accessToken,
         connectionService: connectionService,
         restService: restService,
-        isPleromaInstance: isPleromaInstance);
+        isPleroma: isPleromaInstance);
 
     var pleromaInstanceService =
         PleromaInstanceService(restService: pleromaAuthRestService);

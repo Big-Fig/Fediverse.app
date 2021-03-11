@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2021-03-02T20:04:46+00:00",
+    "@@last_modified": "2021-03-11T19:33:39+00:00",
     "localization_locale_en": "English",
     "localization_locale_ru": "Русский",
     "localization_locale_default": "Default",
@@ -718,5 +718,10 @@
     "app_chat_action_delete_dialog_content": "Are you sure?",
     "app_hashtag_remoteInstance_dialog_title": "#{hashtag}",
     "app_hashtag_remoteInstance_dialog_action_openOnLocal": "Open on {localDomain} inside app",
-    "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": "Open on {remoteDomain} in browser"
+    "app_hashtag_remoteInstance_dialog_action_openOnRemoteInBrowser": "Open on {remoteDomain} in browser",
+    "app_notification_header_report": "Report from {acct}",
+    "app_notification_all_dialog_title": "Notifications",
+    "app_notification_all_dialog_action_pushNotifications": "Push notifications settings",
+    "app_notification_all_dialog_action_markAllAsRead": "Mark ALL as read",
+    "app_notification_all_dialog_action_dismissAll": "Dismiss ALL"
 }

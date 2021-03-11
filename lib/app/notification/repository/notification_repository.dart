@@ -80,4 +80,8 @@ abstract class INotificationRepository
   });
 
   Future dismissAll();
+
+  Future markAllAsRead();
+
+  Future<DbNotificationPopulatedWrapper> getNewest();
 }

@@ -17,7 +17,9 @@ class PushHandlerUnhandledList implements IJsonObject {
   @HiveField(0)
   final List<PushHandlerMessage> messages;
 
-  PushHandlerUnhandledList({this.messages});
+  PushHandlerUnhandledList({
+    this.messages,
+  });
 
   @override
   String toString() {
@@ -33,7 +35,6 @@ class PushHandlerUnhandledList implements IJsonObject {
 
   @override
   int get hashCode => messages.hashCode;
-
 
   factory PushHandlerUnhandledList.fromJson(Map<String, dynamic> json) =>
       _$PushHandlerUnhandledListFromJson(json);

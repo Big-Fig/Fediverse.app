@@ -582,7 +582,7 @@ void main() {
 
   test('countUnread', () async {
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyUnread: true,
           ),
@@ -598,7 +598,7 @@ void main() {
     );
 
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.reblog,
             onlyUnread: true,
@@ -606,7 +606,7 @@ void main() {
         )),
         0);
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.follow,
             onlyUnread: true,
@@ -629,7 +629,7 @@ void main() {
                 unread: false));
 
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.reblog,
             onlyUnread: true,
@@ -637,7 +637,7 @@ void main() {
         )),
         0);
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.follow,
             onlyUnread: true,
@@ -660,7 +660,7 @@ void main() {
                 unread: true));
 
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.reblog,
             onlyUnread: true,
@@ -668,7 +668,7 @@ void main() {
         )),
         1);
     expect(
-        (await notificationRepository.getCount( 
+        (await notificationRepository.getCount(
           filters: NotificationRepositoryFilters(
             onlyWithType: PleromaNotificationType.follow,
             onlyUnread: true,

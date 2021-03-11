@@ -183,7 +183,8 @@ class ToastSettingsBloc
 
   @override
   bool isNotificationTypeEnabled(
-      PleromaNotificationType pleromaNotificationType) {
+    PleromaNotificationType pleromaNotificationType,
+  ) {
     switch (pleromaNotificationType) {
       case PleromaNotificationType.follow:
         return follow;
@@ -202,6 +203,10 @@ class ToastSettingsBloc
         break;
       case PleromaNotificationType.move:
         // todo: handle move type?
+        return false;
+        break;
+      case PleromaNotificationType.pleromaReport:
+        // todo: pleromaReport move type?
         return false;
         break;
       case PleromaNotificationType.followRequest:

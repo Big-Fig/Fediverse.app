@@ -14,14 +14,14 @@ class PleromaAuthRestService extends PleromaRestService
   static final authHeaderValuePrefix = "Bearer";
 
   @override
-  final bool isPleromaInstance;
+  final bool isPleroma;
 
   final String accessToken;
 
   PleromaAuthRestService({
     @required IRestService restService,
     @required IConnectionService connectionService,
-    @required this.isPleromaInstance,
+    @required this.isPleroma,
     @required this.accessToken,
   }) : super(
           restService: restService,
@@ -44,4 +44,7 @@ class PleromaAuthRestService extends PleromaRestService
     request.headers.addAll(createAuthHeaders());
     return super.uploadFileMultipartRequest(request);
   }
+
+  @override
+  bool get isMastodon => !isPleroma;
 }

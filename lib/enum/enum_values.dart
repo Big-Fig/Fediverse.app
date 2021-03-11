@@ -7,6 +7,11 @@ class EnumValues<T> {
 
   List<T> valuesWithoutSelected(List<T> valuesToExclude) =>
       valueToEnumMap.values
-          .where((value) => !valuesToExclude.contains(value))
-          .toList();
+          .valuesWithoutSelected(valuesToExclude);
+}
+
+extension EnumValuesListExtension<T> on Iterable<T> {
+  List<T> valuesWithoutSelected(List<T> valuesToExclude) => where(
+        (value) => !valuesToExclude.contains(value),
+      ).toList();
 }

@@ -7031,6 +7031,56 @@ class S {
       args: [remoteDomain],
     );
   }
+
+  /// `Report from {acct}`
+  String app_notification_header_report(Object acct) {
+    return Intl.message(
+      'Report from $acct',
+      name: 'app_notification_header_report',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Notifications`
+  String get app_notification_all_dialog_title {
+    return Intl.message(
+      'Notifications',
+      name: 'app_notification_all_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push notifications settings`
+  String get app_notification_all_dialog_action_pushNotifications {
+    return Intl.message(
+      'Push notifications settings',
+      name: 'app_notification_all_dialog_action_pushNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark ALL as read`
+  String get app_notification_all_dialog_action_markAllAsRead {
+    return Intl.message(
+      'Mark ALL as read',
+      name: 'app_notification_all_dialog_action_markAllAsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dismiss ALL`
+  String get app_notification_all_dialog_action_dismissAll {
+    return Intl.message(
+      'Dismiss ALL',
+      name: 'app_notification_all_dialog_action_dismissAll',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -24,10 +24,12 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_background_widget.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -224,15 +226,25 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
-            );
+          pleromaNotificationService: IPleromaNotificationService.of(
+            context,
+            listen: false,
+          ),
+          notificationRepository: INotificationRepository.of(
+            context,
+            listen: false,
+          ),
+        );
 
-        notificationsHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.notifications) {
-            notificationsHomeTabBloc.scrollToTop();
-          }
-        }));
+        notificationsHomeTabBloc.addDisposable(
+          streamSubscription: homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.notifications) {
+                notificationsHomeTabBloc.scrollToTop();
+              }
+            },
+          ),
+        );
 
         return notificationsHomeTabBloc;
       },

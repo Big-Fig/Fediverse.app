@@ -12,8 +12,8 @@ class PushHandlerUnhandledLocalPreferencesBloc
     extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList>
     implements IPushHandlerUnhandledLocalPreferencesBloc {
   PushHandlerUnhandledLocalPreferencesBloc(
-      ILocalPreferencesService preferencesService)
-      : super(
+    ILocalPreferencesService preferencesService,
+  ) : super(
           preferencesService,
           "push.unhandled",
           2,

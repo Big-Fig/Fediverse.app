@@ -5,6 +5,7 @@ import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_notification_model.g.dart';
@@ -12,6 +13,8 @@ part 'pleroma_notification_model.g.dart';
 abstract class IPleromaNotification extends IMastodonNotification {
   @override
   IPleromaAccount get account;
+
+  IPleromaAccount get target;
 
   @override
   IPleromaStatus get status;
@@ -24,6 +27,9 @@ abstract class IPleromaNotification extends IMastodonNotification {
 
   PleromaNotificationPleromaPart get pleroma;
 
+  bool get isSeen;
+
+  dynamic get report;
 }
 
 enum PleromaNotificationType {
@@ -36,6 +42,7 @@ enum PleromaNotificationType {
   followRequest,
   pleromaEmojiReaction,
   pleromaChatMention,
+  pleromaReport,
   unknown
 }
 
@@ -57,14 +64,14 @@ extension PleromaNotificationTypeJsonValueExtension on PleromaNotificationType {
 
 extension PleromaNotificationTypeStringExtension on String {
   PleromaNotificationType toPleromaNotificationType() {
-    var pleromaNotificationType = pleromaNotificationTypeValues.valueToEnumMap[this];
-    if(pleromaNotificationType == null) {
+    var pleromaNotificationType =
+        pleromaNotificationTypeValues.valueToEnumMap[this];
+    if (pleromaNotificationType == null) {
       return PleromaNotificationType.unknown;
     }
     return pleromaNotificationType;
   }
 }
-
 
 @JsonSerializable()
 class PleromaNotificationPleromaPart {
@@ -95,6 +102,8 @@ class PleromaNotification extends IPleromaNotification {
   @override
   final PleromaAccount account;
   @override
+  final PleromaAccount target;
+  @override
   @JsonKey(name: "created_at")
   final DateTime createdAt;
   @override
@@ -110,18 +119,27 @@ class PleromaNotification extends IPleromaNotification {
 
   @override
   @JsonKey(name: "chat_message")
-  PleromaChatMessage chatMessage;
+  final PleromaChatMessage chatMessage;
 
+  @override
+  @JsonKey(name: "is_seen")
+  final bool isSeen;
+
+  @override
+  final PleromaAccountReport report;
 
   PleromaNotification({
-    this.account,
-    this.createdAt,
-    this.id,
-    this.type,
-    this.status,
-    this.chatMessage,
-    this.emoji,
-    this.pleroma,
+    @required this.account,
+    @required this.createdAt,
+    @required this.id,
+    @required this.type,
+    @required this.status,
+    @required this.chatMessage,
+    @required this.emoji,
+    @required this.pleroma,
+    @required this.isSeen,
+    @required this.report,
+    @required this.target,
   });
 
   factory PleromaNotification.fromJson(Map<String, dynamic> json) =>
