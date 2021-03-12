@@ -236,7 +236,9 @@ class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
           .of(context)
           .app_auth_instance_current_context_loading_cantLoad_action_refresh,
       onPressed: () {
-        currentInstanceContextLoadingBloc.refreshFromNetwork();
+        currentInstanceContextLoadingBloc.refreshFromNetwork(
+          isNeedWaitForOptionalData: false,
+        );
       },
       color: IFediUiColorTheme.of(context).white,
       expanded: false,

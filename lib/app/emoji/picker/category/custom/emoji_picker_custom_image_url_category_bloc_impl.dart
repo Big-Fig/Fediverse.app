@@ -28,7 +28,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
     var currentInstance = currentAuthInstanceBloc.currentInstance;
-    if (currentInstance.isPleromaInstance) {
+    if (currentInstance.isPleroma) {
       // old instances may not have this API
       var urlHost = currentInstance.urlHost;
       var urlSchema = currentInstance.urlSchema;

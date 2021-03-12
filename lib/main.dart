@@ -13,6 +13,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
@@ -27,6 +28,7 @@ import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/fcm/fcm_push_permission_checker_widget.dart';
 import 'package:fedi/app/splash/splash_page.dart';
@@ -44,8 +46,11 @@ import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
@@ -98,28 +103,32 @@ void main() async {
       IInitBloc initBloc = InitBloc();
       unawaited(initBloc.performAsyncInit());
 
-      initBloc.initLoadingStateStream.listen((newState) async {
-        _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
-            "$newState");
+      initBloc.initLoadingStateStream.listen(
+        (newState) async {
+          _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
+              "$newState");
 
-        if (newState == AsyncInitLoadingState.finished) {
-          var currentInstanceBloc =
-              initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+          if (newState == AsyncInitLoadingState.finished) {
+            var currentInstanceBloc =
+                initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
-          currentInstanceBloc.currentInstanceStream
-              .distinct(
-                  (previous, next) => previous?.userAtHost == next?.userAtHost)
-              .listen((currentInstance) {
-            runInitializedApp(
-              appContextBloc: initBloc.appContextBloc,
-              currentInstance: currentInstance,
-              appTitle: appTitle,
+            currentInstanceBloc.currentInstanceStream
+                .distinct((previous, next) =>
+                    previous?.userAtHost == next?.userAtHost)
+                .listen(
+              (currentInstance) {
+                runInitializedApp(
+                  appContextBloc: initBloc.appContextBloc,
+                  currentInstance: currentInstance,
+                  appTitle: appTitle,
+                );
+              },
             );
-          });
-        } else if (newState == AsyncInitLoadingState.failed) {
-          runInitFailedApp();
-        }
-      });
+          } else if (newState == AsyncInitLoadingState.failed) {
+            runInitFailedApp();
+          }
+        },
+      );
     },
     onCrash,
   );
@@ -271,10 +280,42 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
   _logger.finest(() => "createCurrentInstanceContextBloc");
   var currentAuthInstanceContextLoadingBloc =
       CurrentAuthInstanceContextInitBloc(
-    myAccountBloc: IMyAccountBloc.of(context, listen: false),
-    pleromaInstanceService: IPleromaInstanceService.of(context, listen: false),
-    currentAuthInstanceBloc:
-        ICurrentAuthInstanceBloc.of(context, listen: false),
+    pleromaChatRepository: IPleromaChatRepository.of(
+      context,
+      listen: false,
+    ),
+    conversationChatRepository: IConversationChatRepository.of(
+      context,
+      listen: false,
+    ),
+    notificationRepository: INotificationRepository.of(
+      context,
+      listen: false,
+    ),
+    pleromaChatService: IPleromaChatService.of(
+      context,
+      listen: false,
+    ),
+    pleromaNotificationService: IPleromaNotificationService.of(
+      context,
+      listen: false,
+    ),
+    pleromaConversationService: IPleromaConversationService.of(
+      context,
+      listen: false,
+    ),
+    myAccountBloc: IMyAccountBloc.of(
+      context,
+      listen: false,
+    ),
+    pleromaInstanceService: IPleromaInstanceService.of(
+      context,
+      listen: false,
+    ),
+    currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      context,
+      listen: false,
+    ),
     pleromaAuthRestService: IPleromaAuthRestService.of(
       context,
       listen: false,

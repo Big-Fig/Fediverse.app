@@ -21,7 +21,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
   var isPleromaInstance = ICurrentAuthInstanceBloc.of(
     context,
     listen: false,
-  ).currentInstance.isPleromaInstance;
+  ).currentInstance.isPleroma;
 
   showEditGlobalOrInstanceSettingsDialog(
     context: context,

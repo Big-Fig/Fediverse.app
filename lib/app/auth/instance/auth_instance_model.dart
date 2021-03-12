@@ -33,9 +33,9 @@ class AuthInstance extends IJsonObject {
 
   @HiveField(5)
   @JsonKey(name: "is_pleroma_instance")
-  final bool isPleromaInstance;
+  final bool isPleroma;
 
-  bool get isMastodonInstance => !isPleromaInstance;
+  bool get isMastodon => !isPleroma;
 
   @HiveField(6)
   final PleromaClientApplication application;
@@ -57,14 +57,14 @@ class AuthInstance extends IJsonObject {
     this.acct,
     this.token,
     this.authCode,
-    this.isPleromaInstance,
+    this.isPleroma,
     this.application,
     this.info,
   });
 
-  bool get isSubscribeToAccountFeatureSupported => isPleromaInstance;
+  bool get isSubscribeToAccountFeatureSupported => isPleroma;
 
-  bool get isAccountFavouritesFeatureSupported => isPleromaInstance;
+  bool get isAccountFavouritesFeatureSupported => isPleroma;
 
   @override
   bool operator ==(Object other) =>
@@ -76,7 +76,7 @@ class AuthInstance extends IJsonObject {
           acct == other.acct &&
           token == other.token &&
           authCode == other.authCode &&
-          isPleromaInstance == other.isPleromaInstance &&
+          isPleroma == other.isPleroma &&
           application == other.application &&
           info == other.info;
 
@@ -87,7 +87,7 @@ class AuthInstance extends IJsonObject {
       acct.hashCode ^
       token.hashCode ^
       authCode.hashCode ^
-      isPleromaInstance.hashCode ^
+      isPleroma.hashCode ^
       application.hashCode ^
       info.hashCode;
 
@@ -97,7 +97,7 @@ class AuthInstance extends IJsonObject {
         'token: $token,'
         'application: $application,'
         'instance: $info,'
-        ' authCode: $authCode, isPleromaInstance: $isPleromaInstance}';
+        ' authCode: $authCode, isPleromaInstance: $isPleroma}';
   }
 
   bool isInstanceWithHostAndAcct(
@@ -110,7 +110,7 @@ class AuthInstance extends IJsonObject {
     String acct,
     PleromaOAuthToken token,
     String authCode,
-    bool isPleromaInstance,
+    bool isPleroma,
     PleromaClientApplication application,
     PleromaInstance info,
   }) {
@@ -120,7 +120,7 @@ class AuthInstance extends IJsonObject {
       acct: acct ?? this.acct,
       token: token ?? this.token,
       authCode: authCode ?? this.authCode,
-      isPleromaInstance: isPleromaInstance ?? this.isPleromaInstance,
+      isPleroma: isPleroma ?? this.isPleroma,
       application: application ?? this.application,
       info: info ?? this.info,
     );

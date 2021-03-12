@@ -20,7 +20,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var isPleromaInstance = ICurrentAuthInstanceBloc.of(
       context,
       listen: false,
-    ).currentInstance.isPleromaInstance;
+    ).currentInstance.isPleroma;
 
     return StreamBuilder<PleromaVisibility>(
       stream: postStatusBloc.visibilityStream,

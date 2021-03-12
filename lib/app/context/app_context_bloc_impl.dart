@@ -86,6 +86,7 @@ import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -408,7 +409,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IGlobalPaginationSettingsLocalPreferencesBloc>(
             globalPaginationSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalPaginationSettingsLocalPreferencesBloc);
-    
+
     var globalDatabaseCacheSettingsLocalPreferencesBloc =
         GlobalDatabaseCacheSettingsLocalPreferencesBloc(
       hiveLocalPreferencesService,
@@ -419,17 +420,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
             globalDatabaseCacheSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalDatabaseCacheSettingsLocalPreferencesBloc);
 
-
     var globalFilesCacheSettingsLocalPreferencesBloc =
-    GlobalFilesCacheSettingsLocalPreferencesBloc(
+        GlobalFilesCacheSettingsLocalPreferencesBloc(
       hiveLocalPreferencesService,
     );
 
     await globalProviderService
         .asyncInitAndRegister<IGlobalFilesCacheSettingsLocalPreferencesBloc>(
-        globalFilesCacheSettingsLocalPreferencesBloc);
+            globalFilesCacheSettingsLocalPreferencesBloc);
     addDisposable(disposable: globalFilesCacheSettingsLocalPreferencesBloc);
-
 
     var appAnalyticsLocalPreferenceBloc = AppAnalyticsLocalPreferenceBloc(
       hiveLocalPreferencesService,
@@ -456,7 +455,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     addDisposable(disposable: appAnalyticsBloc);
 
     await appAnalyticsBloc.onAppOpened();
+    await _checkReviewAppDialog(
+      appAnalyticsBloc: appAnalyticsBloc,
+      inAppReviewBloc: inAppReviewBloc,
+    );
+  }
 
+  Future _checkReviewAppDialog({
+    @required AppAnalyticsBloc appAnalyticsBloc,
+    @required InAppReviewBloc inAppReviewBloc,
+  }) async {
     final appOpenedCountToShowAppReview = 5;
     var isAppRated = appAnalyticsBloc.isAppRated;
     var appOpenedCount = appAnalyticsBloc.appOpenedCount;
@@ -473,13 +481,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     if (isNeedRequestReview) {
       var inAppReviewBlocAvailable = await inAppReviewBloc.isAvailable();
       if (inAppReviewBlocAvailable) {
-        Future.delayed(Duration(seconds: 5), () {
-          unawaited(
-            inAppReviewBloc.requestReview().then(
-                  (_) => appAnalyticsBloc.onAppRated(),
-                ),
-          );
-        });
+        Future.delayed(
+          Duration(seconds: 5),
+          () {
+            unawaited(
+              inAppReviewBloc.requestReview().then(
+                    (_) => appAnalyticsBloc.onAppRated(),
+                  ),
+            );
+          },
+        );
       }
     }
   }

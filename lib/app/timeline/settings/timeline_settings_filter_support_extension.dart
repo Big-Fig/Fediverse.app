@@ -65,13 +65,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
         return true;
         break;
       case TimelineType.customList:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.home:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.hashtag:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.account:
         return false;
@@ -87,13 +87,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
         return true;
         break;
       case TimelineType.customList:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.home:
         return true;
         break;
       case TimelineType.hashtag:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.account:
         return false;
@@ -106,16 +106,16 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isWithMutedFilterSupportedOnInstance(AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.home:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.customList:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.hashtag:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.account:
         return false;
@@ -129,16 +129,16 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.home:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.customList:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.hashtag:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.account:
         return false;
@@ -218,7 +218,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyFromInstanceFilterSupportedOnInstance(AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.customList:
         return false;
@@ -240,10 +240,10 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isReplyVisibilityFilterSupportedOnInstance(AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.home:
-        return authInstance.isPleromaInstance;
+        return authInstance.isPleroma;
         break;
       case TimelineType.customList:
         return false;
