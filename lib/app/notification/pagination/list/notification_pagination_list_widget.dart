@@ -44,16 +44,17 @@ class NotificationPaginationListWidget
           return Provider<INotification>.value(
             value: items[index],
             child: DisposableProxyProvider<INotification, INotificationBloc>(
-                update: (context, notification, oldValue) =>
-                    NotificationBloc.createFromContext(context, notification,
-                        isNeedWatchLocalRepositoryForUpdates:
-                            needWatchLocalRepositoryForUpdates),
-                child: Column(
-                  children: <Widget>[
-                    const NotificationListItemWidget(),
-                    const FediUltraLightGreyDivider()
-                  ],
-                )),
+              update: (context, notification, oldValue) =>
+                  NotificationBloc.createFromContext(context, notification,
+                      isNeedWatchLocalRepositoryForUpdates:
+                          needWatchLocalRepositoryForUpdates),
+              child: Column(
+                children: <Widget>[
+                  const NotificationListItemWidget(),
+                  const FediUltraLightGreyDivider()
+                ],
+              ),
+            ),
           );
         },
       );

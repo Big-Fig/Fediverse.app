@@ -27,8 +27,6 @@ abstract class IPleromaNotification extends IMastodonNotification {
 
   PleromaNotificationPleromaPart get pleroma;
 
-  bool get isSeen;
-
   dynamic get report;
 }
 
@@ -77,8 +75,22 @@ extension PleromaNotificationTypeStringExtension on String {
 class PleromaNotificationPleromaPart {
   @JsonKey(name: "is_seen")
   final bool isSeen;
+  @JsonKey(name: "is_muted")
+  final bool isMuted;
 
-  PleromaNotificationPleromaPart({this.isSeen});
+  PleromaNotificationPleromaPart({
+    @required this.isSeen,
+    @required this.isMuted,
+  });
+
+  PleromaNotificationPleromaPart copyWith({
+    bool isSeen,
+    bool isMuted,
+  }) =>
+      PleromaNotificationPleromaPart(
+        isSeen: isSeen ?? this.isSeen,
+        isMuted: isMuted ?? this.isMuted,
+      );
 
   factory PleromaNotificationPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaNotificationPleromaPartFromJson(json);
@@ -122,10 +134,6 @@ class PleromaNotification extends IPleromaNotification {
   final PleromaChatMessage chatMessage;
 
   @override
-  @JsonKey(name: "is_seen")
-  final bool isSeen;
-
-  @override
   final PleromaAccountReport report;
 
   PleromaNotification({
@@ -137,7 +145,6 @@ class PleromaNotification extends IPleromaNotification {
     @required this.chatMessage,
     @required this.emoji,
     @required this.pleroma,
-    @required this.isSeen,
     @required this.report,
     @required this.target,
   });

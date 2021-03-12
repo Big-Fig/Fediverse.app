@@ -94,7 +94,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     if (remoteNotifications != null) {
       await notificationRepository.upsertRemoteNotifications(
         remoteNotifications,
-        unread: false,
+        unread: null,
       );
       return true;
     } else {
@@ -102,8 +102,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     }
   }
 
-  static NotificationCachedListBloc createFromContext(BuildContext context,
-          {@required List<PleromaNotificationType> excludeTypes}) =>
+  static NotificationCachedListBloc createFromContext(
+    BuildContext context, {
+    @required List<PleromaNotificationType> excludeTypes,
+  }) =>
       NotificationCachedListBloc(
         pleromaNotificationService: IPleromaNotificationService.of(
           context,

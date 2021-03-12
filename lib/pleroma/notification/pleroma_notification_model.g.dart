@@ -10,6 +10,7 @@ PleromaNotificationPleromaPart _$PleromaNotificationPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaNotificationPleromaPart(
     isSeen: json['is_seen'] as bool,
+    isMuted: json['is_muted'] as bool,
   );
 }
 
@@ -17,6 +18,7 @@ Map<String, dynamic> _$PleromaNotificationPleromaPartToJson(
         PleromaNotificationPleromaPart instance) =>
     <String, dynamic>{
       'is_seen': instance.isSeen,
+      'is_muted': instance.isMuted,
     };
 
 PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
@@ -41,7 +43,6 @@ PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaNotificationPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
-    isSeen: json['is_seen'] as bool,
     report: json['report'] == null
         ? null
         : PleromaAccountReport.fromJson(json['report'] as Map<String, dynamic>),
@@ -63,6 +64,5 @@ Map<String, dynamic> _$PleromaNotificationToJson(
       'emoji': instance.emoji,
       'pleroma': instance.pleroma?.toJson(),
       'chat_message': instance.chatMessage?.toJson(),
-      'is_seen': instance.isSeen,
       'report': instance.report?.toJson(),
     };
