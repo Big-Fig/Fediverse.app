@@ -49,46 +49,59 @@ abstract class CachedPaginationListWithNewItemsBloc<
     addDisposable(subject: unmergedNewItemsSubject);
 
     addDisposable(
-        streamSubscription: newerItemStream.distinct().listen((newerItem) {
+      streamSubscription: newerItemStream.distinct().listen(
+        (newerItem) {
 //          clearNewItems();
-      _logger.finest(() => "newerItem $newerItem");
-      newItemsSubscription?.cancel();
+        // todo: remove hack actually we should listen even with newerItem == null
+          // but it is hack to avoid duplicated data
+          if (newerItem != null) {
+            _logger.finest(() => "newerItem $newerItem");
+            newItemsSubscription?.cancel();
 
-      newItemsSubscription = watchItemsNewerThanItem(newerItem)
-          .skipWhile((newItems) => newItems?.isNotEmpty != true)
-          .listen(
-        (newItems) {
-          // we need to filter again to be sure that newerItem is no
-          // changed during sql request execute time
-          List<TItem> actuallyNew = newItems
-              .where((newItem) => compareItemsToSort(newItem, newerItem) > 0)
-              .toList();
+            newItemsSubscription = watchItemsNewerThanItem(newerItem)
+                .skipWhile((newItems) => newItems?.isNotEmpty != true)
+                .listen(
+              (newItems) {
+                // we need to filter again to be sure that newerItem is no
+                // changed during sql request execute time
+                List<TItem> actuallyNew = newItems
+                    .where(
+                        (newItem) => compareItemsToSort(newItem, newerItem) > 0)
+                    .toList();
 
-          // remove duplicates
-          // sometimes local storage sqlite returns duplicated items
-          // sometimes item is newer but already exist
-          // for example chat updateAt updated
-          actuallyNew = removeDuplicatesAndUpdate(actuallyNew);
+                var currentItems = items;
 
-          _logger.finest(() => "watchItemsNewerThanItem "
-              "\n"
-              "\t newItems ${newItems.length} \n"
-              "\t actuallyNew = ${actuallyNew.length}");
+                // remove duplicates
+                // sometimes local storage sqlite returns duplicated items
+                // sometimes item is newer but already exist
+                // for example chat updateAt updated
+                actuallyNew = removeDuplicatesAndUpdate(
+                  actuallyNew: actuallyNew,
+                  currentItems: currentItems,
+                );
 
-          if (actuallyNew?.isNotEmpty == true) {
-            if (items?.isNotEmpty != true &&
-                mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-              // merge immediately
-              mergedNewItemsSubject.add(actuallyNew);
-            } else {
-              unmergedNewItemsSubject.add(actuallyNew);
-            }
+                _logger.finest(() => "watchItemsNewerThanItem "
+                    "\n"
+                    "\t newItems ${newItems.length} \n"
+                    "\t actuallyNew = ${actuallyNew.length}");
+
+                if (actuallyNew?.isNotEmpty == true) {
+                  if (currentItems?.isNotEmpty != true &&
+                      mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+                    // merge immediately
+                    mergedNewItemsSubject.add(actuallyNew);
+                  } else {
+                    unmergedNewItemsSubject.add(actuallyNew);
+                  }
+                }
+              },
+            );
+
+            addDisposable(streamSubscription: newItemsSubscription);
           }
         },
-      );
-
-      addDisposable(streamSubscription: newItemsSubscription);
-    }));
+      ),
+    );
 
     if (mergeNewItemsImmediately) {
       addDisposable(
@@ -103,37 +116,49 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
   }
 
-  List<TItem> removeDuplicatesAndUpdate(List<TItem> actuallyNew) =>
-      actuallyNew.where(
-        (newItem) {
-          bool isAlreadyExist;
-          if (items?.isNotEmpty == true) {
-            var found = items.firstWhere(
-              (oldItem) => isItemsEqual(newItem, oldItem),
-              orElse: () => null,
-            );
+  List<TItem> removeDuplicatesAndUpdate({
+    @required List<TItem> actuallyNew,
+    @required List<TItem> currentItems,
+  }) {
+    return actuallyNew.where(
+      (newItem) {
+        bool isAlreadyExist;
+        if (currentItems?.isNotEmpty == true) {
+          var found = currentItems.firstWhere(
+            (oldItem) => isItemsEqual(newItem, oldItem),
+            orElse: () => null,
+          );
 
-            isAlreadyExist = found != null;
-          } else {
-            isAlreadyExist = false;
-          }
-          var isNeedToAdd = !isAlreadyExist;
-          return isNeedToAdd;
-        },
-      ).toList();
+          isAlreadyExist = found != null;
+        } else {
+          isAlreadyExist = false;
+        }
+        var isNeedToAdd = !isAlreadyExist;
+        return isNeedToAdd;
+      },
+    ).toList();
+  }
 
   @override
-  List<TItem> get items => _calculateNewItems(super.items, mergedNewItems);
+  List<TItem> get items => _calculateNewItems(
+        items: super.items,
+        mergedNewItems: mergedNewItems,
+      );
 
   @override
-  Stream<List<TItem>> get itemsStream =>
-      Rx.combineLatest2(mergedNewItemsStream, super.itemsStream,
-          (mergedNewItems, items) {
-        return _calculateNewItems(items, mergedNewItems);
-      });
+  Stream<List<TItem>> get itemsStream => Rx.combineLatest2(
+        mergedNewItemsStream,
+        super.itemsStream,
+        (mergedNewItems, items) => _calculateNewItems(
+          items: items,
+          mergedNewItems: mergedNewItems,
+        ),
+      );
 
-  List<TItem> _calculateNewItems(
-      List<TItem> items, List<TItem> mergedNewItems) {
+  List<TItem> _calculateNewItems({
+    @required List<TItem> items,
+    @required List<TItem> mergedNewItems,
+  }) {
     List<TItem> result;
 
     if (items == null && mergedNewItems == null) {
@@ -146,15 +171,17 @@ abstract class CachedPaginationListWithNewItemsBloc<
         result = null;
       }
     } else {
-      result = [...(mergedNewItems ?? []), ...items];
+      result = [
+        ...(mergedNewItems ?? []),
+        ...items,
+      ];
     }
 
     _logger.finest(() => "_calculateNewItems"
-        // " \n"
-        // "\t items = ${items?.length} \n"
-        // "\t mergedNewItems = ${mergedNewItems.length} \n"
-        // "\t result = ${result?.length}"
-        );
+        " \n"
+        "\t items = ${items?.length} \n"
+        "\t mergedNewItems = ${mergedNewItems.length} \n"
+        "\t result = ${result?.length}");
 
     return result;
   }
@@ -202,7 +229,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
         "\t unmergedNewItems = ${unmergedNewItems.length}\n"
         "\t mergedNewItems = ${mergedNewItems.length}\n");
     var lastMergedItems = unmergedNewItems;
-    mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
+    mergedNewItemsSubject.add(
+      [
+        ...unmergedNewItems,
+        ...mergedNewItems,
+      ],
+    );
     unmergedNewItemsSubject.add([]);
 
     onNewItemsMerged(lastMergedItems);

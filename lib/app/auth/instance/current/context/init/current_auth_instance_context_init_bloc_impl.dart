@@ -225,7 +225,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         await pleromaNotificationService.getNotifications();
     await notificationRepository.upsertRemoteNotifications(
       remoteNotifications,
-      unread: true,
+      unread: null,
     );
   }
 

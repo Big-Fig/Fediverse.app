@@ -76,8 +76,12 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
         } else {
           state = FediListSmartRefresherLoadingState.failed;
           if (!loadMoreErrorStreamController.isClosed) {
-            refreshErrorStreamController.add(PaginationListLoadingError(
-                error: CantUpdateFromNetworkException(), stackTrace: null));
+            refreshErrorStreamController.add(
+              PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(),
+                stackTrace: null,
+              ),
+            );
           }
         }
       } else {
@@ -86,8 +90,12 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
         } else {
           state = FediListSmartRefresherLoadingState.failed;
           if (!loadMoreErrorStreamController.isClosed) {
-            refreshErrorStreamController.add(PaginationListLoadingError(
-                error: CantUpdateFromNetworkException(), stackTrace: null));
+            refreshErrorStreamController.add(
+              PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(),
+                stackTrace: null,
+              ),
+            );
           }
         }
       }
@@ -99,11 +107,17 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!refreshStateSubject.isClosed) {
-        refreshStateSubject.add(FediListSmartRefresherLoadingState.failed);
+        refreshStateSubject.add(
+          FediListSmartRefresherLoadingState.failed,
+        );
       }
       if (!refreshErrorStreamController.isClosed) {
-        refreshErrorStreamController
-            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
+        refreshErrorStreamController.add(
+          PaginationListLoadingError(
+            error: e,
+            stackTrace: stackTrace,
+          ),
+        );
       }
       _logger.warning(
           () => "error during refreshWithoutController", e, stackTrace);

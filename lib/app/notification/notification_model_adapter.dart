@@ -10,8 +10,9 @@ DbNotification mapRemoteNotificationToDbNotification(
   IPleromaNotification remoteNotification, {
   @required bool unread,
 }) {
-  if (remoteNotification.pleroma?.isSeen == true) {
-    unread = false;
+  var isSeen = remoteNotification.pleroma?.isSeen;
+  if (isSeen != null) {
+    unread = !isSeen;
   }
 
   return DbNotification(
@@ -42,11 +43,11 @@ PleromaNotification mapLocalNotificationToRemoteNotification(
     account: mapLocalAccountToRemoteAccount(localNotification.account),
     type: localNotification.type,
     emoji: localNotification.emoji,
-    pleroma: localNotification.pleroma,
+    pleroma: localNotification.pleroma
+        .copyWith(isSeen: localNotification.unread != true),
     chatMessage: localNotification.chatMessage,
     target: localNotification.target,
     report: localNotification.report,
-    isSeen: !localNotification.unread,
     status: status,
   );
 }
