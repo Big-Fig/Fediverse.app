@@ -310,6 +310,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
     return query;
   }
+
   Future markAllAsRead() {
     var update = "UPDATE db_notifications "
         "SET unread = 0 ";
@@ -322,6 +323,19 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     var update = "UPDATE db_notifications "
         "SET dismissed = 1 "
         "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+
+  Future markAsDismissedWhere({
+    @required String accountRemoteId,
+    @required PleromaNotificationType type,
+  }) {
+    var update = "UPDATE db_notifications "
+        "SET dismissed = 1 "
+        "WHERE account_remote_id = '$accountRemoteId' "
+        "AND type = '${type.toJsonValue()}'";
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;

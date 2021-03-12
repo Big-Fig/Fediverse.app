@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -489,4 +490,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future markAllAsRead() => dao.markAllAsRead();
+
+  @override
+  Future dismissFollowRequestNotificationsFromAccount({
+    @required IAccount account,
+  }) =>
+      dao.markAsDismissedWhere(
+        accountRemoteId: account.remoteId,
+        type: PleromaNotificationType.followRequest,
+      );
 }
