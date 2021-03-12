@@ -7,6 +7,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
+import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -21,11 +22,13 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
+  final INotificationRepository notificationRepository;
 
   MyAccountFollowRequestNetworkOnlyAccountListBloc({
     @required this.myAccountBloc,
     @required this.pleromaMyAccountService,
     @required this.accountRepository,
+    @required this.notificationRepository,
   });
 
   @override
@@ -36,13 +39,13 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       accountRemoteId: account.remoteId,
     );
 
-    await _applyFollowRequestAction(
+    await _processFollowRequestAction(
       account,
       accountRelationship,
     );
   }
 
-  Future _applyFollowRequestAction(
+  Future _processFollowRequestAction(
     IAccount account,
     IPleromaAccountRelationship accountRelationship,
   ) async {
@@ -50,6 +53,10 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       account.copyWith(
         pleromaRelationship: accountRelationship,
       ),
+    );
+
+    await notificationRepository.dismissFollowRequestNotificationsFromAccount(
+      account: account,
     );
 
     await myAccountBloc.decreaseFollowingRequestCount();
@@ -68,7 +75,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     var accountRelationship = await pleromaMyAccountService.rejectFollowRequest(
         accountRemoteId: account.remoteId);
 
-    await _applyFollowRequestAction(
+    await _processFollowRequestAction(
       account,
       accountRelationship,
     );
@@ -111,6 +118,10 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
           listen: false,
         ),
         myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+        notificationRepository: INotificationRepository.of(
           context,
           listen: false,
         ),

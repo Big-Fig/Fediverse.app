@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
@@ -77,6 +78,10 @@ abstract class INotificationRepository
 
   Future dismiss({
     @required INotification notification,
+  });
+
+  Future dismissFollowRequestNotificationsFromAccount({
+    @required IAccount account,
   });
 
   Future dismissAll();
