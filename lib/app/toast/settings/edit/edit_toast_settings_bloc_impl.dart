@@ -85,30 +85,30 @@ class EditToastSettingsBloc
     );
     pollFieldBloc = BoolValueFormFieldBloc(
         originValue: currentPushSettings.poll &&
-            (currentInstance.isMastodonInstance ||
+            (currentInstance.isMastodon ||
                 globalOrInstanceSettingsType ==
                     GlobalOrInstanceSettingsType.global),
         isEnabled: isEnabled &&
-            (currentInstance.isMastodonInstance ||
+            (currentInstance.isMastodon ||
                 globalOrInstanceSettingsType ==
                     GlobalOrInstanceSettingsType.global));
     pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings.pleromaChatMention &&
-          (currentInstance.isPleromaInstance ||
+          (currentInstance.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
       isEnabled: isEnabled &&
-          (currentInstance.isPleromaInstance ||
+          (currentInstance.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
     );
     pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings.pleromaEmojiReaction &&
-          (currentInstance.isPleromaInstance ||
+          (currentInstance.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
       isEnabled: isEnabled &&
-          (currentInstance.isPleromaInstance ||
+          (currentInstance.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
     );
@@ -169,15 +169,15 @@ class EditToastSettingsBloc
       pushSettings.reblog,
     );
     pollFieldBloc.changeCurrentValue(
-      pushSettings.poll && (currentInstance.isMastodonInstance || isNotGlobal),
+      pushSettings.poll && (currentInstance.isMastodon || isNotGlobal),
     );
     pleromaChatMentionFieldBloc.changeCurrentValue(
       pushSettings.pleromaChatMention &&
-          (currentInstance.isPleromaInstance || isNotGlobal),
+          (currentInstance.isPleroma || isNotGlobal),
     );
     pleromaEmojiReactionFieldBloc.changeCurrentValue(
       pushSettings.pleromaEmojiReaction &&
-          (currentInstance.isPleromaInstance || isNotGlobal),
+          (currentInstance.isPleroma || isNotGlobal),
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc.changeCurrentValue(

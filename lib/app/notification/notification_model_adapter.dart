@@ -25,8 +25,7 @@ DbNotification mapRemoteNotificationToDbNotification(
     emoji: remoteNotification.emoji,
     pleroma: remoteNotification.pleroma,
     type: remoteNotification.type,
-    unread:
-        remoteNotification.isSeen != null ? !remoteNotification.isSeen : unread,
+    unread: unread == true,
   );
 }
 

@@ -14,5 +14,5 @@ abstract class ICurrentAuthInstanceContextInitBloc
 
   Stream<CurrentAuthInstanceContextInitState> get stateStream;
 
-  Future refreshFromNetwork();
+  Future refreshFromNetwork({@required bool isNeedWaitForOptionalData});
 }

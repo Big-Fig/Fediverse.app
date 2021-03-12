@@ -18,7 +18,7 @@ class StatusActionsListWidget extends StatelessWidget {
         ICurrentAuthInstanceBloc.of(context);
 
     var isPleromaInstance =
-        currentAuthInstanceBloc.currentInstance.isPleromaInstance;
+        currentAuthInstanceBloc.currentInstance.isPleroma;
 
     var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;

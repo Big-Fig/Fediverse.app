@@ -10,7 +10,7 @@ class NotificationTabExcludeHelper {
 
     switch (tab) {
       case NotificationTab.all:
-        excludeTypes = [PleromaNotificationType.pleromaChatMention];
+        excludeTypes = [];
         break;
       case NotificationTab.mentions:
         excludeTypes = pleromaNotificationTypeValues

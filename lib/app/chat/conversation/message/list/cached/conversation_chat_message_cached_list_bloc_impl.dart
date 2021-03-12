@@ -139,7 +139,7 @@ ConversationChatStatusListBloc _createStatusListBloc({
 }) {
   var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
 
-  if (currentInstanceBloc.currentInstance.isPleromaInstance) {
+  if (currentInstanceBloc.currentInstance.isPleroma) {
     // pleroma instances support loading by conversation id
     return ConversationChatStatusListConversationApiBloc.createFromContext(
       context,

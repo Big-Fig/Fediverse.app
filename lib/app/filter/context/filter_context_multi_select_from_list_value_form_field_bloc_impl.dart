@@ -14,7 +14,7 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
   @override
   List<MastodonFilterContextType> get possibleValues {
 
-    if(currentInstance.isMastodonInstance) {
+    if(currentInstance.isMastodon) {
       return [
         MastodonFilterContextType.homeAndCustomLists,
         MastodonFilterContextType.notifications,

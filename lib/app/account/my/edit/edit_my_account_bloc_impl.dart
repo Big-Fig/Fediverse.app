@@ -297,7 +297,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     }
 
     var isPleromaInstance =
-        currentAuthInstanceBloc.currentInstance.isPleromaInstance;
+        currentAuthInstanceBloc.currentInstance.isPleroma;
 
     var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
       PleromaMyAccountEdit(

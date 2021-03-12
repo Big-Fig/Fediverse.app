@@ -53,4 +53,18 @@ extension IMyAccountBlocExtension on IMyAccountBloc {
   Stream<int> get followRequestsCountStream => myAccountStream.map(
         (myAccount) => myAccount.followRequestsCount,
       );
+
+  int get pleromaUnreadNotificationsCount =>
+      myAccount.pleromaUnreadNotificationsCount;
+
+  Stream<int> get pleromaUnreadNotificationsCountStream => myAccountStream.map(
+        (myAccount) => myAccount.pleromaUnreadNotificationsCount,
+      );
+
+  int get pleromaUnreadConversationCount =>
+      myAccount.pleromaUnreadConversationCount;
+
+  Stream<int> get pleromaUnreadConversationCountStream => myAccountStream.map(
+        (myAccount) => myAccount.pleromaUnreadConversationCount,
+      );
 }

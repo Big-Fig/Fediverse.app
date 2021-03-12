@@ -10,7 +10,7 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/badge/account_home_tab_int_badge_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_bloc_impl.dart';
+import 'package:fedi/app/notification/unread/notification_unread_exclude_types_bool_badge_bloc_impl.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
@@ -107,7 +107,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         break;
       case HomeTab.notifications:
         return DisposableProvider<IFediBoolBadgeBloc>(
-          create: (context) => NotificationUnreadBadgeExcludeTypesBloc(
+          create: (context) => NotificationUnreadExcludeTypesBoolBadgeBloc(
             filterRepository: IFilterRepository.of(
               context,
               listen: false,

@@ -186,7 +186,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final AuthInstance currentInstance;
   final AppContextBloc appContextBloc;
 
-  bool get isPleromaInstance => currentInstance.isPleromaInstance;
+  bool get isPleromaInstance => currentInstance.isPleroma;
 
   CurrentAuthInstanceContextBloc({
     @required this.currentInstance,

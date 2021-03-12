@@ -96,7 +96,7 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
 
     return Column(
       children: [
-        if (currentAuthInstanceBloc.currentInstance.isPleromaInstance)
+        if (currentAuthInstanceBloc.currentInstance.isPleroma)
           const EditMyAccountPleromaBackgroundFieldWidget(
             backgroundHeight: _editAccountBackgroundHeight,
           ),
@@ -105,7 +105,7 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
         const EditMyAccountLockedFieldWidget(),
         const EditMyAccountDiscoverableFieldWidget(),
         const EditMyAccountBotFieldWidget(),
-        if (currentAuthInstanceBloc.currentInstance.isPleromaInstance) ...[
+        if (currentAuthInstanceBloc.currentInstance.isPleroma) ...[
           const EditMyAccountPleromaAcceptsChatMessagesFieldWidget(),
           const EditMyAccountPleromaAllowFollowingMoveFieldWidget(),
           const EditMyAccountPleromaHideFavouritesFieldWidget(),

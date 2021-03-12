@@ -75,8 +75,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
       await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
     }
 
-    await upsert(mapRemoteNotificationToDbNotification(remoteNotification,
-        unread: unread));
+    await upsert(
+      mapRemoteNotificationToDbNotification(
+        remoteNotification,
+        unread: unread,
+      ),
+    );
   }
 
   @override
@@ -480,8 +484,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbNotificationPopulatedWrapper> getNewest() => getNotification(
-      filters: null,
-    );
+        filters: null,
+      );
 
   @override
   Future markAllAsRead() => dao.markAllAsRead();

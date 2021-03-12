@@ -11,7 +11,7 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NotificationUnreadBadgeExcludeTypesBloc extends AsyncInitLoadingBloc
+class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     implements IFediBoolBadgeBloc {
   final List<PleromaNotificationType> excludeTypes;
   final INotificationRepository notificationRepository;
@@ -21,7 +21,7 @@ class NotificationUnreadBadgeExcludeTypesBloc extends AsyncInitLoadingBloc
 
   List<IFilter> filters;
 
-  NotificationUnreadBadgeExcludeTypesBloc({
+  NotificationUnreadExcludeTypesBoolBadgeBloc({
     @required this.excludeTypes,
     @required this.notificationRepository,
     @required this.filterRepository,
