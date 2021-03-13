@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/analytics/analytics_service.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
@@ -54,7 +53,6 @@ import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -546,12 +544,6 @@ class FediApp extends StatelessWidget {
                           }
                         }),
                         navigatorKey: navigatorKey,
-                        navigatorObservers: [
-                          FirebaseAnalyticsObserver(
-                              analytics:
-                                  IAnalyticsService.of(context, listen: false)
-                                      .firebaseAnalytics),
-                        ],
                       ),
                     ),
                   );

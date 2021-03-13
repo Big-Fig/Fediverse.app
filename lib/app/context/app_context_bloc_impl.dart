@@ -4,8 +4,6 @@ import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
-import 'package:fedi/app/analytics/analytics_service.dart';
-import 'package:fedi/app/analytics/analytics_service_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
@@ -106,10 +104,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var hiveService = HiveService();
     await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
 
-    var analyticsService = AnalyticsService();
-
-    await globalProviderService
-        .asyncInitAndRegister<IAnalyticsService>(analyticsService);
 
     var externalShareService = ExternalShareService();
 
