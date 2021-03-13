@@ -8,7 +8,6 @@ class TosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_tos_title,
       ),

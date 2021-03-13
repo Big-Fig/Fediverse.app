@@ -230,7 +230,7 @@ class FediDatePicker {
       },
       isDeletePossible: isDeletePossible,
     );
-    ThemeData inheritTheme = Theme.of(context, shadowThemeOnly: true);
+    ThemeData inheritTheme = Theme.of(context);
     if (inheritTheme != null) {
       widget = Theme(data: inheritTheme, child: widget);
     }

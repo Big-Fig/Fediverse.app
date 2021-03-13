@@ -139,10 +139,15 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addNotExpiredWhere(
-      SimpleSelectStatement<$DbFiltersTable, DbFilter> query) => query
-      ..where((filter) =>
-          isNull(filter.expiresAt) |
-          filter.expiresAt.isBiggerThanValue(DateTime.now()));
+          SimpleSelectStatement<$DbFiltersTable, DbFilter> query) =>
+      query
+        ..where(
+          (filter) =>
+              filter.expiresAt.isNull() |
+              filter.expiresAt.isBiggerThanValue(
+                DateTime.now(),
+              ),
+        );
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> orderBy(
           SimpleSelectStatement<$DbFiltersTable, DbFilter> query,

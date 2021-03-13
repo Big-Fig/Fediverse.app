@@ -108,7 +108,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         await notificationRepository
             .upsertRemoteNotification(remoteNotification, unread: unread);
 
-        if (pushHandlerMessage.pushMessage.isLaunchOrResume) {
+        if (pushHandlerMessage.pushMessage.isLaunch) {
           launchOrResumePushLoaderNotificationSubject.add(
             NotificationPushLoaderNotification(
               notification: await notificationRepository.findByRemoteId(

@@ -27,8 +27,8 @@ class PushMessage {
   @HiveField(3)
   final String typeString;
 
-  bool get isLaunchOrResume =>
-      type == PushMessageType.launch || type == PushMessageType.resume;
+  bool get isLaunch =>
+      type == PushMessageType.launch;
 
   PushMessage({
     @required this.typeString,
@@ -85,7 +85,6 @@ class PushMessage {
 enum PushMessageType {
   foreground,
   launch,
-  resume,
 }
 
 extension PushMessageTypeJsonValueExtension on PushMessageType {
@@ -103,7 +102,6 @@ extension PushMessageTypeStringExtension on String {
 EnumValues<PushMessageType> _pushMessageTypeEnumValues = EnumValues({
   "foreground": PushMessageType.foreground,
   "launch": PushMessageType.launch,
-  "resume": PushMessageType.resume,
 });
 
 // -32 is hack for hive 0.x backward ids compatibility

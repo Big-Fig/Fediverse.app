@@ -246,7 +246,7 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
     var isSameAccount =
         currentMessage.account?.remoteId == previousMessage.account?.remoteId;
     isFirstInMinuteGroup =
-        !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
+        !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
             isSameAccount);
   } else {
     isFirstInDayGroup = true;
@@ -257,7 +257,7 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
         currentMessage.account?.remoteId == nextMessage.account?.remoteId;
     isLastInDayGroup = !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
     isLastInMinuteGroup =
-        !(DateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
+        !(CustomDateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
             isSameAccount);
   } else {
     isLastInDayGroup = true;

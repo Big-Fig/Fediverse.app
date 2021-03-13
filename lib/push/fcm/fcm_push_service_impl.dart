@@ -12,8 +12,16 @@ var _logger = Logger("fcm_push_service_impl.dart");
 final String _notificationKey = "notification";
 final String _dataKey = "data";
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  // await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
-  final FirebaseMessaging _fcm;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   // ignore: close_sinks
   final BehaviorSubject<String> _deviceTokenSubject = BehaviorSubject();
@@ -30,7 +38,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   @override
   Stream<PushMessage> get messageStream => _messageSubject.stream;
 
-  FcmPushService() : _fcm = FirebaseMessaging() {
+  FcmPushService() {
     addDisposable(subject: _deviceTokenSubject);
     addDisposable(subject: _messageSubject);
   }
@@ -54,9 +62,16 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
   @override
   Future<bool> askPermissions() async {
-    var granted =
-        _fcm.requestNotificationPermissions(IosNotificationSettings());
-    return granted != false;
+    NotificationSettings settings = await _fcm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
   @override
@@ -64,6 +79,8 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     _logger.finest(() => "init");
 
     _logger.finest(() => "configure");
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     addDisposable(
       streamSubscription: _fcm.onTokenRefresh.listen(
         (newToken) {
@@ -72,16 +89,46 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
       ),
     );
 
-    _fcm.configure(
-      onMessage: (data) async =>
-          _onNewMessage(parseCloudMessage(PushMessageType.foreground, data)),
-      onLaunch: (data) async =>
-          _onNewMessage(parseCloudMessage(PushMessageType.launch, data)),
-      onResume: (data) async => _onNewMessage(
-        parseCloudMessage(PushMessageType.resume, data),
-      ),
-      onBackgroundMessage: myBackgroundMessageHandler,
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        Map<String, dynamic> data = message.data;
+        RemoteNotification notification = message.notification;
+
+        _onNewMessage(
+          PushMessage(
+            typeString: PushMessageType.launch.toJsonValue(),
+            notification: notification != null
+                ? PushNotification(
+                    title: notification.title,
+                    body: notification.body,
+                  )
+                : null,
+            data: data,
+          ),
+        );
+      },
     );
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        Map<String, dynamic> data = message.data;
+        RemoteNotification notification = message.notification;
+
+        _onNewMessage(
+          PushMessage(
+            typeString: PushMessageType.foreground.toJsonValue(),
+            notification: notification != null
+                ? PushNotification(
+                    title: notification.title,
+                    body: notification.body,
+                  )
+                : null,
+            data: data,
+          ),
+        );
+      },
+    );
+
 
     await _fcm.setAutoInitEnabled(true);
 

@@ -1,4 +1,4 @@
-class DateUtils {
+class CustomDateUtils {
   static bool isToday(DateTime dateTime) {
     var now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -8,11 +8,13 @@ class DateUtils {
 
   static DateTime dayStartOf(DateTime dateTime) =>
       DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0, 0, 0);
+
   static DateTime minuteStartOf(DateTime dateTime) => DateTime(dateTime.year,
       dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, 0, 0, 0);
 
   static bool isSameDay(DateTime date1, DateTime date2) =>
       dayStartOf(date1).compareTo(dayStartOf(date2)) == 0;
+
   static bool isSameMinute(DateTime date1, DateTime date2) =>
       minuteStartOf(date1).compareTo(minuteStartOf(date2)) == 0;
 }

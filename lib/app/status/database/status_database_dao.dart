@@ -222,7 +222,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
-        ..where((status) => isNotNull(status.mediaAttachments)
+        ..where((status) => status.mediaAttachments.isNotNull()
 //            |
 //            status.mediaAttachments.equals("").not()
             );
@@ -385,9 +385,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       query
         ..where(
           (status) =>
-              isNull(
-                status.deleted,
-              ) |
+              status.deleted.isNull() |
               status.deleted.equals(
                 false,
               ),
@@ -399,9 +397,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           query
             ..where(
               (status) =>
-                  isNull(
-                    status.hiddenLocallyOnDevice,
-                  ) |
+                  status.hiddenLocallyOnDevice.isNull() |
                   status.hiddenLocallyOnDevice.equals(
                     false,
                   ),
@@ -413,7 +409,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           query
             ..where(
               (status) =>
-                  isNull(status.pendingState) |
+                  status.pendingState.isNull() |
                   status.pendingState.equals(
                     PendingState.published.toJsonValue(),
                   ),
@@ -426,12 +422,15 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   ) =>
           query
             ..where((status) =>
-                isNull(status.inReplyToAccountRemoteId) |
+                status.inReplyToAccountRemoteId.isNull() |
                 status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => isNull(status.inReplyToRemoteId));
+      query
+        ..where(
+          (status) => status.inReplyToRemoteId.isNull(),
+        );
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
@@ -652,6 +651,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query;
   }
+
   Future markAsHiddenLocallyOnDevice({@required int localId}) {
     var update = "UPDATE db_statuses "
         "SET hidden_locally_on_device = 1 "

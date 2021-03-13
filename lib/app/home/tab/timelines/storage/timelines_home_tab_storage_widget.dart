@@ -17,7 +17,8 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
+    as flutter_reorderable_list;
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -72,20 +73,25 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
 
     var children = items
         .map(
-          (item) => ReorderableItem(
+          (item) => flutter_reorderable_list.ReorderableItem(
             key: item.key,
-            childBuilder: (BuildContext context, ReorderableItemState state) =>
+            childBuilder: (BuildContext context,
+                    flutter_reorderable_list.ReorderableItemState state) =>
                 Provider<Timeline>.value(
               value: item.timeline,
               child: Opacity(
-                opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+                opacity: state ==
+                        flutter_reorderable_list
+                            .ReorderableItemState.placeholder
+                    ? 0.0
+                    : 1.0,
                 child: const _TimelinesHomeTabStorageListItemWidget(),
               ),
             ),
           ),
         )
         .toList();
-    return ReorderableList(
+    return flutter_reorderable_list.ReorderableList(
       onReorder: (Key item, Key newPosition) =>
           _onReorder(timelinesHomeTabStorageBloc, item, newPosition),
       onReorderDone: (Key item) =>
@@ -245,7 +251,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
         Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
-            child = ReorderableListener(
+            child = flutter_reorderable_list.ReorderableListener(
               child: Padding(
                 padding: FediPadding.allSmallPadding,
                 child: Icon(

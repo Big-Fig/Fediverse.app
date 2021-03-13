@@ -85,11 +85,13 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       DbChatMessage> addOnlyPendingStatePublishedOrNull(
           SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query) =>
       query
-        ..where((chatMessage) =>
-            isNull(chatMessage.pendingState) |
-            chatMessage.pendingState.equals(
-              PendingState.published.toJsonValue(),
-            ));
+        ..where(
+          (chatMessage) =>
+              chatMessage.pendingState.isNull() |
+              chatMessage.pendingState.equals(
+                PendingState.published.toJsonValue(),
+              ),
+        );
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
       (select(db.dbChatMessages)
@@ -168,9 +170,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       query
         ..where(
           (chatMessage) =>
-              isNull(
-                chatMessage.deleted,
-              ) |
+              chatMessage.deleted.isNull() |
               chatMessage.deleted.equals(
                 false,
               ),
@@ -182,9 +182,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase>
       query
         ..where(
           (chatMessage) =>
-              isNull(
-                chatMessage.hiddenLocallyOnDevice,
-              ) |
+              chatMessage.hiddenLocallyOnDevice.isNull() |
               chatMessage.hiddenLocallyOnDevice.equals(
                 false,
               ),

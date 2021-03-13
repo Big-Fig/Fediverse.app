@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:share/share.dart';
 
 class ExternalShareService extends DisposableOwner
     implements IExternalShareService {
-  static final textMimeType = "text/plain";
   static Future<Uint8List> loadBytesFromUrl(String url) async {
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -58,9 +57,12 @@ class ExternalShareService extends DisposableOwner
         text +=
             "[${nonFirstUrlFileToShareAsBytes.map((attachment) => attachment.url).join(", ")}]";
       }
-      await Share.file(popupTitle, firstUrlFileToShareAsBytes.filename,
-          await loadBytesFromUrl(url), mimeType,
-          text: text);
+      //
+      // Share.shareFiles(paths)
+      //
+      // await Share.file(popupTitle, firstUrlFileToShareAsBytes.filename,
+      //     await loadBytesFromUrl(url), mimeType,
+      //     text: text);
     } else {
       // share everything as text
       text +=
@@ -70,10 +72,8 @@ class ExternalShareService extends DisposableOwner
   }
 
   void shareTextOnly(String popupTitle, String text) {
-    Share.text(
-      popupTitle,
+    Share.share(
       text,
-      textMimeType,
     );
   }
 
@@ -85,7 +85,7 @@ class ExternalShareService extends DisposableOwner
     // todo: improve sharing other media types
     if (isPossibleToShareAsBytes(url)) {
       Uint8List bytes = await loadBytesFromUrl(url);
-      await Share.file(popupTitle, filename, bytes, mime(url));
+      // await Share.file(popupTitle, filename, bytes, mime(url));
     } else {
       shareTextOnly(popupTitle, url);
     }
@@ -93,11 +93,11 @@ class ExternalShareService extends DisposableOwner
 
   void shareSeveralUrlFilesAsLinksWithText(
       String popupTitle, String text, List<ShareUrlFile> urlFiles) {
-    Share.text(
-      popupTitle,
-      "$text  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
-      textMimeType,
-    );
+    // Share.text(
+    //   popupTitle,
+    //   "$text  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
+    //   textMimeType,
+    // );
   }
 
   bool isPossibleToShareAsBytes(String url) => mime(url).contains("image");

@@ -120,7 +120,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-            isNotNull(status.mediaAttachments) |
+        status.mediaAttachments.isNotNull() |
             status.mediaAttachments.equals(""));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
