@@ -137,7 +137,6 @@ class _FediVideoPlayerToggleControlFullscreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       body: Container(
         alignment: Alignment.center,
         color: fediUiColorTheme.black,

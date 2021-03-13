@@ -378,9 +378,15 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbNotificationsTable,
       DbNotification> addOnlyNotDismissedWhere(
           SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
-      query..where((status) => isNull(status.dismissed));
+      query
+        ..where(
+          (status) => status.dismissed.isNull(),
+        );
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
           SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
-      query..where((status) => status.unread.equals(true));
+      query
+        ..where(
+          (status) => status.unread.equals(true),
+        );
 }

@@ -121,11 +121,11 @@ class ConversationChatStatusListWidget
 
         if (previousCreatedAt != null) {
           isFirstInDayGroup =
-              !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
+              !CustomDateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
           var isSameAccount = currentMessage.account.remoteId ==
               previousMessage.account.remoteId;
           isFirstInMinuteGroup =
-              !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
+              !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
         } else {
           isFirstInDayGroup = true;
@@ -135,9 +135,9 @@ class ConversationChatStatusListWidget
           var isSameAccount =
               currentMessage.account.remoteId == nextMessage.account.remoteId;
           isLastInDayGroup =
-              !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
+              !CustomDateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =
-              !(DateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
+              !(CustomDateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
                   isSameAccount);
         } else {
           isLastInDayGroup = true;

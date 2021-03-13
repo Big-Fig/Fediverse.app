@@ -1,7 +1,7 @@
 import 'package:fedi/app/duration/picker/duration_picker_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_duration_picker/flutter_duration_picker.dart'
-    as flutter_duration_picker;
+import 'package:duration_picker/duration_picker.dart'
+    as duration_picker;
 
 Future<DurationPickerResult> showDurationPicker({
   @required BuildContext context,
@@ -15,7 +15,7 @@ Future<DurationPickerResult> showDurationPicker({
     throw UnsupportedError("Deleting not implemented yet");
   }
 
-  var pickedDuration = await flutter_duration_picker.showDurationPicker(
+  var pickedDuration = await duration_picker.showDurationPicker(
     context: context,
     initialTime: currentDuration,
   );

@@ -13,6 +13,8 @@ description: A new Flutter project.
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 2.0.46+246
 
+publish_to: none
+
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
@@ -24,47 +26,51 @@ dependencies:
     sdk: flutter
 
   # enhanced reorderable list
-  flutter_reorderable_list: ^0.1.5
+  flutter_reorderable_list: ^1.0.0
 
   # firebase auth
-  firebase_core: ^0.5.0
+  firebase_core: ^1.0.1
   # push notifications FCM
-  firebase_messaging: ^7.0.0
+  firebase_messaging: ^9.0.0
   # analytics events
-  firebase_analytics: ^6.0.0
+  firebase_analytics: ^7.1.1
   # handle crashes and non-fatal errors
-  firebase_crashlytics: 0.2.1
+  firebase_crashlytics: ^1.0.0
 
   # handle init urls. Used for login/register and navigation from notification
   uni_links: ^0.4.0
   # launch browser to view links
-  url_launcher: ^5.6.0
+  url_launcher: ^6.0.2
   # object serialization
-  hive: ^1.4.4+1
-  hive_flutter: ^0.3.1
+  hive: ^2.0.0
+  hive_flutter: ^1.0.0
 
   #flutter_html: ^1.0.2
   # actually it is ^1.0.2 with additional text style features
-  flutter_html:
-    git:
-      url: https://github.com/xal/flutter_html.git
-      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
+#  flutter_html:
+#    git:
+#      url: https://github.com/xal/flutter_html.git
+#      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
+
+  flutter_html: ^2.0.0-nullsafety.0
 
   #flutter_duration_picker: ^1.0.4
   # actually it is ^1.0.4 with bug fixes & style improvements
-  flutter_duration_picker:
-    git:
-      url: https://github.com/xal/flutter_duration_picker
-      ref: xal/minute_fixes
+#  flutter_duration_picker:
+#    git:
+#      url: https://github.com/xal/flutter_duration_picker
+#      ref: xal/minute_fixes
+
+  duration_picker: ^1.0.0
 
   # media grid
   flutter_staggered_grid_view: ^0.3.2
   # retrieve storage path to save files
-  path_provider: ^1.6.14
+  path_provider: ^2.0.1
   # fetch gallery albums and items
   photo_manager: ^0.5.8
   # detect file mime type for share
-  mime_type: ^0.3.2
+  mime_type: ^1.0.0
   # datetime formatter for statuses & chat messages
   timeago: ^2.0.27
   # better image viewer with gestures support
@@ -83,7 +89,7 @@ dependencies:
   auto_size_text: ^2.1.0
 
   # default media picker
-  image_picker: ^0.6.7+4
+  image_picker: ^0.7.2+1
 
   # better lint, should be in main dependencies to ignore async/await unnecessary warnings
   pedantic: ^1.8.0+1
@@ -92,16 +98,16 @@ dependencies:
   flutter_datetime_picker: ^1.4.0
 
   # annotations to generate json from & to methods
-  json_annotation: ^3.0.1
+  json_annotation: ^4.0.0
 
   # advanced logging
-  logging: ^0.11.4
+  logging: ^1.0.0
 
   # dependency injection framework
   provider: ^4.3.2+2
 
   # fancy permission handler
-  permission_handler: ^5.0.1+1
+  permission_handler: ^6.1.0
 
   # better tab indicator
   md2_tab_indicator: ^1.0.2
@@ -112,34 +118,39 @@ dependencies:
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: ^3.4.0
+  moor: ^4.1.0
 
   # sqlite3_flutter_libs required for moor ffi
   sqlite3_flutter_libs: ^0.2.0
 
   # database inspector for debugging. Use with Moor Inspector Intellij Idea Plugin
-  moor_inspector: ^0.1.3
+  moor_inspector: ^0.2.0
 
   # check internet connection state
-  connectivity: ^0.4.9+2
+  connectivity: ^3.0.2
 
   # WebSockets API mobile implementation
   web_socket_channel: ^1.1.0
 
   # Provides internationalization and localization facilities
-  intl: ^0.16.1
+#  intl: ^0.16.1
 
   # save photo and video to gallery
-  gallery_saver: ^2.0.3
+  #  gallery_saver: ^2.0.3
+
+  gallery_saver:
+    git:
+      url: https://github.com/Saad29/gallery_saver.git
+      ref: 5f945ea23dc4c4ae37bdbffd081d2414471de5e3
 
   # share actions via native API
-  esys_flutter_share: ^1.0.2
+  share: ^2.0.1
 
   # detect mime type be extension
-  mime: ^0.9.7
+  mime: ^1.0.0
 
   # parse html to extract raw text from status content
-  html: ^0.14.0+3
+  html: ^0.15.0
 
   # fetch package info during runtime
   package_info: ^0.4.3
@@ -151,28 +162,28 @@ dependencies:
   carousel_slider: ^2.2.1
 
   # video/audio players
-  video_player: '>=0.10.11+2 <2.0.0'
+  video_player: ^2.0.2
 
   # pull to refresh and pull to load more
-  pull_to_refresh: ^1.6.2
+  pull_to_refresh: ^1.6.4
 
   # custom scroll view which fix bugs related to inner scrollables sync
-  extended_nested_scroll_view: ^1.0.1
+  extended_nested_scroll_view: ^3.0.0
 
   # error overlay
-  overlay_support: ^1.0.5
+  overlay_support: ^1.2.0-nullsafety.0
 
   # file picker for media attachment
-  file_picker: ^2.0.0
+  file_picker: ^3.0.0
 
   # unenscape account not field
   html_unescape: ^1.0.2
 
   # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
-  shared_preferences: ^0.5.10
+  shared_preferences: ^2.0.4
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^5.0.0
+  extended_text_field: ^6.0.1
 
   # detect keyboard visibility
   flutter_keyboard_visibility: ^3.2.2
@@ -181,13 +192,13 @@ dependencies:
   flutter_slidable: ^0.5.7
 
   # disable wakelock for video player
-  wakelock: ^0.1.4+2
+  wakelock: ^0.4.0
 
   # ask for review inside app
-  in_app_review: ^1.0.4
+  in_app_review: ^2.0.1
 
   # better dateTime manipulation (especially for add duration to dateTime)
-  jiffy: ^3.0.1
+  jiffy: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -199,12 +210,12 @@ dev_dependencies:
   # flutter pub run build_runner build --delete-conflicting-outputs
   build_runner: ^1.10.4
   # build tool to generate json from & to methods
-  json_serializable: ^3.4.1
+  json_serializable: ^4.0.2
   # sql orm generator
-  moor_generator: ^3.4.0
+  moor_generator: ^4.1.0
 
   # object serialization generator
-  hive_generator: ^0.8.2
+  hive_generator: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

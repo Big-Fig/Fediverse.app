@@ -70,7 +70,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
           await unhandledLocalPreferencesBloc
               .addUnhandledMessage(pushMessageHandler);
 
-          if (pushMessage.isLaunchOrResume) {
+          if (pushMessage.isLaunch) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
               await currentInstanceBloc
