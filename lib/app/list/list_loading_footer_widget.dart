@@ -6,7 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListLoadingFooterWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => const CustomFooter(
+  Widget build(BuildContext context) => CustomFooter(
         builder: _builder,
       );
 

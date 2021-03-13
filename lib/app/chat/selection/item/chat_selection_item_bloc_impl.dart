@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChatSelectionItemBloc extends DisposableOwner
     implements IChatSelectionItemBloc {

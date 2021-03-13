@@ -35,6 +35,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
     return StreamProvider.value(
       value: accountBloc.displayNameEmojiTextStream,
+      initialData: accountBloc.displayNameEmojiText,
       child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
         update: (context, emojiText, _) {
           var input = emojiText?.text;
