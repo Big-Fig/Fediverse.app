@@ -33,21 +33,19 @@ class UploadMediaAttachmentListAllWidget extends StatelessWidget {
     }
 
     if (heightOnKeyboardOpen != null) {
-      return StreamBuilder<bool>(
-          stream: KeyboardVisibility.onChange,
-          builder: (context, snapshot) {
-            var shown = snapshot.data;
-
-            if (shown == true) {
-              return ConstrainedBox(
-                //                height: heightOnKeyboardOpen,
-                constraints: BoxConstraints(maxHeight: heightOnKeyboardOpen),
-                child: child,
-              );
-            } else {
-              return child;
-            }
-          });
+      return KeyboardVisibilityBuilder(
+        builder: (context, isKeyboardVisible) {
+          if (isKeyboardVisible == true) {
+            return ConstrainedBox(
+              //                height: heightOnKeyboardOpen,
+              constraints: BoxConstraints(maxHeight: heightOnKeyboardOpen),
+              child: child,
+            );
+          } else {
+            return child;
+          }
+        },
+      );
     } else {
       return child;
     }

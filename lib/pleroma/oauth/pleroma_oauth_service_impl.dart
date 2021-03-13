@@ -89,7 +89,7 @@ class PleromaOAuthService extends DisposableOwner
     var completer = Completer<String>();
     if (isCanLaunch) {
       StreamSubscription<Uri> subscription;
-      subscription = getUriLinksStream().listen((Uri uri) {
+      subscription = uriLinkStream.listen((Uri uri) {
         subscription.cancel();
         closeWebView();
         var code = extractAuthCodeFromUri(uri);

@@ -186,23 +186,19 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-        stream: KeyboardVisibility.onChange,
-        builder: (context, snapshot) {
-          var shown = snapshot.data;
+    return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+      double width;
+      if (isKeyboardVisible == true) {
+        width = 75.0;
+      } else {
+        width = 175.0;
+      }
 
-          double width;
-          if (shown == true) {
-            width = 75.0;
-          } else {
-            width = 175.0;
-          }
-
-          return Image(
-            image: AssetImage("assets/images/theme/logo.png"),
-            width: width,
-          );
-        });
+      return Image(
+        image: AssetImage("assets/images/theme/logo.png"),
+        width: width,
+      );
+    });
   }
 }
 
