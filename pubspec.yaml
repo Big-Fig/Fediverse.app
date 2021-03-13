@@ -38,7 +38,26 @@ dependencies:
   firebase_crashlytics: ^1.0.0
 
   # handle init urls. Used for login/register and navigation from notification
-  uni_links: ^0.4.0
+  #  uni_links: ^0.4.0
+  uni_links:
+    git:
+      url: https://github.com/xal/uni_links.git
+      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
+      path: uni_links
+
+  uni_links_platform_interface:
+    git:
+      url: https://github.com/xal/uni_links.git
+      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
+      path: uni_links_platform_interface
+
+  uni_links_web:
+    git:
+      url: https://github.com/xal/uni_links.git
+      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
+      path: uni_links_web
+
+
   # launch browser to view links
   url_launcher: ^6.0.2
   # object serialization
@@ -47,19 +66,19 @@ dependencies:
 
   #flutter_html: ^1.0.2
   # actually it is ^1.0.2 with additional text style features
-#  flutter_html:
-#    git:
-#      url: https://github.com/xal/flutter_html.git
-#      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
+  #  flutter_html:
+  #    git:
+  #      url: https://github.com/xal/flutter_html.git
+  #      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
 
   flutter_html: ^2.0.0-nullsafety.0
 
   #flutter_duration_picker: ^1.0.4
   # actually it is ^1.0.4 with bug fixes & style improvements
-#  flutter_duration_picker:
-#    git:
-#      url: https://github.com/xal/flutter_duration_picker
-#      ref: xal/minute_fixes
+  #  flutter_duration_picker:
+  #    git:
+  #      url: https://github.com/xal/flutter_duration_picker
+  #      ref: xal/minute_fixes
 
   duration_picker: ^1.0.0
 
@@ -95,7 +114,12 @@ dependencies:
   pedantic: ^1.8.0+1
 
   # customizable datetime picker
-  flutter_datetime_picker: ^1.4.0
+  #flutter_datetime_picker: ^1.4.0
+
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/figengungor/flutter_datetime_picker.git
+      ref: f4d2bd02f5c1f5563fc7c521b7a7bf6a4f172c37
 
   # annotations to generate json from & to methods
   json_annotation: ^4.0.0
@@ -108,9 +132,6 @@ dependencies:
 
   # fancy permission handler
   permission_handler: ^6.1.0
-
-  # better tab indicator
-  md2_tab_indicator: ^1.0.2
 
   # native kotlin/swift image convert & compress
   flutter_image_compress: ^0.6.5+1
@@ -133,7 +154,7 @@ dependencies:
   web_socket_channel: ^1.1.0
 
   # Provides internationalization and localization facilities
-#  intl: ^0.16.1
+  #  intl: ^0.16.1
 
   # save photo and video to gallery
   #  gallery_saver: ^2.0.3
@@ -156,7 +177,13 @@ dependencies:
   package_info: ^0.4.3
 
   # better scroll controller for nested scroll
-  nested_scroll_controller: ^0.2.1
+#  nested_scroll_controller: ^0.2.1
+
+  nested_scroll_controller:
+    git:
+      url: https://github.com/xal/nested_scroll_controller.git
+      ref: fc5261bf33e5f1c7c1a5a0f12be4951cab759d98
+
 
   # media attachments carousel
   carousel_slider: ^2.2.1
@@ -165,7 +192,12 @@ dependencies:
   video_player: ^2.0.2
 
   # pull to refresh and pull to load more
-  pull_to_refresh: ^1.6.4
+  #  pull_to_refresh: ^1.6.4
+
+  pull_to_refresh:
+    git:
+      url: https://github.com/fzyzcjy/flutter_pulltorefresh.git
+      ref: 0bb4f70dd7540ffe032bbc2a6994df388b4f1c39
 
   # custom scroll view which fix bugs related to inner scrollables sync
   extended_nested_scroll_view: ^3.0.0
@@ -199,6 +231,20 @@ dependencies:
 
   # better dateTime manipulation (especially for add duration to dateTime)
   jiffy: ^4.0.0
+
+dependency_overrides:
+  uni_links_platform_interface:
+    git:
+      url: https://github.com/xal/uni_links.git
+      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
+      path: uni_links_platform_interface
+
+
+  uni_links_web:
+    git:
+      url: https://github.com/xal/uni_links.git
+      ref: 25ac00d7a635a0d870bd64767cfdf28ac47bcedd
+      path: uni_links_web
 
 dev_dependencies:
   flutter_test:
