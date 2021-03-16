@@ -8,38 +8,36 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger =
     Logger("pleroma_chat_with_last_message_cached_list_bloc_impl.dart");
 
 class PleromaChatWithLastMessageCachedListBloc
-    extends IPleromaChatWithLastMessageCachedBloc {
+    extends IPleromaChatWithLastMessageCachedListBloc {
   final IPleromaChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
 
   PleromaChatWithLastMessageCachedListBloc({
-    @required this.pleromaChatService,
-    @required this.chatRepository,
-    @required this.chatWithLastMessageRepository,
+    required this.pleromaChatService,
+    required this.chatRepository,
+    required this.chatWithLastMessageRepository,
   });
 
   @override
   IPleromaApi get pleromaApi => pleromaChatService;
 
-  PleromaChatRepositoryFilters get filters => null;
+  PleromaChatRepositoryFilters? get filters => null;
 
   PleromaChatOrderingTermData get orderingTermData =>
       PleromaChatOrderingTermData.updatedAtDesc;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IPleromaChatWithLastMessage newerThan,
-      @required IPleromaChatWithLastMessage olderThan}) async {
+      {required int? limit,
+      required IPleromaChatWithLastMessage? newerThan,
+      required IPleromaChatWithLastMessage? olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
@@ -67,9 +65,9 @@ class PleromaChatWithLastMessageCachedListBloc
 
   @override
   Future<List<IPleromaChatWithLastMessage>> loadLocalItems(
-      {@required int limit,
-      @required IPleromaChatWithLastMessage newerThan,
-      @required IPleromaChatWithLastMessage olderThan}) async {
+      {required int? limit,
+      required IPleromaChatWithLastMessage? newerThan,
+      required IPleromaChatWithLastMessage? olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");

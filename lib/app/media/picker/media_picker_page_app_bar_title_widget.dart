@@ -14,8 +14,8 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
   final Widget emptyTitleWidget;
 
   const MediaPickerPageAppBarTitle({
-    Key key,
-    @required this.emptyTitleWidget,
+    Key? key,
+    required this.emptyTitleWidget,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
         var folders = snapshot.data;
 
         if (folders?.isNotEmpty == true) {
-          return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+          return StreamBuilder<MediaDeviceGallerySelectedFolderData?>(
             stream: mediaDeviceGalleryBloc.selectedFolderDataStream,
             builder: (context, snapshot) {
               var selectedFolderData = snapshot.data;
@@ -71,7 +71,7 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
   }
 }
 
-Future<T> _showFolderChooserModalBottomSheet<T>(
+Future<T?> _showFolderChooserModalBottomSheet<T>(
   BuildContext context,
   IMediaDeviceGalleryBloc mediaDeviceGalleryBloc,
 ) {
@@ -84,7 +84,7 @@ Future<T> _showFolderChooserModalBottomSheet<T>(
         padding: FediPadding.allBigPadding,
         child: ListView(
           shrinkWrap: true,
-          children: mediaDeviceGalleryBloc.folders.map((folder) {
+          children: mediaDeviceGalleryBloc.folders!.map((folder) {
             return ListTile(
               onTap: () {
                 mediaDeviceGalleryBloc.selectFolder(folder);

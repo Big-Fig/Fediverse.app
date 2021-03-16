@@ -17,14 +17,14 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const FilterPaginationListWidget({
-    Key key,
-    ScrollController scrollController,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    Key? key,
+    ScrollController? scrollController,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
     bool refreshOnFirstLoad = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
@@ -41,10 +41,10 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
 
   @override
   ScrollView buildItemsCollectionView({
-    BuildContext context,
-    List<IFilter> items,
-    Widget header,
-    Widget footer,
+    BuildContext? context,
+    required List<IFilter> items,
+    Widget? header,
+    Widget? footer,
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
@@ -72,7 +72,7 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
 
   @override
   IPaginationListBloc<PaginationPage<IFilter>, IFilter>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<
               ICachedPaginationListBloc<CachedPaginationPage<IFilter>,
                   IFilter>>(context, listen: false);

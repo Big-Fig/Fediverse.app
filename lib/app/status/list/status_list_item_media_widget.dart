@@ -19,7 +19,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget() : super();
 
   Container mediaAttachmentPreviewUrlWidget(
-      String previewUrl, BuildContext context) {
+      String? previewUrl, BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     return Container(
       color: fediUiColorTheme.black.withOpacity(0.2),
@@ -54,7 +54,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
       statusBloc: statusBloc,
       statusSensitiveBloc: statusSensitiveBloc,
     );
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: statusBloc.deletedStream.distinct(),
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
@@ -76,9 +76,9 @@ class StatusListItemMediaWidget extends StatelessWidget {
   }
 
   Widget buildBody({
-    @required Widget child,
-    @required IStatusBloc statusBloc,
-    @required IStatusSensitiveBloc statusSensitiveBloc,
+    required Widget child,
+    required IStatusBloc statusBloc,
+    required IStatusSensitiveBloc statusSensitiveBloc,
   }) {
     return StreamBuilder<StatusSensitiveWarningState>(
       stream: statusSensitiveBloc.statusWarningStateStream.distinct(),

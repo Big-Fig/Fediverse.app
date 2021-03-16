@@ -7,17 +7,22 @@ import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabStorageBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static ITimelinesHomeTabStorageBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ITimelinesHomeTabStorageBloc>(context, listen: listen);
+  static ITimelinesHomeTabStorageBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<ITimelinesHomeTabStorageBloc>(
+        context,
+        listen: listen,
+      );
 
-  TimelinesHomeTabStorageUiState get uiState;
+  TimelinesHomeTabStorageUiState? get uiState;
 
   Stream<TimelinesHomeTabStorageUiState> get uiStateStream;
 
-  TimelinesHomeTabStorage get storage;
+  TimelinesHomeTabStorage? get storage;
 
-  Stream<TimelinesHomeTabStorage> get storageStream;
+  Stream<TimelinesHomeTabStorage?> get storageStream;
 
   List<String> get timelineIds;
 
@@ -49,5 +54,6 @@ abstract class ITimelinesHomeTabStorageBloc
   void swapItemsAt(int oldIndex, int newIndex);
 
   int indexOfKey(Key key);
+
   Timeline timelineOfKey(Key key);
 }

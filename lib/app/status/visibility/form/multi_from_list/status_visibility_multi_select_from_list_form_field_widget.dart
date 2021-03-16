@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 class StatusVisibilityMultiSelectFromListFormFieldWidget
     extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
+  final String? description;
+  final String? descriptionOnDisabled;
 
   const StatusVisibilityMultiSelectFromListFormFieldWidget({
-    @required this.label,
+    required this.label,
     this.description,
     this.descriptionOnDisabled,
   });

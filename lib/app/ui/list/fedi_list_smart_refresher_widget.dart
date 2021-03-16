@@ -7,37 +7,37 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 var _logger = Logger("fedi_list_smart_refresher_widget.dart");
 
 class FediListSmartRefresherWidget extends StatelessWidget {
-  final Widget child;
-  final Widget header;
-  final Widget footer;
+  final Widget? child;
+  final Widget? header;
+  final Widget? footer;
   final bool enablePullUp;
   final bool enableTwoLevel;
   final bool enablePullDown;
-  final Future<FediListSmartRefresherLoadingState> Function() onRefresh;
-  final Future<FediListSmartRefresherLoadingState> Function() onLoading;
-  final Future<bool> Function() onTwoLevel;
-  final OnOffsetChange onOffsetChange;
+  final Future<FediListSmartRefresherLoadingState> Function()? onRefresh;
+  final Future<FediListSmartRefresherLoadingState> Function()? onLoading;
+  final Future<bool> Function()? onTwoLevel;
+  final OnOffsetChange? onOffsetChange;
   final RefreshController controller;
-  final Axis scrollDirection;
-  final bool reverse;
-  final ScrollController scrollController;
-  final bool primary;
-  final ScrollPhysics physics;
-  final double cacheExtent;
-  final int semanticChildCount;
-  final DragStartBehavior dragStartBehavior;
+  final Axis? scrollDirection;
+  final bool? reverse;
+  final ScrollController? scrollController;
+  final bool? primary;
+  final ScrollPhysics? physics;
+  final double? cacheExtent;
+  final int? semanticChildCount;
+  final DragStartBehavior? dragStartBehavior;
 
   FediListSmartRefresherWidget({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.child,
     this.header,
     this.footer,
     this.enablePullDown = true,
     this.enablePullUp = false,
     this.enableTwoLevel = false,
-    @required this.onRefresh,
-    @required this.onLoading,
+    required this.onRefresh,
+    required this.onLoading,
     this.onTwoLevel,
     this.onOffsetChange,
     this.dragStartBehavior,
@@ -62,13 +62,13 @@ class FediListSmartRefresherWidget extends StatelessWidget {
         enableTwoLevel: enableTwoLevel,
         onRefresh: () async {
           if (onRefresh != null) {
-            var state = await onRefresh();
+            var state = await onRefresh!();
             _logger.finest(() => "onRefresh $state");
           }
         },
         onLoading: () async {
           if (onLoading != null) {
-            var state = await onLoading();
+            var state = await onLoading!();
             _logger.finest(() => "onLoading $state");
           }
         },

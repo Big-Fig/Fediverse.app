@@ -9,7 +9,7 @@ class DurationDateTimeValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   DurationDateTimeValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

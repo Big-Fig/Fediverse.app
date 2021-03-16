@@ -7,7 +7,6 @@ import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/status/share_status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +18,9 @@ class ExternalShareStatusBloc extends ExternalShareBloc
   IStatus status;
 
   ExternalShareStatusBloc({
-    @required this.popupTitle,
-    @required this.status,
-    @required IExternalShareService externalShareService,
+    required this.popupTitle,
+    required this.status,
+    required IExternalShareService externalShareService,
   }) : super(externalShareService: externalShareService);
 
   @override
@@ -33,15 +32,14 @@ class ExternalShareStatusBloc extends ExternalShareBloc
   @override
   Future share() {
     var asLink = asLinkBoolField.currentValue == true;
-    var content = HtmlTextHelper.extractRawStringFromHtmlString(status.content);
+    var content = status.content?.extractRawStringFromHtmlString();
     var text = message ?? "";
     if (asLink) {
       text += " ${status.url}";
     } else {
       var spoilerText = status.spoilerText;
       if (spoilerText?.isNotEmpty == true) {
-        text +=
-            " ${HtmlTextHelper.extractRawStringFromHtmlString(spoilerText)}";
+        text += " ${spoilerText?.extractRawStringFromHtmlString()}";
       }
 
       text += " ${content}";
@@ -58,17 +56,22 @@ class ExternalShareStatusBloc extends ExternalShareBloc
                   filename: mediaAttachment.description,
                 ),
               )
-              ?.toList(),
+              .toList(),
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IStatus status,
-      @required String popupTitle,
-      @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus status,
+    required String popupTitle,
+    required Widget child,
+  }) {
     return DisposableProvider<ExternalShareStatusBloc>(
-      create: (context) =>
-          createFromContext(context, status: status, popupTitle: popupTitle),
+      create: (context) => createFromContext(
+        context,
+        status: status,
+        popupTitle: popupTitle,
+      ),
       child: ProxyProvider<ExternalShareStatusBloc, IExternalShareBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ExternalShareStatusBloc, IShareStatusBloc>(
@@ -83,8 +86,8 @@ class ExternalShareStatusBloc extends ExternalShareBloc
 
   static ExternalShareStatusBloc createFromContext(
     BuildContext context, {
-    @required IStatus status,
-    @required String popupTitle,
+    required IStatus status,
+    required String popupTitle,
   }) =>
       ExternalShareStatusBloc(
         status: status,

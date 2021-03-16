@@ -27,20 +27,20 @@ class PostStatusComposeWidget extends StatelessWidget {
   final bool displaySubjectField;
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
-  final int maxLines;
-  final String hintText;
+  final int? maxLines;
+  final String? hintText;
   final bool showPostAction;
   final bool autofocus;
 
   const PostStatusComposeWidget({
-    @required this.displaySubjectField,
-    @required this.expanded,
-    @required this.displayAccountAvatar,
-    @required this.maxLines,
-    @required this.showPostAction,
+    required this.displaySubjectField,
+    required this.expanded,
+    required this.displayAccountAvatar,
+    required this.maxLines,
+    required this.showPostAction,
     this.hintText,
-    @required this.goBackOnSuccess,
-    @required this.autofocus,
+    required this.goBackOnSuccess,
+    required this.autofocus,
   });
 
   @override
@@ -98,8 +98,8 @@ class PostStatusComposeWidget extends StatelessWidget {
 
 class _PostStatusComposeActionsWidget extends StatelessWidget {
   const _PostStatusComposeActionsWidget({
-    Key key,
-    @required this.showPostAction,
+    Key? key,
+    required this.showPostAction,
   }) : super(key: key);
 
   final bool showPostAction;
@@ -121,7 +121,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    StreamBuilder<String>(
+                    StreamBuilder<String?>(
                         stream: postStatusBloc.inputTextStream,
                         builder: (context, snapshot) {
                           var inputText = snapshot.data;
@@ -156,17 +156,17 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
 
 class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
   const _PostStatusComposeInputWithAvatarWidget({
-    Key key,
-    @required this.autofocus,
-    @required this.expanded,
-    @required this.hintText,
-    @required this.maxLines,
+    Key? key,
+    required this.autofocus,
+    required this.expanded,
+    required this.hintText,
+    required this.maxLines,
   }) : super(key: key);
 
   final bool autofocus;
   final bool expanded;
-  final String hintText;
-  final int maxLines;
+  final String? hintText;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +195,7 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
 
 class _PostStatusComposeSubjectFieldWidget extends StatelessWidget {
   const _PostStatusComposeSubjectFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

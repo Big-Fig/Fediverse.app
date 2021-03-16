@@ -11,11 +11,11 @@ import 'package:flutter/material.dart';
 
 class SingleSelectAccountPage extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final List<Widget>? accountActions;
   final bool isNeedPreFetchRelationship;
 
   const SingleSelectAccountPage({
-    @required this.accountSelectedCallback,
+    required this.accountSelectedCallback,
     this.accountActions,
     this.isNeedPreFetchRelationship = false,
   });
@@ -38,12 +38,12 @@ class SingleSelectAccountPage extends StatelessWidget {
 
 void goToSingleSelectAccountPage(
   BuildContext context, {
-  @required AccountCallback accountSelectedCallback,
-  @required bool excludeMyAccount,
-  @required bool followingsOnly,
-  @required PleromaAccountListLoader customRemoteAccountListLoader,
-  @required AccountListLoader customLocalAccountListLoader,
-  List<Widget> accountActions,
+  required AccountCallback accountSelectedCallback,
+  required bool excludeMyAccount,
+  required bool followingsOnly,
+  required PleromaAccountListLoader? customRemoteAccountListLoader,
+  required AccountListLoader? customLocalAccountListLoader,
+  List<Widget>? accountActions,
   bool isNeedPreFetchRelationship = false,
 }) {
   Navigator.push(

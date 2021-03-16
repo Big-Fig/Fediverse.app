@@ -5,9 +5,9 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 
 class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
   @override
-  AppContextBloc appContextBloc;
+  late AppContextBloc appContextBloc;
 
-  DeepLinkInitBloc deepLinkInitBloc;
+  late DeepLinkInitBloc deepLinkInitBloc;
 
   @override
   Future internalAsyncInit() async {

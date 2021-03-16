@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediCircularProgressIndicator extends StatefulWidget {
-  final Color color;
+  final Color? color;
   final double size;
 
   const FediCircularProgressIndicator({
@@ -22,7 +22,7 @@ class FediCircularProgressIndicator extends StatefulWidget {
 class _FediCircularProgressIndicatorState
     extends State<FediCircularProgressIndicator>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {

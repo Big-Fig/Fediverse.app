@@ -3,18 +3,17 @@ import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_va
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
-import 'package:flutter/material.dart';
 
 class FilterContextMultiSelectFromListValueFormFieldBloc
-    extends MultiSelectFromListValueFormFieldBloc<MastodonFilterContextType>
+    extends MultiSelectFromListValueFormFieldBloc<MastodonFilterContextType?>
     implements IFilterContextMultiSelectFromListValueFormFieldBloc {
 
-  final AuthInstance currentInstance;
+  final AuthInstance? currentInstance;
 
   @override
   List<MastodonFilterContextType> get possibleValues {
 
-    if(currentInstance.isMastodon) {
+    if(currentInstance!.isMastodon) {
       return [
         MastodonFilterContextType.homeAndCustomLists,
         MastodonFilterContextType.notifications,
@@ -34,12 +33,12 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
   }
 
   FilterContextMultiSelectFromListValueFormFieldBloc({
-    @required this.currentInstance,
-    @required List<MastodonFilterContextType> originValue,
+    required this.currentInstance,
+    required List<MastodonFilterContextType?>? originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
-    @required
-        List<FormValueFieldValidation<List<MastodonFilterContextType>>>
+    required
+        List<FormValueFieldValidation<List<MastodonFilterContextType?>>>
             validators,
   }) : super(
           originValue: originValue,

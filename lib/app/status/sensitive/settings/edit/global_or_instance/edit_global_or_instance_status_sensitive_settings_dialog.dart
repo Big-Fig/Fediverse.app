@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditStatusSensitiveSettingsBloc>(
@@ -48,7 +48,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
               streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
                     (isUseGlobalSettings) {
-                  editStatusSensitiveSettingsBloc.changeEnabled(!isUseGlobalSettings);
+                  editStatusSensitiveSettingsBloc.changeEnabled(!isUseGlobalSettings!);
                 },
               ),
             );

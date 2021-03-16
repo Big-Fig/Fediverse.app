@@ -7,7 +7,7 @@ class FediBackgroundBlur extends StatelessWidget {
   final double sigma;
 
   FediBackgroundBlur({
-    @required this.child,
+    required this.child,
     this.sigma = 3.0,
   });
 

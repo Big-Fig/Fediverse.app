@@ -30,7 +30,7 @@ class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
 class _FediPlayerControlToggleMuteButtonInitializedWidget
     extends StatelessWidget {
   const _FediPlayerControlToggleMuteButtonInitializedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
           var isMuted = snapshot.data ?? false;
 
           return AsyncOperationButtonBuilderWidget(
-            builder: (BuildContext context, void Function() onPressed) {
+            builder: (BuildContext context, void Function()? onPressed) {
               return FediIconButton(
                 icon: Icon(isMuted ? FediIcons.sound_off : FediIcons.sound_on),
                 color: IFediUiColorTheme.of(context).white,
@@ -59,7 +59,7 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
 class _FediPlayerControlToggleMuteButtonNotInitialiedWidget
     extends StatelessWidget {
   const _FediPlayerControlToggleMuteButtonNotInitialiedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

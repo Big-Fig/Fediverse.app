@@ -35,7 +35,7 @@ class PostStatusPostIconInCircleActionWidget extends StatelessWidget {
             builder: (BuildContext context, onPressed) {
               return FediIconInCircleFilledButton(
                 FediIcons.send,
-                onPressed: isReadyToPost ? onPressed : null,
+                onPressed: isReadyToPost! ? onPressed : null,
               );
             },
           );

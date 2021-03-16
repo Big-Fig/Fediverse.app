@@ -5,10 +5,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditPaginationSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<PaginationSettings> {
-  static IEditPaginationSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IEditPaginationSettingsBloc>(context, listen: listen);
+    implements IEditGlobalOrInstanceSettingsBloc<PaginationSettings?> {
+  static IEditPaginationSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IEditPaginationSettingsBloc>(
+        context,
+        listen: listen,
+      );
 
-  IPaginationPageSizeSingleFromListValueFormFieldBloc get pageSizeFieldBloc;
+  IPaginationPageSizeSingleFromListValueFormFieldBloc? get pageSizeFieldBloc;
 }

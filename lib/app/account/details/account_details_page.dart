@@ -54,7 +54,7 @@ import 'package:provider/provider.dart';
 var _headerBackgroundHeight = 200.0;
 
 class AccountDetailsPage extends StatelessWidget {
-  const AccountDetailsPage({Key key}) : super(key: key);
+  const AccountDetailsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
           IFediNestedScrollViewBloc>(
         update: (context, value, previous) => value,
         child: ProxyProvider<IFediNestedScrollViewWithNestedScrollableTabsBloc,
-            IScrollControllerBloc>(
+            IScrollControllerBloc?>(
           update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
           child: FediNestedScrollViewWithNestedScrollableTabsWidget(
@@ -154,9 +154,9 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
   }
 
   Widget buildBodyProvider({
-    @required BuildContext context,
-    @required AccountStatusesTab tab,
-    @required Widget child,
+    required BuildContext context,
+    required AccountStatusesTab tab,
+    required Widget child,
   }) {
     return Builder(
       builder: (context) {
@@ -165,7 +165,6 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             return _AccountDetailsPageBodyTabFavouritesProvider(
               child: child,
             );
-            break;
           case AccountStatusesTab.withReplies:
             return _AccountDetailsPageBodyTabWithRepliesProvider(
               child: child,
@@ -175,20 +174,15 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             return _AccountDetailsPageBodyTabWithoutRepliesProvider(
               child: child,
             );
-
-            break;
           case AccountStatusesTab.media:
             return _AccountDetailsPageBodyTabMediaProvider(
               child: child,
             );
-            break;
           case AccountStatusesTab.pinned:
             return _AccountDetailsPageBodyTabPinnedProvider(
               child: child,
             );
-            break;
         }
-        throw "Invalid tab $tab";
       },
     );
   }
@@ -222,8 +216,8 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
   }
 
   Widget buildTabBodyOverlay({
-    @required BuildContext context,
-    @required AccountStatusesTab tab,
+    required BuildContext context,
+    required AccountStatusesTab tab,
   }) {
     var accountBloc = IAccountBloc.of(context, listen: false);
 
@@ -252,7 +246,7 @@ class _AccountDetailsPageBodyTabWithRepliesProvider extends StatelessWidget {
   final Widget child;
 
   const _AccountDetailsPageBodyTabWithRepliesProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -308,7 +302,7 @@ class _AccountDetailsPageBodyTabWithoutRepliesProvider extends StatelessWidget {
   final Widget child;
 
   const _AccountDetailsPageBodyTabWithoutRepliesProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -365,7 +359,7 @@ class _AccountDetailsPageBodyTabMediaProvider extends StatelessWidget {
   final Widget child;
 
   const _AccountDetailsPageBodyTabMediaProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -421,7 +415,7 @@ class _AccountDetailsPageBodyTabPinnedProvider extends StatelessWidget {
   final Widget child;
 
   const _AccountDetailsPageBodyTabPinnedProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -471,7 +465,7 @@ class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
   final Widget child;
 
   const _AccountDetailsPageBodyTabFavouritesProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -528,7 +522,7 @@ class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
 
 class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
   const _AccountDetailsNestedScrollViewHeader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -554,7 +548,7 @@ class _AccountDetailsNestedScrollViewHeader extends StatelessWidget {
 
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
-  scrollControllerBloc.scrollController.animateTo(
+  scrollControllerBloc.scrollController!.animateTo(
     MediaQuery.of(context).size.height / 2,
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
@@ -563,7 +557,7 @@ void _onStatusesTapCallback(BuildContext context) {
 
 class _AccountDetailsPageTabIndicatorWidget extends StatelessWidget {
   const _AccountDetailsPageTabIndicatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

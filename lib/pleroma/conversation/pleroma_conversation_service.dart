@@ -8,27 +8,30 @@ import 'package:provider/provider.dart';
 abstract class IPleromaConversationService implements IPleromaApi {
   static IPleromaConversationService of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IPleromaConversationService>(context, listen: listen);
+      Provider.of<IPleromaConversationService>(
+        context,
+        listen: listen,
+      );
 
-  Future<List<IPleromaStatus>> getConversationStatuses({
-    @required String conversationRemoteId,
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getConversationStatuses({
+    required String conversationRemoteId,
+    IPleromaPaginationRequest? pagination,
   });
 
-  Future<IPleromaConversation> getConversation({
-    @required String conversationRemoteId,
+  Future<IPleromaConversation?> getConversation({
+    required String conversationRemoteId,
   });
 
   Future<IPleromaConversation> markConversationAsRead({
-    @required String conversationRemoteId,
+    required String conversationRemoteId,
   });
 
   Future<bool> deleteConversation({
-    @required String conversationRemoteId,
+    required String conversationRemoteId,
   });
 
   Future<List<IPleromaConversation>> getConversations({
-    IPleromaPaginationRequest pagination,
-    List<String> recipientsIds,
+    IPleromaPaginationRequest? pagination,
+    List<String>? recipientsIds,
   });
 }

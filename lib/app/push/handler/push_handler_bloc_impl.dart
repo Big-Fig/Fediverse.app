@@ -11,7 +11,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("push_handler_bloc_impl.dart");
@@ -25,10 +24,10 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
   PushHandlerBloc({
-    @required this.unhandledLocalPreferencesBloc,
-    @required this.currentInstanceBloc,
-    @required this.instanceListBloc,
-    @required this.fcmPushService,
+    required this.unhandledLocalPreferencesBloc,
+    required this.currentInstanceBloc,
+    required this.instanceListBloc,
+    required this.fcmPushService,
   }) {
     addDisposable(
       streamSubscription: fcmPushService.messageStream.listen(
@@ -40,7 +39,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
-    var body = PleromaPushMessageBody.fromJson(pushMessage.data);
+    var body = PleromaPushMessageBody.fromJson(pushMessage.data!);
 
     var pushMessageHandler = PushHandlerMessage(
       pushMessage: pushMessage,
@@ -106,13 +105,13 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   @override
   Future markAsLaunchMessage(PushHandlerMessage message) async {
-    var unhandledList = unhandledLocalPreferencesBloc.value;
+    var unhandledList = unhandledLocalPreferencesBloc.value!;
 
-    unhandledList.messages.remove(message);
+    unhandledList.messages!.remove(message);
 
-    unhandledList.messages.add(
+    unhandledList.messages!.add(
       message.copyWith(
-        pushMessage: message.pushMessage.copyWith(
+        pushMessage: message.pushMessage!.copyWith(
           typeString: PushMessageType.launch.toJsonValue(),
         ),
       ),

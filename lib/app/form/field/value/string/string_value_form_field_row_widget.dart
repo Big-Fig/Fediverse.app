@@ -4,37 +4,37 @@ import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
 class StringValueFormFieldRowWidget extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
   final int maxLines;
 
   StringValueFormFieldRowWidget({
-    @required this.label,
-    @required this.autocorrect,
+    required this.label,
+    required this.autocorrect,
     this.obscureText = false,
     this.maxLines = 1,
-    @required this.hint,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    required this.hint,
+    required this.onSubmitted,
+    required this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     var formFieldBloc = IStringValueFormFieldBloc.of(context);
 
-    return StreamBuilder<List<FormItemValidationError>>(
+    return StreamBuilder<List<FormItemValidationError?>?>(
       stream: formFieldBloc.errorsStream,
       initialData: formFieldBloc.errors,
       builder: (context, snapshot) {
         var errors = snapshot.data;
 
-        var error = errors?.isNotEmpty == true ? errors.first : null;
+        var error = errors?.isNotEmpty == true ? errors!.first : null;
 
-        return StreamBuilder<bool>(
+        return StreamBuilder<bool?>(
           stream: formFieldBloc.isEnabledStream,
           initialData: formFieldBloc.isEnabled,
           builder: (context, snapshot) {

@@ -23,8 +23,8 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   final bool isLastInMinuteGroup;
 
   ConversationChatStatusListItemWidget({
-    @required this.isFirstInMinuteGroup,
-    @required this.isLastInMinuteGroup,
+    required this.isFirstInMinuteGroup,
+    required this.isLastInMinuteGroup,
   });
 
   @override
@@ -39,7 +39,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
 
     var alignment =
         isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
-    var isHaveTextContent = statusBloc?.content?.isNotEmpty == true;
+    var isHaveTextContent = statusBloc.isHaveTextContent;
     return Align(
       alignment: alignment,
       child: Column(
@@ -62,22 +62,33 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                             topRight: isLastInMinuteGroup
                                 ? _borderRadius
                                 : Radius.zero,
-                            bottomLeft: _borderRadius)
+                            bottomLeft: _borderRadius,
+                          )
                         : BorderRadius.only(
                             topLeft: isLastInMinuteGroup
                                 ? _borderRadius
                                 : Radius.zero,
                             topRight: _borderRadius,
-                            bottomRight: _borderRadius)
+                            bottomRight: _borderRadius,
+                          )
                     : BorderRadius.zero,
               ),
-              constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+              constraints: BoxConstraints(
+                maxWidth: deviceWidth * 0.80,
+              ),
               child: Padding(
                 padding: isHaveTextContent
-                    ? EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                    ? EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      )
                     : EdgeInsets.zero,
                 child: isHaveTextContent
-                    ? buildContent(context, statusBloc, isStatusFromMe)
+                    ? buildContent(
+                        context,
+                        statusBloc,
+                        isStatusFromMe,
+                      )
                     : ClipRRect(
                         borderRadius: isStatusFromMe
                             ? BorderRadius.only(
@@ -85,7 +96,8 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                 topRight: isLastInMinuteGroup
                                     ? _borderRadius
                                     : Radius.zero,
-                                bottomLeft: _borderRadius)
+                                bottomLeft: _borderRadius,
+                              )
                             : BorderRadius.only(
                                 topLeft: isLastInMinuteGroup
                                     ? _borderRadius
@@ -93,8 +105,11 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                 topRight: _borderRadius,
                                 bottomRight: _borderRadius,
                               ),
-                        child:
-                            buildContent(context, statusBloc, isStatusFromMe),
+                        child: buildContent(
+                          context,
+                          statusBloc,
+                          isStatusFromMe,
+                        ),
                       ),
               ),
             ),
@@ -105,7 +120,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Text(
-                  TimeOfDay.fromDateTime(statusBloc.createdAt).format(context),
+                  TimeOfDay.fromDateTime(statusBloc.createdAt!).format(context),
                   style: IFediUiTextTheme.of(context).smallShortMediumGrey,
                 ),
               ),
@@ -126,7 +141,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   }
 
   Widget buildMediaContent(IStatusBloc statusBloc) =>
-      StreamBuilder<List<IPleromaMediaAttachment>>(
+      StreamBuilder<List<IPleromaMediaAttachment>?>(
           stream: statusBloc.mediaAttachmentsStream,
           builder: (context, snapshot) {
             var mediaAttachments = snapshot.data;
@@ -145,7 +160,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
           });
 
   Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
-      StreamBuilder<EmojiText>(
+      StreamBuilder<EmojiText?>(
         stream: statusBloc.contentWithEmojisStream,
         initialData: statusBloc.contentWithEmojis,
         builder: (context, snapshot) {
@@ -154,7 +169,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
           if (contentWithEmojis?.text?.isNotEmpty == true) {
             var fediUiColorTheme = IFediUiColorTheme.of(context);
             var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-            return Provider<EmojiText>.value(
+            return Provider<EmojiText?>.value(
               value: contentWithEmojis,
               child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
                 update: (context, emojiText, _) {
@@ -185,7 +200,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       (url) {
                         UrlHelper.handleUrlClickWithInstanceLocation(
                           context: context,
-                          url: url,
+                          url: url!,
                           instanceLocationBloc: statusBloc,
                         );
                       },

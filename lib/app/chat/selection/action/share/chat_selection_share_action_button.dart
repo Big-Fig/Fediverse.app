@@ -1,22 +1,20 @@
-import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_status_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_status_page.dart';
+import 'package:fedi/app/chat/selection/action/share/chat_selection_share_action_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/external/external_share_status_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionShareActionButtonWidget extends StatelessWidget {
   const ChatSelectionShareActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -32,14 +30,10 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
 
         // todo: remove hack
         // need rework to separate page for simple raw text share
-        var status = mapRemoteStatusToLocalStatus(
-          PleromaStatus(
-            content: rawText,
-            account: mapLocalAccountToRemoteAccount(
-              chatSelectionBloc.currentSelection.first.account,
-            ),
-            visibility: PleromaVisibility.public.toJsonValue(),
-          ),
+        var status = ChatSelectionShareActionStatusAdapter(
+          content: rawText,
+          account: chatSelectionBloc.currentSelection!.first.account,
+          visibility: PleromaVisibility.public,
         );
 
         showShareChooserDialog(

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_poll_model.g.dart';
@@ -26,26 +25,29 @@ class PostStatusPoll implements IPostStatusPoll {
 
   @override
   @JsonKey(name: "hide_totals")
-  bool hideTotals;
+  final bool hideTotals;
 
   @override
-  bool multiple;
+  final bool multiple;
 
   @override
-  List<String> options;
+  final List<String> options;
 
   PostStatusPoll({
-    @required this.durationLength,
-    @required this.hideTotals,
-    @required this.multiple,
-    @required this.options,
+    required this.durationLength,
+    required this.hideTotals,
+    required this.multiple,
+    required this.options,
   });
 
   @override
   String toString() {
-    return 'PostStatusPoll{durationLength: $durationLength,'
-        ' hideTotals: $hideTotals, multiple: $multiple,'
-        ' options: $options}';
+    return 'PostStatusPoll{'
+        'durationLength: $durationLength, '
+        'hideTotals: $hideTotals, '
+        'multiple: $multiple, '
+        'options: $options'
+        '}';
   }
 
   @override
@@ -76,12 +78,26 @@ class PostStatusPoll implements IPostStatusPoll {
   String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
 }
 
-extension PostStatusPollExtension on IPostStatusPoll {
+extension IPostStatusPollExtension on IPostStatusPoll {
   PleromaPostStatusPoll toPleromaPostStatusPoll() => PleromaPostStatusPoll(
-      options: options,
-      multiple: multiple,
-      expiresInSeconds: durationLength.totalSeconds,
-    );
+        options: options,
+        multiple: multiple,
+        expiresInSeconds: durationLength.totalSeconds,
+        hideTotals: hideTotals,
+      );
+
+  PostStatusPoll toPostStatusPoll() {
+    if (this is PostStatusPoll) {
+      return this as PostStatusPoll;
+    } else {
+      return PostStatusPoll(
+        options: options,
+        multiple: multiple,
+        durationLength: durationLength,
+        hideTotals: hideTotals,
+      );
+    }
+  }
 
   PleromaPoll toPleromaPoll() {
     return PleromaPoll(
@@ -89,18 +105,11 @@ extension PostStatusPollExtension on IPostStatusPoll {
       expired: false,
       voted: true,
       multiple: multiple,
-      options: options
-          ?.map(
-            (option) => PleromaPollOption(
-              title: option,
-              votesCount: 0,
-            ),
-          )
-          ?.toList(),
+      options: options.toPleromaPollOptions(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
-      expiresAt: null,
+      expiresAt: DateTime.now().add(durationLength),
     );
   }
 }
@@ -108,9 +117,7 @@ extension PostStatusPollExtension on IPostStatusPoll {
 extension PleromaPostStatusPollExtension on PleromaPostStatusPoll {
   PostStatusPoll toPostStatusPoll() {
     return PostStatusPoll(
-      durationLength: Duration(
-        seconds: expiresInSeconds,
-      ),
+      durationLength: expiresInSeconds.toDuration(),
       hideTotals: hideTotals,
       multiple: multiple,
       options: options,

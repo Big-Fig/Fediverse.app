@@ -22,7 +22,7 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
       stream: mediaPickerBloc.isFileMetadataSelectedStream(mediaDeviceFileMetadata),
       initialData: mediaPickerBloc.isFileMetadataSelected(mediaDeviceFileMetadata),
       builder: (context, snapshot) {
-        var isFileSelected = snapshot.data;
+        var isFileSelected = snapshot.data!;
         return Container(
           decoration: BoxDecoration(
             color: IFediUiColorTheme.of(context).darkGrey,
@@ -49,8 +49,8 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
   const _MediaPickerFileGridItemBodyWidget({
-    Key key,
-    @required this.loadingWidget,
+    Key? key,
+    required this.loadingWidget,
   }) : super(key: key);
 
   final Widget loadingWidget;
@@ -75,7 +75,7 @@ class _MediaPickerFileGridItemBodyWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
   const _MediaPickerFileGridItemIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -95,7 +95,7 @@ class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
   const _MediaPickerFileGridItemPreviewWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -124,7 +124,7 @@ class _MediaPickerFileGridItemPreviewWidget extends StatelessWidget {
 
 class _MediaPickerFileGridItemLoadingWidget extends StatelessWidget {
   const _MediaPickerFileGridItemLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

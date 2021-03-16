@@ -33,12 +33,12 @@ class AccountStatusesMediaOnlyCachedListBloc
       );
 
   AccountStatusesMediaOnlyCachedListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
-    @required IStatusRepository statusRepository,
-    @required IFilterRepository filterRepository,
-    @required IMyAccountBloc myAccountBloc,
-    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
+    required IStatusRepository statusRepository,
+    required IFilterRepository filterRepository,
+    required IMyAccountBloc myAccountBloc,
+    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -53,7 +53,7 @@ class AccountStatusesMediaOnlyCachedListBloc
 
   static AccountStatusesMediaOnlyCachedListBloc createFromContext(
     BuildContext context, {
-    @required IAccount account,
+    required IAccount? account,
   }) {
     return AccountStatusesMediaOnlyCachedListBloc(
       account: account,
@@ -79,9 +79,9 @@ class AccountStatusesMediaOnlyCachedListBloc
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     var statuses = await statusRepository.getStatuses(
       filters: _statusRepositoryFilters,
@@ -107,9 +107,9 @@ class AccountStatusesMediaOnlyCachedListBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
@@ -118,7 +118,7 @@ class AccountStatusesMediaOnlyCachedListBloc
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       onlyWithMedia: true,
-      accountRemoteId: account.remoteId,
+      accountRemoteId: account!.remoteId,
       pagination: PleromaPaginationRequest(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -142,7 +142,7 @@ class AccountStatusesMediaOnlyCachedListBloc
   Stream<bool> get settingsChangedStream => Stream.empty();
 
   static Widget provideToContext(BuildContext context,
-      {@required IAccount account, @required Widget child}) {
+      {required IAccount? account, required Widget child}) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
           AccountStatusesMediaOnlyCachedListBloc.createFromContext(context,
@@ -157,5 +157,5 @@ class AccountStatusesMediaOnlyCachedListBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

@@ -8,11 +8,11 @@ abstract class IConversationChatCurrentBloc implements IDisposable {
           {bool listen = true}) =>
       Provider.of<IConversationChatCurrentBloc>(context, listen: listen);
 
-  IConversationChat get currentChat;
+  IConversationChat? get currentChat;
 
-  Stream<IConversationChat> get currentChatStream;
+  Stream<IConversationChat?> get currentChatStream;
 
-  void onChatOpened(IConversationChat chat);
+  void onChatOpened(IConversationChat? chat);
 
-  void onChatClosed(IConversationChat chat);
+  void onChatClosed(IConversationChat? chat);
 }

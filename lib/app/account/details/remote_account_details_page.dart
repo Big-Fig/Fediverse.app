@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
@@ -25,7 +26,7 @@ import 'package:pedantic/pedantic.dart';
 
 void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
   BuildContext context, {
-  @required IAccount remoteInstanceAccount,
+  required IAccount remoteInstanceAccount,
 }) {
   var isAcctRemoteDomainExist = remoteInstanceAccount.isAcctRemoteDomainExist;
 
@@ -45,21 +46,21 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
 
 Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   BuildContext context, {
-  @required IAccount localInstanceRemoteAccount,
+  required IAccount? localInstanceRemoteAccount,
 }) async {
-  AsyncDialogResult<IAccount> remoteInstanceAccountDialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IAccount>(
+  AsyncDialogResult<IAccount?> remoteInstanceAccountDialogResult =
+      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IAccount?>(
     context: context,
     errorDataBuilders: [
       remoteInstanceLoadDataErrorAlertDialogBuilder,
     ],
     asyncCode: () async {
-      IAccount result;
-      RemoteInstanceBloc remoteInstanceBloc;
-      PleromaStatusService pleromaStatusService;
-      PleromaAccountService pleromaAccountService;
+      IAccount? result;
+      RemoteInstanceBloc? remoteInstanceBloc;
+      PleromaStatusService? pleromaStatusService;
+      PleromaAccountService? pleromaAccountService;
       try {
-        var instanceUri = localInstanceRemoteAccount.urlRemoteHostUri;
+        var instanceUri = localInstanceRemoteAccount!.urlRemoteHostUri;
 
         remoteInstanceBloc = RemoteInstanceBloc(
           instanceUri: instanceUri,
@@ -86,8 +87,9 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
         } catch (e) {
           // load in Pleroma way. Use username as id
           var pleromaAccount = await pleromaAccountService.getAccount(
-              accountRemoteId: localInstanceRemoteAccount.username);
-          result = mapRemoteAccountToLocalAccount(pleromaAccount);
+            accountRemoteId: localInstanceRemoteAccount.username,
+          );
+          result = pleromaAccount.toDbAccountWrapper();
         }
       } finally {
         unawaited(pleromaStatusService?.dispose());
@@ -108,24 +110,36 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   }
 }
 
-Future<IAccount> loadRemoteInstanceAccountViaAccountInStatus(
+Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
     BuildContext context,
     IAccount localInstanceRemoteAccount,
     PleromaStatusService pleromaStatusService) async {
-  var localInstanceRemoteStatus =
-      await loadLocalInstanceRemoteStatus(context, localInstanceRemoteAccount);
+  var remoteAccountAnyStatusOnLocalInstance =
+      await loadRemoteAccountAnyStatusOnLocalInstance(
+    context,
+    localInstanceRemoteAccount,
+  );
 
-  var remoteInstanceStatusRemoteId = localInstanceRemoteStatus.urlRemoteId;
+  IAccount? result;
+  if (remoteAccountAnyStatusOnLocalInstance != null) {
+    var remoteInstanceStatusRemoteId =
+        remoteAccountAnyStatusOnLocalInstance.urlRemoteId;
 
-  var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
-      statusRemoteId: remoteInstanceStatusRemoteId);
-  var result =
-      mapRemoteAccountToLocalAccount(remoteInstanceRemoteStatus.account);
+    var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
+      statusRemoteId: remoteInstanceStatusRemoteId,
+    );
+    if (remoteInstanceRemoteStatus != null) {
+      result = remoteInstanceRemoteStatus.account.toDbAccountWrapper();
+    }
+  }
+
   return result;
 }
 
-Future<IStatus> loadLocalInstanceRemoteStatus(
-    BuildContext context, IAccount localInstanceRemoteAccount) async {
+Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
+  BuildContext context,
+  IAccount localInstanceRemoteAccount,
+) async {
   var localInstancePleromaAccountService =
       IPleromaAccountService.of(context, listen: false);
 
@@ -135,13 +149,13 @@ Future<IStatus> loadLocalInstanceRemoteStatus(
     pagination: PleromaPaginationRequest(limit: 1),
   );
 
-  IStatus localInstanceRemoteStatus =
-      mapRemoteStatusToLocalStatus(remoteStatuses.first);
-  return localInstanceRemoteStatus;
+  var firstPleromaStatus = remoteStatuses.singleOrNull;
+
+  return firstPleromaStatus?.toDbStatusPopulatedWrapper();
 }
 
 MaterialPageRoute createRemoteAccountDetailsPageRoute({
-  @required IAccount account,
+  required IAccount account,
 }) {
   return MaterialPageRoute(
     builder: (context) {

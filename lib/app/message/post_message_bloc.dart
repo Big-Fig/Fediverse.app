@@ -17,25 +17,25 @@ abstract class IPostMessageBloc implements IDisposable {
 
   bool get isReadyToPost;
 
-  int get maximumMessageLength;
+  int? get maximumMessageLength;
 
   Stream<bool> get isReadyToPostStream;
 
-  String get inputText;
+  String? get inputText;
 
-  Stream<String> get inputTextStream;
+  Stream<String?> get inputTextStream;
 
-  List<FormItemValidationError> get inputTextErrors;
+  List<FormItemValidationError>? get inputTextErrors;
 
   Stream<List<FormItemValidationError>> get inputTextErrorsStream;
 
   Future<bool> post();
 
-  void appendText(String textToAppend, {bool requestFocus = true});
+  void appendText(String? textToAppend, {bool requestFocus = true});
 
-  PostMessageSelectedAction get selectedAction;
+  PostMessageSelectedAction? get selectedAction;
 
-  Stream<PostMessageSelectedAction> get selectedActionStream;
+  Stream<PostMessageSelectedAction?> get selectedActionStream;
 
   void toggleAttachActionSelection();
 
@@ -53,7 +53,7 @@ abstract class IPostMessageBloc implements IDisposable {
 
   Stream<bool> get isExpandedStream;
 
-  bool get isExpanded;
+  bool? get isExpanded;
 
   void toggleExpanded();
 }

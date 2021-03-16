@@ -10,11 +10,11 @@ part 'localization_model.g.dart';
 @HiveType(typeId: -32 + 82)
 class LocalizationLocale implements IJsonObject {
   @HiveField(0)
-  String languageCode;
+  String? languageCode;
   @HiveField(1)
-  String scriptCode;
+  String? scriptCode;
   @HiveField(2)
-  String countryCode;
+  String? countryCode;
 
   String get localeString {
     var result = "$languageCode";

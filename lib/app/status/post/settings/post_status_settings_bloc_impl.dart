@@ -4,15 +4,14 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PostStatusSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<PostStatusSettings>
+    extends GlobalOrInstanceSettingsLocalPreferencesBloc<PostStatusSettings?>
     implements IPostStatusSettingsBloc {
   PostStatusSettingsBloc({
-    @required
+    required
         IPostStatusSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    @required
+    required
         IPostStatusSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
@@ -20,50 +19,50 @@ class PostStatusSettingsBloc
         );
 
   @override
-  bool get markMediaAsNsfwOnAttach => settingsData.markMediaAsNsfwOnAttach;
+  bool? get markMediaAsNsfwOnAttach => settingsData?.markMediaAsNsfwOnAttach;
 
   @override
-  Stream<bool> get markMediaAsNsfwOnAttachStream =>
-      settingsDataStream.map((settings) => settings.markMediaAsNsfwOnAttach);
+  Stream<bool?> get markMediaAsNsfwOnAttachStream =>
+      settingsDataStream.map((settings) => settings?.markMediaAsNsfwOnAttach);
 
   @override
   void changeMarkMediaAsNsfwOnAttach(bool value) {
     updateInstanceSettings(
-      settingsData.copyWith(
+      settingsData?.copyWith(
         markMediaAsNsfwOnAttach: value,
       ),
     );
   }
 
   @override
-  PleromaVisibility get defaultVisibility =>
-      settingsData.defaultVisibilityPleroma;
+  PleromaVisibility? get defaultVisibility =>
+      settingsData?.defaultVisibilityPleroma;
 
   @override
-  Stream<PleromaVisibility> get defaultVisibilityStream =>
-      settingsDataStream.map((settings) => settings.defaultVisibilityPleroma);
+  Stream<PleromaVisibility?> get defaultVisibilityStream =>
+      settingsDataStream.map((settings) => settings?.defaultVisibilityPleroma);
 
   @override
   void changeDefaultVisibility(PleromaVisibility value) {
     updateInstanceSettings(
-      settingsData.copyWith(
+      settingsData?.copyWith(
         defaultVisibilityString: value.toJsonValue(),
       ),
     );
   }
 
   @override
-  LocalizationLocale get defaultStatusLocale =>
-      settingsData.defaultStatusLocale;
+  LocalizationLocale? get defaultStatusLocale =>
+      settingsData?.defaultStatusLocale;
 
   @override
-  Stream<LocalizationLocale> get defaultStatusLocaleStream =>
-      settingsDataStream.map((settings) => settings.defaultStatusLocale);
+  Stream<LocalizationLocale?> get defaultStatusLocaleStream =>
+      settingsDataStream.map((settings) => settings?.defaultStatusLocale);
 
   @override
   void changeDefaultStatusLocale(LocalizationLocale value) {
     updateInstanceSettings(
-      settingsData.copyWith(
+      settingsData?.copyWith(
         defaultStatusLocale: value,
       ),
     );

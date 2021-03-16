@@ -14,13 +14,12 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
-import 'package:flutter/widgets.dart';
 
 class NotificationTabBloc extends AsyncInitLoadingBloc
     implements INotificationTabBloc {
   final NotificationTab tab;
-  INotificationCachedListBloc notificationCachedListBloc;
-  INotificationCachedPaginationBloc notificationCachedPaginationBloc;
+  late INotificationCachedListBloc notificationCachedListBloc;
+  late INotificationCachedPaginationBloc notificationCachedPaginationBloc;
 
   final INotificationRepository notificationRepository;
   final IPleromaNotificationService pleromaNotificationService;
@@ -29,14 +28,14 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
 
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification> paginationListWithNewItemsBloc;
+      INotification?>? paginationListWithNewItemsBloc;
 
   NotificationTabBloc({
-    @required this.tab,
-    @required this.notificationRepository,
-    @required this.pleromaNotificationService,
-    @required this.filterRepository,
-    @required this.paginationSettingsBloc,
+    required this.tab,
+    required this.notificationRepository,
+    required this.pleromaNotificationService,
+    required this.filterRepository,
+    required this.paginationSettingsBloc,
   });
 
   INotificationCachedListBloc createListService() => NotificationCachedListBloc(
@@ -64,10 +63,12 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
     paginationListWithNewItemsBloc =
         NotificationCachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<INotification>>(
-      paginationBloc: notificationCachedPaginationBloc,
+      cachedPaginationBloc: notificationCachedPaginationBloc,
       mergeNewItemsImmediately: false,
       cachedListBloc: notificationCachedListBloc,
     );
-    addDisposable(disposable: paginationListWithNewItemsBloc);
+    addDisposable(
+      disposable: paginationListWithNewItemsBloc,
+    );
   }
 }

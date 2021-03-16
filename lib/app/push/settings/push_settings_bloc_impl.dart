@@ -9,7 +9,6 @@ import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger("push_settings_bloc_impl.dart");
@@ -28,116 +27,116 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       failedToUpdateStreamController.stream;
 
   PushSettingsBloc({
-    @required this.instanceLocalPreferencesBloc,
-    @required this.pleromaPushService,
-    @required this.pushRelayService,
-    @required this.currentInstance,
-    @required this.fcmPushService,
+    required this.instanceLocalPreferencesBloc,
+    required this.pleromaPushService,
+    required this.pushRelayService,
+    required this.currentInstance,
+    required this.fcmPushService,
   }) {
     addDisposable(streamController: failedToUpdateStreamController);
   }
 
   @override
-  PushSettings get settingsData => instanceLocalPreferencesBloc.value;
+  PushSettings? get settingsData => instanceLocalPreferencesBloc.value;
 
   @override
-  Stream<PushSettings> get settingsDataStream =>
+  Stream<PushSettings?> get settingsDataStream =>
       instanceLocalPreferencesBloc.stream;
 
   @override
   void changeFavourite(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       favourite: value,
     ));
   }
 
   @override
-  bool get favourite => settingsData.favourite;
+  bool? get favourite => settingsData!.favourite;
 
   @override
-  Stream<bool> get favouriteStream =>
-      settingsDataStream.map((settings) => settings.favourite);
+  Stream<bool?> get favouriteStream =>
+      settingsDataStream.map((settings) => settings!.favourite);
 
   @override
   void changeFollow(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       follow: value,
     ));
   }
 
   @override
-  bool get follow => settingsData.follow;
+  bool? get follow => settingsData!.follow;
 
   @override
-  Stream<bool> get followStream =>
-      settingsDataStream.map((settings) => settings.follow);
+  Stream<bool?> get followStream =>
+      settingsDataStream.map((settings) => settings!.follow);
 
   @override
-  bool get mention => settingsData.mention;
+  bool? get mention => settingsData!.mention;
 
   @override
-  Stream<bool> get mentionStream =>
-      settingsDataStream.map((settings) => settings.mention);
+  Stream<bool?> get mentionStream =>
+      settingsDataStream.map((settings) => settings!.mention);
 
   @override
   void changeMention(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       mention: value,
     ));
   }
 
   @override
-  bool get reblog => settingsData.reblog;
+  bool? get reblog => settingsData!.reblog;
 
   @override
-  Stream<bool> get reblogStream =>
-      settingsDataStream.map((settings) => settings.reblog);
+  Stream<bool?> get reblogStream =>
+      settingsDataStream.map((settings) => settings!.reblog);
 
   @override
   void changeReblog(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       reblog: value,
     ));
   }
 
   @override
-  bool get poll => settingsData.poll;
+  bool? get poll => settingsData!.poll;
 
   @override
-  Stream<bool> get pollStream =>
-      settingsDataStream.map((settings) => settings.poll);
+  Stream<bool?> get pollStream =>
+      settingsDataStream.map((settings) => settings!.poll);
 
   @override
   void changePoll(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       poll: value,
     ));
   }
 
   @override
-  bool get pleromaChatMention => settingsData.pleromaChatMention;
+  bool? get pleromaChatMention => settingsData!.pleromaChatMention;
 
   @override
-  Stream<bool> get pleromaChatMentionStream =>
-      settingsDataStream.map((settings) => settings.pleromaChatMention);
+  Stream<bool?> get pleromaChatMentionStream =>
+      settingsDataStream.map((settings) => settings!.pleromaChatMention);
 
   @override
   void changePleromaChatMention(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       pleromaChatMention: value,
     ));
   }
 
   @override
-  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction;
+  bool? get pleromaEmojiReaction => settingsData!.pleromaEmojiReaction;
 
   @override
-  Stream<bool> get pleromaEmojiReactionStream =>
-      settingsDataStream.map((settings) => settings.pleromaEmojiReaction);
+  Stream<bool?> get pleromaEmojiReactionStream =>
+      settingsDataStream.map((settings) => settings!.pleromaEmojiReaction);
 
   @override
   void changePleromaEmojiReaction(bool value) {
-    updateSettings(settingsData.copyWith(
+    updateSettings(settingsData!.copyWith(
       pleromaEmojiReaction: value,
     ));
   }
@@ -151,7 +150,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       updateSettings(PushSettings.defaultAllEnabled());
 
   @override
-  Future updateSettings(PushSettings newSettings) async {
+  Future updateSettings(PushSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => "Same settings");
       return;
@@ -164,7 +163,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     _logger.finest(() => "updateSubscriptionPreferences "
         "deviceToken $deviceToken permissionGranted $permissionGranted");
     if (deviceToken != null && permissionGranted) {
-      PleromaPushSubscription subscription;
+      PleromaPushSubscription? subscription;
       try {
         subscription = await pleromaPushService.subscribe(
           endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
@@ -173,7 +172,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
               fcmDeviceToken: deviceToken),
           data: PleromaPushSubscribeData(
             alerts: PleromaPushSettingsDataAlerts(
-              favourite: newSettings.favourite,
+              favourite: newSettings!.favourite,
               follow: newSettings.follow,
               mention: newSettings.mention,
               reblog: newSettings.reblog,
@@ -194,14 +193,14 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       if (success) {
         await instanceLocalPreferencesBloc.setValue(
           PushSettings(
-            favourite: subscription.alerts.favourite ?? false,
-            follow: subscription.alerts.follow ?? false,
-            mention: subscription.alerts.mention ?? false,
-            reblog: subscription.alerts.reblog ?? false,
-            poll: subscription.alerts.poll ?? false,
-            pleromaChatMention: subscription.alerts.pleromaChatMention ?? false,
+            favourite: subscription!.alerts!.favourite ?? false,
+            follow: subscription.alerts!.follow ?? false,
+            mention: subscription.alerts!.mention ?? false,
+            reblog: subscription.alerts!.reblog ?? false,
+            poll: subscription.alerts!.poll ?? false,
+            pleromaChatMention: subscription.alerts!.pleromaChatMention ?? false,
             pleromaEmojiReaction:
-                subscription.alerts.pleromaEmojiReaction ?? false,
+                subscription.alerts!.pleromaEmojiReaction ?? false,
           ),
         );
       }

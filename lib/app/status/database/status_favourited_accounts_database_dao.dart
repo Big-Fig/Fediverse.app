@@ -20,7 +20,7 @@ part 'status_favourited_accounts_database_dao.g.dart';
 })
 class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusFavouritedAccountsDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusFavouritedAccountsDao(this.db) : super(db);
@@ -28,11 +28,19 @@ class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
   Future<int> insert(Insertable<DbStatusFavouritedAccount> entity) async =>
       into(dbStatusFavouritedAccounts).insert(entity);
 
-  Future insertAll(Iterable<Insertable<DbStatusFavouritedAccount>> entities,
-          InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbStatusFavouritedAccounts, entities);
-      });
+  Future insertAll(
+    List<Insertable<DbStatusFavouritedAccount>> entities,
+    InsertMode mode,
+  ) async =>
+      await batch(
+        (batch) {
+          batch.insertAll(
+            dbStatusFavouritedAccounts,
+            entities,
+          );
+        },
+      );
+
   Future<bool> replace(Insertable<DbStatusFavouritedAccount> entity) async =>
       await update(dbStatusFavouritedAccounts).replace(entity);
 }

@@ -8,7 +8,7 @@ abstract class IMastodonAccount {
 
   int get statusesCount;
 
-  String get note;
+  String? get note;
 
   bool get bot;
 
@@ -24,11 +24,11 @@ abstract class IMastodonAccount {
 
   int get followersCount;
 
-  List<IMastodonField> get fields;
+  List<IMastodonField>? get fields;
 
-  List<IMastodonEmoji> get emojis;
+  List<IMastodonEmoji>? get emojis;
 
-  String get displayName;
+  String? get displayName;
 
   DateTime get createdAt;
 
@@ -38,47 +38,47 @@ abstract class IMastodonAccount {
 
   String get acct;
 
-  DateTime get lastStatusAt;
+  DateTime? get lastStatusAt;
 }
 
 abstract class IMastodonAccountRelationship {
-  bool get blocking;
+  bool? get blocking;
 
-  bool get blockedBy;
+  bool? get blockedBy;
 
-  bool get domainBlocking;
+  bool? get domainBlocking;
 
-  bool get endorsed;
+  bool? get endorsed;
 
-  bool get followedBy;
+  bool? get followedBy;
 
-  bool get following;
+  bool? get following;
 
-  String get id;
+  String? get id;
 
-  bool get muting;
+  bool? get muting;
 
-  bool get mutingNotifications;
+  bool? get mutingNotifications;
 
-  bool get requested;
+  bool? get requested;
 
-  bool get showingReblogs;
+  bool? get showingReblogs;
 
-  bool get subscribing;
+  bool? get subscribing;
 
-  String get note;
+  String? get note;
 }
 
 abstract class IMastodonAccountIdentityProof {
-  String get provider;
+  String? get provider;
 
-  String get providerUsername;
+  String? get providerUsername;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
-  String get proofUrl;
+  String? get proofUrl;
 
-  String get profileUrl;
+  String? get profileUrl;
 }
 
 abstract class IMastodonAccountReportRequest {
@@ -86,11 +86,11 @@ abstract class IMastodonAccountReportRequest {
   String get accountId;
 
   /// Array of Statuses to attach to the report, for context
-  List<String> get statusIds;
+  List<String>? get statusIds;
 
   /// Reason for the report (default max 1000 characters)
-  String get comment;
+  String? get comment;
 
   /// If the account is remote, should the report be forwarded to the remote admin?
-  bool get forward;
+  bool? get forward;
 }

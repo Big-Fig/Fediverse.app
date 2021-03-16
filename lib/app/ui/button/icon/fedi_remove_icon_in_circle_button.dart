@@ -8,7 +8,7 @@ class FediRemoveIconInCircleButton extends StatelessWidget {
   final double size;
 
   FediRemoveIconInCircleButton({
-    @required this.onPressed,
+    required this.onPressed,
     this.size = 24.0,
   });
 

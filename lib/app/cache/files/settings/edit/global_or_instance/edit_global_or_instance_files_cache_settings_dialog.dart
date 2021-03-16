@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstanceFilesCacheSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstanceFilesCacheSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditFilesCacheSettingsBloc>(
@@ -50,7 +50,7 @@ void showEditGlobalOrInstanceFilesCacheSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editCacheSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editCacheSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ExternalShareBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ExternalShareBlocProxyProvider({@required this.child});
+  ExternalShareBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

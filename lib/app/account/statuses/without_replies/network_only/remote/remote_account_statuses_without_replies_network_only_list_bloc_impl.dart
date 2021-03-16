@@ -18,9 +18,9 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
   final Uri instanceUri;
 
   RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
-    @required this.instanceUri,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
+    required this.instanceUri,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -29,8 +29,8 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
   static RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
       createFromContext(
     BuildContext context, {
-    @required IAccount account,
-    @required Uri instanceUri,
+    required IAccount? account,
+    required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
     var pleromaAccountService = PleromaAccountService(
@@ -48,9 +48,9 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IAccount account,
-    @required Widget child,
-    @required Uri instanceUri,
+    required IAccount? account,
+    required Widget child,
+    required Uri instanceUri,
   }) {
     return DisposableProvider<IStatusNetworkOnlyListBloc>(
       create: (context) =>
@@ -64,7 +64,7 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
         update: (context, value, previous) => value,
         child: StatusNetworkOnlyListBlocProxyProvider(
           child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
+              INetworkOnlyListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: child,
           ),

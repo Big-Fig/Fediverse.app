@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 
 class RecentShareSelectAccountWidget extends StatelessWidget {
   final List<Widget> itemActions;
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const RecentShareSelectAccountWidget({
-    @required this.itemActions,
+    required this.itemActions,
     this.header,
     this.footer,
     this.alwaysShowHeader,

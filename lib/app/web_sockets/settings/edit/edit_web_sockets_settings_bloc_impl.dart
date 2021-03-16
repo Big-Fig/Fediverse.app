@@ -6,7 +6,6 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
-import 'package:flutter/widgets.dart';
 
 class EditWebSocketsSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<WebSocketsSettings>
@@ -14,7 +13,7 @@ class EditWebSocketsSettingsBloc
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override
-  WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+  late WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -22,10 +21,10 @@ class EditWebSocketsSettingsBloc
       ];
 
   EditWebSocketsSettingsBloc({
-    @required this.webSocketsSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.webSocketsSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: webSocketsSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -34,7 +33,7 @@ class EditWebSocketsSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.type,
+      originValue: currentSettings?.type,
       isEnabled: isEnabled,
     );
     addDisposable(disposable: typeFieldBloc);
@@ -43,7 +42,7 @@ class EditWebSocketsSettingsBloc
 
   @override
   WebSocketsSettings calculateCurrentFormFieldsSettings() => WebSocketsSettings(
-        typeString: typeFieldBloc.currentValue.toJsonValue(),
+        typeString: typeFieldBloc.currentValue!.toJsonValue(),
       );
 
   @override

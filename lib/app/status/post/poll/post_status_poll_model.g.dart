@@ -11,9 +11,9 @@ PostStatusPoll _$PostStatusPollFromJson(Map<String, dynamic> json) {
     durationLength: json['duration_length'] == null
         ? null
         : Duration(microseconds: json['duration_length'] as int),
-    hideTotals: json['hide_totals'] as bool,
-    multiple: json['multiple'] as bool,
-    options: (json['options'] as List)?.map((e) => e as String)?.toList(),
+    hideTotals: json['hide_totals'] as bool?,
+    multiple: json['multiple'] as bool?,
+    options: (json['options'] as List?)?.map((e) => e as String)?.toList(),
   );
 }
 

@@ -48,7 +48,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
 
 class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
   const _AccountHomeTabMenuDialogBodyAccountItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -79,15 +79,15 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
 
 class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
   const _AccountHomeTabMenuDialogBodyInstanceItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var currentInstanceUrlHost =
         ICurrentAuthInstanceBloc.of(context, listen: false)
-            .currentInstance
-            .urlHost;
+            .currentInstance!
+            .urlHost!;
 
     return InkWell(
       onTap: () {
@@ -106,7 +106,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
 class _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget
     extends StatelessWidget {
   const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,7 +126,7 @@ class _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget
 class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
     extends StatelessWidget {
   const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -139,7 +139,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
       child: _SimpleAccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.instance,
         text: S.of(context).app_account_home_tab_menu_action_instance_settings(
-              currentAuthInstanceBloc.currentInstance.userAtHost,
+              currentAuthInstanceBloc.currentInstance!.userAtHost,
             ),
       ),
     );
@@ -149,7 +149,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
 class _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget
     extends StatelessWidget {
   const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -168,7 +168,7 @@ class _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget
 
 class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   const _ListsHomeTabMenuDialogBodyListsItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -187,14 +187,14 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
 
 class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   const _RateAppHomeTabMenuDialogBodyListsItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var appAnalyticsBloc = IAppAnalyticsBloc.of(context);
 
-    if (appAnalyticsBloc.isAppRated) {
+    if (appAnalyticsBloc.isAppRated!) {
       return const SizedBox.shrink();
     } else {
       return FutureBuilder(
@@ -225,9 +225,9 @@ class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
 
 class _SimpleAccountHomeTabMenuDialogBodyItem extends StatelessWidget {
   const _SimpleAccountHomeTabMenuDialogBodyItem({
-    Key key,
-    @required this.iconData,
-    @required this.text,
+    Key? key,
+    required this.iconData,
+    required this.text,
   }) : super(key: key);
 
   final IconData iconData;
@@ -248,9 +248,9 @@ class _SimpleAccountHomeTabMenuDialogBodyItem extends StatelessWidget {
 
 class _AccountHomeTabMenuDialogBodyItem extends StatelessWidget {
   const _AccountHomeTabMenuDialogBodyItem({
-    Key key,
-    @required this.iconWidget,
-    @required this.textWidget,
+    Key? key,
+    required this.iconWidget,
+    required this.textWidget,
   }) : super(key: key);
 
   final Widget iconWidget;
@@ -275,8 +275,8 @@ class _AccountHomeTabMenuDialogBodyItem extends StatelessWidget {
 
 class _AccountHomeTabMenuDialogBodyItemText extends StatelessWidget {
   const _AccountHomeTabMenuDialogBodyItemText({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   final String text;
@@ -292,8 +292,8 @@ class _AccountHomeTabMenuDialogBodyItemText extends StatelessWidget {
 
 class _AccountHomeTabMenuDialogBodyItemIcon extends StatelessWidget {
   const _AccountHomeTabMenuDialogBodyItemIcon({
-    Key key,
-    @required this.iconData,
+    Key? key,
+    required this.iconData,
   }) : super(key: key);
 
   final IconData iconData;

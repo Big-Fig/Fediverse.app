@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FediBaseAlertDialog extends FediDialog {
-  final String contentText;
+  final String? contentText;
 
   FediBaseAlertDialog({
-    String title,
-    @required this.contentText,
-    List<DialogAction> actions,
+    String? title,
+    required this.contentText,
+    List<DialogAction>? actions,
     Axis actionsAxis = Axis.horizontal,
     bool cancelable = true,
     bool actionsBorderVisible = true,
@@ -24,14 +24,14 @@ class FediBaseAlertDialog extends FediDialog {
         );
 
   @override
-  Widget buildContentWidget(BuildContext context) {
+  Widget? buildContentWidget(BuildContext context) {
     if (contentText == null) {
       return null;
     }
     return Padding(
       padding: FediPadding.horizontalSmallPadding,
       child: Text(
-        contentText,
+        contentText!,
         textAlign: TextAlign.center,
         style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
       ),

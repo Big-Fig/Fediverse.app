@@ -9,24 +9,24 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class FediProgressDialog extends BaseDialog {
-  final String titleMessage;
-  final String contentMessage;
+  final String? titleMessage;
+  final String? contentMessage;
 
-  CancelableOperation cancelableOperation;
+  CancelableOperation? cancelableOperation;
 
   // ignore: close_sinks
   final BehaviorSubject<bool> _isCanceledSubject =
       BehaviorSubject.seeded(false);
 
-  bool get isCanceled => _isCanceledSubject.value;
+  bool? get isCanceled => _isCanceledSubject.value;
 
   Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
 
   FediProgressDialog({
     this.titleMessage,
     this.contentMessage,
-    @required this.cancelableOperation,
-    @required bool cancelable,
+    required this.cancelableOperation,
+    required bool cancelable,
   }) : super(cancelable: cancelable) {
     addDisposable(subject: _isCanceledSubject);
   }
@@ -48,7 +48,7 @@ abstract class FediProgressDialog extends BaseDialog {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: Text(
-        contentMessage,
+        contentMessage!,
         textAlign: TextAlign.center,
         style: IFediUiTextTheme.of(context).bigShortDarkGrey.copyWith(
           height: 1,
@@ -87,13 +87,13 @@ abstract class FediProgressDialog extends BaseDialog {
                 stream: isCanceledStream,
                 initialData: isCanceled,
                 builder: (context, snapshot) {
-                  var canceled = snapshot.data;
-                  Future<Null> Function() onPressed;
+                  var canceled = snapshot.data!;
+                  Future<Null> Function()? onPressed;
 
                   if (!canceled) {
                     onPressed = () async {
                       _isCanceledSubject.add(true);
-                      await cancelableOperation.cancel();
+                      await cancelableOperation!.cancel();
                       if(isShowing) {
                         await hide(context);
                       }

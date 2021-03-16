@@ -1,58 +1,60 @@
 import 'dart:convert';
 
-import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/date_time/date_time_extension.dart';
 import 'package:fedi/duration/duration_extension.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_status_model.g.dart';
 
 abstract class IPostStatusData {
-  String get subject;
+  String? get subject;
 
-  String get text;
+  String? get text;
 
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
 
   String get visibility;
 
-  String get language;
+  String? get language;
 
-  int get expiresInSeconds;
+  int? get expiresInSeconds;
 
-  List<String> get to;
+  List<String>? get to;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment>? get mediaAttachments;
 
-  IPostStatusPoll get poll;
+  IPostStatusPoll? get poll;
 
-  IPleromaStatus get inReplyToPleromaStatus;
+  IPleromaStatus? get inReplyToPleromaStatus;
 
-  String get inReplyToConversationId;
+  String? get inReplyToConversationId;
 
   bool get isNsfwSensitiveEnabled;
 
   bool get isScheduled;
 
   PostStatusData copyWith({
-    String subject,
-    String text,
-    DateTime scheduledAt,
-    String visibility,
-    String language,
-    String to,
-    List<IPleromaMediaAttachment> mediaAttachments,
-    PleromaPostStatusPoll poll,
-    PleromaStatus inReplyToPleromaStatus,
-    String inReplyToConversationId,
-    bool isNsfwSensitiveEnabled,
-    int expiresInSeconds,
+    String? subject,
+    String? text,
+    DateTime? scheduledAt,
+    String? visibility,
+    String? language,
+    List<String>? to,
+    List<IPleromaMediaAttachment>? mediaAttachments,
+    PleromaPostStatusPoll? poll,
+    PleromaStatus? inReplyToPleromaStatus,
+    String? inReplyToConversationId,
+    bool? isNsfwSensitiveEnabled,
+    int? expiresInSeconds,
   });
 }
 
@@ -63,71 +65,71 @@ class PostStatusData implements IPostStatusData {
 
   @override
   @JsonKey()
-  final String subject;
+  final String? subject;
   @override
   @JsonKey()
-  final String text;
+  final String? text;
   @override
   @JsonKey(name: "scheduled_at")
-  final DateTime scheduledAt;
+  final DateTime? scheduledAt;
   @override
   final String visibility;
   @override
-  final List<String> to;
+  final List<String>? to;
   @override
   @JsonKey(name: "media_attachments")
-  final List<PleromaMediaAttachment> mediaAttachments;
+  final List<PleromaMediaAttachment>? mediaAttachments;
   @override
-  final PostStatusPoll poll;
+  final PostStatusPoll? poll;
   @override
   @JsonKey(name: "in_reply_to_status")
-  final PleromaStatus inReplyToPleromaStatus;
+  final PleromaStatus? inReplyToPleromaStatus;
   @override
   @JsonKey(name: "in_reply_to_conversation_id")
-  final String inReplyToConversationId;
+  final String? inReplyToConversationId;
   @override
   @JsonKey(name: "is_nsfw_sensitive_enabled")
   final bool isNsfwSensitiveEnabled;
 
   @override
   @JsonKey()
-  final String language;
+  final String? language;
 
   @override
   @JsonKey(name: "expires_in_seconds")
-  final int expiresInSeconds;
+  final int? expiresInSeconds;
 
   const PostStatusData({
-    @required this.subject,
-    @required this.text,
-    @required this.scheduledAt,
-    @required this.visibility,
-    @required this.to,
-    @required this.mediaAttachments,
-    @required this.poll,
-    @required this.inReplyToPleromaStatus,
-    @required this.inReplyToConversationId,
-    @required this.isNsfwSensitiveEnabled,
-    @required this.language,
-    @required this.expiresInSeconds,
+    required this.subject,
+    required this.text,
+    required this.scheduledAt,
+    required this.visibility,
+    required this.to,
+    required this.mediaAttachments,
+    required this.poll,
+    required this.inReplyToPleromaStatus,
+    required this.inReplyToConversationId,
+    required this.isNsfwSensitiveEnabled,
+    required this.language,
+    required this.expiresInSeconds,
   });
 
   PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
 
   @override
   PostStatusData copyWith({
-    String subject,
-    String text,
-    DateTime scheduledAt,
-    String visibility,
-    String language,
-    String to,
-    List<IPleromaMediaAttachment> mediaAttachments,
-    IPleromaPostStatusPoll poll,
-    PleromaStatus inReplyToPleromaStatus,
-    String inReplyToConversationId,
-    bool isNsfwSensitiveEnabled,
-    int expiresInSeconds,
+    String? subject,
+    String? text,
+    DateTime? scheduledAt,
+    String? visibility,
+    String? language,
+    List<String>? to,
+    List<IPleromaMediaAttachment>? mediaAttachments,
+    IPleromaPostStatusPoll? poll,
+    PleromaStatus? inReplyToPleromaStatus,
+    String? inReplyToConversationId,
+    bool? isNsfwSensitiveEnabled,
+    int? expiresInSeconds,
   }) =>
       PostStatusData(
         subject: subject ?? this.subject,
@@ -137,8 +139,8 @@ class PostStatusData implements IPostStatusData {
         visibility: visibility ?? this.visibility,
         language: language ?? this.language,
         to: to ?? this.to,
-        mediaAttachments: mediaAttachments ?? this.mediaAttachments,
-        poll: poll ?? this.poll,
+        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+        poll: poll as PostStatusPoll? ?? this.poll,
         inReplyToPleromaStatus:
             inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
         inReplyToConversationId:
@@ -179,14 +181,19 @@ class PostStatusData implements IPostStatusData {
       language.hashCode;
 
   @override
-  String toString() => 'PostStatusData{subject: $subject, text: $text,'
-      ' scheduledAt: $scheduledAt, visibility: $visibility,'
-      ' attachments: $mediaAttachments, poll: $poll,'
-      ' inReplyToStatus: $inReplyToPleromaStatus,'
-      ' inReplyToConversationId: $inReplyToConversationId,'
-      ' to: $to,'
-      ' language: $language,'
-      ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
+  String toString() => 'PostStatusData{'
+      'subject: $subject, '
+      'text: $text, '
+      'scheduledAt: $scheduledAt, '
+      'visibility: $visibility, '
+      'attachments: $mediaAttachments, '
+      'poll: $poll, '
+      'inReplyToStatus: $inReplyToPleromaStatus, '
+      'inReplyToConversationId: $inReplyToConversationId, '
+      'to: $to, '
+      'language: $language, '
+      'isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled'
+      '}';
 
   factory PostStatusData.fromJson(Map<String, dynamic> json) =>
       _$PostStatusDataFromJson(json);
@@ -201,28 +208,51 @@ class PostStatusData implements IPostStatusData {
 
 extension IPostStatusDataExtension on IPostStatusData {
   PleromaScheduleStatus toPleromaScheduleStatus({
-    @required String idempotencyKey,
+    required String? idempotencyKey,
   }) {
     assert(isScheduled);
     return PleromaScheduleStatus(
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
       visibility: visibility,
-      mediaIds: mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.id)
-          ?.toList(),
+      mediaIds: mediaAttachments?.toPleromaMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       spoilerText: subject,
       status: text,
       to: to,
-      scheduledAt: scheduledAt,
+      scheduledAt: scheduledAt!,
       expiresInSeconds: expiresInSeconds,
       poll: poll?.toPleromaPostStatusPoll(),
+      language: language,
+      idempotencyKey: idempotencyKey,
+      contentType: null,
+      preview: null,
     );
   }
 
+  PostStatusData toPostStatusData() {
+    if (this is PostStatusData) {
+      return this as PostStatusData;
+    } else {
+      return PostStatusData(
+        subject: subject,
+        text: text,
+        scheduledAt: scheduledAt,
+        visibility: visibility,
+        to: to,
+        mediaAttachments: mediaAttachments?.toPleromaMediaAttachments(),
+        poll: poll?.toPostStatusPoll(),
+        inReplyToPleromaStatus: inReplyToPleromaStatus?.toPleromaStatus(),
+        inReplyToConversationId: inReplyToConversationId,
+        isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+        language: language,
+        expiresInSeconds: expiresInSeconds,
+      );
+    }
+  }
+
   PleromaPostStatus toPleromaPostStatus({
-    @required String idempotencyKey,
+    required String? idempotencyKey,
   }) {
     assert(!isScheduled);
 
@@ -232,76 +262,38 @@ extension IPostStatusDataExtension on IPostStatusData {
       inReplyToConversationId: inReplyToConversationId,
       inReplyToId: inReplyToPleromaStatus?.id,
       visibility: visibility,
-      mediaIds: mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.id)
-          ?.toList(),
+      mediaIds: mediaAttachments?.toPleromaMediaAttachmentIds(),
       sensitive: isNsfwSensitiveEnabled,
       language: language,
       spoilerText: subject,
       status: text,
       to: to,
       poll: poll?.toPleromaPostStatusPoll(),
+      contentType: null,
+      preview: null,
     );
   }
 }
 
 extension PostStatusDataStatusExtension on IStatus {
-  PostStatusData calculatePostStatusData() => PostStatusData(
+  PostStatusData calculatePostStatusData({
+    required PleromaInstancePollLimits limits,
+  }) =>
+      PostStatusData(
         subject: spoilerText,
         text: content,
         scheduledAt: null,
         visibility: visibility.toJsonValue(),
-        to: mentions?.map((mention) => mention.acct)?.toList(),
+        to: mentions?.toAccts(),
         mediaAttachments: mediaAttachments,
-        poll: poll != null
-            ? PostStatusPoll(
-                durationLength: poll.expiresAt != null
-                    ? _calculatePostStatusPollDurationLength(poll.expiresAt)
-                    : null,
-                hideTotals: false,
-                multiple: poll.multiple,
-                options: poll.options
-                    ?.map(
-                      (option) => option.title,
-                    )
-                    ?.toList(),
-              )
-            : null,
-        inReplyToPleromaStatus: inReplyToStatus != null
-            ? mapLocalStatusToRemoteStatus(inReplyToStatus)
-            : null,
+        poll: poll?.toPostStatusPoll(
+          limits: limits,
+        ),
+        inReplyToPleromaStatus: inReplyToStatus?.toPleromaStatus(),
         inReplyToConversationId: pleromaDirectConversationId?.toString(),
         isNsfwSensitiveEnabled: nsfwSensitive,
         language: language,
-        expiresInSeconds: pleromaExpiresAt != null
-            ? _calculateExpiresInSeconds(pleromaExpiresAt)
-            : null,
+        expiresInSeconds:
+            pleromaExpiresAt?.calculateExpiresInDurationOrNull()?.totalSeconds,
       );
-
-  int _calculateExpiresInSeconds(DateTime pleromaExpiresAt) {
-    var now = DateTime.now();
-
-    if (now.isAfter(pleromaExpiresAt)) {
-      var difference = now.difference(pleromaExpiresAt);
-      return difference.abs().totalSeconds;
-    } else {
-      return null;
-    }
-  }
-
-  Duration _calculatePostStatusPollDurationLength(DateTime expiresAt) {
-    var now = DateTime.now();
-
-    if (now.isAfter(pleromaExpiresAt)) {
-      var difference = now.difference(expiresAt);
-
-      if (difference > IPostStatusPollBloc.minimumPollExpiration) {
-        return difference;
-      } else {
-        return IPostStatusPollBloc.minimumPollExpiration;
-      }
-    } else {
-      return IPostStatusPollBloc.minimumPollExpiration;
-    }
-  }
 }

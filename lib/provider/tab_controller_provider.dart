@@ -12,8 +12,8 @@ class TabControllerProvider extends StatefulWidget {
   final Widget child;
 
   TabControllerProvider({
-    @required this.tabControllerCreator,
-    @required this.child,
+    required this.tabControllerCreator,
+    required this.child,
   });
 
   @override

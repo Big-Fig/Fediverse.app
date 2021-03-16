@@ -92,16 +92,16 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       ];
 
   EditMyAccountBloc({
-    @required this.myAccountBloc,
-    @required this.currentAuthInstanceBloc,
-    @required this.pleromaMyAccountService,
-    @required int noteMaxLength,
-    @required int avatarUploadSizeInBytes,
-    @required int headerUploadSizeInBytes,
-    @required int backgroundUploadSizeInBytes,
-    @required PleromaInstancePleromaPartMetadataFieldLimits customFieldLimits,
-  })  : displayNameField = StringValueFormFieldBloc(
-          originValue: myAccountBloc.displayNameEmojiText.text,
+    required this.myAccountBloc,
+    required this.currentAuthInstanceBloc,
+    required this.pleromaMyAccountService,
+    required int? noteMaxLength,
+    required int? avatarUploadSizeInBytes,
+    required int? headerUploadSizeInBytes,
+    required int? backgroundUploadSizeInBytes,
+    required PleromaInstancePleromaPartMetadataFieldLimits? customFieldLimits,
+  })   : displayNameField = StringValueFormFieldBloc(
+          originValue: myAccountBloc.displayNameEmojiText!.text,
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator()
           ],
@@ -113,20 +113,20 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           maxLength: noteMaxLength,
         ),
         lockedField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc.account.locked,
+          originValue: myAccountBloc.account!.locked,
         ),
         avatarField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account.avatar,
+          originalUrl: myAccountBloc.account!.avatar,
           maxFileSizeInBytes: avatarUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
         headerField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account.header,
+          originalUrl: myAccountBloc.account!.header,
           maxFileSizeInBytes: headerUploadSizeInBytes,
           isPossibleToDeleteOriginal: false,
         ),
         backgroundField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account.pleromaBackgroundImage,
+          originalUrl: myAccountBloc.account!.pleromaBackgroundImage,
           maxFileSizeInBytes: backgroundUploadSizeInBytes,
           isPossibleToDeleteOriginal: true,
         ),
@@ -138,7 +138,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
             nameMaxLength: customFieldLimits?.nameLength,
             valueMaxLength: customFieldLimits?.valueLength,
           ),
-          originalItems: myAccountBloc.fields
+          originalItems: myAccountBloc.fields!
               .map(
                 (field) => LinkPairFormGroupBloc(
                   name: field.name,
@@ -244,109 +244,118 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   Future submitChanges() async {
-    var avatarPickedFile = avatarField.isSomethingChanged
+    await _updateFiles();
+
+    await _updateData();
+  }
+
+  Future _updateData() async {
+    var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
+      _calculatePleromaMyAccountEdit(),
+    );
+
+    await myAccountBloc.updateMyAccountByMyPleromaAccount(remoteMyAccount);
+  }
+
+  Future _updateFiles() async {
+    var avatarPickedFile = avatarField.isSomethingChanged!
         ? avatarField.currentMediaDeviceFile
         : null;
 
-    var headerPickedFile = headerField.isSomethingChanged
+    var headerPickedFile = headerField.isSomethingChanged!
         ? headerField.currentMediaDeviceFile
         : null;
-    var backgroundPickedFile = backgroundField.isSomethingChanged
+    var backgroundPickedFile = backgroundField.isSomethingChanged!
         ? backgroundField.currentMediaDeviceFile
         : null;
-    if (avatarPickedFile != null ||
+    var isAnyFileExist = avatarPickedFile != null ||
         headerPickedFile != null ||
-        backgroundPickedFile != null) {
+        backgroundPickedFile != null;
+    if (isAnyFileExist) {
       var request = PleromaMyAccountFilesRequest(
         avatar: await avatarPickedFile?.loadFile(),
         header: await headerPickedFile?.loadFile(),
         pleromaBackgroundImage: await backgroundPickedFile?.loadFile(),
       );
 
-      await _updateFiles(request);
+      await _sendPleromaMyAccountFilesRequest(request);
 
       if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
-        await avatarPickedFile.delete();
+        await avatarPickedFile!.delete();
       }
       if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
-        await headerPickedFile.delete();
+        await headerPickedFile!.delete();
       }
       if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
-        await backgroundPickedFile.delete();
+        await backgroundPickedFile!.delete();
       }
     }
+  }
 
+  PleromaMyAccountEdit _calculatePleromaMyAccountEdit() {
     Map<int, PleromaField> fieldsAttributes = {};
 
-    customFieldsGroupBloc.items.asMap().entries.forEach(
+    customFieldsGroupBloc.items!.asMap().entries.forEach(
       (entry) {
         var index = entry.key;
-        var field = entry.value;
+        var field = entry.value!;
         fieldsAttributes[index] = PleromaField(
-            name: field.keyField.currentValue,
-            value: field.valueField.currentValue);
+          name: field.keyField.currentValue,
+          value: field.valueField.currentValue,
+          verifiedAt: null,
+        );
       },
     );
 
-    var backgroundImageOriginalDeleted = backgroundField.isOriginalDeleted;
-    String pleromaBackgroundImage;
+    var backgroundImageOriginalDeleted = backgroundField.isOriginalDeleted!;
+    String? pleromaBackgroundImage;
     if (backgroundImageOriginalDeleted) {
       // API logic
       // We should set pleromaBackgroundImage to empty string to delete it
       pleromaBackgroundImage = "";
     }
 
-    var isPleromaInstance =
-        currentAuthInstanceBloc.currentInstance.isPleroma;
+    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
 
-    var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
-      PleromaMyAccountEdit(
-        displayName: displayNameField.currentValue,
-        note: noteField.currentValue,
-        fieldsAttributes: fieldsAttributes,
-        locked: lockedField.currentValue,
-        discoverable: discoverableField.currentValue,
-        bot: botField.currentValue,
-        acceptsChatMessages:
-            isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
-        allowFollowingMove:
-            isPleromaInstance ? allowFollowingMoveField.currentValue : null,
-        pleromaBackgroundImage: pleromaBackgroundImage,
-        hideFavorites:
-            isPleromaInstance ? hideFavouritesField.currentValue : null,
-        hideFollowers:
-            isPleromaInstance ? hideFollowersField.currentValue : null,
-        hideFollowersCount:
-            isPleromaInstance ? hideFollowersCountField.currentValue : null,
-        hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
-        hideFollowsCount:
-            isPleromaInstance ? hideFollowsCountField.currentValue : null,
-        noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
-        showRole: isPleromaInstance ? showRoleField.currentValue : null,
-        skipThreadContainment:
-            isPleromaInstance ? skipThreadContainmentField.currentValue : null,
-      ),
+    return PleromaMyAccountEdit(
+      displayName: displayNameField.currentValue,
+      note: noteField.currentValue,
+      fieldsAttributes: fieldsAttributes,
+      locked: lockedField.currentValue,
+      discoverable: discoverableField.currentValue,
+      bot: botField.currentValue,
+      acceptsChatMessages:
+          isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
+      allowFollowingMove:
+          isPleromaInstance ? allowFollowingMoveField.currentValue : null,
+      pleromaBackgroundImage: pleromaBackgroundImage,
+      hideFavorites:
+          isPleromaInstance ? hideFavouritesField.currentValue : null,
+      hideFollowers: isPleromaInstance ? hideFollowersField.currentValue : null,
+      hideFollowersCount:
+          isPleromaInstance ? hideFollowersCountField.currentValue : null,
+      hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
+      hideFollowsCount:
+          isPleromaInstance ? hideFollowsCountField.currentValue : null,
+      noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
+      showRole: isPleromaInstance ? showRoleField.currentValue : null,
+      skipThreadContainment:
+          isPleromaInstance ? skipThreadContainmentField.currentValue : null,
     );
-
-    await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
   }
 
-  Future<bool> _updateFiles(
-      PleromaMyAccountFilesRequest pleromaMyAccountFilesRequest) async {
+  Future _sendPleromaMyAccountFilesRequest(
+    PleromaMyAccountFilesRequest pleromaMyAccountFilesRequest,
+  ) async {
     var remoteMyAccount =
         await pleromaMyAccountService.updateFiles(pleromaMyAccountFilesRequest);
 
-    if (remoteMyAccount != null) {
-      await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
-      return true;
-    } else {
-      return false;
-    }
+    await myAccountBloc.updateMyAccountByMyPleromaAccount(remoteMyAccount);
   }
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
+        .currentInstance!
         .info;
     return EditMyAccountBloc(
       currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(

@@ -6,7 +6,6 @@ import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -24,7 +23,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -38,12 +37,12 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaStatusEmojiReactionService({@required this.restService});
+  PleromaStatusEmojiReactionService({required this.restService});
 
   @override
   Future<IPleromaStatus> addReaction({
-    @required String statusRemoteId,
-    @required String emoji,
+    required String? statusRemoteId,
+    required String? emoji,
   }) async {
     var request = RestRequest.put(
       relativePath: urlPath.join(
@@ -60,12 +59,17 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
 
   @override
   Future<IPleromaStatusEmojiReaction> getReaction({
-    @required String statusRemoteId,
-    @required String emoji,
+    required String statusRemoteId,
+    required String emoji,
   }) async {
     var request = RestRequest.get(
-        relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
-            statusRemoteId, reactionsRelativeUrlPath, emoji));
+      relativePath: urlPath.join(
+        pleromaStatusesRelativeUrlPath,
+        statusRemoteId,
+        reactionsRelativeUrlPath,
+        emoji,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     // pleroma returns array even when we specify emoji
@@ -74,11 +78,15 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
 
   @override
   Future<List<IPleromaStatusEmojiReaction>> getReactions({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.get(
-        relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
-            statusRemoteId, reactionsRelativeUrlPath));
+      relativePath: urlPath.join(
+        pleromaStatusesRelativeUrlPath,
+        statusRemoteId,
+        reactionsRelativeUrlPath,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseEmojiReactionListResponse(httpResponse);
@@ -86,12 +94,17 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
 
   @override
   Future<IPleromaStatus> removeReaction({
-    @required String statusRemoteId,
-    @required String emoji,
+    required String? statusRemoteId,
+    required String? emoji,
   }) async {
     var request = RestRequest.delete(
-        relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
-            statusRemoteId, reactionsRelativeUrlPath, emoji));
+      relativePath: urlPath.join(
+        pleromaStatusesRelativeUrlPath,
+        statusRemoteId,
+        reactionsRelativeUrlPath,
+        emoji,
+      ),
+    );
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusResponse(httpResponse);
@@ -106,7 +119,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,
@@ -125,7 +138,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,
@@ -145,7 +158,7 @@ class PleromaStatusEmojiReactionService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusEmojiReactionException(
         statusCode: httpResponse.statusCode,

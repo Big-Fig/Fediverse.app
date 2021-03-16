@@ -13,8 +13,8 @@ class SearchResultItemPaginationListBloc extends PaginationListBloc<
   final ISearchInputBloc searchInputBloc;
 
   SearchResultItemPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
+    required this.searchInputBloc,
+    required
         IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
             paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
@@ -33,7 +33,7 @@ class SearchResultItemPaginationListBloc extends PaginationListBloc<
           searchInputBloc: ISearchInputBloc.of(context, listen: false));
 
   static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+          {required Widget child}) =>
       DisposableProvider<
           IPaginationListBloc<PaginationPage<ISearchResultItem>,
               ISearchResultItem>>(

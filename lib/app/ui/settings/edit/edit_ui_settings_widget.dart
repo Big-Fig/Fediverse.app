@@ -10,7 +10,7 @@ class EditUiSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditUiSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -27,7 +27,7 @@ class EditUiSettingsWidget extends StatelessWidget {
 
 class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
   const _EditUiSettingsStatusFontSizeFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -43,7 +43,7 @@ class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
 
 class _EditUiSettingsThemeFieldWidget extends StatelessWidget {
   const _EditUiSettingsThemeFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

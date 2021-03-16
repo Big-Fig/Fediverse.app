@@ -16,7 +16,7 @@ void showMediaAttachmentFailedNotificationOverlay(
     contentText =
         S.of(context).app_media_upload_failed_notification_exceedSize_content(
               _numberFormat.format(e.currentFileSizeInBytes / pow(1024, 2)),
-              _numberFormat.format(e.maximumFileSizeInBytes / pow(1024, 2)),
+              _numberFormat.format(e.maximumFileSizeInBytes! / pow(1024, 2)),
             );
   } else {
     contentText = e.toString();

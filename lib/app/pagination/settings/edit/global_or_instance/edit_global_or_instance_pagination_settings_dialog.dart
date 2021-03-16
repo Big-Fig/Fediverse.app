@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstancePaginationSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstancePaginationSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditPaginationSettingsBloc>(
@@ -48,7 +48,7 @@ void showEditGlobalOrInstancePaginationSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editPaginationSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editPaginationSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );

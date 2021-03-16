@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-Future<IMediaDeviceFile> showEditMyAccountPleromaBackgroundFieldPicker(
+Future<IMediaDeviceFile?> showEditMyAccountPleromaBackgroundFieldPicker(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) =>
@@ -54,7 +54,7 @@ Future _cropAndSelect(
     context,
     listen: false,
   );
-  File croppedFile = await goToCropImagePage(
+  File? croppedFile = await goToCropImagePage(
     context: context,
     file: await mediaDeviceFile.loadFile(),
     isForceCropToSquare: false,

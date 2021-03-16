@@ -5,7 +5,7 @@ import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,39 +15,121 @@ Function eq = const ListEquality().equals;
 
 abstract class IPleromaAccount implements IMastodonAccount {
   @override
-  List<IPleromaField> get fields;
+  List<IPleromaField>? get fields;
 
   @override
-  List<IPleromaEmoji> get emojis;
+  List<IPleromaEmoji>? get emojis;
 
-  IPleromaAccountPleromaPart get pleroma;
+  IPleromaAccountPleromaPart? get pleroma;
 
-  String get fqn;
+  String? get fqn;
+
+  IPleromaAccount copyWith({
+    String? username,
+    String? url,
+    int? statusesCount,
+    String? note,
+    bool? locked,
+    String? id,
+    String? headerStatic,
+    String? header,
+    int? followingCount,
+    int? followersCount,
+    List<IPleromaField>? fields,
+    List<IPleromaEmoji>? emojis,
+    String? displayName,
+    DateTime? createdAt,
+    bool? bot,
+    String? avatarStatic,
+    String? avatar,
+    String? acct,
+    IPleromaAccountPleromaPart? pleroma,
+    DateTime? lastStatusAt,
+    String? fqn,
+  });
+}
+
+extension IPleromaAccountExtension on IPleromaAccount {
+  PleromaAccount toPleromaAccount() {
+    if (this is PleromaAccount) {
+      return this as PleromaAccount;
+    } else {
+      return PleromaAccount(
+        pleroma: pleroma?.toPleromaAccountPleromaPart(),
+        id: id,
+        username: username,
+        url: url,
+        note: note,
+        locked: locked,
+        headerStatic: headerStatic,
+        header: header,
+        followingCount: followingCount,
+        followersCount: followersCount,
+        statusesCount: statusesCount,
+        displayName: displayName,
+        createdAt: createdAt,
+        bot: bot,
+        avatarStatic: avatarStatic,
+        avatar: avatar,
+        acct: acct,
+        lastStatusAt: lastStatusAt,
+        fields: fields?.toPleromaFields(),
+        emojis: emojis?.toPleromaEmojis(),
+        fqn: fqn,
+      );
+    }
+  }
+}
+
+extension IPleromaAccountListExtension on List<IPleromaAccount> {
+  List<PleromaAccount> toPleromaAccounts() {
+    if (this is List<PleromaAccount>) {
+      return this as List<PleromaAccount>;
+    } else {
+      return map(
+        (account) => account.toPleromaAccount(),
+      ).toList();
+    }
+  }
 }
 
 abstract class IPleromaAccountReport {
-  List<IPleromaStatus> get statuses;
+  List<IPleromaStatus>? get statuses;
 
-  IPleromaAccount get account;
+  IPleromaAccount? get account;
 
-  IPleromaAccount get user;
+  IPleromaAccount? get user;
+}
+
+extension IPleromaAccountReportExtension on IPleromaAccountReport {
+  PleromaAccountReport toPleromaAccountReport() {
+    if (this is PleromaAccountReport) {
+      return this as PleromaAccountReport;
+    } else {
+      return PleromaAccountReport(
+        account: account?.toPleromaAccount(),
+        statuses: statuses?.toPleromaStatuses(),
+        user: user?.toPleromaAccount(),
+      );
+    }
+  }
 }
 
 @JsonSerializable(explicitToJson: true)
 class PleromaAccountReport implements IPleromaAccountReport {
   @override
-  final PleromaAccount account;
+  final PleromaAccount? account;
 
   @override
-  final List<PleromaStatus> statuses;
+  final List<PleromaStatus>? statuses;
 
   @override
-  final PleromaAccount user;
+  final PleromaAccount? user;
 
   PleromaAccountReport({
-    @required this.account,
-    @required this.statuses,
-    @required this.user,
+    required this.account,
+    required this.statuses,
+    required this.user,
   });
 
   @override
@@ -69,7 +151,6 @@ class PleromaAccountReport implements IPleromaAccountReport {
       'user: $user'
       '}';
 
-
   factory PleromaAccountReport.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountReportFromJson(json);
 
@@ -83,7 +164,6 @@ class PleromaAccountReport implements IPleromaAccountReport {
   Map<String, dynamic> toJson() => _$PleromaAccountReportToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaAccountReportToJson(this));
-
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -105,7 +185,7 @@ class PleromaAccount implements IPleromaAccount {
   final int statusesCount;
   @override
   @HiveField(3)
-  final String note;
+  final String? note;
   @override
   @HiveField(4)
   final bool locked;
@@ -129,14 +209,14 @@ class PleromaAccount implements IPleromaAccount {
   final int followersCount;
   @override
   @HiveField(10)
-  final List<PleromaField> fields;
+  final List<PleromaField>? fields;
   @override
   @HiveField(11)
-  final List<PleromaEmoji> emojis;
+  final List<PleromaEmoji>? emojis;
   @override
   @HiveField(12)
   @JsonKey(name: "display_name")
-  final String displayName;
+  final String? displayName;
   @override
   @HiveField(13)
   @JsonKey(name: "created_at")
@@ -156,38 +236,38 @@ class PleromaAccount implements IPleromaAccount {
   final String acct;
   @override
   @HiveField(19)
-  final PleromaAccountPleromaPart pleroma;
+  final PleromaAccountPleromaPart? pleroma;
   @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
-  final DateTime lastStatusAt;
+  final DateTime? lastStatusAt;
 
   @HiveField(21)
   @override
-  final String fqn;
+  final String? fqn;
 
   PleromaAccount({
-    this.username,
-    this.url,
-    this.statusesCount,
-    this.note,
-    this.locked,
-    this.id,
-    this.headerStatic,
-    this.header,
-    this.followingCount,
-    this.followersCount,
-    this.fields,
-    this.emojis,
-    this.displayName,
-    this.createdAt,
-    this.bot,
-    this.avatarStatic,
-    this.avatar,
-    this.acct,
-    this.pleroma,
-    this.lastStatusAt,
-    this.fqn,
+    required this.username,
+    required this.url,
+    required this.statusesCount,
+    required this.note,
+    required this.locked,
+    required this.id,
+    required this.headerStatic,
+    required this.header,
+    required this.followingCount,
+    required this.followersCount,
+    required this.fields,
+    required this.emojis,
+    required this.displayName,
+    required this.createdAt,
+    required this.bot,
+    required this.avatarStatic,
+    required this.avatar,
+    required this.acct,
+    required this.pleroma,
+    required this.lastStatusAt,
+    required this.fqn,
   });
 
   factory PleromaAccount.fromJson(Map<String, dynamic> json) =>
@@ -206,16 +286,28 @@ class PleromaAccount implements IPleromaAccount {
 
   @override
   String toString() {
-    return 'PleromaAccount{username: $username, url: $url,'
-        ' statusesCount: $statusesCount, note: $note, locked: $locked,'
-        ' id: $id, headerStatic: $headerStatic, header: $header,'
-        ' followingCount: $followingCount, followersCount: $followersCount,'
-        ' fields: $fields, emojis: $emojis, displayName: $displayName,'
-        ' createdAt: $createdAt, bot: $bot, avatarStatic: $avatarStatic,'
-        ' avatar: $avatar, acct: $acct,'
-        ' pleroma: $pleroma,'
-        ' fqn: $fqn,'
-        ' lastStatusAt: $lastStatusAt'
+    return 'PleromaAccount{'
+        'username: $username, '
+        'url: $url, '
+        'statusesCount: $statusesCount, '
+        'note: $note, '
+        'locked: $locked, '
+        'id: $id, '
+        'headerStatic: $headerStatic, '
+        'header: $header,'
+        'followingCount: $followingCount, '
+        'followersCount: $followersCount,'
+        'fields: $fields, '
+        'emojis: $emojis, '
+        'displayName: $displayName,'
+        'createdAt: $createdAt, '
+        'bot: $bot, '
+        'avatarStatic: $avatarStatic,'
+        'avatar: $avatar, '
+        'acct: $acct,'
+        'pleroma: $pleroma,'
+        'fqn: $fqn,'
+        'lastStatusAt: $lastStatusAt'
         '}';
   }
 
@@ -269,69 +361,174 @@ class PleromaAccount implements IPleromaAccount {
       pleroma.hashCode ^
       fqn.hashCode ^
       lastStatusAt.hashCode;
+
+  @override
+  PleromaAccount copyWith({
+    String? username,
+    String? url,
+    int? statusesCount,
+    String? note,
+    bool? locked,
+    String? id,
+    String? headerStatic,
+    String? header,
+    int? followingCount,
+    int? followersCount,
+    List<IPleromaField>? fields,
+    List<IPleromaEmoji>? emojis,
+    String? displayName,
+    DateTime? createdAt,
+    bool? bot,
+    String? avatarStatic,
+    String? avatar,
+    String? acct,
+    IPleromaAccountPleromaPart? pleroma,
+    DateTime? lastStatusAt,
+    String? fqn,
+  }) {
+    if ((username == null || identical(username, this.username)) &&
+        (url == null || identical(url, this.url)) &&
+        (statusesCount == null ||
+            identical(statusesCount, this.statusesCount)) &&
+        (note == null || identical(note, this.note)) &&
+        (locked == null || identical(locked, this.locked)) &&
+        (id == null || identical(id, this.id)) &&
+        (headerStatic == null || identical(headerStatic, this.headerStatic)) &&
+        (header == null || identical(header, this.header)) &&
+        (followingCount == null ||
+            identical(followingCount, this.followingCount)) &&
+        (followersCount == null ||
+            identical(followersCount, this.followersCount)) &&
+        (fields == null || identical(fields, this.fields)) &&
+        (emojis == null || identical(emojis, this.emojis)) &&
+        (displayName == null || identical(displayName, this.displayName)) &&
+        (createdAt == null || identical(createdAt, this.createdAt)) &&
+        (bot == null || identical(bot, this.bot)) &&
+        (avatarStatic == null || identical(avatarStatic, this.avatarStatic)) &&
+        (avatar == null || identical(avatar, this.avatar)) &&
+        (acct == null || identical(acct, this.acct)) &&
+        (pleroma == null || identical(pleroma, this.pleroma)) &&
+        (lastStatusAt == null || identical(lastStatusAt, this.lastStatusAt)) &&
+        (fqn == null || identical(fqn, this.fqn))) {
+      return this;
+    }
+
+    return PleromaAccount(
+      username: username ?? this.username,
+      url: url ?? this.url,
+      statusesCount: statusesCount ?? this.statusesCount,
+      note: note ?? this.note,
+      locked: locked ?? this.locked,
+      id: id ?? this.id,
+      headerStatic: headerStatic ?? this.headerStatic,
+      header: header ?? this.header,
+      followingCount: followingCount ?? this.followingCount,
+      followersCount: followersCount ?? this.followersCount,
+      fields: fields?.toPleromaFields() ?? this.fields,
+      emojis: emojis?.toPleromaEmojis() ?? this.emojis,
+      displayName: displayName ?? this.displayName,
+      createdAt: createdAt ?? this.createdAt,
+      bot: bot ?? this.bot,
+      avatarStatic: avatarStatic ?? this.avatarStatic,
+      avatar: avatar ?? this.avatar,
+      acct: acct ?? this.acct,
+      pleroma: pleroma?.toPleromaAccountPleromaPart() ?? this.pleroma,
+      lastStatusAt: lastStatusAt ?? this.lastStatusAt,
+      fqn: fqn ?? this.fqn,
+    );
+  }
 }
 
 abstract class IPleromaAccountPleromaPart {
-  String get backgroundImage;
+  String? get backgroundImage;
 
-//  List<PleromaTag> tags;
-  List<dynamic> get tags;
+  List<PleromaTag>? get tags;
 
-  PleromaAccountRelationship get relationship;
+  PleromaAccountRelationship? get relationship;
 
-  bool get isAdmin;
+  bool? get isAdmin;
 
-  bool get isModerator;
+  bool? get isModerator;
 
-  bool get confirmationPending;
+  bool? get confirmationPending;
 
-  bool get hideFavorites;
+  bool? get hideFavorites;
 
-  bool get hideFollowers;
+  bool? get hideFollowers;
 
-  bool get hideFollows;
+  bool? get hideFollows;
 
-  bool get hideFollowersCount;
+  bool? get hideFollowersCount;
 
-  bool get hideFollowsCount;
+  bool? get hideFollowsCount;
 
-  bool get deactivated;
+  bool? get deactivated;
 
-  bool get allowFollowingMove;
+  bool? get allowFollowingMove;
 
-  bool get acceptsChatMessages;
+  bool? get acceptsChatMessages;
 
-  bool get skipThreadContainment;
+  bool? get skipThreadContainment;
 
-  bool get isConfirmed;
+  bool? get isConfirmed;
 
-  String get favicon;
+  String? get favicon;
 
-  String get apId;
+  String? get apId;
 
-  List<String> get alsoKnownAs;
+  List<String>? get alsoKnownAs;
 
   IPleromaAccountPleromaPart copyWith({
-    String backgroundImage,
-    List<dynamic> tags,
-    PleromaAccountRelationship relationship,
-    bool isAdmin,
-    bool isModerator,
-    bool confirmationPending,
-    bool hideFavorites,
-    bool hideFollowers,
-    bool hideFollows,
-    bool hideFollowersCount,
-    bool hideFollowsCount,
-    bool deactivated,
-    bool allowFollowingMove,
-    bool skipThreadContainment,
-    bool acceptsChatMessages,
-    bool isConfirmed,
-    String favicon,
-    String apId,
-    List<String> alsoKnownAs,
+    String? backgroundImage,
+    List<IPleromaTag>? tags,
+    IPleromaAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    bool? acceptsChatMessages,
+    bool? isConfirmed,
+    String? favicon,
+    String? apId,
+    List<String>? alsoKnownAs,
   });
+}
+
+extension IPleromaAccountPleromaPartExtension on IPleromaAccountPleromaPart {
+  PleromaAccountPleromaPart toPleromaAccountPleromaPart() {
+    if (this is PleromaAccountPleromaPart) {
+      return this as PleromaAccountPleromaPart;
+    } else {
+      return PleromaAccountPleromaPart(
+        backgroundImage: backgroundImage,
+        tags: tags,
+        relationship: relationship,
+        isAdmin: isAdmin,
+        isModerator: isModerator,
+        confirmationPending: confirmationPending,
+        hideFavorites: hideFavorites,
+        hideFollowers: hideFollowers,
+        hideFollows: hideFollows,
+        hideFollowersCount: hideFollowersCount,
+        hideFollowsCount: hideFollowsCount,
+        deactivated: deactivated,
+        allowFollowingMove: allowFollowingMove,
+        skipThreadContainment: skipThreadContainment,
+        acceptsChatMessages: acceptsChatMessages,
+        apId: apId,
+        isConfirmed: isConfirmed,
+        alsoKnownAs: alsoKnownAs,
+        favicon: favicon,
+      );
+    }
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -345,111 +542,110 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   @override
   @HiveField(1)
   @JsonKey(name: "background_image")
-  final String backgroundImage;
+  final String? backgroundImage;
 
   @override
   @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
-//  List<PleromaTag> tags;
-  final List<dynamic> tags;
+  final List<PleromaTag>? tags;
 
   @override
   @HiveField(3)
-  final PleromaAccountRelationship relationship;
+  final PleromaAccountRelationship? relationship;
   @override
   @HiveField(4)
   @JsonKey(name: "is_admin")
-  final bool isAdmin;
+  final bool? isAdmin;
   @override
   @HiveField(5)
   @JsonKey(name: "is_moderator")
-  final bool isModerator;
+  final bool? isModerator;
 
   @override
   @HiveField(7)
   @JsonKey(name: "confirmation_pending")
-  final bool confirmationPending;
+  final bool? confirmationPending;
 
   @override
   @HiveField(8)
   @JsonKey(name: "hide_favorites")
-  final bool hideFavorites;
+  final bool? hideFavorites;
   @override
   @HiveField(9)
   @JsonKey(name: "hide_followers")
-  final bool hideFollowers;
+  final bool? hideFollowers;
   @override
   @HiveField(11)
   @JsonKey(name: "hide_follows")
-  final bool hideFollows;
+  final bool? hideFollows;
   @override
   @HiveField(12)
   @JsonKey(name: "hide_followers_count")
-  final bool hideFollowersCount;
+  final bool? hideFollowersCount;
   @override
   @HiveField(13)
   @JsonKey(name: "hide_follows_count")
-  final bool hideFollowsCount;
+  final bool? hideFollowsCount;
 
   @override
   @HiveField(16)
-  final bool deactivated;
+  final bool? deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
   @override
   @HiveField(17)
   @JsonKey(name: "allow_following_move")
-  final bool allowFollowingMove;
+  final bool? allowFollowingMove;
 
   @override
   @HiveField(18)
   @JsonKey(name: "skip_thread_containment")
-  final bool skipThreadContainment;
+  final bool? skipThreadContainment;
 
   @override
   @HiveField(19)
   @JsonKey(name: "accepts_chat_messages")
-  final bool acceptsChatMessages;
+  final bool? acceptsChatMessages;
 
   @override
   @HiveField(20)
   @JsonKey(name: "is_confirmed")
-  final bool isConfirmed;
+  final bool? isConfirmed;
 
   @override
   @HiveField(21)
-  final String favicon;
+  final String? favicon;
 
   @override
   @HiveField(22)
-  final String apId;
+  final String? apId;
   @override
   @HiveField(23)
   @JsonKey(name: "also_known_as")
-  final List<String> alsoKnownAs;
+  final List<String>? alsoKnownAs;
 
   PleromaAccountPleromaPart({
-    this.backgroundImage,
-    this.tags,
-    this.relationship,
-    this.isAdmin,
-    this.isModerator,
-    this.confirmationPending,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollows,
-    this.hideFollowersCount,
-    this.hideFollowsCount,
-    this.deactivated,
-    this.allowFollowingMove,
-    this.skipThreadContainment,
-    this.acceptsChatMessages,
-    this.isConfirmed,
-    this.favicon,
-    this.apId,
-    this.alsoKnownAs,
+    required this.backgroundImage,
+    required this.tags,
+    required this.relationship,
+    required this.isAdmin,
+    required this.isModerator,
+    required this.confirmationPending,
+    required this.hideFavorites,
+    required this.hideFollowers,
+    required this.hideFollows,
+    required this.hideFollowersCount,
+    required this.hideFollowsCount,
+    required this.deactivated,
+    required this.allowFollowingMove,
+    required this.skipThreadContainment,
+    required this.acceptsChatMessages,
+    required this.isConfirmed,
+    required this.favicon,
+    required this.apId,
+    required this.alsoKnownAs,
   });
 
   factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
@@ -464,30 +660,31 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 
   @override
   PleromaAccountPleromaPart copyWith({
-    String backgroundImage,
-    List<dynamic> tags,
-    PleromaAccountRelationship relationship,
-    bool isAdmin,
-    bool isModerator,
-    bool confirmationPending,
-    bool hideFavorites,
-    bool hideFollowers,
-    bool hideFollows,
-    bool hideFollowersCount,
-    bool hideFollowsCount,
-    bool deactivated,
-    bool allowFollowingMove,
-    bool skipThreadContainment,
-    bool acceptsChatMessages,
-    bool isConfirmed,
-    String favicon,
-    String apId,
-    List<String> alsoKnownAs,
+    String? backgroundImage,
+    List<IPleromaTag>? tags,
+    IPleromaAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    bool? acceptsChatMessages,
+    bool? isConfirmed,
+    String? favicon,
+    String? apId,
+    List<String>? alsoKnownAs,
   }) =>
       PleromaAccountPleromaPart(
         backgroundImage: backgroundImage ?? this.backgroundImage,
-        tags: tags ?? this.tags,
-        relationship: relationship ?? this.relationship,
+        tags: tags?.toPleromaTags() ?? this.tags,
+        relationship:
+            relationship?.toPleromaAccountRelationship() ?? this.relationship,
         isAdmin: isAdmin ?? this.isAdmin,
         isModerator: isModerator ?? this.isModerator,
         confirmationPending: confirmationPending ?? this.confirmationPending,
@@ -581,20 +778,44 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 abstract class IPleromaAccountRelationship
     implements IMastodonAccountRelationship {
   IPleromaAccountRelationship copyWith({
-    bool blocking,
-    bool domainBlocking,
-    bool endorsed,
-    bool followedBy,
-    bool following,
-    String id,
-    bool muting,
-    bool mutingNotifications,
-    bool requested,
-    bool showingReblogs,
-    bool subscribing,
-    bool blockedBy,
-    String note,
+    bool? blocking,
+    bool? domainBlocking,
+    bool? endorsed,
+    bool? followedBy,
+    bool? following,
+    String? id,
+    bool? muting,
+    bool? mutingNotifications,
+    bool? requested,
+    bool? showingReblogs,
+    bool? subscribing,
+    bool? blockedBy,
+    String? note,
   });
+}
+
+extension IPleromaAccountRelationshipExtension on IPleromaAccountRelationship {
+  PleromaAccountRelationship toPleromaAccountRelationship() {
+    if (this is PleromaAccountRelationship) {
+      return this as PleromaAccountRelationship;
+    } else {
+      return PleromaAccountRelationship(
+        blocking: blocking,
+        domainBlocking: domainBlocking,
+        endorsed: endorsed,
+        followedBy: followedBy,
+        following: following,
+        id: id,
+        muting: muting,
+        mutingNotifications: mutingNotifications,
+        requested: requested,
+        showingReblogs: showingReblogs,
+        subscribing: subscribing,
+        blockedBy: blockedBy,
+        note: note,
+      );
+    }
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -606,83 +827,83 @@ abstract class IPleromaAccountRelationship
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @override
   @HiveField(1)
-  final bool blocking;
+  final bool? blocking;
   @override
   @JsonKey(name: "domain_blocking")
   @HiveField(2)
-  final bool domainBlocking;
+  final bool? domainBlocking;
   @override
   @HiveField(3)
-  final bool endorsed;
+  final bool? endorsed;
   @override
   @HiveField(4)
   @JsonKey(name: "followed_by")
-  final bool followedBy;
+  final bool? followedBy;
   @override
   @HiveField(5)
-  final bool following;
+  final bool? following;
   @override
   @HiveField(6)
-  final String id;
+  final String? id;
   @override
   @HiveField(7)
-  final bool muting;
+  final bool? muting;
   @override
   @HiveField(8)
   @JsonKey(name: "muting_notifications")
   @HiveField(9)
-  final bool mutingNotifications;
+  final bool? mutingNotifications;
   @override
   @HiveField(10)
-  final bool requested;
+  final bool? requested;
   @override
   @JsonKey(name: "showing_reblogs")
   @HiveField(11)
-  final bool showingReblogs;
+  final bool? showingReblogs;
   @override
   @HiveField(12)
-  final bool subscribing;
+  final bool? subscribing;
 
   @override
   @HiveField(13)
   @JsonKey(name: "blocked_by")
-  final bool blockedBy;
+  final bool? blockedBy;
 
   @override
   @HiveField(14)
-  final String note;
+  final String? note;
 
   PleromaAccountRelationship({
-    this.blocking,
-    this.domainBlocking,
-    this.endorsed,
-    this.followedBy,
-    this.following,
-    this.id,
-    this.muting,
-    this.mutingNotifications,
-    this.requested,
-    this.showingReblogs,
-    this.subscribing,
-    this.blockedBy,
-    this.note,
+    required this.blocking,
+    required this.domainBlocking,
+    required this.endorsed,
+    required this.followedBy,
+    required this.following,
+    required this.id,
+    required this.muting,
+    required this.mutingNotifications,
+    required this.requested,
+    required this.showingReblogs,
+    required this.subscribing,
+    required this.blockedBy,
+    required this.note,
   });
 
   @override
   PleromaAccountRelationship copyWith({
-    bool blocking,
-    bool domainBlocking,
-    bool endorsed,
-    bool followedBy,
-    bool following,
-    String id,
-    bool muting,
-    bool mutingNotifications,
-    bool requested,
-    bool showingReblogs,
-    bool subscribing,
-    bool blockedBy,
-    String note,
+    bool? blocking,
+    bool? domainBlocking,
+    bool? endorsed,
+    bool? followedBy,
+    bool? following,
+    String? id,
+    bool? muting,
+    bool? mutingNotifications,
+    bool? requested,
+    bool? showingReblogs,
+    bool? subscribing,
+    bool? blockedBy,
+    String? note,
   }) =>
       PleromaAccountRelationship(
         blocking: blocking ?? this.blocking,
@@ -769,19 +990,19 @@ abstract class IPleromaAccountIdentityProof
 @JsonSerializable()
 class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
   @override
-  final String profileUrl;
+  final String? profileUrl;
 
   @override
-  final String proofUrl;
+  final String? proofUrl;
 
   @override
-  final String provider;
+  final String? provider;
 
   @override
-  final String providerUsername;
+  final String? providerUsername;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   PleromaAccountIdentityProof(
       {this.profileUrl,
@@ -828,14 +1049,14 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
   final String accountId;
 
   @override
-  final String comment;
+  final String? comment;
 
   @override
-  final bool forward;
+  final bool? forward;
 
   @JsonKey(name: "status_ids")
   @override
-  final List<String> statusIds;
+  final List<String>? statusIds;
 
   @override
   bool operator ==(Object other) =>
@@ -855,7 +1076,7 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
       statusIds.hashCode;
 
   PleromaAccountReportRequest({
-    @required this.accountId,
+    required this.accountId,
     this.comment,
     this.forward,
     this.statusIds,

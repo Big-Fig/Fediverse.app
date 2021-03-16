@@ -1,12 +1,10 @@
-import 'package:flutter/widgets.dart';
-
 class DurationDateTime {
-  final Duration duration;
-  final DateTime dateTime;
+  final Duration? duration;
+  final DateTime? dateTime;
 
   DurationDateTime({
-    @required this.duration,
-    @required this.dateTime,
+    required this.duration,
+    required this.dateTime,
   });
 
   @override
@@ -22,7 +20,9 @@ class DurationDateTime {
 
   @override
   String toString() {
-    return 'DurationDateTime{duration: $duration, dateTime: $dateTime}';
+    return 'DurationDateTime{'
+        'duration: $duration, '
+        'dateTime: $dateTime'
+        '}';
   }
-
 }

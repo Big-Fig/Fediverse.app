@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+
 
 enum GlobalOrInstanceSettingsType { instance, global }
 
@@ -11,8 +11,8 @@ class GlobalOrInstanceSettings<T> {
   bool get isGlobal => type == GlobalOrInstanceSettingsType.global;
 
   GlobalOrInstanceSettings({
-    @required this.settings,
-    @required this.type,
+    required this.settings,
+    required this.type,
   });
 
   @override

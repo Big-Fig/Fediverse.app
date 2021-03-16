@@ -9,11 +9,11 @@ abstract class IPleromaApplicationService implements IPleromaApi {
           {bool listen = true}) =>
       Provider.of<IPleromaApplicationService>(context, listen: listen);
 
-  Future<IPleromaClientApplication> registerApp({
-    @required MastodonApplicationRegistrationRequest registrationRequest,
+  Future<IPleromaClientApplication?> registerApp({
+    required MastodonApplicationRegistrationRequest registrationRequest,
   });
 
-  Future<IPleromaApplication> verifyCredentials({
-    @required String appToken,
+  Future<IPleromaApplication?> verifyCredentials({
+    required String appToken,
   });
 }

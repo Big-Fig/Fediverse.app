@@ -28,7 +28,7 @@ class StatusCommentActionWidget extends StatelessWidget {
 
 class _StatusCommentActionCounterWidget extends StatelessWidget {
   const _StatusCommentActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     var statusListItemTimelineBloc = IStatusListItemTimelineBloc.of(context);
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: statusBloc.repliesCountStream,
       builder: (context, snapshot) {
         var repliesCount = snapshot.data;
@@ -57,7 +57,7 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
   }
 }
 
-void _onActionClick(BuildContext context) {
+Future  _onActionClick(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
   var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
@@ -78,7 +78,7 @@ void _onActionClick(BuildContext context) {
 
 class _StatusCommentActionButtonWidget extends StatelessWidget {
   const _StatusCommentActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

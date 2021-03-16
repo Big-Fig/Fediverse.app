@@ -1,9 +1,9 @@
 import 'package:fedi/mastodon/history/mastodon_history_model.dart';
 
 abstract class IMastodonTag {
-  String get name;
+  String? get name;
 
-  String get url;
+  String? get url;
 
-  List<IMastodonHistory> get history;
+  List<IMastodonTagHistory>? get history;
 }

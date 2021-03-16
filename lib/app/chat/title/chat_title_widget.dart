@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatTitleWidget extends StatelessWidget {
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   const ChatTitleWidget({
     this.textStyle,
@@ -26,7 +26,7 @@ class ChatTitleWidget extends StatelessWidget {
         if (accounts?.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
-        var accountsText = accounts.map((account) => account.acct).join(", ");
+        var accountsText = accounts!.map((account) => account.acct).join(", ");
 
         return Text(
           accountsText,

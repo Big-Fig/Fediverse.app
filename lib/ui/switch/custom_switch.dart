@@ -19,7 +19,7 @@ class CustomSwitch extends StatelessWidget {
   final bool enabled;
 
   CustomSwitch({
-    Key key,
+    Key? key,
     this.backgroundActiveColor = Colors.transparent,
     this.backgroundInactiveColor = Colors.transparent,
     this.backgroundDisabledColor = Colors.transparent,
@@ -70,7 +70,7 @@ class CustomSwitch extends StatelessWidget {
 }
 
 class _CustomSwitchIndicator extends StatelessWidget {
-  final bool value;
+  final bool? value;
   final double width;
   final double height;
   final ValueChanged<bool> onChanged;
@@ -88,9 +88,9 @@ class _CustomSwitchIndicator extends StatelessWidget {
   final bool enabled;
 
   _CustomSwitchIndicator({
-    Key key,
-    @required this.value,
-    @required this.onChanged,
+    Key? key,
+    required this.value,
+    required this.onChanged,
     this.backgroundActiveColor = Colors.transparent,
     this.backgroundInactiveColor = Colors.transparent,
     this.backgroundDisabledColor = Colors.transparent,
@@ -125,13 +125,13 @@ class _CustomSwitchIndicator extends StatelessWidget {
             width: borderWidth,
           ),
           color: enabled
-              ? value
+              ? value!
                   ? backgroundActiveColor
                   : backgroundInactiveColor
               : backgroundDisabledColor,
         ),
         child: Align(
-          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+          alignment: value! ? Alignment.centerRight : Alignment.centerLeft,
           child: _buildIndicator(value),
         ),
       ),
@@ -140,7 +140,7 @@ class _CustomSwitchIndicator extends StatelessWidget {
     if (enabled) {
       return InkWell(
         onTap: () {
-          onChanged(!value);
+          onChanged(!value!);
         },
         child: child,
       );
@@ -149,13 +149,13 @@ class _CustomSwitchIndicator extends StatelessWidget {
     }
   }
 
-  Widget _buildIndicator(bool isActive) => Container(
+  Widget _buildIndicator(bool? isActive) => Container(
         width: indicatorSize,
         height: indicatorSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: enabled
-              ? isActive
+              ? isActive!
                   ? indicatorActiveColor
                   : indicatorInactiveColor
               : Colors.transparent,

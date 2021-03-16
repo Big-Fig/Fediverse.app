@@ -12,7 +12,7 @@ class StatusActionMuteBloc extends DisposableOwner
   final IStatusBloc statusBloc;
 
   @override
-  IStatus get statusForMute => statusBloc.status;
+  IStatus? get statusForMute => statusBloc.status;
 
   @override
   final IDurationDateTimeValueFormFieldBloc expireDurationFieldBloc =
@@ -25,14 +25,14 @@ class StatusActionMuteBloc extends DisposableOwner
   );
 
   StatusActionMuteBloc({
-    @required this.statusBloc,
+    required this.statusBloc,
   }) {
     addDisposable(disposable: expireDurationFieldBloc);
   }
 
   static StatusActionMuteBloc createFromContext(
     BuildContext context, {
-    @required IStatusBloc statusBloc,
+    required IStatusBloc statusBloc,
   }) {
     return StatusActionMuteBloc(
       statusBloc: statusBloc,
@@ -41,8 +41,8 @@ class StatusActionMuteBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IStatusBloc statusBloc,
+    required Widget child,
+    required IStatusBloc statusBloc,
   }) {
     return DisposableProvider<IStatusActionMuteBloc>(
       create: (context) => StatusActionMuteBloc.createFromContext(

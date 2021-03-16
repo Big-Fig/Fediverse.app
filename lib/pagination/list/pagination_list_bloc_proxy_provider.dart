@@ -7,7 +7,7 @@ class PaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
     TItem> extends StatelessWidget {
   final Widget child;
 
-  PaginationListBlocProxyProvider({@required this.child});
+  PaginationListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

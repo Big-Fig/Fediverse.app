@@ -14,8 +14,8 @@ class ConversationChatOrderingTermData {
   final OrderingMode orderingMode;
 
   const ConversationChatOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   static const ConversationChatOrderingTermData remoteIdDesc =

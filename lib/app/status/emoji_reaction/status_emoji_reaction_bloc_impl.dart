@@ -4,7 +4,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StatusEmojiReactionBloc extends DisposableOwner
@@ -17,18 +17,18 @@ class StatusEmojiReactionBloc extends DisposableOwner
 
   @override
   Stream<IPleromaStatusEmojiReaction> get emojiReactionStream =>
-      emojiReactionSubject.stream;
+      emojiReactionSubject.stream.mapToNotNull();
 
   @override
-  IPleromaStatusEmojiReaction get emojiReaction => emojiReactionSubject.value;
+  IPleromaStatusEmojiReaction get emojiReaction => emojiReactionSubject.value!;
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
 
-  StatusEmojiReactionBloc(
-      {@required this.status,
-      @required this.statusRepository,
-      @required IPleromaStatusEmojiReaction emojiReaction,
-      @required this.pleromaStatusEmojiReactionService})
-      : emojiReactionSubject = BehaviorSubject.seeded(emojiReaction) {
+  StatusEmojiReactionBloc({
+    required this.status,
+    required this.statusRepository,
+    required IPleromaStatusEmojiReaction emojiReaction,
+    required this.pleromaStatusEmojiReactionService,
+  }) : emojiReactionSubject = BehaviorSubject.seeded(emojiReaction) {
     addDisposable(subject: emojiReactionSubject);
   }
 
@@ -37,14 +37,21 @@ class StatusEmojiReactionBloc extends DisposableOwner
     IPleromaStatus remoteStatus;
     if (emojiReaction.me) {
       remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
-          statusRemoteId: status.remoteId, emoji: emojiReaction.name);
+        statusRemoteId: status.remoteId,
+        emoji: emojiReaction.name,
+      );
     } else {
       remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
-          statusRemoteId: status.remoteId, emoji: emojiReaction.name);
+        statusRemoteId: status.remoteId,
+        emoji: emojiReaction.name,
+      );
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(
+      remoteStatus,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
 
     return remoteStatus;
   }

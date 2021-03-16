@@ -14,9 +14,9 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
 
   Uri get instanceBaseUri;
 
-  bool get approvalRequired;
+  bool? get approvalRequired;
 
-  ILocalizationLocaleSingleFromListValueFormFieldBloc get localeFieldBloc;
+  ILocalizationLocaleSingleFromListValueFormFieldBloc? get localeFieldBloc;
 
   IBoolValueFormFieldBloc get agreeTermsOfServiceFieldBloc;
 
@@ -30,7 +30,7 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
 
   IStringValueFormFieldBloc get reasonFieldBloc;
 
-  IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
+  IPleromaFormCaptchaStringFieldBloc? get captchaFieldBloc;
 
   PleromaAccountRegisterRequest calculateRegisterFormData();
 }

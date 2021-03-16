@@ -6,30 +6,30 @@ import 'package:rxdart/rxdart.dart';
 // todo: refactor with similar conversation chat class
 class PleromaChatCurrentBloc extends DisposableOwner
     implements IPleromaChatCurrentBloc {
-  final List<IPleromaChat> openedChats = [];
+  final List<IPleromaChat?> openedChats = [];
 
-  BehaviorSubject<IPleromaChat> currentChatSubject = BehaviorSubject();
+  BehaviorSubject<IPleromaChat?> currentChatSubject = BehaviorSubject();
 
   PleromaChatCurrentBloc() {
     addDisposable(subject: currentChatSubject);
   }
 
   @override
-  IPleromaChat get currentChat => currentChatSubject.value;
+  IPleromaChat? get currentChat => currentChatSubject.value;
 
   @override
-  Stream<IPleromaChat> get currentChatStream => currentChatSubject.stream;
+  Stream<IPleromaChat?> get currentChatStream => currentChatSubject.stream;
 
   @override
-  void onChatOpened(IPleromaChat chat) {
+  void onChatOpened(IPleromaChat? chat) {
     currentChatSubject.add(chat);
     openedChats.add(chat);
   }
 
   @override
-  void onChatClosed(IPleromaChat chat) {
+  void onChatClosed(IPleromaChat? chat) {
     var indexToRemove = openedChats.lastIndexWhere(
-      (currentChat) => currentChat.remoteId == chat.remoteId,
+      (currentChat) => currentChat!.remoteId == chat!.remoteId,
     );
 
     if (indexToRemove >= 0) {

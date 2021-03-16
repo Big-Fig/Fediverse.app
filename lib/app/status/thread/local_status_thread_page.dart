@@ -5,16 +5,16 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void goToLocalStatusThreadPage(
+Future goToLocalStatusThreadPage(
   BuildContext context, {
-  @required IStatus status,
-  @required IMastodonMediaAttachment initialMediaAttachment,
+  required IStatus status,
+  required IPleromaMediaAttachment? initialMediaAttachment,
 }) {
-  Navigator.push(
+  return Navigator.push(
     context,
     createLocalStatusThreadPageRoute(
       status: status,
@@ -24,8 +24,8 @@ void goToLocalStatusThreadPage(
 }
 
 MaterialPageRoute createLocalStatusThreadPageRoute({
-  @required IStatus status,
-  @required IMastodonMediaAttachment initialMediaAttachment,
+  required IStatus status,
+  required IPleromaMediaAttachment? initialMediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(

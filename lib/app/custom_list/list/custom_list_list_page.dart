@@ -72,7 +72,7 @@ void goToCustomListListPage(
 }
 
 MaterialPageRoute createCustomListListPageRoute({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   return MaterialPageRoute(
     builder: (context) => CustomListNetworkOnlyListBloc.provideToContext(

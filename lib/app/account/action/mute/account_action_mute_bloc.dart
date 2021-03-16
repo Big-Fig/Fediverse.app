@@ -12,7 +12,7 @@ abstract class IAccountActionMuteBloc implements IDisposable {
   }) =>
       Provider.of<IAccountActionMuteBloc>(context, listen: listen);
 
-  IAccount get accountForMute;
+  IAccount? get accountForMute;
 
   IBoolValueFormFieldBloc get notificationsBoolFieldBloc;
   IDurationDateTimeValueFormFieldBloc get expireDurationFieldBloc;

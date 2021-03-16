@@ -28,7 +28,7 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
 
 class _FediPlayerControlProgressPlaybackWidget extends StatelessWidget {
   const _FediPlayerControlProgressPlaybackWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

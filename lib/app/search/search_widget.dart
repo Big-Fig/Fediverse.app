@@ -44,7 +44,7 @@ class SearchWidget extends StatelessWidget {
         stream: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmptyStream,
         initialData: searchBloc.searchInputBloc.confirmedSearchTermIsNotEmpty,
         builder: (context, snapshot) {
-          var confirmedSearchTermIsNotEmpty = snapshot.data;
+          var confirmedSearchTermIsNotEmpty = snapshot.data!;
           if (confirmedSearchTermIsNotEmpty) {
             return buildNonEmptyInputBody(searchBloc, context);
           } else {
@@ -76,7 +76,7 @@ class SearchWidget extends StatelessWidget {
 
 class _SearchBodyWidget extends StatelessWidget {
   const _SearchBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -94,8 +94,8 @@ class _SearchBodyWidget extends StatelessWidget {
 
 class _SearchTabBodyWidget extends StatelessWidget {
   const _SearchTabBodyWidget({
-    Key key,
-    @required this.tab,
+    Key? key,
+    required this.tab,
   }) : super(key: key);
 
   final SearchTab tab;
@@ -151,30 +151,27 @@ class _SearchTabBodyWidget extends StatelessWidget {
   }
 
   Widget buildTabBody(
-      BuildContext context, SearchTab tab, ISearchBloc searchBloc) {
+    BuildContext context,
+    SearchTab tab,
+    ISearchBloc searchBloc,
+  ) {
     switch (tab) {
       case SearchTab.accounts:
         return buildAccountsTab(context);
-        break;
       case SearchTab.statuses:
         return buildStatusesTab(context);
-
-        break;
       case SearchTab.all:
         return const SearchResultItemListWidget();
 
-        break;
       case SearchTab.hashtags:
         return buildHashtagsTab(context);
-        break;
     }
-    throw "Invalid tab $tab";
   }
 }
 
 class _SearchTabBarWidget extends StatelessWidget {
   const _SearchTabBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -184,10 +181,10 @@ class _SearchTabBarWidget extends StatelessWidget {
       child: Builder(
         builder: (context) {
           var tabController = DefaultTabController.of(context);
-          return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
-            create: (context) => FediTabIndicatorBloc<SearchTab>(
+          return DisposableProvider<IFediTabIndicatorBloc<SearchTab?>>(
+            create: (context) => FediTabIndicatorBloc<SearchTab?>(
               items: tabs,
-              tabController: tabController,
+              tabController: tabController!,
             ),
             child: FediTextTabIndicatorWidget(
               isTransparent: false,
@@ -200,21 +197,18 @@ class _SearchTabBarWidget extends StatelessWidget {
   }
 }
 
-String mapTabToTitle(BuildContext context, SearchTab tab) {
-  switch (tab) {
+String mapTabToTitle(BuildContext context, SearchTab? tab) {
+  switch (tab!) {
     case SearchTab.accounts:
       return S.of(context).app_search_tab_accounts;
-      break;
+
     case SearchTab.statuses:
       return S.of(context).app_search_tab_statuses;
-      break;
+
     case SearchTab.all:
       return S.of(context).app_search_tab_all;
-      break;
+
     case SearchTab.hashtags:
       return S.of(context).app_search_tab_hashtags;
-      break;
   }
-
-  throw "Invalid tab $tab";
 }

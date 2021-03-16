@@ -13,11 +13,11 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return InkWell(
-      child: StreamBuilder<bool>(
+      child: StreamBuilder<bool?>(
           stream: postStatusBloc.isNsfwSensitiveEnabledStream,
           initialData: postStatusBloc.isNsfwSensitiveEnabled,
           builder: (context, snapshot) {
-            var nsfwSensitive = snapshot.data;
+            var nsfwSensitive = snapshot.data!;
 
             return FediIconButton(
               icon: Icon(
@@ -29,13 +29,13 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
               ),
               onPressed: () {
                 postStatusBloc.changeNsfwSensitive(
-                    !postStatusBloc.isNsfwSensitiveEnabled);
+                    !postStatusBloc.isNsfwSensitiveEnabled!);
               },
             );
           }),
       onTap: () {
         postStatusBloc
-            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
+            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled!);
       },
     );
   }

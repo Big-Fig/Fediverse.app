@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class AccountFollowingAccountListWidget extends StatelessWidget {
   const AccountFollowingAccountListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class AccountFollowingAccountListWidget extends StatelessWidget {
 
 class _AccountFollowingAccountListEmptyWidget extends StatelessWidget {
   const _AccountFollowingAccountListEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -45,7 +45,7 @@ class _AccountFollowingAccountListEmptyWidget extends StatelessWidget {
 
 class _AccountFollowingAccountListBodyWidget extends StatelessWidget {
   const _AccountFollowingAccountListBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

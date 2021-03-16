@@ -1,11 +1,11 @@
 abstract class IMastodonEmoji {
-  String get shortcode;
+  String? get shortcode;
 
-  String get url;
+  String? get url;
 
-  String get staticUrl;
+  String? get staticUrl;
 
-  bool get visibleInPicker;
+  bool? get visibleInPicker;
 
-  String get category;
+  String? get category;
 }

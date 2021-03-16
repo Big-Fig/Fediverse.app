@@ -8,9 +8,9 @@ abstract class IOverlayNotificationService implements IDisposable {
       Provider.of<IOverlayNotificationService>(context, listen: listen);
 
   void showNotification({
-    @required Widget child,
-    @required bool slideDismissible,
-    @required Key key,
-    @required Duration duration,
+    required Widget child,
+    required bool slideDismissible,
+    required Key key,
+    required Duration duration,
   });
 }

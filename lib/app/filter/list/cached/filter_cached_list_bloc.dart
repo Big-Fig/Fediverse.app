@@ -7,21 +7,29 @@ import 'package:provider/provider.dart';
 
 abstract class IFilterCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IFilter> {
-  static IFilterCachedListBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IFilterCachedListBloc>(context, listen: listen);
+  static IFilterCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IFilterCachedListBloc>(
+        context,
+        listen: listen,
+      );
 
   @override
   IPleromaApi get pleromaApi;
 
   @override
-  Future<List<IFilter>> loadLocalItems(
-      {@required int limit,
-      @required IFilter newerThan,
-      @required IFilter olderThan});
+  Future<List<IFilter>> loadLocalItems({
+    required int? limit,
+    required IFilter? newerThan,
+    required IFilter? olderThan,
+  });
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IFilter newerThan,
-      @required IFilter olderThan});
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IFilter? newerThan,
+    required IFilter? olderThan,
+  });
 }

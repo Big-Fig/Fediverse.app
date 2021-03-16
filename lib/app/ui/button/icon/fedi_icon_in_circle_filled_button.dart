@@ -9,20 +9,20 @@ import 'package:flutter/widgets.dart';
 
 class FediIconInCircleFilledButton extends StatelessWidget {
   final IconData iconData;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double iconSize;
   final double borderWidth;
   final double size;
-  final Color enabledBackgroundColor;
-  final Color disabledBackgroundColor;
-  final Color enabledBorderColor;
-  final Color disabledBorderColor;
-  final Color enabledIconColor;
-  final Color disabledIconColor;
+  final Color? enabledBackgroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? enabledBorderColor;
+  final Color? disabledBorderColor;
+  final Color? enabledIconColor;
+  final Color? disabledIconColor;
 
   const FediIconInCircleFilledButton(
     this.iconData, {
-    @required this.onPressed,
+    required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
     this.enabledBorderColor,

@@ -4,7 +4,6 @@ import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,23 +14,24 @@ part 'post_status_settings_model.g.dart';
 class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   @HiveField(0)
   @JsonKey(name: "mark_media_as_nsfw_on_attach")
-  final bool markMediaAsNsfwOnAttach;
+  final bool? markMediaAsNsfwOnAttach;
 
   @HiveField(1)
   @JsonKey(name: "default_visibility")
-  final String defaultVisibilityString;
+  final String? defaultVisibilityString;
 
   @HiveField(2)
   @JsonKey(name: "default_status_locale")
-  final LocalizationLocale defaultStatusLocale;
+  final LocalizationLocale? defaultStatusLocale;
 
   PleromaVisibility get defaultVisibilityPleroma =>
-      defaultVisibilityString.toPleromaVisibility();
+      defaultVisibilityString?.toPleromaVisibility() ??
+      defaultPleromaVisibility;
 
   PostStatusSettings({
-    @required this.markMediaAsNsfwOnAttach,
-    @required this.defaultVisibilityString,
-    @required this.defaultStatusLocale,
+    required this.markMediaAsNsfwOnAttach,
+    required this.defaultVisibilityString,
+    required this.defaultStatusLocale,
   });
 
   @override
@@ -74,16 +74,15 @@ class PostStatusSettings implements IJsonObject, ISettings<PostStatusSettings> {
   PostStatusSettings clone() => copyWith();
 
   PostStatusSettings copyWith({
-    bool markMediaAsNsfwOnAttach,
-    String defaultVisibilityString,
-    LocalizationLocale defaultStatusLocale,
+    bool? markMediaAsNsfwOnAttach,
+    String? defaultVisibilityString,
+    LocalizationLocale? defaultStatusLocale,
   }) =>
       PostStatusSettings(
         markMediaAsNsfwOnAttach:
             markMediaAsNsfwOnAttach ?? this.markMediaAsNsfwOnAttach,
         defaultVisibilityString:
             defaultVisibilityString ?? this.defaultVisibilityString,
-        defaultStatusLocale:
-            defaultStatusLocale ?? this.defaultStatusLocale,
+        defaultStatusLocale: defaultStatusLocale ?? this.defaultStatusLocale,
       );
 }

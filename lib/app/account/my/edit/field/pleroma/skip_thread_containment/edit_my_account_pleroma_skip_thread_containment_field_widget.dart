@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class EditMyAccountPleromaSkipThreadContainmentFieldWidget
     extends StatelessWidget {
   const EditMyAccountPleromaSkipThreadContainmentFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

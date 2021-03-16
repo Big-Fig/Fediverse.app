@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NavigationSlideBottomRouteBuilder<T> extends PageRouteBuilder<T> {
-  final Widget page;
+  final Widget? page;
   NavigationSlideBottomRouteBuilder({this.page})
       : super(
           pageBuilder: (
@@ -9,7 +9,7 @@ class NavigationSlideBottomRouteBuilder<T> extends PageRouteBuilder<T> {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page,
+              page!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

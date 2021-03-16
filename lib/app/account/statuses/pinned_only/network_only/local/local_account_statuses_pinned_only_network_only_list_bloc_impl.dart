@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
     extends AccountStatusesPinnedOnlyNetworkOnlyListBloc {
   LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -23,7 +23,7 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
 
   static LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc createFromContext(
     BuildContext context, {
-    @required IAccount account,
+    required IAccount? account,
   }) {
     return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc(
       account: account,
@@ -33,8 +33,8 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IAccount account,
-    @required Widget child,
+    required IAccount? account,
+    required Widget child,
   }) {
     return DisposableProvider<IStatusNetworkOnlyListBloc>(
       create: (context) =>
@@ -46,7 +46,7 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
         update: (context, value, previous) => value,
         child: StatusNetworkOnlyListBlocProxyProvider(
           child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
+              INetworkOnlyListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: child,
           ),
@@ -59,5 +59,5 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

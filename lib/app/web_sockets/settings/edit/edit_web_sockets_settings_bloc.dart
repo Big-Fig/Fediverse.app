@@ -10,5 +10,5 @@ abstract class IEditWebSocketsSettingsBloc
           {bool listen = true}) =>
       Provider.of<IEditWebSocketsSettingsBloc>(context, listen: listen);
 
-  IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc get typeFieldBloc;
+  IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc? get typeFieldBloc;
 }

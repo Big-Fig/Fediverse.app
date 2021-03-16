@@ -3,9 +3,9 @@ import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_i
 import 'package:flutter/cupertino.dart';
 
 class CustomEmojiPickerImageUrlItemWidget extends StatelessWidget {
-  final CustomEmojiPickerImageUrlItem item;
+  final CustomEmojiPickerImageUrlItem? item;
 
-  const CustomEmojiPickerImageUrlItemWidget({Key key, this.item})
+  const CustomEmojiPickerImageUrlItemWidget({Key? key, this.item})
       : super(key: key);
 
   @override
@@ -13,7 +13,7 @@ class CustomEmojiPickerImageUrlItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: item.imageUrl,
+        imageUrl: item!.imageUrl,
         fit: BoxFit.fill,
       ),
     );

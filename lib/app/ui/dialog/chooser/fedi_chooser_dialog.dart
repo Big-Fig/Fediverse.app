@@ -9,11 +9,11 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future<T> showFediChooserDialog<T>({
-  @required BuildContext context,
-  @required String title,
-  String content,
-  @required List<DialogAction> actions,
+Future<T?> showFediChooserDialog<T>({
+  required BuildContext context,
+  required String title,
+  String? content,
+  required List<DialogAction> actions,
   bool cancelable = true,
 }) {
   return showFediModalBottomSheetDialog<T>(
@@ -28,17 +28,17 @@ Future<T> showFediChooserDialog<T>({
 }
 
 class FediChooserDialogBody extends StatelessWidget {
-  final String title;
-  final String content;
+  final String? title;
+  final String? content;
   final List<DialogAction> actions;
   final bool loadingActions;
   final bool cancelable;
 
   FediChooserDialogBody({
-    @required this.title,
+    required this.title,
     this.content,
-    @required this.actions,
-    @required this.cancelable,
+    required this.actions,
+    required this.cancelable,
     this.loadingActions = false,
   });
 
@@ -51,7 +51,7 @@ class FediChooserDialogBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
-              title,
+              title!,
               style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
@@ -59,7 +59,7 @@ class FediChooserDialogBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
-              content,
+              content!,
               style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
@@ -98,7 +98,7 @@ class FediChooserDialogBody extends StatelessWidget {
   }
 
   Widget _buildAction(
-      {@required BuildContext context, @required DialogAction action}) {
+      {required BuildContext context, required DialogAction action}) {
     var enabled = action.onAction != null;
     return Padding(
       padding: FediPadding.horizontalBigPadding,
@@ -109,7 +109,7 @@ class FediChooserDialogBody extends StatelessWidget {
           InkWell(
             onTap: () {
               if (enabled) {
-                action.onAction(context);
+                action.onAction!(context);
               }
             },
             child: Row(
@@ -124,7 +124,7 @@ class FediChooserDialogBody extends StatelessWidget {
                 Padding(
                   padding: FediPadding.allMediumPadding,
                   child: Text(
-                    action.label,
+                    action.label!,
                     style: action.customTextStyle ??
                         IFediUiTextTheme.of(context).bigTallPrimary,
                   ),

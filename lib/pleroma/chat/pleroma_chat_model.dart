@@ -4,7 +4,6 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_chat_model.g.dart';
@@ -12,13 +11,13 @@ part 'pleroma_chat_model.g.dart';
 abstract class IPleromaChat {
   String get id;
 
-  int get unread;
+  int? get unread;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
   IPleromaAccount get account;
 
-  IPleromaChatMessage get lastMessage;
+  IPleromaChatMessage? get lastMessage;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -26,37 +25,37 @@ class PleromaChat implements IPleromaChat {
   @override
   final String id;
   @override
-  final int unread;
+  final int? unread;
 
   @override
   @JsonKey(name: "updated_at")
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
   final PleromaAccount account;
 
   @override
   @JsonKey(name: "last_message")
-  final PleromaChatMessage lastMessage;
+  final PleromaChatMessage? lastMessage;
 
   PleromaChat({
-    @required this.id,
-    @required this.unread,
-    @required this.account,
-    @required this.updatedAt,
-    @required this.lastMessage,
+    required this.id,
+    required this.unread,
+    required this.account,
+    required this.updatedAt,
+    required this.lastMessage,
   });
 
   PleromaChat copyWith({
-    String id,
-    bool unread,
-    PleromaAccount account,
-    DateTime updatedAt,
-    PleromaChatMessage lastMessage,
+    String? id,
+    bool? unread,
+    PleromaAccount? account,
+    DateTime? updatedAt,
+    PleromaChatMessage? lastMessage,
   }) =>
       PleromaChat(
         id: id ?? this.id,
-        unread: unread ?? this.unread,
+        unread: unread as int? ?? this.unread,
         account: account ?? this.account,
         updatedAt: updatedAt ?? this.updatedAt,
         lastMessage: lastMessage ?? this.lastMessage,
@@ -109,15 +108,15 @@ abstract class IPleromaChatMessage {
 
   String get accountId;
 
-  String get content;
+  String? get content;
 
   DateTime get createdAt;
 
-  List<IPleromaEmoji> get emojis;
+  List<IPleromaEmoji>? get emojis;
 
-  IPleromaMediaAttachment get mediaAttachment;
+  IPleromaMediaAttachment? get mediaAttachment;
 
-  IPleromaCard get card;
+  IPleromaCard? get card;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -131,28 +130,28 @@ class PleromaChatMessage extends IPleromaChatMessage {
   @JsonKey(name: "account_id")
   final String accountId;
   @override
-  final String content;
+  final String? content;
   @override
   @JsonKey(name: "created_at")
   final DateTime createdAt;
   @override
-  final List<PleromaEmoji> emojis;
+  final List<PleromaEmoji>? emojis;
   @override
   @JsonKey(name: "attachment")
-  final PleromaMediaAttachment mediaAttachment;
+  final PleromaMediaAttachment? mediaAttachment;
 
   @override
-  final PleromaCard card;
+  final PleromaCard? card;
 
   PleromaChatMessage({
-    @required this.id,
-    @required this.chatId,
-    @required this.accountId,
-    @required this.content,
-    @required this.createdAt,
-    @required this.emojis,
-    @required this.mediaAttachment,
-    @required this.card,
+    required this.id,
+    required this.chatId,
+    required this.accountId,
+    required this.content,
+    required this.createdAt,
+    required this.emojis,
+    required this.mediaAttachment,
+    required this.card,
   });
 
   @override
@@ -206,16 +205,16 @@ class PleromaChatMessage extends IPleromaChatMessage {
 }
 
 abstract class IPleromaChatMessageSendData {
-  String get content;
+  String? get content;
 
-  String get mediaId;
+  String? get mediaId;
 
-  String get idempotencyKey;
+  String? get idempotencyKey;
 
   IPleromaChatMessageSendData copyWith({
-    String content,
-    String mediaId,
-    String idempotencyKey,
+    String? content,
+    String? mediaId,
+    String? idempotencyKey,
   });
 
   Map<String, dynamic> toJson();
@@ -224,26 +223,26 @@ abstract class IPleromaChatMessageSendData {
 @JsonSerializable()
 class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
   @override
-  final String content;
+  final String? content;
   @override
   @JsonKey(name: "media_id")
-  final String mediaId;
+  final String? mediaId;
 
   @override
   @JsonKey(name: "idempotency_key")
-  final String idempotencyKey;
+  final String? idempotencyKey;
 
   PleromaChatMessageSendData({
-    @required this.content,
-    @required this.mediaId,
-    @required this.idempotencyKey,
+    required this.content,
+    required this.mediaId,
+    required this.idempotencyKey,
   });
 
   @override
   PleromaChatMessageSendData copyWith({
-    String content,
-    String mediaId,
-    String idempotencyKey,
+    String? content,
+    String? mediaId,
+    String? idempotencyKey,
   }) =>
       PleromaChatMessageSendData(
         content: content ?? this.content,

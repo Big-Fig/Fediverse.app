@@ -17,7 +17,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
       BehaviorSubject.seeded("");
 
   @override
-  String get currentInput => currentInputSubject.value;
+  String? get currentInput => currentInputSubject.value;
 
   @override
   Stream<String> get currentInputStream => currentInputSubject.stream;
@@ -66,7 +66,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   }
 
   @override
-  String get confirmedSearchTerm => confirmedSearchTermSubject.value;
+  String? get confirmedSearchTerm => confirmedSearchTermSubject.value;
 
   @override
   Stream<String> get confirmedSearchTermStream =>

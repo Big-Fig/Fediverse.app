@@ -2,4 +2,4 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fedi/localization/localization_model.dart';
 
 abstract class ILocalizationLocaleSingleFromListValueFormFieldBloc
-    implements ISingleSelectFromListValueFormFieldBloc<LocalizationLocale> {}
+    implements ISingleSelectFromListValueFormFieldBloc<LocalizationLocale?> {}

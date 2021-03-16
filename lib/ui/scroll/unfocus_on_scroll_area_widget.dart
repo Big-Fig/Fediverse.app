@@ -4,7 +4,7 @@ class UnfocusOnScrollAreaWidget extends StatelessWidget {
   final Widget child;
 
   const UnfocusOnScrollAreaWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override

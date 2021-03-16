@@ -20,13 +20,16 @@ class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
   @HiveField(1)
   final String code;
   CustomEmojiPickerCodeItem({
-    this.code,
-    this.name,
+    required this.code,
+    required this.name,
   });
 
   @override
   String toString() {
-    return 'CustomEmojiPickerCodeItem{name: $name, code: $code}';
+    return 'CustomEmojiPickerCodeItem{'
+        'name: $name, '
+        'code: $code'
+        '}';
   }
 
 

@@ -12,8 +12,7 @@ class AccountPaginationListBloc
     extends PaginationListBloc<PaginationPage<IAccount>, IAccount>
     implements IAccountPaginationListBloc {
   AccountPaginationListBloc({
-    @required
-        IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
+    required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
     bool loadFromCacheDuringInit = true,
   }) : super(
           paginationBloc: paginationBloc,
@@ -36,7 +35,7 @@ class AccountPaginationListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
     bool loadFromCacheDuringInit = true,
   }) {
     return DisposableProvider<IAccountPaginationListBloc>(

@@ -22,8 +22,8 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
   final TabController tabController;
 
   NotificationTabTextTabIndicatorItemWidget({
-    @required this.notificationTabs,
-    @required this.tabController,
+    required this.notificationTabs,
+    required this.tabController,
   });
 
   @override
@@ -50,7 +50,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
 
 class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
   const _NotificationTabTextTabIndicatorItemBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -58,13 +58,15 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
     return FediIconTabIndicatorWidget(
       customTabBuilder:
           (BuildContext context, Widget child, NotificationTab tab) {
-        var notificationTabsBloc =
-            INotificationTabsBloc.of(context, listen: false);
+        var notificationTabsBloc = INotificationTabsBloc.of(
+          context,
+          listen: false,
+        );
 
         var paginationListBloc =
             notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
 
-        return Provider<ICachedPaginationListWithNewItemsBloc>.value(
+        return Provider<ICachedPaginationListWithNewItemsBloc?>.value(
           value: paginationListBloc,
           child: DisposableProxyProvider<ICachedPaginationListWithNewItemsBloc,
               IFediBoolBadgeBloc>(
@@ -79,8 +81,8 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
           ),
         );
       },
-      tabToIconMapper: (BuildContext context, NotificationTab tab) =>
-          mapTabToIconData(context, tab),
+      tabToIconMapper: (BuildContext context, NotificationTab? tab) =>
+          mapTabToIconData(context, tab!),
       expand: true,
     );
   }
@@ -90,20 +92,13 @@ IconData mapTabToIconData(BuildContext context, NotificationTab tab) {
   switch (tab) {
     case NotificationTab.all:
       return FediIcons.notification;
-      break;
     case NotificationTab.mentions:
       return FediIcons.chat;
-      break;
     case NotificationTab.reblogs:
       return FediIcons.reply;
-      break;
     case NotificationTab.favourites:
       return FediIcons.heart;
-      break;
     case NotificationTab.follows:
       return FediIcons.add_user;
-      break;
   }
-
-  throw "Invalid tab $tab";
 }

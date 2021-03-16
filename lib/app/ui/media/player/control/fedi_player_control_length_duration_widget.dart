@@ -12,7 +12,7 @@ class FediPlayerControlLengthDurationWidget extends StatelessWidget {
         stream: mediaPlayerBloc.lengthDurationStream,
         builder: (context, snapshot) {
           var duration = snapshot.data;
-          return Provider<Duration>.value(
+          return Provider<Duration?>.value(
             value: duration,
             child: const FediPlayerControlDurationWidget(),
           );

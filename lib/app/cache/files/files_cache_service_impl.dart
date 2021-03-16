@@ -10,19 +10,17 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
   final IConnectionService connectionService;
   final CacheManager cacheManager;
-  final Duration stalePeriod;
-  final int maxNrOfCacheObjects;
 
   FilesCacheService({
-    @required this.key,
-    @required this.stalePeriod,
-    @required this.maxNrOfCacheObjects,
-    @required this.connectionService,
+    required this.key,
+    required this.connectionService,
+    required Duration? stalePeriod,
+    required int? maxNrOfCacheObjects,
   }) : cacheManager = CacheManager(
           Config(
             key,
-            stalePeriod: stalePeriod,
-            maxNrOfCacheObjects: maxNrOfCacheObjects,
+            stalePeriod: stalePeriod ?? Duration(days: 30),
+            maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),
         ) {
     addDisposable(custom: () {
@@ -32,44 +30,44 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
   @override
   Widget createCachedNetworkImageWidget({
-    String stringKey,
-    @required String imageUrl,
-    Map<String, String> httpHeaders,
-    ImageWidgetBuilder imageBuilder,
-    PlaceholderWidgetBuilder placeholder,
-    ProgressIndicatorBuilder progressIndicatorBuilder,
-    LoadingErrorWidgetBuilder errorWidget,
+    String? stringKey,
+    required String? imageUrl,
+    Map<String, String>? httpHeaders,
+    ImageWidgetBuilder? imageBuilder,
+    PlaceholderWidgetBuilder? placeholder,
+    ProgressIndicatorBuilder? progressIndicatorBuilder,
+    LoadingErrorWidgetBuilder? errorWidget,
     Duration fadeOutDuration = const Duration(milliseconds: 1000),
     Cubic fadeOutCurve = Curves.easeOut,
     Duration fadeInDuration = const Duration(milliseconds: 500),
     Cubic fadeInCurve = Curves.easeIn,
-    double width,
-    double height,
-    BoxFit fit,
+    double? width,
+    double? height,
+    BoxFit? fit,
     Alignment alignment = Alignment.center,
     ImageRepeat repeat = ImageRepeat.noRepeat,
     bool matchTextDirection = false,
     bool useOldImageOnUrlChange = false,
-    Color color,
+    Color? color,
     FilterQuality filterQuality = FilterQuality.low,
-    BlendMode colorBlendMode,
-    Duration placeholderFadeInDuration,
-    int memCacheWidth,
-    int memCacheHeight,
-    String cacheKey,
-    int maxWidthDiskCache,
-    int maxHeightDiskCache,
-    ImageRenderMethodForWeb imageRenderMethodForWeb,
+    BlendMode? colorBlendMode,
+    Duration? placeholderFadeInDuration,
+    int? memCacheWidth,
+    int? memCacheHeight,
+    String? cacheKey,
+    int? maxWidthDiskCache,
+    int? maxHeightDiskCache,
+    ImageRenderMethodForWeb? imageRenderMethodForWeb,
   }) {
     assert(imageUrl?.isNotEmpty == true);
     stringKey ??= imageUrl;
     return StreamBuilder<bool>(
       stream: connectionService.isConnectedStream.distinct(),
       builder: (context, snapshot) {
-        var isConnected  = snapshot.data ?? true;
+        var isConnected = snapshot.data ?? true;
         return CachedNetworkImage(
-          key: ValueKey(stringKey + "+" + isConnected.toString()),
-          imageUrl: imageUrl,
+          key: ValueKey(stringKey! + "+" + isConnected.toString()),
+          imageUrl: imageUrl!,
           httpHeaders: httpHeaders,
           imageBuilder: imageBuilder,
           placeholder: placeholder,
@@ -99,7 +97,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
         );
       },
     );
-
   }
 
   @override

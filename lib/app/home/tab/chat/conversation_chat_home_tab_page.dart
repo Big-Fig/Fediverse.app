@@ -32,7 +32,7 @@ var _logger = Logger("conversation_messages_home_tab_page.dart");
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
 class ConversationChatHomeTabPage extends StatelessWidget {
-  const ConversationChatHomeTabPage({Key key}) : super(key: key);
+  const ConversationChatHomeTabPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +68,15 @@ class ConversationChatHomeTabPage extends StatelessWidget {
 
         return MultiProvider(
           providers: [
-            Provider.value(value: chatsListBloc.chatListBloc),
-            Provider.value(value: chatsListBloc.chatPaginationBloc),
+            Provider.value(value: chatsListBloc.cachedListBloc),
+            Provider.value(value: chatsListBloc.paginationBloc),
             Provider.value(value: chatsListBloc.chatPaginationListBloc),
             Provider.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-            Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-            Provider<IPaginationListBloc>.value(
-                value: chatsListBloc.chatPaginationListWithNewItemsBloc),
+                value: chatsListBloc.paginationListWithNewItemsBloc),
+            Provider<ICachedPaginationListWithNewItemsBloc?>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc),
+            Provider<IPaginationListBloc?>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc),
           ],
           child: child,
         );
@@ -87,7 +87,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
 
 class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
   const _ConversationMessagesHomeTabPageContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -109,7 +109,7 @@ class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
 
 class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   const _ConversationMessagesHomeTabPageHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

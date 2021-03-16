@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountCustomFieldsListFieldWidget extends StatelessWidget {
   const EditMyAccountCustomFieldsListFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -27,18 +27,18 @@ class EditMyAccountCustomFieldsListFieldWidget extends StatelessWidget {
 
 class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {
   const _EditMyAccountCustomFieldsListFieldBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var customFieldsGroupBloc =
         Provider.of<IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(context);
-    return StreamBuilder<List<ILinkPairFormGroupBloc>>(
-      stream: customFieldsGroupBloc.itemsStream,
-      initialData: customFieldsGroupBloc.items,
+    return StreamBuilder<List<ILinkPairFormGroupBloc>?>(
+      stream: customFieldsGroupBloc.itemsStream as Stream<List<ILinkPairFormGroupBloc>?>?,
+      initialData: customFieldsGroupBloc.items as List<ILinkPairFormGroupBloc>?,
       builder: (context, snapshot) {
-        var fields = snapshot.data;
+        var fields = snapshot.data!;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -47,7 +47,7 @@ class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {
                 var index = entry.key;
                 var nextIndex = index + 1;
 
-                ILinkPairFormGroupBloc nextCustomField;
+                ILinkPairFormGroupBloc? nextCustomField;
                 if (nextIndex < fields.length) {
                   nextCustomField = fields[nextIndex];
                 }
@@ -72,7 +72,7 @@ class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {
 
 class _EditMyAccountCustomFieldsListFieldFooterWidget extends StatelessWidget {
   const _EditMyAccountCustomFieldsListFieldFooterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -103,7 +103,7 @@ class _EditMyAccountCustomFieldsListFieldFooterWidget extends StatelessWidget {
 class _EditMyAccountCustomFieldsListFieldAddNewButtonWidget
     extends StatelessWidget {
   const _EditMyAccountCustomFieldsListFieldAddNewButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

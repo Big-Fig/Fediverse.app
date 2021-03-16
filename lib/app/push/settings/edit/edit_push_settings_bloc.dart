@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditPushSettingsBloc
-    implements IEditInstanceSettingsBloc<PushSettings> {
+    implements IEditInstanceSettingsBloc<PushSettings?> {
   static IEditPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditPushSettingsBloc>(context, listen: listen);
 

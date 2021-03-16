@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,18 +13,18 @@ part 'ui_settings_model.g.dart';
 class UiSettings implements IJsonObject, ISettings<UiSettings> {
   @HiveField(0)
   @JsonKey(name: "theme_id")
-  final String themeId;
+  final String? themeId;
 
   @HiveField(1)
   @JsonKey(name: "status_font_size")
-  final String statusFontSize;
+  final String? statusFontSize;
 
-  UiSettingsFontSize get statusFontSizeAsUiSettingsFontSize =>
+  UiSettingsFontSize? get statusFontSizeAsUiSettingsFontSize =>
       statusFontSize?.toUiSettingsFontSize();
 
   UiSettings({
-    @required this.themeId,
-    @required this.statusFontSize,
+    required this.themeId,
+    required this.statusFontSize,
   });
 
   factory UiSettings.fromJson(Map<String, dynamic> json) =>
@@ -47,8 +46,8 @@ class UiSettings implements IJsonObject, ISettings<UiSettings> {
   UiSettings clone() => copyWith();
 
   UiSettings copyWith({
-    String themeId,
-    String statusFontSize,
+    String? themeId,
+    String? statusFontSize,
   }) =>
       UiSettings(
         themeId: themeId ?? this.themeId,

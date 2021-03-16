@@ -5,14 +5,13 @@ import 'package:fedi/media/device/folder/media_device_folder_model.dart';
 import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
   PhotoManagerMediaDeviceGalleryBloc({
-    @required IStoragePermissionBloc storagePermissionBloc,
-    @required List<MediaDeviceFileType> typesToPick,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
+    required IStoragePermissionBloc storagePermissionBloc,
+    required List<MediaDeviceFileType> typesToPick,
+    required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
           storagePermissionBloc: storagePermissionBloc,
           typesToPick: typesToPick,

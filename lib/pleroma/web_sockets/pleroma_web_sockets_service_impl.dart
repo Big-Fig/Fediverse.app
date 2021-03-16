@@ -4,35 +4,37 @@ import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 
 var urlPath = path.posix;
 
 class PleromaWebSocketsService extends IPleromaWebSocketsService {
   static final _relativePath = "/api/v1/streaming";
-  final IWebSocketsService webSocketsService;
+  final IWebSocketsService? webSocketsService;
 
   final Uri baseUri;
   final String accessToken;
   final IConnectionService connectionService;
 
   PleromaWebSocketsService({
-    @required this.webSocketsService,
-    @required this.connectionService,
-    @required this.baseUri,
-    @required this.accessToken,
+    required this.webSocketsService,
+    required this.connectionService,
+    required this.baseUri,
+    required this.accessToken,
   });
 
   IWebSocketsChannel<PleromaWebSocketsEvent> getOrCreateNewChannel({
-    @required String stream,
-    Map<String, String> queryArgs,
+    required String stream,
+    Map<String, String?>? queryArgs,
   }) {
     var webSocketsScheme = mapHttpToWebSocketsScheme(baseUri.scheme);
     var host = baseUri.host;
-    var baseUrl =
-        Uri(scheme: webSocketsScheme, host: host, path: _relativePath);
-    return webSocketsService.getOrCreateWebSocketsChannel(
+    var baseUrl = Uri(
+      scheme: webSocketsScheme,
+      host: host,
+      path: _relativePath,
+    );
+    return webSocketsService!.getOrCreateWebSocketsChannel(
       config: PleromaWebSocketsChannelConfig(
         connectionService: connectionService,
         baseUrl: baseUrl,
@@ -49,26 +51,24 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
     switch (scheme) {
       case "http":
         return "ws";
-        break;
       case "https":
         return "wss";
-        break;
     }
     throw "Invalid http protocol $scheme";
   }
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getHashtagChannel({
-    @required String hashtag,
-    @required bool local,
+    required String? hashtag,
+    required bool? local,
   }) =>
       getOrCreateNewChannel(
-          stream: local ? "hashtag:local" : "hashtag",
+          stream: local! ? "hashtag:local" : "hashtag",
           queryArgs: {"tag": hashtag});
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getListChannel({
-    @required String listId,
+    required String? listId,
   }) =>
       getOrCreateNewChannel(
         stream: "list",
@@ -77,10 +77,10 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getPublicChannel({
-    @required bool onlyLocal,
-    @required bool onlyRemote,
-    @required bool onlyMedia,
-    @required String onlyFromInstance,
+    required bool? onlyLocal,
+    required bool? onlyRemote,
+    required bool? onlyMedia,
+    required String? onlyFromInstance,
   }) {
     var stream = "public";
 
@@ -115,8 +115,8 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel({
-    @required String accountId,
-    @required bool notification,
+    required String? accountId,
+    required bool notification,
   }) {
     assert(accountId != null);
     return getOrCreateNewChannel(
@@ -126,8 +126,8 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel({
-    @required bool notification,
-    @required bool chat,
+    required bool notification,
+    required bool chat,
   }) {
     assert(!(notification == true && chat == true));
     return getOrCreateNewChannel(
@@ -140,7 +140,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel({
-    @required String accountId,
+    required String? accountId,
   }) {
     Map<String, String> queryArgs = {};
     if (accountId != null) {

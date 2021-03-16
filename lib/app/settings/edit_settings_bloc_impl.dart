@@ -2,16 +2,16 @@ import 'package:fedi/app/settings/edit_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
+abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     implements IEditSettingsBloc<T> {
   @override
-  bool get isEnabled => isEnabledSubject.value;
+  bool get isEnabled => isEnabledSubject.value!;
 
   @override
-  Stream<bool> get isEnabledStream => isEnabledSubject.stream;
+  Stream<bool> get isEnabledStream => isEnabledSubject.stream.mapToNotNull();
 
   final BehaviorSubject<bool> isEnabledSubject;
 
@@ -19,9 +19,9 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
   final ISettingsBloc<T> settingsBloc;
 
   EditSettingsBloc({
-    @required bool isEnabled,
-    @required this.settingsBloc,
-    @required bool isAllItemsInitialized,
+    required bool isEnabled,
+    required this.settingsBloc,
+    required bool isAllItemsInitialized,
   })  : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
         super(
           isAllItemsInitialized: isAllItemsInitialized,
@@ -51,10 +51,10 @@ abstract class EditSettingsBloc<T extends ISettings> extends FormBloc
   }
 
   @override
-  T get currentSettings => settingsBloc.settingsData;
+  T? get currentSettings => settingsBloc.settingsData;
 
   @override
-  Stream<T> get currentSettingsStream => settingsBloc.settingsDataStream;
+  Stream<T?> get currentSettingsStream => settingsBloc.settingsDataStream;
 
   bool get isPossibleToSaveSettingsToBloc => true;
 

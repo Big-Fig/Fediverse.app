@@ -17,16 +17,16 @@ var _logger =
     Logger("pleroma_chat_with_last_message_cached_list_bloc_impl.dart");
 
 class ConversationChatWithLastMessageCachedListBloc
-    extends IConversationChatWithLastMessageCachedBloc {
+    extends IConversationChatWithLastMessageCachedListBloc {
   final IPleromaConversationService conversationChatService;
   final IConversationChatRepository conversationRepository;
   final IConversationChatWithLastMessageRepository
       chatWithLastMessageRepository;
 
   ConversationChatWithLastMessageCachedListBloc({
-    @required this.conversationChatService,
-    @required this.conversationRepository,
-    @required this.chatWithLastMessageRepository,
+    required this.conversationChatService,
+    required this.conversationRepository,
+    required this.chatWithLastMessageRepository,
   });
 
   @override
@@ -34,14 +34,14 @@ class ConversationChatWithLastMessageCachedListBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IConversationChatWithLastMessage newerThan,
-      @required IConversationChatWithLastMessage olderThan}) async {
+      {required int? limit,
+      required IConversationChatWithLastMessage? newerThan,
+      required IConversationChatWithLastMessage? olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    List<IPleromaConversation> remoteConversations;
+    List<IPleromaConversation>? remoteConversations;
 
     remoteConversations = await conversationChatService.getConversations(
       pagination: PleromaPaginationRequest(
@@ -65,9 +65,9 @@ class ConversationChatWithLastMessageCachedListBloc
 
   @override
   Future<List<IConversationChatWithLastMessage>> loadLocalItems({
-    @required int limit,
-    @required IConversationChatWithLastMessage newerThan,
-    @required IConversationChatWithLastMessage olderThan,
+    required int? limit,
+    required IConversationChatWithLastMessage? newerThan,
+    required IConversationChatWithLastMessage? olderThan,
   }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"

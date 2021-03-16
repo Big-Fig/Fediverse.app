@@ -4,32 +4,32 @@ import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormEditTextRow extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final String errorText;
+  final String? errorText;
   final TextEditingController textEditingController;
   final FocusNode focusNode;
   final TextInputAction textInputAction;
-  final ValueChanged<String> onSubmitted;
-  final int maxLength;
-  final bool enabled;
+  final ValueChanged<String>? onSubmitted;
+  final int? maxLength;
+  final bool? enabled;
   final int maxLines;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final Axis axis;
 
   FediFormEditTextRow({
-    @required this.label,
-    @required this.autocorrect,
+    required this.label,
+    required this.autocorrect,
     this.obscureText = false,
-    @required this.hint,
-    @required this.errorText,
-    @required this.textEditingController,
-    @required this.textInputAction,
-    @required this.onSubmitted,
-    @required this.focusNode,
-    @required this.maxLength,
+    required this.hint,
+    required this.errorText,
+    required this.textEditingController,
+    required this.textInputAction,
+    required this.onSubmitted,
+    required this.focusNode,
+    required this.maxLength,
     this.maxLines = 1,
     this.enabled = true,
     this.keyboardType,

@@ -1,4 +1,5 @@
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/files/form/limit/size_count/size_count_limit_files_cache_single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/files/settings/edit/edit_files_cache_settings_bloc.dart';
@@ -7,19 +8,18 @@ import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditFilesCacheSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<FilesCacheSettings>
+    extends EditGlobalOrInstanceSettingsBloc<FilesCacheSettings?>
     implements IEditFilesCacheSettingsBloc {
   final IFilesCacheSettingsBloc filesCacheSettingsBloc;
 
   @override
-  SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
+  late SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
       sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc;
 
   @override
-  AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
+  late AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
       ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc;
 
   @override
@@ -29,10 +29,10 @@ class EditFilesCacheSettingsBloc
       ];
 
   EditFilesCacheSettingsBloc({
-    @required this.filesCacheSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.filesCacheSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: filesCacheSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -43,12 +43,12 @@ class EditFilesCacheSettingsBloc
     ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc =
         AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.filesCacheAgeLimitType,
+      originValue: currentSettings?.filesCacheAgeLimitType,
     );
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc =
         SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.filesCacheSizeLimitCountType,
+      originValue: currentSettings?.filesCacheSizeLimitCountType,
     );
 
     addDisposable(
@@ -74,10 +74,10 @@ class EditFilesCacheSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(FilesCacheSettings settings) async {
+  Future fillSettingsToFormFields(FilesCacheSettings? settings) async {
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
         .changeCurrentValue(
-      settings.filesCacheSizeLimitCountType,
+      settings?.filesCacheSizeLimitCountType,
     );
   }
 }

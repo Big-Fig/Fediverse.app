@@ -14,7 +14,7 @@ class AccountActionMuteBloc extends DisposableOwner
   final IAccountBloc accountBloc;
 
   @override
-  IAccount get accountForMute => accountBloc.account;
+  IAccount? get accountForMute => accountBloc.account;
 
   @override
   final IDurationDateTimeValueFormFieldBloc expireDurationFieldBloc =
@@ -33,7 +33,7 @@ class AccountActionMuteBloc extends DisposableOwner
   );
 
   AccountActionMuteBloc({
-    @required this.accountBloc,
+    required this.accountBloc,
   }) {
     addDisposable(disposable: expireDurationFieldBloc);
     addDisposable(disposable: notificationsBoolFieldBloc);
@@ -41,7 +41,7 @@ class AccountActionMuteBloc extends DisposableOwner
 
   static AccountActionMuteBloc createFromContext(
     BuildContext context, {
-    @required IAccountBloc accountBloc,
+    required IAccountBloc accountBloc,
   }) {
     return AccountActionMuteBloc(
       accountBloc: accountBloc,
@@ -50,8 +50,8 @@ class AccountActionMuteBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IAccountBloc accountBloc,
+    required Widget child,
+    required IAccountBloc accountBloc,
   }) {
     return DisposableProvider<IAccountActionMuteBloc>(
       create: (context) => AccountActionMuteBloc.createFromContext(

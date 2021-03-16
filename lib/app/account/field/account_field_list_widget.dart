@@ -9,21 +9,21 @@ class AccountFieldListWidget extends StatelessWidget {
   final Brightness brightness;
 
   const AccountFieldListWidget({
-    @required this.brightness,
+    required this.brightness,
   });
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<List<IPleromaField>>(
+    return StreamBuilder<List<IPleromaField>?>(
       stream: accountBloc.fieldsStream,
       builder: (context, snapshot) {
         var fields = snapshot.data;
 
         var nonEmptyFields = fields?.where((field) =>
-            field?.name?.isNotEmpty == true ||
-            field?.value?.isNotEmpty == true);
+            field.name?.isNotEmpty == true ||
+            field.value?.isNotEmpty == true);
 
         if (nonEmptyFields?.isNotEmpty == true) {
           return Padding(
@@ -32,7 +32,7 @@ class AccountFieldListWidget extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: nonEmptyFields
+              children: nonEmptyFields!
                   // hack to avoid fill parent inside GridView
                   .map(
                     (field) => Padding(

@@ -24,9 +24,9 @@ extension GoToNotificationExtension on INotification {
     var account = this.account;
     var chatRemoteId = this.chatRemoteId;
     if (typePleroma == PleromaNotificationType.followRequest) {
-      goToMyAccountFollowRequestListPage(context);
+      await goToMyAccountFollowRequestListPage(context);
     } else if (status != null) {
-      goToLocalStatusThreadPage(
+      await goToLocalStatusThreadPage(
         context,
         status: status,
         initialMediaAttachment: null,
@@ -36,7 +36,9 @@ extension GoToNotificationExtension on INotification {
 
       var chat = await chatRepository.findByRemoteId(chatRemoteId);
 
-      goToPleromaChatPage(context, chat: chat);
+      if (chat != null) {
+        goToPleromaChatPage(context, chat: chat);
+      }
     } else if (account != null) {
       goToLocalAccountDetailsPage(
         context,

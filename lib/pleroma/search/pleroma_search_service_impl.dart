@@ -7,21 +7,20 @@ import 'package:fedi/pleroma/search/pleroma_search_exception.dart';
 import 'package:fedi/pleroma/search/pleroma_search_model.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PleromaSearchService extends DisposableOwner
     implements IPleromaSearchService {
   @override
   final IPleromaAuthRestService restService;
 
-  PleromaSearchService({@required this.restService});
+  PleromaSearchService({required this.restService});
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,17 +36,17 @@ class PleromaSearchService extends DisposableOwner
 
   @override
   Future<IPleromaSearchResult> search({
-    @required String query,
-    String accountId,
-    bool excludeUnreviewed,
-    bool following,
-    bool resolve,
-    int offset,
-    MastodonSearchRequestType type,
-    IPleromaPaginationRequest pagination,
+    required String? query,
+    String? accountId,
+    bool? excludeUnreviewed,
+    bool? following,
+    bool? resolve,
+    int? offset,
+    MastodonSearchRequestType? type,
+    IPleromaPaginationRequest? pagination,
   }) async {
     if (pagination?.limit != null) {
-      assert(pagination.limit <= 40, "Server-side limit");
+      assert(pagination!.limit! <= 40, "Server-side limit");
     }
 
     var httpResponse = await restService.sendHttpRequest(
@@ -58,7 +57,7 @@ class PleromaSearchService extends DisposableOwner
           if (type != null)
             RestRequestQueryArg(
               "type",
-              mastodonSearchRequestTypeTypeValues.enumToValueMap[type],
+              type.toJsonValue(),
             ),
           if (accountId != null)
             RestRequestQueryArg(
@@ -88,7 +87,7 @@ class PleromaSearchService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
         ],
       ),
-    );
+    )!;
 
     if (httpResponse.statusCode == 200) {
       return PleromaSearchResult.fromJsonString(httpResponse.body);

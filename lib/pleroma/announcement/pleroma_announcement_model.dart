@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/announcement/mastodon_announcements_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_announcement_model.g.dart';
@@ -14,59 +13,59 @@ abstract class IPleromaAnnouncementReaction
 @JsonSerializable(explicitToJson: true)
 class PleromaAnnouncement implements IPleromaAnnouncement {
   @override
-  final String id;
+  final String? id;
 
   @override
-  final String text;
+  final String? text;
 
   @override
-  final bool published;
+  final bool? published;
 
   @override
   @JsonKey(name: "all_day")
-  final bool allDay;
+  final bool? allDay;
 
   @override
   @JsonKey(name: "created_at")
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
   @JsonKey(name: "updated_at")
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
-  final bool read;
+  final bool? read;
 
   @override
-  final List<PleromaAnnouncementReaction> reactions;
+  final List<PleromaAnnouncementReaction>? reactions;
 
   // nullable
   @override
   @JsonKey(name: "scheduled_at")
-  final DateTime scheduledAt;
+  final DateTime? scheduledAt;
 
   // nullable
   @override
   @JsonKey(name: "starts_at")
-  final DateTime startsAt;
+  final DateTime? startsAt;
 
   // nullable
   @override
   @JsonKey(name: "ends_at")
-  final DateTime endsAt;
+  final DateTime? endsAt;
 
   PleromaAnnouncement({
-    @required this.id,
-    @required this.text,
-    @required this.published,
-    @required this.allDay,
-    @required this.createdAt,
-    @required this.updatedAt,
-    @required this.read,
-    @required this.reactions,
-    @required this.scheduledAt,
-    @required this.startsAt,
-    @required this.endsAt,
+    required this.id,
+    required this.text,
+    required this.published,
+    required this.allDay,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.read,
+    required this.reactions,
+    required this.scheduledAt,
+    required this.startsAt,
+    required this.endsAt,
   });
 
   @override
@@ -127,27 +126,27 @@ class PleromaAnnouncement implements IPleromaAnnouncement {
 @JsonSerializable()
 class PleromaAnnouncementReaction implements IPleromaAnnouncementReaction {
   @override
-  final String name;
+  final String? name;
 
   @override
-  final int count;
+  final int? count;
 
   @override
-  final bool me;
+  final bool? me;
 
   @override
-  final String url;
+  final String? url;
 
   @override
   @JsonKey(name: "static_url")
-  final String staticUrl;
+  final String? staticUrl;
 
   PleromaAnnouncementReaction({
-    @required this.name,
-    @required this.count,
-    @required this.me,
-    @required this.url,
-    @required this.staticUrl,
+    required this.name,
+    required this.count,
+    required this.me,
+    required this.url,
+    required this.staticUrl,
   });
 
   @override

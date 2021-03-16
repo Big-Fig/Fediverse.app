@@ -8,8 +8,8 @@ abstract class IExternalShareService implements IDisposable {
       Provider.of<IExternalShareService>(context, listen: listen);
 
   Future share({
-    @required String popupTitle,
-    @required String text,
-    @required List<ShareUrlFile> urlFiles,
+    required String popupTitle,
+    required String? text,
+    required List<ShareUrlFile>? urlFiles,
   });
 }

@@ -47,7 +47,7 @@ class StatusThreadPage extends StatelessWidget {
 
 class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
   const _StatusThreadAppBarStarterAccountWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -55,7 +55,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
     var statusThreadBloc = IStatusThreadBloc.of(context);
     var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IStatus>(
+    return StreamBuilder<IStatus?>(
       stream: statusThreadBloc.firstStatusInThreadStream,
       builder: (context, snapshot) {
         var status = snapshot.data;
@@ -102,7 +102,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                     if (isLocal) {
                       return LocalAccountBloc.createFromContext(
                         context,
-                        account: account,
+                        account: account!,
                         isNeedWatchWebSocketsEvents:
                             isNeedWatchWebSocketsEvents,
                         isNeedRefreshFromNetworkOnInit:
@@ -114,7 +114,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                     } else {
                       return RemoteAccountBloc.createFromContext(
                         context,
-                        account: account,
+                        account: account!,
                         isNeedRefreshFromNetworkOnInit:
                             isNeedRefreshFromNetworkOnInit,
                       );
@@ -130,7 +130,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                       } else {
                         goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
                           context,
-                          remoteInstanceAccount: account,
+                          remoteInstanceAccount: account!,
                         );
                       }
                     },
@@ -148,7 +148,7 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
 
 class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
   const _StatusThreadStarterAccountBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -3,4 +3,4 @@ import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 
 abstract class ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc
     implements
-        ISingleSelectFromListValueFormFieldBloc<PleromaReplyVisibilityFilter> {}
+        ISingleSelectFromListValueFormFieldBloc<PleromaReplyVisibilityFilter?> {}

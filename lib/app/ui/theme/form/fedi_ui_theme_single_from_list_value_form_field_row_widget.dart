@@ -11,9 +11,9 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       FediUiThemeSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<IFediUiTheme>(
+        child: SingleSelectFromListValueFormFieldRowWidget<IFediUiTheme?>(
           label: S.of(context).app_theme_chooser_label,
-          valueTitleMapper: (context, IFediUiTheme value) =>
+          valueTitleMapper: (context, IFediUiTheme? value) =>
               _mapThemeToTitle(context, value),
           description: null,
           descriptionOnDisabled: null,
@@ -26,7 +26,7 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
   const FediUiThemeSingleFromListValueFormFieldRowWidget();
 }
 
-String _mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
+String _mapThemeToTitle(BuildContext context, IFediUiTheme? theme) {
   if (theme == null) {
     return S.of(context).app_theme_type_system;
   } else if (theme == lightFediUiTheme) {
@@ -38,7 +38,7 @@ String _mapThemeToTitle(BuildContext context, IFediUiTheme theme) {
   }
 }
 
-IconData _mapThemeToIcon(BuildContext context, IFediUiTheme theme) {
+IconData _mapThemeToIcon(BuildContext context, IFediUiTheme? theme) {
   if (theme == null) {
     return FediIcons.appearance_auto;
   } else if (theme == lightFediUiTheme) {

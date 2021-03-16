@@ -11,8 +11,8 @@ class SearchHashtagsPaginationListBloc
   final ISearchInputBloc searchInputBloc;
 
   SearchHashtagsPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
+    required this.searchInputBloc,
+    required
         IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(streamSubscription:

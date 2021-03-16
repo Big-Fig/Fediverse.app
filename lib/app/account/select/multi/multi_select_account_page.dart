@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 class MultiSelectAccountPage extends StatelessWidget {
   final AccountsListCallback accountsListSelectedCallback;
 
-  const MultiSelectAccountPage({@required this.accountsListSelectedCallback});
+  const MultiSelectAccountPage({required this.accountsListSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +54,11 @@ class MultiSelectAccountPage extends StatelessWidget {
 
 void goToMultiSelectAccountPage(
   BuildContext context, {
-  @required AccountsListCallback accountsListSelectedCallback,
-  @required bool excludeMyAccount,
-  @required bool followingsOnly,
-  @required PleromaAccountListLoader customRemoteAccountListLoader,
-  @required AccountListLoader customLocalAccountListLoader,
+  required AccountsListCallback accountsListSelectedCallback,
+  required bool excludeMyAccount,
+  required bool followingsOnly,
+  required PleromaAccountListLoader customRemoteAccountListLoader,
+  required AccountListLoader customLocalAccountListLoader,
 }) {
   Navigator.push(
     context,

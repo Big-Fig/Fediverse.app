@@ -6,10 +6,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("status_duration_picker_dialog.dart");
 
-Future<Duration> showStatusDurationPickerDialog({
-  BuildContext context,
-  Duration oldValue,
-  String pickerTitle,
+Future<Duration?> showStatusDurationPickerDialog({
+  required BuildContext context,
+  Duration? oldValue,
+  String? pickerTitle,
 }) async {
   var durationForSelection = Duration(minutes: 5);
   var minimumExpireDuration =

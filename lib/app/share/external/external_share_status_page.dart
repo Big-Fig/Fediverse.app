@@ -21,7 +21,7 @@ class ExternalShareStatusPage extends StatelessWidget {
   final bool isShareAsLinkPossible;
 
   const ExternalShareStatusPage({
-    @required this.isShareAsLinkPossible,
+    required this.isShareAsLinkPossible,
   });
 
   @override
@@ -44,10 +44,10 @@ class ExternalShareStatusPage extends StatelessWidget {
 }
 
 void goToExternalShareStatusPage({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
-  @required bool isShareAsLinkPossible,
+  required BuildContext context,
+  required IStatus status,
+  required InstanceLocation instanceLocation,
+  required bool isShareAsLinkPossible,
 }) {
   Navigator.push(
     context,
@@ -61,10 +61,10 @@ void goToExternalShareStatusPage({
 }
 
 MaterialPageRoute createExternalShareStatusPageRoute({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
-  @required bool isShareAsLinkPossible,
+  required BuildContext context,
+  required IStatus status,
+  required InstanceLocation instanceLocation,
+  required bool isShareAsLinkPossible,
 }) {
   return MaterialPageRoute(
     builder: (context) => ExternalShareStatusBloc.provideToContext(

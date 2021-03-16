@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,21 +14,21 @@ part 'files_cache_settings_model.g.dart';
 class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
   @HiveField(2)
   @JsonKey(name: "files_cache_size_limit_count_type_string")
-  final String filesCacheSizeLimitCountTypeString;
+  final String? filesCacheSizeLimitCountTypeString;
 
   @HiveField(3)
   @JsonKey(name: "files_cache_ageL_limit_type_string")
-  final String filesCacheAgeLimitTypeString;
+  final String? filesCacheAgeLimitTypeString;
 
-  FilesCacheSizeLimitCountType get filesCacheSizeLimitCountType =>
+  FilesCacheSizeLimitCountType? get filesCacheSizeLimitCountType =>
       filesCacheSizeLimitCountTypeString?.toFilesCacheSizeLimitCountType();
 
-  FilesCacheAgeLimitType get filesCacheAgeLimitType =>
+  FilesCacheAgeLimitType? get filesCacheAgeLimitType =>
       filesCacheAgeLimitTypeString?.toFilesCacheAgeLimitType();
 
   FilesCacheSettings({
-    @required this.filesCacheSizeLimitCountTypeString,
-    @required this.filesCacheAgeLimitTypeString,
+    required this.filesCacheSizeLimitCountTypeString,
+    required this.filesCacheAgeLimitTypeString,
   });
 
   factory FilesCacheSettings.fromJson(Map<String, dynamic> json) =>
@@ -50,8 +50,8 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
   FilesCacheSettings clone() => copyWith();
 
   FilesCacheSettings copyWith({
-    String filesCacheSizeLimitCountTypeString,
-    String filesCacheAgeLimitTypeString,
+    String? filesCacheSizeLimitCountTypeString,
+    String? filesCacheAgeLimitTypeString,
   }) =>
       FilesCacheSettings(
         filesCacheSizeLimitCountTypeString:
@@ -61,13 +61,12 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
             filesCacheAgeLimitTypeString ?? this.filesCacheAgeLimitTypeString,
       );
 
-
   @override
   String toString() => 'FilesCacheSettings{'
-        'filesCacheSizeLimitCountTypeString: '
-        '$filesCacheSizeLimitCountTypeString, '
-        'filesCacheAgeLimitTypeString: $filesCacheAgeLimitTypeString'
-        '}';
+      'filesCacheSizeLimitCountTypeString: '
+      '$filesCacheSizeLimitCountTypeString, '
+      'filesCacheAgeLimitTypeString: $filesCacheAgeLimitTypeString'
+      '}';
 
   @override
   bool operator ==(Object other) =>

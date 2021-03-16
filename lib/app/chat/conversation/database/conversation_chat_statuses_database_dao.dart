@@ -16,29 +16,35 @@ part 'conversation_chat_statuses_database_dao.g.dart';
   "deleteByConversationRemoteId": "DELETE FROM db_conversation_statuses WHERE "
       "conversation_remote_id = :conversationRemoteId;",
   "deleteByConversationRemoteIdAndStatusRemoteId":
-  "DELETE FROM db_conversation_statuses WHERE "
-      "conversation_remote_id = :conversationRemoteId "
-      "AND "
-      "status_remote_id = :statusRemoteId;",
+      "DELETE FROM db_conversation_statuses WHERE "
+          "conversation_remote_id = :conversationRemoteId "
+          "AND "
+          "status_remote_id = :statusRemoteId;",
   "clear": "DELETE FROM db_conversation_statuses",
   "getAll": "SELECT * FROM db_conversation_statuses"
 })
 class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationStatusesDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   ConversationStatusesDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbConversationStatus> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(dbConversationStatuses).insert(entity, mode: mode);
 
-  Future insertAll(Iterable<Insertable<DbConversationStatus>> entities,
+  Future insertAll(List<Insertable<DbConversationStatus>> entities,
       InsertMode mode) async {
-    await batch((batch) {
-      batch.insertAll(dbConversationStatuses, entities, mode: mode);
-    });
+    await batch(
+      (batch) {
+        batch.insertAll(
+          dbConversationStatuses,
+          entities,
+          mode: mode,
+        );
+      },
+    );
   }
 
   Future<bool> replace(Insertable<DbConversationStatus> entity) async =>

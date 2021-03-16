@@ -6,7 +6,6 @@ import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -23,7 +22,7 @@ class PleromaFilterService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,7 +36,7 @@ class PleromaFilterService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaFilterService({@required this.restService});
+  PleromaFilterService({required this.restService});
 
   IPleromaFilter parseFilterResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -67,7 +66,7 @@ class PleromaFilterService extends DisposableOwner
 
   @override
   Future<List<IPleromaFilter>> getFilters({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -76,14 +75,14 @@ class PleromaFilterService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    );
+    )!;
 
     return parseFilterListResponse(httpResponse);
   }
 
   @override
   Future<IPleromaFilter> getFilter({
-    @required String filterRemoteId,
+    required String? filterRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -92,14 +91,14 @@ class PleromaFilterService extends DisposableOwner
           filterRemoteId,
         ),
       ),
-    );
+    )!;
 
     return parseFilterResponse(httpResponse);
   }
 
   @override
   Future deleteFilter({
-    @required String filterRemoteId,
+    required String? filterRemoteId,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
@@ -113,7 +112,7 @@ class PleromaFilterService extends DisposableOwner
 
   @override
   Future<IPleromaFilter> createFilter({
-    @required IPostPleromaFilter postPleromaFilter,
+    required IPostPleromaFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -124,15 +123,15 @@ class PleromaFilterService extends DisposableOwner
           postPleromaFilter,
         ),
       ),
-    );
+    )!;
 
     return parseFilterResponse(httpResponse);
   }
 
   @override
   Future<IPleromaFilter> updateFilter({
-    @required String filterRemoteId,
-    @required IPostPleromaFilter postPleromaFilter,
+    required String? filterRemoteId,
+    required IPostPleromaFilter postPleromaFilter,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
@@ -144,7 +143,7 @@ class PleromaFilterService extends DisposableOwner
           postPleromaFilter,
         ),
       ),
-    );
+    )!;
 
     return parseFilterResponse(httpResponse);
   }

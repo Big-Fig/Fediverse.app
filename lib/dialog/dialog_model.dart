@@ -6,20 +6,20 @@ typedef DialogActionEnabledStreamFetcher = Stream<bool> Function(
     BuildContext context);
 
 class DialogAction {
-  final String label;
-  final IconData icon;
+  final String? label;
+  final IconData? icon;
 
-  final TextStyle customTextStyle;
-  final Color customColor;
-  final DialogActionCallback onAction;
+  final TextStyle? customTextStyle;
+  final Color? customColor;
+  final DialogActionCallback? onAction;
 
-  final DialogActionEnabledFetcher isActionEnabledFetcher;
-  final DialogActionEnabledStreamFetcher isActionEnabledStreamFetcher;
+  final DialogActionEnabledFetcher? isActionEnabledFetcher;
+  final DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher;
 
   DialogAction({
-    @required this.label,
+    required this.label,
     this.icon,
-    @required this.onAction,
+    required this.onAction,
     this.customTextStyle,
     this.customColor,
     this.isActionEnabledFetcher,
@@ -51,13 +51,13 @@ class SelectionDialogAction extends DialogAction {
   final bool isSelected;
 
   SelectionDialogAction({
-    @required this.isSelected,
-    @required String label,
-    IconData icon,
-    TextStyle customTextStyle,
-    @required DialogActionCallback onAction,
-    DialogActionEnabledFetcher isActionEnabledFetcher,
-    DialogActionEnabledStreamFetcher isActionEnabledStreamFetcher,
+    required this.isSelected,
+    required String? label,
+    IconData? icon,
+    TextStyle? customTextStyle,
+    required DialogActionCallback? onAction,
+    DialogActionEnabledFetcher? isActionEnabledFetcher,
+    DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher,
   }) : super(
           label: label,
           icon: icon,

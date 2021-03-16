@@ -13,15 +13,15 @@ class MyAccountAccountMuteActionNotificationsButtonWidget
   final bool defaultMuting;
 
   const MyAccountAccountMuteActionNotificationsButtonWidget({
-    Key key,
-    @required this.defaultMuting,
+    Key? key,
+    required this.defaultMuting,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: accountBloc.relationshipMutingStream,
       builder: (context, snapshot) {
         var relationshipMuting = snapshot.data ?? defaultMuting;
@@ -39,7 +39,7 @@ class MyAccountAccountMuteActionNotificationsButtonWidget
 class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
     extends StatelessWidget {
   const _MyAccountAccountMuteActionNotificationsButtonBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
 
     var listBloc = IMyAccountAccountMuteNetworkOnlyAccountListBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: accountBloc.relationshipMutingNotificationsStream,
       builder: (context, snapshot) {
         var relationshipMutingNotifications = snapshot.data;
@@ -61,7 +61,7 @@ class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
         return PleromaAsyncOperationButtonBuilderWidget(
           asyncButtonAction: () async {
             var newMutingNotifications =
-                !accountBloc.relationshipMutingNotifications;
+                !accountBloc.relationshipMutingNotifications!;
             await listBloc.changeAccountMute(
               account: accountBloc.account,
               notifications: newMutingNotifications,

@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediBlurredOverlayWarningWidget extends StatelessWidget {
-  final String descriptionText;
-  final String buttonText;
-  final VoidCallback buttonAction;
+  final String? descriptionText;
+  final String? buttonText;
+  final VoidCallback? buttonAction;
 
   FediBlurredOverlayWarningWidget({
     this.descriptionText,
@@ -33,7 +33,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
             children: <Widget>[
               if (descriptionText != null) ...[
                 Text(
-                  descriptionText,
+                  descriptionText!,
                   style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                 ),
                 const FediBigVerticalSpacer(),

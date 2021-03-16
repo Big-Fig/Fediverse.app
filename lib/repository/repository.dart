@@ -9,16 +9,16 @@ abstract class IReadListRepository<Item> {
 abstract class IWriteListRepository<Item> {
   Future clear();
 
-  Future insertAll(Iterable<Item> items);
+  Future insertAll(List<Item> items);
 
-  Future upsertAll(Iterable<Item> items);
+  Future upsertAll(List<Item> items);
 }
 
 abstract class IReadIdListRepository<Item, Id>
     implements IReadListRepository<Item> {
-  Future<Item> findById(Id id);
+  Future<Item?> findById(Id id);
 
-  Stream<Item> watchById(Id id);
+  Stream<Item?> watchById(Id id);
 
   Future<bool> isExistWithId(Id id);
 }

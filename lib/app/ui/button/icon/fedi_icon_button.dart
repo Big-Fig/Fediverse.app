@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 
 class FediIconButton extends StatelessWidget {
   final Icon icon;
-  final VoidCallback onPressed;
-  final Color color;
+  final VoidCallback? onPressed;
+  final Color? color;
   final double iconSize;
-  final String tooltip;
+  final String? tooltip;
   final EdgeInsets padding;
 
   FediIconButton({
-    @required this.icon,
-    @required this.onPressed,
+    required this.icon,
+    required this.onPressed,
     this.color,
     this.padding = FediPadding.allSmallPadding,
     this.iconSize = 24.0,

@@ -19,7 +19,7 @@ final _logger = Logger("edit_my_account_header_field_widget.dart");
 
 class EditMyAccountHeaderFieldWidget extends StatelessWidget {
   const EditMyAccountHeaderFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -43,13 +43,13 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
 
 class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
   const EditMyAccountHeaderFieldImageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
-    return StreamBuilder<MediaImageSource>(
+    return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.headerField.imageSourceStream,
       builder: (context, snapshot) {
         var source = snapshot.data;
@@ -72,7 +72,7 @@ class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
           );
         } else {
           return Image.file(
-            source.file,
+            source.file!,
             fit: BoxFit.cover,
           );
         }
@@ -83,7 +83,7 @@ class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
 
 class EditMyAccountHeaderFieldEditButtonWidget extends StatelessWidget {
   const EditMyAccountHeaderFieldEditButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -109,12 +109,14 @@ void _startChoosingFileToUploadHeader(BuildContext context) async {
     var filePickerFile =
         await showEditMyAccountHeaderFieldPicker(context, mediaDeviceFile);
 
-    var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
-    try {
-      await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
-    } catch (e, stackTrace) {
-      _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
-      showMediaAttachmentFailedNotificationOverlay(context, e);
+    if (filePickerFile != null) {
+      var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
+      try {
+        await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
+      } catch (e, stackTrace) {
+        _logger.warning("startChoosingFileToUploadHeader error", e, stackTrace);
+        showMediaAttachmentFailedNotificationOverlay(context, e);
+      }
     }
   }
 }

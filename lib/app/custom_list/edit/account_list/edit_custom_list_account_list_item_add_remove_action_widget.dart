@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class CustomListAccountListItemAddRemoveActionWidget extends StatelessWidget {
   const CustomListAccountListItemAddRemoveActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

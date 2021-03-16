@@ -17,7 +17,7 @@ abstract class IFilterFormBloc extends IFormBloc {
 
   IBoolValueFormFieldBloc get wholeWordField;
 
-  IDurationDateTimeValueFormFieldBloc get expiresInField;
+  IDurationDateTimeValueFormFieldBloc? get expiresInField;
 
   IFilterContextMultiSelectFromListValueFormFieldBloc get contextField;
 

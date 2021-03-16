@@ -27,20 +27,21 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:fedi/stream/stream_extension.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
-  final List<IPleromaMediaAttachment> mediaAttachments;
-  final IPleromaMediaAttachment initialMediaAttachment;
+  final List<IPleromaMediaAttachment?>? mediaAttachments;
+  final IPleromaMediaAttachment? initialMediaAttachment;
 
-  int get initialIndex => mediaAttachments.indexOf(initialMediaAttachment);
+  int get initialIndex => mediaAttachments!.indexOf(initialMediaAttachment);
 
   MediaAttachmentDetailsPage.multi({
-    @required this.mediaAttachments,
-    @required this.initialMediaAttachment,
+    required this.mediaAttachments,
+    required this.initialMediaAttachment,
   });
 
   MediaAttachmentDetailsPage.single(
-      {@required IPleromaMediaAttachment mediaAttachment})
+      {required IPleromaMediaAttachment mediaAttachment})
       : this.multi(
             mediaAttachments: [mediaAttachment],
             initialMediaAttachment: mediaAttachment);
@@ -53,21 +54,21 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaMediaAttachment get mediaAttachment =>
-      selectedMediaAttachmentSubject.value;
+      selectedMediaAttachmentSubject.value!;
 
   final PageController _controller;
 
-  BehaviorSubject<IPleromaMediaAttachment> selectedMediaAttachmentSubject;
+  BehaviorSubject<IPleromaMediaAttachment?> selectedMediaAttachmentSubject;
 
   Stream<IPleromaMediaAttachment> get selectedMediaAttachmentStream =>
-      selectedMediaAttachmentSubject.stream;
+      selectedMediaAttachmentSubject.stream.mapToNotNull();
 
-  IPleromaMediaAttachment get selectedMediaAttachment =>
+  IPleromaMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.value;
-  VoidCallback listener;
+  late VoidCallback listener;
 
   _MediaAttachmentDetailsPageState(
-      IPleromaMediaAttachment initialMediaAttachment, int initialIndex)
+      IPleromaMediaAttachment? initialMediaAttachment, int initialIndex)
       : _controller = PageController(
           initialPage: initialIndex,
         ),
@@ -75,7 +76,7 @@ class _MediaAttachmentDetailsPageState
             BehaviorSubject.seeded(initialMediaAttachment) {
     listener = () {
       selectedMediaAttachmentSubject
-          .add(widget.mediaAttachments[_controller.page.toInt()]);
+          .add(widget.mediaAttachments![_controller.page!.toInt()]);
     };
     _controller.addListener(listener);
   }
@@ -124,7 +125,6 @@ class _MediaAttachmentDetailsPageState
           errorWidget: (context, url, error) => buildDetails(),
           imageUrl: mediaAttachment.url,
         );
-        break;
       case MastodonMediaAttachmentType.video:
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return VideoMediaPlayerBloc.provideToContext(
@@ -138,8 +138,6 @@ class _MediaAttachmentDetailsPageState
               VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
           isFullscreen: false,
         );
-
-        break;
       case MastodonMediaAttachmentType.audio:
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
         return AudioMediaPlayerBloc.provideToContext(
@@ -150,37 +148,35 @@ class _MediaAttachmentDetailsPageState
               MediaPlayerSource.network(networkUrl: mediaAttachment.url),
           child: const FediAudioPlayerWidget(),
         );
-        break;
       case MastodonMediaAttachmentType.unknown:
       default:
         return Center(
           child: Text(
             S.of(context).app_media_attachment_details_notSupported_type(
-                mediaAttachment.type),
+                mediaAttachment.type!),
           ),
         );
-        break;
     }
   }
 
   Widget buildBody(BuildContext context) {
-    if (widget.mediaAttachments.length == 1) {
-      return buildMediaAttachmentBody(context, mediaAttachment);
+    if (widget.mediaAttachments!.length == 1) {
+      return buildMediaAttachmentBody(context, mediaAttachment!);
     } else {
       return Stack(
         children: <Widget>[
           PageView(
             controller: _controller,
-            children: widget.mediaAttachments
+            children: widget.mediaAttachments!
                 .map((mediaAttachment) =>
-                    buildMediaAttachmentBody(context, mediaAttachment))
+                    buildMediaAttachmentBody(context, mediaAttachment!))
                 .toList(),
           ),
           Positioned(
             left: 0.0,
             right: 0.0,
             bottom: 12.0,
-            child: StreamBuilder<IPleromaMediaAttachment>(
+            child: StreamBuilder<IPleromaMediaAttachment?>(
                 stream: selectedMediaAttachmentStream,
                 initialData: selectedMediaAttachment,
                 builder: (context, snapshot) {
@@ -190,7 +186,7 @@ class _MediaAttachmentDetailsPageState
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: widget.mediaAttachments
+                    children: widget.mediaAttachments!
                         .map((mediaAttachment) => FediIndicatorWidget(
                             active: selectedMediaAttachment == mediaAttachment))
                         .toList(),
@@ -204,7 +200,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildDetails() =>
       IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: mediaAttachment.url,
+        imageUrl: mediaAttachment!.url,
         imageBuilder: (context, imageProvider) {
           return Container(
             child: PhotoView(
@@ -226,11 +222,11 @@ class _MediaAttachmentDetailsPageState
 
 class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
   const _MediaAttachmentDetailsPageShareAction({
-    Key key,
-    @required this.mediaAttachment,
+    Key? key,
+    required this.mediaAttachment,
   }) : super(key: key);
 
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaMediaAttachment? mediaAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +266,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
 
             goToNewPostStatusPageWithInitial(
               context,
-              initialText: mediaAttachment.url,
+              initialText: mediaAttachment!.url,
             );
           },
         );
@@ -281,8 +277,8 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
 
 class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
   const _MediaAttachmentDetailsPageAddToGalleryAction({
-    Key key,
-    @required this.mediaAttachment,
+    Key? key,
+    required this.mediaAttachment,
   }) : super(key: key);
 
   final IPleromaMediaAttachment mediaAttachment;
@@ -292,7 +288,8 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
     return PleromaAsyncOperationButtonBuilderWidget(
       progressContentMessage:
           S.of(context).app_media_attachment_addToGallery_progress_content,
-      builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
+      builder: (BuildContext context, VoidCallback? onPressed) =>
+          FediIconButton(
         icon: Icon(
           FediIcons.download,
           color: IFediUiColorTheme.of(context).darkGrey,
@@ -315,7 +312,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
         }
       },
       errorAlertDialogBuilders: [
-        (BuildContext context, dynamic error, StackTrace stackTrace) {
+        (BuildContext? context, dynamic error, StackTrace stackTrace) {
           return ErrorData(
             error: error,
             stackTrace: stackTrace,
@@ -333,7 +330,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
 }
 
 void goToSingleMediaAttachmentDetailsPage(BuildContext context,
-    {@required IPleromaMediaAttachment mediaAttachment}) {
+    {required IPleromaMediaAttachment mediaAttachment}) {
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -345,8 +342,8 @@ void goToSingleMediaAttachmentDetailsPage(BuildContext context,
 }
 
 void goToMultiMediaAttachmentDetailsPage(BuildContext context,
-    {@required List<IPleromaMediaAttachment> mediaAttachments,
-    @required IPleromaMediaAttachment initialMediaAttachment}) {
+    {required List<IPleromaMediaAttachment?>? mediaAttachments,
+    required IPleromaMediaAttachment? initialMediaAttachment}) {
   Navigator.push(
     context,
     MaterialPageRoute(

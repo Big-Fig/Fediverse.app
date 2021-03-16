@@ -8,9 +8,9 @@ abstract class IShareToAccountBloc {
 
   Future<bool> shareToAccount(IAccount account);
 
-  List<IAccount> get alreadySharedToAccounts;
+  List<IAccount>? get alreadySharedToAccounts;
 
-  Stream<List<IAccount>> get alreadySharedToAccountsStream;
+  Stream<List<IAccount>?> get alreadySharedToAccountsStream;
 
   bool isAlreadySharedToAccount(IAccount account);
 

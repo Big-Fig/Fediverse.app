@@ -2,7 +2,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("memory_local_preferences_service_impl.dart");
@@ -50,21 +49,21 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> setString(String key, String value) async {
+  Future<bool> setString(String key, String? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
     return true;
   }
 
   @override
-  Future<bool> setIntPreference(String key, int value) async {
+  Future<bool> setIntPreference(String key, int? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
     return true;
   }
 
   @override
-  Future<bool> setBoolPreference(String key, bool value) async {
+  Future<bool> setBoolPreference(String key, bool? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
     return true;
@@ -72,27 +71,27 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> setObjectPreference(
-      String key, IJsonObject preferencesObject) async {
+      String key, IJsonObject? preferencesObject) async {
     preferences[key] = preferencesObject;
     notifyKeyValueChanged(key, preferencesObject);
     return true;
   }
 
   @override
-  bool getBoolPreference(
+  bool? getBoolPreference(
     String key,
   ) =>
       preferences[key];
 
   @override
-  String getStringPreference(String key) => preferences[key];
+  String? getStringPreference(String key) => preferences[key];
 
   @override
-  int getIntPreference(String key, {@required int defaultValue}) =>
+  int? getIntPreference(String key) =>
       preferences[key];
 
   @override
-  T getObjectPreference<T>(
+  T? getObjectPreference<T>(
     String key,
     T jsonConverter(Map<String, dynamic> jsonData),
   ) {
@@ -112,16 +111,16 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
       listeners[key] = [];
     }
 
-    listeners[key].add(onChanged);
+    listeners[key]!.add(onChanged as dynamic Function(dynamic));
 
     return CustomDisposable(() async {
-      listeners[key].remove(onChanged);
+      listeners[key]!.remove(onChanged);
     });
   }
 
   void notifyKeyValueChanged(String key, dynamic value) {
     if (listeners.containsKey(key)) {
-      listeners[key].forEach((listener) {
+      listeners[key]!.forEach((listener) {
         listener(value);
       });
     }

@@ -4,20 +4,21 @@ import 'package:flutter/widgets.dart';
 typedef ChatCallback = Function(BuildContext context, IChat chat);
 
 abstract class IChat {
-  int get localId;
+  int? get localId;
 
   String get remoteId;
 
-  int get unread;
+  int? get unread;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
   List<IAccount> get accounts;
 
-  IChat copyWith(
-      {int id,
-      String remoteId,
-      int unread,
-      DateTime updatedAt,
-      List<IAccount> accounts});
+  IChat copyWith({
+    int? id,
+    String? remoteId,
+    int? unread,
+    DateTime? updatedAt,
+    List<IAccount>? accounts,
+  });
 }

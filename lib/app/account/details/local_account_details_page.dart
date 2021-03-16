@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 
 void goToLocalAccountDetailsPage(
   BuildContext context, {
-  @required IAccount account,
+  required IAccount? account,
 }) {
   Navigator.push(
     context,
@@ -19,7 +19,7 @@ void goToLocalAccountDetailsPage(
   );
 }
 
-MaterialPageRoute createLocalAccountDetailsPageRoute(IAccount account) {
+MaterialPageRoute createLocalAccountDetailsPageRoute(IAccount? account) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IAccountDetailsBloc>(
       create: (context) => AccountDetailsBloc(
@@ -32,7 +32,7 @@ MaterialPageRoute createLocalAccountDetailsPageRoute(IAccount account) {
         create: (context) => LocalAccountBloc.createFromContext(
           context,
           isNeedWatchLocalRepositoryForUpdates: true,
-          account: account,
+          account: account!,
           isNeedRefreshFromNetworkOnInit: false,
           isNeedWatchWebSocketsEvents: false,
           isNeedPreFetchRelationship: true,

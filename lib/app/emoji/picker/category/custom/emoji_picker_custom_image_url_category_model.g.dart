@@ -18,7 +18,7 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return EmojiPickerCustomImageUrlCategoryItems(
-      items: (fields[0] as List)?.cast<CustomEmojiPickerImageUrlItem>(),
+      items: (fields[0] as List?)?.cast<CustomEmojiPickerImageUrlItem>(),
     );
   }
 
@@ -49,7 +49,7 @@ EmojiPickerCustomImageUrlCategoryItems
     _$EmojiPickerCustomImageUrlCategoryItemsFromJson(
         Map<String, dynamic> json) {
   return EmojiPickerCustomImageUrlCategoryItems(
-    items: (json['items'] as List)
+    items: (json['items'] as List?)
         ?.map((e) => e == null
             ? null
             : CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,37 +18,144 @@ abstract class IPleromaPoll implements IMastodonPoll {
 }
 
 extension IPleromaPollExtension on IPleromaPoll {
-  bool isOwnVote(IPleromaPollOption option) {
+  PleromaPoll toPleromaPoll() {
+    if (this is PleromaPoll) {
+      return this as PleromaPoll;
+    } else {
+      return PleromaPoll(
+        expired: expired,
+        expiresAt: expiresAt,
+        id: id,
+        multiple: multiple,
+        options: options.toPleromaPollOptions(),
+        ownVotes: ownVotes,
+        voted: voted,
+        votesCount: votesCount,
+        votersCount: votersCount,
+      );
+    }
+  }
 
+  PostStatusPoll toPostStatusPoll({
+    required PleromaInstancePollLimits limits,
+  }) {
+    return PostStatusPoll(
+      durationLength: expiresAt.calculatePostDurationLength(
+        limits: limits,
+      ),
+      // todo: implement  hideTotals
+      hideTotals: false,
+      multiple: multiple,
+      options: options.toPleromaPollOptionTitles(),
+    );
+  }
+
+  bool isOwnVote(IPleromaPollOption option) {
     var index = options.indexOf(option);
 
-    return ownVotes?.contains(index) ?? false;
+    return ownVotes.contains(index);
   }
+
   double votesPercent(IPleromaPollOption option) {
     // votes count can be hidden until poll ends
-    var votesCount = option.votesCount ?? 0;
+    var votesCount = option.votesCount;
     double votesPercent;
     if (votesCount == 0) {
       votesPercent = 0.0;
     } else {
-      votesPercent = votesCount / (this.votesCount);
+      votesPercent = votesCount / this.votesCount;
     }
     return votesPercent;
   }
 }
 
+extension DateTimePollExtension on DateTime {
+  Duration calculatePostDurationLength({
+    required PleromaInstancePollLimits limits,
+  }) {
+    DateTime expiresAt = this;
+
+    var now = DateTime.now();
+
+    var minExpirationDuration = limits.minExpirationDurationOrDefault;
+    var maxExpirationDuration = limits.maxExpirationDurationOrDefault;
+
+    if (now.isAfter(expiresAt)) {
+      var difference = now.difference(expiresAt);
+
+      if (difference > minExpirationDuration &&
+          difference < maxExpirationDuration) {
+        return difference;
+      } else if (difference < minExpirationDuration) {
+        return minExpirationDuration;
+      } else {
+        return maxExpirationDuration;
+      }
+    } else {
+      return minExpirationDuration;
+    }
+  }
+}
+
 abstract class IPleromaPollOption implements IMastodonPollOption {}
+
+extension IPleromaPollOptionExtension on IPleromaPollOption {
+  PleromaPollOption toPleromaPollOption() {
+    if (this is PleromaPollOption) {
+      return this as PleromaPollOption;
+    } else {
+      return PleromaPollOption(
+        title: title,
+        votesCount: votesCount,
+      );
+    }
+  }
+}
+
+extension IPleromaPollOptionListExtension on List<IPleromaPollOption> {
+  List<PleromaPollOption> toPleromaPollOptions() {
+    if (this is List<PleromaPollOption>) {
+      return this as List<PleromaPollOption>;
+    } else {
+      return map(
+        (pollOption) => pollOption.toPleromaPollOption(),
+      ).toList();
+    }
+  }
+
+  List<String> toPleromaPollOptionTitles() {
+    return map(
+      (pollOption) => pollOption.title,
+    ).toList();
+  }
+}
+
+extension StringPleromaPollOptionExtension on String {
+  PleromaPollOption toPleromaPollOption() => PleromaPollOption(
+        title: this,
+        votesCount: 0,
+      );
+}
+
+extension StringListPleromaPollOptionExtension on List<String> {
+  List<PleromaPollOption> toPleromaPollOptions() => map(
+        (value) => value.toPleromaPollOption(),
+      ).toList();
+}
 
 @JsonSerializable()
 class PleromaPollOption implements IPleromaPollOption {
   @override
-  String title;
+  final String title;
 
   @override
   @JsonKey(name: "votes_count")
-  int votesCount;
+  final int votesCount;
 
-  PleromaPollOption({this.title, this.votesCount});
+  PleromaPollOption({
+    required this.title,
+    required this.votesCount,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -70,7 +180,10 @@ class PleromaPollOption implements IPleromaPollOption {
 
   @override
   String toString() {
-    return 'PleromaPollOption{title: $title, votesCount: $votesCount}';
+    return 'PleromaPollOption{'
+        'title: $title, '
+        'votesCount: $votesCount'
+        '}';
   }
 }
 
@@ -84,7 +197,7 @@ class PleromaPoll implements IPleromaPoll {
   final DateTime expiresAt;
 
   @override
-  final String id;
+  final String? id;
 
   @override
   final bool multiple;
@@ -108,15 +221,15 @@ class PleromaPoll implements IPleromaPoll {
   final int votesCount;
 
   PleromaPoll({
-    this.expired,
-    this.expiresAt,
-    this.id,
-    this.multiple,
-    this.options,
-    this.ownVotes,
-    this.voted,
-    this.votersCount,
-    this.votesCount,
+    required this.expired,
+    required this.expiresAt,
+    required this.id,
+    required this.multiple,
+    required this.options,
+    required this.ownVotes,
+    required this.voted,
+    required this.votersCount,
+    required this.votesCount,
   });
 
   factory PleromaPoll.fromJson(Map<String, dynamic> json) =>
@@ -131,10 +244,17 @@ class PleromaPoll implements IPleromaPoll {
 
   @override
   String toString() {
-    return 'PleromaPoll{expired: $expired, expiresAt: $expiresAt,'
-        ' id: $id, multiple: $multiple, options: $options,'
-        ' ownVotes: $ownVotes, voted: $voted,'
-        ' votersCount: $votersCount, votesCount: $votesCount}';
+    return 'PleromaPoll{'
+        'expired: $expired, '
+        'expiresAt: $expiresAt, '
+        'id: $id, '
+        'multiple: $multiple, '
+        'options: $options,'
+        'ownVotes: $ownVotes, '
+        'voted: $voted, '
+        'votersCount: $votersCount, '
+        'votesCount: $votesCount'
+        '}';
   }
 
   @override
@@ -173,15 +293,19 @@ extension PleromaPostStatusPollExtension on PleromaPostStatusPoll {
       voted: true,
       multiple: multiple,
       options: options
-          ?.map((option) => PleromaPollOption(
-                title: option,
-                votesCount: 0,
-              ))
-          ?.toList(),
+          .map(
+            (option) => PleromaPollOption(
+              title: option,
+              votesCount: 0,
+            ),
+          )
+          .toList(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
-      expiresAt: null,
+      expiresAt: DateTime.now().add(
+        expiresInSeconds.toDuration(),
+      ),
     );
   }
 }

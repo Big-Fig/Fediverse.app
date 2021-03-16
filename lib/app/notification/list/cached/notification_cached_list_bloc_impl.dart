@@ -15,14 +15,13 @@ import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 class NotificationCachedListBloc extends AsyncInitLoadingBloc
     implements INotificationCachedListBloc {
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
-  final List<PleromaNotificationType> excludeTypes;
+  final List<PleromaNotificationType>? excludeTypes;
 
   NotificationRepositoryFilters get _notificationRepositoryFilters =>
       NotificationRepositoryFilters(
@@ -38,13 +37,13 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   IPleromaApi get pleromaApi => pleromaNotificationService;
 
   NotificationCachedListBloc({
-    @required this.pleromaNotificationService,
-    @required this.notificationRepository,
-    @required this.filterRepository,
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required this.filterRepository,
     this.excludeTypes,
   });
 
-  List<IFilter> filters;
+  late List<IFilter> filters;
 
   @override
   Future internalAsyncInit() async {
@@ -61,9 +60,9 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<List<INotification>> loadLocalItems(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan}) {
+      {required int? limit,
+      required INotification? newerThan,
+      required INotification? olderThan}) {
     return notificationRepository.getNotifications(
       filters: _notificationRepositoryFilters,
       pagination: RepositoryPagination<INotification>(
@@ -77,9 +76,9 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required INotification newerThan,
-    @required INotification olderThan,
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
   }) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
@@ -104,7 +103,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static NotificationCachedListBloc createFromContext(
     BuildContext context, {
-    @required List<PleromaNotificationType> excludeTypes,
+    required List<PleromaNotificationType> excludeTypes,
   }) =>
       NotificationCachedListBloc(
         pleromaNotificationService: IPleromaNotificationService.of(
@@ -124,8 +123,8 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required List<PleromaNotificationType> excludeTypes,
-    @required Widget child,
+    required List<PleromaNotificationType> excludeTypes,
+    required Widget child,
   }) {
     return DisposableProvider<INotificationCachedListBloc>(
       create: (context) => NotificationCachedListBloc.createFromContext(

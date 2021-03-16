@@ -18,20 +18,26 @@ part 'home_timeline_statuses_database_dao.g.dart';
 })
 class HomeTimelineStatusesDao extends DatabaseAccessor<AppDatabase>
     with _$HomeTimelineStatusesDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   HomeTimelineStatusesDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbHomeTimelineStatus> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(dbHomeTimelineStatuses).insert(entity, mode: mode);
 
-  Future insertAll(Iterable<Insertable<DbHomeTimelineStatus>> entities,
-      InsertMode mode) async {
-    await batch((batch) {
-      batch.insertAll(dbHomeTimelineStatuses, entities, mode: mode);
-    });
+  Future insertAll(
+      List<Insertable<DbHomeTimelineStatus>> entities, InsertMode mode) async {
+    await batch(
+      (batch) {
+        batch.insertAll(
+          dbHomeTimelineStatuses,
+          entities,
+          mode: mode,
+        );
+      },
+    );
   }
 
   Future<bool> replace(Insertable<DbHomeTimelineStatus> entity) async =>

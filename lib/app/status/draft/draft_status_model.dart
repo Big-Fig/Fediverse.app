@@ -3,10 +3,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class IDraftStatus {
-  int get localId;
+  int? get localId;
 
   DateTime get updatedAt;
 
@@ -19,7 +18,7 @@ class DbDraftStatusWrapper implements IDraftStatus {
   DbDraftStatusWrapper(this.dbDraftStatus);
 
   @override
-  int get localId => dbDraftStatus.id;
+  int? get localId => dbDraftStatus.id;
 
   @override
   PostStatusData get postStatusData => dbDraftStatus.data;
@@ -32,8 +31,8 @@ class DraftStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
   final IDraftStatus draftStatus;
 
   DraftStatusAdapterToStatus({
-    @required IAccount account,
-    @required this.draftStatus,
+    required IAccount account,
+    required this.draftStatus,
   }) : super(
           localId: draftStatus.localId,
           account: account,

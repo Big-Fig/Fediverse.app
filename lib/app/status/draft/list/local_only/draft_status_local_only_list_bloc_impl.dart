@@ -7,14 +7,14 @@ import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
   final IDraftStatusRepository draftStatusRepository;
 
-  DraftStatusLocalOnlyListBloc({@required this.draftStatusRepository})
-      : super();
+  DraftStatusLocalOnlyListBloc({
+    required this.draftStatusRepository,
+  }) : super();
 
   static DraftStatusLocalOnlyListBloc createFromContext(BuildContext context) =>
       DraftStatusLocalOnlyListBloc(
@@ -23,7 +23,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
       );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<IDraftStatusLocalOnlyListBloc>(
       create: (context) =>
           DraftStatusLocalOnlyListBloc.createFromContext(context),
@@ -36,10 +36,10 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
 
   @override
   Future<List<IDraftStatus>> loadItemsFromLocalForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    IDraftStatus olderThan,
-    IDraftStatus newerThan,
+    int? pageIndex,
+    int? itemsCountPerPage,
+    IDraftStatus? olderThan,
+    IDraftStatus? newerThan,
   }) async {
     var statuses = await draftStatusRepository.getDraftStatuses(
       filters: null,
@@ -58,5 +58,5 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

@@ -87,7 +87,7 @@ class _HashtagPageState extends State<HashtagPage> {
 
 class _HashtagPageOpenInBrowserAction extends StatelessWidget {
   const _HashtagPageOpenInBrowserAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
       onPressed: () {
         UrlHelper.handleUrlClickOnLocalInstanceLocation(
           context: context,
-          url: hashtag.url,
+          url: hashtag.url!,
         );
       },
     );
@@ -107,11 +107,11 @@ class _HashtagPageOpenInBrowserAction extends StatelessWidget {
 }
 
 Future showRemoteInstanceHashtagActionsDialog({
-  @required BuildContext context,
-  @required String url,
-  @required String remoteInstanceDomain,
-  @required String localInstanceDomain,
-  @required String hashtag,
+  required BuildContext context,
+  required String url,
+  required String remoteInstanceDomain,
+  required String localInstanceDomain,
+  required String hashtag,
 }) =>
     FediActionsDialog(
       context: context,
@@ -150,8 +150,8 @@ Future showRemoteInstanceHashtagActionsDialog({
     ).show(context);
 
 Future goToHashtagPage({
-  @required BuildContext context,
-  @required IHashtag hashtag,
+  required BuildContext context,
+  required IHashtag hashtag,
 }) =>
     Navigator.push(
       context,
@@ -162,8 +162,8 @@ Future goToHashtagPage({
     );
 
 MaterialPageRoute createHashtagPageRoute({
-  @required BuildContext context,
-  @required IHashtag hashtag,
+  required BuildContext context,
+  required IHashtag hashtag,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -173,7 +173,7 @@ MaterialPageRoute createHashtagPageRoute({
       create: (context) {
         var timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.hashtag(
           ILocalPreferencesService.of(context, listen: false),
-          userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
+          userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
           hashtag: hashtag,
         );
         timelineLocalPreferencesBloc.performAsyncInit();
@@ -229,7 +229,7 @@ MaterialPageRoute createHashtagPageRoute({
                 },
                 child: StatusCachedListBlocProxyProvider(
                   child: ProxyProvider<IStatusCachedListBloc,
-                      IPleromaCachedListBloc<IStatus>>(
+                      IPleromaCachedListBloc<IStatus?>>(
                     update: (context, value, previous) => value,
                     child: StatusCachedListBlocLoadingWidget(
                       child: StatusCachedPaginationBloc.provideToContext(

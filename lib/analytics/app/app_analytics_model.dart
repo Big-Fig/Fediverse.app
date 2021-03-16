@@ -11,13 +11,13 @@ part 'app_analytics_model.g.dart';
 @HiveType(typeId: -32 + 94)
 class AppAnalyticsData implements IJsonObject {
   @HiveField(0)
-  final int appOpenedCount;
+  final int? appOpenedCount;
   @HiveField(1)
-  final bool isAppRated;
+  final bool? isAppRated;
 
   AppAnalyticsData({
-    @required this.appOpenedCount,
-    @required this.isAppRated,
+    required this.appOpenedCount,
+    required this.isAppRated,
   });
 
   @override
@@ -38,8 +38,8 @@ class AppAnalyticsData implements IJsonObject {
   }
 
   AppAnalyticsData copyWith({
-    int appOpenedCount,
-    bool isAppRated,
+    int? appOpenedCount,
+    bool? isAppRated,
   }) =>
       AppAnalyticsData(
         appOpenedCount: appOpenedCount ?? this.appOpenedCount,

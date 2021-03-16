@@ -9,7 +9,7 @@ class EditChatSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditChatSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -27,12 +27,12 @@ class EditChatSettingsWidget extends StatelessWidget {
 class _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget
     extends StatelessWidget {
   const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc>(
+      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc?>(
         update: (context, value, previous) =>
             value.countConversationsInChatsUnreadBadgesFieldBloc,
         child: BoolValueFormFieldRowWidget(
@@ -46,12 +46,12 @@ class _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget
 class _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget
     extends StatelessWidget {
   const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc>(
+      ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc?>(
         update: (context, value, previous) =>
             value.replaceConversationsWithPleromaChatsFieldBloc,
         child: BoolValueFormFieldRowWidget(

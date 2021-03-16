@@ -5,18 +5,24 @@ class TimelineTabBlocsList {
   final TabController tabController;
   final List<ITimelineTabBloc> timelineTabBlocs;
 
+  List<String> get timelineIds => timelineTabBlocs
+      .map((timelineTabBloc) => timelineTabBloc.timelineId)
+      .toList();
+
   ITimelineTabBloc get selectedTimelineTabBloc =>
       timelineTabBlocs[tabController.index];
 
   TimelineTabBlocsList({
-    @required this.tabController,
-    @required this.timelineTabBlocs,
+    required this.tabController,
+    required this.timelineTabBlocs,
   });
 
   @override
   String toString() {
-    return 'TimelineTabBlocsList{tabController: $tabController,'
-        ' timelineTabBlocs: $timelineTabBlocs}';
+    return 'TimelineTabBlocsList{'
+        'tabController: $tabController, '
+        'timelineTabBlocs: $timelineTabBlocs'
+        '}';
   }
 
   @override

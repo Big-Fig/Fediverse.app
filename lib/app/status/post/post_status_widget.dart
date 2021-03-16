@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 class PostStatusWidget extends PostMessageWidget {
 
   const PostStatusWidget({
-    @required String hintText,
+    required String hintText,
   }): super(hintText: hintText);
 
   @override

@@ -2,14 +2,13 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_l
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 
 class TimelinesHomeTabStorageLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<TimelinesHomeTabStorage>
+    extends ObjectLocalPreferenceBloc<TimelinesHomeTabStorage?>
     implements ITimelinesHomeTabStorageLocalPreferencesBloc {
   TimelinesHomeTabStorageLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
+    required String userAtHost,
   }) : super(
           preferencesService,
           "$userAtHost.timelines.storage",
@@ -18,5 +17,5 @@ class TimelinesHomeTabStorageLocalPreferencesBloc
         );
 
   @override
-  TimelinesHomeTabStorage get defaultValue => null;
+  TimelinesHomeTabStorage? get defaultValue => null;
 }

@@ -1,9 +1,9 @@
 abstract class IMastodonPaginationRequest {
-  String get maxId;
+  String? get maxId;
 
-  String get minId;
+  String? get minId;
 
-  String get sinceId;
+  String? get sinceId;
 
-  int get limit;
+  int? get limit;
 }

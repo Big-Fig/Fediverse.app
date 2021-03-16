@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 
 enum MediaPlayerState {
   notInitialized,
@@ -21,24 +20,24 @@ enum MediaPlayerSourceType {
 
 class MediaPlayerSource {
   final MediaPlayerSourceType type;
-  final String assetPath;
-  final String assetPackage;
-  final File file;
-  final String networkUrl;
-  final String networkFormatHint;
+  final String? assetPath;
+  final String? assetPackage;
+  final File? file;
+  final String? networkUrl;
+  final String? networkFormatHint;
 
   MediaPlayerSource._private({
-    @required this.type,
-    @required this.assetPath,
-    @required this.assetPackage,
-    @required this.file,
-    @required this.networkUrl,
-    @required this.networkFormatHint,
+    required this.type,
+    required this.assetPath,
+    required this.assetPackage,
+    required this.file,
+    required this.networkUrl,
+    required this.networkFormatHint,
   });
 
   MediaPlayerSource.asset({
-    @required String assetPath,
-    String assetPackage,
+    required String assetPath,
+    String? assetPackage,
   }) : this._private(
           type: MediaPlayerSourceType.asset,
           assetPath: assetPath,
@@ -49,7 +48,7 @@ class MediaPlayerSource {
         );
 
   MediaPlayerSource.file({
-    @required File file,
+    required File file,
   }) : this._private(
           type: MediaPlayerSourceType.file,
           assetPath: null,
@@ -60,8 +59,8 @@ class MediaPlayerSource {
         );
 
   MediaPlayerSource.network({
-    @required String networkUrl,
-    String networkFormatHint,
+    required String? networkUrl,
+    String? networkFormatHint,
   }) : this._private(
           type: MediaPlayerSourceType.network,
           assetPath: null,

@@ -17,9 +17,9 @@ class ConversationChatMessageCachedPaginationBloc
   final IConversationChatMessageCachedListBloc chatMessageListService;
 
   ConversationChatMessageCachedPaginationBloc({
-    @required this.chatMessageListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.chatMessageListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -30,10 +30,10 @@ class ConversationChatMessageCachedPaginationBloc
 
   @override
   Future<List<IConversationChatMessage>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IConversationChatMessage> olderPage,
-    @required CachedPaginationPage<IConversationChatMessage> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IConversationChatMessage>? olderPage,
+    required CachedPaginationPage<IConversationChatMessage>? newerPage,
   }) =>
       chatMessageListService.loadLocalItems(
         limit: itemsCountPerPage,
@@ -42,11 +42,11 @@ class ConversationChatMessageCachedPaginationBloc
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IConversationChatMessage> olderPage,
-    @required CachedPaginationPage<IConversationChatMessage> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IConversationChatMessage>? olderPage,
+    required CachedPaginationPage<IConversationChatMessage>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
@@ -60,26 +60,29 @@ class ConversationChatMessageCachedPaginationBloc
 
   static ConversationChatMessageCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       ConversationChatMessageCachedPaginationBloc(
-          chatMessageListService:
-              Provider.of<IConversationChatMessageCachedListBloc>(context,
-                  listen: false),
-          paginationSettingsBloc: IPaginationSettingsBloc.of(
-            context,
-            listen: false,
-          ),
-          maximumCachedPagesCount: maximumCachedPagesCount);
+        chatMessageListService:
+            Provider.of<IConversationChatMessageCachedListBloc>(
+          context,
+          listen: false,
+        ),
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
-    @required Widget child,
+    int? maximumCachedPagesCount,
+    required Widget child,
   }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
-            IConversationChatMessage>>(
+        ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage?>,
+            IConversationChatMessage?>>(
       create: (context) =>
           ConversationChatMessageCachedPaginationBloc.createFromContext(
         context,
@@ -87,7 +90,9 @@ class ConversationChatMessageCachedPaginationBloc
       ),
       child: CachedPaginationBlocProxyProvider<
           CachedPaginationPage<IConversationChatMessage>,
-          IConversationChatMessage>(child: child),
+          IConversationChatMessage>(
+        child: child,
+      ),
     );
   }
 }

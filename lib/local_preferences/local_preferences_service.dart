@@ -7,7 +7,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef ValueCallback<T> = Function(T value);
+typedef ValueCallback<T> = Function(T? value);
 
 abstract class ILocalPreferencesService extends DisposableOwner
     implements IAsyncInitLoadingBloc {
@@ -23,26 +23,26 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   Future<bool> clearValue(String key);
 
-  Future<bool> setString(String key, String value);
+  Future<bool> setString(String key, String? value);
 
-  Future<bool> setIntPreference(String key, int value);
+  Future<bool> setIntPreference(String key, int? value);
 
-  Future<bool> setBoolPreference(String key, bool value);
+  Future<bool> setBoolPreference(String key, bool? value);
 
   Future<bool> setObjectPreference(
     String key,
-    IJsonObject preferencesObject,
+    IJsonObject? preferencesObject,
   );
 
-  bool getBoolPreference(
+  bool? getBoolPreference(
     String key,
   );
 
-  String getStringPreference(String key);
+  String? getStringPreference(String key);
 
-  int getIntPreference(String key);
+  int? getIntPreference(String key);
 
-  T getObjectPreference<T>(
+  T? getObjectPreference<T>(
     String key,
     T jsonConverter(Map<String, dynamic> jsonData),
   );

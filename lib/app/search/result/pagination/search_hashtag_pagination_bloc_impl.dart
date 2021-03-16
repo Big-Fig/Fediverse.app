@@ -8,16 +8,16 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SearchHashtagPaginationBloc
-    extends SearchAdapterPaginationBloc<IHashtag> {
+    extends SearchAdapterPaginationBloc<IHashtag?> {
   SearchHashtagPaginationBloc(
-      {@required
+      {required
           IPaginationBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
               searchResultItemPaginationBloc})
       : super(searchResultItemPaginationBloc: searchResultItemPaginationBloc);
 
   @override
-  PaginationPage<IHashtag> mapPage(PaginationPage<ISearchResultItem> page) {
-    List<IHashtag> items = page.items
+  PaginationPage<IHashtag?> mapPage(PaginationPage<ISearchResultItem> page) {
+    List<IHashtag?> items = page.items!
         .where((searchResultItem) => searchResultItem.type ==
         SearchResultItemType.hashtag)
         .map((searchResultItem) => searchResultItem.hashtag)
@@ -37,9 +37,9 @@ class SearchHashtagPaginationBloc
       );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<
-        IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
+        IPaginationBloc<PaginationPage<IHashtag?>, IHashtag?>>(
       create: (context) =>
           SearchHashtagPaginationBloc.createFromContext(context),
       child: child,

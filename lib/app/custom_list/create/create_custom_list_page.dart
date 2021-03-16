@@ -34,8 +34,8 @@ class CreateCustomListPage extends StatelessWidget {
 }
 
 void goToCreateCustomListPage({
-  @required BuildContext context,
-  @required Function(ICustomList) onSubmit,
+  required BuildContext context,
+  required Function(ICustomList) onSubmit,
 }) {
   Navigator.push(
     context,
@@ -47,14 +47,14 @@ void goToCreateCustomListPage({
 }
 
 MaterialPageRoute createCreateCustomListPageRoute({
-  @required BuildContext context,
-  @required Function(ICustomList) onSubmit,
+  required BuildContext context,
+  required Function(ICustomList) onSubmit,
 }) {
   return MaterialPageRoute(
     builder: (context) => CreateCustomListBloc.provideToContext(
       context,
       child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc>(
+          IEditCustomListAccountListPaginationListBloc?>(
         update: (context, value, _) =>
             value.editCustomListAccountListPaginationListBloc,
         child: const CreateCustomListPage(),

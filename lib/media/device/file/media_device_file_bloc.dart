@@ -15,5 +15,5 @@ abstract class IMediaDeviceFileBloc
 
   MediaDeviceFileType get type;
 
-  Uint8List get thumbImageData;
+  Uint8List? get thumbImageData;
 }

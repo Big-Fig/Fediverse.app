@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 
 class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
     extends StatelessWidget {
-  final String label;
-  final String description;
+  final String? label;
+  final String? description;
   final String descriptionOnDisabled;
 
   TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget({
     this.label,
-    @required this.description,
-    @required this.descriptionOnDisabled,
+    required this.description,
+    required this.descriptionOnDisabled,
   });
 
   @override
@@ -36,7 +36,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
 }
 
 String mapTimelineTypeToLabel(BuildContext context,
-    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter) {
+    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter) {
   if (pleromaReplyVisibilityFilter == null) {
     return S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;
   }
@@ -44,12 +44,9 @@ String mapTimelineTypeToLabel(BuildContext context,
   switch (pleromaReplyVisibilityFilter) {
     case PleromaReplyVisibilityFilter.self:
       return S.of(context).app_timeline_settings_replyVisibilityFilter_self;
-      break;
     case PleromaReplyVisibilityFilter.following:
       return S
           .of(context)
           .app_timeline_settings_replyVisibilityFilter_following;
-      break;
   }
-  throw "Invalid PleromaReplyVisibilityFilter $pleromaReplyVisibilityFilter";
 }

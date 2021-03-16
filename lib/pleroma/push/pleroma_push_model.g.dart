@@ -18,10 +18,10 @@ class PleromaPushMessageBodyAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaPushMessageBody(
-      notificationId: fields[0] as String,
-      server: fields[1] as String,
-      account: fields[2] as String,
-      notificationType: fields[3] as String,
+      notificationId: fields[0] as String?,
+      server: fields[1] as String?,
+      account: fields[2] as String?,
+      notificationType: fields[3] as String?,
     );
   }
 
@@ -79,12 +79,12 @@ PleromaPushSubscription _$PleromaPushSubscriptionFromJson(
     Map<String, dynamic> json) {
   return PleromaPushSubscription(
     id: json['id'],
-    endpoint: json['endpoint'] as String,
+    endpoint: json['endpoint'] as String?,
     alerts: json['alerts'] == null
         ? null
         : PleromaPushSettingsDataAlerts.fromJson(
             json['alerts'] as Map<String, dynamic>),
-    serverKey: json['server_key'] as String,
+    serverKey: json['server_key'] as String?,
     subscription: json['subscription'] == null
         ? null
         : PleromaPushSubscribeRequestSubscription.fromJson(
@@ -121,13 +121,13 @@ Map<String, dynamic> _$PleromaPushSubscribeDataToJson(
 PleromaPushSettingsDataAlerts _$PleromaPushSettingsDataAlertsFromJson(
     Map<String, dynamic> json) {
   return PleromaPushSettingsDataAlerts(
-    favourite: json['favourite'] as bool,
-    follow: json['follow'] as bool,
-    mention: json['mention'] as bool,
-    reblog: json['reblog'] as bool,
-    poll: json['poll'] as bool,
-    pleromaChatMention: json['pleroma:chat_mention'] as bool,
-    pleromaEmojiReaction: json['pleroma:emoji_reaction'] as bool,
+    favourite: json['favourite'] as bool?,
+    follow: json['follow'] as bool?,
+    mention: json['mention'] as bool?,
+    reblog: json['reblog'] as bool?,
+    poll: json['poll'] as bool?,
+    pleromaChatMention: json['pleroma:chat_mention'] as bool?,
+    pleromaEmojiReaction: json['pleroma:emoji_reaction'] as bool?,
   );
 }
 
@@ -155,7 +155,7 @@ PleromaPushSubscribeRequestSubscription
     _$PleromaPushSubscribeRequestSubscriptionFromJson(
         Map<String, dynamic> json) {
   return PleromaPushSubscribeRequestSubscription(
-    endpoint: json['endpoint'] as String,
+    endpoint: json['endpoint'] as String?,
     keys: json['keys'] == null
         ? null
         : PleromaPushSubscriptionKeys.fromJson(
@@ -173,8 +173,8 @@ Map<String, dynamic> _$PleromaPushSubscribeRequestSubscriptionToJson(
 PleromaPushSubscriptionKeys _$PleromaPushSubscriptionKeysFromJson(
     Map<String, dynamic> json) {
   return PleromaPushSubscriptionKeys(
-    p256dh: json['p256dh'] as String,
-    auth: json['auth'] as String,
+    p256dh: json['p256dh'] as String?,
+    auth: json['auth'] as String?,
   );
 }
 
@@ -188,10 +188,10 @@ Map<String, dynamic> _$PleromaPushSubscriptionKeysToJson(
 PleromaPushMessageBody _$PleromaPushMessageBodyFromJson(
     Map<String, dynamic> json) {
   return PleromaPushMessageBody(
-    notificationId: json['notification_id'] as String,
-    server: json['server'] as String,
-    account: json['account'] as String,
-    notificationType: json['notification_type'] as String,
+    notificationId: json['notification_id'] as String?,
+    server: json['server'] as String?,
+    account: json['account'] as String?,
+    notificationType: json['notification_type'] as String?,
   );
 }
 

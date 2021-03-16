@@ -9,29 +9,29 @@ import 'package:logging/logging.dart';
 
 Logger _logger = Logger("async_dialog.dart");
 
-typedef ErrorData ErrorDataBuilder(
+typedef ErrorData? ErrorDataBuilder(
   BuildContext context,
   dynamic error,
   StackTrace stackTrace,
 );
 
-typedef void ErrorCallback(BuildContext context, ErrorData errorData);
+typedef void ErrorCallback(BuildContext? context, ErrorData errorData);
 
-Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
-  @required BuildContext context,
-  @required Future<T> asyncCode(),
-  @required ErrorCallback errorCallback,
-  String contentMessage,
+Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
+  required BuildContext context,
+  required Future<T> asyncCode(),
+  required ErrorCallback? errorCallback,
+  String? contentMessage,
   List<ErrorDataBuilder> errorDataBuilders = const [],
   bool showDefaultErrorAlertDialogOnUnhandledError = true,
   bool showProgressDialog = true,
   bool cancelable = false,
 }) async {
-  T result;
+  T? result;
   CancelableOperation<T> cancelableOperation =
       CancelableOperation.fromFuture(asyncCode());
 
-  var progressDialog;
+  late var progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
         cancelable: cancelable,
@@ -41,7 +41,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   }
 
   var error;
-  ErrorData errorData;
+  ErrorData? errorData;
 
   var needRethrow = true;
 
@@ -90,7 +90,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
   });
 
-  AsyncDialogResult dialogResult;
+  AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
     _logger.fine(() => "canceled doAsyncOperationWithFediDialog");

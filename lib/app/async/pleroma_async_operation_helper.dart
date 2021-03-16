@@ -14,15 +14,15 @@ class PleromaAsyncOperationHelper {
     ...AsyncOperationHelper.defaultErrorDataBuilders,
   ];
 
-  static Future<AsyncDialogResult<T>> performPleromaAsyncOperation<T>({
-    @required BuildContext context,
-    @required Future<T> asyncCode(),
-    String contentMessage,
+  static Future<AsyncDialogResult<T?>> performPleromaAsyncOperation<T>({
+    required BuildContext context,
+    required Future<T> asyncCode(),
+    String? contentMessage,
     List<ErrorDataBuilder> errorDataBuilders = pleromaErrorDataBuilders,
     bool createDefaultErrorDataUnhandledError = true,
     bool showNotificationOnError = true,
     bool showProgressDialog = true,
-    ErrorCallback errorCallback,
+    ErrorCallback? errorCallback,
     bool cancelable = false,
   }) {
     return AsyncOperationHelper.performAsyncOperation(
@@ -43,7 +43,7 @@ class PleromaAsyncOperationHelper {
     );
   }
 
-  static ErrorData pleromaThrottledErrorAlertDialogBuilder(
+  static ErrorData? pleromaThrottledErrorAlertDialogBuilder(
     BuildContext context,
     dynamic error,
     StackTrace stackTrace,
@@ -62,8 +62,8 @@ class PleromaAsyncOperationHelper {
     }
   }
 
-  static ErrorData pleromaInvalidCredentialsErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? pleromaInvalidCredentialsErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {
@@ -84,8 +84,8 @@ class PleromaAsyncOperationHelper {
     }
   }
 
-  static ErrorData pleromaErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? pleromaErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {

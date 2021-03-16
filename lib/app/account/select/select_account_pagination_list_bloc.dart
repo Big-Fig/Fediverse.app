@@ -13,8 +13,8 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
   final ISearchInputBloc searchInputBloc;
 
   SelectAccountPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
+    required this.searchInputBloc,
+    required
         IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(
@@ -37,7 +37,7 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
           searchInputBloc: ISearchInputBloc.of(context, listen: false));
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<IAccountPaginationListBloc>(
       create: (context) =>
           SelectAccountPaginationListBloc.createFromContext(context),

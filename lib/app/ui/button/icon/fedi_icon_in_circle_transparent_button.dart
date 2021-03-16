@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 class FediIconInCircleTransparentButton extends StatelessWidget {
   final IconData iconData;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double iconSize;
   final double borderWidth;
   final double size;
@@ -17,8 +17,8 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
 
   const FediIconInCircleTransparentButton(
     this.iconData, {
-    @required this.onPressed,
-    @required this.color,
+    required this.onPressed,
+    required this.color,
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,

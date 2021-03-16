@@ -9,7 +9,6 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -25,12 +24,12 @@ var _singlePleromaChatMessageRepositoryPagination =
 
 class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     implements IPleromaChatMessageRepository {
-  ChatMessageDao dao;
-  IAccountRepository accountRepository;
+  late ChatMessageDao dao;
+  IAccountRepository? accountRepository;
 
   PleromaChatMessageRepository({
-    @required AppDatabase appDatabase,
-    @required this.accountRepository,
+    required AppDatabase appDatabase,
+    required this.accountRepository,
   }) {
     dao = appDatabase.chatMessageDao;
   }
@@ -46,57 +45,53 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
     pleroma_lib.IPleromaChatMessage remoteChatMessage,
   ) async {
     _logger.finer(() => "upsertRemoteChatMessage $remoteChatMessage");
-//    var remoteAccount = remoteChatMessage.account;
-//
-//    await accountRepository.upsertRemoteAccount(remoteAccount,
-//        chatRemoteId: chatRemoteId);
-//
+
     await upsert(
-      mapRemoteChatMessageToDbPleromaChatMessage(
-        remoteChatMessage,
-      ),
+      remoteChatMessage.toDbChatMessage(),
     );
   }
 
   @override
   Future upsertRemoteChatMessages(
-    List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
+    List<pleroma_lib.IPleromaChatMessage> pleromaChatMessages,
   ) async {
     _logger
-        .finer(() => "upsertRemoteChatMessages ${remoteChatMessages.length}");
-    if (remoteChatMessages.isEmpty) {
+        .finer(() => "upsertRemoteChatMessages ${pleromaChatMessages.length}");
+    if (pleromaChatMessages.isEmpty) {
       return;
     }
-
-//
-//    List<IPleromaAccount> remoteAccounts = remoteChatMessages
-//        .map((remoteChatMessage) => remoteChatMessage.account)
-//        .toList();
-//
-//    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-//        chatRemoteId: chatRemoteId);
-
-    await upsertAll(remoteChatMessages
-        .map(mapRemoteChatMessageToDbPleromaChatMessage)
+    await upsertAll(pleromaChatMessages
+        .map(
+          (pleromaChatMessage) => pleromaChatMessage.toDbChatMessage(),
+        )
         .toList());
   }
 
   @override
-  Future<DbChatMessagePopulatedWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(
-          remoteId,
-        ),
+  Future<DbChatMessagePopulatedWrapper?> findByRemoteId(
+    String remoteId,
+  ) async {
+    var dbChatMessagePopulated = await dao.findByRemoteId(
+      remoteId,
+    );
+
+    if (dbChatMessagePopulated != null) {
+      return mapDataClassToItem(
+        dbChatMessagePopulated,
       );
+    } else {
+      return null;
+    }
+  }
 
   @override
   Future deleteByRemoteId(String remoteId) => dao.deleteByRemoteId(remoteId);
 
   @override
   Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
-    @required PleromaChatMessageRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChatMessage> pagination,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChatMessage>? pagination,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
@@ -115,9 +110,9 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbChatMessagePopulatedWrapper>> watchChatMessages({
-    @required PleromaChatMessageRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChatMessage> pagination,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChatMessage>? pagination,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
@@ -126,15 +121,20 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbChatMessagePopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
+    Stream<List<DbChatMessagePopulated>> stream = query.watch().map(
+          dao.typedResultListToPopulated,
+        );
+    return stream.map((list) => list
+        .map(
+          mapDataClassToItem,
+        )
+        .toList());
   }
 
   JoinedSelectStatement createQuery({
-    @required PleromaChatMessageRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChatMessage> pagination,
-    @required PleromaChatMessageOrderingTermData orderingTermData,
+    required PleromaChatMessageRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChatMessage>? pagination,
+    required PleromaChatMessageOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -180,24 +180,31 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
     var finalQuery = joinQuery;
 
-    if (filters?.onlyInChats != null) {
-      if (filters.onlyInChats.length == 1) {
+    var onlyInChats = filters?.onlyInChats;
+    if (onlyInChats != null) {
+      if (onlyInChats.length == 1) {
         finalQuery = dao.addChatWhere(
           finalQuery,
-          filters.onlyInChats.first.remoteId,
+          onlyInChats.first.remoteId,
         );
       } else {
         finalQuery = dao.addChatsWhere(
           finalQuery,
-          filters.onlyInChats.map(
-            (chat) => chat.remoteId,
-          ),
+          onlyInChats
+              .map(
+                (chat) => chat.remoteId,
+              )
+              .toList(),
         );
       }
     }
 
-    if (pagination?.limit != null) {
-      finalQuery.limit(pagination?.limit, offset: pagination?.offset);
+    var limit = pagination?.limit;
+    if (limit != null) {
+      finalQuery.limit(
+        limit,
+        offset: pagination?.offset,
+      );
     }
     return finalQuery;
   }
@@ -229,7 +236,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
+    var affectedRows = await dao.deleteById(id!);
     assert(affectedRows == 0 || affectedRows == 1);
     return (affectedRows) == 1;
   }
@@ -243,7 +250,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       (dao.watchById(id)).map(mapDataClassToItem);
 
   @override
-  Stream<IPleromaChatMessage> watchByRemoteId(String remoteId) {
+  Stream<IPleromaChatMessage> watchByRemoteId(String? remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
     return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
   }
@@ -259,7 +266,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<IPleromaChatMessage> watchByOldPendingRemoteId(
-    String oldPendingRemoteId,
+    String? oldPendingRemoteId,
   ) {
     _logger.finest(() => "watchByOldPendingRemoteId $oldPendingRemoteId");
     return (dao.watchByOldPendingRemoteId(oldPendingRemoteId))
@@ -288,7 +295,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbChatMessage item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int id, DbChatMessage dbChatMessage) {
+  Future<bool> updateById(int? id, DbChatMessage dbChatMessage) {
     if (dbChatMessage.id != id) {
       dbChatMessage = dbChatMessage.copyWith(id: id);
     }
@@ -297,46 +304,35 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   DbChatMessagePopulatedWrapper mapDataClassToItem(
       DbChatMessagePopulated dataClass) {
-    if (dataClass == null) {
-      return null;
-    }
-    return DbChatMessagePopulatedWrapper(dataClass);
+    return DbChatMessagePopulatedWrapper(
+      dbChatMessagePopulated: dataClass,
+    );
   }
 
-  Insertable<DbChatMessage> mapItemToDataClass(
+  Insertable<DbChatMessage>? mapItemToDataClass(
       DbChatMessagePopulatedWrapper item) {
-    if (item == null) {
-      return null;
-    }
     return item.dbChatMessagePopulated.dbChatMessage;
   }
 
   @override
   Future updateLocalChatMessageByRemoteChatMessage({
-    @required IPleromaChatMessage oldLocalChatMessage,
-    @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
+    required IPleromaChatMessage oldLocalChatMessage,
+    required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
   }) async {
     _logger.finer(() => "updateLocalChatMessageByRemoteChatMessage \n"
         "\t old: $oldLocalChatMessage \n"
         "\t newRemoteChatMessage: $newRemoteChatMessage");
 
-//    var remoteAccount = newRemoteChatMessage.account;
-//
-//    await accountRepository.upsertRemoteAccount(remoteAccount,
-//        chatRemoteId: oldLocalChatMessage.remoteId, conversationRemoteId: null);
-
     await updateById(
       oldLocalChatMessage.localId,
-      mapRemoteChatMessageToDbPleromaChatMessage(
-        newRemoteChatMessage,
-      ),
+      newRemoteChatMessage.toDbChatMessage(),
     );
   }
 
   @override
   Future<DbChatMessagePopulatedWrapper> getChatMessage({
-    @required PleromaChatMessageRepositoryFilters filters,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
@@ -354,8 +350,8 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbChatMessagePopulatedWrapper> watchChatMessage({
-    @required PleromaChatMessageRepositoryFilters filters,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
@@ -378,7 +374,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<IPleromaChatMessage> getChatLastChatMessage({
-    @required IPleromaChat chat,
+    required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
       getChatMessage(
@@ -395,7 +391,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<IPleromaChatMessage> watchChatLastChatMessage({
-    @required IPleromaChat chat,
+    required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   }) =>
       watchChatMessage(
@@ -411,8 +407,8 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
       );
 
   @override
-  Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
-    @required List<IPleromaChat> chats,
+  Future<Map<IPleromaChat, IPleromaChatMessage?>> getChatsLastChatMessage({
+    required List<IPleromaChat> chats,
     bool onlyPendingStatePublishedOrNull = false,
   }) async {
     var query = createQuery(
@@ -431,7 +427,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
         .map(mapDataClassToItem)
         .toList();
 
-    Map<IPleromaChat, IPleromaChatMessage> result = {};
+    Map<IPleromaChat, IPleromaChatMessage?> result = {};
 
     chats.forEach(
       (chat) {
@@ -439,13 +435,15 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
           (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
         );
 
-        IPleromaChatMessage chatMessage = currentChatMessages?.fold(
+        IPleromaChatMessage? chatMessage = currentChatMessages.fold(
           null,
-          (IPleromaChatMessage previousValue, IPleromaChatMessage element) {
+          (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
             if (previousValue == null) {
               return element;
             } else {
-              if (previousValue.createdAt.isBefore(element.createdAt)) {
+              if (previousValue.createdAt.isBefore(
+                element.createdAt,
+              )) {
                 return element;
               } else {
                 return previousValue;
@@ -463,7 +461,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future markChatMessageAsDeleted({
-    @required String chatMessageRemoteId,
+    required String? chatMessageRemoteId,
   }) =>
       dao.markAsDeleted(
         remoteId: chatMessageRemoteId,
@@ -471,7 +469,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future markChatMessageAsHiddenLocallyOnDevice({
-    @required int chatMessageLocalId,
+    required int? chatMessageLocalId,
   }) =>
       dao.markAsHiddenLocallyOnDevice(
         localId: chatMessageLocalId,

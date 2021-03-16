@@ -60,7 +60,7 @@ import 'package:provider/provider.dart';
 const _headerBackgroundHeight = 200.0;
 
 class AccountHomeTabPage extends StatelessWidget {
-  const AccountHomeTabPage({Key key}) : super(key: key);
+  const AccountHomeTabPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -138,13 +138,10 @@ class _AccountHomeTabPageBody extends StatelessWidget {
       case AccountStatusesTab.withoutReplies:
       case AccountStatusesTab.media:
         return const StatusListTapToLoadOverlayWidget();
-        break;
       case AccountStatusesTab.favourites:
       case AccountStatusesTab.pinned:
         return const SizedBox.shrink();
-        break;
     }
-    throw "Invalid tab $tab";
   }
 
   Widget _buildTabContent(AccountStatusesTab tab) {
@@ -156,12 +153,9 @@ class _AccountHomeTabPageBody extends StatelessWidget {
         return const CollapsibleOwnerWidget(
           child: AccountStatusesTimelineWidget(),
         );
-        break;
       case AccountStatusesTab.media:
         return const AccountStatusesMediaWidget();
-        break;
     }
-    throw "Invalid tab $tab";
   }
 }
 
@@ -170,9 +164,9 @@ class _AccountHomeTabPageBodyProviderWidget extends StatelessWidget {
   final Widget child;
 
   const _AccountHomeTabPageBodyProviderWidget({
-    Key key,
-    @required this.index,
-    @required this.child,
+    Key? key,
+    required this.index,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -194,28 +188,19 @@ class _AccountHomeTabPageBodyProviderWidget extends StatelessWidget {
               return _AccountHomeTabProviderWithoutRepliesTabProviderWidget(
                 child: child,
               );
-
-              break;
             case AccountStatusesTab.media:
               return _AccountHomeTabProviderMediaTabProviderWidget(
                 child: child,
               );
-
-              break;
             case AccountStatusesTab.pinned:
               return _AccountHomeTabProviderPinnedTabProviderWidget(
                 child: child,
               );
-
-              break;
             case AccountStatusesTab.favourites:
               return _AccountHomeTabProviderFavouritedTabProviderWidget(
                 child: child,
               );
-
-              break;
           }
-          throw "Invalid tab $tab";
         },
       ),
     );
@@ -224,7 +209,7 @@ class _AccountHomeTabPageBodyProviderWidget extends StatelessWidget {
 
 class _AccountHomeTabMyAccountWidget extends StatelessWidget {
   const _AccountHomeTabMyAccountWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -254,7 +239,7 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
 
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
-  scrollControllerBloc.scrollController.animateTo(
+  scrollControllerBloc.scrollController!.animateTo(
     MediaQuery.of(context).size.height / 2,
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,
@@ -266,8 +251,8 @@ class _AccountHomeTabProviderWithRepliesTabProviderWidget
   final Widget child;
 
   const _AccountHomeTabProviderWithRepliesTabProviderWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -296,8 +281,8 @@ class _AccountHomeTabProviderWithoutRepliesTabProviderWidget
   final Widget child;
 
   const _AccountHomeTabProviderWithoutRepliesTabProviderWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -325,8 +310,8 @@ class _AccountHomeTabProviderMediaTabProviderWidget extends StatelessWidget {
   final Widget child;
 
   const _AccountHomeTabProviderMediaTabProviderWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -354,8 +339,8 @@ class _AccountHomeTabProviderPinnedTabProviderWidget extends StatelessWidget {
   final Widget child;
 
   const _AccountHomeTabProviderPinnedTabProviderWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -387,8 +372,8 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
   final Widget child;
 
   const _AccountHomeTabProviderFavouritedTabProviderWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -409,7 +394,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
         update: (context, value, previous) => value,
         child: StatusCachedListBlocProxyProvider(
           child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-              IPleromaCachedListBloc<IStatus>>(
+              IPleromaCachedListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(
@@ -432,7 +417,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
 
 class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
   const _AccountHomeTabCurrentInstanceNameWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -441,10 +426,10 @@ class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return AutoSizeText(
-      currentInstanceBloc.currentInstance.userAtHost,
-      minFontSize: IFediUiTextTheme.of(context).smallShortBoldWhite.fontSize,
+      currentInstanceBloc.currentInstance!.userAtHost,
+      minFontSize: IFediUiTextTheme.of(context).smallShortBoldWhite.fontSize!,
       maxFontSize:
-          IFediUiTextTheme.of(context).subHeaderShortBoldWhite.fontSize,
+          IFediUiTextTheme.of(context).subHeaderShortBoldWhite.fontSize!,
       maxLines: 1,
       style: IFediUiTextTheme.of(context).subHeaderShortBoldWhite,
     );
@@ -453,7 +438,7 @@ class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
 
 class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
   const _AccountHomeTabTextIndicatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -471,7 +456,7 @@ class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
 
 class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
   const _AccountHomeTabFediTabMainHeaderBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

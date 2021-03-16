@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
@@ -7,7 +8,6 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -23,9 +23,9 @@ var _singleScheduledStatusRepositoryPagination =
 
 class ScheduledStatusRepository extends AsyncInitLoadingBloc
     implements IScheduledStatusRepository {
-  ScheduledStatusDao dao;
+  late ScheduledStatusDao dao;
 
-  ScheduledStatusRepository({@required AppDatabase appDatabase}) {
+  ScheduledStatusRepository({required AppDatabase appDatabase}) {
     dao = appDatabase.scheduledStatusDao;
   }
 
@@ -45,14 +45,14 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbScheduledStatusWrapper> watchByRemoteId(
-    String remoteId,
+    String? remoteId,
   ) =>
-      dao.findByRemoteId(remoteId).watchSingle().map(
+      dao.findByRemoteId(remoteId!).watchSingle().map(
             mapDataClassToItem,
           );
 
   @override
-  Future upsertAll(Iterable<DbScheduledStatus> items) async {
+  Future upsertAll(List<DbScheduledStatus> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
@@ -64,7 +64,7 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future insertAll(Iterable<DbScheduledStatus> items) async {
+  Future insertAll(List<DbScheduledStatus> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
     return await dao.insertAll(
@@ -114,7 +114,7 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> updateById(
-    int id,
+    int? id,
     DbScheduledStatus dbScheduledStatus,
   ) {
     if (dbScheduledStatus.id != id) {
@@ -124,13 +124,10 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   }
 
   DbScheduledStatusWrapper mapDataClassToItem(DbScheduledStatus dataClass) {
-    if (dataClass == null) {
-      return null;
-    }
-    return DbScheduledStatusWrapper(dataClass);
+    return DbScheduledStatusWrapper(dbScheduledStatus: dataClass);
   }
 
-  Insertable<DbScheduledStatus> mapItemToDataClass(
+  Insertable<DbScheduledStatus>? mapItemToDataClass(
     DbScheduledStatusWrapper item,
   ) =>
       item.dbScheduledStatus;
@@ -140,10 +137,7 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
     IPleromaScheduledStatus remoteScheduledStatus,
   ) async {
     await upsert(
-      mapRemoteScheduledStatusToDbScheduledStatus(
-        remoteScheduledStatus,
-        canceled: false,
-      ),
+      remoteScheduledStatus.toDbScheduledStatus(canceled: false),
     );
   }
 
@@ -151,13 +145,12 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Future upsertRemoteScheduledStatuses(
     List<IPleromaScheduledStatus> remoteScheduledStatuses,
   ) async {
-    if (remoteScheduledStatuses?.isNotEmpty == true) {
+    if (remoteScheduledStatuses.isNotEmpty == true) {
       await upsertAll(
         remoteScheduledStatuses
             .map(
               (remoteScheduledStatus) =>
-                  mapRemoteScheduledStatusToDbScheduledStatus(
-                remoteScheduledStatus,
+                  remoteScheduledStatus.toDbScheduledStatus(
                 canceled: false,
               ),
             )
@@ -168,15 +161,14 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future updateLocalScheduledStatusByRemoteScheduledStatus({
-    @required IScheduledStatus oldLocalScheduledStatus,
-    @required IPleromaScheduledStatus newRemoteScheduledStatus,
+    required IScheduledStatus oldLocalScheduledStatus,
+    required IPleromaScheduledStatus newRemoteScheduledStatus,
   }) async {
     _logger.finer(() => "updateLocalScheduledStatusByRemoteScheduledStatus \n"
         "\t old: $oldLocalScheduledStatus \n"
         "\t newRemoteScheduledStatus: $newRemoteScheduledStatus");
 
-    var newLocalScheduledStatus = mapRemoteScheduledStatusToDbScheduledStatus(
-      newRemoteScheduledStatus,
+    var newLocalScheduledStatus = newRemoteScheduledStatus.toDbScheduledStatus(
       canceled: oldLocalScheduledStatus.canceled,
     );
     await updateById(
@@ -187,9 +179,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbScheduledStatusWrapper>> getScheduledStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IScheduledStatus> pagination,
-    ScheduledStatusOrderingTermData orderingTermData =
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IScheduledStatus>? pagination,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   }) async {
     var query = createQuery(
@@ -210,9 +202,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbScheduledStatusWrapper>> watchScheduledStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IScheduledStatus> pagination,
-    ScheduledStatusOrderingTermData orderingTermData =
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IScheduledStatus>? pagination,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   }) {
     var query = createQuery(
@@ -230,9 +222,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IScheduledStatus> pagination,
-    @required ScheduledStatusOrderingTermData orderingTermData,
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IScheduledStatus>? pagination,
+    required ScheduledStatusOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -243,7 +235,7 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
 
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTermData.orderType ==
+      assert(orderingTermData!.orderType ==
           ScheduledStatusRepositoryOrderType.remoteId);
       query = dao.addRemoteIdBoundsWhere(
         query,
@@ -272,16 +264,20 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
     // nothing to join by now, just to avoid unnecessary code wrappers overhead
     var joinQuery = query.join([]);
 
-    if (pagination?.limit != null) {
-      joinQuery.limit(pagination?.limit, offset: pagination?.offset);
+    var limit = pagination?.limit;
+    if (limit != null) {
+      joinQuery.limit(
+        limit,
+        offset: pagination?.offset,
+      );
     }
     return joinQuery;
   }
 
   @override
-  Future<DbScheduledStatusWrapper> getScheduledStatus({
-    @required ScheduledStatusRepositoryFilters filters,
-    ScheduledStatusOrderingTermData orderingTermData =
+  Future<DbScheduledStatusWrapper?> getScheduledStatus({
+    required ScheduledStatusRepositoryFilters? filters,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   }) async {
     var scheduledStatuses = await getScheduledStatuses(
@@ -289,13 +285,13 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
       pagination: _singleScheduledStatusRepositoryPagination,
       orderingTermData: orderingTermData,
     );
-    return scheduledStatuses?.first;
+    return scheduledStatuses.first;
   }
 
   @override
-  Stream<DbScheduledStatusWrapper> watchScheduledStatus({
-    @required ScheduledStatusRepositoryFilters filters,
-    ScheduledStatusOrderingTermData orderingTermData =
+  Stream<DbScheduledStatusWrapper?> watchScheduledStatus({
+    required ScheduledStatusRepositoryFilters? filters,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   }) {
     var scheduledStatusesStream = watchScheduledStatuses(
@@ -303,20 +299,21 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
       pagination: _singleScheduledStatusRepositoryPagination,
       orderingTermData: orderingTermData,
     );
+
     return scheduledStatusesStream.map(
-      (scheduledStatuses) => scheduledStatuses?.first,
+      (scheduledStatuses) => scheduledStatuses.firstOrNull,
     );
   }
 
   @override
   Future markAsCanceled({
-    @required IScheduledStatus scheduledStatus,
+    required IScheduledStatus scheduledStatus,
   }) async {
     await updateById(
       scheduledStatus.localId,
       DbScheduledStatus(
         canceled: true,
-        params: scheduledStatus.params,
+        params: scheduledStatus.params.toPleromaScheduledStatusParams(),
         mediaAttachments: scheduledStatus.mediaAttachments,
         id: scheduledStatus.localId,
         remoteId: scheduledStatus.remoteId,

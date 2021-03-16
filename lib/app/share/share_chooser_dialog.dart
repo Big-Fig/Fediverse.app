@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 
 void showShareChooserDialog(
   BuildContext context, {
-  @required Function(BuildContext context) externalShareAction,
-  @required Function(BuildContext context) conversationsShareAction,
-  @required Function(BuildContext context) chatsShareAction,
-  @required Function(BuildContext context) newStatusShareAction,
+  required Function(BuildContext context) externalShareAction,
+  required Function(BuildContext context) conversationsShareAction,
+  required Function(BuildContext context) chatsShareAction,
+  required Function(BuildContext context) newStatusShareAction,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -32,7 +32,7 @@ void showShareChooserDialog(
           conversationsShareAction(context);
         },
       ),
-      if (currentAuthInstanceBloc.currentInstance.isSupportChats)
+      if (currentAuthInstanceBloc.currentInstance!.isSupportChats)
         DialogAction(
           icon: FediIcons.chat,
           label: S.of(context).app_share_action_shareToChats,

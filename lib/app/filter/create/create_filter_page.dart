@@ -31,8 +31,8 @@ class CreateFilterPage extends StatelessWidget {
 }
 
 void goToCreateFilterPage({
-  @required BuildContext context,
-  @required Function(IFilter) onSubmit,
+  required BuildContext context,
+  required Function(IFilter) onSubmit,
 }) {
   Navigator.push(
     context,
@@ -44,8 +44,8 @@ void goToCreateFilterPage({
 }
 
 MaterialPageRoute createCreateFilterPageRoute({
-  @required BuildContext context,
-  @required Function(IFilter) onSubmit,
+  required BuildContext context,
+  required Function(IFilter) onSubmit,
 }) {
   return MaterialPageRoute(
     builder: (context) => CreateFilterBloc.provideToContext(

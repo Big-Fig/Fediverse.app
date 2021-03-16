@@ -7,66 +7,92 @@ part 'pleroma_card_model.g.dart';
 
 abstract class IPleromaCard implements IMastodonCard {}
 
+extension IPleromaCardExtension on IPleromaCard {
+  PleromaCard toPleromaCard() {
+    if (this is PleromaCard) {
+      return this as PleromaCard;
+    } else {
+      return PleromaCard(
+
+        authorName:authorName,
+        authorUrl:authorUrl,
+        description:description,
+        embedUrl:embedUrl,
+        height:height,
+        html:html,
+        image:image,
+        providerName:providerName,
+        providerUrl:providerUrl,
+        title:title,
+        type:type,
+        url:url,
+        width:width,
+      );
+    }
+  }
+}
+
 @JsonSerializable()
 class PleromaCard implements IPleromaCard {
   @override
   @JsonKey(name: "author_name")
-  String authorName;
+  final String? authorName;
 
   @override
   @JsonKey(name: "author_url")
-  String authorUrl;
+  final String? authorUrl;
 
   @override
-  String description;
+  final String? description;
 
   @override
   @JsonKey(name: "embed_url")
-  String embedUrl;
+  final String? embedUrl;
 
   @override
-  int height;
+  final int? height;
 
   @override
-  String html;
+  final String? html;
 
   @override
-  String image;
+  final String? image;
 
   @override
   @JsonKey(name: "provider_name")
-  String providerName;
+  final String? providerName;
 
   @override
   @JsonKey(name: "provider_url")
-  String providerUrl;
+  final String? providerUrl;
 
   @override
-  String title;
+  final String? title;
 
   @override
-  MastodonCardType type;
+  final MastodonCardType? type;
 
   @override
-  String url;
+  final String? url;
 
   @override
-  int width;
+  final int? width;
 
-  PleromaCard(
-      {this.authorName,
-      this.authorUrl,
-      this.description,
-      this.embedUrl,
-      this.height,
-      this.html,
-      this.image,
-      this.providerName,
-      this.providerUrl,
-      this.title,
-      this.type,
-      this.url,
-      this.width});
+  PleromaCard({
+    required this.authorName,
+    required this.authorUrl,
+    required this.description,
+    required this.embedUrl,
+    required this.height,
+    required this.html,
+    required this.image,
+    required this.providerName,
+    required this.providerUrl,
+    required this.title,
+    required this.type,
+    required this.url,
+    required this.width,
+  });
 
   factory PleromaCard.fromJson(Map<String, dynamic> json) =>
       _$PleromaCardFromJson(json);

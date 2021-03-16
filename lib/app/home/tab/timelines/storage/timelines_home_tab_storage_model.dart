@@ -13,8 +13,10 @@ enum TimelinesHomeTabStorageUiState { edit, view }
 class TimelinesHomeTabStorageListItem {
   final Timeline timeline;
   final Key key;
+
   TimelinesHomeTabStorageListItem(this.timeline)
       : key = ValueKey("timeline.${timeline.id}");
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -22,8 +24,10 @@ class TimelinesHomeTabStorageListItem {
           runtimeType == other.runtimeType &&
           timeline == other.timeline &&
           key == other.key;
+
   @override
   int get hashCode => timeline.hashCode ^ key.hashCode;
+
   @override
   String toString() {
     return 'TimelinesHomeTabStorageListItem{timeline: $timeline, key: $key}';
@@ -41,7 +45,9 @@ class TimelinesHomeTabStorage implements IJsonObject {
   @JsonKey(name: "timeline_ids")
   final List<String> timelineIds;
 
-  TimelinesHomeTabStorage({@required this.timelineIds});
+  TimelinesHomeTabStorage({
+    required this.timelineIds,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -54,9 +60,11 @@ class TimelinesHomeTabStorage implements IJsonObject {
   int get hashCode => timelineIds.hashCode;
 
   TimelinesHomeTabStorage copyWith({
-    List<String> timelineIds,
+    List<String>? timelineIds,
   }) =>
-      TimelinesHomeTabStorage(timelineIds: timelineIds ?? this.timelineIds);
+      TimelinesHomeTabStorage(
+        timelineIds: timelineIds ?? this.timelineIds,
+      );
 
   @override
   String toString() {

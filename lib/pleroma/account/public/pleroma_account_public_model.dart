@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/account/public/mastodon_account_public_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_account_public_model.g.dart';
@@ -9,11 +8,11 @@ part 'pleroma_account_public_model.g.dart';
 abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
   Map<String, dynamic> toJson();
 
-  String get captchaToken;
+  String? get captchaToken;
 
-  String get captchaAnswerData;
+  String? get captchaAnswerData;
 
-  String get captchaSolution;
+  String? get captchaSolution;
 }
 
 @JsonSerializable(
@@ -21,43 +20,43 @@ abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
 )
 class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
   @override
-  final bool agreement;
+  final bool? agreement;
 
   @override
-  final String email;
+  final String? email;
 
   @override
-  final String locale;
+  final String? locale;
 
   @override
-  final String password;
+  final String? password;
 
   @override
-  final String reason;
+  final String? reason;
 
   @override
-  final String username;
+  final String? username;
 
   @override
   @JsonKey(name: "captcha_token")
-  final String captchaToken;
+  final String? captchaToken;
   @override
   @JsonKey(name: "captcha_answer_data")
-  final String captchaAnswerData;
+  final String? captchaAnswerData;
   @override
   @JsonKey(name: "captcha_solution")
-  final String captchaSolution;
+  final String? captchaSolution;
 
   PleromaAccountRegisterRequest({
-    @required this.agreement,
-    @required this.email,
-    @required this.locale,
-    @required this.password,
+    required this.agreement,
+    required this.email,
+    required this.locale,
+    required this.password,
     this.reason,
-    @required this.username,
-    @required this.captchaToken,
-    @required this.captchaAnswerData,
-    @required this.captchaSolution,
+    required this.username,
+    required this.captchaToken,
+    required this.captchaAnswerData,
+    required this.captchaSolution,
   });
 
   @override

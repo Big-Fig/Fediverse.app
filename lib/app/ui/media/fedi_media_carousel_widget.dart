@@ -8,7 +8,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
   final IndexedWidgetBuilder builder;
 
   const FediMediaCarouselWidget({
-    @required this.builder,
+    required this.builder,
   });
 
   @override
@@ -31,7 +31,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
                     )
                     .toList(),
                 options: CarouselOptions(
-                    initialPage: fediMediaCarouselBloc.currentIndex,
+                    initialPage: fediMediaCarouselBloc.currentIndex!,
                     viewportFraction: 0.9,
                     enableInfiniteScroll: false,
                     onPageChanged: (index, reason) {

@@ -10,6 +10,7 @@ import 'package:fedi/app/ui/button/fedi_text_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,15 +32,15 @@ class AccountReportPage extends StatelessWidget {
 class _AccountReportPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _AccountReportPageAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accountReportBloc = IAccountReportBloc.of(context);
-    var account = accountReportBloc.account;
+    var account = accountReportBloc.account!;
     return FediPageTitleAppBar(
-      title: S.of(context).app_account_report_title(account.acct),
+      title: S.of(context).app_account_report_title(account.acct!),
       actions: [
         const _AccountReportSendButton(),
       ],
@@ -52,7 +53,7 @@ class _AccountReportPageAppBar extends StatelessWidget
 
 class _AccountReportSendButton extends StatelessWidget {
   const _AccountReportSendButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -66,7 +67,7 @@ class _AccountReportSendButton extends StatelessWidget {
         return PleromaAsyncOperationButtonBuilderWidget(
           builder: (context, onPressed) => FediTextButton(
             text: S.of(context).app_account_report_action_send,
-            onPressed: isHaveAtLeastOneError ? null : onPressed,
+            onPressed: isHaveAtLeastOneError! ? null : onPressed,
           ),
           asyncButtonAction: () async {
             var success = await accountReportBloc.send();
@@ -94,8 +95,8 @@ class _AccountReportSendButton extends StatelessWidget {
 
 void goToAccountReportPage(
   BuildContext context, {
-  @required IAccount account,
-  @required List<IStatus> statuses,
+  required IAccount? account,
+  required List<IStatus?> statuses,
 }) {
   Navigator.push(
     context,
@@ -107,15 +108,15 @@ void goToAccountReportPage(
 }
 
 MaterialPageRoute createAccountReportPageRoute({
-  @required IAccount account,
-  @required List<IStatus> statuses,
+  required IAccount? account,
+  required List<IStatus?> statuses,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IAccountReportBloc>(
       create: (context) => AccountReportBloc(
         account: account,
         statuses: statuses,
-        pleromaAuthAccountService: IPleromaAccountService.of(
+        pleromaAuthAccountService: IPleromaAuthAccountService.of(
           context,
           listen: false,
         ),

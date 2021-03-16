@@ -9,15 +9,15 @@ import 'package:flutter/widgets.dart';
 abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
-  PleromaClientApplication get hostApplication;
+  PleromaClientApplication? get hostApplication;
 
-  Stream<PleromaClientApplication> get hostApplicationStream;
+  Stream<PleromaClientApplication?> get hostApplicationStream;
 
   bool get isHostAccessTokenExist;
 
-  PleromaOAuthToken get hostAccessToken;
+  PleromaOAuthToken? get hostAccessToken;
 
-  Stream<PleromaOAuthToken> get hostAccessTokenStream;
+  Stream<PleromaOAuthToken?> get hostAccessTokenStream;
 
   Future<AuthInstance> loginWithAuthCode(String authCode);
 
@@ -25,10 +25,10 @@ abstract class IAuthHostBloc extends IDisposable {
 
   Future<bool> retrieveAppAccessToken();
 
-  Future<AuthInstance> launchLoginToAccount();
+  Future<AuthInstance?> launchLoginToAccount();
 
   Future<AuthHostRegistrationResult> registerAccount({
-    @required IPleromaAccountRegisterRequest request,
+    required IPleromaAccountRegisterRequest request,
   });
 
   Future checkApplicationRegistration();

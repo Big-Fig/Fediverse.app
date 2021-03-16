@@ -9,11 +9,11 @@ import 'package:rxdart/rxdart.dart';
 class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   final IPleromaListService pleromaListService;
 
-  BehaviorSubject<ICustomList> customListSubject;
+  BehaviorSubject<ICustomList?> customListSubject;
 
   CustomListBloc({
-    @required ICustomList customList,
-    @required this.pleromaListService,
+    required ICustomList customList,
+    required this.pleromaListService,
   }) : customListSubject = BehaviorSubject.seeded(customList) {
     addDisposable(subject: customListSubject);
   }
@@ -23,25 +23,25 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
       customListStream.where((customList) => customList == null);
 
   @override
-  ICustomList get customList => customListSubject.value;
+  ICustomList? get customList => customListSubject.value;
 
   @override
-  Stream<ICustomList> get customListStream => customListSubject.stream;
+  Stream<ICustomList?> get customListStream => customListSubject.stream;
 
   @override
-  void updateList(ICustomList customList) {
+  void updateList(ICustomList? customList) {
     customListSubject.add(customList);
   }
 
   @override
-  String get title => customList.title;
+  String? get title => customList!.title;
 
   @override
-  Stream<String> get titleStream =>
-      customListStream.map((customList) => customList.title);
+  Stream<String?> get titleStream =>
+      customListStream.map((customList) => customList!.title);
 
   static CustomListBloc createFromContext(BuildContext context,
-          {@required ICustomList customList}) =>
+          {required ICustomList customList}) =>
       CustomListBloc(
         customList: customList,
         pleromaListService: IPleromaListService.of(
@@ -51,7 +51,7 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
       );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child, @required ICustomList customList}) {
+      {required Widget child, required ICustomList customList}) {
     return DisposableProvider<ICustomListBloc>(
       create: (context) => CustomListBloc.createFromContext(
         context,

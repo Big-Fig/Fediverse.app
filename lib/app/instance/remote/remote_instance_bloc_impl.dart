@@ -13,13 +13,13 @@ class RemoteInstanceBloc extends DisposableOwner
 
   final IConnectionService connectionService;
 
-  RestService restService;
+  late RestService restService;
   @override
-  PleromaRestService pleromaRestService;
+  late PleromaRestService pleromaRestService;
 
   RemoteInstanceBloc({
-    @required this.instanceUri,
-    @required this.connectionService,
+    required this.instanceUri,
+    required this.connectionService,
   }) {
     restService = RestService(
       baseUri: instanceUri,
@@ -35,7 +35,7 @@ class RemoteInstanceBloc extends DisposableOwner
 
   static RemoteInstanceBloc createFromContext(
     BuildContext context, {
-    @required Uri instanceUri,
+    required Uri instanceUri,
   }) =>
       RemoteInstanceBloc(
         instanceUri: instanceUri,
@@ -47,8 +47,8 @@ class RemoteInstanceBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required Uri instanceUri,
+    required Widget child,
+    required Uri instanceUri,
   }) =>
       DisposableProvider<IRemoteInstanceBloc>(
         create: (context) => createFromContext(

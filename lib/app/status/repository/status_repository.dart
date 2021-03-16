@@ -12,118 +12,124 @@ import 'package:provider/provider.dart';
 abstract class IStatusRepository
     implements
         IReadIdListRepository<IStatus, int>,
-        IWriteIdListRepository<DbStatus, int>,
+        IWriteIdListRepository<DbStatus?, int?>,
         IDisposable {
-  static IStatusRepository of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IStatusRepository>(context, listen: listen);
+  static IStatusRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusRepository>(
+        context,
+        listen: listen,
+      );
 
-  Future<IStatus> findByRemoteId(String remoteId);
+  Future<IStatus?> findByRemoteId(String remoteId);
 
   Future deleteByRemoteId(String remoteId);
 
   Future addStatusesToConversationWithDuplicatePreCheck({
-    @required List<String> statusRemoteIds,
-    @required String conversationRemoteId,
+    required List<String> statusRemoteIds,
+    required String conversationRemoteId,
   });
 
   Future upsertRemoteStatuses(
     List<IPleromaStatus> remoteStatuses, {
-    @required String listRemoteId,
-    @required String conversationRemoteId,
+    required String? listRemoteId,
+    required String? conversationRemoteId,
     bool isFromHomeTimeline = false,
   });
 
-  Stream<IStatus> watchByRemoteId(String remoteId);
+  Stream<IStatus?> watchByRemoteId(String remoteId);
 
   Future updateLocalStatusByRemoteStatus({
-    @required IStatus oldLocalStatus,
-    @required IPleromaStatus newRemoteStatus,
+    required IStatus oldLocalStatus,
+    required IPleromaStatus newRemoteStatus,
     bool isFromHomeTimeline = false,
   });
 
   Future upsertRemoteStatus(
     IPleromaStatus remoteStatus, {
-    @required String listRemoteId,
-    @required String conversationRemoteId,
+    required String? listRemoteId,
+    required String? conversationRemoteId,
     bool isFromHomeTimeline = false,
   });
 
   Future<List<IStatus>> getStatuses({
-    @required StatusRepositoryFilters filters,
-    @required RepositoryPagination<IStatus> pagination,
-    StatusRepositoryOrderingTermData orderingTermData =
+    required StatusRepositoryFilters? filters,
+    required RepositoryPagination<IStatus>? pagination,
+    StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<IStatus>> watchStatuses({
-    @required StatusRepositoryFilters filters,
-    @required RepositoryPagination<IStatus> pagination,
-    StatusRepositoryOrderingTermData orderingTermData =
+    required StatusRepositoryFilters? filters,
+    required RepositoryPagination<IStatus>? pagination,
+    StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
-  Future<IStatus> getStatus({
-    @required StatusRepositoryFilters filters,
-    StatusRepositoryOrderingTermData orderingTermData =
+  Future<IStatus?> getStatus({
+    required StatusRepositoryFilters? filters,
+    StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
-  Stream<IStatus> watchStatus({
-    @required StatusRepositoryFilters filters,
-    StatusRepositoryOrderingTermData orderingTermData =
+  Stream<IStatus?> watchStatus({
+    required StatusRepositoryFilters? filters,
+    StatusRepositoryOrderingTermData? orderingTermData =
         StatusRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Future incrementRepliesCount({
-    @required String remoteId,
+    required String remoteId,
   });
 
   Future removeAccountStatusesFromHome({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   });
 
   Future markStatusAsDeleted({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future markStatusAsHiddenLocallyOnDevice({
-    @required int localId,
+    required int localId,
   });
 
   Future clearListStatusesConnection({
-    @required String listRemoteId,
+    required String listRemoteId,
   });
 
-  Future<Map<IConversationChat, IStatus>> getConversationsLastStatus({
-    @required List<IConversationChat> conversations,
+  Future<Map<IConversationChat, IStatus?>> getConversationsLastStatus({
+    required List<IConversationChat> conversations,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Stream<IStatus> watchConversationLastStatus({
-    @required IConversationChat conversation,
+  Stream<IStatus?> watchConversationLastStatus({
+    required IConversationChat? conversation,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Future<IStatus> getConversationLastStatus({
-    @required IConversationChat conversation,
+  Future<IStatus?> getConversationLastStatus({
+    required IConversationChat? conversation,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Future<IStatus> findByOldPendingRemoteId(
+  Future<IStatus?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   );
 
-  Stream<IStatus> watchByOldPendingRemoteId(
-    String oldPendingRemoteId,
+  Stream<IStatus?> watchByOldPendingRemoteId(
+    String? oldPendingRemoteId,
   );
 
   Future addStatusToConversation({
-    @required String statusRemoteId,
-    @required String conversationRemoteId,
+    required String statusRemoteId,
+    required String conversationRemoteId,
   });
 
   Future removeStatusToConversation({
-    @required String statusRemoteId,
-    @required String conversationRemoteId,
+    required String statusRemoteId,
+    required String conversationRemoteId,
   });
 }

@@ -5,11 +5,11 @@ import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:flutter/widgets.dart';
 
 class AuthHostApplicationLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<PleromaClientApplication>
+    extends ObjectLocalPreferenceBloc<PleromaClientApplication?>
     implements IAuthHostApplicationLocalPreferenceBloc {
   AuthHostApplicationLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, {
-        @required String host,
+        required String? host,
       })
       : super(
           preferencesService,

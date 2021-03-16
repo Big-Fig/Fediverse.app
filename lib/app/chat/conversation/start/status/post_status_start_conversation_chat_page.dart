@@ -24,7 +24,7 @@ class PostStatusStartConversationChatPage extends StatelessWidget {
 
 class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
   const _PostStatusStartConversationChatPageBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
 }
 
 void goToPostStatusStartConversationPage(BuildContext context,
-    {@required List<IAccount> conversationAccountsWithoutMe}) async {
+    {required List<IAccount> conversationAccountsWithoutMe}) async {
   await Navigator.push(
     context,
     MaterialPageRoute(builder: (context) {
@@ -59,7 +59,7 @@ void goToPostStatusStartConversationPage(BuildContext context,
         context,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe,
         child: const PostStatusStartConversationChatPage(),
-        successCallback: (IStatus status) {
+        successCallback: (IStatus? status) {
           // todo: rework with pop until
           Navigator.of(context).pop();
           Navigator.of(context).pop();

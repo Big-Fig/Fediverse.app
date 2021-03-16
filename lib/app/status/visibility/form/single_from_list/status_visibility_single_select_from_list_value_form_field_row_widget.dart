@@ -16,7 +16,7 @@ class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
               .of(context)
               .app_status_post_settings_field_defaultVisibility_label,
           valueTitleMapper: (context, value) =>
-              StatusVisibilityTitleWidget.mapVisibilityToTitle(context, value),
+              StatusVisibilityTitleWidget.mapVisibilityToTitle(context, value!),
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,

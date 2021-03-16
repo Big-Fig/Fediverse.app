@@ -26,7 +26,7 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
 class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   const _TimelinesHomeTabStoragePagePageAppBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -47,7 +47,7 @@ class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
 class _TimelinesHomeTabStoragePagePageAppBarActionWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStoragePagePageAppBarActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -61,7 +61,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
           return const SizedBox.shrink();
         }
 
-        var child;
+        late var child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();
@@ -80,7 +80,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
 class _TimelinesHomeTabStoragePagePageAppBarActionEditWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStoragePagePageAppBarActionEditWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -101,7 +101,7 @@ class _TimelinesHomeTabStoragePagePageAppBarActionEditWidget
 class _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

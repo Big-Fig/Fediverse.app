@@ -5,16 +5,16 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 
 class MyAccountLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<MyAccountRemoteWrapper>
+    extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper>
     implements IMyAccountLocalPreferenceBloc {
   MyAccountLocalPreferenceBloc(
-      ILocalPreferencesService preferencesService, {
-        @required String userAtHost,
+      ILocalPreferencesService? preferencesService, {
+        required String userAtHost,
       })
       : super(
           preferencesService,
           "account.my.$userAtHost",
           1,
-          (json) => MyAccountRemoteWrapper.fromJson(json),
+          (json) => PleromaMyAccountWrapper.fromJson(json),
         );
 }

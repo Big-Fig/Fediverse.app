@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class ScheduledEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
 
-  ScheduledEditPostStatusPage({@required this.onBackPressed});
+  ScheduledEditPostStatusPage({required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,15 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
   void handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     await onBackPressed(
-      postStatusBloc.calculateCurrentPostStatusData(),
+      postStatusBloc.calculateCurrentPostStatusData() as PostStatusData,
     );
   }
 }
 
 void goToScheduledEditPostStatusPage(
   BuildContext context, {
-  @required IPostStatusData initialData,
-  @required VoidCallback successCallback,
+  required IPostStatusData initialData,
+  required VoidCallback successCallback,
 }) {
   var scheduledStatusBloc = IScheduledStatusBloc.of(context, listen: false);
   Navigator.push(

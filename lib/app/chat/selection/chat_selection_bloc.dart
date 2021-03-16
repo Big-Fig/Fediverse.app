@@ -19,19 +19,19 @@ abstract class IChatSelectionBloc implements IDisposable {
 
   Stream<int> get selectedItemsCountStream;
 
-  List<IChatMessage> get currentSelection;
+  List<IChatMessage>? get currentSelection;
 
-  Stream<List<IChatMessage>> get currentSelectionStream;
+  Stream<List<IChatMessage?>> get currentSelectionStream;
 
-  void toggleItemSelected(IChatMessage chatMessage);
+  void toggleItemSelected(IChatMessage? chatMessage);
 
-  void removeItemFromSelection(IChatMessage chatMessage);
+  void removeItemFromSelection(IChatMessage? chatMessage);
 
-  void addItemToSelection(IChatMessage chatMessage);
+  void addItemToSelection(IChatMessage? chatMessage);
 
-  bool isItemSelected(IChatMessage chatMessage);
+  bool isItemSelected(IChatMessage? chatMessage);
 
-  Stream<bool> isItemSelectedStream(IChatMessage chatMessage);
+  Stream<bool> isItemSelectedStream(IChatMessage? chatMessage);
 
   String calculateSelectionAsRawText();
 

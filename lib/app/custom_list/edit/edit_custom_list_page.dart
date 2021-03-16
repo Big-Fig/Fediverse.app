@@ -34,10 +34,10 @@ class EditCustomListPage extends StatelessWidget {
 }
 
 void goToEditCustomListPage({
-  @required BuildContext context,
-  @required ICustomList customList,
-  @required Function(ICustomList customList) onSubmit,
-  @required VoidCallback onDelete,
+  required BuildContext context,
+  required ICustomList customList,
+  required Function(ICustomList customList) onSubmit,
+  required VoidCallback onDelete,
 }) {
   Navigator.push(
     context,
@@ -51,10 +51,10 @@ void goToEditCustomListPage({
 }
 
 MaterialPageRoute createEditCustomListPageRoute({
-  @required BuildContext context,
-  @required ICustomList customList,
-  @required Function(ICustomList customList) onSubmit,
-  @required VoidCallback onDelete,
+  required BuildContext context,
+  required ICustomList customList,
+  required Function(ICustomList customList) onSubmit,
+  required VoidCallback onDelete,
 }) {
   return MaterialPageRoute(
     builder: (context) => EditCustomListBloc.provideToContext(
@@ -62,7 +62,7 @@ MaterialPageRoute createEditCustomListPageRoute({
       onSubmit: onSubmit,
       onDelete: onDelete,
       child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc>(
+          IEditCustomListAccountListPaginationListBloc?>(
         update: (context, value, _) =>
             value.editCustomListAccountListPaginationListBloc,
         child: const EditCustomListPage(),

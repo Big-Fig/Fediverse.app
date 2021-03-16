@@ -18,9 +18,9 @@ class NotificationPaginationListWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const NotificationPaginationListWidget({
-    Key key,
-    @required this.needWatchLocalRepositoryForUpdates,
-    ScrollController scrollController,
+    Key? key,
+    required this.needWatchLocalRepositoryForUpdates,
+    ScrollController? scrollController,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
@@ -29,10 +29,10 @@ class NotificationPaginationListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<INotification> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<INotification> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
@@ -62,7 +62,7 @@ class NotificationPaginationListWidget
   @override
   IPaginationListBloc<PaginationPage<INotification>, INotification>
       retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+          {required bool listen}) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<CachedPaginationPage<INotification>,
             INotification>>(context, listen: listen);

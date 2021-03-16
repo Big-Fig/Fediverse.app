@@ -9,7 +9,6 @@ import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 class PleromaTimelineService extends DisposableOwner
@@ -26,7 +25,7 @@ class PleromaTimelineService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -40,16 +39,16 @@ class PleromaTimelineService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaTimelineService({@required this.restService});
+  PleromaTimelineService({required this.restService});
 
   @override
-  Future<List<IPleromaStatus>> getHashtagTimeline({
-    @required String hashtag,
-    IPleromaPaginationRequest pagination,
-    bool onlyWithMedia = false,
+  Future<List<IPleromaStatus>?> getHashtagTimeline({
+    required String? hashtag,
+    IPleromaPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
   }) {
@@ -68,14 +67,14 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>> getHomeTimeline({
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getHomeTimeline({
+    IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
-    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   }) {
     return getTimeline(
       relativeTimeLineUrlPath: "home",
@@ -91,12 +90,12 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>> getListTimeline({
-    @required String listId,
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getListTimeline({
+    required String? listId,
+    IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
   }) {
@@ -115,17 +114,17 @@ class PleromaTimelineService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaStatus>> getPublicTimeline({
-    IPleromaPaginationRequest pagination,
-    bool onlyWithMedia = false,
+  Future<List<IPleromaStatus>?> getPublicTimeline({
+    IPleromaPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
     bool onlyLocal = false,
     bool onlyRemote = false,
     bool withMuted = false,
-    String onlyFromInstance,
-    List<PleromaVisibility> excludeVisibilities = const [
+    String? onlyFromInstance,
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
-    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   }) {
     return getTimeline(
       relativeTimeLineUrlPath: "public",
@@ -140,16 +139,16 @@ class PleromaTimelineService extends DisposableOwner
     );
   }
 
-  Future<List<IPleromaStatus>> getTimeline({
-    @required String relativeTimeLineUrlPath,
-    @required IPleromaPaginationRequest pagination,
-    @required bool onlyWithMedia,
-    @required bool onlyLocal,
-    @required bool withMuted,
-    @required bool onlyRemote,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
-    @required String onlyFromInstance,
+  Future<List<IPleromaStatus>?> getTimeline({
+    required String relativeTimeLineUrlPath,
+    required IPleromaPaginationRequest? pagination,
+    required bool? onlyWithMedia,
+    required bool onlyLocal,
+    required bool withMuted,
+    required bool? onlyRemote,
+    required List<PleromaVisibility>? excludeVisibilities,
+    required PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
+    required String? onlyFromInstance,
   }) async {
     var request = RestRequest.get(
       relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
@@ -172,7 +171,7 @@ class PleromaTimelineService extends DisposableOwner
             [])
       ],
     );
-    var httpResponse = await restService.sendHttpRequest(request);
+    var httpResponse = await restService.sendHttpRequest(request)!;
 
     RestResponse<List<IPleromaStatus>> restResponse = RestResponse.fromResponse(
       response: httpResponse,

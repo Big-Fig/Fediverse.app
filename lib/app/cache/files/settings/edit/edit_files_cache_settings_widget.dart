@@ -16,7 +16,7 @@ class EditFilesCacheSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditFilesCacheSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -39,7 +39,7 @@ class EditFilesCacheSettingsWidget extends StatelessWidget {
 
 class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
   const _EditFilesCacheSettingsClearAllButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
       asyncButtonAction: () => filesCacheService.clear(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(
-              currentAuthInstanceBloc.currentInstance.userAtHost,
+              currentAuthInstanceBloc.currentInstance!.userAtHost,
             ),
         onPressed: onPressed,
         expanded: false,
@@ -61,7 +61,7 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
 
 class _EditFilesCacheSettingsDescriptionWidget extends StatelessWidget {
   const _EditFilesCacheSettingsDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -71,13 +71,13 @@ class _EditFilesCacheSettingsDescriptionWidget extends StatelessWidget {
 
 class _EditFilesCacheSettingsMaxSizeLimitFieldWidget extends StatelessWidget {
   const _EditFilesCacheSettingsMaxSizeLimitFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditFilesCacheSettingsBloc,
-          ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc>(
+          ISizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc?>(
         update: (context, value, previous) => value
             .sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc,
         child:
@@ -88,13 +88,13 @@ class _EditFilesCacheSettingsMaxSizeLimitFieldWidget extends StatelessWidget {
 class _AgeLimitFilesCacheDurationValueFormFieldRowWidget
     extends StatelessWidget {
   const _AgeLimitFilesCacheDurationValueFormFieldRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditFilesCacheSettingsBloc,
-          IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc>(
+          IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc?>(
         update: (context, value, previous) =>
             value.ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc,
         child:

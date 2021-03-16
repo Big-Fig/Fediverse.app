@@ -15,14 +15,14 @@ abstract class IConversationChatWithLastMessageListBloc extends IDisposable {
       Provider.of<IConversationChatWithLastMessageListBloc>(context,
           listen: listen);
 
-  IConversationChatWithLastMessageCachedBloc get chatListBloc;
+  IConversationChatWithLastMessageCachedListBloc? get cachedListBloc;
 
-  IConversationChatWithLastMessagePaginationBloc get chatPaginationBloc;
+  IConversationChatWithLastMessagePaginationBloc? get paginationBloc;
 
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage> get chatPaginationListBloc;
+      IConversationChatWithLastMessage?>? get chatPaginationListBloc;
 
   ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage> get chatPaginationListWithNewItemsBloc;
+      IConversationChatWithLastMessage?>? get paginationListWithNewItemsBloc;
 }

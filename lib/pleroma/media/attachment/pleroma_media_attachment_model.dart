@@ -6,46 +6,85 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_media_attachment_model.g.dart';
 
 abstract class IPleromaMediaAttachment extends IMastodonMediaAttachment {
-  PleromaMediaAttachmentPleromaPart get pleroma;
+  PleromaMediaAttachmentPleromaPart? get pleroma;
+}
+
+extension IPleromaMediaAttachmentExtension on IPleromaMediaAttachment {
+  PleromaMediaAttachment toPleromaMediaAttachment() {
+    if (this is PleromaMediaAttachment) {
+      return this as PleromaMediaAttachment;
+    } else {
+      return PleromaMediaAttachment(
+        description: description,
+        id: id,
+        previewUrl: previewUrl,
+        remoteUrl: remoteUrl,
+        textUrl: textUrl,
+        type: type,
+        url: url,
+        pleroma: pleroma,
+      );
+    }
+  }
+}
+
+extension IPleromaMediaAttachmentListExtension
+    on List<IPleromaMediaAttachment> {
+  List<PleromaMediaAttachment> toPleromaMediaAttachments() {
+    if (this is List<PleromaMediaAttachment>) {
+      return this as List<PleromaMediaAttachment>;
+    } else {
+      return map(
+        (mediaAttachment) => mediaAttachment.toPleromaMediaAttachment(),
+      ).toList();
+    }
+  }
+
+  List<String> toPleromaMediaAttachmentIds() {
+    return map(
+      (mediaAttachment) => mediaAttachment.id,
+    ).toList();
+  }
 }
 
 @JsonSerializable()
 class PleromaMediaAttachment implements IPleromaMediaAttachment {
   @override
-  final String description;
+  final String? description;
   @override
   final String id;
 
   @override
   @JsonKey(name: "preview_url")
-  final String previewUrl;
+  final String? previewUrl;
   @override
   @JsonKey(name: "remote_url")
-  final String remoteUrl;
+  final String? remoteUrl;
   @override
   @JsonKey(name: "text_url")
-  final String textUrl;
+  final String? textUrl;
   @override
   @JsonKey(name: "type")
   final String type;
 
   @override
   MastodonMediaAttachmentType get typeMastodon =>
-      MastodonMediaAttachmentTypeTypeConverter().fromJson(type);
+      type.toMastodonMediaAttachmentType();
+
   @override
   final String url;
   @override
-  PleromaMediaAttachmentPleromaPart pleroma;
+  PleromaMediaAttachmentPleromaPart? pleroma;
 
   PleromaMediaAttachment({
-    this.description,
-    this.id,
-    this.previewUrl,
-    this.remoteUrl,
-    this.textUrl,
-    this.type,
-    this.url,
-    this.pleroma,
+    required this.description,
+    required this.id,
+    required this.previewUrl,
+    required this.remoteUrl,
+    required this.textUrl,
+    required this.type,
+    required this.url,
+    required this.pleroma,
   });
 
   factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
@@ -63,11 +102,9 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       case MastodonMediaAttachmentType.video:
       case MastodonMediaAttachmentType.audio:
         return true;
-        break;
       case MastodonMediaAttachmentType.unknown:
       default:
         return false;
-        break;
     }
   }
 
@@ -81,7 +118,6 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       case MastodonMediaAttachmentType.unknown:
       default:
         return false;
-        break;
     }
   }
 
@@ -138,7 +174,7 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
 @JsonSerializable()
 class PleromaMediaAttachmentPleromaPart {
   @JsonKey(name: "mime_type")
-  final String mimeType;
+  final String? mimeType;
 
   PleromaMediaAttachmentPleromaPart({
     this.mimeType,

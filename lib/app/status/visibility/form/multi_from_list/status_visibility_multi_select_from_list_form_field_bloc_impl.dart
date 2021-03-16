@@ -2,7 +2,6 @@ import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibilit
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/material.dart';
 
 class StatusVisibilityMultiSelectFromListFormFieldBloc
     extends MultiSelectFromListValueFormFieldBloc<PleromaVisibility>
@@ -11,11 +10,11 @@ class StatusVisibilityMultiSelectFromListFormFieldBloc
   final List<PleromaVisibility> possibleValues;
 
   StatusVisibilityMultiSelectFromListFormFieldBloc({
-    @required List<PleromaVisibility> originValue,
+    required List<PleromaVisibility>? originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
     this.possibleValues = PleromaVisibility.values,
-    @required
+    required
         List<FormValueFieldValidation<List<PleromaVisibility>>> validators,
   }) : super(
           originValue: originValue,

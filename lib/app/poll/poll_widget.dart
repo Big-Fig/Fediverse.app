@@ -22,12 +22,12 @@ class PollWidget extends StatelessWidget {
     var pollBloc = IPollBloc.of(context);
     return Padding(
       padding: FediPadding.horizontalBigPadding,
-      child: StreamBuilder<IPleromaPoll>(
+      child: StreamBuilder<IPleromaPoll?>(
           initialData: pollBloc.poll,
           stream: pollBloc.pollStream,
           builder: (context, snapshot) {
             var poll = snapshot.data;
-            return Provider<IPleromaPoll>.value(
+            return Provider<IPleromaPoll?>.value(
               value: poll,
               child: const _PollBodyWidget(),
             );
@@ -38,7 +38,7 @@ class PollWidget extends StatelessWidget {
 
 class _PollBodyWidget extends StatelessWidget {
   const _PollBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -48,14 +48,14 @@ class _PollBodyWidget extends StatelessWidget {
 
     return Column(
       children: [
-        ...poll.options
+        ...poll.options!
             .map((pollOption) => Provider<IPleromaPollOption>.value(
                   value: pollOption,
                   child: const _PollBodyOptionWidget(),
                 ))
             .toList(),
         const FediSmallVerticalSpacer(),
-        if (pollBloc.multiple) const _PollBodyVoteButtonBuilderWidget(),
+        if (pollBloc.multiple!) const _PollBodyVoteButtonBuilderWidget(),
         const PollMetadataWidget(),
       ],
     );
@@ -64,7 +64,7 @@ class _PollBodyWidget extends StatelessWidget {
 
 class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
   const _PollBodyVoteButtonBuilderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -104,7 +104,7 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
 
 class _PollBodyOptionWidget extends StatelessWidget {
   const _PollBodyOptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -119,7 +119,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
         onTap: poll.isPossibleToVote
             ? () {
                 pollBloc.onPollOptionSelected(pollOption);
-                if (!poll.multiple) {
+                if (!poll.multiple!) {
                   AsyncOperationHelper.performAsyncOperation(
                     context: context,
                     asyncCode: () async {
@@ -146,7 +146,7 @@ class PollMetadataWidget extends StatelessWidget {
       children: <Widget>[
         const PollMetadataTotalVotesCountWidget(),
         const _PollMetadataDotSeparatorWidget(),
-        if (poll.expiresAt != null) const PollMetadataExpiresAtWidget(),
+        const PollMetadataExpiresAtWidget(),
         if (poll.isPossibleToVote) const _PollMetadataDotSeparatorWidget(),
         if (poll.isPossibleToVote) const PollMetadataShowHideResultsWidget()
       ],
@@ -156,7 +156,7 @@ class PollMetadataWidget extends StatelessWidget {
 
 class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   const _PollMetadataDotSeparatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -175,7 +175,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaPoll>(context);
     return Text(
-      S.of(context).app_poll_metadata_totalVotes(poll.votesCount),
+      S.of(context).app_poll_metadata_totalVotes(poll.votesCount!),
       style: IFediUiTextTheme.of(context).mediumShortGrey,
     );
   }
@@ -191,7 +191,7 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
         stream: pollBloc.isNeedShowResultsWithoutVoteStream,
         initialData: pollBloc.isNeedShowResultsWithoutVote,
         builder: (context, snapshot) {
-          var isNeedShowResultsWithoutVote = snapshot.data;
+          var isNeedShowResultsWithoutVote = snapshot.data!;
           return InkWell(
             onTap: () {
               if (isNeedShowResultsWithoutVote) {
@@ -217,7 +217,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaPoll>(context);
-    return poll.expired
+    return poll.expired!
         ? const _PollMetadataExpiresAtExpiredWidget()
         : const _PollMetadataExpiresAtNotExpiredWidget();
   }
@@ -225,7 +225,7 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
 
 class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
   const _PollMetadataExpiresAtExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -239,7 +239,7 @@ class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
 
 class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   const _PollMetadataExpiresAtNotExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -268,7 +268,7 @@ class PollOptionWidget extends StatelessWidget {
         Expanded(
           child: const _PollOptionBodyWidget(),
         ),
-        if (pollBloc.multiple) const _PollOptionSelectionWidget(),
+        if (pollBloc.multiple!) const _PollOptionSelectionWidget(),
         _PollOptionResultsWidget(),
       ],
     );
@@ -277,7 +277,7 @@ class PollOptionWidget extends StatelessWidget {
 
 class _PollOptionBodyWidget extends StatelessWidget {
   const _PollOptionBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -313,7 +313,7 @@ class _PollOptionBodyWidget extends StatelessWidget {
 
 class _PollOptionBodyFillerWidget extends StatelessWidget {
   const _PollOptionBodyFillerWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -346,7 +346,7 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
 
 class _PollOptionResultsWidget extends StatelessWidget {
   _PollOptionResultsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -358,7 +358,7 @@ class _PollOptionResultsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isNeedShowResultsWithoutVote = snapshot.data;
 
-        if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote) {
+        if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote!) {
           return PollOptionVotesPercentWidget();
         } else {
           return const SizedBox.shrink();
@@ -370,7 +370,7 @@ class _PollOptionResultsWidget extends StatelessWidget {
 
 class _PollOptionSelectionWidget extends StatelessWidget {
   const _PollOptionSelectionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -382,14 +382,14 @@ class _PollOptionSelectionWidget extends StatelessWidget {
         stream: pollBloc.isPossibleToVoteStream,
         initialData: pollBloc.isPossibleToVote,
         builder: (context, snapshot) {
-          var isPossibleToVote = snapshot.data;
+          var isPossibleToVote = snapshot.data!;
           if (isPossibleToVote) {
-            return StreamBuilder<List<IPleromaPollOption>>(
+            return StreamBuilder<List<IPleromaPollOption>?>(
                 stream: pollBloc.selectedVotesStream,
                 initialData: pollBloc.selectedVotes,
                 builder: (context, snapshot) {
-                  var selectedVotes = snapshot.data;
-                  var multiple = poll.multiple;
+                  var selectedVotes = snapshot.data!;
+                  var multiple = poll.multiple!;
 
                   var isSelected = selectedVotes.contains(pollOption);
                   var borderColor = isSelected
@@ -434,7 +434,7 @@ class _PollOptionSelectionWidget extends StatelessWidget {
 
 class _PollOptionContentWidget extends StatelessWidget {
   const _PollOptionContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -445,7 +445,7 @@ class _PollOptionContentWidget extends StatelessWidget {
         horizontal: FediSizes.mediumPadding,
       ),
       child: Row(
-        mainAxisAlignment: poll.isPossibleToVote && !poll.multiple
+        mainAxisAlignment: poll.isPossibleToVote && !poll.multiple!
             ? MainAxisAlignment.center
             : MainAxisAlignment.start,
         children: <Widget>[
@@ -508,7 +508,7 @@ class PollOptionTitleWidget extends StatelessWidget {
 
     var votesPercent = poll.votesPercent(pollOption);
     return Text(
-      pollOption.title,
+      pollOption.title!,
       style: poll.isPossibleToVote
           ? IFediUiTextTheme.of(context).bigTallPrimaryDark
           : isOwnVote && votesPercent > 0

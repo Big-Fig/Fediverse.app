@@ -13,15 +13,15 @@ abstract class ICaptchaStringValueFormFieldBloc
 
   Stream<bool> get isExistStream;
 
-  PleromaCaptcha get captcha;
+  PleromaCaptcha? get captcha;
 
-  Stream<PleromaCaptcha> get captchaStream;
+  Stream<PleromaCaptcha?> get captchaStream;
 
-  PleromaCaptchaType get captchaType;
+  PleromaCaptchaType? get captchaType;
 
-  Stream<PleromaCaptchaType> get captchaTypeStream;
+  Stream<PleromaCaptchaType?> get captchaTypeStream;
 
-  Stream<Image> get captchaImageStream;
+  Stream<Image?> get captchaImageStream;
 
   Future reloadCaptcha();
 }

@@ -2,6 +2,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -42,7 +43,7 @@ void showPostStatusUnsavedDialog(
               DbDraftStatus(
                 id: null,
                 updatedAt: DateTime.now(),
-                data: postStatusData,
+                data: postStatusData.toPostStatusData(),
               ),
             ),
           );

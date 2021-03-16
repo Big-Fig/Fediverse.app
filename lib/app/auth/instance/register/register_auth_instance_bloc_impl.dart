@@ -19,7 +19,6 @@ import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:flutter/widgets.dart';
 
 class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     implements IRegisterAuthInstanceBloc {
@@ -31,23 +30,23 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
-  IPleromaInstance pleromaInstance;
-  IRestService restService;
-  IPleromaRestService pleromaRestService;
-  IPleromaCaptchaService pleromaCaptchaService;
+  late IPleromaInstance pleromaInstance;
+  late IRestService restService;
+  late IPleromaRestService pleromaRestService;
+  late IPleromaCaptchaService pleromaCaptchaService;
 
-  IPleromaInstanceService pleromaInstanceService;
+  late IPleromaInstanceService pleromaInstanceService;
 
   @override
-  RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
+  late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
 
   RegisterAuthInstanceBloc({
-    @required this.instanceBaseUri,
-    @required this.localPreferencesService,
-    @required this.connectionService,
-    @required this.currentInstanceBloc,
-    @required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
-    @required this.localizationSettingsBloc,
+    required this.instanceBaseUri,
+    required this.localPreferencesService,
+    required this.connectionService,
+    required this.currentInstanceBloc,
+    required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    required this.localizationSettingsBloc,
   }) : super() {
     restService = RestService(baseUri: instanceBaseUri);
     pleromaRestService = PleromaRestService(
@@ -76,11 +75,11 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
         registerAuthInstanceFormBloc.calculateRegisterFormData();
 
     AuthHostRegistrationResult registrationResult;
-    AuthHostBloc authApplicationBloc;
+    AuthHostBloc? authApplicationBloc;
     try {
       authApplicationBloc = AuthHostBloc(
         instanceBaseUri: instanceBaseUri,
-        isPleromaInstance: false,
+        isPleroma: false,
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentInstanceBloc,
@@ -96,7 +95,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       await authApplicationBloc?.dispose();
     }
 
-    if (registrationResult != null) {
+    if (registrationResult.isPossibleToLogin) {
       successRegistrationStreamController.add(registrationResult);
     }
     return registrationResult;

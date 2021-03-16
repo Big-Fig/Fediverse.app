@@ -16,12 +16,12 @@ class AccountAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
         stream: accountBloc.avatarStream,
         builder: (context, snapshot) {
           var avatar = snapshot.data;
 
-          return Provider<String>.value(
+          return Provider<String?>.value(
             value: avatar,
             child: AccountAvatarUrlWidget(
               progressSize: progressSize,
@@ -34,9 +34,9 @@ class AccountAvatarWidget extends StatelessWidget {
 
 class AccountAvatarUrlWidget extends StatelessWidget {
   const AccountAvatarUrlWidget({
-    Key key,
-    @required this.progressSize,
-    @required this.imageSize,
+    Key? key,
+    required this.progressSize,
+    required this.imageSize,
   }) : super(key: key);
 
   final double imageSize;
@@ -85,7 +85,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
 
 class _AccountAvatarFailedWidget extends StatelessWidget {
   const _AccountAvatarFailedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -96,8 +96,8 @@ class _AccountAvatarFailedWidget extends StatelessWidget {
 
 class _AccountAvatarLoadingWidget extends StatelessWidget {
   const _AccountAvatarLoadingWidget({
-    Key key,
-    @required this.progressSize,
+    Key? key,
+    required this.progressSize,
   }) : super(key: key);
   final double progressSize;
 

@@ -12,7 +12,7 @@ class MyAccountDomainBlockPaginationListBloc
     extends PaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>
     implements IMyAccountDomainBlockPaginationListBloc {
   MyAccountDomainBlockPaginationListBloc({
-    @required
+    required
         IPaginationBloc<PaginationPage<DomainBlock>, DomainBlock>
             paginationBloc,
     bool loadFromCacheDuringInit = true,
@@ -37,7 +37,7 @@ class MyAccountDomainBlockPaginationListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
     bool loadFromCacheDuringInit = true,
   }) {
     return DisposableProvider<IMyAccountDomainBlockPaginationListBloc>(

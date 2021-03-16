@@ -8,6 +8,6 @@ class InstanceFilesCacheSettingsLocalPreferencesBloc
     implements IInstanceFilesCacheSettingsLocalPreferencesBloc {
   InstanceFilesCacheSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
+    required String userAtHost,
   }) : super(preferencesService, "cache.files.settings.instance.$userAtHost");
 }

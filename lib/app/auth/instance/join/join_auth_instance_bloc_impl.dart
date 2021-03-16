@@ -11,7 +11,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
   @override
   final TextEditingController hostTextController = TextEditingController();
 
-  JoinAuthInstanceBloc({@required this.isFromScratch}) {
+  JoinAuthInstanceBloc({required this.isFromScratch}) {
     addDisposable(textEditingController: hostTextController);
   }
 

@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 class PostMessageContentWidget extends StatelessWidget {
   final String hintText;
   final bool expanded;
-  final Widget ending;
+  final Widget? ending;
   final bool filled;
 
   const PostMessageContentWidget({
-    @required this.hintText,
+    required this.hintText,
     this.expanded = false,
     this.ending,
     this.filled = true,
@@ -29,10 +29,10 @@ class PostMessageContentWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var inputTextErrors = snapshot.data;
 
-          String errorText;
+          String? errorText;
 
           if (inputTextErrors?.isNotEmpty == true) {
-            errorText = inputTextErrors.first.createErrorDescription(context);
+            errorText = inputTextErrors!.first.createErrorDescription(context);
           }
 
           return FediFilledEditTextField(

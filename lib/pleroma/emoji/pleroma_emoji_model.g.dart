@@ -17,11 +17,11 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaEmoji(
-      shortcode: fields[0] as String,
-      url: fields[1] as String,
-      staticUrl: fields[2] as String,
-      visibleInPicker: fields[3] as bool,
-      category: fields[4] as String,
+      shortcode: fields[0] as String?,
+      url: fields[1] as String?,
+      staticUrl: fields[2] as String?,
+      visibleInPicker: fields[3] as bool?,
+      category: fields[4] as String?,
     );
   }
 
@@ -63,9 +63,9 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaCustomEmoji(
-      tags: (fields[0] as List)?.cast<String>(),
-      imageUrl: fields[1] as String,
-      name: fields[2] as String,
+      tags: (fields[0] as List?)?.cast<String>(),
+      imageUrl: fields[1] as String?,
+      name: fields[2] as String?,
     );
   }
 
@@ -98,11 +98,11 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
 
 PleromaEmoji _$PleromaEmojiFromJson(Map<String, dynamic> json) {
   return PleromaEmoji(
-    shortcode: json['shortcode'] as String,
-    url: json['url'] as String,
-    staticUrl: json['static_url'] as String,
-    visibleInPicker: json['visible_in_picker'] as bool,
-    category: json['category'] as String,
+    shortcode: json['shortcode'] as String?,
+    url: json['url'] as String?,
+    staticUrl: json['static_url'] as String?,
+    visibleInPicker: json['visible_in_picker'] as bool?,
+    category: json['category'] as String?,
   );
 }
 
@@ -117,9 +117,9 @@ Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
 
 PleromaCustomEmoji _$PleromaCustomEmojiFromJson(Map<String, dynamic> json) {
   return PleromaCustomEmoji(
-    tags: (json['tags'] as List)?.map((e) => e as String)?.toList(),
-    imageUrl: json['image_url'] as String,
-    name: json['name'] as String,
+    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList(),
+    imageUrl: json['image_url'] as String?,
+    name: json['name'] as String?,
   );
 }
 

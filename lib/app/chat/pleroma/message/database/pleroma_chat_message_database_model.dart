@@ -5,35 +5,35 @@ import 'package:moor/moor.dart';
 @DataClassName("DbChatMessage")
 class DbChatMessages extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn? get id => integer().autoIncrement()();
 
-  TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
+  TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
-  TextColumn get chatRemoteId => text()();
+  TextColumn? get chatRemoteId => text()();
 
-  TextColumn get accountRemoteId => text()();
+  TextColumn? get accountRemoteId => text()();
 
-  TextColumn get content => text().nullable()();
+  TextColumn? get content => text().nullable()();
 
-  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn? get createdAt => dateTime()();
 
-  TextColumn get emojis =>
+  TextColumn? get emojis =>
       text().map(PleromaEmojiListDatabaseConverter()).nullable()();
 
-  TextColumn get mediaAttachment =>
+  TextColumn? get mediaAttachment =>
       text().map(PleromaMediaAttachmentDatabaseConverter()).nullable()();
 
-  TextColumn get card =>
+  TextColumn? get card =>
       text().map(PleromaCardDatabaseConverter()).nullable()();
 
-  TextColumn get pendingState =>
+  TextColumn? get pendingState =>
       text().nullable().map(PendingStateDatabaseConverter())();
 
-  BoolColumn get deleted => boolean().nullable()();
+  BoolColumn? get deleted => boolean().nullable()();
 
-  BoolColumn get hiddenLocallyOnDevice => boolean().nullable()();
+  BoolColumn? get hiddenLocallyOnDevice => boolean().nullable()();
 
-  TextColumn get oldPendingRemoteId => text().nullable()();
+  TextColumn? get oldPendingRemoteId => text().nullable()();
 
-  TextColumn get wasSentWithIdempotencyKey => text().nullable()();
+  TextColumn? get wasSentWithIdempotencyKey => text().nullable()();
 }

@@ -11,32 +11,31 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditToastSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<ToastSettings>
+    extends EditGlobalOrInstanceSettingsBloc<ToastSettings?>
     implements IEditToastSettingsBloc {
   final IToastSettingsBloc toastSettingsBloc;
 
-  final AuthInstance currentInstance;
+  final AuthInstance? currentInstance;
 
   @override
-  IBoolValueFormFieldBloc favouriteFieldBloc;
+  late IBoolValueFormFieldBloc favouriteFieldBloc;
   @override
-  IBoolValueFormFieldBloc followFieldBloc;
+  late IBoolValueFormFieldBloc followFieldBloc;
   @override
-  IBoolValueFormFieldBloc mentionFieldBloc;
+  late IBoolValueFormFieldBloc mentionFieldBloc;
   @override
-  IBoolValueFormFieldBloc reblogFieldBloc;
+  late IBoolValueFormFieldBloc reblogFieldBloc;
   @override
-  IBoolValueFormFieldBloc pollFieldBloc;
+  late IBoolValueFormFieldBloc pollFieldBloc;
   @override
-  IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
+  late IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
   @override
-  IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
+  late IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
 
   @override
-  IToastHandlingTypeSingleFromListValueFormFieldBloc
+  late IToastHandlingTypeSingleFromListValueFormFieldBloc
       toastHandlingTypeSingleFromListValueFormFieldBloc;
 
   @override
@@ -51,14 +50,14 @@ class EditToastSettingsBloc
         toastHandlingTypeSingleFromListValueFormFieldBloc,
       ];
 
-  PushSettings get currentPushSettings => currentSettings.pushSettings;
+  PushSettings? get currentPushSettings => currentSettings?.pushSettings;
 
   EditToastSettingsBloc({
-    @required this.toastSettingsBloc,
-    @required this.currentInstance,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.toastSettingsBloc,
+    required this.currentInstance,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           isEnabled: isEnabled,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -67,55 +66,55 @@ class EditToastSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     favouriteFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.favourite,
+      originValue: currentPushSettings!.favourite,
       isEnabled: isEnabled,
     );
 
     followFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.follow,
+      originValue: currentPushSettings!.follow,
       isEnabled: isEnabled,
     );
     mentionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.mention,
+      originValue: currentPushSettings!.mention,
       isEnabled: isEnabled,
     );
     reblogFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.reblog,
+      originValue: currentPushSettings!.reblog,
       isEnabled: isEnabled,
     );
     pollFieldBloc = BoolValueFormFieldBloc(
-        originValue: currentPushSettings.poll &&
-            (currentInstance.isMastodon ||
+        originValue: currentPushSettings!.poll! &&
+            (currentInstance!.isMastodon ||
                 globalOrInstanceSettingsType ==
                     GlobalOrInstanceSettingsType.global),
         isEnabled: isEnabled &&
-            (currentInstance.isMastodon ||
+            (currentInstance!.isMastodon ||
                 globalOrInstanceSettingsType ==
                     GlobalOrInstanceSettingsType.global));
     pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.pleromaChatMention &&
-          (currentInstance.isPleroma ||
+      originValue: currentPushSettings!.pleromaChatMention! &&
+          (currentInstance!.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
       isEnabled: isEnabled &&
-          (currentInstance.isPleroma ||
+          (currentInstance!.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
     );
     pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings.pleromaEmojiReaction &&
-          (currentInstance.isPleroma ||
+      originValue: currentPushSettings!.pleromaEmojiReaction! &&
+          (currentInstance!.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
       isEnabled: isEnabled &&
-          (currentInstance.isPleroma ||
+          (currentInstance!.isPleroma ||
               globalOrInstanceSettingsType ==
                   GlobalOrInstanceSettingsType.global),
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc =
         ToastHandlingTypeSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.handlingType,
+      originValue: currentSettings?.handlingType,
       isEnabled: isEnabled,
     );
 
@@ -146,13 +145,13 @@ class EditToastSettingsBloc
       ),
       handlingTypeString: toastHandlingTypeSingleFromListValueFormFieldBloc
           .currentValue
-          .toJsonValue(),
+          ?.toJsonValue(),
     );
   }
 
   @override
-  Future fillSettingsToFormFields(ToastSettings settings) async {
-    var pushSettings = settings.pushSettings;
+  Future fillSettingsToFormFields(ToastSettings? settings) async {
+    var pushSettings = settings!.pushSettings!;
     var isNotGlobal =
         globalOrInstanceSettingsType != GlobalOrInstanceSettingsType.global;
 
@@ -169,15 +168,15 @@ class EditToastSettingsBloc
       pushSettings.reblog,
     );
     pollFieldBloc.changeCurrentValue(
-      pushSettings.poll && (currentInstance.isMastodon || isNotGlobal),
+      pushSettings.poll! && (currentInstance!.isMastodon || isNotGlobal),
     );
     pleromaChatMentionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaChatMention &&
-          (currentInstance.isPleroma || isNotGlobal),
+      pushSettings.pleromaChatMention! &&
+          (currentInstance!.isPleroma || isNotGlobal),
     );
     pleromaEmojiReactionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaEmojiReaction &&
-          (currentInstance.isPleroma || isNotGlobal),
+      pushSettings.pleromaEmojiReaction! &&
+          (currentInstance!.isPleroma || isNotGlobal),
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc.changeCurrentValue(

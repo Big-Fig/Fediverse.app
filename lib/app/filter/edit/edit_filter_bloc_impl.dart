@@ -23,9 +23,9 @@ import 'package:flutter/widgets.dart';
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static EditFilterBloc createFromContext(
     BuildContext context, {
-    @required IFilter initialValue,
-    @required Function(IFilter filter) onSubmit,
-    @required VoidCallback onDelete,
+    required IFilter? initialValue,
+    required Function(IFilter filter)? onSubmit,
+    required VoidCallback? onDelete,
   }) {
     var editFilterBloc = EditFilterBloc(
       filter: initialValue,
@@ -54,7 +54,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
       currentInstance: ICurrentAuthInstanceBloc.of(
         context,
         listen: false,
-      ).currentInstance,
+      ).currentInstance!,
     );
 
     if (onSubmit != null) {
@@ -73,10 +73,10 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IFilter initialValue,
-    @required Function(IFilter filter) onSubmit,
-    @required VoidCallback onDelete,
+    required Widget child,
+    required IFilter? initialValue,
+    required Function(IFilter filter) onSubmit,
+    required VoidCallback onDelete,
   }) {
     return DisposableProvider<IEditFilterBloc>(
       create: (context) => EditFilterBloc.createFromContext(
@@ -89,7 +89,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     );
   }
 
-  final IFilter filter;
+  final IFilter? filter;
 
   final IPleromaFilterService pleromaFilterService;
 
@@ -105,15 +105,15 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   final AuthInstance currentInstance;
 
   EditFilterBloc({
-    @required this.filter,
-    @required this.pleromaFilterService,
-    @required this.statusRepository,
-    @required this.isPossibleToDelete,
-    @required this.timelinesHomeTabStorageBloc,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
-    @required this.currentInstance,
+    required this.filter,
+    required this.pleromaFilterService,
+    required this.statusRepository,
+    required this.isPossibleToDelete,
+    required this.timelinesHomeTabStorageBloc,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAccountService pleromaAccountService,
+    required this.currentInstance,
   }) : filterFormBloc = FilterFormBloc(
           initialValue: filter,
           currentInstance: currentInstance,
@@ -146,7 +146,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   }
 
   Future<IPleromaFilter> actuallySubmitFilter(
-    String listRemoteId,
+    String? listRemoteId,
     IPostPleromaFilter postPleromaFilter,
   ) async {
     var remoteFilter = await pleromaFilterService.updateFilter(
@@ -159,7 +159,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   @override
   Future deleteList() async {
-    await pleromaFilterService.deleteFilter(filterRemoteId: filter.remoteId);
+    await pleromaFilterService.deleteFilter(filterRemoteId: filter!.remoteId);
 
     deletedStreamController.add(null);
 
@@ -169,7 +169,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         in timelinesHomeTabStorageBloc.timelineStorageItems) {
       var timeline = timelineStorageItem.timeline;
       var onlyInRemoteList = timeline.onlyInRemoteList;
-      if (onlyInRemoteList != null && onlyInRemoteList.id == filter.remoteId) {
+      if (onlyInRemoteList != null && onlyInRemoteList.id == filter!.remoteId) {
         timelinesToRemove.add(timeline);
       }
     }

@@ -17,9 +17,9 @@ class PushMessageAdapter extends TypeAdapter<PushMessage> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushMessage(
-      typeString: fields[3] as String,
-      notification: fields[1] as PushNotification,
-      data: (fields[2] as Map)?.cast<String, dynamic>(),
+      typeString: fields[3] as String?,
+      notification: fields[1] as PushNotification?,
+      data: (fields[2] as Map?)?.cast<String, dynamic>(),
     );
   }
 
@@ -57,8 +57,8 @@ class PushNotificationAdapter extends TypeAdapter<PushNotification> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushNotification(
-      title: fields[0] as String,
-      body: fields[1] as String,
+      title: fields[0] as String?,
+      body: fields[1] as String?,
     );
   }
 
@@ -89,12 +89,12 @@ class PushNotificationAdapter extends TypeAdapter<PushNotification> {
 
 PushMessage _$PushMessageFromJson(Map<String, dynamic> json) {
   return PushMessage(
-    typeString: json['typeString'] as String,
+    typeString: json['typeString'] as String?,
     notification: json['notification'] == null
         ? null
         : PushNotification.fromJson(
             json['notification'] as Map<String, dynamic>),
-    data: json['data'] as Map<String, dynamic>,
+    data: json['data'] as Map<String, dynamic>?,
   );
 }
 
@@ -107,8 +107,8 @@ Map<String, dynamic> _$PushMessageToJson(PushMessage instance) =>
 
 PushNotification _$PushNotificationFromJson(Map<String, dynamic> json) {
   return PushNotification(
-    title: json['title'] as String,
-    body: json['body'] as String,
+    title: json['title'] as String?,
+    body: json['body'] as String?,
   );
 }
 

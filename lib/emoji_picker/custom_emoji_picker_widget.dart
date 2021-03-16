@@ -17,7 +17,7 @@ typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
 typedef EmptyCategoryBuilder = Function(
     BuildContext context, ICustomEmojiPickerCategoryBloc categoryBloc);
 
-typedef CustomCategoryIconBuilder = IconData Function(
+typedef CustomCategoryIconBuilder = IconData? Function(
     ICustomEmojiPickerCategoryBloc);
 typedef CustomCategoryBodyBuilder = Widget Function(
     ICustomEmojiPickerCategoryBloc);
@@ -30,15 +30,15 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final Color separatorColor;
   final double selectedCategoryItemsGridHeight;
   final double indicatorHeight;
-  final EmptyCategoryBuilder emptyCategoryBuilder;
-  final CustomCategoryIconBuilder customCategoryIconBuilder;
-  final CustomCategoryBodyBuilder customCategoryBodyBuilder;
-  final Widget loadingWidget;
+  final EmptyCategoryBuilder? emptyCategoryBuilder;
+  final CustomCategoryIconBuilder? customCategoryIconBuilder;
+  final CustomCategoryBodyBuilder? customCategoryBodyBuilder;
+  final Widget? loadingWidget;
   final bool useImageEmoji;
 
   CustomEmojiPickerWidget({
-    @required this.rowsCount,
-    @required this.onEmojiSelected,
+    required this.rowsCount,
+    required this.onEmojiSelected,
     this.unselectedIndicatorColor = Colors.black,
     this.separatorColor = Colors.grey,
     this.selectedIndicatorColor = Colors.blue,
@@ -81,26 +81,26 @@ class CustomEmojiPickerWidget extends StatelessWidget {
 
 class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
   const _CustomEmojiPickerSelectedCategoryWidget({
-    Key key,
-    @required this.selectedCategoryItemsGridHeight,
-    @required this.loadingWidget,
-    @required this.useImageEmoji,
-    @required this.emptyCategoryBuilder,
-    @required this.rowsCount,
-    @required this.onEmojiSelected,
+    Key? key,
+    required this.selectedCategoryItemsGridHeight,
+    required this.loadingWidget,
+    required this.useImageEmoji,
+    required this.emptyCategoryBuilder,
+    required this.rowsCount,
+    required this.onEmojiSelected,
   }) : super(key: key);
 
   final double selectedCategoryItemsGridHeight;
-  final Widget loadingWidget;
+  final Widget? loadingWidget;
   final bool useImageEmoji;
-  final EmptyCategoryBuilder emptyCategoryBuilder;
+  final EmptyCategoryBuilder? emptyCategoryBuilder;
   final int rowsCount;
   final EmojiSelectedCallback onEmojiSelected;
 
   @override
   Widget build(BuildContext context) {
     var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
-    return StreamBuilder<ICustomEmojiPickerCategoryBloc>(
+    return StreamBuilder<ICustomEmojiPickerCategoryBloc?>(
         stream: customEmojiPickerBloc.selectedCategoryBlocStream,
         builder: (context, snapshot) {
           var selectedCategoryBloc = snapshot.data;
@@ -116,13 +116,13 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                 loadingWidget: loadingWidget,
                 asyncInitLoadingBloc: selectedCategoryBloc,
                 loadingFinishedBuilder: (BuildContext context) {
-                  return StreamBuilder<List<CustomEmojiPickerItem>>(
+                  return StreamBuilder<List<CustomEmojiPickerItem>?>(
                       stream: selectedCategoryBloc.itemsStream,
                       builder: (context, snapshot) {
                         var items = snapshot.data;
 
                         if (items == null) {
-                          return loadingWidget;
+                          return loadingWidget!;
                         }
 
                         if (!useImageEmoji) {
@@ -136,11 +136,11 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                         }
                         if (items.isEmpty) {
                           return Center(
-                            child: emptyCategoryBuilder(
+                            child: emptyCategoryBuilder!(
                                 context, selectedCategoryBloc),
                           );
                         }
-                        return Provider<List<CustomEmojiPickerItem>>.value(
+                        return Provider<List<CustomEmojiPickerItem>?>.value(
                           value: items,
                           child: _CustomEmojiPickerSelectedCategoryItemsWidget(
                             rowsCount: rowsCount,
@@ -160,10 +160,10 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
 
 class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
   const _CustomEmojiPickerSelectedCategoryItemsWidget({
-    Key key,
-    @required this.rowsCount,
-    @required this.selectedCategoryItemsGridHeight,
-    @required this.onEmojiSelected,
+    Key? key,
+    required this.rowsCount,
+    required this.selectedCategoryItemsGridHeight,
+    required this.onEmojiSelected,
   }) : super(key: key);
 
   final int rowsCount;
@@ -212,26 +212,26 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
 
 class _CustomEmojiPickerIndicatorListWidget extends StatelessWidget {
   const _CustomEmojiPickerIndicatorListWidget({
-    Key key,
-    @required this.indicatorHeight,
-    @required this.selectedIndicatorColor,
-    @required this.unselectedIndicatorColor,
-    @required this.customCategoryIconBuilder,
+    Key? key,
+    required this.indicatorHeight,
+    required this.selectedIndicatorColor,
+    required this.unselectedIndicatorColor,
+    required this.customCategoryIconBuilder,
   }) : super(key: key);
 
   final double indicatorHeight;
   final Color selectedIndicatorColor;
   final Color unselectedIndicatorColor;
-  final CustomCategoryIconBuilder customCategoryIconBuilder;
+  final CustomCategoryIconBuilder? customCategoryIconBuilder;
 
   @override
   Widget build(BuildContext context) {
     var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
-    return StreamBuilder<List<ICustomEmojiPickerCategoryBloc>>(
+    return StreamBuilder<List<ICustomEmojiPickerCategoryBloc?>>(
       stream: customEmojiPickerBloc.availableCategoriesStream,
       initialData: customEmojiPickerBloc.availableCategories,
       builder: (context, snapshot) {
-        var availableCategories = snapshot.data;
+        var availableCategories = snapshot.data!;
         return Container(
           height: indicatorHeight,
           alignment: Alignment.center,
@@ -240,7 +240,7 @@ class _CustomEmojiPickerIndicatorListWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: availableCategories
                 .map(
-                  (category) => Provider<ICustomEmojiPickerCategoryBloc>.value(
+                  (category) => Provider<ICustomEmojiPickerCategoryBloc?>.value(
                     value: category,
                     child: _CustomEmojiPickerCategoryIndicatorWidget(
                       selectedIndicatorColor: selectedIndicatorColor,
@@ -259,21 +259,21 @@ class _CustomEmojiPickerIndicatorListWidget extends StatelessWidget {
 
 class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
   const _CustomEmojiPickerCategoryIndicatorWidget({
-    Key key,
-    @required this.selectedIndicatorColor,
-    @required this.unselectedIndicatorColor,
-    @required this.customCategoryIconBuilder,
+    Key? key,
+    required this.selectedIndicatorColor,
+    required this.unselectedIndicatorColor,
+    required this.customCategoryIconBuilder,
   }) : super(key: key);
 
   final Color selectedIndicatorColor;
   final Color unselectedIndicatorColor;
-  final CustomCategoryIconBuilder customCategoryIconBuilder;
+  final CustomCategoryIconBuilder? customCategoryIconBuilder;
 
   @override
   Widget build(BuildContext context) {
     var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
     var category = ICustomEmojiPickerCategoryBloc.of(context);
-    return StreamBuilder<ICustomEmojiPickerCategoryBloc>(
+    return StreamBuilder<ICustomEmojiPickerCategoryBloc?>(
       stream: customEmojiPickerBloc.selectedCategoryBlocStream,
       initialData: customEmojiPickerBloc.selectedCategoryBloc,
       builder: (context, snapshot) {
@@ -304,8 +304,8 @@ class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
 }
 
 IconData mapCategoryToIcon({
-  @required ICustomEmojiPickerCategoryBloc category,
-  @required CustomCategoryIconBuilder customCategoryIconBuilder,
+  required ICustomEmojiPickerCategoryBloc category,
+  required CustomCategoryIconBuilder? customCategoryIconBuilder,
 }) {
   if (customCategoryIconBuilder != null) {
     var icon = customCategoryIconBuilder(category);
@@ -319,31 +319,22 @@ IconData mapCategoryToIcon({
     switch (emojiPickerCodeCategoryType) {
       case CustomEmojiPickerCodeCategoryType.smiles:
         return Icons.tag_faces;
-        break;
       case CustomEmojiPickerCodeCategoryType.animals:
         return Icons.pets;
-        break;
       case CustomEmojiPickerCodeCategoryType.foods:
         return Icons.fastfood;
-        break;
       case CustomEmojiPickerCodeCategoryType.travel:
         return Icons.location_city;
-        break;
       case CustomEmojiPickerCodeCategoryType.activities:
         return Icons.directions_run;
-        break;
       case CustomEmojiPickerCodeCategoryType.objects:
         return Icons.lightbulb_outline;
-        break;
       case CustomEmojiPickerCodeCategoryType.symbols:
         return Icons.euro_symbol;
-        break;
       case CustomEmojiPickerCodeCategoryType.flags:
         return Icons.flag;
-        break;
       default:
         throw "emojiPickerCodeCategoryType $emojiPickerCodeCategoryType not supported";
-        break;
     }
   } else {
     throw "category $category not supported";
@@ -352,8 +343,8 @@ IconData mapCategoryToIcon({
 
 class _CustomEmojiPickerSeparatorWidget extends StatelessWidget {
   const _CustomEmojiPickerSeparatorWidget({
-    Key key,
-    @required this.separatorColor,
+    Key? key,
+    required this.separatorColor,
   }) : super(key: key);
 
   final Color separatorColor;

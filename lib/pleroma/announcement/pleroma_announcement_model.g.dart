@@ -8,18 +8,18 @@ part of 'pleroma_announcement_model.dart';
 
 PleromaAnnouncement _$PleromaAnnouncementFromJson(Map<String, dynamic> json) {
   return PleromaAnnouncement(
-    id: json['id'] as String,
-    text: json['text'] as String,
-    published: json['published'] as bool,
-    allDay: json['all_day'] as bool,
+    id: json['id'] as String?,
+    text: json['text'] as String?,
+    published: json['published'] as bool?,
+    allDay: json['all_day'] as bool?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
-    read: json['read'] as bool,
-    reactions: (json['reactions'] as List)
+    read: json['read'] as bool?,
+    reactions: (json['reactions'] as List?)
         ?.map((e) => e == null
             ? null
             : PleromaAnnouncementReaction.fromJson(e as Map<String, dynamic>))
@@ -55,11 +55,11 @@ Map<String, dynamic> _$PleromaAnnouncementToJson(
 PleromaAnnouncementReaction _$PleromaAnnouncementReactionFromJson(
     Map<String, dynamic> json) {
   return PleromaAnnouncementReaction(
-    name: json['name'] as String,
-    count: json['count'] as int,
-    me: json['me'] as bool,
-    url: json['url'] as String,
-    staticUrl: json['static_url'] as String,
+    name: json['name'] as String?,
+    count: json['count'] as int?,
+    me: json['me'] as bool?,
+    url: json['url'] as String?,
+    staticUrl: json['static_url'] as String?,
   );
 }
 

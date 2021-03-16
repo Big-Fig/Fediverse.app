@@ -63,7 +63,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
 }
 
 class _NotificationsHomeTabPageBody extends StatefulWidget {
-  const _NotificationsHomeTabPageBody({Key key}) : super(key: key);
+  const _NotificationsHomeTabPageBody({Key? key}) : super(key: key);
 
   @override
   _NotificationsHomeTabPageBodyState createState() =>
@@ -72,7 +72,7 @@ class _NotificationsHomeTabPageBody extends StatefulWidget {
 
 class _NotificationsHomeTabPageBodyState
     extends State<_NotificationsHomeTabPageBody> {
-  IDisposable disposable;
+  IDisposable? disposable;
 
   @override
   void didChangeDependencies() {
@@ -83,7 +83,7 @@ class _NotificationsHomeTabPageBodyState
       var notificationTabsBloc =
           INotificationTabsBloc.of(context, listen: false);
       var paginationListBloc =
-          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
+          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab)!;
       if (paginationListBloc.unmergedNewItemsCount > 0) {
         paginationListBloc.mergeNewItems();
       }
@@ -162,7 +162,7 @@ class _NotificationsHomeTabPageBodyState
 
     return Provider<
         ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<INotification>, INotification>>.value(
+            CachedPaginationPage<INotification>, INotification?>?>.value(
       value: timelineTabPaginationListBloc,
       child: ProxyProvider<
           ICachedPaginationListWithNewItemsBloc<
@@ -178,7 +178,7 @@ class _NotificationsHomeTabPageBodyState
 
 class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
   const _NotificationsHomeTabPageBodyHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

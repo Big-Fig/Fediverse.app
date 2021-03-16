@@ -16,21 +16,21 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<IChatMessage> get chatMessageStream;
 
-  String get content;
+  String? get content;
 
-  Stream<String> get contentStream;
+  Stream<String?> get contentStream;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
 
-  IPleromaCard get card;
+  IPleromaCard? get card;
 
-  Stream<IPleromaCard> get cardStream;
+  Stream<IPleromaCard?> get cardStream;
 
-  EmojiText get contentWithEmojis;
+  EmojiText? get contentWithEmojis;
 
-  Stream<EmojiText> get contentWithEmojisStream;
+  Stream<EmojiText?> get contentWithEmojisStream;
 
   IAccount get account;
 
@@ -46,9 +46,9 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<String> get accountAvatarStream;
 
-  PendingState get pendingState;
+  PendingState? get pendingState;
 
-  Stream<PendingState> get pendingStateStream;
+  Stream<PendingState?> get pendingStateStream;
 
   bool get isDeleted;
 

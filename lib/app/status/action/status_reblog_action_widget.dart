@@ -26,14 +26,14 @@ class StatusReblogActionWidget extends StatelessWidget {
 
 class _StatusReblogActionCounterWidget extends StatelessWidget {
   const _StatusReblogActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
         stream: statusBloc.reblogPlusOriginalReblogsCountStream,
         builder: (context, snapshot) {
           var reblogsCount = snapshot.data;
@@ -59,14 +59,14 @@ void _onCounterClick(BuildContext context) {
 
 class _StatusReblogActionButtonWidget extends StatelessWidget {
   const _StatusReblogActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: statusBloc.rebloggedStream,
         initialData: statusBloc.reblogged,
         builder: (context, snapshot) {
@@ -76,7 +76,7 @@ class _StatusReblogActionButtonWidget extends StatelessWidget {
               showProgressDialog: false,
               builder: (context, onPressed) => FediIconButton(
                     iconSize: FediSizes.bigIconSize,
-                    color: reblogged
+                    color: reblogged!
                         ? IFediUiColorTheme.of(context).primary
                         : IFediUiColorTheme.of(context).darkGrey,
                     icon: Icon(FediIcons.reply),

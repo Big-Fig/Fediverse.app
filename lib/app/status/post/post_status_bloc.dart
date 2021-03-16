@@ -18,29 +18,29 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   bool get isExpirePossible;
 
-  List<String> get mentionedAccts;
+  List<String?>? get mentionedAccts;
 
-  Stream<List<String>> get mentionedAcctsStream;
+  Stream<List<String?>> get mentionedAcctsStream;
 
   bool get isPossibleToChangeVisibility;
 
-  PleromaVisibility get visibility;
+  PleromaVisibility? get visibility;
 
   Stream<PleromaVisibility> get visibilityStream;
 
-  bool get isNsfwSensitiveEnabled;
+  bool? get isNsfwSensitiveEnabled;
 
-  Stream<bool> get isNsfwSensitiveEnabledStream;
+  Stream<bool?> get isNsfwSensitiveEnabledStream;
 
   TextEditingController get subjectTextController;
 
   FocusNode get subjectFocusNode;
 
-  String get subjectText;
+  String? get subjectText;
 
   Stream<String> get subjectTextStream;
 
-  void addAccountMentions(List<IAccount> accounts);
+  void addAccountMentions(List<IAccount?> accounts);
 
   void removeAccountMentions(List<IAccount> accounts);
 
@@ -50,7 +50,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void changeNsfwSensitive(bool nsfwSensitive);
 
-  void setScheduledAt(DateTime dateTime);
+  void setScheduledAt(DateTime? dateTime);
 
   void clearScheduleAt();
 
@@ -58,11 +58,11 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<bool> get isScheduledAtExistStream;
 
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
 
-  Stream<DateTime> get scheduledAtStream;
+  Stream<DateTime?> get scheduledAtStream;
   
-  void setExpireDuration(Duration duration);
+  void setExpireDuration(Duration? duration);
 
   void clearExpireDuration();
 
@@ -70,21 +70,21 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<bool> get isExpireDurationExistStream;
 
-  Duration get expireDuration;
+  Duration? get expireDuration;
 
-  Stream<Duration> get expireDurationStream;
+  Stream<Duration?> get expireDurationStream;
 
-  String get inputWithoutMentionedAcctsText;
+  String? get inputWithoutMentionedAcctsText;
 
-  Stream<String> get inputWithoutMentionedAcctsTextStream;
+  Stream<String?> get inputWithoutMentionedAcctsTextStream;
 
   bool get isHaveMentionedAccts;
 
   Stream<bool> get isHaveMentionedAcctsStream;
 
-  IStatus get originInReplyToStatus;
+  IStatus? get originInReplyToStatus;
 
-  IPostStatusPollBloc get pollBloc;
+  IPostStatusPollBloc? get pollBloc;
 
   IPostStatusData calculateCurrentPostStatusData();
 }

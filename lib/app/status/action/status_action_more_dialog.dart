@@ -32,8 +32,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 void showStatusActionMoreDialog({
-  @required BuildContext context,
-  @required IStatusBloc statusBloc,
+  required BuildContext context,
+  required IStatusBloc statusBloc,
 }) {
   showFediModalBottomSheetDialog(
     context: context,
@@ -53,7 +53,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    IStatus status = statusBloc.status;
+    IStatus? status = statusBloc.status;
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
 
@@ -114,8 +114,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         label: S.of(context).app_status_action_openInBrowser,
         onAction: (context) async {
           var statusBloc = IStatusBloc.of(context, listen: false);
-          var status = statusBloc.status;
-          var url = status.url;
+          var status = statusBloc.status!;
+          var url = status.url!;
           await UrlHelper.handleUrlClick(
             context: context,
             url: url,
@@ -130,7 +130,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_status_action_openOnRemoteInstance(
-          statusBloc.account.acctRemoteDomainOrNull),
+          statusBloc.account!.acctRemoteDomainOrNull!),
       onAction: (context) async {
         await goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           context,
@@ -146,7 +146,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         label: S.of(context).app_status_action_copyLink,
         onAction: (context) async {
           var statusBloc = IStatusBloc.of(context, listen: false);
-          var status = statusBloc.status;
+          var status = statusBloc.status!;
           await Clipboard.setData(
             ClipboardData(text: status.uri),
           );
@@ -194,7 +194,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    var isPleromaInstance = statusBloc.isPleromaInstance;
+    var isPleromaInstance = statusBloc.isPleroma;
     return DialogAction(
       icon: statusBloc.muted == true ? FediIcons.unmute : FediIcons.mute,
       label: statusBloc.muted == true
@@ -204,7 +204,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         if (statusBloc.muted == true || isPleromaInstance != true) {
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
-            asyncCode: () => statusBloc.toggleMute(),
+            asyncCode: () => statusBloc.toggleMute(
+              duration: null,
+            ),
           );
 
           Navigator.of(context).pop();
@@ -275,7 +277,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           newStatusShareAction: (context) {
             Navigator.of(context).pop();
 
-            var mediaAttachmentsString = status.mediaAttachments
+            var mediaAttachmentsString = status!.mediaAttachments
                 ?.map(
                   (mediaAttachment) => mediaAttachment.url,
                 )
@@ -299,13 +301,13 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
 class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
   const _StatusActionMoreDialogBodyStatusActionsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    IStatus status = statusBloc.status;
+    IStatus? status = statusBloc.status;
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
@@ -321,7 +323,7 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
           if (isLocal) StatusActionMoreDialogBody.buildBookmarkAction(context),
           StatusActionMoreDialogBody.buildCopyAction(context),
           StatusActionMoreDialogBody.buildOpenInBrowserAction(context),
-          if (isLocal && statusBloc.account.isAcctRemoteDomainExist)
+          if (isLocal && statusBloc.account!.isAcctRemoteDomainExist)
             StatusActionMoreDialogBody.buildAccountOpenOnRemoteInstance(
                 context),
           StatusActionMoreDialogBody.buildShareAction(context),

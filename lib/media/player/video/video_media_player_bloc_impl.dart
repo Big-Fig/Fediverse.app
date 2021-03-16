@@ -16,7 +16,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   final double desiredAspectRatio;
 
   @override
-  double get actualAspectRatio => videoPlayerController?.value?.aspectRatio;
+  double? get actualAspectRatio => videoPlayerController?.value?.aspectRatio;
 
   @override
   final bool isFullScreenSupportEnabled;
@@ -33,15 +33,15 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   Stream<DateTime> get lastIterationDateTimeStream =>
       lastIterationDateTimeSubject.stream;
 
-  DateTime get lastIterationDateTime => lastIterationDateTimeSubject.value;
+  DateTime? get lastIterationDateTime => lastIterationDateTimeSubject.value;
 
   VideoMediaPlayerBloc({
-    @required MediaPlayerSource mediaPlayerSource,
-    @required this.desiredAspectRatio,
-    @required this.isFullScreenSupportEnabled,
-    @required bool autoInit,
-    @required bool autoPlay,
-    @required this.isFullscreen,
+    required MediaPlayerSource mediaPlayerSource,
+    required this.desiredAspectRatio,
+    required this.isFullScreenSupportEnabled,
+    required bool? autoInit,
+    required bool? autoPlay,
+    required this.isFullscreen,
     this.systemOverlaysAfterFullScreen = SystemUiOverlay.values,
     this.isNeedEnableWakelockOnFullScreen = true,
     this.deviceOrientationsAfterFullScreen = const [
@@ -60,12 +60,12 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
 
   static VideoMediaPlayerBloc createFromContext(
     BuildContext context, {
-    @required MediaPlayerSource mediaPlayerSource,
-    @required double desiredAspectRatio,
+    required MediaPlayerSource mediaPlayerSource,
+    required double desiredAspectRatio,
     bool isFullScreenSupportEnabled = true,
-    @required bool autoInit,
-    @required bool autoPlay,
-    @required bool isFullscreen,
+    required bool? autoInit,
+    required bool? autoPlay,
+    required bool isFullscreen,
   }) {
     return VideoMediaPlayerBloc(
       mediaPlayerSource: mediaPlayerSource,
@@ -79,13 +79,13 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required MediaPlayerSource mediaPlayerSource,
-    @required Widget child,
-    @required double desiredAspectRatio,
+    required MediaPlayerSource mediaPlayerSource,
+    required Widget child,
+    required double desiredAspectRatio,
     bool isFullScreenSupportEnabled = true,
-    @required bool autoInit,
-    @required bool autoPlay,
-    @required bool isFullscreen,
+    required bool? autoInit,
+    required bool? autoPlay,
+    required bool isFullscreen,
   }) {
     return DisposableProvider<IVideoMediaPlayerBloc>(
       create: (context) => VideoMediaPlayerBloc.createFromContext(
@@ -152,7 +152,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
 
   @override
   bool get isControlsVisible =>
-      _calculateIsControlsVisible(lastIterationDateTime, isPlaying);
+      _calculateIsControlsVisible(lastIterationDateTime!, isPlaying);
 
   bool _calculateIsControlsVisible(
       DateTime lastIterationDateTime, bool isPlaying) {
@@ -170,7 +170,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         lastIterationDateTimeStream, isPlayingStream, videoPlayerValueStream,
         // use videoPlayerValueStream just for regular updates
         // hack to avoid using Timer to update isControlsVisibleStream
-        (lastIterationDateTime, isPlaying, videoPlayerValue) =>
+        (dynamic lastIterationDateTime, dynamic isPlaying, dynamic videoPlayerValue) =>
             _calculateIsControlsVisible(lastIterationDateTime, isPlaying),
       );
 

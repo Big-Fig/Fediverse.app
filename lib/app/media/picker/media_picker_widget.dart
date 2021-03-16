@@ -50,7 +50,7 @@ class MediaPickerWidget extends StatelessWidget {
 
 class _MediaPickerPageNoFoldersWidget extends StatelessWidget {
   const _MediaPickerPageNoFoldersWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class _MediaPickerPageNoFoldersWidget extends StatelessWidget {
 
 class _MediaPickerPageFolderLoadingWidget extends StatelessWidget {
   const _MediaPickerPageFolderLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -75,12 +75,12 @@ class _MediaPickerPageFolderLoadingWidget extends StatelessWidget {
 }
 
 class _MediaPickerPageFoldersWidget extends StatelessWidget {
-  const _MediaPickerPageFoldersWidget({Key key}) : super(key: key);
+  const _MediaPickerPageFoldersWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
-    return StreamBuilder<MediaDeviceGallerySelectedFolderData>(
+    return StreamBuilder<MediaDeviceGallerySelectedFolderData?>(
       stream: mediaDeviceGalleryBloc.selectedFolderDataStream
           .distinct((old, current) => old?.folder?.id == current?.folder?.id),
       builder: (context, snapshot) {
@@ -93,7 +93,7 @@ class _MediaPickerPageFoldersWidget extends StatelessWidget {
         return Provider<IMediaDeviceFolder>.value(
           value: folder,
           child: Provider<IMediaDeviceFolderBloc>.value(
-            value: folderData.folderBloc,
+            value: folderData!.folderBloc,
             child: Provider<IMediaDeviceFileLocalOnlyListBloc>.value(
               value: folderData.filesListBloc,
               child: Provider<IMediaDeviceFilePaginationBloc>.value(
@@ -101,7 +101,7 @@ class _MediaPickerPageFoldersWidget extends StatelessWidget {
                 child: Provider<IMediaDeviceFilePaginationListBloc>.value(
                   value: folderData.filesPaginationListBloc,
                   child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-                      ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
+                      ILocalOnlyListBloc<IMediaDeviceFileMetadata?>>(
                     update: (context, value, previous) => value,
                     child: ProxyProvider<
                         IMediaDeviceFilePaginationBloc,
@@ -135,7 +135,7 @@ class _MediaPickerPageFoldersWidget extends StatelessWidget {
 
 class _MediaPickerPageGalleryFolderWidget extends StatelessWidget {
   const _MediaPickerPageGalleryFolderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -158,7 +158,7 @@ class _MediaPickerPageGalleryFolderWidget extends StatelessWidget {
 
 class _FileGalleryFolderPickFromCameraHeaderItemWidget extends StatelessWidget {
   const _FileGalleryFolderPickFromCameraHeaderItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

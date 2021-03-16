@@ -8,8 +8,8 @@ abstract class IPushRelayService extends IDisposable {
 
   /// Create Url to forward WebPushSubscription to FCM
   String createPushRelayEndPointUrl({
-    @required String account,
-    @required Uri baseServerUrl,
-    @required String fcmDeviceToken,
+    required String? account,
+    required Uri baseServerUrl,
+    required String fcmDeviceToken,
   });
 }

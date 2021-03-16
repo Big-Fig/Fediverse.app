@@ -82,7 +82,7 @@ class StatusHeaderWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Text(
-          account.acct,
+          account.acct!,
           style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
         ),
         const FediMediumHorizontalSpacer(),
@@ -104,7 +104,7 @@ class StatusHeaderWidget extends StatelessWidget {
   }
 
   const StatusHeaderWidget({
-    @required this.descText,
-    @required this.icon,
+    required this.descText,
+    required this.icon,
   });
 }

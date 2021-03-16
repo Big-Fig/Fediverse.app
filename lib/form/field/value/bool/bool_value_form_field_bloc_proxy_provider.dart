@@ -8,12 +8,12 @@ class BoolValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   BoolValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IBoolValueFormFieldBloc, IValueFormFieldBloc<bool>>(
+      ProxyProvider<IBoolValueFormFieldBloc, IValueFormFieldBloc<bool?>>(
         update: (context, value, previous) => value,
         child: ValueFormFieldBlocProxyProvider<bool>(
           child: child,

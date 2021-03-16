@@ -7,21 +7,22 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PleromaMediaAttachmentService extends DisposableOwner
     implements IPleromaMediaAttachmentService {
   @override
   final IPleromaAuthRestService restService;
 
-  PleromaMediaAttachmentService({@required this.restService});
+  PleromaMediaAttachmentService({
+    required this.restService,
+  });
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,7 +38,7 @@ class PleromaMediaAttachmentService extends DisposableOwner
 
   @override
   Future<PleromaMediaAttachment> uploadMedia({
-    @required File file,
+    required File file,
   }) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
       UploadMultipartRestRequest.post(
@@ -52,9 +53,10 @@ class PleromaMediaAttachmentService extends DisposableOwner
       return PleromaMediaAttachment.fromJsonString(httpResponse.body);
     } else {
       throw PleromaMediaAttachmentUploadException(
-          file: file,
-          statusCode: httpResponse.statusCode,
-          body: httpResponse.body);
+        file: file,
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 

@@ -23,7 +23,7 @@ class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
 
   const CurrentAuthInstanceContextInitWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -33,8 +33,8 @@ class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
 
 class _CurrentAuthInstanceContextInitWidgetState
     extends State<CurrentAuthInstanceContextInitWidget> {
-  FediIndeterminateProgressDialog loadingInstanceProgressDialog;
-  StreamSubscription subscription;
+  FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
+  StreamSubscription? subscription;
 
   var disposed = false;
 
@@ -72,7 +72,7 @@ class _CurrentAuthInstanceContextInitWidgetState
               .app_auth_instance_current_context_loading_loading_content(
                   myAccountBloc.instance.userAtHost));
 
-      loadingInstanceProgressDialog.show(context);
+      loadingInstanceProgressDialog!.show(context);
 
       subscription =
           currentInstanceContextLoadingBloc.stateStream.listen((state) {
@@ -103,7 +103,7 @@ class _CurrentAuthInstanceContextInitWidgetState
     var isShowing = loadingInstanceProgressDialog?.isShowing == true;
     _logger.finest(() => "hideDialog isShowing $isShowing");
     if (isShowing) {
-      loadingInstanceProgressDialog.hide(context);
+      loadingInstanceProgressDialog!.hide(context);
     }
   }
 
@@ -143,7 +143,7 @@ class _CurrentAuthInstanceContextInitWidgetState
 class _CurrentAuthInstanceContextInitSessionExpiredWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -180,7 +180,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredWidget
 class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -202,7 +202,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
 class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -223,7 +223,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
 class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -249,7 +249,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
 class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
     extends StatelessWidget {
   const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -257,7 +257,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
-          currentAuthInstanceBloc.currentInstance.userAtHost),
+          currentAuthInstanceBloc.currentInstance!.userAtHost),
       textAlign: TextAlign.center,
       style: IFediUiTextTheme.of(context).mediumShortBoldWhite,
     );

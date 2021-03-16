@@ -16,16 +16,16 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
 
   FormCaptchaStringFormFieldRowWidget({
-    @required this.label,
-    @required this.autocorrect,
+    required this.label,
+    required this.autocorrect,
     this.obscureText = false,
-    @required this.hint,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    required this.hint,
+    required this.onSubmitted,
+    required this.textInputAction,
   });
 
   @override
@@ -54,13 +54,13 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
 
 class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
   const _FormCaptchaStringFormFieldRowContentWidget({
-    Key key,
-    @required this.hint,
-    @required this.label,
-    @required this.autocorrect,
-    @required this.obscureText,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    Key? key,
+    required this.hint,
+    required this.label,
+    required this.autocorrect,
+    required this.obscureText,
+    required this.onSubmitted,
+    required this.textInputAction,
   }) : super(key: key);
 
   final String hint;
@@ -68,7 +68,7 @@ class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
   final bool autocorrect;
   final bool obscureText;
 
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
 
   @override
@@ -80,7 +80,7 @@ class _FormCaptchaStringFormFieldRowContentWidget extends StatelessWidget {
     _logger.finest(() => "build isExist $isExist");
 
     if (isExist) {
-      return StreamBuilder<List<FormItemValidationError>>(
+      return StreamBuilder<List<FormItemValidationError?>?>(
         stream: captchaStringFieldBloc.errorsStream,
         builder: (context, snapshot) {
           var errors = snapshot.data ?? [];
@@ -115,26 +115,26 @@ class _FormCaptchaStringFormFieldRowBodyWidget extends StatelessWidget {
   final String hint;
   final bool autocorrect;
   final bool obscureText;
-  final String errorText;
+  final String? errorText;
   final TextEditingController textEditingController;
   final FocusNode focusNode;
   final TextInputAction textInputAction;
-  final ValueChanged<String> onSubmitted;
-  final Stream<Image> captchaImageStream;
+  final ValueChanged<String>? onSubmitted;
+  final Stream<Image?> captchaImageStream;
   final VoidCallback onNeedCaptchaReloadCallback;
 
   _FormCaptchaStringFormFieldRowBodyWidget({
-    @required this.label,
-    @required this.autocorrect,
+    required this.label,
+    required this.autocorrect,
     this.obscureText = false,
-    @required this.hint,
-    @required this.errorText,
-    @required this.textEditingController,
-    @required this.textInputAction,
-    @required this.onSubmitted,
-    @required this.focusNode,
-    @required this.captchaImageStream,
-    @required this.onNeedCaptchaReloadCallback,
+    required this.hint,
+    required this.errorText,
+    required this.textEditingController,
+    required this.textInputAction,
+    required this.onSubmitted,
+    required this.focusNode,
+    required this.captchaImageStream,
+    required this.onNeedCaptchaReloadCallback,
   });
 
   @override
@@ -173,18 +173,18 @@ class _FormCaptchaStringFormFieldRowBodyWidget extends StatelessWidget {
 
 class _FormCaptchaStringFormFieldRowImageWidget extends StatelessWidget {
   const _FormCaptchaStringFormFieldRowImageWidget({
-    Key key,
-    @required this.captchaImageStream,
-    @required this.onNeedCaptchaReloadCallback,
+    Key? key,
+    required this.captchaImageStream,
+    required this.onNeedCaptchaReloadCallback,
   }) : super(key: key);
 
-  final Stream<Image> captchaImageStream;
+  final Stream<Image?> captchaImageStream;
 
   final VoidCallback onNeedCaptchaReloadCallback;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Image>(
+    return StreamBuilder<Image?>(
       stream: captchaImageStream,
       builder: (context, snapshot) {
         var image = snapshot.data;

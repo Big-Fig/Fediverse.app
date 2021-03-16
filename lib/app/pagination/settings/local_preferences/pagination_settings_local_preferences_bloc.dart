@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPaginationSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<PaginationSettings> {
+    implements ILocalPreferenceBloc<PaginationSettings?> {
   static IPaginationSettingsLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IPaginationSettingsLocalPreferencesBloc>(context, listen: listen);

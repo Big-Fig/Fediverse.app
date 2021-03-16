@@ -30,7 +30,7 @@ class AccountActionListWidget extends StatelessWidget {
 
 class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
   const _AccountActionListBodyLayoutBuilderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {
 
 class _AccountActionListBodyWidget extends StatelessWidget {
   const _AccountActionListBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -97,7 +97,7 @@ class _AccountActionListBodyWidget extends StatelessWidget {
 
 class _AccountActionListMessageWidget extends StatelessWidget {
   const _AccountActionListMessageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -114,7 +114,7 @@ class _AccountActionListMessageWidget extends StatelessWidget {
 
 class _AccountActionListMoreWidget extends StatelessWidget {
   const _AccountActionListMoreWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -134,13 +134,13 @@ class _AccountActionListMoreWidget extends StatelessWidget {
 
 class _AccountActionListFollowWidget extends StatelessWidget {
   const _AccountActionListFollowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<IPleromaAccountRelationship>(
+    return StreamBuilder<IPleromaAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var relationship = accountBloc.relationship;
@@ -153,7 +153,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
-            builder: (BuildContext context, VoidCallback onPressed) {
+            builder: (BuildContext context, VoidCallback? onPressed) {
               return FediBlurredTextButtonWithBorder(
                 S.of(context).app_account_action_followRequested,
                 onPressed: onPressed,
@@ -165,7 +165,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
-            builder: (BuildContext context, VoidCallback onPressed) {
+            builder: (BuildContext context, VoidCallback? onPressed) {
               return FediBlurredTextButtonWithBorder(
                 relationship?.requested == true
                     ? S.of(context).app_account_action_followRequested

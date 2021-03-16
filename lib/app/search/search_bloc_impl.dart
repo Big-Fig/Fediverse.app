@@ -17,8 +17,8 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   IPleromaSearchService pleromaSearchService;
 
   SearchBloc({
-    @required this.pleromaSearchService,
-    @required SearchTab startTab,
+    required this.pleromaSearchService,
+    required SearchTab startTab,
   })  : searchInputBloc = SearchInputBloc(),
         _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     addDisposable(disposable: searchInputBloc);
@@ -33,7 +33,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   Stream<SearchTab> get selectedTabStream => _selectedTabSubject.stream;
 
   @override
-  SearchTab get selectedTab => _selectedTabSubject.value;
+  SearchTab get selectedTab => _selectedTabSubject.value!;
 
   @override
   void selectTab(SearchTab tab) {
@@ -41,7 +41,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   }
 
   static SearchBloc createFromContext(BuildContext context,
-          {@required SearchTab startTab}) =>
+          {required SearchTab startTab}) =>
       SearchBloc(
         startTab: startTab,
         pleromaSearchService: IPleromaSearchService.of(

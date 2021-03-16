@@ -7,7 +7,7 @@ class CustomListAccountListWidget extends StatelessWidget {
   final List<Widget> itemActions;
 
   const CustomListAccountListWidget({
-    @required this.itemActions,
+    required this.itemActions,
   });
 
   @override

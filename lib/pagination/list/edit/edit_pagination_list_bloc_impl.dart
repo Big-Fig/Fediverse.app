@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -5,7 +6,6 @@ import 'package:fedi/pagination/list/edit/edit_pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/src/smart_refresher.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,15 +21,15 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   final ItemEquality<TItem> itemEquality;
 
   EditPaginationListBloc({
-    @required this.paginationListBloc,
-    @required this.itemEquality,
+    required this.paginationListBloc,
+    required this.itemEquality,
   });
 
   @override
   Future clearChangesAndRefresh() async {
     addedItemsSubject.add([]);
     removedItemsSubject.add([]);
-    refreshWithController();
+    await refreshWithController();
   }
 
   @override
@@ -39,8 +39,8 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   bool _calculateIsSomethingChanged({
-    @required List<TItem> addedItems,
-    @required List<TItem> removedItems,
+    required List<TItem> addedItems,
+    required List<TItem> removedItems,
   }) {
     var isSomethingChanged = addedItems.isNotEmpty || removedItems.isNotEmpty;
     _logger.finest(() => " isSomethingChanged $isSomethingChanged");
@@ -51,15 +51,15 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(
         addedItemsStream,
         removedItemsStream,
-        (addedItems, removedItems) => _calculateIsSomethingChanged(
+        (dynamic addedItems, dynamic removedItems) => _calculateIsSomethingChanged(
           addedItems: addedItems,
           removedItems: removedItems,
         ),
       );
 
-  List<TItem> get originalItems => paginationListBloc.items;
+  List<TItem>? get originalItems => paginationListBloc!.items;
 
-  Stream<List<TItem>> get originalItemsStream => paginationListBloc.itemsStream;
+  Stream<List<TItem>?> get originalItemsStream => paginationListBloc!.itemsStream;
 
   final BehaviorSubject<List<TItem>> addedItemsSubject =
       BehaviorSubject.seeded([]);
@@ -67,7 +67,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       BehaviorSubject.seeded([]);
 
   @override
-  List<TItem> get addedItems => List.unmodifiable(addedItemsSubject.value);
+  List<TItem> get addedItems => List.unmodifiable(addedItemsSubject.value!);
 
   Stream<List<TItem>> get addedItemsStream => addedItemsSubject.stream.map(
         (value) => List.unmodifiable(
@@ -76,7 +76,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem> get removedItems => List.unmodifiable(removedItemsSubject.value);
+  List<TItem> get removedItems => List.unmodifiable(removedItemsSubject.value!);
 
   Stream<List<TItem>> get removedItemsStream => removedItemsSubject.stream.map(
         (value) => List.unmodifiable(
@@ -85,7 +85,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem> get items {
+  List<TItem>? get items {
     return _calculateCurrentItems(
       originalItems: originalItems,
       addedItems: addedItems,
@@ -94,13 +94,13 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
   }
 
-  static List<TItem> _calculateCurrentItems<TItem>({
-    @required List<TItem> originalItems,
-    @required List<TItem> addedItems,
-    @required List<TItem> removedItems,
-    @required ItemEquality<TItem> itemEquality,
+  static List<TItem>? _calculateCurrentItems<TItem>({
+    required List<TItem>? originalItems,
+    required List<TItem> addedItems,
+    required List<TItem> removedItems,
+    required ItemEquality<TItem> itemEquality,
   }) {
-    List<TItem> result;
+    List<TItem>? result;
 
     _logger.finest(() => "_calculateCurrentItems \n"
         "originalItems ${originalItems?.length} \n"
@@ -133,11 +133,11 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Stream<List<TItem>> get itemsStream => Rx.combineLatest3(
+  Stream<List<TItem>?> get itemsStream => Rx.combineLatest3(
         originalItemsStream,
         addedItemsStream,
         removedItemsStream,
-        (originalItems, addedItems, removedItems) => _calculateCurrentItems(
+        (dynamic originalItems, dynamic addedItems, dynamic removedItems) => _calculateCurrentItems(
           originalItems: originalItems,
           addedItems: addedItems,
           removedItems: removedItems,
@@ -153,7 +153,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       itemEquality: itemEquality,
     );
     if (foundInRemoved != null) {
-      var items = removedItemsSubject.value;
+      var items = removedItemsSubject.value!;
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
@@ -192,7 +192,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
 
     if (foundInAdded != null) {
-      var items = addedItemsSubject.value;
+      var items = addedItemsSubject.value!;
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);
@@ -222,9 +222,9 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   static bool _calculateIsItemAdded<TItem>({
-    @required List<TItem> items,
-    @required TItem item,
-    @required ItemEquality<TItem> itemEquality,
+    required List<TItem>? items,
+    required TItem item,
+    required ItemEquality<TItem> itemEquality,
   }) =>
       _findItemInList(
         items: items,
@@ -233,14 +233,13 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       ) !=
       null;
 
-  static TItem _findItemInList<TItem>({
-    @required List<TItem> items,
-    @required TItem item,
-    @required ItemEquality<TItem> itemEquality,
+  static TItem? _findItemInList<TItem>({
+    required List<TItem>? items,
+    required TItem item,
+    required ItemEquality<TItem> itemEquality,
   }) =>
-      items?.firstWhere(
+      items?.firstWhereOrNull(
         (currentItem) => itemEquality(currentItem, item),
-        orElse: () => null,
       );
 
   @override
@@ -253,77 +252,77 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  AsyncInitLoadingState get initLoadingState =>
-      paginationListBloc.initLoadingState;
+  AsyncInitLoadingState? get initLoadingState =>
+      paginationListBloc!.initLoadingState;
 
   @override
   Stream<AsyncInitLoadingState> get initLoadingStateStream =>
-      paginationListBloc.initLoadingStateStream;
+      paginationListBloc!.initLoadingStateStream;
 
   @override
-  bool get isLoading => paginationListBloc.isLoading;
+  bool? get isLoading => paginationListBloc!.isLoading;
 
   @override
-  Stream<bool> get isLoadingStream => paginationListBloc.isLoadingStream;
+  Stream<bool> get isLoadingStream => paginationListBloc!.isLoadingStream;
 
   @override
-  int get itemsCountPerPage => paginationListBloc.itemsCountPerPage;
+  int? get itemsCountPerPage => paginationListBloc!.itemsCountPerPage;
 
   @override
-  Stream<List<TItem>> get itemsDistinctStream => itemsStream.distinct();
+  Stream<List<TItem>?> get itemsDistinctStream => itemsStream.distinct();
 
   @override
   Stream<PaginationListLoadingError> get loadMoreErrorStream =>
-      paginationListBloc.loadMoreErrorStream;
+      paginationListBloc!.loadMoreErrorStream;
 
   @override
-  FediListSmartRefresherLoadingState get loadMoreState =>
-      paginationListBloc.loadMoreState;
+  FediListSmartRefresherLoadingState? get loadMoreState =>
+      paginationListBloc!.loadMoreState;
 
   @override
   // TODO: implement loadMoreStateStream
   Stream<FediListSmartRefresherLoadingState> get loadMoreStateStream =>
-      paginationListBloc.loadMoreStateStream;
+      paginationListBloc!.loadMoreStateStream;
 
   @override
   Future<FediListSmartRefresherLoadingState> loadMoreWithoutController() =>
-      paginationListBloc.loadMoreWithoutController();
+      paginationListBloc!.loadMoreWithoutController();
 
   @override
-  Future performAsyncInit() => paginationListBloc.performAsyncInit();
+  Future performAsyncInit() => paginationListBloc!.performAsyncInit();
 
   @override
   RefreshController get refreshController =>
-      paginationListBloc.refreshController;
+      paginationListBloc!.refreshController;
 
   @override
   Stream<PaginationListLoadingError> get refreshErrorStream =>
-      paginationListBloc.refreshErrorStream;
+      paginationListBloc!.refreshErrorStream;
 
   @override
-  FediListSmartRefresherLoadingState get refreshState =>
-      paginationListBloc.refreshState;
+  FediListSmartRefresherLoadingState? get refreshState =>
+      paginationListBloc!.refreshState;
 
   @override
   Stream<FediListSmartRefresherLoadingState> get refreshStateStream =>
-      paginationListBloc.refreshStateStream;
+      paginationListBloc!.refreshStateStream;
 
   @override
-  void refreshWithController() {
-    paginationListBloc.refreshWithController();
+  Future refreshWithController() {
+    return paginationListBloc!.refreshWithController();
   }
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>
-      paginationListBloc.refreshWithoutController();
+      paginationListBloc!.refreshWithoutController();
 
   @override
-  List<TPage> get sortedPages => paginationListBloc.sortedPages;
+  List<TPage>? get sortedPages => paginationListBloc!.sortedPages;
 
   @override
   Stream<List<TPage>> get sortedPagesStream =>
-      paginationListBloc.sortedPagesStream;
+      paginationListBloc!.sortedPagesStream;
 
   @override
-  dynamic get initLoadingException => paginationListBloc.initLoadingException;
+  dynamic get initLoadingException => paginationListBloc!.initLoadingException;
 }

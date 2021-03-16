@@ -32,13 +32,12 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
 
 class FediLocalPreferencesServiceMigrationBloc
     extends LocalPreferencesServiceMigrationBloc {
   FediLocalPreferencesServiceMigrationBloc({
-    @required ILocalPreferencesService inputService,
-    @required ILocalPreferencesService outputService,
+    required ILocalPreferencesService inputService,
+    required ILocalPreferencesService outputService,
   }) : super(
           inputService: inputService,
           outputService: outputService,
@@ -51,12 +50,12 @@ class FediLocalPreferencesServiceMigrationBloc
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(inputService);
     await instanceListLocalPreferenceBloc.performAsyncInit();
-    var authInstanceList = instanceListLocalPreferenceBloc.value;
+    var authInstanceList = instanceListLocalPreferenceBloc.value!;
 
     var authInstancesBlocCreators = <LocalPreferencesBlocCreator>[];
 
-    for (var authInstance in authInstanceList.instances) {
-      var host = authInstance.urlHost;
+    for (var authInstance in authInstanceList.instances!) {
+      var host = authInstance!.urlHost;
       var userAtHost = authInstance.userAtHost;
 
       authInstancesBlocCreators.addAll([

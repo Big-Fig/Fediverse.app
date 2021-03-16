@@ -5,10 +5,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditLocalizationSettingsBloc
-    implements IGlobalSettingsBloc<LocalizationSettings> {
-  static IEditLocalizationSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IEditLocalizationSettingsBloc>(context, listen: listen);
+    implements IGlobalSettingsBloc<LocalizationSettings?> {
+  static IEditLocalizationSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IEditLocalizationSettingsBloc>(
+        context,
+        listen: listen,
+      );
 
   ILocalizationLocaleSingleFromListValueFormFieldBloc
       get localizationLocaleFieldBloc;

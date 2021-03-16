@@ -13,7 +13,6 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger = Logger("account_follower_account_cached_list_bloc_impl.dart");
 
@@ -29,19 +28,20 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
       );
 
   AccountFollowerAccountCachedListBloc({
-    @required this.pleromaAccountService,
-    @required this.accountRepository,
-    @required this.account,
+    required this.pleromaAccountService,
+    required this.accountRepository,
+    required this.account,
   });
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
@@ -57,7 +57,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    if (remoteAccounts != null) {
+    if (remoteAccounts.isNotEmpty) {
       await accountRepository.upsertRemoteAccounts(
         remoteAccounts,
         conversationRemoteId: null,
@@ -65,7 +65,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
       );
 
       await accountRepository.addAccountFollowers(
-        accountRemoteId: account.remoteId,
+        accountRemoteId: account!.remoteId,
         followers: remoteAccounts,
       );
 
@@ -79,9 +79,9 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
 
   @override
   Future<List<IAccount>> loadLocalItems({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
@@ -103,7 +103,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
 
   static AccountFollowerAccountCachedListBloc createFromContext(
     BuildContext context, {
-    @required IAccount account,
+    required IAccount account,
   }) =>
       AccountFollowerAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
@@ -114,13 +114,15 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IAccount account,
-    @required Widget child,
+    required IAccount account,
+    required Widget child,
   }) {
     return DisposableProvider<IAccountCachedListBloc>(
       create: (context) =>
-          AccountFollowerAccountCachedListBloc.createFromContext(context,
-              account: account),
+          AccountFollowerAccountCachedListBloc.createFromContext(
+        context,
+        account: account,
+      ),
       child: AccountCachedListBlocProxyProvider(
         child: child,
       ),
@@ -131,5 +133,5 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

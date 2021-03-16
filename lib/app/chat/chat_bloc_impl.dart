@@ -15,11 +15,11 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   Stream<bool> get chatDeletedStream => chatDeletedStreamController.stream;
 
   ChatBloc({
-    @required bool needRefreshFromNetworkOnInit,
-    @required this.isNeedWatchLocalRepositoryForUpdates,
+    required bool needRefreshFromNetworkOnInit,
+    required this.isNeedWatchLocalRepositoryForUpdates,
     // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
-    @required bool delayInit,
+    required bool delayInit,
   }) {
     addDisposable(streamController: chatDeletedStreamController);
     if (delayInit) {
@@ -45,34 +45,34 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   }
 
   @override
-  List<IAccount> get accounts => chat.accounts;
+  List<IAccount>? get accounts => chat!.accounts;
 
   @override
   Stream<List<IAccount>> get accountsStream =>
-      chatStream.map((chat) => chat.accounts);
+      chatStream.map((chat) => chat!.accounts);
 
   @override
-  DateTime get updatedAt => chat.updatedAt;
+  DateTime? get updatedAt => chat!.updatedAt;
 
   @override
-  Stream<DateTime> get updatedAtStream =>
-      chatStream.map((chat) => chat.updatedAt);
+  Stream<DateTime?> get updatedAtStream =>
+      chatStream.map((chat) => chat!.updatedAt);
 
   @override
   Future refreshFromNetwork();
 
   @override
-  bool get isHaveUnread => unreadCount > 0;
+  bool get isHaveUnread => unreadCount! > 0;
 
   @override
   Stream<bool> get isHaveUnreadStream =>
-      unreadCountStream.map((unreadCount) => unreadCount > 0);
+      unreadCountStream.map((unreadCount) => unreadCount! > 0);
 
   @override
-  int get unreadCount => chat.unread;
+  int? get unreadCount => chat!.unread;
 
   @override
-  Stream<int> get unreadCountStream => chatStream.map((chat) => chat.unread);
+  Stream<int?> get unreadCountStream => chatStream.map((chat) => chat!.unread);
 
   @override
   Future delete() async {

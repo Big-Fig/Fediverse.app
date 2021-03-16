@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class AppContextWidget extends StatelessWidget {
   final Widget child;
 
-  const AppContextWidget({@required this.child});
+  const AppContextWidget({required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -15,99 +15,105 @@ abstract class IAccountRepository
         IDisposable,
         IReadIdListRepository<IAccount, int>,
         IWriteIdListRepository<DbAccount, int> {
-  static IAccountRepository of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IAccountRepository>(context, listen: listen);
+  static IAccountRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IAccountRepository>(
+        context,
+        listen: listen,
+      );
 
-  Future<IAccount> findByRemoteId(String remoteId);
+  Future<IAccount?> findByRemoteId(String remoteId);
 
-  Stream<IAccount> watchByRemoteId(String remoteId);
+  Stream<IAccount?> watchByRemoteId(String remoteId);
 
   Future upsertRemoteAccounts(
     List<IPleromaAccount> remoteAccounts, {
-    @required String conversationRemoteId,
-    @required String chatRemoteId,
+    required String? conversationRemoteId,
+    required String? chatRemoteId,
   });
 
   Future upsertRemoteAccount(
     IPleromaAccount remoteAccount, {
-    @required String conversationRemoteId,
-    @required String chatRemoteId,
+    required String? conversationRemoteId,
+    required String? chatRemoteId,
   });
 
   Future addAccountFollowings({
-    @required String accountRemoteId,
-    @required List<PleromaAccount> followings,
+    required String accountRemoteId,
+    required List<PleromaAccount> followings,
   });
 
   Future addAccountFollowers({
-    @required String accountRemoteId,
-    @required List<PleromaAccount> followers,
+    required String accountRemoteId,
+    required List<IPleromaAccount> followers,
   });
 
   Future updateStatusRebloggedBy({
-    @required String statusRemoteId,
-    @required List<PleromaAccount> rebloggedByAccounts,
+    required String statusRemoteId,
+    required List<IPleromaAccount> rebloggedByAccounts,
   });
 
   Future updateStatusFavouritedBy({
-    @required String statusRemoteId,
-    @required List<PleromaAccount> favouritedByAccounts,
+    required String statusRemoteId,
+    required List<IPleromaAccount> favouritedByAccounts,
   });
 
   Future updateLocalAccountByRemoteAccount({
-    @required IAccount oldLocalAccount,
-    @required IPleromaAccount newRemoteAccount,
+    required IAccount oldLocalAccount,
+    required IPleromaAccount newRemoteAccount,
   });
 
   Future<List<IAccount>> getAccounts({
-    @required AccountRepositoryFilters filters,
-    @required RepositoryPagination<IAccount> pagination,
-    AccountRepositoryOrderingTermData orderingTermData =
+    required AccountRepositoryFilters? filters,
+    required RepositoryPagination<IAccount>? pagination,
+    AccountRepositoryOrderingTermData? orderingTermData =
         AccountRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<IAccount>> watchAccounts({
-    @required AccountRepositoryFilters filters,
-    @required RepositoryPagination<IAccount> pagination,
-    AccountRepositoryOrderingTermData orderingTermData =
+    required AccountRepositoryFilters? filters,
+    required RepositoryPagination<IAccount>? pagination,
+    AccountRepositoryOrderingTermData? orderingTermData =
         AccountRepositoryOrderingTermData.remoteIdDesc,
   });
 
-  Future<IAccount> getAccount({
-    @required AccountRepositoryFilters filters,
-    AccountRepositoryOrderingTermData orderingTermData =
+  Future<IAccount?> getAccount({
+    required AccountRepositoryFilters? filters,
+    AccountRepositoryOrderingTermData? orderingTermData =
         AccountRepositoryOrderingTermData.remoteIdDesc,
   });
 
-  Stream<IAccount> watchAccount({
-    @required AccountRepositoryFilters filters,
-    AccountRepositoryOrderingTermData orderingTermData =
+  Stream<IAccount?> watchAccount({
+    required AccountRepositoryFilters? filters,
+    AccountRepositoryOrderingTermData? orderingTermData =
         AccountRepositoryOrderingTermData.remoteIdDesc,
   });
 
   Future<List<IAccount>> getConversationAccounts({
-    @required IConversationChat conversation,
+    required IConversationChat conversation,
   });
 
   Stream<List<IAccount>> watchConversationAccounts({
-    @required IConversationChat conversation,
+    required IConversationChat conversation,
   });
 
   Future<List<IAccount>> getChatAccounts({
-    @required IPleromaChat chat,
+    required IPleromaChat chat,
   });
 
   Stream<List<IAccount>> watchChatAccounts({
-    @required IPleromaChat chat,
+    required IPleromaChat chat,
   });
 
   Future removeAccountFollowing({
-    @required String accountRemoteId,
-    @required String followingAccountId,
+    required String accountRemoteId,
+    required String followingAccountId,
   });
 
   Future removeAccountFollower({
-    @required String accountRemoteId,
-    @required String followerAccountId,
+    required String accountRemoteId,
+    required String followerAccountId,
   });
 }

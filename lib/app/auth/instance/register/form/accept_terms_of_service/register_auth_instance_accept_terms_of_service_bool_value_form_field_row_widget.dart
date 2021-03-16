@@ -43,6 +43,6 @@ class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
       );
 
   const RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget({
-    @required this.instanceBaseUri,
+    required this.instanceBaseUri,
   });
 }

@@ -10,9 +10,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("media_attachment_add_to_gallery_helper.dart");
 
-Future<bool> addMediaAttachmentToGallery(
-    {@required BuildContext context,
-    @required IPleromaMediaAttachment mediaAttachment}) async {
+Future<bool> addMediaAttachmentToGallery({
+  required BuildContext context,
+  required IPleromaMediaAttachment mediaAttachment,
+}) async {
   _logger.finest(() => "addMediaAttachmentToGallery start");
 
   var result;
@@ -21,7 +22,7 @@ Future<bool> addMediaAttachmentToGallery(
         IStoragePermissionBloc.of(context, listen: false);
     await storagePermissionBloc.requestPermission();
 
-    if (storagePermissionBloc.permissionGranted) {
+    if (storagePermissionBloc.permissionGranted!) {
       result = await _save(mediaAttachment);
     } else {
       result = false;
@@ -32,14 +33,14 @@ Future<bool> addMediaAttachmentToGallery(
   return result;
 }
 
-Future<bool> _save(IPleromaMediaAttachment mediaAttachment) async {
-  bool saved;
+Future<bool?> _save(IPleromaMediaAttachment mediaAttachment) async {
+  bool? saved;
   var typeMastodon = mediaAttachment.typeMastodon;
   if (typeMastodon == MastodonMediaAttachmentType.image) {
-    saved = await GallerySaver.saveImage(mediaAttachment.url);
+    saved = await GallerySaver.saveImage(mediaAttachment.url!);
   } else if (typeMastodon == MastodonMediaAttachmentType.video ||
       typeMastodon == MastodonMediaAttachmentType.gifv) {
-    saved = await GallerySaver.saveVideo(mediaAttachment.url);
+    saved = await GallerySaver.saveVideo(mediaAttachment.url!);
   } else {
     saved = false;
   }

@@ -33,13 +33,13 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
 })
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbAccountFollowingsTable accountFollowingsAlias;
-  $DbAccountFollowersTable accountFollowersAlias;
-  $DbStatusRebloggedAccountsTable statusRebloggedAccountsAlias;
-  $DbStatusFavouritedAccountsTable statusFavouritedAccountsAlias;
-  $DbConversationAccountsTable conversationAccountsAlias;
-  $DbChatAccountsTable chatAccountsAlias;
+  $DbAccountsTable? accountAlias;
+  late $DbAccountFollowingsTable accountFollowingsAlias;
+  late $DbAccountFollowersTable accountFollowersAlias;
+  late $DbStatusRebloggedAccountsTable statusRebloggedAccountsAlias;
+  late $DbStatusFavouritedAccountsTable statusFavouritedAccountsAlias;
+  late $DbConversationAccountsTable conversationAccountsAlias;
+  late $DbChatAccountsTable chatAccountsAlias;
 
   // Called by the AppDatabase class
   AccountDao(this.db) : super(db) {
@@ -57,27 +57,36 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity, {InsertMode mode}) =>
+  Future<int> insert(Insertable<DbAccount> entity, {InsertMode? mode}) =>
       into(dbAccounts).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbAccount> entity) =>
       into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          Iterable<Insertable<DbAccount>> entities, InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbAccounts, entities, mode: mode);
-      });
+          List<Insertable<DbAccount>> entities, InsertMode mode) async =>
+      await batch(
+        (batch) {
+          batch.insertAll(
+            dbAccounts,
+            entities,
+            mode: mode,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbAccount> entity) async =>
       await update(dbAccounts).replace(entity);
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbAccount> entity) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
 
     if (localId != null && localId >= 0) {
-      await (update(dbAccounts)..where((i) => i.id.equals(localId)))
+      await (update(dbAccounts)
+            ..where(
+              (i) => i.id.equals(localId),
+            ))
           .write(entity);
     } else {
       localId = await insert(entity);
@@ -93,8 +102,8 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   /// chronological order
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbAccountsTable, DbAccount> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
@@ -132,12 +141,12 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
             .toList());
 
   List<Join<Table, DataClass>> populateAccountJoin({
-    @required includeAccountFollowings,
-    @required includeAccountFollowers,
-    @required includeStatusFavouritedAccounts,
-    @required includeStatusRebloggedAccounts,
-    @required includeConversationAccounts,
-    @required includeChatAccounts,
+    required includeAccountFollowings,
+    required includeAccountFollowers,
+    required includeStatusFavouritedAccounts,
+    required includeStatusRebloggedAccounts,
+    required includeConversationAccounts,
+    required includeChatAccounts,
   }) {
     List<Join<Table, DataClass>> allJoins = [
       ...(includeAccountFollowings
@@ -194,31 +203,31 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
           SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-          String searchQuery) =>
+          String? searchQuery) =>
       query..where((account) => account.acct.like("%$searchQuery%"));
 
   JoinedSelectStatement addConversationWhere(
-          JoinedSelectStatement query, String conversationRemoteId) =>
+          JoinedSelectStatement query, String? conversationRemoteId) =>
       query
         ..where(CustomExpression<bool>(
             "$_conversationAccountsAliasId.conversation_remote_id"
             " = '$conversationRemoteId'"));
 
   JoinedSelectStatement addChatWhere(
-          JoinedSelectStatement query, String chatRemoteId) =>
+          JoinedSelectStatement query, String? chatRemoteId) =>
       query
         ..where(CustomExpression<bool>("$_chatAccountsAliasId.chat_remote_id"
             " = '$chatRemoteId'"));
 
   JoinedSelectStatement addStatusFavouritedByWhere(
-          JoinedSelectStatement query, String statusRemoteId) =>
+          JoinedSelectStatement query, String? statusRemoteId) =>
       query
         ..where(
             CustomExpression<bool>("$_statusFavouritedAccounts.status_remote_id"
                 " = '$statusRemoteId'"));
 
   JoinedSelectStatement addStatusRebloggedByWhere(
-          JoinedSelectStatement query, String statusRemoteId) =>
+          JoinedSelectStatement query, String? statusRemoteId) =>
       query
         ..where(
             CustomExpression<bool>("$_statusRebloggedAccounts.status_remote_id"
@@ -226,7 +235,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
-          JoinedSelectStatement query, String followingAccountRemoteId) =>
+          JoinedSelectStatement query, String? followingAccountRemoteId) =>
       query
         ..where(CustomExpression<bool>(
             "$_accountFollowingsAliasId.account_remote_id"
@@ -234,24 +243,17 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowersWhere(
-          JoinedSelectStatement query, String followerAccountRemoteId) =>
+          JoinedSelectStatement query, String? followerAccountRemoteId) =>
       query
         ..where(
             CustomExpression<bool>("$_accountFollowersAliasId.account_remote_id"
                 " = '$followerAccountRemoteId'"));
 
   List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbAccount typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-
     return typedResult.readTable(db.dbAccounts);
   }
 }

@@ -11,12 +11,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditTimelineSettingsBloc
-    extends IEditInstanceSettingsBloc<TimelineSettings> {
+    extends IEditInstanceSettingsBloc<TimelineSettings?> {
   static IEditTimelineSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEditTimelineSettingsBloc>(context, listen: listen);
 
-  TimelineType get timelineType;
+  TimelineType? get timelineType;
 
   bool get isNullableValuesPossible;
 

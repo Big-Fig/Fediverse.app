@@ -19,10 +19,10 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatPostMessageBloc({
-    @required this.pleromaChatBloc,
-    @required int maximumMessageLength,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumFileSizeInBytes,
+    required this.pleromaChatBloc,
+    required int? maximumMessageLength,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int? maximumFileSizeInBytes,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
@@ -59,28 +59,28 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return data;
   }
 
-  String calculateMediaAttachmentId() {
+  String? calculateMediaAttachmentId() {
     return calculateMediaAttachment()?.id;
   }
 
-  IPleromaMediaAttachment calculateMediaAttachment() {
+  IPleromaMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
         (bloc) =>
-            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded);
-    IPleromaMediaAttachment mediaAttachment;
+            bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded);
+    IPleromaMediaAttachment? mediaAttachment;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
-      mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
+      mediaAttachment = mediaAttachmentBlocs!.first.pleromaMediaAttachment;
     }
     return mediaAttachment;
   }
 
   static PleromaChatPostMessageBloc createFromContext(
     BuildContext context, {
-    @required String chatRemoteId,
+    required String? chatRemoteId,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
     return PleromaChatPostMessageBloc(
       pleromaChatBloc: IPleromaChatBloc.of(
         context,
@@ -97,8 +97,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required String chatRemoteId,
-    @required Widget child,
+    required String? chatRemoteId,
+    required Widget child,
   }) {
     return DisposableProvider<IPleromaChatPostMessageBloc>(
       create: (context) => PleromaChatPostMessageBloc.createFromContext(context,

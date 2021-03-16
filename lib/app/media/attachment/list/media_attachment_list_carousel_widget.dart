@@ -40,7 +40,7 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
     assert(mediaAttachments.isNotEmpty == true);
 
     if (mediaAttachments.length == 1) {
-      return Provider<IPleromaMediaAttachment>.value(
+      return Provider<IPleromaMediaAttachment?>.value(
         value: mediaAttachments.first,
         child: const MediaAttachmentListItemWidget(),
       );
@@ -90,7 +90,7 @@ Widget _carouselWidgetBuilder(BuildContext context, int index) {
   var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
   var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-  return Provider<IPleromaMediaAttachment>.value(
+  return Provider<IPleromaMediaAttachment?>.value(
     value: mediaAttachments[index],
     child: const MediaAttachmentListItemWidget(),
   );

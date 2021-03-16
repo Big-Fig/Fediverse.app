@@ -10,9 +10,9 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   final bool isSelectedVisibility;
 
   StatusVisibilityIconWidget({
-    @required this.visibility,
-    @required this.isPossibleToChangeVisibility,
-    @required this.isSelectedVisibility,
+    required this.visibility,
+    required this.isPossibleToChangeVisibility,
+    required this.isSelectedVisibility,
   });
 
   @override
@@ -24,10 +24,10 @@ class StatusVisibilityIconWidget extends StatelessWidget {
       );
 
   static Icon buildVisibilityIcon(
-          {@required BuildContext context,
-          @required PleromaVisibility visibility,
-          @required isPossibleToChangeVisibility,
-          @required isSelectedVisibility}) =>
+          {required BuildContext context,
+          required PleromaVisibility? visibility,
+          required isPossibleToChangeVisibility,
+          required isSelectedVisibility}) =>
       Icon(
         mapVisibilityToIconData(visibility),
         color: calculateVisibilityColor(
@@ -37,26 +37,20 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
+  static IconData mapVisibilityToIconData(PleromaVisibility? visibility) {
     switch (visibility) {
       case PleromaVisibility.public:
         return FediIcons.world;
-        break;
       case PleromaVisibility.local:
         return FediIcons.instance;
-        break;
       case PleromaVisibility.unlisted:
         return FediIcons.unlisted;
-        break;
       case PleromaVisibility.direct:
         return FediIcons.message;
-        break;
       case PleromaVisibility.list:
         return FediIcons.lists;
-        break;
       case PleromaVisibility.private:
         return FediIcons.private;
-        break;
     }
     throw "Not supported visibility $visibility";
   }

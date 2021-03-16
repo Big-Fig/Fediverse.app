@@ -17,7 +17,7 @@ class LocalizationSettingsAdapter extends TypeAdapter<LocalizationSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocalizationSettings(
-      localizationLocale: fields[0] as LocalizationLocale,
+      localizationLocale: fields[0] as LocalizationLocale?,
     );
   }
 

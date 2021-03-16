@@ -8,9 +8,9 @@ import 'package:flutter/widgets.dart';
 class AudioMediaPlayerBloc extends MediaPlayerBloc
     implements IAudioMediaPlayerBloc {
   AudioMediaPlayerBloc({
-    @required MediaPlayerSource mediaPlayerSource,
-    @required bool autoInit,
-    @required bool autoPlay,
+    required MediaPlayerSource mediaPlayerSource,
+    required bool? autoInit,
+    required bool? autoPlay,
   }) : super(
           mediaPlayerSource: mediaPlayerSource,
           autoInit: autoInit,
@@ -19,9 +19,9 @@ class AudioMediaPlayerBloc extends MediaPlayerBloc
 
   static AudioMediaPlayerBloc createFromContext(
     BuildContext context, {
-    @required MediaPlayerSource mediaPlayerSource,
-    @required bool autoInit,
-    @required bool autoPlay,
+    required MediaPlayerSource mediaPlayerSource,
+    required bool? autoInit,
+    required bool? autoPlay,
   }) =>
       AudioMediaPlayerBloc(
         mediaPlayerSource: mediaPlayerSource,
@@ -31,10 +31,10 @@ class AudioMediaPlayerBloc extends MediaPlayerBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required MediaPlayerSource mediaPlayerSource,
-    @required Widget child,
-    @required bool autoInit,
-    @required bool autoPlay,
+    required MediaPlayerSource mediaPlayerSource,
+    required Widget child,
+    required bool? autoInit,
+    required bool? autoPlay,
   }) {
     return DisposableProvider<IAudioMediaPlayerBloc>(
       create: (context) => AudioMediaPlayerBloc.createFromContext(

@@ -15,14 +15,14 @@ import 'package:provider/provider.dart';
 class EditPushSettingsWidget extends StatefulWidget {
   final bool shrinkWrap;
 
-  const EditPushSettingsWidget({@required this.shrinkWrap});
+  const EditPushSettingsWidget({required this.shrinkWrap});
 
   @override
   _EditPushSettingsWidgetState createState() => _EditPushSettingsWidgetState();
 }
 
 class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
-  StreamSubscription failedToUpdateSubscription;
+  StreamSubscription? failedToUpdateSubscription;
 
   @override
   void didChangeDependencies() {
@@ -65,7 +65,7 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
 
 class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
   const _EditPushSettingsPleromaEmojiReactionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -84,7 +84,7 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
   const _EditPushSettingsPleromaChatMentionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -102,7 +102,7 @@ class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsPollFieldWidget extends StatelessWidget {
   const _EditPushSettingsPollFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -120,7 +120,7 @@ class _EditPushSettingsPollFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
   const _EditPushSettingsReblogFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -138,7 +138,7 @@ class _EditPushSettingsReblogFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
   const _EditPushSettingsMentionFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -156,7 +156,7 @@ class _EditPushSettingsMentionFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
   const _EditPushSettingsFollowFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -174,7 +174,7 @@ class _EditPushSettingsFollowFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
   const _EditPushSettingsFavouriteFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -192,7 +192,7 @@ class _EditPushSettingsFavouriteFieldWidget extends StatelessWidget {
 
 class _EditPushSettingsDescriptionWidget extends StatelessWidget {
   const _EditPushSettingsDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

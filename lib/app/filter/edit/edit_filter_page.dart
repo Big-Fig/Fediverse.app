@@ -31,10 +31,10 @@ class EditFilterPage extends StatelessWidget {
 }
 
 void goToEditFilterPage({
-  @required BuildContext context,
-  @required IFilter filter,
-  @required Function(IFilter filter) onSubmit,
-  @required VoidCallback onDelete,
+  required BuildContext context,
+  required IFilter? filter,
+  required Function(IFilter filter) onSubmit,
+  required VoidCallback onDelete,
 }) {
   Navigator.push(
     context,
@@ -48,10 +48,10 @@ void goToEditFilterPage({
 }
 
 MaterialPageRoute createEditFilterPageRoute({
-  @required BuildContext context,
-  @required IFilter filter,
-  @required Function(IFilter filter) onSubmit,
-  @required VoidCallback onDelete,
+  required BuildContext context,
+  required IFilter? filter,
+  required Function(IFilter filter) onSubmit,
+  required VoidCallback onDelete,
 }) {
   return MaterialPageRoute(
     builder: (context) => EditFilterBloc.provideToContext(

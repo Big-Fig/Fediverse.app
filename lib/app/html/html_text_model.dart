@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
 
 class HtmlTextResultData {
-  final String text;
+  final String? text;
   final bool isActuallyHaveHtmlInData;
   HtmlTextResultData({
-    @required this.text,
-    @required this.isActuallyHaveHtmlInData,
+    required this.text,
+    required this.isActuallyHaveHtmlInData,
   });
 
   @override
@@ -27,15 +27,15 @@ class HtmlTextResultData {
 }
 
 class HtmlTextInputData {
-  final String input;
+  final String? input;
 
-  final List<IPleromaEmoji> emojis;
+  final List<IPleromaEmoji>? emojis;
 
   bool get isHaveEmojis => emojis?.isNotEmpty == true;
 
   HtmlTextInputData({
-    @required this.input,
-    @required this.emojis,
+    required this.input,
+    required this.emojis,
   });
 
   @override
@@ -55,13 +55,13 @@ class HtmlTextInputData {
 }
 
 class HtmlTextSettings {
-  final double fontSize;
-  final FontWeight fontWeight;
-  final double lineHeight;
-  final Color color;
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  final double? lineHeight;
+  final Color? color;
   final Color linkColor;
-  final int textMaxLines;
-  final TextOverflow textOverflow;
+  final int? textMaxLines;
+  final TextOverflow? textOverflow;
   final bool shrinkWrap;
   final bool drawNewLines;
   final TextAlign textAlign;
@@ -71,19 +71,19 @@ class HtmlTextSettings {
   final double textScaleFactor;
 
   HtmlTextSettings({
-    @required this.fontSize,
-    @required this.lineHeight,
-    @required this.fontWeight,
+    required this.fontSize,
+    required this.lineHeight,
+    required this.fontWeight,
     this.customEmojiImageSize = 20.0,
     this.imageSize = 20.0,
-    @required this.linkColor,
-    @required this.color,
-    @required this.textMaxLines,
+    required this.linkColor,
+    required this.color,
+    required this.textMaxLines,
     this.paragraphDisplay = Display.INLINE,
-    @required this.textOverflow,
-    @required this.textScaleFactor,
+    required this.textOverflow,
+    required this.textScaleFactor,
     this.shrinkWrap = false,
-    @required this.drawNewLines,
+    required this.drawNewLines,
     this.textAlign = TextAlign.start,
   });
 

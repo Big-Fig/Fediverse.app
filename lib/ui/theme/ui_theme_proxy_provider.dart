@@ -6,7 +6,7 @@ class UiThemeProxyProvider extends StatelessWidget {
   final Widget child;
 
   UiThemeProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

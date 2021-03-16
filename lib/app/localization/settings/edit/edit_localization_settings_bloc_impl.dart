@@ -6,10 +6,9 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditLocalizationSettingsBloc
-    extends EditGlobalSettingsBloc<LocalizationSettings>
+    extends EditGlobalSettingsBloc<LocalizationSettings?>
     implements IEditLocalizationSettingsBloc {
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
@@ -23,8 +22,8 @@ class EditLocalizationSettingsBloc
       ];
 
   EditLocalizationSettingsBloc({
-    @required this.localizationSettingsBloc,
-    @required bool isEnabled,
+    required this.localizationSettingsBloc,
+    required bool isEnabled,
   })  : localizationLocaleFieldBloc =
             LocalizationLocaleSingleFromListValueFormFieldBloc(
           originValue: localizationSettingsBloc.localizationLocale,
@@ -40,10 +39,10 @@ class EditLocalizationSettingsBloc
   }
 
   @override
-  LocalizationSettings get settingsData => localizationSettingsBloc.settingsData;
+  LocalizationSettings? get settingsData => localizationSettingsBloc.settingsData;
 
   @override
-  Stream<LocalizationSettings> get settingsDataStream =>
+  Stream<LocalizationSettings?> get settingsDataStream =>
       localizationSettingsBloc.settingsDataStream;
 
   @override
@@ -53,9 +52,9 @@ class EditLocalizationSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(LocalizationSettings settings) async {
+  Future fillSettingsToFormFields(LocalizationSettings? settings) async {
     localizationLocaleFieldBloc.changeCurrentValue(
-      settings.localizationLocale,
+      settings?.localizationLocale,
     );
   }
 }

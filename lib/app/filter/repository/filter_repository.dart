@@ -11,12 +11,12 @@ import 'package:provider/provider.dart';
 abstract class IFilterRepository
     implements
         IReadIdListRepository<IFilter, int>,
-        IWriteIdListRepository<DbFilter, int>,
+        IWriteIdListRepository<DbFilter, int?>,
         IDisposable {
   static IFilterRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilterRepository>(context, listen: listen);
 
-  Future<IFilter> findByRemoteId(
+  Future<IFilter?> findByRemoteId(
     String remoteId,
   );
 
@@ -24,13 +24,13 @@ abstract class IFilterRepository
     List<IPleromaFilter> remoteFilters,
   );
 
-  Stream<IFilter> watchByRemoteId(
-    String remoteId,
+  Stream<IFilter?> watchByRemoteId(
+    String? remoteId,
   );
 
   Future updateLocalFilterByRemoteFilter({
-    @required IFilter oldLocalFilter,
-    @required IPleromaFilter newRemoteFilter,
+    required IFilter? oldLocalFilter,
+    required IPleromaFilter newRemoteFilter,
   });
 
   Future upsertRemoteFilter(
@@ -38,27 +38,27 @@ abstract class IFilterRepository
   );
 
   Future<List<DbFilterPopulatedWrapper>> getFilters({
-    @required FilterRepositoryFilters filters,
-    @required RepositoryPagination<IFilter> pagination,
+    required FilterRepositoryFilters filters,
+    required RepositoryPagination<IFilter>? pagination,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-    @required FilterRepositoryFilters filters,
-    @required RepositoryPagination<IFilter> pagination,
+    required FilterRepositoryFilters filters,
+    required RepositoryPagination<IFilter> pagination,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   });
 
   Future<DbFilterPopulatedWrapper> getFilter({
-    @required FilterRepositoryFilters filters,
+    required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   });
 
   Stream<DbFilterPopulatedWrapper> watchFilter({
-    @required FilterRepositoryFilters filters,
+    required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   });

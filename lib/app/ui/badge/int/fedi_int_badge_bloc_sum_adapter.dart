@@ -1,6 +1,5 @@
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FediIntBadgeBlocSumAdapter extends DisposableOwner
@@ -8,7 +7,7 @@ class FediIntBadgeBlocSumAdapter extends DisposableOwner
   final List<IFediIntBadgeBloc> fediIntBadgeBlocs;
 
   FediIntBadgeBlocSumAdapter({
-    @required this.fediIntBadgeBlocs,
+    required this.fediIntBadgeBlocs,
   });
 
   @override
@@ -17,7 +16,8 @@ class FediIntBadgeBlocSumAdapter extends DisposableOwner
       fediIntBadgeBlocs.map((bloc) => bloc.badgeStream),
       (values) => values.fold(
         0,
-        (previousValue, element) => previousValue + (element ?? 0),
+        // todo improve code style
+        (int previousValue, Object? element) => previousValue + (element as int? ?? 0),
       ),
     );
   }

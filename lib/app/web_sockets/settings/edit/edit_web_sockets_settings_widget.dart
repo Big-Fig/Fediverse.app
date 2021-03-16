@@ -8,7 +8,7 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditWebSocketsSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -16,7 +16,7 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: [
           ProxyProvider<IEditWebSocketsSettingsBloc,
-              IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc>(
+              IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc?>(
             update: (context, value, previous) => value.typeFieldBloc,
             child:
                 const WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget(),

@@ -20,34 +20,34 @@ var _logger = Logger("account_pagination_list_widget.dart");
 
 typedef AccountPaginationListItemBuilder = Widget Function(
   BuildContext context,
-  AccountCallback accountSelectedCallback,
-  List<Widget> accountActions,
+  AccountCallback? accountSelectedCallback,
+  List<Widget>? accountActions,
 );
 
 class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
-  final AccountCallback accountSelectedCallback;
+  final AccountCallback? accountSelectedCallback;
   final bool needWatchLocalRepositoryForUpdates;
-  final List<Widget> accountActions;
-  final AccountPaginationListItemBuilder customItemBodyBuilder;
+  final List<Widget>? accountActions;
+  final AccountPaginationListItemBuilder? customItemBodyBuilder;
   final bool isNeedPreFetchRelationship;
   final EdgeInsets itemPadding;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const AccountPaginationListWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
     this.isNeedPreFetchRelationship = false,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.accountActions,
     this.customItemBodyBuilder,
     this.itemPadding = FediPadding.allMediumPadding,
-    @required this.accountSelectedCallback,
-    Widget customLoadingWidget,
-    Widget customEmptyWidget,
+    required this.accountSelectedCallback,
+    Widget? customLoadingWidget,
+    Widget? customEmptyWidget,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -62,10 +62,10 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
 
   @override
   ScrollView buildItemsCollectionView(
-      {@required BuildContext context,
-      @required List<IAccount> items,
-      @required Widget header,
-      @required Widget footer}) {
+      {required BuildContext context,
+      required List<IAccount> items,
+      required Widget? header,
+      required Widget? footer}) {
     var accountListBloc = IAccountListBloc.of(context, listen: false);
 
     var instanceLocation = accountListBloc.instanceLocation;
@@ -106,7 +106,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
               }
             },
             child: customItemBodyBuilder != null
-                ? customItemBodyBuilder(
+                ? customItemBodyBuilder!(
                     context,
                     accountSelectedCallback,
                     accountActions,
@@ -124,7 +124,7 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
 
   @override
   IPaginationListBloc<PaginationPage<IAccount>, IAccount>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) {
+      retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var accountPaginationListBloc =
         IAccountPaginationListBloc.of(context, listen: listen);
     return accountPaginationListBloc;
@@ -133,14 +133,14 @@ class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
 
 class _AccountPaginationListBodyWidget extends StatelessWidget {
   final EdgeInsets itemPadding;
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final AccountCallback? accountSelectedCallback;
+  final List<Widget>? accountActions;
 
   const _AccountPaginationListBodyWidget({
-    Key key,
-    @required this.accountSelectedCallback,
-    @required this.accountActions,
-    @required this.itemPadding,
+    Key? key,
+    required this.accountSelectedCallback,
+    required this.accountActions,
+    required this.itemPadding,
   }) : super(key: key);
 
   @override

@@ -11,11 +11,9 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger = Logger("status_reblog_account_list_service_impl.dart");
 
@@ -31,24 +29,25 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
       );
 
   StatusReblogAccountCachedListBloc({
-    @required this.pleromaAuthStatusService,
-    @required this.accountRepository,
-    @required this.status,
+    required this.pleromaAuthStatusService,
+    required this.accountRepository,
+    required this.status,
   });
 
   @override
   IPleromaApi get pleromaApi => pleromaAuthStatusService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
 
-    List<IPleromaAccount> remoteAccounts;
+    List<IPleromaAccount>? remoteAccounts;
 
     remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
       statusRemoteId: status.remoteId,
@@ -59,26 +58,24 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    if (remoteAccounts != null) {
-      await accountRepository.upsertRemoteAccounts(remoteAccounts,
-          conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
 
-      await accountRepository.updateStatusRebloggedBy(
-          statusRemoteId: status.remoteId, rebloggedByAccounts: remoteAccounts);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "accounts is null");
-      return false;
-    }
+    await accountRepository.updateStatusRebloggedBy(
+      statusRemoteId: status.remoteId,
+      rebloggedByAccounts: remoteAccounts.toPleromaAccounts(),
+    );
   }
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<List<IAccount>> loadLocalItems({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
         "\t olderThanAccount=$olderThan");
@@ -97,18 +94,20 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   }
 
   static StatusReblogAccountCachedListBloc createFromContext(
-          BuildContext context,
-          {@required IStatus status}) =>
+    BuildContext context, {
+    required IStatus status,
+  }) =>
       StatusReblogAccountCachedListBloc(
-          accountRepository: IAccountRepository.of(context, listen: false),
-          pleromaAuthStatusService:
-              IPleromaStatusService.of(context, listen: false),
-          status: status);
+        accountRepository: IAccountRepository.of(context, listen: false),
+        pleromaAuthStatusService:
+            IPleromaAuthStatusService.of(context, listen: false),
+        status: status,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IStatus status,
-    @required Widget child,
+    required IStatus status,
+    required Widget child,
   }) =>
       DisposableProvider<IAccountCachedListBloc>(
         create: (context) =>
@@ -123,5 +122,5 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

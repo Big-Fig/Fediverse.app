@@ -3,7 +3,6 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatUnreadBadgeBloc extends DisposableOwner
@@ -13,9 +12,9 @@ class ChatUnreadBadgeBloc extends DisposableOwner
   final IChatSettingsBloc chatSettingsBloc;
 
   ChatUnreadBadgeBloc({
-    @required this.pleromaChatRepository,
-    @required this.conversationChatRepository,
-    @required this.chatSettingsBloc,
+    required this.pleromaChatRepository,
+    required this.conversationChatRepository,
+    required this.chatSettingsBloc,
   });
 
   @override
@@ -27,7 +26,7 @@ class ChatUnreadBadgeBloc extends DisposableOwner
             .watchTotalUnreadCount()
             .map((count) => count != null && count > 0),
         chatSettingsBloc.countConversationsInChatsUnreadBadgesStream,
-        (pleromaUnread, conversationUnread, countConversationsUnread) =>
+        (dynamic pleromaUnread, dynamic conversationUnread, dynamic countConversationsUnread) =>
             pleromaUnread || (conversationUnread && countConversationsUnread),
       );
 }

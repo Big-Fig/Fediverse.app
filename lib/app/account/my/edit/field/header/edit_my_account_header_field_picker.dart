@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Future<IMediaDeviceFile> showEditMyAccountHeaderFieldPicker(
+Future<IMediaDeviceFile?> showEditMyAccountHeaderFieldPicker(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) {
@@ -46,7 +46,7 @@ Future _cropAndSelect(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {
-  File croppedFile = await goToCropImagePage(
+  File? croppedFile = await goToCropImagePage(
     file: await mediaDeviceFile.loadFile(),
     context: context,
     isForceCropToSquare: false,

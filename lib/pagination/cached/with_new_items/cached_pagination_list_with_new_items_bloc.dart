@@ -11,9 +11,9 @@ abstract class ICachedPaginationListWithNewItemsBloc<
       Provider.of<ICachedPaginationListWithNewItemsBloc>(context,
           listen: listen);
 
-  TItem get newerItem;
+  TItem? get newerItem;
 
-  Stream<TItem> get newerItemStream;
+  Stream<TItem?> get newerItemStream;
 
   List<TItem> get unmergedNewItems;
 

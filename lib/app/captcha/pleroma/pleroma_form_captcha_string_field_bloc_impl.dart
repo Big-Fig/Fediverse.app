@@ -17,9 +17,9 @@ final _logger = Logger("pleroma_form_captcha_string_field_bloc_impl.dart");
 
 class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     implements IPleromaFormCaptchaStringFieldBloc {
-  final IPleromaCaptchaService pleromaCaptchaService;
+  final IPleromaCaptchaService? pleromaCaptchaService;
 
-  final BehaviorSubject<PleromaCaptcha> captchaSubject;
+  final BehaviorSubject<PleromaCaptcha?> captchaSubject;
   final BehaviorSubject<dynamic> errorSubject;
 
   @override
@@ -29,52 +29,52 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   Stream<bool> get isHaveAtLeastOneErrorStream => Rx.combineLatest2(
         super.isHaveAtLeastOneErrorStream,
         isExistStream,
-        (isHaveAtLeastOneError, isExist) =>
+        (dynamic isHaveAtLeastOneError, dynamic isExist) =>
             isExist && super.isHaveAtLeastOneError,
       );
 
   @override
-  bool get isSomethingChanged => isExist && super.isSomethingChanged;
+  bool get isSomethingChanged => isExist && super.isSomethingChanged!;
 
   @override
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(
         isExistStream,
         super.isSomethingChangedStream,
-        (isExist, isSomethingChanged) => isExist && isSomethingChanged,
+        (dynamic isExist, dynamic isSomethingChanged) =>
+            isExist && isSomethingChanged,
       );
 
   @override
-  List<ValueFormFieldValidationError> get errors =>
-      isExist ? super.errors : null;
+  List<ValueFormFieldValidationError> get errors => isExist ? super.errors : [];
 
   @override
   Stream<List<ValueFormFieldValidationError>> get errorsStream =>
       Rx.combineLatest2(
         isExistStream,
         super.errorsStream,
-        (isExist, errors) => isExist ? errors : null,
+        (dynamic isExist, dynamic errors) => isExist ? errors : [],
       );
 
   @override
-  PleromaCaptcha get captcha => captchaSubject.value;
+  PleromaCaptcha? get captcha => captchaSubject.value;
 
   @override
-  Stream<PleromaCaptcha> get captchaStream => captchaSubject.stream;
+  Stream<PleromaCaptcha?> get captchaStream => captchaSubject.stream;
 
   final BehaviorSubject<DateTime> captchaLoadedDateTimeSubject;
 
   @override
-  DateTime get captchaLoadedDateTime => captchaLoadedDateTimeSubject.value;
+  DateTime? get captchaLoadedDateTime => captchaLoadedDateTimeSubject.value;
 
   @override
   Stream<DateTime> get captchaLoadedDateTimeStream =>
       captchaLoadedDateTimeSubject.stream;
 
   PleromaFormCaptchaStringFieldBloc({
-    @required this.pleromaCaptchaService,
-    @required String originValue,
-    @required List<FormValueFieldValidation<String>> validators,
-  })  : captchaSubject = BehaviorSubject(),
+    required this.pleromaCaptchaService,
+    required String? originValue,
+    required List<FormValueFieldValidation<String>> validators,
+  })   : captchaSubject = BehaviorSubject(),
         errorSubject = BehaviorSubject(),
         captchaLoadedDateTimeSubject = BehaviorSubject(),
         super(
@@ -101,7 +101,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   void _checkForReload() {
     _logger.finest(() => "_checkForReload isExist $isExist");
     if (isExist) {
-      var difference = captchaLoadedDateTime.difference(
+      var difference = captchaLoadedDateTime!.difference(
         DateTime.now(),
       );
       var differenceAbs = difference.abs();
@@ -123,15 +123,15 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   }
 
   @override
-  Stream<Image> get captchaImageStream => captchaStream.asyncMap(
+  Stream<Image?> get captchaImageStream => captchaStream.asyncMap(
         (captcha) async {
           switch (captcha?.pleromaType) {
             case PleromaCaptchaType.kocaptcha:
             case PleromaCaptchaType.unknown:
-              return Image.network(captcha.url);
+              return Image.network(captcha!.url!);
               break;
             case PleromaCaptchaType.native:
-              return captcha.decodeUrlAsBase64Image();
+              return captcha!.decodeUrlAsBase64Image();
               break;
             default:
               return null;
@@ -146,8 +146,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     captchaLoadedDateTimeSubject.add(DateTime.now());
     errorSubject.add(null);
     try {
-      var captcha = await pleromaCaptchaService.getCaptcha();
-      captchaSubject.add(captcha);
+      var captcha = await pleromaCaptchaService!.getCaptcha();
+      captchaSubject.add(captcha as PleromaCaptcha?);
       _logger.finest(() => "reloadCaptcha FINISH $captcha");
     } catch (e, stackTrace) {
       _logger.warning(() => "reloadCaptcha ERROR", e, stackTrace);
@@ -156,10 +156,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   }
 
   @override
-  PleromaCaptchaType get captchaType => captcha?.pleromaType;
+  PleromaCaptchaType? get captchaType => captcha?.pleromaType;
 
   @override
-  Stream<PleromaCaptchaType> get captchaTypeStream => captchaStream.map(
+  Stream<PleromaCaptchaType?> get captchaTypeStream => captchaStream.map(
         (captcha) => captcha?.pleromaType,
       );
 
@@ -170,13 +170,13 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   Stream<bool> get isExistStream => Rx.combineLatest2(
         captchaStream,
         errorSubject.stream,
-        (captcha, error) => _calculateIsExist(
+        (dynamic captcha, dynamic error) => _calculateIsExist(
           captcha,
           error,
         ),
       );
 
-  bool _calculateIsExist(PleromaCaptcha captcha, error) {
+  bool _calculateIsExist(PleromaCaptcha? captcha, error) {
     var isExist;
     if (captcha != null) {
       if (captcha.pleromaType == PleromaCaptchaType.none) {

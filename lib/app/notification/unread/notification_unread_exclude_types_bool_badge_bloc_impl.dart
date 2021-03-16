@@ -8,7 +8,6 @@ import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
@@ -19,12 +18,12 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
 
   final BehaviorSubject<bool> badgeSubject = BehaviorSubject.seeded(false);
 
-  List<IFilter> filters;
+  late List<IFilter> filters;
 
   NotificationUnreadExcludeTypesBoolBadgeBloc({
-    @required this.excludeTypes,
-    @required this.notificationRepository,
-    @required this.filterRepository,
+    required this.excludeTypes,
+    required this.notificationRepository,
+    required this.filterRepository,
   }) {
     addDisposable(subject: badgeSubject);
     performAsyncInit();

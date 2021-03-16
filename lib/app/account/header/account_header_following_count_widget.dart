@@ -15,10 +15,15 @@ class AccountHeaderFollowingCountWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
     return InkWell(
-      onTap: isLocal ? () {
-        goToAccountFollowingAccountListPage(context, accountBloc.account);
-      } : null,
-      child: StreamBuilder<bool>(
+      onTap: isLocal
+          ? () {
+              goToAccountFollowingAccountListPage(
+                context: context,
+                account: accountBloc.account!,
+              );
+            }
+          : null,
+      child: StreamBuilder<bool?>(
         stream: accountBloc.pleromaHideFollowsCountStream,
         initialData: accountBloc.pleromaHideFollowsCount,
         builder: (context, snapshot) {
@@ -39,18 +44,18 @@ class AccountHeaderFollowingCountWidget extends StatelessWidget {
 
 class _AccountHeaderFollowingCountBodyWidget extends StatelessWidget {
   const _AccountHeaderFollowingCountBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: accountBloc.followingCountStream,
       builder: (context, snapshot) {
         var count = snapshot.data;
-        return Provider<int>.value(
+        return Provider<int?>.value(
           value: count,
           child: AccountHeaderStatisticWidget(
             label: S.of(context).app_account_info_following,

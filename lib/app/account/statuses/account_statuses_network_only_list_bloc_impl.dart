@@ -7,12 +7,12 @@ import 'package:moor/moor.dart';
 
 abstract class AccountStatusesNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
-  final IAccount account;
+  final IAccount? account;
   final IPleromaAccountService pleromaAccountService;
 
   AccountStatusesNetworkOnlyListBloc({
-    @required this.account,
-    @required this.pleromaAccountService,
+    required this.account,
+    required this.pleromaAccountService,
   }) : super();
 
   @override

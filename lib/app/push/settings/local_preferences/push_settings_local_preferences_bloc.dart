@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPushSettingsLocalPreferencesBloc
-    implements LocalPreferenceBloc<PushSettings> {
+    implements LocalPreferenceBloc<PushSettings?> {
   static IPushSettingsLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IPushSettingsLocalPreferencesBloc>(context,

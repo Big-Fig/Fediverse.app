@@ -15,7 +15,7 @@ class PostStatusExpireActionWidget extends StatelessWidget {
       stream: postStatusBloc.isExpireDurationExistStream,
       initialData: postStatusBloc.isExpireDurationExist,
       builder: (context, snapshot) {
-        var isExpireAtExist = snapshot.data;
+        var isExpireAtExist = snapshot.data!;
 
         Null Function() onPressed;
         onPressed = () {

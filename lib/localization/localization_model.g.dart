@@ -17,9 +17,9 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocalizationLocale(
-      languageCode: fields[0] as String,
-      scriptCode: fields[1] as String,
-      countryCode: fields[2] as String,
+      languageCode: fields[0] as String?,
+      scriptCode: fields[1] as String?,
+      countryCode: fields[2] as String?,
     );
   }
 
@@ -52,9 +52,9 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
 
 LocalizationLocale _$LocalizationLocaleFromJson(Map<String, dynamic> json) {
   return LocalizationLocale(
-    languageCode: json['languageCode'] as String,
-    scriptCode: json['scriptCode'] as String,
-    countryCode: json['countryCode'] as String,
+    languageCode: json['languageCode'] as String?,
+    scriptCode: json['scriptCode'] as String?,
+    countryCode: json['countryCode'] as String?,
   );
 }
 

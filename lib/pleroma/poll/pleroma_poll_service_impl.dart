@@ -6,7 +6,6 @@ import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
@@ -21,7 +20,7 @@ class PleromaPollService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -35,7 +34,7 @@ class PleromaPollService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaPollService({@required this.restService});
+  PleromaPollService({required this.restService});
 
   @override
   Future dispose() async {
@@ -44,7 +43,7 @@ class PleromaPollService extends DisposableOwner
 
   @override
   Future<IPleromaPoll> getPoll({
-    @required String pollRemoteId,
+    required String? pollRemoteId,
   }) async {
     var request = RestRequest.get(
       relativePath: join(
@@ -52,15 +51,15 @@ class PleromaPollService extends DisposableOwner
         pollRemoteId,
       ),
     );
-    var httpResponse = await restService.sendHttpRequest(request);
+    var httpResponse = await restService.sendHttpRequest(request)!;
 
     return parsePollResponse(httpResponse);
   }
 
   @override
   Future<IPleromaPoll> vote({
-    @required String pollRemoteId,
-    @required List<int> voteIndexes,
+    required String? pollRemoteId,
+    required List<int> voteIndexes,
   }) async {
     var request = RestRequest.post(
         relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
@@ -79,7 +78,7 @@ class PleromaPollService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaPollException(
         statusCode: httpResponse.statusCode,

@@ -17,15 +17,14 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/id/pleroma_fake_id_helper.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 Function eq = const ListEquality().equals;
@@ -34,42 +33,43 @@ final _logger = Logger("conversation_chat_bloc_impl.dart");
 
 class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   // ignore: close_sinks
-  final BehaviorSubject<IConversationChat> _chatSubject;
+  final BehaviorSubject<IConversationChat?> _chatSubject;
 
   // ignore: close_sinks
-  final BehaviorSubject<IConversationChatMessage> _lastMessageSubject;
+  final BehaviorSubject<IConversationChatMessage?> _lastMessageSubject;
 
   // ignore: close_sinks
   final BehaviorSubject<IConversationChatMessage> _lastPublishedMessageSubject =
       BehaviorSubject();
 
-  final BehaviorSubject<List<IAccount>> _accountsSubject = BehaviorSubject();
+  final BehaviorSubject<List<IAccount>> _accountsSubject;
 
   @override
-  List<IAccount> get accounts => _accountsSubject.value;
+  List<IAccount> get accounts => _accountsSubject.value!;
 
   @override
   Stream<List<IAccount>> get accountsStream =>
       _accountsSubject.stream.distinct((a, b) => eq(a, b));
 
   @override
-  IConversationChat get chat => _chatSubject.value;
+  IConversationChat get chat => _chatSubject.value!;
 
   @override
-  Stream<IConversationChat> get chatStream => _chatSubject.stream;
+  Stream<IConversationChat> get chatStream =>
+      _chatSubject.stream.mapToNotNull();
 
   @override
-  IConversationChatMessage get lastChatMessage => _lastMessageSubject.value;
+  IConversationChatMessage? get lastChatMessage => _lastMessageSubject.value;
 
   @override
-  Stream<IConversationChatMessage> get lastChatMessageStream =>
+  Stream<IConversationChatMessage?> get lastChatMessageStream =>
       _lastMessageSubject.stream;
 
-  final StreamController<IConversationChatMessage>
+  final StreamController<IConversationChatMessage?>
       onMessageLocallyHiddenStreamController = StreamController.broadcast();
 
   @override
-  Stream<IConversationChatMessage> get onMessageLocallyHiddenStream =>
+  Stream<IConversationChatMessage?> get onMessageLocallyHiddenStream =>
       onMessageLocallyHiddenStreamController.stream;
 
   final IMyAccountBloc myAccountBloc;
@@ -86,20 +86,21 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream;
 
   ConversationChatBloc({
-    @required this.pleromaConversationService,
-    @required this.myAccountBloc,
-    @required this.conversationRepository,
-    @required this.pleromaAuthStatusService,
-    @required this.statusRepository,
-    @required this.accountRepository,
-    @required IConversationChat conversation,
-    @required IConversationChatMessage lastChatMessage,
+    required this.pleromaConversationService,
+    required this.myAccountBloc,
+    required this.conversationRepository,
+    required this.pleromaAuthStatusService,
+    required this.statusRepository,
+    required this.accountRepository,
+    required IConversationChat conversation,
+    required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
     bool isNeedWatchLocalRepositoryForUpdates =
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
-  })  : _chatSubject = BehaviorSubject.seeded(conversation),
+  })  : _accountsSubject = BehaviorSubject.seeded(conversation.accounts),
+        _chatSubject = BehaviorSubject.seeded(conversation),
         _lastMessageSubject = BehaviorSubject.seeded(lastChatMessage),
         super(
           needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
@@ -117,9 +118,9 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     listenForAccounts(conversation);
   }
 
-  void listenForAccounts(IConversationChat conversation) {
+  void listenForAccounts(IConversationChat? conversation) {
     addDisposable(
-      streamSubscription: accountRepository
+      streamSubscription: accountRepository!
           .watchAccounts(
         filters: AccountRepositoryFilters.createForOnlyInConversation(
           conversation: conversation,
@@ -133,7 +134,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
             (account) => !myAccountBloc.checkAccountIsMe(account),
           );
           accountsWithoutMe.sort(
-            (a, b) => a.remoteId.compareTo(b.remoteId),
+            (a, b) => a.remoteId!.compareTo(b.remoteId!),
           );
           _accountsSubject.add(accountsWithoutMe);
         },
@@ -145,7 +146,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   void watchLocalRepositoryForUpdates() {
     addDisposable(
       streamSubscription:
-          conversationRepository.watchByRemoteId(chat.remoteId).listen(
+          conversationRepository.watchByRemoteId(chat!.remoteId).listen(
         (updatedChat) {
           if (updatedChat != null) {
             _chatSubject.add(updatedChat);
@@ -164,7 +165,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           if (lastStatus != null) {
             _lastMessageSubject.add(
               ConversationChatMessageStatusAdapter(
-                lastStatus,
+                status: lastStatus,
               ),
             );
           }
@@ -183,7 +184,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           if (lastStatus != null) {
             _lastPublishedMessageSubject.add(
               ConversationChatMessageStatusAdapter(
-                lastStatus,
+                status: lastStatus,
               ),
             );
           }
@@ -195,52 +196,64 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future internalAsyncInit() async {
     var conversationLastStatus =
-        await statusRepository.getConversationLastStatus(conversation: chat);
-    if (!_lastMessageSubject.isClosed) {
-      _lastMessageSubject.add(
-        ConversationChatMessageStatusAdapter(conversationLastStatus),
-      );
-    }
+        await statusRepository.getConversationLastStatus(
+      conversation: chat,
+    );
 
-    var pendingStatePublishedOrNull =
-        conversationLastStatus.pendingState == null ||
-            conversationLastStatus.pendingState == PendingState.published;
-    if (pendingStatePublishedOrNull) {
-      _lastPublishedMessageSubject.add(
-        ConversationChatMessageStatusAdapter(conversationLastStatus),
-      );
-    } else {
-      var conversationLastPublishedStatus =
-          await statusRepository.getConversationLastStatus(
-        conversation: chat,
-        onlyPendingStatePublishedOrNull: true,
-      );
-      if (!_lastPublishedMessageSubject.isClosed) {
-        _lastPublishedMessageSubject.add(
-          ConversationChatMessageStatusAdapter(conversationLastPublishedStatus),
+    if (conversationLastStatus != null) {
+      var conversationChatMessageStatusAdapter =
+          conversationLastStatus.toConversationChatMessageStatusAdapter();
+      if (!_lastMessageSubject.isClosed) {
+        _lastMessageSubject.add(
+          conversationChatMessageStatusAdapter,
         );
+      }
+
+      var pendingStatePublishedOrNull =
+          conversationChatMessageStatusAdapter.isPendingStatePublishedOrNull;
+      if (pendingStatePublishedOrNull) {
+        _lastPublishedMessageSubject.add(
+          conversationChatMessageStatusAdapter,
+        );
+      } else {
+        var conversationLastPublishedStatus =
+            await statusRepository.getConversationLastStatus(
+          conversation: chat,
+          onlyPendingStatePublishedOrNull: true,
+        );
+        if (!_lastPublishedMessageSubject.isClosed &&
+            conversationLastPublishedStatus != null) {
+          _lastPublishedMessageSubject.add(
+            conversationLastPublishedStatus
+                .toConversationChatMessageStatusAdapter(),
+          );
+        }
       }
     }
   }
 
   @override
   Future refreshFromNetwork() async {
-    var remoteConversation = await pleromaConversationService.getConversation(
-        conversationRemoteId: chat.remoteId);
+    var remoteConversation = await (pleromaConversationService!
+            .getConversation(conversationRemoteId: chat!.remoteId)
+        as FutureOr<IPleromaConversation>);
 
     if (remoteConversation.accounts?.isNotEmpty == true) {
-      for (var account in remoteConversation.accounts) {
-        await accountRepository.upsertRemoteAccount(
+      for (var account in remoteConversation.accounts!) {
+        await accountRepository!.upsertRemoteAccount(
           account,
           chatRemoteId: null,
           conversationRemoteId: remoteConversation.id,
         );
       }
     }
-
-    if (remoteConversation.lastStatus != null) {
-      await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,
-          conversationRemoteId: remoteConversation.id, listRemoteId: null);
+    var lastStatus = remoteConversation.lastStatus;
+    if (lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(
+        lastStatus,
+        conversationRemoteId: remoteConversation.id,
+        listRemoteId: null,
+      );
     }
 
     await _updateByRemoteChat(remoteConversation);
@@ -254,8 +267,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   static ConversationChatBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat chat,
-    @required IConversationChatMessage lastChatMessage,
+    required IConversationChat chat,
+    required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return ConversationChatBloc(
@@ -278,12 +291,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future markAsRead() async {
-    if (chat.unread != null && chat.unread > 0) {
+    if (chat.unread != null && chat.unread! > 0) {
       if (pleromaConversationService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastStatus = await statusRepository.getConversationLastStatus(
-              conversation: chat);
+            conversation: chat,
+          );
           lastReadChatMessageId = lastStatus?.remoteId;
         }
         var updatedRemoteChat =
@@ -304,11 +318,11 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   bool get isCountInUnreadSupported => false;
 
   @override
-  Future deleteMessages(List<IChatMessage> chatMessages) async {
+  Future deleteMessages(List<IChatMessage>? chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages) {
+    for (var chatMessage in chatMessages!) {
       if (chatMessage.isPendingStatePublishedOrNull) {
-        await pleromaAuthStatusService.deleteStatus(
+        await pleromaAuthStatusService!.deleteStatus(
           statusRemoteId: chatMessage.remoteId,
         );
       }
@@ -320,8 +334,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future performActualDelete() async {
-    var remoteId = conversation.remoteId;
-    await pleromaConversationService.deleteConversation(
+    var remoteId = conversation!.remoteId;
+    await pleromaConversationService!.deleteConversation(
       conversationRemoteId: remoteId,
     );
 
@@ -330,21 +344,19 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future postMessage({
-    @required IPostStatusData postStatusData,
-    @required IConversationChatMessage oldPendingFailedConversationChatMessage,
+    required IPostStatusData postStatusData,
+    required IConversationChatMessage? oldPendingFailedConversationChatMessage,
   }) async {
     DbStatus dbStatus;
-    int localStatusId;
+    int? localStatusId;
 
     PleromaPostStatus pleromaPostStatus;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
-      localStatusId = oldPendingFailedConversationChatMessage.status.localId;
-      dbStatus = mapRemoteStatusToDbStatus(
-        mapLocalStatusToRemoteStatus(
-          oldPendingFailedConversationChatMessage.status,
-        ),
-      ).copyWith(id: localStatusId);
+      localStatusId = oldPendingFailedConversationChatMessage!.status!.localId;
+      dbStatus = oldPendingFailedConversationChatMessage.status!
+          .toDbStatus()
+          .copyWith(id: localStatusId);
 
       pleromaPostStatus = postStatusData.toPleromaPostStatus(
         idempotencyKey: dbStatus.wasSentWithIdempotencyKey,
@@ -359,9 +371,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     } else {
       var createdAt = DateTime.now();
       var fakeUniqueRemoteRemoteId = generateUniquePleromaFakeId();
-      var localStatusAdapter = PostStatusDataStatusStatusAdapter(
-        account: myAccountBloc.myAccount,
-        postStatusData: postStatusData,
+      var account = myAccountBloc.account;
+      var postStatusDataStatusStatusAdapter = PostStatusDataStatusStatusAdapter(
+        account: account.toDbAccountWrapper(),
+        postStatusData: postStatusData.toPostStatusData(),
         localId: null,
         createdAt: createdAt,
         pendingState: PendingState.pending,
@@ -369,7 +382,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         wasSentWithIdempotencyKey: fakeUniqueRemoteRemoteId,
       );
 
-      dbStatus = localStatusAdapter.toDbStatus(
+      dbStatus = postStatusDataStatusStatusAdapter.toDbStatus(
         fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
       );
       localStatusId = await statusRepository.insert(
@@ -378,7 +391,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
       await statusRepository.addStatusToConversation(
         statusRemoteId: fakeUniqueRemoteRemoteId,
-        conversationRemoteId: chat.remoteId,
+        conversationRemoteId: chat!.remoteId,
       );
 
       pleromaPostStatus = postStatusData.toPleromaPostStatus(
@@ -398,28 +411,15 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
             pendingState: PendingState.published,
           ),
         );
+
         onMessageLocallyHiddenStreamController.add(
-          ConversationChatMessageStatusAdapter(
-            DbStatusPopulatedWrapper(
-              // todo: rework
-              DbStatusPopulated(
-                dbStatus: dbStatus,
-                dbAccount: null,
-                replyDbStatus: null,
-                replyReblogDbStatusAccount: null,
-                replyReblogDbStatus: null,
-                replyDbStatusAccount: null,
-                reblogDbStatusAccount: null,
-                reblogDbStatus: null,
-              ),
-            ),
-          ),
+          pleromaStatus.toConversationChatMessageStatusAdapter(),
         );
 
         await statusRepository.upsertRemoteStatus(
           pleromaStatus,
           listRemoteId: null,
-          conversationRemoteId: chat.remoteId,
+          conversationRemoteId: chat!.remoteId,
         );
       } else {
         await statusRepository.updateById(
@@ -443,7 +443,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future deleteMessage({
-    @required IConversationChatMessage conversationChatMessage,
+    required IConversationChatMessage conversationChatMessage,
   }) async {
     if (conversationChatMessage.isPendingStatePublishedOrNull) {
       await pleromaAuthStatusService.deleteStatus(
@@ -455,7 +455,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     } else {
       await statusRepository.markStatusAsHiddenLocallyOnDevice(
-        localId: conversationChatMessage.status.localId,
+        localId: conversationChatMessage.status.localId!,
       );
 
       onMessageLocallyHiddenStreamController.add(conversationChatMessage);
@@ -463,6 +463,6 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
-  IConversationChatMessage get lastPublishedChatMessage =>
+  IConversationChatMessage? get lastPublishedChatMessage =>
       _lastPublishedMessageSubject.value;
 }

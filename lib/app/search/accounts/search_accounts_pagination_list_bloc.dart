@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
   final ISearchInputBloc searchInputBloc;
   SearchAccountsPaginationListBloc({
-    @required this.searchInputBloc,
-    @required
+    required this.searchInputBloc,
+    required
         IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(streamSubscription:

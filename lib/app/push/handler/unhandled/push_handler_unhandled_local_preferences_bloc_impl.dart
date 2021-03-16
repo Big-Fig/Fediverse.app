@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger("push_handler_unhandled_local_preferences_bloc_impl.dart");
 
 class PushHandlerUnhandledLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList>
+    extends ObjectLocalPreferenceBloc<PushHandlerUnhandledList?>
     implements IPushHandlerUnhandledLocalPreferencesBloc {
   PushHandlerUnhandledLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,
@@ -26,12 +26,12 @@ class PushHandlerUnhandledLocalPreferencesBloc
 
   @override
   Future addUnhandledMessage(PushHandlerMessage pushHandlerMessage) async {
-    var pleromaUnhandledList = value;
+    var pleromaUnhandledList = value!;
 
-    pleromaUnhandledList.messages.add(pushHandlerMessage);
+    pleromaUnhandledList.messages!.add(pushHandlerMessage);
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
         "\t pushHandlerMessage = $pushHandlerMessage"
-        "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}");
+        "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages!.length}");
 
     await setValue(pleromaUnhandledList);
   }
@@ -39,11 +39,11 @@ class PushHandlerUnhandledLocalPreferencesBloc
   @override
   List<PushHandlerMessage> loadUnhandledMessagesForInstance(
       AuthInstance instance) {
-    var pleromaUnhandledList = value;
+    var pleromaUnhandledList = value!;
 
-    var messagesForInstances = pleromaUnhandledList.messages
+    var messagesForInstances = pleromaUnhandledList.messages!
         .where((message) => instance.isInstanceWithHostAndAcct(
-            host: message.body.server, acct: message.body.account))
+            host: message.body!.server, acct: message.body!.account))
         .toList();
 
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
@@ -55,9 +55,9 @@ class PushHandlerUnhandledLocalPreferencesBloc
 
   @override
   Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
-    var pleromaUnhandledList = value;
+    var pleromaUnhandledList = value!;
 
-    pleromaUnhandledList.messages
+    pleromaUnhandledList.messages!
         .removeWhere((message) => messages.contains(message));
 
     _logger.finest(() => "markAsHandled \n"

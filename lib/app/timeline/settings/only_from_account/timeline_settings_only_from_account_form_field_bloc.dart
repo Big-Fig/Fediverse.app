@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelineSettingsOnlyFromAccountFormFieldBloc
-    implements IValueFormFieldBloc<IPleromaAccount> {
+    implements IValueFormFieldBloc<IPleromaAccount?> {
   static ITimelineSettingsOnlyFromAccountFormFieldBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<ITimelineSettingsOnlyFromAccountFormFieldBloc>(context,

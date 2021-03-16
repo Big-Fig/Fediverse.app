@@ -11,7 +11,7 @@ class FcmPushPermissionCheckerWidget extends StatefulWidget {
   final Widget child;
 
   FcmPushPermissionCheckerWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -37,7 +37,7 @@ class _FcmPushPermissionCheckerWidgetState
 
     if (isNeedCheckPermission) {
       Future.delayed(Duration(milliseconds: 100), () async {
-        FediBaseAlertDialog askFcmPushPermissionDialog;
+        late FediBaseAlertDialog askFcmPushPermissionDialog;
         askFcmPushPermissionDialog = createAskFcmPushPermissionDialog(
           context: context,
           yesAction: (context) async {

@@ -9,19 +9,18 @@ class ToastService extends DisposableOwner implements IToastService {
   final IOverlayNotificationService overlayNotificationService;
 
   ToastService({
-    @required this.overlayNotificationService,
+    required this.overlayNotificationService,
   });
 
   @override
   void showErrorToast({
-    @required BuildContext context,
-    @required String title,
+    required BuildContext? context,
+    required String title,
     bool titleAutoFontSize = true,
-    String content,
-    VoidCallback onClick,
+    String? content,
+    VoidCallback? onClick,
     Duration duration = const Duration(seconds: 2, milliseconds: 500),
   }) {
-    assert(title != null);
     overlayNotificationService.showNotification(
       child: ToastWidget(
         toastType: ToastType.error,
@@ -38,14 +37,13 @@ class ToastService extends DisposableOwner implements IToastService {
 
   @override
   void showInfoToast({
-    @required BuildContext context,
-    @required String title,
+    required BuildContext context,
+    required String title,
     bool titleAutoFontSize = true,
-    String content,
-    VoidCallback onClick,
+    String? content,
+    VoidCallback? onClick,
     Duration duration = const Duration(seconds: 2, milliseconds: 500),
   }) {
-    assert(title != null);
     overlayNotificationService.showNotification(
       child: ToastWidget(
         toastType: ToastType.info,

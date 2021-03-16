@@ -19,11 +19,11 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   final IFilterRepository filterRepository;
 
   LocalStatusThreadBloc({
-    @required this.statusRepository,
-    @required this.filterRepository,
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
-    @required IPleromaStatusService pleromaStatusService,
+    required this.statusRepository,
+    required this.filterRepository,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment? initialMediaAttachment,
+    required IPleromaStatusService pleromaStatusService,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           initialStatusToFetchThread: initialStatusToFetchThread,
@@ -32,8 +32,8 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
 
   static LocalStatusThreadBloc createFromContext(
     BuildContext context, {
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment? initialMediaAttachment,
   }) =>
       LocalStatusThreadBloc(
         initialStatusToFetchThread: initialStatusToFetchThread,
@@ -54,9 +54,9 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
-    @required Widget child,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment initialMediaAttachment,
+    required Widget child,
   }) {
     return DisposableProvider<IStatusThreadBloc>(
       create: (context) => LocalStatusThreadBloc.createFromContext(
@@ -96,5 +96,5 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

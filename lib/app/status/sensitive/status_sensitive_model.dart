@@ -1,20 +1,20 @@
-import 'package:flutter/widgets.dart';
+
 
 class StatusSensitiveWarningState {
-  bool nsfwSensitive;
+  bool? nsfwSensitive;
   bool containsSpoiler;
-  bool displayEnabled;
+  bool? displayEnabled;
 
   bool get containsSpoilerAndDisplayEnabled =>
-      containsSpoiler != true || displayEnabled;
+      containsSpoiler != true || displayEnabled!;
 
   bool get nsfwSensitiveAndDisplayEnabled =>
-      nsfwSensitive != true || displayEnabled;
+      nsfwSensitive != true || displayEnabled!;
 
   StatusSensitiveWarningState({
-    @required this.nsfwSensitive,
-    @required this.containsSpoiler,
-    @required this.displayEnabled,
+    required this.nsfwSensitive,
+    required this.containsSpoiler,
+    required this.displayEnabled,
   });
 
   @override

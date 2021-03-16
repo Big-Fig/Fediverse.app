@@ -1,38 +1,38 @@
 abstract class IMastodonAnnouncement {
-  String get id;
+  String? get id;
 
-  String get text;
+  String? get text;
 
-  bool get published;
+  bool? get published;
 
-  bool get allDay;
+  bool? get allDay;
 
-  DateTime get createdAt;
+  DateTime? get createdAt;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
-  bool get read;
+  bool? get read;
 
-  List<IMastodonAnnouncementReaction> get reactions;
-
-  // nullable
-  DateTime get scheduledAt;
+  List<IMastodonAnnouncementReaction>? get reactions;
 
   // nullable
-  DateTime get startsAt;
+  DateTime? get scheduledAt;
 
   // nullable
-  DateTime get endsAt;
+  DateTime? get startsAt;
+
+  // nullable
+  DateTime? get endsAt;
 }
 
 abstract class IMastodonAnnouncementReaction {
-  String get name;
+  String? get name;
 
-  int get count;
+  int? get count;
 
-  bool get me;
+  bool? get me;
 
-  String get url;
+  String? get url;
 
-  String get staticUrl;
+  String? get staticUrl;
 }

@@ -8,13 +8,13 @@ import 'package:provider/provider.dart';
 class SearchStatusPaginationListTimelineWidget
     extends StatusCachedPaginationListTimelineWidget {
   const SearchStatusPaginationListTimelineWidget({
-    Key key,
-    Widget header,
+    Key? key,
+    Widget? header,
     bool forceFirstItemPadding = false,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    @required bool needWatchLocalRepositoryForUpdates,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    required bool needWatchLocalRepositoryForUpdates,
   }) : super(
             key: key,
             header: header,
@@ -29,7 +29,7 @@ class SearchStatusPaginationListTimelineWidget
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   }) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(

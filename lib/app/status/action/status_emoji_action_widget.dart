@@ -28,13 +28,13 @@ class StatusEmojiActionWidget extends StatelessWidget {
 
 class _StatusEmojiActionCounterWidget extends StatelessWidget {
   const _StatusEmojiActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
         stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
         builder: (context, snapshot) {
           var emojiCount = snapshot.data;
@@ -54,7 +54,7 @@ class _StatusEmojiActionCounterWidget extends StatelessWidget {
 
 class _StatusEmojiActionButtonWidget extends StatelessWidget {
   const _StatusEmojiActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -78,7 +78,7 @@ void _showEmojiPicker(BuildContext context) {
         context: context,
         asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),
         errorDataBuilders: [
-          (BuildContext context, dynamic error, StackTrace stackTrace) =>
+          (BuildContext? context, dynamic error, StackTrace stackTrace) =>
               ErrorData(
                 error: error,
                 stackTrace: stackTrace,

@@ -18,11 +18,11 @@ class PleromaChatWithLastMessageListWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const PleromaChatWithLastMessageListWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     bool refreshOnFirstLoad = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
@@ -36,10 +36,10 @@ class PleromaChatWithLastMessageListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IPleromaChatWithLastMessage> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IPleromaChatWithLastMessage> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
           context: context,
@@ -74,7 +74,7 @@ class PleromaChatWithLastMessageListWidget
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
           IPleromaChatWithLastMessage>
       retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+          {required bool listen}) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);

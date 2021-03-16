@@ -14,27 +14,26 @@ typedef SingleSelectFromListValueTitleMapper<T> = String Function(
 
 class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
+  final String? description;
+  final String? descriptionOnDisabled;
 
-  final SingleSelectFromListValueIconMapper<T> valueIconMapper;
-  final SingleSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
+  final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
   final bool displayIconInRow;
   final bool displayIconInDialog;
 
   SingleSelectFromListValueFormFieldRowWidget({
-    @required this.label,
-    @required this.valueTitleMapper,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.displayIconInRow,
-    @required this.displayIconInDialog,
-    @required this.valueIconMapper,
+    required this.label,
+    required this.valueTitleMapper,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.displayIconInRow,
+    required this.displayIconInDialog,
+    required this.valueIconMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
       assert(valueIconMapper != null);
     }
-    assert(valueTitleMapper != null);
   }
 
   @override
@@ -58,16 +57,16 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
     extends StatelessWidget {
   final String label;
   final bool displayIconInRow;
-  final SingleSelectFromListValueIconMapper<T> valueIconMapper;
-  final SingleSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
+  final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
   final bool displayIconInDialog;
 
   _SingleSelectFromListValueFormFieldRowValueWidget({
-    @required this.label,
-    @required this.valueTitleMapper,
-    @required this.displayIconInRow,
-    @required this.displayIconInDialog,
-    @required this.valueIconMapper,
+    required this.label,
+    required this.valueTitleMapper,
+    required this.displayIconInRow,
+    required this.displayIconInDialog,
+    required this.valueIconMapper,
   });
 
   @override
@@ -76,7 +75,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
       onTap: () {
         var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context,
             listen: false);
-        if (fieldBloc.isEnabled) {
+        if (fieldBloc.isEnabled!) {
           _showDialog(
             context: context,
             fieldBloc: fieldBloc,
@@ -108,30 +107,30 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
 class _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>
     extends StatelessWidget {
   const _SingleSelectFromListValueFormFieldRowValueTitleWidget({
-    Key key,
-    @required this.valueTitleMapper,
+    Key? key,
+    required this.valueTitleMapper,
   }) : super(key: key);
 
-  final SingleSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
 
   @override
   Widget build(BuildContext context) {
     var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context);
     //
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
-        return StreamBuilder<T>(
+        return StreamBuilder<T?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValue = snapshot.data;
             return Text(
               valueTitleMapper(context, currentValue),
-              style: isEnabled
+              style: isEnabled!
                   ? fediUiTextTheme.mediumShortDarkGrey
                   : fediUiTextTheme.mediumShortLightGrey,
             );
@@ -145,16 +144,16 @@ class _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>
 class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
     extends StatelessWidget {
   const _SingleSelectFromListValueFormFieldRowValueIconWidget({
-    Key key,
-    @required this.label,
-    @required this.valueIconMapper,
-    @required this.valueTitleMapper,
-    @required this.displayIconInDialog,
+    Key? key,
+    required this.label,
+    required this.valueIconMapper,
+    required this.valueTitleMapper,
+    required this.displayIconInDialog,
   }) : super(key: key);
 
   final String label;
-  final SingleSelectFromListValueIconMapper<T> valueIconMapper;
-  final SingleSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
+  final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
   final bool displayIconInDialog;
 
   @override
@@ -162,18 +161,18 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
     var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: fieldBloc.isEnabledStream,
         initialData: fieldBloc.isEnabled,
         builder: (context, snapshot) {
           var isEnabled = snapshot.data;
-          return StreamBuilder<T>(
+          return StreamBuilder<T?>(
               stream: fieldBloc.currentValueStream,
               initialData: fieldBloc.currentValue,
               builder: (context, snapshot) {
                 var currentValue = snapshot.data;
                 return FediIconButton(
-                  color: isEnabled
+                  color: isEnabled!
                       ? fediUiColorTheme.darkGrey
                       : fediUiColorTheme.lightGrey,
                   onPressed: () {
@@ -187,7 +186,7 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
                     );
                   },
                   icon: Icon(
-                    valueIconMapper(context, currentValue),
+                    valueIconMapper!(context, currentValue),
                   ),
                 );
               });
@@ -196,12 +195,12 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
 }
 
 void _showDialog<T>({
-  @required BuildContext context,
-  @required String label,
-  @required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
-  @required SingleSelectFromListValueIconMapper<T> valueIconMapper,
-  @required SingleSelectFromListValueTitleMapper<T> valueTitleMapper,
-  @required bool displayIconInDialog,
+  required BuildContext context,
+  required String label,
+  required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required SingleSelectFromListValueIconMapper<T?>? valueIconMapper,
+  required SingleSelectFromListValueTitleMapper<T?> valueTitleMapper,
+  required bool displayIconInDialog,
 }) {
   var actions = <SelectionDialogAction>[
     if (fieldBloc.isNullValuePossible)
@@ -235,16 +234,16 @@ void _showDialog<T>({
 }
 
 SelectionDialogAction _buildDialogAction<T>({
-  @required BuildContext context,
-  @required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
-  @required T value,
-  @required T selectedValue,
-  @required SingleSelectFromListValueIconMapper<T> valueIconMapper,
-  @required SingleSelectFromListValueTitleMapper<T> valueTitleMapper,
-  @required bool displayIconInDialog,
+  required BuildContext context,
+  required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required T value,
+  required T selectedValue,
+  required SingleSelectFromListValueIconMapper<T>? valueIconMapper,
+  required SingleSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required bool displayIconInDialog,
 }) {
   return SelectionDialogAction(
-    icon: displayIconInDialog ? valueIconMapper(context, value) : null,
+    icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
     label: valueTitleMapper(context, value),
     onAction: (context) {
       fieldBloc.changeCurrentValue(value);

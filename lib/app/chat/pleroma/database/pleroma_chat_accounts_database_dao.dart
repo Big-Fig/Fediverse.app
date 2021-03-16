@@ -15,7 +15,7 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
       "SELECT * FROM db_chat_accounts WHERE chat_remote_id = "
           ":chatRemoteId AND account_remote_id = :accountRemoteId;",
   "findByAccountRemoteId":
-  "SELECT * FROM db_chat_accounts WHERE account_remote_id = :accountRemoteId;",
+      "SELECT * FROM db_chat_accounts WHERE account_remote_id = :accountRemoteId;",
   "countById": "SELECT COUNT(*) FROM db_chat_accounts WHERE id = :id;",
   "deleteById": "DELETE FROM db_chat_accounts WHERE id = :id;",
   "deleteByChatRemoteId": "DELETE FROM db_chat_accounts WHERE "
@@ -25,20 +25,28 @@ part 'pleroma_chat_accounts_database_dao.g.dart';
 })
 class ChatAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$ChatAccountsDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   ChatAccountsDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbChatAccount> entity,
-          {InsertMode mode}) async =>
-      into(dbChatAccounts).insert(entity, mode: mode);
+          {InsertMode? mode}) async =>
+      into(dbChatAccounts).insert(
+        entity,
+        mode: mode,
+      );
 
   Future insertAll(Iterable<Insertable<DbChatAccount>> entities,
           InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbChatAccounts, entities);
-      });
+      await batch(
+        (batch) {
+          batch.insertAll(
+            dbChatAccounts,
+            entities as List<Insertable<DbChatAccount>>,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbChatAccount> entity) async =>
       await update(dbChatAccounts).replace(entity);

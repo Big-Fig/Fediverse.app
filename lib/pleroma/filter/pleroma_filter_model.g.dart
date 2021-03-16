@@ -17,12 +17,12 @@ class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaFilter(
-      context: (fields[0] as List)?.cast<String>(),
-      phrase: fields[4] as String,
-      expiresAt: fields[1] as DateTime,
-      id: fields[2] as String,
-      irreversible: fields[3] as bool,
-      wholeWord: fields[5] as bool,
+      context: (fields[0] as List?)?.cast<String>(),
+      phrase: fields[4] as String?,
+      expiresAt: fields[1] as DateTime?,
+      id: fields[2] as String?,
+      irreversible: fields[3] as bool?,
+      wholeWord: fields[5] as bool?,
     );
   }
 
@@ -61,14 +61,14 @@ class PleromaFilterAdapter extends TypeAdapter<PleromaFilter> {
 
 PleromaFilter _$PleromaFilterFromJson(Map<String, dynamic> json) {
   return PleromaFilter(
-    context: (json['context'] as List)?.map((e) => e as String)?.toList(),
-    phrase: json['phrase'] as String,
+    context: (json['context'] as List?)?.map((e) => e as String)?.toList(),
+    phrase: json['phrase'] as String?,
     expiresAt: json['expires_at'] == null
         ? null
         : DateTime.parse(json['expires_at'] as String),
-    id: json['id'] as String,
-    irreversible: json['irreversible'] as bool,
-    wholeWord: json['whole_word'] as bool,
+    id: json['id'] as String?,
+    irreversible: json['irreversible'] as bool?,
+    wholeWord: json['whole_word'] as bool?,
   );
 }
 
@@ -92,11 +92,11 @@ Map<String, dynamic> _$PleromaFilterToJson(PleromaFilter instance) {
 
 PostPleromaFilter _$PostPleromaFilterFromJson(Map<String, dynamic> json) {
   return PostPleromaFilter(
-    context: (json['context'] as List)?.map((e) => e as String)?.toList(),
-    phrase: json['phrase'] as String,
-    expiresInSeconds: json['expires_in'] as int,
-    irreversible: json['irreversible'] as bool,
-    wholeWord: json['whole_word'] as bool,
+    context: (json['context'] as List?)?.map((e) => e as String)?.toList(),
+    phrase: json['phrase'] as String?,
+    expiresInSeconds: json['expires_in'] as int?,
+    irreversible: json['irreversible'] as bool?,
+    wholeWord: json['whole_word'] as bool?,
   );
 }
 

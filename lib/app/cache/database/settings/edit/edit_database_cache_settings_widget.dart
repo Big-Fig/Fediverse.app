@@ -20,7 +20,7 @@ class EditDatabaseCacheSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditDatabaseCacheSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -51,7 +51,7 @@ class EditDatabaseCacheSettingsWidget extends StatelessWidget {
 
 class _EditDatabaseCacheSettingsDescriptionWidget extends StatelessWidget {
   const _EditDatabaseCacheSettingsDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -63,7 +63,7 @@ class _EditDatabaseCacheSettingsDescriptionWidget extends StatelessWidget {
 
 class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
   const _EditDatabaseCacheSettingsClearAllButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -75,7 +75,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearAll(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(
-              currentAuthInstanceBloc.currentInstance.userAtHost,
+              currentAuthInstanceBloc.currentInstance!.userAtHost,
             ),
         onPressed: onPressed,
         expanded: false,
@@ -87,7 +87,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
 class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
     extends StatelessWidget {
   const _EditDatabaseCacheSettingsClearByLimitsButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearByLimits(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_by_limits_now(
-              currentAuthInstanceBloc.currentInstance.userAtHost,
+              currentAuthInstanceBloc.currentInstance!.userAtHost,
             ),
         onPressed: onPressed,
         expanded: false,
@@ -111,13 +111,13 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
 class _EditDatabaseCacheSettingsCurrentMaxEntriesCountByTypeFieldWidget
     extends StatelessWidget {
   const _EditDatabaseCacheSettingsCurrentMaxEntriesCountByTypeFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc>(
+          ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc?>(
         update: (context, value, previous) =>
             value.currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc,
         child:
@@ -128,13 +128,13 @@ class _EditDatabaseCacheSettingsCurrentMaxEntriesCountByTypeFieldWidget
 class _EditDatabaseCacheSettingsCurrentMaxAgeFieldWidget
     extends StatelessWidget {
   const _EditDatabaseCacheSettingsCurrentMaxAgeFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc>(
+          ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc?>(
         update: (context, value, previous) =>
             value.currentMaxAgeDatabaseCacheInfoFormFieldBloc,
         child: const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget(),
@@ -143,13 +143,13 @@ class _EditDatabaseCacheSettingsCurrentMaxAgeFieldWidget
 
 class _EditDatabaseCacheSettingsAgeLimitFieldWidget extends StatelessWidget {
   const _EditDatabaseCacheSettingsAgeLimitFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc>(
+          IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?>(
         update: (context, value, previous) =>
             value.ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
         child:
@@ -160,13 +160,13 @@ class _EditDatabaseCacheSettingsAgeLimitFieldWidget extends StatelessWidget {
 class _EditDatabaseCacheSettingsEntriesCountByTypeLimitFieldWidget
     extends StatelessWidget {
   const _EditDatabaseCacheSettingsEntriesCountByTypeLimitFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditDatabaseCacheSettingsBloc,
-          IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc>(
+          IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?>(
         update: (context, value, previous) => value
             .entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
         child:

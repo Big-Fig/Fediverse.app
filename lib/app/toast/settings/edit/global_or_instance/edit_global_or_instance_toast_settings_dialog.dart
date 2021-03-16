@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 final _logger = Logger("edit_global_or_instance_toast_settings_dialog.dart");
 
 void showEditGlobalOrInstanceToastSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -27,8 +27,8 @@ void showEditGlobalOrInstanceToastSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditToastSettingsBloc>(

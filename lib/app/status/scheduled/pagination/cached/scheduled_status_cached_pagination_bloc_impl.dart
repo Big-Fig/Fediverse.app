@@ -17,9 +17,9 @@ class ScheduledStatusCachedPaginationBloc
   final IScheduledStatusCachedListBloc scheduledStatusListService;
 
   ScheduledStatusCachedPaginationBloc({
-    @required this.scheduledStatusListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.scheduledStatusListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -30,37 +30,37 @@ class ScheduledStatusCachedPaginationBloc
 
   @override
   Future<List<IScheduledStatus>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IScheduledStatus> olderPage,
-    @required CachedPaginationPage<IScheduledStatus> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IScheduledStatus>? olderPage,
+    required CachedPaginationPage<IScheduledStatus>? newerPage,
   }) =>
       scheduledStatusListService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.first,
+        olderThan: newerPage?.items.last,
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IScheduledStatus> olderPage,
-    @required CachedPaginationPage<IScheduledStatus> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IScheduledStatus>? olderPage,
+    required CachedPaginationPage<IScheduledStatus>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
     return scheduledStatusListService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.first,
+      olderThan: newerPage?.items.last,
     );
   }
 
   static ScheduledStatusCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       ScheduledStatusCachedPaginationBloc(
         scheduledStatusListService:
@@ -72,13 +72,15 @@ class ScheduledStatusCachedPaginationBloc
         maximumCachedPagesCount: maximumCachedPagesCount,
       );
 
-  static Widget provideToContext(BuildContext context,
-      {int itemsCountPerPage = 20,
-      int maximumCachedPagesCount,
-      @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    int itemsCountPerPage = 20,
+    int? maximumCachedPagesCount,
+    required Widget child,
+  }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
-            IScheduledStatus>>(
+        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus?>,
+            IScheduledStatus?>>(
       create: (context) =>
           ScheduledStatusCachedPaginationBloc.createFromContext(
         context,

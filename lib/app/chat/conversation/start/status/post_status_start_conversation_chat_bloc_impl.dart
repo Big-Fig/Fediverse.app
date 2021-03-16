@@ -11,8 +11,8 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -26,25 +26,25 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     await super.onStatusPosted(remoteStatus);
     successCallback(
-      mapRemoteStatusToLocalStatus(remoteStatus),
+      remoteStatus.toDbStatusPopulatedWrapper(),
     );
   }
 
   PostStatusStartConversationChatBloc({
-    @required this.conversationAccountsWithoutMe,
-    @required this.successCallback,
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IScheduledStatusRepository scheduledStatusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
-    @required String language,
+    required this.conversationAccountsWithoutMe,
+    required this.successCallback,
+    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int? maximumMessageLength,
+    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool? markMediaAsNsfwOnAttach,
+    required String? language,
   }) : super(
           isExpirePossible: false,
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -62,16 +62,19 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
 
   static PostStatusStartConversationChatBloc createFromContext(
     BuildContext context, {
-    @required List<IAccount> conversationAccountsWithoutMe,
-    @required StatusCallback successCallback,
+    required List<IAccount> conversationAccountsWithoutMe,
+    required StatusCallback successCallback,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        context,
+        listen: false,
+      ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -93,9 +96,9 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required List<IAccount> conversationAccountsWithoutMe,
-    @required Widget child,
-    @required StatusCallback successCallback,
+    required List<IAccount> conversationAccountsWithoutMe,
+    required Widget child,
+    required StatusCallback successCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) =>
@@ -120,16 +123,16 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       inputWithoutMentionedAcctsTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      pollBloc.isHaveAtLeastOneErrorStream,
-      pollBloc.isSomethingChangedStream,
+      pollBloc!.isHaveAtLeastOneErrorStream,
+      pollBloc!.isSomethingChangedStream,
       mentionedAcctsStream,
       (
-        inputWithoutMentionedAcctsText,
-        mediaAttachmentBlocs,
-        isAllAttachedMediaUploaded,
-        isHaveAtLeastOneError,
-        isPollBlocChanged,
-        mentionedAccts,
+        dynamic inputWithoutMentionedAcctsText,
+        dynamic mediaAttachmentBlocs,
+        dynamic isAllAttachedMediaUploaded,
+        dynamic isHaveAtLeastOneError,
+        dynamic isPollBlocChanged,
+        dynamic mentionedAccts,
       ) =>
           calculateStatusBlocIsReadyToPost(
             inputText: inputWithoutMentionedAcctsText,

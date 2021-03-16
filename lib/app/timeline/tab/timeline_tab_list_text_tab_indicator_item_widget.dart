@@ -31,7 +31,7 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
           child: DisposableProxyProvider<ITimelineTabListBloc,
               IFediTabIndicatorBloc<ITimelineTabBloc>>(
             update: (context, value, previous) {
-              var timelineTabBlocsList = value.timelineTabBlocsList;
+              var timelineTabBlocsList = value.timelineTabBlocsList!;
               return FediTabIndicatorBloc<ITimelineTabBloc>(
                   items: timelineTabBlocsList.timelineTabBlocs,
                   tabController: timelineTabBlocsList.tabController);
@@ -42,7 +42,7 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
                 var tabPaginationListBloc =
                     timelineTabBloc.paginationListWithNewItemsBloc;
 
-                return Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                return Provider<ICachedPaginationListWithNewItemsBloc?>.value(
                   value: tabPaginationListBloc,
                   child: DisposableProxyProvider<
                       ICachedPaginationListWithNewItemsBloc,
@@ -62,11 +62,11 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
               isTransparent: true,
               tabToTextMapper: (
                 BuildContext context,
-                ITimelineTabBloc timelineTabBloc,
+                ITimelineTabBloc? timelineTabBloc,
               ) =>
                   mapTabToTitle(
                 context,
-                timelineTabBloc.timeline,
+                timelineTabBloc!.timeline,
               ),
             ),
           ),
@@ -75,6 +75,6 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
     );
   }
 
-  static String mapTabToTitle(BuildContext context, Timeline tab) =>
+  static String? mapTabToTitle(BuildContext context, Timeline tab) =>
       tab.calculateLabel(context);
 }

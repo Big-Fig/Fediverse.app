@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountCustomFieldsItemFieldWidget extends StatelessWidget {
   const EditMyAccountCustomFieldsItemFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -29,8 +29,10 @@ class EditMyAccountCustomFieldsItemFieldWidget extends StatelessWidget {
                 S.of(context).app_account_my_edit_field_customField_name_label,
             valueHint:
                 S.of(context).app_account_my_edit_field_customField_value_label,
-            nameStringFieldBloc: itemData.customField.keyField,
-            valueStringFieldBloc: itemData.customField.valueField,
+            nameStringFieldBloc:
+                itemData.customField.keyField,
+            valueStringFieldBloc:
+                itemData.customField.valueField,
             ending: FediIconButton(
               icon: Icon(FediIcons.close),
               onPressed: () {

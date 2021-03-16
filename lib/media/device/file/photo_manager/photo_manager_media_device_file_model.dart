@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/photo_manager_media_device_adapter.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
@@ -22,8 +21,8 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
   MediaDeviceFileType get type => assetEntity.type.mapToMediaDeviceFileType();
 
   PhotoManagerMediaDeviceFileMetadata({
-    @required this.assetEntity,
-    @required this.isNeedDeleteAfterUsage,
+    required this.assetEntity,
+    required this.isNeedDeleteAfterUsage,
   });
 
   @override
@@ -45,7 +44,7 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
     var file = await assetEntity.file;
 
     if (type == MediaDeviceFileType.image) {
-      var filePath = file.absolute.path;
+      var filePath = file!.absolute.path;
       _logger.fine(() => "retrieveFile \n"
           "\t file $filePath");
       var extension = path.extension(filePath);
@@ -73,7 +72,7 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
     }
   }
 
-  Future<File> _compressToJpeg(File file) async {
+  Future<File?> _compressToJpeg(File file) async {
     var originPath = file.absolute.path;
     final Directory extDir = await getTemporaryDirectory();
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
@@ -86,14 +85,14 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
     _logger.fine(() => "_compressToJpeg \n"
         "\t originPath $originPath"
         "\t resultPath $resultPath");
-    file = await FlutterImageCompress.compressAndGetFile(
+    var result = await FlutterImageCompress.compressAndGetFile(
       originPath,
       resultPath,
       format: CompressFormat.jpeg,
       quality: 88,
     );
 
-    return file;
+    return result!;
   }
 
   @override
@@ -107,11 +106,11 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
 class PhotoManagerMediaDeviceFile implements IMediaDeviceFile {
   @override
   final PhotoManagerMediaDeviceFileMetadata metadata;
-  final File reCompressedFile;
+  final File? reCompressedFile;
 
   PhotoManagerMediaDeviceFile({
-    @required this.metadata,
-    @required this.reCompressedFile,
+    required this.metadata,
+    required this.reCompressedFile,
   });
 
   @override
@@ -132,25 +131,23 @@ class PhotoManagerMediaDeviceFile implements IMediaDeviceFile {
   @override
   Future<File> loadFile() async {
     if (reCompressedFile != null) {
-      return reCompressedFile;
+      return reCompressedFile!;
     } else {
-      return metadata.assetEntity.file;
+      return (await metadata.assetEntity.file)!;
     }
   }
 
   @override
   Future delete() async {
     if (reCompressedFile != null) {
-      return reCompressedFile.deleteSync();
+      return reCompressedFile!.deleteSync();
     } else {
       return (await loadFile()).deleteSync();
     }
   }
 
   @override
-  Future<String> calculateFilePath() {
-    return loadFile().then((file) => file?.path);
-  }
+  Future<String> calculateFilePath() => loadFile().then((file) => file.path);
 
   @override
   bool get isNeedDeleteAfterUsage {

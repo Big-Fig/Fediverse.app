@@ -4,7 +4,7 @@ import 'package:fedi/form/form_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IEditSettingsBloc<T extends ISettings> extends IFormBloc {
+abstract class IEditSettingsBloc<T extends ISettings?> extends IFormBloc {
   static IEditSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditSettingsBloc>(context, listen: listen);
 
@@ -14,9 +14,9 @@ abstract class IEditSettingsBloc<T extends ISettings> extends IFormBloc {
 
   Stream<bool> get isEnabledStream;
 
-  T get currentSettings;
+  T? get currentSettings;
 
-  Stream<T> get currentSettingsStream;
+  Stream<T?> get currentSettingsStream;
 
   Future updateSettings(T settings);
 

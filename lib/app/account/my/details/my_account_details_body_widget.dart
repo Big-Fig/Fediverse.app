@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountDetailsBodyWidget extends StatelessWidget {
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) => CollapsibleOwnerWidget(
@@ -33,7 +33,7 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
 
 void _onStatusesTapCallback(BuildContext context) {
   var scrollControllerBloc = IScrollControllerBloc.of(context, listen: false);
-  scrollControllerBloc.scrollController.animateTo(
+  scrollControllerBloc.scrollController!.animateTo(
     MediaQuery.of(context).size.height / 2,
     duration: Duration(milliseconds: 500),
     curve: Curves.easeOut,

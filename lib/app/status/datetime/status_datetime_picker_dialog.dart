@@ -6,10 +6,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("status_datetime_picker_dialog.dart");
 
-Future<DateTime> showStatusDateTimePickerDialog({
-  BuildContext context,
-  DateTime oldValue,
-  String pickerTitle,
+Future<DateTime?> showStatusDateTimePickerDialog({
+  required BuildContext context,
+  DateTime? oldValue,
+  String? pickerTitle,
 }) async {
   var approximateDurationForSelection = Duration(minutes: 2);
   var now = DateTime.now();

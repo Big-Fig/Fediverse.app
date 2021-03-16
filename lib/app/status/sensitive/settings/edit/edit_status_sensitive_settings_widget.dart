@@ -11,7 +11,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditStatusSensitiveSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -30,13 +30,13 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
 class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IDurationValueFormFieldBloc>(
+        IDurationValueFormFieldBloc?>(
       update: (context, value, _) => value.nsfwDisplayDelayDurationFieldBloc,
       child: DurationValueFormFieldRowWidget(
         label: S
@@ -50,13 +50,13 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
 class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc>(
+        IBoolValueFormFieldBloc?>(
       update: (context, value, previous) => value.isAlwaysShowNsfwFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S
@@ -70,13 +70,13 @@ class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
 class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
     extends StatelessWidget {
   const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc>(
+        IBoolValueFormFieldBloc?>(
       update: (context, value, previous) => value.isAlwaysShowSpoilerFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S

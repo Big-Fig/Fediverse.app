@@ -12,5 +12,5 @@ abstract class IMyAccountDomainBlockNetworkOnlyListBloc
       Provider.of<IMyAccountDomainBlockNetworkOnlyListBloc>(context,
           listen: listen);
 
-  Future removeDomainBlock({@required String domain});
+  Future removeDomainBlock({required String domain});
 }

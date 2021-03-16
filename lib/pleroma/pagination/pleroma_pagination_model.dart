@@ -7,13 +7,13 @@ abstract class IPleromaPaginationRequest implements IMastodonPaginationRequest {
 
 class PleromaPaginationRequest implements IPleromaPaginationRequest {
   @override
-  final int limit;
+  final int? limit;
   @override
-  final String maxId;
+  final String? maxId;
   @override
-  final String minId;
+  final String? minId;
   @override
-  final String sinceId;
+  final String? sinceId;
 
   PleromaPaginationRequest({
     this.limit,

@@ -6,16 +6,16 @@ import 'package:provider/provider.dart';
 abstract class IStatusSensitiveBloc implements IDisposable {
   static IStatusSensitiveBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusSensitiveBloc>(context, listen: listen);
-  bool get isAlwaysShowNsfw;
+  bool? get isAlwaysShowNsfw;
 
-  bool get isAlwaysShowSpoiler;
+  bool? get isAlwaysShowSpoiler;
 
 
-  bool get nsfwSensitiveAndDisplayNsfwContentEnabled;
+  bool? get nsfwSensitiveAndDisplayNsfwContentEnabled;
 
   Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream;
 
-  bool get containsSpoilerAndDisplaySpoilerContentEnabled;
+  bool? get containsSpoilerAndDisplaySpoilerContentEnabled;
 
   StatusSensitiveWarningState get statusWarningState;
 

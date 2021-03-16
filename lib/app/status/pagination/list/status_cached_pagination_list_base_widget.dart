@@ -5,14 +5,14 @@ import 'package:flutter/widgets.dart';
 abstract class StatusCachedPaginationListBaseWidget
     extends FediPaginationListWidget<IStatus> {
   const StatusCachedPaginationListBaseWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    ScrollController scrollController,
-    Widget customLoadingWidget,
-    Widget customEmptyWidget,
+    required Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    ScrollController? scrollController,
+    Widget? customLoadingWidget,
+    Widget? customEmptyWidget,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,

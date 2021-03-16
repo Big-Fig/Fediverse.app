@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class AccountReportBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  AccountReportBlocProxyProvider({@required this.child});
+  AccountReportBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -15,24 +15,24 @@ class AuthInstanceChooserBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentInstanceBloc;
 
   AuthInstanceChooserBloc(
-      {@required this.instanceListBloc, @required this.currentInstanceBloc});
+      {required this.instanceListBloc, required this.currentInstanceBloc});
 
   @override
   Future chooseInstance(AuthInstance instance) => currentInstanceBloc.changeCurrentInstance(instance);
 
   @override
-  List<AuthInstance> get instancesAvailableToChoose =>
+  List<AuthInstance?> get instancesAvailableToChoose =>
       filterNotSelected(instanceListBloc.availableInstances).toList();
 
   @override
-  Stream<List<AuthInstance>> get instancesAvailableToChooseStream =>
+  Stream<List<AuthInstance?>> get instancesAvailableToChooseStream =>
       instanceListBloc.availableInstancesStream
           .map((availableInstances) => filterNotSelected(availableInstances));
 
-  List<AuthInstance> filterNotSelected(List<AuthInstance> availableInstances) {
+  List<AuthInstance?> filterNotSelected(List<AuthInstance?> availableInstances) {
     var selectedInstance = this.selectedInstance;
     var filtered = availableInstances.where((instance) {
-      return instance.userAtHost != selectedInstance.userAtHost;
+      return instance!.userAtHost != selectedInstance!.userAtHost;
     }).toList();
     _logger.finest(() => "filterNotSelected \n"
         "\t availableInstances = ${availableInstances.length} \n"
@@ -41,10 +41,10 @@ class AuthInstanceChooserBloc extends DisposableOwner
   }
 
   @override
-  AuthInstance get selectedInstance => currentInstanceBloc.currentInstance;
+  AuthInstance? get selectedInstance => currentInstanceBloc.currentInstance;
 
   @override
-  Stream<AuthInstance> get selectedInstanceStream =>
+  Stream<AuthInstance?> get selectedInstanceStream =>
       currentInstanceBloc.currentInstanceStream;
 
   @override

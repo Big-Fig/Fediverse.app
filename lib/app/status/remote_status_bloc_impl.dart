@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
@@ -20,15 +21,15 @@ class RemoteStatusBloc extends StatusBloc {
   final Uri instanceUri;
 
   final BehaviorSubject<IAccount> inReplyToAccountSubject = BehaviorSubject();
-  final BehaviorSubject<IStatus> inReplyToStatusSubject = BehaviorSubject();
+  final BehaviorSubject<IStatus?> inReplyToStatusSubject = BehaviorSubject();
 
   RemoteStatusBloc({
-    @required this.instanceUri,
-    @required IPleromaStatusService pleromaStatusService,
-    @required IPleromaAccountService pleromaAccountService,
-    @required IStatus status,
-    @required bool isNeedRefreshFromNetworkOnInit,
-    @required bool delayInit,
+    required this.instanceUri,
+    required IPleromaStatusService pleromaStatusService,
+    required IPleromaAccountService pleromaAccountService,
+    required IStatus status,
+    required bool isNeedRefreshFromNetworkOnInit,
+    required bool delayInit,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           pleromaAccountService: pleromaAccountService,
@@ -45,7 +46,7 @@ class RemoteStatusBloc extends StatusBloc {
 
   static RemoteStatusBloc createFromContext(
     BuildContext context, {
-    @required IStatus status,
+    required IStatus status,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) {
@@ -75,10 +76,10 @@ class RemoteStatusBloc extends StatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IStatus status,
+    required IStatus status,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IStatusBloc>(
       create: (context) => RemoteStatusBloc.createFromContext(
@@ -93,8 +94,8 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   Future actualInit({
-    @required IStatus status,
-    @required bool isNeedRefreshFromNetworkOnInit,
+    required IStatus status,
+    required bool isNeedRefreshFromNetworkOnInit,
   }) async {
     if (isNeedRefreshFromNetworkOnInit) {
       await refreshFromNetwork();
@@ -109,9 +110,7 @@ class RemoteStatusBloc extends StatusBloc {
     var remoteStatus = await loadRemoteStatus();
 
     statusSubject.add(
-      mapRemoteStatusToLocalStatus(
-        remoteStatus,
-      ),
+      remoteStatus.toDbStatusPopulatedWrapper(),
     );
   }
 
@@ -123,7 +122,7 @@ class RemoteStatusBloc extends StatusBloc {
           accountRemoteId: inReplyToAccountRemoteId);
 
       inReplyToAccountSubject.add(
-        mapRemoteAccountToLocalAccount(remoteAccount),
+        remoteAccount.toDbAccountWrapper(),
       );
     }
   }
@@ -135,7 +134,7 @@ class RemoteStatusBloc extends StatusBloc {
           statusRemoteId: inReplyToRemoteId);
 
       inReplyToStatusSubject.add(
-        mapRemoteStatusToLocalStatus(remoteStatus),
+        remoteStatus.toDbStatusPopulatedWrapper(),
       );
     }
   }
@@ -144,7 +143,7 @@ class RemoteStatusBloc extends StatusBloc {
   Future<IAccount> getInReplyToAccount() async {
     await _checkIsInReplyToAccountLoaded();
 
-    return inReplyToAccountSubject.value;
+    return inReplyToAccountSubject.value!;
   }
 
   @override
@@ -158,23 +157,22 @@ class RemoteStatusBloc extends StatusBloc {
   Future<IStatus> getInReplyToStatus() async {
     await _checkIsInReplyToStatusLoaded();
 
-    return inReplyToStatusSubject.value;
+    return inReplyToStatusSubject.value!;
   }
 
   @override
-  Stream<IStatus> watchInReplyToStatus() {
+  Stream<IStatus?> watchInReplyToStatus() {
     _checkIsInReplyToStatusLoaded();
 
     return inReplyToStatusSubject.stream;
   }
 
   @override
-  Future<IAccount> loadAccountByMentionUrl({
-    @required String url,
+  Future<IAccount?> loadAccountByMentionUrl({
+    required String? url,
   }) async {
-    var foundMention = reblogOrOriginalMentions?.firstWhere(
+    var foundMention = reblogOrOriginalMentions?.firstWhereOrNull(
       (mention) => mention.url == url,
-      orElse: () => null,
     );
 
     var account;
@@ -185,7 +183,7 @@ class RemoteStatusBloc extends StatusBloc {
           accountRemoteId: accountRemoteId,
         );
 
-        account = mapRemoteAccountToLocalAccount(remoteAccount);
+        account = remoteAccount.toDbAccountWrapper();
       }
     }
 
@@ -204,7 +202,7 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   Future<IPleromaStatus> toggleEmojiReaction({
-    @required String emoji,
+    required String? emoji,
   }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
@@ -216,7 +214,7 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleMute({
-    @required Duration duration,
+    required Duration? duration,
   }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
@@ -235,10 +233,14 @@ class RemoteStatusBloc extends StatusBloc {
   Uri get remoteInstanceUriOrNull => instanceUri;
 
   @override
-  Future<IStatus> mute({@required Duration duration}) {
+  Future<IStatus> mute({
+    required Duration? duration,
+  }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  bool get isPleromaInstance => null;
+  // todo: should be implemented
+  bool get isPleroma =>
+      throw UnsupportedOnRemoteInstanceLocationException();
 }

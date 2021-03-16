@@ -30,7 +30,7 @@ class CardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(_cardBorderRadius),
           child: InkWell(
             onTap: () async {
-              var url = card.url;
+              var url = card.url!;
               await UrlHelper.handleUrlClick(
                 context: context,
                 url: url,
@@ -55,7 +55,7 @@ class CardWidget extends StatelessWidget {
 
 class _CardContentWidget extends StatelessWidget {
   const _CardContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -92,7 +92,7 @@ class _CardContentWidget extends StatelessWidget {
 
 class _CardImageWidget extends StatelessWidget {
   const _CardImageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -115,7 +115,7 @@ class _CardImageWidget extends StatelessWidget {
 
 class _CardProviderWidget extends StatelessWidget {
   const _CardProviderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -124,7 +124,7 @@ class _CardProviderWidget extends StatelessWidget {
 
     return Container(
       child: Text(
-        card.providerName,
+        card.providerName!,
         style: IFediUiTextTheme.of(context).smallTallGrey,
         overflow: TextOverflow.ellipsis,
       ),
@@ -134,7 +134,7 @@ class _CardProviderWidget extends StatelessWidget {
 
 class _CardTitleWidget extends StatelessWidget {
   const _CardTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -142,7 +142,7 @@ class _CardTitleWidget extends StatelessWidget {
     var card = Provider.of<IPleromaCard>(context);
 
     return Text(
-      card.title,
+      card.title!,
       maxLines: 2,
       style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
       overflow: TextOverflow.ellipsis,
@@ -152,7 +152,7 @@ class _CardTitleWidget extends StatelessWidget {
 
 class _CardDescriptionWidget extends StatelessWidget {
   const _CardDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -161,7 +161,7 @@ class _CardDescriptionWidget extends StatelessWidget {
 
     return Expanded(
       child: Text(
-        card.description,
+        card.description!,
         style: IFediUiTextTheme.of(context).bigTallDarkGrey,
       ),
     );

@@ -13,12 +13,12 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final String descText;
   final IconData icon;
   final IAccount account;
-  final AccountCallback accountCallback;
+  final AccountCallback? accountCallback;
 
   StatusSubHeaderWidget({
-    @required this.account,
-    @required this.descText,
-    @required this.icon,
+    required this.account,
+    required this.descText,
+    required this.icon,
     this.accountCallback,
   });
 
@@ -28,7 +28,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             if (accountCallback != null) {
-              accountCallback(context, account);
+              accountCallback!(context, account);
             } else {
               var statusBloc = IStatusBloc.of(context, listen: false);
               var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
@@ -67,7 +67,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
         ),
         Flexible(
           child: Text(
-            account.acct,
+            account.acct!,
             overflow: TextOverflow.ellipsis,
             style: IFediUiTextTheme.of(context)
                 .mediumShortDarkGrey

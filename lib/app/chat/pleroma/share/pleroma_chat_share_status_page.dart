@@ -35,9 +35,9 @@ class PleromaChatShareStatusPage extends StatelessWidget {
 }
 
 void goToPleromaChatShareStatusPage({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
+  required BuildContext context,
+  required IStatus status,
+  required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
     context,
@@ -50,40 +50,42 @@ void goToPleromaChatShareStatusPage({
 }
 
 MaterialPageRoute createPleromaChatShareStatusPageRoute({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
+  required BuildContext context,
+  required IStatus status,
+  required InstanceLocation instanceLocation,
 }) {
   return MaterialPageRoute(
-    builder: (context) => PleromaChatShareStatusBloc.provideToContext(context,
-        status: status,
-        child: Provider.value(
-          value: status,
-          child: DisposableProxyProvider<IStatus, IStatusBloc>(
-            update: (context, value, previous) {
-              var isLocal = instanceLocation == InstanceLocation.local;
-              if (isLocal) {
-                return LocalStatusBloc.createFromContext(
-                  context,
-                  status: value,
-                );
-              } else {
-                return RemoteStatusBloc.createFromContext(
-                  context,
-                  status: value,
-                );
-              }
-            },
-            child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
-              update: (context, statusBloc, _) =>
-                  StatusSensitiveBloc.createFromContext(
-                context: context,
-                statusBloc: statusBloc,
-                initialDisplayEnabled: true,
-              ),
-              child: const PleromaChatShareStatusPage(),
+    builder: (context) => PleromaChatShareStatusBloc.provideToContext(
+      context,
+      status: status,
+      child: Provider.value(
+        value: status,
+        child: DisposableProxyProvider<IStatus, IStatusBloc>(
+          update: (context, value, previous) {
+            var isLocal = instanceLocation.isLocal;
+            if (isLocal) {
+              return LocalStatusBloc.createFromContext(
+                context,
+                status: value,
+              );
+            } else {
+              return RemoteStatusBloc.createFromContext(
+                context,
+                status: value,
+              );
+            }
+          },
+          child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+            update: (context, statusBloc, _) =>
+                StatusSensitiveBloc.createFromContext(
+              context: context,
+              statusBloc: statusBloc,
+              initialDisplayEnabled: true,
             ),
+            child: const PleromaChatShareStatusPage(),
           ),
-        )),
+        ),
+      ),
+    ),
   );
 }

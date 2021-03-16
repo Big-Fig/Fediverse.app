@@ -8,23 +8,23 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
   final double height;
   final double borderWidth;
   final bool expanded;
-  final Color enabledBackgroundColor;
-  final Color disabledBackgroundColor;
-  final Color enabledBorderColor;
-  final Color disabledBorderColor;
+  final Color? enabledBackgroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? enabledBorderColor;
+  final Color? disabledBorderColor;
 
   final bool limitMinWidth;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   FediPrimaryFilledTextButtonWithBorder(
     this.text, {
-    @required this.onPressed,
+    required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
     this.enabledBorderColor,
@@ -32,7 +32,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
-    @required this.expanded,
+    required this.expanded,
     this.limitMinWidth = false,
   });
 
@@ -78,7 +78,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
               padding: FediPadding.buttonHorizontalPadding,
               child: Center(
                 child: Text(
-                  text, textAlign: TextAlign.center, // 80% transparency
+                  text!, textAlign: TextAlign.center, // 80% transparency
                   style: textStyle,
                 ),
               ),

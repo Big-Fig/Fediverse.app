@@ -7,13 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusReplySubHeaderWidget extends StatelessWidget {
-  final AccountCallback accountCallback;
+  final AccountCallback? accountCallback;
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
     if (statusBloc.isReply) {
-      return StreamBuilder<IAccount>(
+      return StreamBuilder<IAccount?>(
         stream: statusBloc.watchInReplyToAccount(),
         initialData: null,
         builder: (context, snapshot) {

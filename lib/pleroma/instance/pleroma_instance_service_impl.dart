@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -24,7 +23,7 @@ class PleromaInstanceService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -38,7 +37,9 @@ class PleromaInstanceService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaInstanceService({@required this.restService});
+  PleromaInstanceService({
+    required this.restService,
+  });
 
   List<String> parseInstancePeers(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -70,8 +71,14 @@ class PleromaInstanceService extends DisposableOwner
 
   @override
   Future<List<IPleromaInstanceHistory>> getHistory() async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-        relativePath: urlPath.join(instanceRelativeUrlPath, "activity")));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join(
+          instanceRelativeUrlPath,
+          "activity",
+        ),
+      ),
+    );
 
     return parseInstanceHistoryListResponse(httpResponse);
   }

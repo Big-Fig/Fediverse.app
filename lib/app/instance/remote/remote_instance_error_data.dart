@@ -2,8 +2,8 @@ import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 
-ErrorData remoteInstanceLoadDataErrorAlertDialogBuilder(
-  BuildContext context,
+ErrorData? remoteInstanceLoadDataErrorAlertDialogBuilder(
+  BuildContext? context,
   dynamic error,
   StackTrace stackTrace,
 ) {

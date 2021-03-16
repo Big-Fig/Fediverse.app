@@ -12,13 +12,13 @@ const _rowHeight = 48.0 + 6.0;
 
 class MediaFilePathWidget extends StatelessWidget {
   final double opacity;
-  final Widget actionsWidget;
+  final Widget? actionsWidget;
 
   // final String filePath;
 
   const MediaFilePathWidget({
     this.opacity = 1.0,
-    @required this.actionsWidget, // @required this.filePath,
+    required this.actionsWidget, // @required this.filePath,
   });
 
   @override
@@ -54,7 +54,7 @@ class MediaFilePathWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      actionsWidget,
+                      actionsWidget!,
                     ],
                   ),
                 )
@@ -68,7 +68,7 @@ class MediaFilePathWidget extends StatelessWidget {
 
 class _MediaFilePathBodyWidget extends StatelessWidget {
   const _MediaFilePathBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -100,7 +100,7 @@ class _MediaFilePathBodyWidget extends StatelessWidget {
 
 class _MediaFilePathIconWidget extends StatelessWidget {
   const _MediaFilePathIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -13,7 +13,7 @@ class PostMessageEmojiActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
-    return StreamBuilder<PostMessageSelectedAction>(
+    return StreamBuilder<PostMessageSelectedAction?>(
         stream: postMessageBloc.selectedActionStream,
         initialData: postMessageBloc.selectedAction,
         builder: (context, snapshot) {

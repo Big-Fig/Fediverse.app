@@ -22,8 +22,8 @@ class PleromaStatusContext implements IPleromaStatusContext {
   final List<PleromaStatus> ancestors;
 
   PleromaStatusContext({
-    this.descendants,
-    this.ancestors,
+    required this.descendants,
+    required this.ancestors,
   });
 
   factory PleromaStatusContext.fromJson(Map<String, dynamic> json) =>
@@ -33,11 +33,14 @@ class PleromaStatusContext implements IPleromaStatusContext {
       _$PleromaStatusContextFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() => _$PleromaStatusContextToJson(this);
+
   String toJsonString() => jsonEncode(_$PleromaStatusContextToJson(this));
 
   @override
   String toString() {
-    return 'PleromaStatusContext{descendants: $descendants,'
-        ' ancestors: $ancestors}';
+    return 'PleromaStatusContext{'
+        'descendants: $descendants, '
+        'ancestors: $ancestors'
+        '}';
   }
 }

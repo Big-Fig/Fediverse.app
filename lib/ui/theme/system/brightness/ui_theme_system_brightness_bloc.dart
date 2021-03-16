@@ -9,7 +9,7 @@ abstract class IUiThemeSystemBrightnessBloc extends IDisposable {
           {bool listen = true}) =>
       Provider.of<IUiThemeSystemBrightnessBloc>(context, listen: listen);
 
-  Brightness get systemBrightness;
+  Brightness? get systemBrightness;
 
   Stream<Brightness> get systemBrightnessStream;
 

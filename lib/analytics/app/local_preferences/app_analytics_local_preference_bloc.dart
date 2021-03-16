@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAppAnalyticsLocalPreferenceBloc
-    implements LocalPreferenceBloc<AppAnalyticsData> {
+    implements LocalPreferenceBloc<AppAnalyticsData?> {
   static IAppAnalyticsLocalPreferenceBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IAppAnalyticsLocalPreferenceBloc>(context, listen: listen);

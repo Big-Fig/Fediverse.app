@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class AppAnalyticsLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<AppAnalyticsData>
+    extends ObjectLocalPreferenceBloc<AppAnalyticsData?>
     implements IAppAnalyticsLocalPreferenceBloc {
   AppAnalyticsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,

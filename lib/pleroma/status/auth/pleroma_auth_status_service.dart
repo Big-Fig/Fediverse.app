@@ -8,70 +8,75 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaAuthStatusService
     implements IPleromaStatusService, IPleromaAuthApi {
-  static IPleromaAuthStatusService of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaAuthStatusService>(context, listen: listen);
+  static IPleromaAuthStatusService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaAuthStatusService>(
+        context,
+        listen: listen,
+      );
 
   Future<IPleromaStatus> postStatus({
-    @required IPleromaPostStatus data,
+    required IPleromaPostStatus data,
   });
 
   Future<IPleromaScheduledStatus> scheduleStatus({
-    @required IPleromaScheduleStatus data,
+    required IPleromaScheduleStatus data,
   });
 
   Future deleteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> muteStatus({
-    @required String statusRemoteId,
-    @required int expireDurationInSeconds,
+    required String statusRemoteId,
+    required int? expireDurationInSeconds,
   });
 
   Future<IPleromaStatus> unMuteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> pinStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> unPinStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> favouriteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> unFavouriteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> bookmarkStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> unBookmarkStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> reblogStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatus> unReblogStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<List<IPleromaAccount>> favouritedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String statusRemoteId,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaAccount>> rebloggedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String statusRemoteId,
+    IPleromaPaginationRequest? pagination,
   });
 }

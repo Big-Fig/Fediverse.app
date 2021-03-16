@@ -12,17 +12,36 @@ abstract class IPleromaApplication implements IMastodonApplication {}
 abstract class IPleromaClientApplication implements IMastodonClientApplication {
 }
 
+extension IPleromaApplicationExtension on IPleromaApplication {
+  PleromaApplication toPleromaApplication() {
+    if (this is PleromaApplication) {
+      return this as PleromaApplication;
+    } else {
+      return PleromaApplication(
+        name: name,
+        website: website,
+        vapidKey: vapidKey,
+      );
+    }
+  }
+}
+
 @JsonSerializable()
 class PleromaApplication implements IPleromaApplication {
   @override
-  final String name;
+  final String? name;
   @override
-  final String website;
+  final String? website;
   @override
   @JsonKey(name: "vapid_key")
   @HiveField(2)
-  final String vapidKey;
-  PleromaApplication({this.name, this.website, this.vapidKey});
+  final String? vapidKey;
+
+  PleromaApplication({
+    required this.name,
+    required this.website,
+    required this.vapidKey,
+  });
 
   factory PleromaApplication.fromJson(Map<String, dynamic> json) =>
       _$PleromaApplicationFromJson(json);
@@ -33,6 +52,7 @@ class PleromaApplication implements IPleromaApplication {
   Map<String, dynamic> toJson() => _$PleromaApplicationToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaApplicationToJson(this));
+
   @override
   String toString() {
     return 'PleromaApplication{name: $name, website: $website,'
@@ -47,8 +67,25 @@ class PleromaApplication implements IPleromaApplication {
           name == other.name &&
           website == other.website &&
           vapidKey == other.vapidKey;
+
   @override
   int get hashCode => name.hashCode ^ website.hashCode ^ vapidKey.hashCode;
+}
+
+extension IPleromaClientApplicationExtension on IPleromaClientApplication {
+  PleromaClientApplication toPleromaClientApplication() {
+    if (this is PleromaClientApplication) {
+      return this as PleromaClientApplication;
+    } else {
+      return PleromaClientApplication(
+        name: name,
+        website: website,
+        vapidKey: vapidKey,
+        clientId: clientId,
+        clientSecret: clientSecret,
+      );
+    }
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -59,28 +96,32 @@ class PleromaApplication implements IPleromaApplication {
 @JsonSerializable(explicitToJson: true)
 class PleromaClientApplication
     implements IPleromaClientApplication, IJsonObject {
+  @override
   @HiveField(0)
-  final String name;
+  final String? name;
+  @override
   @HiveField(1)
-  final String website;
+  final String? website;
+  @override
   @JsonKey(name: "vapid_key")
   @HiveField(2)
-  final String vapidKey;
+  final String? vapidKey;
   @override
   @JsonKey(name: "client_id")
   @HiveField(3)
-  final String clientId;
+  final String? clientId;
   @override
   @JsonKey(name: "client_secret")
   @HiveField(4)
-  final String clientSecret;
+  final String? clientSecret;
 
-  PleromaClientApplication(
-      {this.name,
-      this.website,
-      this.vapidKey,
-      this.clientId,
-      this.clientSecret});
+  PleromaClientApplication({
+    required this.name,
+    required this.website,
+    required this.vapidKey,
+    required this.clientId,
+    required this.clientSecret,
+  });
 
   factory PleromaClientApplication.fromJson(Map<String, dynamic> json) =>
       _$PleromaClientApplicationFromJson(json);

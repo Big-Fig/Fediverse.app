@@ -7,11 +7,11 @@ abstract class IFilterBloc implements IDisposable {
   static IFilterBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilterBloc>(context, listen: listen);
 
-  String get remoteId;
+  String? get remoteId;
 
-  IFilter get filter;
+  IFilter? get filter;
 
-  Stream<IFilter> get filterStream;
+  Stream<IFilter?> get filterStream;
 
   bool get isExpired;
 

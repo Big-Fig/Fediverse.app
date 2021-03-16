@@ -7,27 +7,27 @@ part of 'my_account_model.dart';
 // **************************************************************************
 
 class MyAccountRemoteWrapperAdapter
-    extends TypeAdapter<MyAccountRemoteWrapper> {
+    extends TypeAdapter<PleromaMyAccountWrapper> {
   @override
   final int typeId = 21;
 
   @override
-  MyAccountRemoteWrapper read(BinaryReader reader) {
+  PleromaMyAccountWrapper read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MyAccountRemoteWrapper(
-      remoteAccount: fields[0] as PleromaMyAccount,
+    return PleromaMyAccountWrapper(
+      pleromaAccount: fields[0] as PleromaMyAccount,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MyAccountRemoteWrapper obj) {
+  void write(BinaryWriter writer, PleromaMyAccountWrapper obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.remoteAccount);
+      ..write(obj.pleromaAccount);
   }
 
   @override
@@ -45,10 +45,10 @@ class MyAccountRemoteWrapperAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-MyAccountRemoteWrapper _$MyAccountRemoteWrapperFromJson(
+PleromaMyAccountWrapper _$MyAccountRemoteWrapperFromJson(
     Map<String, dynamic> json) {
-  return MyAccountRemoteWrapper(
-    remoteAccount: json['remote_account'] == null
+  return PleromaMyAccountWrapper(
+    pleromaAccount: json['remote_account'] == null
         ? null
         : PleromaMyAccount.fromJson(
             json['remote_account'] as Map<String, dynamic>),
@@ -56,7 +56,7 @@ MyAccountRemoteWrapper _$MyAccountRemoteWrapperFromJson(
 }
 
 Map<String, dynamic> _$MyAccountRemoteWrapperToJson(
-        MyAccountRemoteWrapper instance) =>
+        PleromaMyAccountWrapper instance) =>
     <String, dynamic>{
-      'remote_account': instance.remoteAccount?.toJson(),
+      'remote_account': instance.pleromaAccount?.toJson(),
     };

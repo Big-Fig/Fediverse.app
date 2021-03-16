@@ -4,21 +4,28 @@ import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUiSettingsBloc implements IGlobalSettingsBloc<UiSettings> {
-  static IUiSettingsBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IUiSettingsBloc>(context, listen: listen);
+abstract class IUiSettingsBloc implements IGlobalSettingsBloc<UiSettings?> {
+  static IUiSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IUiSettingsBloc>(
+        context,
+        listen: listen,
+      );
 
-  static const UiSettingsFontSize defaultStatusFontSettingsValue = UiSettingsFontSize.medium;
+  static const UiSettingsFontSize defaultStatusFontSettingsValue =
+      UiSettingsFontSize.medium;
 
-  String get themeId;
+  String? get themeId;
 
-  Stream<String> get themeIdStream;
+  Stream<String?> get themeIdStream;
 
-  void changeThemeId(String value);
+  Future changeThemeId(String value);
 
-  UiSettingsFontSize get statusFontSize;
+  UiSettingsFontSize? get statusFontSize;
 
-  Stream<UiSettingsFontSize> get statusFontSizeStream;
+  Stream<UiSettingsFontSize?> get statusFontSizeStream;
 
   void changeStatusFontSize(UiSettingsFontSize value);
 }

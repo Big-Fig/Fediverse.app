@@ -8,20 +8,20 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediBlurredTextButtonWithBorder extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
   final double height;
   final double borderWidth;
 
   final bool limitMinWidth;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final bool expanded;
 
   const FediBlurredTextButtonWithBorder(
     this.text, {
-    @required this.onPressed,
-    @required this.expanded,
+    required this.onPressed,
+    required this.expanded,
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
@@ -58,10 +58,10 @@ class FediBlurredTextButtonWithBorder extends StatelessWidget {
                 child: Padding(
                   padding: FediPadding.buttonHorizontalPadding,
                   child: Text(
-                    text,
+                    text!,
                     textAlign: TextAlign.center,
                     style: textStyle.copyWith(
-                      color: textStyle.color.withOpacity(0.8),
+                      color: textStyle.color!.withOpacity(0.8),
                     ),
                   ),
                 ),

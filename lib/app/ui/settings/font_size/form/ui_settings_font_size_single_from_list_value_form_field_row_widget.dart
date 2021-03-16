@@ -12,7 +12,7 @@ class UiSettingsFontSizeSingleFromListValueFormFieldRowWidget
         child: SingleSelectFromListValueFormFieldRowWidget<UiSettingsFontSize>(
           label: S.of(context).app_ui_statusFontSize,
           valueTitleMapper: (context, value) =>
-              mapUiSettingsFontSizeToLabel(context, value),
+              mapUiSettingsFontSizeToLabel(context, value!),
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,
@@ -29,19 +29,13 @@ String mapUiSettingsFontSizeToLabel(
   switch (type) {
     case UiSettingsFontSize.smallest:
       return S.of(context).app_ui_fontSize_type_smallest;
-      break;
     case UiSettingsFontSize.small:
       return S.of(context).app_ui_fontSize_type_small;
-      break;
     case UiSettingsFontSize.medium:
       return S.of(context).app_ui_fontSize_type_medium;
-      break;
     case UiSettingsFontSize.large:
       return S.of(context).app_ui_fontSize_type_large;
-      break;
     case UiSettingsFontSize.largest:
       return S.of(context).app_ui_fontSize_type_largest;
-      break;
   }
-  throw "Unsupported UiSettingsFontSize $type";
 }

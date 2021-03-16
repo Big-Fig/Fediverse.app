@@ -12,7 +12,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   @override
   final IStatus originalStatus;
   @override
-  IStatus inReplyToStatus;
+  IStatus? inReplyToStatus;
 
   static LocalStatusReplyLoaderBloc createFromContext(
     BuildContext context,
@@ -25,9 +25,9 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
       );
 
   LocalStatusReplyLoaderBloc({
-    @required this.pleromaStatusService,
-    @required this.statusRepository,
-    @required this.originalStatus,
+    required this.pleromaStatusService,
+    required this.statusRepository,
+    required this.originalStatus,
   }) {
     assert(originalStatus.inReplyToRemoteId != null);
     if (originalStatus.inReplyToStatus != null) {
@@ -39,25 +39,27 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     if (inReplyToStatus != null) {
+      // already loaded
       return;
     }
-    var inReplyToRemoteId = originalStatus.inReplyToRemoteId;
+    var inReplyToRemoteId = originalStatus.inReplyToRemoteId!;
 
     inReplyToStatus = await statusRepository.findByRemoteId(inReplyToRemoteId);
 
     if (inReplyToStatus == null) {
       var replyToRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: inReplyToRemoteId);
+        statusRemoteId: inReplyToRemoteId,
+      );
 
-      if (replyToRemoteStatus != null) {
-        await statusRepository.upsertRemoteStatus(replyToRemoteStatus,
-            listRemoteId: null, conversationRemoteId: null);
+      await statusRepository.upsertRemoteStatus(
+        replyToRemoteStatus,
+        listRemoteId: null,
+        conversationRemoteId: null,
+      );
 
-        inReplyToStatus =
-            await statusRepository.findByRemoteId(inReplyToRemoteId);
-      } else {
-        throw "Can't load inReplyToStatus";
-      }
+      inReplyToStatus = await statusRepository.findByRemoteId(
+        inReplyToRemoteId,
+      );
     }
   }
 }

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,13 +13,13 @@ part 'pagination_settings_model.g.dart';
 class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   @HiveField(0)
   @JsonKey(name: "page_size")
-  final String pageSize;
+  final String? pageSize;
 
-  PaginationPageSize get pageSizeAsUiSettingsFontSize =>
+  PaginationPageSize? get pageSizeAsUiSettingsFontSize =>
       pageSize?.toPaginationPageSize();
 
   PaginationSettings({
-    @required this.pageSize,
+    required this.pageSize,
   });
 
   factory PaginationSettings.fromJson(Map<String, dynamic> json) =>
@@ -42,7 +41,7 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   PaginationSettings clone() => copyWith();
 
   PaginationSettings copyWith({
-    String pageSize,
+    String? pageSize,
   }) =>
       PaginationSettings(
         pageSize: pageSize ?? this.pageSize,

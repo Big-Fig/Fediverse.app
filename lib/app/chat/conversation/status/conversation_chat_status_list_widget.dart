@@ -23,12 +23,12 @@ var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
 class ConversationChatStatusListWidget
     extends StatusCachedPaginationListBaseWidget {
-  ConversationChatStatusListWidget({@required Key key}) : super(key: key);
+  ConversationChatStatusListWidget({required Key key}) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+          {required bool listen}) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
             context,
@@ -41,9 +41,9 @@ class ConversationChatStatusListWidget
   Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
           BuildContext context,
-          List<IStatus> items,
+          List<IStatus>? items,
           RefreshController refreshController,
-          ScrollController scrollController,
+          ScrollController? scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
       FediListSmartRefresherWidget(
         key: key,
@@ -83,18 +83,18 @@ class ConversationChatStatusListWidget
 
   @override
   ScrollView buildItemsCollectionView(
-      {@required BuildContext context,
-      @required List<IStatus> items,
-      @required Widget header,
-      @required Widget footer}) {
+      {required BuildContext context,
+      required List<IStatus> items,
+      required Widget? header,
+      required Widget? footer}) {
     assert(header == null, "header not supported");
     assert(footer == null, "footer not supported");
 
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        IStatus nextMessage;
-        IStatus previousMessage;
+        IStatus? nextMessage;
+        IStatus? previousMessage;
         if (index > 0) {
           previousMessage = items[index - 1];
         }
@@ -103,15 +103,15 @@ class ConversationChatStatusListWidget
         }
         var currentMessage = items[index];
 
-        DateTime currentCreatedAt = currentMessage.createdAt;
-        DateTime previousCreatedAt = previousMessage?.createdAt;
-        DateTime nextCreatedAt = nextMessage?.createdAt;
+        DateTime? currentCreatedAt = currentMessage.createdAt;
+        DateTime? previousCreatedAt = previousMessage?.createdAt;
+        DateTime? nextCreatedAt = nextMessage?.createdAt;
 
-        bool isFirstInDayGroup;
-        bool isLastInDayGroup;
+        bool? isFirstInDayGroup;
+        bool? isLastInDayGroup;
 
-        bool isFirstInMinuteGroup;
-        bool isLastInMinuteGroup;
+        bool? isFirstInMinuteGroup;
+        bool? isLastInMinuteGroup;
 
         _logger.finest(() => "content = ${currentMessage.content}\n"
             "\t isFirstInDayGroup = $isFirstInDayGroup \n"
@@ -121,9 +121,9 @@ class ConversationChatStatusListWidget
 
         if (previousCreatedAt != null) {
           isFirstInDayGroup =
-              !CustomDateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
-          var isSameAccount = currentMessage.account.remoteId ==
-              previousMessage.account.remoteId;
+              !CustomDateUtils.isSameDay(currentCreatedAt!, previousCreatedAt);
+          var isSameAccount = currentMessage.account!.remoteId ==
+              previousMessage!.account!.remoteId;
           isFirstInMinuteGroup =
               !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
@@ -133,9 +133,9 @@ class ConversationChatStatusListWidget
         }
         if (nextCreatedAt != null) {
           var isSameAccount =
-              currentMessage.account.remoteId == nextMessage.account.remoteId;
+              currentMessage.account!.remoteId == nextMessage!.account!.remoteId;
           isLastInDayGroup =
-              !CustomDateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
+              !CustomDateUtils.isSameDay(currentCreatedAt!, nextCreatedAt);
           isLastInMinuteGroup =
               !(CustomDateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
                   isSameAccount);
@@ -165,7 +165,7 @@ class ConversationChatStatusListWidget
                 padding: FediPadding.allSmallPadding,
                 child: Center(
                     child: Text(
-                  _dateSeparatorDateFormat.format(currentCreatedAt),
+                  _dateSeparatorDateFormat.format(currentCreatedAt!),
                   style: IFediUiTextTheme.of(context).smallShortBoldGrey,
                 )),
               ),

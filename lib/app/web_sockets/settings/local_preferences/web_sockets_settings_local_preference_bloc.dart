@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IWebSocketsSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<WebSocketsSettings> {
+    implements ILocalPreferenceBloc<WebSocketsSettings?> {
   static IWebSocketsSettingsLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IWebSocketsSettingsLocalPreferencesBloc>(context,

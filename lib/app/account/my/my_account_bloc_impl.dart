@@ -13,7 +13,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/stream/stream_extension.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static final selfActionError = const SelfActionNotPossibleException();
@@ -29,17 +29,17 @@ class MyAccountBloc extends IMyAccountBloc {
   bool get isLocalCacheExist => account != null;
 
   MyAccountBloc({
-    @required this.myAccountLocalPreferenceBloc,
-    @required this.pleromaMyAccountService,
-    @required this.accountRepository,
-    @required this.instance,
+    required this.myAccountLocalPreferenceBloc,
+    required this.pleromaMyAccountService,
+    required this.accountRepository,
+    required this.instance,
   }) {
     addDisposable(
-      streamSubscription: accountStream.listen(
+      streamSubscription: myAccountStream.listen(
         (myAccount) {
           if (myAccount != null) {
             accountRepository.upsertRemoteAccount(
-              mapLocalAccountToRemoteAccount(myAccount),
+              myAccount.toPleromaAccount(),
               conversationRemoteId: null,
               chatRemoteId: null,
             );
@@ -50,16 +50,17 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Stream<IMyAccount> get myAccountStream => myAccountLocalPreferenceBloc.stream;
+  Stream<IMyAccount?> get myAccountStream =>
+      myAccountLocalPreferenceBloc.stream;
 
   @override
-  IMyAccount get myAccount => myAccountLocalPreferenceBloc.value;
+  IMyAccount? get myAccount => myAccountLocalPreferenceBloc.value!;
 
   @override
-  Stream<IAccount> get accountStream => myAccountStream;
+  Stream<IAccount> get accountStream => myAccountStream.mapToNotNull();
 
   @override
-  IAccount get account => myAccount;
+  IAccount get account => myAccount!;
 
   @override
   Future<IPleromaAccountRelationship> toggleBlock() {
@@ -72,27 +73,21 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork({
-    @required bool isNeedPreFetchRelationship,
+  Future refreshFromNetwork({
+    required bool isNeedPreFetchRelationship,
   }) async {
     var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 
-    var success = remoteMyAccount != null;
-    if (success) {
-      await updateMyAccountByRemote(remoteMyAccount);
-    }
-    return success;
+    await updateMyAccountByMyPleromaAccount(remoteMyAccount);
   }
 
   @override
-  bool checkAccountIsMe(IAccount account) {
-    return myAccount.remoteId == account.remoteId;
-  }
+  bool checkAccountIsMe(IAccount account) =>
+      myAccount!.remoteId == account.remoteId;
 
   @override
-  bool checkIsStatusFromMe(IStatus status) {
-    return myAccount.remoteId == status.account.remoteId;
-  }
+  bool checkIsStatusFromMe(IStatus status) =>
+      myAccount!.remoteId == status.account.remoteId;
 
   @override
   IPleromaAccountRelationship get relationship => throw selfActionError;
@@ -109,33 +104,43 @@ class MyAccountBloc extends IMyAccountBloc {
       throw selfActionError;
 
   @override
-  Future updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) async {
+  Future updateMyAccountByMyPleromaAccount(
+      IPleromaMyAccount pleromaMyAccount) async {
     await myAccountLocalPreferenceBloc.setValue(
-      MyAccountRemoteWrapper(
-        remoteAccount: remoteMyAccount,
+      PleromaMyAccountWrapper(
+        pleromaAccount: pleromaMyAccount.toPleromaMyAccount(),
+      ),
+    );
+  }
+
+  @override
+  Future updateMyAccountByMyAccount(IMyAccount myAccount) async {
+    await myAccountLocalPreferenceBloc.setValue(
+      PleromaMyAccountWrapper(
+        pleromaAccount: myAccount.toPleromaMyAccount(),
       ),
     );
   }
 
   @override
   Future decreaseFollowingRequestCount() async {
-    assert(followRequestsCount > 0);
+    assert(followRequestsCount! > 0);
     await myAccountLocalPreferenceBloc.setValue(
-      myAccountLocalPreferenceBloc.value.copyWith(
-        followRequestsCount: followRequestsCount - 1,
-      ),
+      myAccountLocalPreferenceBloc.value!.copyWith(
+        followRequestsCount: followRequestsCount! - 1,
+      ) as PleromaMyAccountWrapper?,
     );
   }
 
   @override
-  bool checkIsChatMessageFromMe(IChatMessage chatMessage) {
-    return myAccount.remoteId == chatMessage.account?.remoteId;
+  bool checkIsChatMessageFromMe(IChatMessage? chatMessage) {
+    return myAccount!.remoteId == chatMessage!.account?.remoteId;
   }
 
   @override
   Future<IPleromaAccountRelationship> mute({
-    @required bool notifications,
-    @required Duration duration,
+    required bool notifications,
+    required Duration? duration,
   }) =>
       throw selfActionError;
 
@@ -159,5 +164,5 @@ class MyAccountBloc extends IMyAccountBloc {
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

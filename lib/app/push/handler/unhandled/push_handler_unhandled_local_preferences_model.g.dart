@@ -18,7 +18,7 @@ class PushHandlerUnhandledListAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushHandlerUnhandledList(
-      messages: (fields[0] as List)?.cast<PushHandlerMessage>(),
+      messages: (fields[0] as List?)?.cast<PushHandlerMessage>(),
     );
   }
 
@@ -48,7 +48,7 @@ class PushHandlerUnhandledListAdapter
 PushHandlerUnhandledList _$PushHandlerUnhandledListFromJson(
     Map<String, dynamic> json) {
   return PushHandlerUnhandledList(
-    messages: (json['messages'] as List)
+    messages: (json['messages'] as List?)
         ?.map((e) => e == null
             ? null
             : PushHandlerMessage.fromJson(e as Map<String, dynamic>))

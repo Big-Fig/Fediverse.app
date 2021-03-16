@@ -15,13 +15,13 @@ class FilterCachedPaginationListBloc<
   final IFilterCachedListBloc cachedListBloc;
 
   FilterCachedPaginationListBloc({
-    @required this.cachedListBloc,
-    @required ICachedPaginationBloc<TPage, IFilter> cachedPaginationBloc,
+    required this.cachedListBloc,
+    required ICachedPaginationBloc<TPage, IFilter> cachedPaginationBloc,
   }) : super(cachedPaginationBloc: cachedPaginationBloc);
 
   static Widget provideToContext<TPage extends CachedPaginationPage<IFilter>>(
       BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<ICachedPaginationListBloc<TPage, IFilter>>(
       create: (context) =>
           FilterCachedPaginationListBloc.createFromContext<TPage>(context),

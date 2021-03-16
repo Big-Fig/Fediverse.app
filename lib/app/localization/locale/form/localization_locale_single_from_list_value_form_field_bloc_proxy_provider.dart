@@ -10,13 +10,13 @@ class LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ILocalizationLocaleSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<LocalizationLocale>>(
+          ISingleSelectFromListValueFormFieldBloc<LocalizationLocale?>>(
         update: (context, value, previous) => value,
         child:
             SingleSelectFromListValueFormFieldBlocProxyProvider<LocalizationLocale>(

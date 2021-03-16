@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFilesCacheSettingsLocalPreferencesBloc
-    implements ILocalPreferenceBloc<FilesCacheSettings> {
+    implements ILocalPreferenceBloc<FilesCacheSettings?> {
   static IFilesCacheSettingsLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IFilesCacheSettingsLocalPreferencesBloc>(context,

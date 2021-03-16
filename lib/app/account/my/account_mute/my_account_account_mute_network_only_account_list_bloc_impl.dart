@@ -24,39 +24,46 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   final IAccountRepository accountRepository;
 
   MyAccountAccountMuteNetworkOnlyAccountListBloc({
-    @required this.pleromaAuthAccountService,
-    @required this.pleromaMyAccountService,
-    @required this.accountRepository,
+    required this.pleromaAuthAccountService,
+    required this.pleromaMyAccountService,
+    required this.accountRepository,
   });
 
   @override
-  Future removeAccountMute({@required IAccount account}) async {
+  Future removeAccountMute({required IAccount? account}) async {
     var accountRelationship = await pleromaAuthAccountService.unMuteAccount(
-        accountRemoteId: account.remoteId);
-
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(pleromaRelationship: accountRelationship),
+      accountRemoteId: account!.remoteId,
     );
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    var pleromaAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
+
+    await accountRepository.upsertRemoteAccount(
+      pleromaAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
   }
 
   @override
-  Future addAccountMute({@required IAccount account}) async {
+  Future addAccountMute({required IAccount account}) async {
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
       accountRemoteId: account.remoteId,
-      notifications: false, expireDurationInSeconds: null,
+      notifications: false,
+      expireDurationInSeconds: null,
     );
 
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(
-        pleromaRelationship: accountRelationship,
-      ),
-    );
+    var pleromaAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
 
     await accountRepository.upsertRemoteAccount(
-      remoteAccount,
+      pleromaAccount,
       conversationRemoteId: null,
       chatRemoteId: null,
     );
@@ -64,10 +71,10 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getAccountMutes(
       pagination: PleromaPaginationRequest(
@@ -77,11 +84,12 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null, chatRemoteId: null);
-    return remoteAccounts
-        .map((remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))
-        .toList();
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
+    return remoteAccounts.toDbAccountWrappers();
   }
 
   @override
@@ -101,12 +109,12 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         pleromaAuthAccountService: IPleromaAccountService.of(
           context,
           listen: false,
-        ),
+        ) as IPleromaAuthAccountService,
       );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc>(
       create: (context) =>
@@ -129,14 +137,13 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future changeAccountMute({
-    @required IAccount account,
-    @required bool notifications,
-    @required Duration duration,
+    required IAccount? account,
+    required bool notifications,
+    required Duration? duration,
   }) async {
     await pleromaAuthAccountService.unMuteAccount(
-      accountRemoteId: account.remoteId,
+      accountRemoteId: account!.remoteId,
     );
-
 
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
       accountRemoteId: account.remoteId,
@@ -144,19 +151,22 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
       expireDurationInSeconds: duration?.totalSeconds,
     );
 
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(
-        pleromaRelationship: accountRelationship,
-      ),
-    );
+    var pleromaAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
 
-    await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccount(
+      pleromaAccount,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
   }
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

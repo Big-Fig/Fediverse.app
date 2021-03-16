@@ -10,24 +10,24 @@ import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyInCustomListFormFieldRowWidget
     extends StatelessWidget {
-  final String description;
+  final String? description;
   final String descriptionOnDisabled;
 
   TimelineSettingsOnlyInCustomListFormFieldRowWidget({
-    @required this.description,
-    @required this.descriptionOnDisabled,
+    required this.description,
+    required this.descriptionOnDisabled,
   });
 
   @override
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyInCustomListFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaList>(
+    return StreamBuilder<IPleromaList?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaList>(
+        return FediFormSingleChooseCustomFromListFieldRow<IPleromaList?>(
           isEnabled: fieldBloc.isEnabled,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
@@ -50,7 +50,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
                     });
 
             if (dialogResult.success) {
-              var remoteLists = dialogResult.result;
+              var remoteLists = dialogResult.result!;
 
               await showFediSingleSelectionChooserDialog(
                 context: context,

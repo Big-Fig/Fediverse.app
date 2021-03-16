@@ -2,14 +2,14 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediTabMainHeaderBarWidget extends StatelessWidget {
-  final List<Widget> leadingWidgets;
-  final Widget content;
-  final List<Widget> endingWidgets;
+  final List<Widget>? leadingWidgets;
+  final Widget? content;
+  final List<Widget>? endingWidgets;
 
   FediTabMainHeaderBarWidget({
-    @required this.leadingWidgets,
-    @required this.content,
-    @required this.endingWidgets,
+    required this.leadingWidgets,
+    required this.content,
+    required this.endingWidgets,
   });
 
   @override
@@ -27,15 +27,15 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
         children: [
           if (leadingWidgets != null)
             Row(
-              children: leadingWidgets,
+              children: leadingWidgets!,
             ),
           if (content != null)
             Expanded(
-              child: content,
+              child: content!,
             ),
           if (endingWidgets != null)
             Row(
-              children: endingWidgets,
+              children: endingWidgets!,
             )
         ],
       ),

@@ -1,10 +1,9 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
-import 'package:flutter/widgets.dart';
 
 class FilterState {
-  final bool dismissed;
-  final bool unread;
+  final bool? dismissed;
+  final bool? unread;
 
   FilterState({
     this.dismissed,
@@ -29,7 +28,7 @@ class FilterState {
 }
 
 abstract class IFilter {
-  int get localId;
+  int? get localId;
 
   String get remoteId;
 
@@ -39,40 +38,42 @@ abstract class IFilter {
 
   List<MastodonFilterContextType> get contextAsMastodonFilterContextType;
 
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
 
   bool get irreversible;
 
   bool get wholeWord;
 
   IFilter copyWith({
-    int localId,
-    String remoteId,
-    List<String> context,
-    DateTime expiresAt,
-    bool irreversible,
-    String phrase,
-    bool wholeWord,
+    int? localId,
+    String? remoteId,
+    List<String>? context,
+    DateTime? expiresAt,
+    bool? irreversible,
+    String? phrase,
+    bool? wholeWord,
   });
 }
 
 class DbFilterPopulatedWrapper implements IFilter {
   final DbFilterPopulated dbFilterPopulated;
 
-  DbFilterPopulatedWrapper(this.dbFilterPopulated);
+  DbFilterPopulatedWrapper({
+    required this.dbFilterPopulated,
+  });
 
   @override
   DbFilterPopulatedWrapper copyWith({
-    List<String> context,
-    DateTime expiresAt,
-    int localId,
-    String remoteId,
-    bool irreversible,
-    String phrase,
-    bool wholeWord,
+    List<String>? context,
+    DateTime? expiresAt,
+    int? localId,
+    String? remoteId,
+    bool? irreversible,
+    String? phrase,
+    bool? wholeWord,
   }) =>
       DbFilterPopulatedWrapper(
-        DbFilterPopulated(
+        dbFilterPopulated: DbFilterPopulated(
           dbFilter: dbFilterPopulated.dbFilter.copyWith(
             id: localId ?? this.localId,
             remoteId: remoteId ?? this.remoteId,
@@ -88,25 +89,25 @@ class DbFilterPopulatedWrapper implements IFilter {
   @override
   String toString() {
     return 'DbFilterPopulatedWrapper{'
-        'dbFilterPopulated: $dbFilterPopulated}';
+        'dbFilterPopulated: $dbFilterPopulated'
+        '}';
   }
 
   @override
   List<MastodonFilterContextType> get contextAsMastodonFilterContextType =>
-      context
-          ?.map(
+      context.map(
             (contextString) => contextString.toMastodonFilterContextType(),
           )
-          ?.toList();
+          .toList();
 
   @override
-  DateTime get expiresAt => dbFilterPopulated.dbFilter.expiresAt;
+  DateTime? get expiresAt => dbFilterPopulated.dbFilter.expiresAt;
 
   @override
   bool get irreversible => dbFilterPopulated.dbFilter.irreversible;
 
   @override
-  int get localId => dbFilterPopulated.dbFilter.id;
+  int? get localId => dbFilterPopulated.dbFilter.id;
 
   @override
   String get phrase => dbFilterPopulated.dbFilter.phrase;
@@ -125,7 +126,7 @@ class DbFilterPopulated {
   final DbFilter dbFilter;
 
   DbFilterPopulated({
-    @required this.dbFilter,
+    required this.dbFilter,
   });
 
   @override
@@ -149,7 +150,7 @@ extension IFilterExtension on IFilter {
     if (expiresAt == null) {
       return false;
     } else {
-      return DateTime.now().isAfter(expiresAt);
+      return DateTime.now().isAfter(expiresAt!);
     }
   }
 }

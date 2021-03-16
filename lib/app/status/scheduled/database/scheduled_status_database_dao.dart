@@ -22,7 +22,7 @@ part 'scheduled_status_database_dao.g.dart';
 })
 class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
     with _$ScheduledStatusDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   ScheduledStatusDao(this.db) : super(db);
@@ -34,11 +34,19 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
       into(dbScheduledStatuses)
           .insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbScheduledStatus>> entities,
-          InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbScheduledStatuses, entities, mode: mode);
-      });
+  Future insertAll(
+    List<Insertable<DbScheduledStatus>> entities,
+    InsertMode mode,
+  ) async =>
+      await batch(
+        (batch) {
+          batch.insertAll(
+            dbScheduledStatuses,
+            entities,
+            mode: mode,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbScheduledStatus> entity) async =>
       await update(dbScheduledStatuses).replace(entity);
@@ -65,8 +73,8 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
       addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
@@ -122,16 +130,10 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
 
   List<DbScheduledStatus> typedResultListToPopulated(
       List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbScheduledStatus typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
 
     return typedResult.readTable(db.dbScheduledStatuses);
   }

@@ -12,8 +12,8 @@ class PleromaChatOrderingTermData {
   final OrderingMode orderingMode;
 
   const PleromaChatOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   static const PleromaChatOrderingTermData remoteIdDesc =

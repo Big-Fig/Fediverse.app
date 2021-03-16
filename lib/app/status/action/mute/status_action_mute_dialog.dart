@@ -10,9 +10,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-Future<T> showStatusActionMuteDialog<T>({
-  @required BuildContext context,
-  @required IStatusBloc statusBloc,
+Future<T?> showStatusActionMuteDialog<T>({
+  required BuildContext context,
+  required IStatusBloc statusBloc,
 }) => StatusActionMuteDialog(
     statusBloc: statusBloc,
     actionsBorderVisible: false,
@@ -41,9 +41,9 @@ class StatusActionMuteDialog extends FediDialog {
   final IStatusActionMuteBloc statusActionMuteBloc;
 
   StatusActionMuteDialog({
-    @required IStatusBloc statusBloc,
-    @required String title,
-    @required List<DialogAction> actions,
+    required IStatusBloc statusBloc,
+    required String title,
+    required List<DialogAction> actions,
     Axis actionsAxis = Axis.horizontal,
     bool cancelable = true,
     bool actionsBorderVisible = true,
@@ -79,7 +79,7 @@ class StatusActionMuteDialog extends FediDialog {
 
 class _StatusActionMuteDialogExpireField extends StatelessWidget {
   const _StatusActionMuteDialogExpireField({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

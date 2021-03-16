@@ -33,7 +33,7 @@ class SingleMediaPickerPage extends StatelessWidget {
 class _SingleMediaPickerPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _SingleMediaPickerPageAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
 
 class _SingleMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   const _SingleMediaPickerPageAppBarEmptyTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -64,7 +64,7 @@ class _SingleMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   }
 }
 
-Future<IMediaDeviceFile> goToSingleMediaPickerPage(
+Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
   BuildContext context, {
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,

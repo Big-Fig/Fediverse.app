@@ -13,9 +13,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -35,11 +33,12 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
 
   @override
-  NotificationPushLoaderNotification get launchOrResumePushLoaderNotification =>
-      launchOrResumePushLoaderNotificationSubject.value;
+  NotificationPushLoaderNotification?
+      get launchOrResumePushLoaderNotification =>
+          launchOrResumePushLoaderNotificationSubject.value;
 
   @override
-  Stream<NotificationPushLoaderNotification>
+  Stream<NotificationPushLoaderNotification?>
       get launchOrResumePushLoaderNotificationStream =>
           launchOrResumePushLoaderNotificationSubject.stream;
 
@@ -51,12 +50,12 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       _handledNotificationsStreamController.stream;
 
   NotificationPushLoaderBloc({
-    @required this.currentInstance,
-    @required this.pushHandlerBloc,
-    @required this.pleromaNotificationService,
-    @required this.notificationRepository,
-    @required this.chatNewMessagesHandlerBloc,
-    @required this.myAccountBloc,
+    required this.currentInstance,
+    required this.pushHandlerBloc,
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required this.chatNewMessagesHandlerBloc,
+    required this.myAccountBloc,
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchOrResumePushLoaderNotificationSubject);
@@ -71,7 +70,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body;
+    PleromaPushMessageBody pleromaPushMessage = pushHandlerMessage.body!;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
@@ -89,63 +88,65 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       );
 
       handled = true;
-      if (remoteNotification != null) {
-        var all = await notificationRepository.countAll();
-        _logger.finest(() => "all ${all}");
+      var all = await notificationRepository.countAll();
+      _logger.finest(() => "all ${all}");
 
-        var alreadyExistNotification =
-            await notificationRepository.findByRemoteId(remoteNotificationId);
+      var alreadyExistNotification =
+          await notificationRepository.findByRemoteId(remoteNotificationId);
 
-        _logger.finest(() => "handlePush \n"
-            "\t remoteNotification = $remoteNotification");
+      _logger.finest(() => "handlePush \n"
+          "\t remoteNotification = $remoteNotification");
 
-        _logger.finest(() => "handlePush \n"
-            "\t remoteNotificationId = $remoteNotificationId \n"
-            "\t alreadyExistNotification = $alreadyExistNotification");
+      _logger.finest(() => "handlePush \n"
+          "\t remoteNotificationId = $remoteNotificationId \n"
+          "\t alreadyExistNotification = $alreadyExistNotification");
 
-        var unread = alreadyExistNotification?.unread ?? true;
+      var unread = alreadyExistNotification?.unread ?? true;
 
-        await notificationRepository
-            .upsertRemoteNotification(remoteNotification, unread: unread);
+      await notificationRepository.upsertRemoteNotification(remoteNotification,
+          unread: unread);
 
-        if (pushHandlerMessage.pushMessage.isLaunch) {
+        var notification = await notificationRepository.findByRemoteId(
+          remoteNotification.id,
+        );
+      if (pushHandlerMessage.pushMessage.isLaunch) {
+        if (notification != null) {
           launchOrResumePushLoaderNotificationSubject.add(
             NotificationPushLoaderNotification(
-              notification: await notificationRepository.findByRemoteId(
-                remoteNotification.id,
-              ),
+              notification: notification,
               pushHandlerMessage: pushHandlerMessage,
             ),
           );
         }
+      }
 
-        // todo: remove temp hack unread should be redesigned
-        // Also, we should fetch chat info if chat not exist locally
-        var chatMessage = remoteNotification.chatMessage;
-        if (chatMessage != null) {
-          await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
-        }
+      // todo: remove temp hack unread should be redesigned
+      // Also, we should fetch chat info if chat not exist locally
+      var chatMessage = remoteNotification.chatMessage;
+      if (chatMessage != null) {
+        await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
+      }
 
-        var pleromaNotificationType = remoteNotification.typePleroma;
+      var pleromaNotificationType = remoteNotification.typePleroma;
 
-        // refresh to update followRequestCount
-        if (pleromaNotificationType == PleromaNotificationType.followRequest) {
-          unawaited(
-            myAccountBloc.refreshFromNetwork(
-              isNeedPreFetchRelationship: false,
-            ),
-          );
-        }
+      // refresh to update followRequestCount
+      if (pleromaNotificationType == PleromaNotificationType.followRequest) {
+        unawaited(
+          myAccountBloc.refreshFromNetwork(
+            isNeedPreFetchRelationship: false,
+          ),
+        );
+      }
 
+      if (notification != null) {
         _handledNotificationsStreamController.add(
           NotificationPushLoaderNotification(
-            notification: await notificationRepository.findByRemoteId(
-              remoteNotification.id,
-            ),
+            notification: notification,
             pushHandlerMessage: pushHandlerMessage,
           ),
         );
       }
+
     } else {
       handled = false;
     }

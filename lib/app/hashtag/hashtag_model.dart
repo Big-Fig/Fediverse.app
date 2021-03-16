@@ -1,28 +1,27 @@
-import 'package:fedi/pleroma/history/pleroma_history_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/pleroma/tag/history/pleroma_tag_history_model.dart';
 
 abstract class IHashtag {
-  String get name;
+  String? get name;
 
-  String get url;
+  String? get url;
 
-  List<IPleromaHistory> get history;
+  List<IPleromaTagHistory>? get history;
 }
 
 class Hashtag extends IHashtag {
   @override
-  final String name;
+  final String? name;
 
   @override
-  final List<IPleromaHistory> history;
+  final List<IPleromaTagHistory>? history;
 
   @override
-  final String url;
+  final String? url;
 
   Hashtag({
-    @required this.name,
-    @required this.url,
-    @required this.history,
+    required this.name,
+    required this.url,
+    required this.history,
   });
 
   @override

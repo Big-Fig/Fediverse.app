@@ -8,11 +8,11 @@ part of 'pleroma_captcha_model.dart';
 
 PleromaCaptcha _$PleromaCaptchaFromJson(Map<String, dynamic> json) {
   return PleromaCaptcha(
-    answerData: json['answer_data'] as String,
-    secondsValid: json['seconds_valid'] as int,
-    token: json['token'] as String,
-    type: json['type'] as String,
-    url: json['url'] as String,
+    answerData: json['answer_data'] as String?,
+    secondsValid: json['seconds_valid'] as int?,
+    token: json['token'] as String?,
+    type: json['type'] as String?,
+    url: json['url'] as String?,
   );
 }
 

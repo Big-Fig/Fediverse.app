@@ -8,8 +8,8 @@ part of 'pleroma_chat_model.dart';
 
 PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
   return PleromaChat(
-    id: json['id'] as String,
-    unread: json['unread'] as int,
+    id: json['id'] as String?,
+    unread: json['unread'] as int?,
     account: json['account'] == null
         ? null
         : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
@@ -34,14 +34,14 @@ Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
 
 PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
   return PleromaChatMessage(
-    id: json['id'] as String,
-    chatId: json['chat_id'] as String,
-    accountId: json['account_id'] as String,
-    content: json['content'] as String,
+    id: json['id'] as String?,
+    chatId: json['chat_id'] as String?,
+    accountId: json['account_id'] as String?,
+    content: json['content'] as String?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-    emojis: (json['emojis'] as List)
+    emojis: (json['emojis'] as List?)
         ?.map((e) =>
             e == null ? null : PleromaEmoji.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -70,9 +70,9 @@ Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
 PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(
     Map<String, dynamic> json) {
   return PleromaChatMessageSendData(
-    content: json['content'] as String,
-    mediaId: json['media_id'] as String,
-    idempotencyKey: json['idempotency_key'] as String,
+    content: json['content'] as String?,
+    mediaId: json['media_id'] as String?,
+    idempotencyKey: json['idempotency_key'] as String?,
   );
 }
 

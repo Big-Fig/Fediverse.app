@@ -17,8 +17,8 @@ class MediaSettingsAdapter extends TypeAdapter<MediaSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MediaSettings(
-      autoInit: fields[0] as bool,
-      autoPlay: fields[1] as bool,
+      autoInit: fields[0] as bool?,
+      autoPlay: fields[1] as bool?,
     );
   }
 
@@ -49,8 +49,8 @@ class MediaSettingsAdapter extends TypeAdapter<MediaSettings> {
 
 MediaSettings _$MediaSettingsFromJson(Map<String, dynamic> json) {
   return MediaSettings(
-    autoInit: json['auto_init'] as bool,
-    autoPlay: json['auto_play'] as bool,
+    autoInit: json['auto_init'] as bool?,
+    autoPlay: json['auto_play'] as bool?,
   );
 }
 

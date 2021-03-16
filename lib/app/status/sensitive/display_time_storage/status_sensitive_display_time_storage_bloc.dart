@@ -9,11 +9,11 @@ abstract class IStatusSensitiveDisplayTimeStorageBloc implements IDisposable {
       Provider.of<IStatusSensitiveDisplayTimeStorageBloc>(context,
           listen: listen);
 
-  DateTime findStatusLastDisplayEnabledTime({
-    @required IStatus status,
+  DateTime? findStatusLastDisplayEnabledTime({
+    required IStatus? status,
   });
 
   void onStatusDisplayEnabled({
-    @required IStatus status,
+    required IStatus? status,
   });
 }

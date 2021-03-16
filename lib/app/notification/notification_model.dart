@@ -5,11 +5,10 @@ import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:flutter/widgets.dart';
 
 class NotificationState {
-  final bool dismissed;
-  final bool unread;
+  final bool? dismissed;
+  final bool? unread;
 
   NotificationState({
     this.dismissed,
@@ -34,25 +33,25 @@ class NotificationState {
 }
 
 abstract class INotification {
-  int get localId;
+  int? get localId;
 
   String get remoteId;
 
-  bool get unread;
+  bool? get unread;
 
   DateTime get createdAt;
 
-  IStatus get status;
+  IStatus? get status;
 
-  IAccount get account;
+  IAccount? get account;
 
-  String get chatMessageRemoteId;
+  String? get chatMessageRemoteId;
 
-  String get chatRemoteId;
+  String? get chatRemoteId;
 
-  IPleromaChatMessage get chatMessage;
+  IPleromaChatMessage? get chatMessage;
 
-  IPleromaAccountReport get report;
+  IPleromaAccountReport? get report;
 
   String get type;
 
@@ -60,9 +59,9 @@ abstract class INotification {
 
   MastodonNotificationType get typeMastodon;
 
-  String get emoji;
+  String? get emoji;
 
-  PleromaNotificationPleromaPart get pleroma;
+  PleromaNotificationPleromaPart? get pleroma;
 
   bool get isContainsChat;
 
@@ -72,19 +71,19 @@ abstract class INotification {
 
   bool get dismissed;
 
-  IPleromaAccount get target;
+  IPleromaAccount? get target;
 
   INotification copyWith({
-    int localId,
-    String remoteId,
-    bool unread,
-    DateTime createdAt,
-    IStatus status,
-    String emoji,
-    PleromaNotificationPleromaPart pleroma,
-    IAccount account,
-    MastodonNotificationType type,
-    bool dismissed,
+    int? localId,
+    String? remoteId,
+    bool? unread,
+    DateTime? createdAt,
+    IStatus? status,
+    String? emoji,
+    PleromaNotificationPleromaPart? pleroma,
+    IAccount? account,
+    MastodonNotificationType? type,
+    bool? dismissed,
   });
 }
 
@@ -100,30 +99,34 @@ class DbNotificationPopulatedWrapper implements INotification {
   @override
   bool get isContainsAccount => account != null;
 
-  DbNotificationPopulatedWrapper(this.dbNotificationPopulated);
+  DbNotificationPopulatedWrapper({
+    required this.dbNotificationPopulated,
+  });
 
   @override
-  IAccount get account => DbAccountWrapper(dbNotificationPopulated.dbAccount);
+  IAccount? get account => DbAccountWrapper(
+        dbAccount: dbNotificationPopulated.dbAccount,
+      );
 
   @override
   DateTime get createdAt => dbNotificationPopulated.dbNotification.createdAt;
 
   @override
-  int get localId => dbNotificationPopulated.dbNotification.id;
+  int? get localId => dbNotificationPopulated.dbNotification.id;
 
   @override
   String get remoteId => dbNotificationPopulated.dbNotification.remoteId;
 
   @override
-  String get emoji => dbNotificationPopulated.dbNotification.emoji;
+  String? get emoji => dbNotificationPopulated.dbNotification.emoji;
 
   @override
-  PleromaNotificationPleromaPart get pleroma =>
+  PleromaNotificationPleromaPart? get pleroma =>
       dbNotificationPopulated.dbNotification.pleroma;
 
   @override
   MastodonNotificationType get typeMastodon =>
-      mastodonNotificationTypeValues.valueToEnumMap[type];
+      type.toMastodonNotificationType();
 
   @override
   PleromaNotificationType get typePleroma => type.toPleromaNotificationType();
@@ -132,57 +135,60 @@ class DbNotificationPopulatedWrapper implements INotification {
   String get type => dbNotificationPopulated.dbNotification.type;
 
   @override
-  IStatus get status => dbNotificationPopulated.dbStatusPopulated != null
-      ? DbStatusPopulatedWrapper(dbNotificationPopulated.dbStatusPopulated)
-      : null;
+  IStatus? get status =>
+      dbNotificationPopulated.dbStatusPopulated?.toDbStatusPopulatedWrapper();
 
   @override
-  bool get unread => dbNotificationPopulated.dbNotification.unread == true;
+  bool get unread => dbNotificationPopulated!.dbNotification!.unread == true;
 
   @override
   DbNotificationPopulatedWrapper copyWith({
-    int localId,
-    String remoteId,
-    bool unread,
-    DateTime createdAt,
-    IStatus status,
-    IAccount account,
-    String emoji,
-    PleromaNotificationPleromaPart pleroma,
-    MastodonNotificationType type,
-    bool dismissed,
+    int? localId,
+    String? remoteId,
+    bool? unread,
+    DateTime? createdAt,
+    IStatus? status,
+    IAccount? account,
+    String? emoji,
+    PleromaNotificationPleromaPart? pleroma,
+    MastodonNotificationType? type,
+    bool? dismissed,
   }) =>
-      DbNotificationPopulatedWrapper(DbNotificationPopulated(
+      DbNotificationPopulatedWrapper(
+        dbNotificationPopulated: DbNotificationPopulated(
           dbNotification: dbNotificationPopulated.dbNotification.copyWith(
             id: localId ?? this.localId,
             remoteId: remoteId ?? this.remoteId,
             unread: unread ?? this.unread,
             createdAt: createdAt ?? this.createdAt,
-            type: type ?? this.type,
+            type: type as String? ?? this.type,
             pleroma: pleroma ?? this.pleroma,
             emoji: emoji ?? this.emoji,
             dismissed: dismissed ?? this.dismissed,
           ),
-          dbAccount: dbAccountFromAccount(account) ??
-              dbNotificationPopulated.dbAccount,
-          dbStatusPopulated: dbNotificationPopulated.dbStatusPopulated.copyWith(
-              status: dbStatusFromStatus(status) ??
-                  dbNotificationPopulated.dbStatusPopulated.dbStatus,
-              account: dbAccountFromAccount(status?.account) ??
-                  dbNotificationPopulated.dbStatusPopulated.dbAccount,
-              reblogDbStatus: dbStatusFromStatus(status?.reblog) ??
-                  dbNotificationPopulated.dbStatusPopulated.reblogDbStatus,
-              reblogDbStatusAccount:
-                  dbAccountFromAccount(status?.reblog?.account) ??
-                      dbNotificationPopulated
-                          .dbStatusPopulated.reblogDbStatusAccount)));
+          dbAccount:
+              account?.toDbAccount() ?? dbNotificationPopulated.dbAccount,
+          dbStatusPopulated:
+              dbNotificationPopulated.dbStatusPopulated!.copyWith(
+            dbStatus: status?.toDbStatus() ??
+                dbNotificationPopulated.dbStatusPopulated?.dbStatus,
+            dbAccount: status?.account.toDbAccount() ??
+                dbNotificationPopulated.dbStatusPopulated?.dbAccount,
+            reblogDbStatus: status?.reblog?.toDbStatus() ??
+                dbNotificationPopulated.dbStatusPopulated?.reblogDbStatus,
+            reblogDbStatusAccount: status?.reblog?.account.toDbAccount() ??
+                dbNotificationPopulated
+                    .dbStatusPopulated?.reblogDbStatusAccount,
+          ),
+        ),
+      );
 
   @override
-  String get chatMessageRemoteId =>
+  String? get chatMessageRemoteId =>
       dbNotificationPopulated.dbNotification.chatMessageRemoteId;
 
   @override
-  String get chatRemoteId =>
+  String? get chatRemoteId =>
       dbNotificationPopulated.dbNotification.chatRemoteId;
 
   @override
@@ -193,30 +199,30 @@ class DbNotificationPopulatedWrapper implements INotification {
   }
 
   @override
-  bool get dismissed => dbNotificationPopulated.dbNotification.dismissed;
+  bool get dismissed =>
+      dbNotificationPopulated.dbNotification.dismissed == true;
 
   @override
-  IPleromaChatMessage get chatMessage =>
+  IPleromaChatMessage? get chatMessage =>
       dbNotificationPopulated.dbNotification.chatMessage;
 
   @override
-  IPleromaAccountReport get report =>
+  IPleromaAccountReport? get report =>
       dbNotificationPopulated.dbNotification.report;
 
   @override
-  IPleromaAccount get target  =>
-      dbNotificationPopulated.dbNotification.target;
+  IPleromaAccount? get target => dbNotificationPopulated.dbNotification.target;
 }
 
 class DbNotificationPopulated {
   final DbNotification dbNotification;
   final DbAccount dbAccount;
-  final DbStatusPopulated dbStatusPopulated;
+  final DbStatusPopulated? dbStatusPopulated;
 
   DbNotificationPopulated({
-    @required this.dbNotification,
-    @required this.dbAccount,
-    @required this.dbStatusPopulated,
+    required this.dbNotification,
+    required this.dbAccount,
+    required this.dbStatusPopulated,
   });
 
   @override
@@ -240,4 +246,9 @@ class DbNotificationPopulated {
   @override
   int get hashCode =>
       dbNotification.hashCode ^ dbAccount.hashCode ^ dbStatusPopulated.hashCode;
+}
+
+extension DbNotificationPopulatedExtension on DbNotificationPopulated {
+  DbNotificationPopulatedWrapper toDbNotificationPopulatedWrapper() =>
+      DbNotificationPopulatedWrapper(dbNotificationPopulated: this);
 }

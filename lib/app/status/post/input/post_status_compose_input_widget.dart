@@ -11,13 +11,13 @@ import 'package:flutter/material.dart';
 class PostStatusComposeInputWidget extends StatelessWidget {
   final bool expanded;
   final bool autofocus;
-  final int maxLines;
-  final String hintText;
+  final int? maxLines;
+  final String? hintText;
 
   PostStatusComposeInputWidget({
-    @required this.expanded,
-    @required this.autofocus,
-    @required this.maxLines,
+    required this.expanded,
+    required this.autofocus,
+    required this.maxLines,
     this.hintText,
   });
 
@@ -31,10 +31,10 @@ class PostStatusComposeInputWidget extends StatelessWidget {
 
         var inputTextErrors = snapshot.data;
 
-        String errorText;
+        String? errorText;
 
         if (inputTextErrors?.isNotEmpty == true) {
-          errorText = inputTextErrors.first.createErrorDescription(context);
+          errorText = inputTextErrors!.first.createErrorDescription(context);
         }
         return FediTransparentEditTextField(
           textEditingController: postStatusBloc.inputTextController,
@@ -52,7 +52,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
                 context: context,
                 asyncCode: () => postStatusBloc.post(),
               );
-              var success = dialogResult.result;
+              var success = dialogResult.result!;
 
               if (success) {
                 showPostStatusPostOverlayNotification(
@@ -63,7 +63,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
               }
             } else {
 
-              if(postStatusBloc.pollBloc.isHaveAtLeastOneError) {
+              if(postStatusBloc.pollBloc!.isHaveAtLeastOneError) {
                 await FediSimpleAlertDialog(
                     context: context,
 

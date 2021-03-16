@@ -5,12 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditMediaSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<MediaSettings> {
+    implements IEditGlobalOrInstanceSettingsBloc<MediaSettings?> {
   static IEditMediaSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEditMediaSettingsBloc>(context, listen: listen);
 
-  IBoolValueFormFieldBloc get autoPlayFieldBloc;
+  IBoolValueFormFieldBloc? get autoPlayFieldBloc;
 
-  IBoolValueFormFieldBloc get autoInitFieldBloc;
+  IBoolValueFormFieldBloc? get autoInitFieldBloc;
 }

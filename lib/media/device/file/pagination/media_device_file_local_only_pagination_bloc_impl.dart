@@ -17,19 +17,20 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
   final IMediaDeviceFileLocalOnlyListBloc listBloc;
 
   MediaDeviceFileLocalOnlyPaginationBloc({
-    @required this.listBloc,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  PaginationPage<IMediaDeviceFileMetadata> createPage(
-          {@required int pageIndex,
-          List<IMediaDeviceFileMetadata> loadedItems,
-          @required int itemsCountPerPage}) =>
+  PaginationPage<IMediaDeviceFileMetadata> createPage({
+    required int pageIndex,
+    required List<IMediaDeviceFileMetadata> loadedItems,
+    required int? itemsCountPerPage,
+  }) =>
       PaginationPage(
         pageIndex: pageIndex,
         requestedLimitPerPage: itemsCountPerPage,
@@ -38,16 +39,16 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
 
   @override
   Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    PaginationPage<IMediaDeviceFileMetadata> olderPage,
-    PaginationPage<IMediaDeviceFileMetadata> newerPage,
+    int? pageIndex,
+    int? itemsCountPerPage,
+    PaginationPage<IMediaDeviceFileMetadata>? olderPage,
+    PaginationPage<IMediaDeviceFileMetadata>? newerPage,
   }) =>
       listBloc.loadItemsFromLocalForPage(
         pageIndex: pageIndex,
         itemsCountPerPage: itemsCountPerPage,
-        olderThan: olderPage?.items?.first,
-        newerThan: newerPage?.items?.last,
+        olderThan: olderPage?.items.first,
+        newerThan: newerPage?.items.last,
       );
 
   static MediaDeviceFileLocalOnlyPaginationBloc createFromContext(
@@ -57,7 +58,7 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
         listBloc: Provider.of<ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
           context,
           listen: false,
-        ),
+        ) as IMediaDeviceFileLocalOnlyListBloc,
         maximumCachedPagesCount: null,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
@@ -65,8 +66,10 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
         ),
       );
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required Widget child,
+  }) {
     return DisposableProvider<IMediaDeviceFilePaginationBloc>(
       create: (context) =>
           MediaDeviceFileLocalOnlyPaginationBloc.createFromContext(

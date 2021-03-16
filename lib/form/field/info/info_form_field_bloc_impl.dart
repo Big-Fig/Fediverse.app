@@ -4,14 +4,14 @@ import 'package:fedi/form/form_item_validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class InfoFormFieldBloc<T> extends AsyncInitLoadingBloc
-    implements IInfoFormFieldBloc<T> {
-  BehaviorSubject<T> currentValueSubject = BehaviorSubject();
+    implements IInfoFormFieldBloc<T?> {
+  BehaviorSubject<T?> currentValueSubject = BehaviorSubject();
 
   @override
-  T get currentValue => currentValueSubject.value;
+  T? get currentValue => currentValueSubject.value;
 
   @override
-  Stream<T> get currentValueStream => currentValueSubject.stream;
+  Stream<T?> get currentValueStream => currentValueSubject.stream;
 
   InfoFormFieldBloc() {
     addDisposable(subject: currentValueSubject);

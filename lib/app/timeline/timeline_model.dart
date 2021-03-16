@@ -11,7 +11,6 @@ import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -27,7 +26,7 @@ class Timeline implements IJsonObject {
   @HiveField(0)
   final String id;
   @HiveField(1)
-  final String label;
+  final String? label;
   @HiveField(2)
   @JsonKey(name: "is_possible_to_delete")
   final bool isPossibleToDelete;
@@ -36,25 +35,25 @@ class Timeline implements IJsonObject {
   @JsonKey(name: "type_string")
   final String typeString;
 
-  TimelineType get type => typeString?.toTimelineType();
+  TimelineType get type => typeString.toTimelineType();
 
   @HiveField(4)
   final TimelineSettings settings;
 
   Timeline({
-    @required this.id,
-    @required this.typeString,
-    @required this.settings,
-    @required this.label,
-    @required this.isPossibleToDelete,
+    required this.id,
+    required this.typeString,
+    required this.settings,
+    required this.label,
+    required this.isPossibleToDelete,
   });
 
   Timeline.byType({
-    @required String id,
-    @required TimelineType type,
-    @required TimelineSettings settings,
-    @required String label,
-    @required bool isPossibleToDelete,
+    required String id,
+    required TimelineType type,
+    required TimelineSettings settings,
+    required String? label,
+    required bool isPossibleToDelete,
   }) : this(
           id: id,
           typeString: type.toJsonValue(),
@@ -64,9 +63,9 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.home({
-    @required String id,
-    @required String label,
-    @required TimelineSettings settings,
+    required String id,
+    required String? label,
+    required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
           id: id,
@@ -77,9 +76,9 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.public({
-    @required String id,
-    @required TimelineSettings settings,
-    @required String label,
+    required String id,
+    required TimelineSettings settings,
+    required String? label,
     bool isPossibleToDelete = true,
   }) : this.byType(
           id: id,
@@ -90,8 +89,8 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.hashtag({
-    @required IPleromaTag remoteTag,
-    @required TimelineSettings settings,
+    required IPleromaTag remoteTag,
+    required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
           id: remoteTag.calculateTimelineId(),
@@ -102,8 +101,8 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.customList({
-    @required IPleromaList remoteList,
-    @required TimelineSettings settings,
+    required IPleromaList remoteList,
+    required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
           id: remoteList.calculateTimelineId(),
@@ -114,8 +113,8 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.account({
-    @required IPleromaAccount account,
-    @required TimelineSettings settings,
+    required IPleromaAccount account,
+    required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
           id: account.calculateTimelineId(),
@@ -165,50 +164,50 @@ class Timeline implements IJsonObject {
 
   String toJsonString() => jsonEncode(_$TimelineToJson(this));
 
-  bool get onlyWithMedia => settings?.onlyWithMedia;
+  bool? get onlyWithMedia => settings.onlyWithMedia;
 
-  bool get excludeReplies => settings?.excludeReplies;
+  bool? get excludeReplies => settings.excludeReplies;
 
-  bool get excludeNsfwSensitive => settings?.excludeNsfwSensitive;
+  bool? get excludeNsfwSensitive => settings.excludeNsfwSensitive;
 
-  bool get onlyRemote => settings?.onlyRemote;
+  bool? get onlyRemote => settings.onlyRemote;
 
-  bool get onlyLocal => settings?.onlyLocal;
+  bool? get onlyLocal => settings.onlyLocal;
 
-  bool get isWebSocketsUpdatesEnabled => settings?.webSocketsUpdates;
+  bool? get isWebSocketsUpdatesEnabled => settings.webSocketsUpdates;
 
-  bool get withMuted => settings?.withMuted;
+  bool? get withMuted => settings.withMuted;
 
-  List<String> get excludeVisibilitiesStrings =>
-      settings?.excludeVisibilitiesStrings;
+  List<String?>? get excludeVisibilitiesStrings =>
+      settings.excludeVisibilitiesStrings;
 
-  List<PleromaVisibility> get excludeVisibilities =>
-      settings?.excludeVisibilities;
+  List<PleromaVisibility>? get excludeVisibilities =>
+      settings.excludeVisibilities;
 
-  PleromaList get onlyInRemoteList => settings?.onlyInRemoteList;
+  PleromaList? get onlyInRemoteList => settings.onlyInRemoteList;
 
-  String get withRemoteHashtag => settings?.withRemoteHashtag;
+  String? get withRemoteHashtag => settings.withRemoteHashtag;
 
-  String get PleromaReplyVisibilityFilterString =>
-      settings?.replyVisibilityFilterString;
+  String? get PleromaReplyVisibilityFilterString =>
+      settings.replyVisibilityFilterString;
 
-  PleromaReplyVisibilityFilter get replyVisibilityFilter =>
-      settings?.replyVisibilityFilter;
+  PleromaReplyVisibilityFilter? get replyVisibilityFilter =>
+      settings.replyVisibilityFilter;
 
-  PleromaAccount get onlyFromRemoteAccount => settings?.onlyFromRemoteAccount;
+  PleromaAccount? get onlyFromRemoteAccount => settings.onlyFromRemoteAccount;
 
-  String get onlyFromInstance => settings?.onlyFromInstance;
+  String? get onlyFromInstance => settings.onlyFromInstance;
 
-  bool get onlyPinned => settings?.onlyPinned;
+  bool? get onlyPinned => settings.onlyPinned;
 
-  bool get excludeReblogs => settings?.excludeReblogs;
+  bool? get excludeReblogs => settings.excludeReblogs;
 
   Timeline copyWith({
-    String id,
-    TimelineType type,
-    TimelineSettings settings,
-    String label,
-    bool isPossibleToDelete,
+    String? id,
+    TimelineType? type,
+    TimelineSettings? settings,
+    String? label,
+    bool? isPossibleToDelete,
   }) =>
       Timeline(
         id: id ?? this.id,

@@ -7,47 +7,54 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaMyAccountService implements IPleromaApi {
-  static IPleromaMyAccountService of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaMyAccountService>(context, listen: listen);
+  static IPleromaMyAccountService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaMyAccountService>(
+        context,
+        listen: listen,
+      );
 
   Future<IPleromaMyAccount> updateCredentials(
-      IPleromaMyAccountEdit accountEditData);
+    IPleromaMyAccountEdit accountEditData,
+  );
 
   Future<IPleromaMyAccount> updateFiles(
-      PleromaMyAccountFilesRequest accountFilesRequest);
+    PleromaMyAccountFilesRequest accountFilesRequest,
+  );
 
   Future<IPleromaMyAccount> verifyCredentials();
 
   Future<List<String>> getDomainBlocks({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaAccount>> getAccountBlocks({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaAccount>> getAccountMutes({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaStatus>> getBookmarks({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaStatus>> getFavourites({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<List<IPleromaAccount>> getFollowRequests({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<IPleromaAccountRelationship> acceptFollowRequest({
-    String accountRemoteId,
+    required String accountRemoteId,
   });
 
   Future<IPleromaAccountRelationship> rejectFollowRequest({
-    String accountRemoteId,
+    required String accountRemoteId,
   });
 }

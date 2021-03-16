@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -7,11 +8,11 @@ import 'package:fedi/media/device/file/pagination/media_device_file_local_only_p
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc_impl.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
 import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_bloc_impl.dart';
+import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_model.dart';
 import 'package:fedi/permission/permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,9 +23,9 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   MediaDeviceGalleryBloc({
-    @required this.storagePermissionBloc,
-    @required this.typesToPick,
-    @required this.paginationSettingsBloc,
+    required this.storagePermissionBloc,
+    required this.typesToPick,
+    required this.paginationSettingsBloc,
   }) {
     addDisposable(subject: foldersSubject);
     addDisposable(subject: selectedFolderSubject);
@@ -41,16 +42,18 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   Stream<List<IMediaDeviceFolder>> get foldersStream => foldersSubject.stream;
 
   @override
-  List<IMediaDeviceFolder> get folders => foldersSubject.value;
+  List<IMediaDeviceFolder>? get folders => foldersSubject.value;
 
   // ignore: close_sinks
-  BehaviorSubject<MediaDeviceGallerySelectedFolderData> selectedFolderSubject =
+  BehaviorSubject<MediaDeviceGallerySelectedFolderData?> selectedFolderSubject =
       BehaviorSubject();
 
   @override
   Future selectFolder(IMediaDeviceFolder folder) async {
+    // todo: rework
+    assert(folder is IMediaDeviceFolder);
     var oldFolderData = selectedFolderData;
-    if (oldFolderData?.folder?.id == folder?.id) {
+    if (oldFolderData?.folder.id == folder.id) {
       return;
     }
 
@@ -58,9 +61,10 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
     await oldFolderData?.dispose();
 
+
     var folderBloc = PhotoManagerMediaDeviceFolderBloc(
       storagePermissionBloc: storagePermissionBloc,
-      folder: folder,
+      folder: folder as PhotoManagerMediaDeviceFolder,
     );
     var listBloc = MediaDeviceFileLocalOnlyListBloc(
       folderBloc: folderBloc,
@@ -86,11 +90,11 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  MediaDeviceGallerySelectedFolderData get selectedFolderData =>
+  MediaDeviceGallerySelectedFolderData? get selectedFolderData =>
       selectedFolderSubject.value;
 
   @override
-  Stream<MediaDeviceGallerySelectedFolderData> get selectedFolderDataStream =>
+  Stream<MediaDeviceGallerySelectedFolderData?> get selectedFolderDataStream =>
       selectedFolderSubject.stream;
 
   // ignore: close_sinks
@@ -102,20 +106,20 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
       galleryStateSubject.stream;
 
   @override
-  MediaDeviceGalleryState get galleryState => galleryStateSubject.value;
+  MediaDeviceGalleryState? get galleryState => galleryStateSubject.value;
 
   @override
   Future internalAsyncInit() async {
     await storagePermissionBloc.checkPermissionStatus();
 
-    if (storagePermissionBloc.permissionGranted) {
+    if (storagePermissionBloc.permissionGranted!) {
       await _initAfterPermissionGranted();
     } else {
       addDisposable(
           streamSubscription: storagePermissionBloc.permissionGrantedStream
               .distinct()
               .listen((granted) {
-        if (granted && folders?.isNotEmpty != true) {
+        if (granted! && folders?.isNotEmpty != true) {
           _initAfterPermissionGranted();
         }
       }));
@@ -128,7 +132,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   Future refreshFoldersInformation() async {
-    assert(permissionGranted);
+    assert(permissionGranted!);
     var oldSelectedFolder = selectedFolderData;
     galleryStateSubject.add(MediaDeviceGalleryState.loading);
     var folders = await loadFoldersInformation();
@@ -137,9 +141,8 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     galleryStateSubject.add(MediaDeviceGalleryState.loaded);
 
     if (oldSelectedFolder?.folder != null) {
-      var newSelectedFolder = folders.firstWhere(
+      var newSelectedFolder = folders.firstWhereOrNull(
         (folder) => folder.id == oldSelectedFolder?.folder?.id,
-        orElse: () => null,
       );
 
       if (newSelectedFolder != null) {
@@ -163,22 +166,22 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
       storagePermissionBloc.checkPermissionStatus();
 
   @override
-  bool get permissionGranted => storagePermissionBloc.permissionGranted;
+  bool? get permissionGranted => storagePermissionBloc.permissionGranted;
 
   @override
-  Stream<bool> get permissionGrantedStream =>
+  Stream<bool?> get permissionGrantedStream =>
       storagePermissionBloc.permissionGrantedStream;
 
   @override
-  PermissionStatus get permissionStatus =>
+  PermissionStatus? get permissionStatus =>
       storagePermissionBloc.permissionStatus;
 
   @override
-  Stream<PermissionStatus> get permissionStatusStream =>
+  Stream<PermissionStatus?> get permissionStatusStream =>
       storagePermissionBloc.permissionStatusStream;
 
   @override
-  Future<PermissionStatus> requestPermission() =>
+  Future<PermissionStatus?> requestPermission() =>
       storagePermissionBloc.requestPermission();
 
   Future disposeSelectedFolderBlocs() async {

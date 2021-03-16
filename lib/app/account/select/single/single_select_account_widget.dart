@@ -6,18 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SingleSelectAccountWidget extends StatelessWidget {
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final AccountCallback? accountSelectedCallback;
+  final List<Widget>? accountActions;
   final bool isNeedPreFetchRelationship;
   final EdgeInsets itemPadding;
 
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const SingleSelectAccountWidget({
-    @required this.accountSelectedCallback,
+    required this.accountSelectedCallback,
     this.accountActions,
     this.isNeedPreFetchRelationship = false,
     this.itemPadding = FediPadding.allMediumPadding,
@@ -37,7 +37,7 @@ class SingleSelectAccountWidget extends StatelessWidget {
           var selectAccountListBloc = ISelectAccountListBloc.of(context, listen: false);
 
           selectAccountListBloc.onAccountSelected(account);
-          accountSelectedCallback(context, account);
+          accountSelectedCallback!(context, account);
         }
       },
       itemPadding: itemPadding,

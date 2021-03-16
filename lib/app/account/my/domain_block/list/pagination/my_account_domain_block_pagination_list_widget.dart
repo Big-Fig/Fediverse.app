@@ -14,23 +14,23 @@ var _logger = Logger("domainBlock_pagination_list_widget.dart");
 
 class MyAccountDomainBlockPaginationListWidget
     extends FediPaginationListWidget<DomainBlock> {
-  final DomainBlockCallback domainBlockSelectedCallback;
+  final DomainBlockCallback? domainBlockSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;
-  final List<Widget> domainBlockActions;
+  final List<Widget>? domainBlockActions;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const MyAccountDomainBlockPaginationListWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     this.needWatchLocalRepositoryForUpdates = true,
     this.domainBlockActions,
-    Widget customLoadingWidget,
-    Widget customEmptyWidget,
-    @required this.domainBlockSelectedCallback,
+    Widget? customLoadingWidget,
+    Widget? customEmptyWidget,
+    required this.domainBlockSelectedCallback,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     bool refreshOnFirstLoad = true,
   }) : super(
@@ -46,10 +46,10 @@ class MyAccountDomainBlockPaginationListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<DomainBlock> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<DomainBlock> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
@@ -72,7 +72,7 @@ class MyAccountDomainBlockPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) {
+      retrievePaginationListBloc(BuildContext context, {required bool listen}) {
     var domainBlockPaginationListBloc =
         IMyAccountDomainBlockPaginationListBloc.of(context, listen: listen);
     return domainBlockPaginationListBloc;

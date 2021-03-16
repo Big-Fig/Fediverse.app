@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 abstract class IChatMessage {
-  int get localId;
+  int? get localId;
 
   String get remoteId;
 
@@ -13,41 +13,41 @@ abstract class IChatMessage {
 
   IAccount get account;
 
-  String get content;
+  String? get content;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment>? get mediaAttachments;
 
   DateTime get createdAt;
 
-  List<IPleromaEmoji> get emojis;
+  List<IPleromaEmoji>? get emojis;
 
-  IPleromaCard get card;
+  IPleromaCard? get card;
 
-  PendingState get pendingState;
+  PendingState? get pendingState;
 
-  String get oldPendingRemoteId;
+  String? get oldPendingRemoteId;
 
-  bool get isDeleted;
+  bool get deleted;
 
-  bool get isHiddenLocallyOnDevice;
+  bool get hiddenLocallyOnDevice;
 
-  String get wasSentWithIdempotencyKey;
+  String? get wasSentWithIdempotencyKey;
 
   IChatMessage copyWith({
-    int localId,
-    String remoteId,
-    String chatRemoteId,
-    IAccount account,
-    String content,
-    DateTime createdAt,
-    List<IPleromaMediaAttachment> mediaAttachments,
-    List<PleromaEmoji> emojis,
-    IPleromaCard card,
-    PendingState pendingState,
-    String oldPendingRemoteId,
-    bool deleted,
-    bool hiddenLocallyOnDevice,
-    String wasSentWithIdempotencyKey,
+    int? localId,
+    String? remoteId,
+    String? chatRemoteId,
+    IAccount? account,
+    String? content,
+    DateTime? createdAt,
+    List<IPleromaMediaAttachment>? mediaAttachments,
+    List<PleromaEmoji>? emojis,
+    IPleromaCard? card,
+    PendingState? pendingState,
+    String? oldPendingRemoteId,
+    bool? deleted,
+    bool? hiddenLocallyOnDevice,
+    String? wasSentWithIdempotencyKey,
   });
 }
 
@@ -56,8 +56,8 @@ extension IChatMessageExtension on IChatMessage {
       pendingState == null || pendingState == PendingState.published;
 
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
-      isDeleted != true &&
-      isHiddenLocallyOnDevice != true &&
+      deleted != true &&
+      hiddenLocallyOnDevice != true &&
       isPendingStatePublishedOrNull;
 
   bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;

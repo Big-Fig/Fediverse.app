@@ -25,7 +25,6 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger = Logger("timeline_status_cached_list_bloc_impl.dart");
 
@@ -40,11 +39,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
 
-  Timeline get timeline => timelineLocalPreferencesBloc.value;
+  Timeline get timeline => timelineLocalPreferencesBloc.value!;
 
   TimelineType get timelineType => timeline.type;
 
-  List<IFilter> filters;
+  late List<IFilter> filters;
 
   List<StatusTextCondition> get excludeTextConditions => filters
       .map(
@@ -52,18 +51,18 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       )
       .toList();
 
-  StatusOnlyLocalCondition get onlyLocalCondition {
+  StatusOnlyLocalCondition? get onlyLocalCondition {
     if (timeline.onlyLocal == true) {
-      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
+      var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
       return StatusOnlyLocalCondition(localUrlHost);
     } else {
       return null;
     }
   }
 
-  StatusOnlyRemoteCondition get onlyRemoteCondition {
+  StatusOnlyRemoteCondition? get onlyRemoteCondition {
     if (timeline.onlyRemote == true) {
-      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
+      var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
       return StatusOnlyRemoteCondition(localUrlHost);
     } else {
       return null;
@@ -73,9 +72,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   StatusRepositoryFilters get _statusRepositoryFilters =>
       StatusRepositoryFilters(
         onlyInConversation: null,
-        onlyFromAccount: timeline.onlyFromRemoteAccount != null
-            ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
-            : null,
+        onlyFromAccount: timeline.onlyFromRemoteAccount?.toDbAccountWrapper(),
         onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
         onlyWithHashtag: timeline.withRemoteHashtag,
         onlyLocalCondition: onlyLocalCondition,
@@ -88,7 +85,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         excludeTextConditions: excludeTextConditions,
         replyVisibilityFilterCondition: timeline.replyVisibilityFilter != null
             ? PleromaReplyVisibilityFilterCondition(
-                myAccountRemoteId: myAccountBloc.myAccount.remoteId,
+                myAccountRemoteId: myAccountBloc.myAccount!.remoteId,
                 replyVisibilityFilter: timeline.replyVisibilityFilter,
               )
             : null,
@@ -97,21 +94,21 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
+  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc!.stream
       .map((timeline) => timeline?.settings)
       .map((_) => true)
       .distinct();
 
   TimelineStatusCachedListBloc({
-    @required this.pleromaAccountService,
-    @required this.pleromaTimelineService,
-    @required this.statusRepository,
-    @required this.filterRepository,
-    @required this.currentInstanceBloc,
-    @required this.timelineLocalPreferencesBloc,
-    @required this.webSocketsHandlerManagerBloc,
-    @required this.myAccountBloc,
-    @required WebSocketsListenType webSocketsListenType,
+    required this.pleromaAccountService,
+    required this.pleromaTimelineService,
+    required this.statusRepository,
+    required this.filterRepository,
+    required this.currentInstanceBloc,
+    required this.timelineLocalPreferencesBloc,
+    required this.webSocketsHandlerManagerBloc,
+    required this.myAccountBloc,
+    required WebSocketsListenType webSocketsListenType,
   }) {
     resubscribeWebSocketsUpdates(webSocketsListenType);
 
@@ -120,7 +117,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     });
   }
 
-  IDisposable webSocketsListenerDisposable;
+  IDisposable? webSocketsListenerDisposable;
 
   void resubscribeWebSocketsUpdates(
     WebSocketsListenType webSocketsListenType,
@@ -158,7 +155,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenListChannel(
             listenType: webSocketsListenType,
-            listId: timeline.onlyInRemoteList.id,
+            listId: timeline.onlyInRemoteList!.id,
           );
           break;
 
@@ -174,7 +171,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenAccountChannel(
             listenType: webSocketsListenType,
-            accountId: timeline.onlyFromRemoteAccount.id,
+            accountId: timeline.onlyFromRemoteAccount!.id,
             notification: false,
           );
           break;
@@ -189,16 +186,16 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t _timeline = $timeline"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    List<IPleromaStatus> remoteStatuses;
+    List<IPleromaStatus>? remoteStatuses;
     var onlyLocal = timeline.onlyLocal == true;
     var onlyRemote = timeline.onlyRemote == true;
     var onlyFromInstance = timeline.onlyFromInstance;
@@ -226,7 +223,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
       case TimelineType.customList:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
-          listId: timeline.onlyInRemoteList.id,
+          listId: timeline.onlyInRemoteList!.id,
           pagination: pagination,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
@@ -254,7 +251,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
       case TimelineType.account:
         remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          accountRemoteId: timeline.onlyFromRemoteAccount.id,
+          accountRemoteId: timeline.onlyFromRemoteAccount!.id,
           onlyWithMedia: onlyWithMedia,
         );
         break;
@@ -278,9 +275,9 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     var statuses = await statusRepository.getStatuses(
       filters: _statusRepositoryFilters,
@@ -306,9 +303,9 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
-    @required TimelineType timelineType,
-    @required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
-    @required WebSocketsListenType webSocketsListenType,
+    required TimelineType timelineType,
+    required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
+    required WebSocketsListenType webSocketsListenType,
   }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: IPleromaAccountService.of(
@@ -345,7 +342,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    List<MastodonFilterContextType> onlyWithContextTypes;
+    List<MastodonFilterContextType>? onlyWithContextTypes;
 
     switch (timelineType) {
       case TimelineType.public:
@@ -389,5 +386,5 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

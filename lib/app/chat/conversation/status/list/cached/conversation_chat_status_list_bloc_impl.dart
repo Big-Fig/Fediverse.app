@@ -20,11 +20,11 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
       StatusRepositoryOrderingTermData.createdAtDesc;
 
   final IStatusRepository statusRepository;
-  final IConversationChat conversation;
+  final IConversationChat? conversation;
 
   ConversationChatStatusListBloc({
-    @required this.conversation,
-    @required this.statusRepository,
+    required this.conversation,
+    required this.statusRepository,
   }) {
     assert(conversation != null);
   }
@@ -36,9 +36,9 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     var statuses = await statusRepository.getStatuses(
       filters: _statusRepositoryFilters,
@@ -54,7 +54,7 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
     return statusRepository.watchStatuses(
       filters: _statusRepositoryFilters,
       pagination: RepositoryPagination<IStatus>(

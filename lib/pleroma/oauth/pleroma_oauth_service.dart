@@ -7,22 +7,31 @@ typedef dynamic AuthorizationCodeSuccessCallback(String code);
 typedef dynamic AuthorizationCodeErrorCallback(error);
 
 abstract class IPleromaOAuthService extends IPleromaApi {
-  static IPleromaOAuthService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPleromaOAuthService>(context, listen: listen);
+  static IPleromaOAuthService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaOAuthService>(
+        context,
+        listen: listen,
+      );
 
-  Future<String> launchAuthorizeFormAndExtractAuthorizationCode(
-      {@required PleromaOAuthAuthorizeRequest authorizeRequest});
-
+  Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
+    required PleromaOAuthAuthorizeRequest authorizeRequest,
+  });
 
   static String extractAuthCodeFromUri(Uri uri) =>
       uri.queryParameters['code'].toString();
 
-  Future<PleromaOAuthToken> retrieveAccountAccessToken(
-      {@required PleromaOAuthAccountTokenRequest tokenRequest});
+  Future<PleromaOAuthToken?> retrieveAccountAccessToken({
+    required PleromaOAuthAccountTokenRequest tokenRequest,
+  });
 
-  Future<PleromaOAuthToken> retrieveAppAccessToken(
-      {@required PleromaOAuthAppTokenRequest tokenRequest});
+  Future<PleromaOAuthToken?> retrieveAppAccessToken({
+    required PleromaOAuthAppTokenRequest tokenRequest,
+  });
 
-  Future<bool> revokeToken(
-      {@required PleromaOAuthAppTokenRevokeRequest revokeRequest});
+  Future<bool> revokeToken({
+    required PleromaOAuthAppTokenRevokeRequest revokeRequest,
+  });
 }

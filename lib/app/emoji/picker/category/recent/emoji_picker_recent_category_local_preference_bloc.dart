@@ -4,10 +4,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEmojiPickerRecentCategoryLocalPreferenceBloc
-    implements LocalPreferenceBloc<EmojiPickerRecentCategoryItemsList> {
+    implements LocalPreferenceBloc<EmojiPickerRecentCategoryItemsList?> {
   static IEmojiPickerRecentCategoryLocalPreferenceBloc of(
-          BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IEmojiPickerRecentCategoryLocalPreferenceBloc>(context,
-          listen: listen);
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
+        context,
+        listen: listen,
+      );
 }

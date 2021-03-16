@@ -35,7 +35,7 @@ var _logger = Logger("chat_messages_home_tab_page.dart");
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
 class PleromaChatHomeTabPage extends StatelessWidget {
-  const PleromaChatHomeTabPage({Key key}) : super(key: key);
+  const PleromaChatHomeTabPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +79,9 @@ class PleromaChatHomeTabPage extends StatelessWidget {
             Provider.value(value: chatsListBloc.chatPaginationListBloc),
             Provider.value(
                 value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-            Provider<ICachedPaginationListWithNewItemsBloc>.value(
+            Provider<ICachedPaginationListWithNewItemsBloc?>.value(
                 value: chatsListBloc.chatPaginationListWithNewItemsBloc),
-            Provider<IPaginationListBloc>.value(
+            Provider<IPaginationListBloc?>.value(
                 value: chatsListBloc.chatPaginationListWithNewItemsBloc),
           ],
           child: child,
@@ -93,15 +93,15 @@ class PleromaChatHomeTabPage extends StatelessWidget {
 
 class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
   const _ChatMessagesHomeTabPageContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
-    var isPleromaInstance = currentInstance.isPleroma;
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var isPleromaInstance = currentInstance.isPleroma!;
 
     var isSupportChats = currentInstance.isSupportChats;
 
@@ -122,9 +122,9 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
   }
 
   Widget buildBody({
-    @required BuildContext context,
-    @required bool isPleromaInstance,
-    @required bool isSupportChats,
+    required BuildContext context,
+    required bool isPleromaInstance,
+    required bool isSupportChats,
   }) =>
       isPleromaInstance
           ? isSupportChats
@@ -151,15 +151,15 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
 
 class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   const _ChatMessagesHomeTabPageHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
-    var isPleromaInstance = currentInstance.isPleroma;
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var isPleromaInstance = currentInstance.isPleroma!;
 
     var isSupportChats = currentInstance.isSupportChats;
     return FediTabMainHeaderBarWidget(
@@ -181,7 +181,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
 class _ChatMessagesHomeTabPageHeaderAddActionWidget extends StatelessWidget {
   const _ChatMessagesHomeTabPageHeaderAddActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -198,7 +198,7 @@ class _ChatMessagesHomeTabPageHeaderAddActionWidget extends StatelessWidget {
 class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget
     extends StatelessWidget {
   const _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -17,8 +17,8 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushHandlerMessage(
-      body: fields[0] as PleromaPushMessageBody,
-      pushMessage: fields[1] as PushMessage,
+      body: fields[0] as PleromaPushMessageBody?,
+      pushMessage: fields[1] as PushMessage?,
     );
   }
 

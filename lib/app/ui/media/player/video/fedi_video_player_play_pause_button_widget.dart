@@ -42,9 +42,9 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
 
 class _FediVideoPlayerPlayPauseButtonInitializedWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseButtonInitializedWidget({
-    Key key,
-    @required this.size,
-    @required this.iconSize,
+    Key? key,
+    required this.size,
+    required this.iconSize,
   }) : super(key: key);
 
   final double size;
@@ -73,9 +73,9 @@ class _FediVideoPlayerPlayPauseButtonInitializedWidget extends StatelessWidget {
 
 class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseControlsWidget({
-    Key key,
-    @required this.size,
-    @required this.iconSize,
+    Key? key,
+    required this.size,
+    required this.iconSize,
   }) : super(key: key);
 
   final double size;
@@ -100,7 +100,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
               var isPlaying = snapshot.data ?? false;
               return AsyncOperationButtonBuilderWidget(
                 showProgressDialog: false,
-                builder: (BuildContext context, void Function() onPressed) {
+                builder: (BuildContext context, void Function()? onPressed) {
                   return Container(
                     child: FediIconButton(
                       padding: EdgeInsets.zero,
@@ -127,7 +127,7 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
 
 class _FediVideoPlayerPlayPauseButtonLoadingWidget extends StatelessWidget {
   const _FediVideoPlayerPlayPauseButtonLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -12,12 +12,12 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
   final IMediaDeviceFolderBloc folderBloc;
 
   MediaDeviceFileLocalOnlyListBloc({
-    @required this.folderBloc,
+    required this.folderBloc,
   });
 
   static MediaDeviceFileLocalOnlyListBloc createFromContext(
     BuildContext context, {
-    @required IMediaDeviceFolderBloc folderBloc,
+    required IMediaDeviceFolderBloc folderBloc,
   }) =>
       MediaDeviceFileLocalOnlyListBloc(
         folderBloc: folderBloc,
@@ -25,8 +25,8 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IMediaDeviceFolderBloc folderBloc,
+    required Widget child,
+    required IMediaDeviceFolderBloc folderBloc,
   }) {
     return DisposableProvider<IMediaDeviceFileLocalOnlyListBloc>(
       create: (context) =>
@@ -35,7 +35,7 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
         folderBloc: folderBloc,
       ),
       child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-          ILocalOnlyListBloc<IMediaDeviceFileMetadata>>(
+          ILocalOnlyListBloc<IMediaDeviceFileMetadata?>>(
         update: (context, value, previous) => value,
         child: child,
       ),
@@ -44,10 +44,10 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
 
   @override
   Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required IMediaDeviceFileMetadata olderThan,
-    @required IMediaDeviceFileMetadata newerThan,
+    required int? pageIndex,
+    required int? itemsCountPerPage,
+    required IMediaDeviceFileMetadata? olderThan,
+    required IMediaDeviceFileMetadata? newerThan,
   }) =>
       folderBloc.loadPagedFiles(
           pageIndex: pageIndex,

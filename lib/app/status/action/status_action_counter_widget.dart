@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusActionCounterWidget extends StatelessWidget {
-  final OnClickUiCallback onClick;
+  final OnClickUiCallback? onClick;
 
   const StatusActionCounterWidget({
-    @required this.onClick,
+    required this.onClick,
   });
 
   @override
@@ -17,7 +17,7 @@ class StatusActionCounterWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (onClick != null) {
-          onClick(context);
+          onClick!(context);
         }
       },
       child: Padding(

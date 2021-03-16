@@ -14,11 +14,11 @@ import 'package:logging/logging.dart';
 var _logger = Logger("account_big_list_item_widget.dart");
 
 class AccountBigListItemWidget extends StatelessWidget {
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final AccountCallback? accountSelectedCallback;
+  final List<Widget>? accountActions;
 
   const AccountBigListItemWidget({
-    @required this.accountSelectedCallback,
+    required this.accountSelectedCallback,
     this.accountActions,
   });
 
@@ -30,8 +30,9 @@ class AccountBigListItemWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (accountSelectedCallback != null) {
-          accountSelectedCallback(context, accountBloc.account);
+        var callback = accountSelectedCallback;
+        if (callback != null) {
+          callback(context, accountBloc.account!);
         }
       },
       child: Padding(
@@ -67,7 +68,7 @@ class AccountBigListItemWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ...accountActions,
+                              ...accountActions!,
                             ],
                           )
                       ],

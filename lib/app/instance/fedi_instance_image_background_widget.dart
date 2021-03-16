@@ -26,12 +26,12 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
 
     var myAccountBloc = IMyAccountBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: myAccountBloc.pleromaBackgroundImageStream,
       builder: (context, snapshot) {
         var accountBackgroundImage = snapshot.data;
 
-        String backgroundImage = accountBackgroundImage;
+        String? backgroundImage = accountBackgroundImage;
 
         if (backgroundImage?.isNotEmpty != true) {
           backgroundImage = currentInstance?.info?.backgroundImage;
@@ -44,7 +44,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
           var backgroundImageUri = Uri.parse(backgroundImage);
           var isRelative = backgroundImageUri.host?.isNotEmpty != true;
           if (isRelative) {
-            var hostPath = currentInstance.uri.toString();
+            var hostPath = currentInstance!.uri.toString();
             backgroundImageAbsolutePath = hostPath + backgroundImage;
           } else {
             backgroundImageAbsolutePath = backgroundImage;
@@ -54,7 +54,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         _logger.finest(
             () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
 
-        return Provider<String>.value(
+        return Provider<String?>.value(
           value: backgroundImageAbsolutePath,
           child: const _FediInstanceImageBackgroundCachedNetworkImageWidget(),
         );
@@ -66,7 +66,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
 class _FediInstanceImageBackgroundCachedNetworkImageWidget
     extends StatelessWidget {
   const _FediInstanceImageBackgroundCachedNetworkImageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -80,7 +80,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
           imageUrl: backgroundImageAbsolutePath,
           width: constraints.maxWidth,
           memCacheWidth: constraints.maxWidth.toInt(),
-          errorWidget: (BuildContext context, String url, Object error) =>
+          errorWidget: (BuildContext context, String url, Object? error) =>
               buildDefault(
             context: context,
           ),
@@ -103,7 +103,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
 }
 
 Widget buildDefault({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   return Provider<ImageProvider>.value(
     value: defaultImage.image,
@@ -113,7 +113,7 @@ Widget buildDefault({
 
 class _FediInstanceImageBackgroundPlaceholderWidget extends StatelessWidget {
   const _FediInstanceImageBackgroundPlaceholderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -128,7 +128,7 @@ class _FediInstanceImageBackgroundPlaceholderWidget extends StatelessWidget {
 
 class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
   const _FediInstanceImageBackgroundImageProviderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -152,11 +152,11 @@ class _FediInstanceImageBackgroundImageProviderWidget extends StatelessWidget {
 
 class _FediInstanceImageBackgroundDarkOverlayWidget extends StatelessWidget {
   const _FediInstanceImageBackgroundDarkOverlayWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) => Container(

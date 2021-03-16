@@ -22,9 +22,9 @@ class EditMyAccountAvatarFieldWidget extends StatelessWidget {
   final double avatarCircleBorderWidth;
 
   const EditMyAccountAvatarFieldWidget({
-    Key key,
-    @required this.avatarSize,
-    @required this.avatarCircleBorderWidth,
+    Key? key,
+    required this.avatarSize,
+    required this.avatarCircleBorderWidth,
   }) : super(key: key);
 
   @override
@@ -64,18 +64,20 @@ void _startChoosingFileToUploadAvatar(BuildContext context) async {
       mediaDeviceFile,
     );
 
-    try {
-      await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
-    } catch (e, stackTrace) {
-      _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
-      showMediaAttachmentFailedNotificationOverlay(context, e);
+    if (filePickerFile != null) {
+      try {
+        await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
+      } catch (e, stackTrace) {
+        _logger.warning("startChoosingFileToUploadAvatar error", e, stackTrace);
+        showMediaAttachmentFailedNotificationOverlay(context, e);
+      }
     }
   }
 }
 
 class _EditMyAccountAvatarFieldEditButtonWidget extends StatelessWidget {
   const _EditMyAccountAvatarFieldEditButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -99,9 +101,9 @@ class _EditMyAccountAvatarFieldImageWidget extends StatelessWidget {
   double get avatarAndBorderSize => avatarSize + avatarCircleBorderWidth;
 
   const _EditMyAccountAvatarFieldImageWidget({
-    Key key,
-    @required this.avatarSize,
-    @required this.avatarCircleBorderWidth,
+    Key? key,
+    required this.avatarSize,
+    required this.avatarCircleBorderWidth,
   }) : super(key: key);
 
   @override
@@ -128,15 +130,15 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
   final double avatarCircleBorderWidth;
 
   const _EditMyAccountAvatarFieldImageMediaSourceWidget({
-    Key key,
-    @required this.avatarSize,
-    @required this.avatarCircleBorderWidth,
+    Key? key,
+    required this.avatarSize,
+    required this.avatarCircleBorderWidth,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
-    return StreamBuilder<MediaImageSource>(
+    return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.avatarField.imageSourceStream,
       builder: (context, snapshot) {
         var source = snapshot.data;
@@ -165,7 +167,7 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
           );
         } else {
           return _EditMyAccountAvatarFieldImageContainerWidget(
-            imageProvider: Image.file(source.file).image,
+            imageProvider: Image.file(source.file!).image,
             avatarSize: avatarSize,
             avatarCircleBorderWidth: avatarCircleBorderWidth,
           );
@@ -181,10 +183,10 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
   final double avatarCircleBorderWidth;
 
   const _EditMyAccountAvatarFieldImageContainerWidget({
-    Key key,
-    @required this.imageProvider,
-    @required this.avatarSize,
-    @required this.avatarCircleBorderWidth,
+    Key? key,
+    required this.imageProvider,
+    required this.avatarSize,
+    required this.avatarCircleBorderWidth,
   }) : super(key: key);
 
   @override

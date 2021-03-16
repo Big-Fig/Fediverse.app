@@ -23,21 +23,24 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   final IAccountRepository accountRepository;
 
   MyAccountAccountBlockNetworkOnlyAccountListBloc({
-    @required this.pleromaAuthAccountService,
-    @required this.pleromaMyAccountService,
-    @required this.accountRepository,
+    required this.pleromaAuthAccountService,
+    required this.pleromaMyAccountService,
+    required this.accountRepository,
   });
 
   @override
-  Future removeAccountBlock({@required IAccount account}) async {
+  Future removeAccountBlock({
+    required IAccount account,
+  }) async {
     var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
-        accountRemoteId: account.remoteId);
-
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(
-        pleromaRelationship: accountRelationship,
-      ),
+      accountRemoteId: account!.remoteId,
     );
+
+    var remoteAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
 
     await accountRepository.upsertRemoteAccount(
       remoteAccount,
@@ -47,16 +50,18 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   }
 
   @override
-  Future addAccountBlock({@required IAccount account}) async {
+  Future addAccountBlock({
+    required IAccount account,
+  }) async {
     var accountRelationship = await pleromaAuthAccountService.blockAccount(
-      accountRemoteId: account.remoteId,
+      accountRemoteId: account!.remoteId,
     );
 
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(
-        pleromaRelationship: accountRelationship,
-      ),
-    );
+    var remoteAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
 
     await accountRepository.upsertRemoteAccount(
       remoteAccount,
@@ -67,10 +72,10 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getAccountBlocks(
       pagination: PleromaPaginationRequest(
@@ -83,7 +88,9 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: null, chatRemoteId: null);
     return remoteAccounts
-        .map((remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))
+        .map(
+          (remoteAccount) => remoteAccount.toDbAccountWrapper(),
+        )
         .toList();
   }
 
@@ -104,12 +111,12 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         pleromaAuthAccountService: IPleromaAccountService.of(
           context,
           listen: false,
-        ),
+        ) as IPleromaAuthAccountService,
       );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(
       create: (context) =>
@@ -134,5 +141,5 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

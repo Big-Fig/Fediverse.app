@@ -8,13 +8,13 @@ abstract class IAuthInstanceChooserBloc implements IDisposable {
           {bool listen = true}) =>
       Provider.of<IAuthInstanceChooserBloc>(context, listen: listen);
 
-  AuthInstance get selectedInstance;
+  AuthInstance? get selectedInstance;
 
-  Stream<AuthInstance> get selectedInstanceStream;
+  Stream<AuthInstance?> get selectedInstanceStream;
 
-  List<AuthInstance> get instancesAvailableToChoose;
+  List<AuthInstance?> get instancesAvailableToChoose;
 
-  Stream<List<AuthInstance>> get instancesAvailableToChooseStream;
+  Stream<List<AuthInstance?>> get instancesAvailableToChooseStream;
 
   Future chooseInstance(AuthInstance instance);
 

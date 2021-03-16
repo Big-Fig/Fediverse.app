@@ -6,11 +6,11 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/cupertino.dart';
 
-Future<IMediaDeviceFile> showEditMyAccountImageConfirmDialog({
-  BuildContext context,
-  @required String title,
-  @required List<DialogAction> actions,
-  @required IMediaDeviceFile mediaDeviceFile,
+Future<IMediaDeviceFile?> showEditMyAccountImageConfirmDialog({
+  required BuildContext context,
+  required String title,
+  required List<DialogAction> actions,
+  required IMediaDeviceFile mediaDeviceFile,
 }) => EditMyAccountImageConfirmDialog(
     title: title,
     actions: actions,
@@ -21,9 +21,9 @@ class EditMyAccountImageConfirmDialog extends FediDialog {
   final IMediaDeviceFile mediaDeviceFile;
 
   EditMyAccountImageConfirmDialog({
-    @required String title,
-    @required List<DialogAction> actions,
-    @required this.mediaDeviceFile,
+    required String title,
+    required List<DialogAction> actions,
+    required this.mediaDeviceFile,
     Axis actionsAxis = Axis.vertical,
     bool cancelable = true,
     bool actionsBorderVisible = false,
@@ -39,7 +39,7 @@ class EditMyAccountImageConfirmDialog extends FediDialog {
   Widget buildContentWidget(BuildContext context) {
     return FutureBuilder(
       future: mediaDeviceFile.loadFile(),
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
         var file = snapshot.data;
         if (file != null) {
           return Image.file(file);

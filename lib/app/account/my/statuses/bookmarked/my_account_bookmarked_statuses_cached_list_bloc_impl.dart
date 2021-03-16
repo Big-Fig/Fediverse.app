@@ -24,8 +24,8 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
   final IPleromaMyAccountService pleromaMyAccountService;
 
   MyAccountBookmarkedStatusesCachedListBloc({
-    @required this.pleromaMyAccountService,
-    @required this.statusRepository,
+    required this.pleromaMyAccountService,
+    required this.statusRepository,
   });
 
   @override
@@ -36,9 +36,9 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    int limit,
-    IStatus newerThan,
-    IStatus olderThan,
+    int? limit,
+    IStatus? newerThan,
+    IStatus? olderThan,
   }) {
     return statusRepository.getStatuses(
       filters: _statusRepositoryFilters,
@@ -64,9 +64,9 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    int limit,
-    IStatus newerThan,
-    IStatus olderThan,
+    int? limit,
+    IStatus? newerThan,
+    IStatus? olderThan,
   }) async {
     var remoteStatuses = await pleromaMyAccountService.getBookmarks(
       pagination: PleromaPaginationRequest(
@@ -100,5 +100,5 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

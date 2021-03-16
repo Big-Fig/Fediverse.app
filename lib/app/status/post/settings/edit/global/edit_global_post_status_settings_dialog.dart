@@ -15,12 +15,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditGlobalPostStatusSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   var isPleromaInstance = ICurrentAuthInstanceBloc.of(
     context,
     listen: false,
-  ).currentInstance.isPleroma;
+  ).currentInstance!.isPleroma;
 
   showEditGlobalSettingsDialog(
     context: context,
@@ -41,7 +41,7 @@ void showEditGlobalPostStatusSettingsDialog({
           postStatusSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
-          pleromaVisibilityPossibleValues: isPleromaInstance
+          pleromaVisibilityPossibleValues: isPleromaInstance!
               ? [
                   PleromaVisibility.public,
                   PleromaVisibility.unlisted,

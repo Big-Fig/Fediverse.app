@@ -10,13 +10,13 @@ class PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IPaginationPageSizeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<PaginationPageSize>>(
+          ISingleSelectFromListValueFormFieldBloc<PaginationPageSize?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
             PaginationPageSize>(

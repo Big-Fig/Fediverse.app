@@ -13,10 +13,10 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
   final AccountHomeTabMenuActionsIntBadgeBloc
       accountHomeTabMenuActionsIntBadgeBloc;
 
-  FediIntBadgeBlocSumAdapter fediIntBadgeBlocSumAdapter;
+  FediIntBadgeBlocSumAdapter? fediIntBadgeBlocSumAdapter;
 
   AccountHomeTabMenuIntBadgeBloc({
-    @required this.myAccountBloc,
+    required this.myAccountBloc,
   }) : accountHomeTabMenuActionsIntBadgeBloc =
             AccountHomeTabMenuActionsIntBadgeBloc(
           myAccountBloc: myAccountBloc,
@@ -31,7 +31,7 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
   }
 
   @override
-  Stream<int> get badgeStream => fediIntBadgeBlocSumAdapter.badgeStream;
+  Stream<int> get badgeStream => fediIntBadgeBlocSumAdapter!.badgeStream;
 
   static AccountHomeTabMenuIntBadgeBloc createFromContext(
     BuildContext context,
@@ -43,7 +43,7 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IFediIntBadgeBloc>(
       create: (context) => AccountHomeTabMenuIntBadgeBloc.createFromContext(

@@ -1,7 +1,11 @@
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PleromaStatusException extends PleromaRestException {
-  PleromaStatusException({@required int statusCode, @required String body})
-      : super(statusCode: statusCode, body: body);
+  PleromaStatusException({
+    required int statusCode,
+    required String body,
+  }) : super(
+          statusCode: statusCode,
+          body: body,
+        );
 }

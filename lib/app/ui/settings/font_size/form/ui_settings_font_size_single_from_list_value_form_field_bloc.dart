@@ -3,7 +3,7 @@ import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
 
 abstract class IUiSettingsFontSizeSingleFromListValueFormFieldBloc
-    implements ISingleSelectFromListValueFormFieldBloc<UiSettingsFontSize> {
+    implements ISingleSelectFromListValueFormFieldBloc<UiSettingsFontSize?> {
   static const UiSettingsFontSize defaultValue =
       IUiSettingsBloc.defaultStatusFontSettingsValue;
 }

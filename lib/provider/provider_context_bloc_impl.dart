@@ -44,7 +44,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
       throw "Can't unregister $object because {$type} not registred";
     }
 
-    var objInStorage = _storage[type];
+    var objInStorage = _storage[type]!;
     if (objInStorage != object) {
       throw "Can't unregister $object because obj {$object} not equal to "
           "registered $objInStorage";
@@ -56,7 +56,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Widget provideContextToChild({@required Widget child}) {
+  Widget provideContextToChild({required Widget child}) {
     _logger.fine(() => "provideToChildContext ${_storage.length}");
 
     var providers =
@@ -69,7 +69,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
   @override
   Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(T obj,
-      {Future Function(T obj) additionalAsyncInit}) async {
+      {Future Function(T obj)? additionalAsyncInit}) async {
     if (obj is AsyncInitLoadingBloc) {
       await obj.performAsyncInit();
     }
@@ -82,5 +82,5 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  T get<T extends IDisposable>() => _storage[T].disposable;
+  T get<T extends IDisposable>() => _storage[T]!.disposable as T;
 }

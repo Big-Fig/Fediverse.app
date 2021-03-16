@@ -17,7 +17,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
   final IPleromaInstanceService pleromaInstanceService;
 
   RemoteInstanceDetailsBloc({
-    @required this.remoteInstanceBloc,
+    required this.remoteInstanceBloc,
   })  : pleromaInstanceService = PleromaInstanceService(
           restService: remoteInstanceBloc.pleromaRestService,
         ),
@@ -40,7 +40,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) =>
       DisposableProxyProvider<IRemoteInstanceBloc, IInstanceDetailsBloc>(
         update: (context, value, previous) => RemoteInstanceDetailsBloc(

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFcmPushPermissionAskedLocalPreferencesBloc
-    implements ILocalPreferenceBloc<bool> {
+    implements ILocalPreferenceBloc<bool?> {
   static IFcmPushPermissionAskedLocalPreferencesBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IFcmPushPermissionAskedLocalPreferencesBloc>(context,

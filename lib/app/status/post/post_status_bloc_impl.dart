@@ -37,28 +37,28 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool get isAnyDataEntered {
     return inputText?.isNotEmpty == true ||
         subjectText?.isNotEmpty == true ||
-        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
+        mediaAttachmentsBloc.mediaAttachmentBlocs!.isNotEmpty ||
         pollBloc.isSomethingChanged;
   }
 
-  final bool markMediaAsNsfwOnAttach;
+  final bool? markMediaAsNsfwOnAttach;
   bool alreadyMarkMediaNsfwByDefault = false;
-  final PleromaInstancePollLimits pleromaInstancePollLimits;
+  final PleromaInstancePollLimits? pleromaInstancePollLimits;
 
   PostStatusBloc({
-    @required this.pleromaAuthStatusService,
-    @required this.statusRepository,
-    @required this.scheduledStatusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required this.pleromaAuthStatusService,
+    required this.statusRepository,
+    required this.scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
-    @required int maximumMessageLength,
-    @required IPostStatusData initialData,
-    List<IAccount> initialAccountsToMention = const [],
-    @required this.pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required this.markMediaAsNsfwOnAttach,
-    @required this.isExpirePossible,
-    @required bool unfocusOnClear,
+    required int? maximumMessageLength,
+    required IPostStatusData? initialData,
+    List<IAccount>? initialAccountsToMention = const [],
+    required this.pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required this.markMediaAsNsfwOnAttach,
+    required this.isExpirePossible,
+    required bool unfocusOnClear,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -66,14 +66,18 @@ abstract class PostStatusBloc extends PostMessageBloc
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           unfocusOnClear: unfocusOnClear,
         ) {
-    this.initialData = initialData ?? defaultInitData;
-    visibilitySubject =
-        BehaviorSubject.seeded(initialData.visibility.toPleromaVisibility());
-    nsfwSensitiveSubject =
-        BehaviorSubject.seeded(initialData.isNsfwSensitiveEnabled);
+    initialData = initialData ?? defaultInitData;
+    this.initialData = initialData;
+    visibilitySubject = BehaviorSubject.seeded(
+      initialData.visibility.toPleromaVisibility(),
+    );
+    nsfwSensitiveSubject = BehaviorSubject.seeded(
+      initialData.isNsfwSensitiveEnabled,
+    );
 
     pollBloc = PostStatusPollBloc(
-      pollLimits: pleromaInstancePollLimits,
+      pollLimits:
+          pleromaInstancePollLimits ?? PleromaInstancePollLimits.defaultLimits,
     );
 
     addDisposable(subject: selectedActionSubject);
@@ -116,7 +120,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
 
     if (initialAccountsToMention?.isNotEmpty == true) {
-      initialAccountsToMention.forEach(
+      initialAccountsToMention!.forEach(
         (account) {
           mentionedAccts.add(account.acct);
         },
@@ -131,32 +135,36 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (initialData.expiresInSeconds != null) {
       expireAtSubject.add(
         Duration(
-          seconds: initialData.expiresInSeconds,
+          seconds: initialData.expiresInSeconds!,
         ),
       );
     }
-    if (initialData.subject != null) {
-      subjectTextController.text = initialData.subject;
+    var initialDataSubject = initialData.subject;
+    if (initialDataSubject != null) {
+      subjectTextController.text = initialDataSubject;
     }
-    if (initialData.text != null) {
-      inputTextController.text = initialData.text;
+    var initialDataText = initialData.text;
+    if (initialDataText != null) {
+      inputTextController.text = initialDataText;
     }
-    if (initialData.poll != null) {
-      pollBloc.fillFormData(initialData.poll);
+    var initialDataPoll = initialData.poll;
+    if (initialDataPoll != null) {
+      pollBloc.fillFormData(initialDataPoll);
     }
-    if (initialData.mediaAttachments?.isNotEmpty == true) {
-      initialData.mediaAttachments.forEach(
+    var initialDataMediaAttachments = initialData.mediaAttachments;
+    if (initialDataMediaAttachments != null) {
+      initialDataMediaAttachments.forEach(
         (attachment) {
           mediaAttachmentsBloc.addUploadedAttachment(attachment);
         },
       );
     }
-    if (markMediaAsNsfwOnAttach) {
+    if (markMediaAsNsfwOnAttach!) {
       addDisposable(
         streamSubscription:
             mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
           (blocs) {
-            if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
+            if (!alreadyMarkMediaNsfwByDefault && blocs!.isNotEmpty) {
               alreadyMarkMediaNsfwByDefault = true;
               nsfwSensitiveSubject.add(true);
             }
@@ -196,10 +204,10 @@ abstract class PostStatusBloc extends PostMessageBloc
       _logger.finest(() => "_checkPollEmptyInputError "
           "textIsNotEmpty $textIsNotEmpty");
       if (textIsNotEmpty) {
-        currentInputTextErrors.remove(postMessagePollEmptyInputTextError);
+        currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
         inputTextErrorsSubject.add([...currentInputTextErrors]);
       } else {
-        if (!currentInputTextErrors
+        if (!currentInputTextErrors!
             .contains(postMessagePollEmptyInputTextError)) {
           currentInputTextErrors.add(postMessagePollEmptyInputTextError);
           inputTextErrorsSubject.add([...currentInputTextErrors]);
@@ -208,7 +216,7 @@ abstract class PostStatusBloc extends PostMessageBloc
             "add inputTextErrors $currentInputTextErrors");
       }
     } else {
-      currentInputTextErrors.remove(postMessagePollEmptyInputTextError);
+      currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
       inputTextErrorsSubject.add([...currentInputTextErrors]);
     }
   }
@@ -218,15 +226,15 @@ abstract class PostStatusBloc extends PostMessageBloc
   final IScheduledStatusRepository scheduledStatusRepository;
 
   @override
-  IStatus get originInReplyToStatus =>
-      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
+  IStatus? get originInReplyToStatus =>
+      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
 
-  String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
+  String? get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
   @override
-  IPostStatusPollBloc pollBloc;
+  late IPostStatusPollBloc pollBloc;
 
-  IPostStatusData initialData;
+  late IPostStatusData initialData;
 
   static final defaultInitData = PostStatusData(
     subject: null,
@@ -248,24 +256,24 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  bool get isHaveMentionedAccts => mentionedAccts?.isNotEmpty == true;
+  bool get isHaveMentionedAccts => mentionedAccts.isNotEmpty == true;
 
   @override
   Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
-      .map((mentionedAccts) => mentionedAccts?.isNotEmpty == true);
+      .map((mentionedAccts) => mentionedAccts.isNotEmpty == true);
 
   // ignore: close_sinks
   BehaviorSubject<List<String>> mentionedAcctsSubject =
       BehaviorSubject.seeded([]);
 
   @override
-  List<String> get mentionedAccts => mentionedAcctsSubject.value;
+  List<String> get mentionedAccts => mentionedAcctsSubject.value!;
 
   @override
   Stream<List<String>> get mentionedAcctsStream => mentionedAcctsSubject.stream;
 
   // ignore: close_sinks
-  BehaviorSubject<DateTime> scheduledAtSubject = BehaviorSubject();
+  BehaviorSubject<DateTime?> scheduledAtSubject = BehaviorSubject();
 
   @override
   bool get isScheduledAtExist => scheduledAt != null;
@@ -275,25 +283,25 @@ abstract class PostStatusBloc extends PostMessageBloc
       scheduledAtStream.map((scheduledAt) => scheduledAt != null);
 
   @override
-  DateTime get scheduledAt => scheduledAtSubject.value;
+  DateTime? get scheduledAt => scheduledAtSubject.value;
 
   @override
-  Stream<DateTime> get scheduledAtStream => scheduledAtSubject.stream;
+  Stream<DateTime?> get scheduledAtStream => scheduledAtSubject.stream;
 
   // ignore: close_sinks
-  BehaviorSubject<PleromaVisibility> visibilitySubject;
+  late BehaviorSubject<PleromaVisibility> visibilitySubject;
 
   @override
-  PleromaVisibility get visibility => visibilitySubject.value;
+  PleromaVisibility get visibility => visibilitySubject.value!;
 
   @override
   Stream<PleromaVisibility> get visibilityStream => visibilitySubject.stream;
 
   // ignore: close_sinks
-  BehaviorSubject<bool> nsfwSensitiveSubject;
+  late BehaviorSubject<bool> nsfwSensitiveSubject;
 
   @override
-  bool get isNsfwSensitiveEnabled => nsfwSensitiveSubject.value;
+  bool get isNsfwSensitiveEnabled => nsfwSensitiveSubject.value!;
 
   @override
   Stream<bool> get isNsfwSensitiveEnabledStream => nsfwSensitiveSubject.stream;
@@ -316,11 +324,11 @@ abstract class PostStatusBloc extends PostMessageBloc
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         (
-          inputWithoutMentionedAcctsText,
-          mediaAttachmentBlocs,
-          isAllAttachedMediaUploaded,
-          isHaveAtLeastOneError,
-          isPollBlocChanged,
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+          dynamic isHaveAtLeastOneError,
+          dynamic isPollBlocChanged,
         ) =>
             calculateStatusBlocIsReadyToPost(
           inputText: inputWithoutMentionedAcctsText,
@@ -332,11 +340,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       );
 
   bool calculateStatusBlocIsReadyToPost({
-    @required String inputText,
-    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-    @required bool isAllAttachedMediaUploaded,
-    @required bool isPollBlocHaveErrors,
-    @required bool isPollBlocChanged,
+    required String? inputText,
+    required List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,
+    required bool? isAllAttachedMediaUploaded,
+    required bool isPollBlocHaveErrors,
+    required bool? isPollBlocChanged,
   }) {
     var isReady = super.calculateIsReadyToPost(
       inputText: inputText,
@@ -344,18 +352,18 @@ abstract class PostStatusBloc extends PostMessageBloc
       isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
     );
 
-    return isReady && (!isPollBlocChanged || !isPollBlocHaveErrors);
+    return isReady && (!isPollBlocChanged! || !isPollBlocHaveErrors);
   }
 
   @override
-  String get inputWithoutMentionedAcctsText =>
+  String? get inputWithoutMentionedAcctsText =>
       removeAcctsFromText(inputText, mentionedAccts);
 
   @override
-  Stream<String> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
+  Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
       inputTextStream,
       mentionedAcctsStream,
-      (inputText, mentionedAccts) =>
+      (dynamic inputText, dynamic mentionedAccts) =>
           removeAcctsFromText(inputText, mentionedAccts));
 
   void onMentionedAccountsChanged() {
@@ -370,10 +378,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     var acctsToRemove =
         textAccts.where((acct) => !mentionedAccts.contains(acct)).toList();
     if (acctsToAdd.isNotEmpty || acctsToRemove.isNotEmpty) {
-      var newText = prependAccts(text, acctsToAdd);
+      String? newText = prependAccts(text, acctsToAdd);
       newText = removeAcctsFromText(newText, acctsToRemove);
       _logger.finest(() => "onMentionedAccountsChanged newText $newText");
-      inputTextController.text = newText;
+      inputTextController.text = newText!;
       inputTextSubject.add(newText);
     }
   }
@@ -406,12 +414,16 @@ abstract class PostStatusBloc extends PostMessageBloc
   static List<String> findAcctMentionsInText(String text) {
     var matches = findAcctsRegex.allMatches(text);
 
-    return matches.map((match) => // group(0) is all match
-        // group(1) is acct without first @
-        match.group(1)).toList();
+    return matches
+        .map(
+          (match) => // group(0) is all match
+              // group(1) is acct without first @
+              match.group(1)!,
+        )
+        .toList();
   }
 
-  static String prependAccts(String text, List<String> accts) {
+  static String prependAccts(String text, List<String?> accts) {
     if (accts.isNotEmpty) {
       var acctsString = accts.map((acct) => "@$acct").join(", ");
 
@@ -422,8 +434,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void addAccountMentions(List<IAccount> accounts) {
-    var accts = accounts.map((account) => account.acct);
+  void addAccountMentions(List<IAccount?> accounts) {
+    var accts = accounts.map((account) => account!.acct);
 
     // remove duplicates
     removeAccountMentions(accounts);
@@ -433,8 +445,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void removeAccountMentions(List<IAccount> accounts) {
-    var accts = accounts.map((account) => account.acct);
+  void removeAccountMentions(List<IAccount?> accounts) {
+    var accts = accounts.map((account) => account!.acct);
 
     mentionedAccts.removeWhere((acct) => accts.contains(acct));
 
@@ -460,8 +472,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   bool isMaximumAttachmentReached(
-      {@required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-      @required int maximumMediaAttachmentCount}) {
+      {required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+      required int maximumMediaAttachmentCount}) {
     return mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
   }
 
@@ -488,16 +500,18 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   String calculateVisibilityField() => visibility.toJsonValue();
 
-  List<String> _calculateMediaIdsField() => _calculateMediaAttachmentsField()
+  List<String>? _calculateMediaIdsField() => _calculateMediaAttachmentsField()
       ?.map((mediaAttachment) => mediaAttachment.id)
-      ?.toList();
+      .toList();
 
-  List<IPleromaMediaAttachment> _calculateMediaAttachmentsField() {
+  List<IPleromaMediaAttachment>? _calculateMediaAttachmentsField() {
     var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
-        ?.where((bloc) =>
-            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
-        ?.map((bloc) => bloc.pleromaMediaAttachment)
-        ?.toList();
+        ?.where(
+          (bloc) =>
+              bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
+        )
+        .map((bloc) => bloc.pleromaMediaAttachment!)
+        .toList();
     // media ids shouldn't be empty (should be null in this case)
     if (mediaAttachments?.isNotEmpty != true) {
       mediaAttachments = null;
@@ -522,15 +536,16 @@ abstract class PostStatusBloc extends PostMessageBloc
     subjectFocusNode.unfocus();
   }
 
-  String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
+  String? removeAcctsFromText(
+      String? inputText, List<String?>? mentionedAccts) {
     var newText = inputText;
     // todo: better performance via Regex
     mentionedAccts?.forEach(
       (acctToRemove) {
-        newText = newText.replaceAll("@$acctToRemove, ", "");
-        newText = newText.replaceAll("@$acctToRemove,", "");
-        newText = newText.replaceAll(" @$acctToRemove ", "");
-        newText = newText.replaceAll("@$acctToRemove", "");
+        newText = newText!.replaceAll("@$acctToRemove, ", "");
+        newText = newText!.replaceAll("@$acctToRemove,", "");
+        newText = newText!.replaceAll(" @$acctToRemove ", "");
+        newText = newText!.replaceAll("@$acctToRemove", "");
       },
     );
 
@@ -538,7 +553,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void setScheduledAt(DateTime dateTime) {
+  void setScheduledAt(DateTime? dateTime) {
     scheduledAtSubject.add(dateTime);
   }
 
@@ -551,7 +566,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     // nothing by default
   }
 
-  List<String> calculateToField() {
+  List<String>? calculateToField() {
     if (pleromaAuthStatusService.isPleroma) {
       return mentionedAccts;
     } else {
@@ -559,12 +574,12 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  String calculateStatusTextField() {
+  String? calculateStatusTextField() {
     if (pleromaAuthStatusService.isPleroma) {
       return inputText;
     } else {
       if (originInReplyToStatus != null) {
-        var inReplyToStatusAcct = originInReplyToStatus.account.acct;
+        var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 
         return "@${inReplyToStatusAcct} $inputText";
       } else {
@@ -573,18 +588,18 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  IStatus calculateInReplyToStatusField() =>
-      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
+  IStatus? calculateInReplyToStatusField() =>
+      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
 
-  IPostStatusPoll _calculatePostStatusPoll() {
-    var poll;
+  IPostStatusPoll? _calculatePostStatusPoll() {
+    IPostStatusPoll? poll;
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
         durationLength:
-            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
-        multiple: pollBloc.multiplyFieldBloc.currentValue,
+            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration!,
+        multiple: pollBloc.multiplyFieldBloc.currentValue!,
         options: pollBloc.pollOptionsGroupBloc.items
-            .map((item) => item.currentValue)
+            .map((item) => item.currentValue!)
             .toList(),
         hideTotals: false,
       );
@@ -592,27 +607,29 @@ abstract class PostStatusBloc extends PostMessageBloc
     return poll;
   }
 
-  PleromaPostStatusPoll _calculatePleromaPostStatusPollField() {
+  PleromaPostStatusPoll? _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
-          .durationDateTimeLengthFieldBloc.currentValueDuration.totalSeconds;
+          .durationDateTimeLengthFieldBloc.currentValueDuration!.totalSeconds;
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
-        multiple: pollBloc.multiplyFieldBloc.currentValue,
+        multiple: pollBloc.multiplyFieldBloc.currentValue!,
         options: pollBloc.pollOptionsGroupBloc.items
-            .map((item) => item.currentValue)
+            .map((item) => item.currentValue!)
             .toList(),
+        // todo: support hide totals
+        hideTotals: false,
       );
     }
     return poll;
   }
 
-  String _calculateSpoilerTextField() {
-    String spoiler;
+  String? _calculateSpoilerTextField() {
+    String? spoiler;
 
-    if (subjectText?.trim()?.isNotEmpty == true) {
+    if (subjectText?.trim().isNotEmpty == true) {
       spoiler = subjectText;
     }
 
@@ -623,7 +640,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   final FocusNode subjectFocusNode = FocusNode();
 
   @override
-  String get subjectText => subjectTextSubject.value;
+  String? get subjectText => subjectTextSubject.value;
 
   @override
   Stream<String> get subjectTextStream => subjectTextSubject.stream;
@@ -644,13 +661,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   void onFileSelected() {
     super.onFileSelected();
-    if (markMediaAsNsfwOnAttach) {
+    if (markMediaAsNsfwOnAttach!) {
       nsfwSensitiveSubject.add(true);
     }
   }
 
   // ignore: close_sinks
-  BehaviorSubject<Duration> expireAtSubject = BehaviorSubject();
+  BehaviorSubject<Duration?> expireAtSubject = BehaviorSubject();
 
   @override
   bool get isExpireDurationExist => expireDuration != null;
@@ -660,10 +677,10 @@ abstract class PostStatusBloc extends PostMessageBloc
       expireDurationStream.map((expireAt) => expireAt != null);
 
   @override
-  Duration get expireDuration => expireAtSubject.value;
+  Duration? get expireDuration => expireAtSubject.value;
 
   @override
-  Stream<Duration> get expireDurationStream => expireAtSubject.stream;
+  Stream<Duration?> get expireDurationStream => expireAtSubject.stream;
 
   @override
   void clearExpireDuration() {
@@ -671,55 +688,43 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void setExpireDuration(Duration duration) {
+  void setExpireDuration(Duration? duration) {
     expireAtSubject.add(duration);
   }
 
-  Future<bool> actualPostStatus() async {
+  Future actualPostStatus() async {
     var remoteStatus = await pleromaAuthStatusService.postStatus(
       data: calculatePleromaPostStatus(),
     );
 
-    var success;
-    if (remoteStatus != null) {
-      await statusRepository.upsertRemoteStatus(
-        remoteStatus,
-        listRemoteId: null,
-        conversationRemoteId: initialData.inReplyToConversationId,
-      );
-      await onStatusPosted(remoteStatus);
-      success = true;
-    } else {
-      success = false;
-    }
-    if (success) {
-      if (inReplyToStatusRemoteId != null) {
-        try {
-          await statusRepository.incrementRepliesCount(
-            remoteId: inReplyToStatusRemoteId,
-          );
-        } catch (e, stackTrace) {
-          _logger.warning(
-            () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
-            e,
-            stackTrace,
-          );
-        }
+    await statusRepository.upsertRemoteStatus(
+      remoteStatus,
+      listRemoteId: null,
+      conversationRemoteId: initialData.inReplyToConversationId,
+    );
+    await onStatusPosted(remoteStatus);
+    var inReplyToStatusRemoteId = this.inReplyToStatusRemoteId;
+    if (inReplyToStatusRemoteId != null) {
+      try {
+        await statusRepository.incrementRepliesCount(
+          remoteId: inReplyToStatusRemoteId,
+        );
+      } catch (e, stackTrace) {
+        _logger.warning(
+          () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
+          e,
+          stackTrace,
+        );
       }
     }
-    return success;
   }
 
-  Future<bool> actualScheduleStatus() async {
+  Future actualScheduleStatus() async {
     var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
       data: calculateScheduleStatus(),
     );
-    var success = scheduledStatus != null;
-    if (success) {
-      await scheduledStatusRepository
-          .upsertRemoteScheduledStatus(scheduledStatus);
-    }
-    return success;
+    await scheduledStatusRepository
+        .upsertRemoteScheduledStatus(scheduledStatus);
   }
 
   @override
@@ -741,13 +746,10 @@ abstract class PostStatusBloc extends PostMessageBloc
                 pleroma: mediaAttachment.pleroma,
               ),
             )
-            ?.toList(),
-        poll: _calculatePostStatusPoll(),
-        inReplyToPleromaStatus: initialData.inReplyToPleromaStatus != null
-            ? mapLocalStatusToRemoteStatus(
-                calculateInReplyToStatusField(),
-              )
-            : null,
+            .toList(),
+        poll: _calculatePostStatusPoll() as PostStatusPoll?,
+        inReplyToPleromaStatus:
+            calculateInReplyToStatusField()?.toPleromaStatus(),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,
@@ -764,11 +766,14 @@ abstract class PostStatusBloc extends PostMessageBloc
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
       idempotencyKey: idempotencyKey,
-      scheduledAt: scheduledAt,
+      scheduledAt: scheduledAt!,
       to: calculateToField(),
       poll: _calculatePleromaPostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       expiresInSeconds: expireAtSubject.value?.totalSeconds,
+      language: initialData.language,
+      preview: null,
+      contentType: null,
     );
   }
 
@@ -786,6 +791,8 @@ abstract class PostStatusBloc extends PostMessageBloc
       spoilerText: _calculateSpoilerTextField(),
       language: initialData.language,
       expiresInSeconds: expireAtSubject.value?.totalSeconds,
+      contentType: null,
+      preview: null,
     );
   }
 }

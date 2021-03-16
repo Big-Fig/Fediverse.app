@@ -41,7 +41,7 @@ class ConversationChatPage extends StatelessWidget {
 class _ConversationChatPageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   const _ConversationChatPageAppBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -68,7 +68,7 @@ class _ConversationChatPageAppBarWidget extends StatelessWidget
 
 class _ConversationChatPageAppBarDeleteActionWidget extends StatelessWidget {
   const _ConversationChatPageAppBarDeleteActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -80,27 +80,22 @@ class _ConversationChatPageAppBarDeleteActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {
         var success = await FediConfirmAlertDialog(
-          context: context,
-          title: S.of(context).app_chat_action_delete_dialog_title,
-          contentText: S.of(context).app_chat_action_delete_dialog_content,
-          onAction: (context) async {
+            context: context,
+            title: S.of(context).app_chat_action_delete_dialog_title,
+            contentText: S.of(context).app_chat_action_delete_dialog_content,
+            onAction: (context) async {
+              var dialogResult = await PleromaAsyncOperationHelper
+                  .performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () => conversationChatBloc.delete(),
+              );
 
-            var dialogResult =
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-              context: context,
-              asyncCode: () => conversationChatBloc.delete(),
-            );
-
-            Navigator.of(context).pop(dialogResult.success);
-
-
-          }
-        ).show(context);
+              Navigator.of(context).pop(dialogResult.success);
+            }).show(context);
 
         if (success) {
           Navigator.of(context).pop();
         }
-
       },
     );
   }
@@ -108,9 +103,9 @@ class _ConversationChatPageAppBarDeleteActionWidget extends StatelessWidget {
 
 void goToConversationChatPage(
   BuildContext context, {
-  @required IConversationChat chat,
-  @required IConversationChatMessage lastChatMessage,
-  @required VoidCallback onDeletedCallback,
+  required IConversationChat chat,
+  required IConversationChatMessage? lastChatMessage,
+  required VoidCallback? onDeletedCallback,
 }) {
   Navigator.push(
     context,
@@ -123,15 +118,18 @@ void goToConversationChatPage(
 }
 
 MaterialPageRoute createConversationChatPageRoute({
-  @required IConversationChat chat,
-  @required IConversationChatMessage lastChatMessage,
-  @required VoidCallback onDeletedCallback,
+  required IConversationChat chat,
+  required IConversationChatMessage? lastChatMessage,
+  required VoidCallback? onDeletedCallback,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IConversationChatBloc>(
       create: (context) {
-        var chatBloc = ConversationChatBloc.createFromContext(context,
-            chat: chat, lastChatMessage: lastChatMessage);
+        var chatBloc = ConversationChatBloc.createFromContext(
+          context,
+          chat: chat,
+          lastChatMessage: lastChatMessage,
+        );
 
         // we don't need to await
         chatBloc.markAsRead();

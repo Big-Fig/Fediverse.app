@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 class ChatSelectionCopyAsRawTextActionButtonWidget extends StatelessWidget {
   const ChatSelectionCopyAsRawTextActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

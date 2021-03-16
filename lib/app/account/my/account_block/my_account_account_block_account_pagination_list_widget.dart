@@ -5,8 +5,8 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
-  final Widget customLoadingWidget;
-  final Widget customEmptyWidget;
+  final Widget? customLoadingWidget;
+  final Widget? customEmptyWidget;
 
   const MyAccountAccountBlockAccountPaginationListWidget({
     this.customLoadingWidget,
@@ -30,7 +30,7 @@ class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
 class _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget
     extends StatelessWidget {
   const _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

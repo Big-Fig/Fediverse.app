@@ -17,8 +17,8 @@ class PleromaListAdapter extends TypeAdapter<PleromaList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaList(
-      id: fields[0] as String,
-      title: fields[1] as String,
+      id: fields[0] as String?,
+      title: fields[1] as String?,
     );
   }
 
@@ -49,8 +49,8 @@ class PleromaListAdapter extends TypeAdapter<PleromaList> {
 
 PleromaList _$PleromaListFromJson(Map<String, dynamic> json) {
   return PleromaList(
-    id: json['id'] as String,
-    title: json['title'] as String,
+    id: json['id'] as String?,
+    title: json['title'] as String?,
   );
 }
 

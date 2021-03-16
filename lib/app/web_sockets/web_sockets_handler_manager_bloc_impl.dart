@@ -16,7 +16,6 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/widgets.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
@@ -30,20 +29,20 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
 
   WebSocketsHandlerManagerBloc({
-    @required this.pleromaWebSocketsService,
-    @required this.conversationRepository,
-    @required this.notificationRepository,
-    @required this.statusRepository,
-    @required this.chatNewMessagesHandlerBloc,
-    @required this.conversationChatNewMessagesHandlerBloc,
-    @required this.myAccountBloc,
+    required this.pleromaWebSocketsService,
+    required this.conversationRepository,
+    required this.notificationRepository,
+    required this.statusRepository,
+    required this.chatNewMessagesHandlerBloc,
+    required this.conversationChatNewMessagesHandlerBloc,
+    required this.myAccountBloc,
   });
 
   @override
   IDisposable listenMyAccountChannel({
-    @required WebSocketsListenType listenType,
-    @required bool notification,
-    @required bool chat,
+    required WebSocketsListenType listenType,
+    required bool notification,
+    required bool chat,
   }) =>
       MyAccountWebSocketsHandler(
         myAccountBloc: myAccountBloc,
@@ -61,9 +60,9 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenAccountChannel({
-    @required WebSocketsListenType listenType,
-    @required String accountId,
-    @required bool notification,
+    required WebSocketsListenType listenType,
+    required String? accountId,
+    required bool notification,
   }) =>
       AccountWebSocketsHandler(
         listenType: listenType,
@@ -81,7 +80,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenPleromaChatChannel({
-    @required WebSocketsListenType listenType,
+    required WebSocketsListenType listenType,
   }) =>
       PleromaChatWebSocketsHandler(
         listenType: listenType,
@@ -97,7 +96,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenConversationChannel({
-    @required WebSocketsListenType listenType,
+    required WebSocketsListenType listenType,
   }) =>
       ConversationChatWebSocketsHandler(
         pleromaWebSocketsService: pleromaWebSocketsService,
@@ -114,11 +113,11 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenPublicChannel({
-    @required WebSocketsListenType listenType,
-    @required bool onlyLocal,
-    @required bool onlyMedia,
-    @required bool onlyRemote,
-    @required String onlyFromInstance,
+    required WebSocketsListenType listenType,
+    required bool? onlyLocal,
+    required bool? onlyMedia,
+    required bool? onlyRemote,
+    required String? onlyFromInstance,
   }) =>
       PublicTimelineWebSocketsHandler(
         listenType: listenType,
@@ -138,9 +137,9 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenHashtagChannel({
-    @required WebSocketsListenType listenType,
-    @required String hashtag,
-    @required bool local,
+    required WebSocketsListenType listenType,
+    required String? hashtag,
+    required bool? local,
   }) =>
       HashtagStatusListWebSocketsHandler(
         listenType: listenType,
@@ -158,8 +157,8 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenListChannel({
-    @required WebSocketsListenType listenType,
-    @required String listId,
+    required WebSocketsListenType listenType,
+    required String? listId,
   }) =>
       CustomListStatusListWebSocketsHandler(
         listenType: listenType,

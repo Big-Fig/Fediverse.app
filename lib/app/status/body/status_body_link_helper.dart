@@ -6,9 +6,9 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:flutter/widgets.dart';
 
 Future handleStatusBodyLinkClick({
-  @required IStatusBloc statusBloc,
-  @required String url,
-  @required BuildContext context,
+  required IStatusBloc statusBloc,
+  required String url,
+  required BuildContext context,
 }) async {
   var instanceLocation = statusBloc.instanceLocation;
   var isLocal = instanceLocation == InstanceLocation.local;

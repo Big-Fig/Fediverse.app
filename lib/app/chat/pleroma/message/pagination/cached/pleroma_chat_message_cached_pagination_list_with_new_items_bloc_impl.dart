@@ -23,10 +23,10 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatMessageCachedPaginationListWithNewItemsBloc({
-    @required bool mergeNewItemsImmediately,
-    @required this.chatMessageCachedListService,
-    @required this.pleromaChatBloc,
-    @required
+    required bool mergeNewItemsImmediately,
+    required this.chatMessageCachedListService,
+    required this.pleromaChatBloc,
+    required
         ICachedPaginationBloc<TPage, IPleromaChatMessage> cachedPaginationBloc,
   }) : super(
           mergeNewItemsImmediately: mergeNewItemsImmediately,
@@ -43,16 +43,16 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
     addDisposable(subject: hiddenItemsSubject);
   }
 
-  final BehaviorSubject<List<IPleromaChatMessage>> hiddenItemsSubject =
+  final BehaviorSubject<List<IPleromaChatMessage?>?> hiddenItemsSubject =
       BehaviorSubject.seeded([]);
 
-  List<IPleromaChatMessage> get hiddenItems => hiddenItemsSubject.value;
+  List<IPleromaChatMessage?>? get hiddenItems => hiddenItemsSubject.value;
 
-  Stream<List<IPleromaChatMessage>> get hiddenItemsStream =>
+  Stream<List<IPleromaChatMessage?>?> get hiddenItemsStream =>
       hiddenItemsSubject.stream;
 
-  void hideItem(IPleromaChatMessage itemToHide) {
-    hiddenItems.add(itemToHide);
+  void hideItem(IPleromaChatMessage? itemToHide) {
+    hiddenItems!.add(itemToHide);
     hiddenItemsSubject.add(hiddenItems);
   }
 
@@ -70,14 +70,14 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
   List<IPleromaChatMessage> excludeHiddenItems(
     List<IPleromaChatMessage> superItems,
-    List<IPleromaChatMessage> hiddenItems,
+    List<IPleromaChatMessage?>? hiddenItems,
   ) {
-    if (hiddenItems.isEmpty) {
+    if (hiddenItems!.isEmpty) {
       return superItems;
     }
     superItems.removeWhere((currentItem) =>
         hiddenItems.firstWhere(
-            (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
+            (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
             orElse: () => null) !=
         null);
 
@@ -103,7 +103,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
     if (a?.createdAt == null && b?.createdAt != null) {
       return -1;
     }
-    return a.createdAt.compareTo(b.createdAt);
+    return a.createdAt!.compareTo(b.createdAt!);
   }
 
   @override
@@ -113,7 +113,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   static PleromaChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
+    required bool mergeNewItemsImmediately,
   }) {
     return PleromaChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
@@ -126,7 +126,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
               IPleromaChatMessage>>(
         context,
         listen: false,
-      ),
+      ) as ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>,
       pleromaChatBloc: IPleromaChatBloc.of(
         context,
         listen: false,
@@ -136,12 +136,12 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
 
   static Widget provideToContext(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
-    @required Widget child,
+    required bool mergeNewItemsImmediately,
+    required Widget child,
   }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
+            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage?>>(
       create: (context) =>
           PleromaChatMessageCachedPaginationListWithNewItemsBloc
               .createFromContext(

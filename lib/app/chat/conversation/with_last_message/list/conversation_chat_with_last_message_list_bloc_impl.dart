@@ -24,20 +24,20 @@ var _logger = Logger("conversation_chat_with_last_message_list_bloc_impl.dart");
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
   @override
-  IConversationChatWithLastMessageCachedBloc chatListBloc;
+  late IConversationChatWithLastMessageCachedListBloc cachedListBloc;
 
   @override
-  IConversationChatWithLastMessagePaginationBloc chatPaginationBloc;
+  late IConversationChatWithLastMessagePaginationBloc paginationBloc;
 
   @override
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
           IConversationChatWithLastMessage>
-      get chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
+      get chatPaginationListBloc => paginationListWithNewItemsBloc;
 
   @override
-  ICachedPaginationListWithNewItemsBloc<
+  late ICachedPaginationListWithNewItemsBloc<
       CachedPaginationPage<IConversationChatWithLastMessage>,
-      IConversationChatWithLastMessage> chatPaginationListWithNewItemsBloc;
+      IConversationChatWithLastMessage> paginationListWithNewItemsBloc;
 
   final IConversationChatRepository conversationRepository;
   final IConversationChatWithLastMessageRepository
@@ -46,34 +46,35 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   ConversationChatWithLastMessageListBloc({
-    @required IPleromaConversationService conversationService,
-    @required this.conversationRepository,
-    @required this.paginationSettingsBloc,
-    @required this.conversationChatWithLastMessageRepository,
-    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
-  }) {
+    required IPleromaConversationService conversationService,
+    required this.conversationRepository,
+    required this.paginationSettingsBloc,
+    required this.conversationChatWithLastMessageRepository,
+    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+  }) : cachedListBloc = ConversationChatWithLastMessageCachedListBloc(
+          conversationChatService: conversationService,
+          chatWithLastMessageRepository:
+              conversationChatWithLastMessageRepository,
+          conversationRepository: conversationRepository,
+        ) {
     _logger.finest(() => "constructor");
-    chatListBloc = ConversationChatWithLastMessageCachedListBloc(
-        conversationChatService: conversationService,
-        chatWithLastMessageRepository:
-            conversationChatWithLastMessageRepository,
-        conversationRepository: conversationRepository);
+
     addDisposable(
-      disposable: chatListBloc,
+      disposable: cachedListBloc,
     );
-    chatPaginationBloc = ConversationChatWithLastMessagePaginationBloc(
+    paginationBloc = ConversationChatWithLastMessagePaginationBloc(
       paginationSettingsBloc: paginationSettingsBloc,
-      listService: chatListBloc,
+      listService: cachedListBloc,
       maximumCachedPagesCount: null,
     );
-    addDisposable(disposable: chatListBloc);
-    chatPaginationListWithNewItemsBloc =
+    addDisposable(disposable: cachedListBloc);
+    paginationListWithNewItemsBloc =
         ConversationChatWithLastMessagePaginationListWithNewItemsBloc(
-      paginationBloc: chatPaginationBloc,
-      cachedListBloc: chatListBloc,
+      paginationBloc: paginationBloc,
+      cachedListBloc: cachedListBloc,
       mergeNewItemsImmediately: true,
     );
-    addDisposable(disposable: chatPaginationListWithNewItemsBloc);
+    addDisposable(disposable: paginationListWithNewItemsBloc);
 
     addDisposable(
       disposable: webSocketsHandlerManagerBloc.listenConversationChannel(
@@ -85,8 +86,10 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   static ConversationChatWithLastMessageListBloc createFromContext(
           BuildContext context) =>
       ConversationChatWithLastMessageListBloc(
-        conversationRepository:
-            IConversationChatRepository.of(context, listen: false),
+        conversationRepository: IConversationChatRepository.of(
+          context,
+          listen: false,
+        ),
         conversationService: IPleromaConversationService.of(
           context,
           listen: false,

@@ -12,46 +12,46 @@ abstract class IPleromaTimelineService implements IPleromaApi {
   static IPleromaTimelineService of(BuildContext context, {listen = true}) =>
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 
-  Future<List<IPleromaStatus>> getPublicTimeline({
-    IPleromaPaginationRequest pagination,
-    bool onlyWithMedia = false,
+  Future<List<IPleromaStatus>?> getPublicTimeline({
+    IPleromaPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
     bool onlyLocal = false,
     bool onlyRemote = false,
     bool withMuted = false,
-    String onlyFromInstance,
-    List<PleromaVisibility> excludeVisibilities = const [
+    String? onlyFromInstance,
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
-    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   });
 
-  Future<List<IPleromaStatus>> getHashtagTimeline({
-    @required String hashtag,
-    IPleromaPaginationRequest pagination,
-    bool onlyWithMedia = false,
+  Future<List<IPleromaStatus>?> getHashtagTimeline({
+    required String? hashtag,
+    IPleromaPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
   });
 
-  Future<List<IPleromaStatus>> getHomeTimeline({
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getHomeTimeline({
+    IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
-    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+    PleromaReplyVisibilityFilter? pleromaReplyVisibilityFilter,
   });
 
-  Future<List<IPleromaStatus>> getListTimeline({
-    @required String listId,
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getListTimeline({
+    required String? listId,
+    IPleromaPaginationRequest? pagination,
     bool onlyLocal = false,
     bool withMuted = false,
-    List<PleromaVisibility> excludeVisibilities = const [
+    List<PleromaVisibility>? excludeVisibilities = const [
       PleromaVisibility.direct
     ],
   });

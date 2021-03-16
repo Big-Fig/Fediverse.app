@@ -61,7 +61,7 @@ void _goToAccountDetailsPage(BuildContext context, IAccount account) {
 
 class _StatusReblogAccountListPrivacyWarningWidget extends StatelessWidget {
   const _StatusReblogAccountListPrivacyWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -77,14 +77,14 @@ class _StatusReblogAccountListPrivacyWarningWidget extends StatelessWidget {
   }
 }
 
-void goToStatusReblogAccountListPage(BuildContext context, IStatus status) {
+void goToStatusReblogAccountListPage(BuildContext context, IStatus? status) {
   Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) =>
             StatusReblogAccountCachedListBloc.provideToContext(
               context,
-              status: status.reblog ?? status,
+              status: status!.reblog ?? status,
               child: AccountCachedPaginationBloc.provideToContext(
                 context,
                 child: AccountPaginationListBloc.provideToContext(context,

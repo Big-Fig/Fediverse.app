@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 
 class MyAccountFollowRequestAccountPaginationListWidget
     extends StatelessWidget {
-  final Widget customLoadingWidget;
-  final Widget customEmptyWidget;
+  final Widget? customLoadingWidget;
+  final Widget? customEmptyWidget;
 
   const MyAccountFollowRequestAccountPaginationListWidget({
     this.customLoadingWidget,
@@ -29,8 +29,8 @@ class MyAccountFollowRequestAccountPaginationListWidget
       customLoadingWidget: customLoadingWidget,
       customItemBodyBuilder: (
         BuildContext context,
-        AccountCallback accountSelectedCallback,
-        List<Widget> accountActions,
+        AccountCallback? accountSelectedCallback,
+        List<Widget>? accountActions,
       ) {
         return FediListTile(
           child: AccountBigListItemWidget(
@@ -53,7 +53,7 @@ class MyAccountFollowRequestAccountPaginationListWidget
 class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
     extends StatelessWidget {
   const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -71,7 +71,7 @@ class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
             .rejectFollowRequest(account: account);
         paginationListBloc.refreshWithController();
       },
-      builder: (BuildContext context, void Function() onPressed) {
+      builder: (BuildContext context, void Function()? onPressed) {
         return FediTransparentTextButtonWithBorder(
           S.of(context).app_account_my_followRequest_action_ignore,
           onPressed: onPressed,
@@ -86,7 +86,7 @@ class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
 class _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget
     extends StatelessWidget {
   const _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -104,7 +104,7 @@ class _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget
             .acceptFollowRequest(account: account);
         paginationListBloc.refreshWithController();
       },
-      builder: (BuildContext context, void Function() onPressed) {
+      builder: (BuildContext context, void Function()? onPressed) {
         return FediTransparentTextButtonWithBorder(
           S.of(context).app_account_my_followRequest_action_add,
           onPressed: onPressed,

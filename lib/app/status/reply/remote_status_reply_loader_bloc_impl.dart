@@ -13,7 +13,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   @override
   final IStatus originalStatus;
   @override
-  IStatus inReplyToStatus;
+  IStatus? inReplyToStatus;
 
   static RemoteStatusReplyLoaderBloc createFromContext(
     BuildContext context,
@@ -33,8 +33,8 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   }
 
   RemoteStatusReplyLoaderBloc({
-    @required this.pleromaStatusService,
-    @required this.originalStatus,
+    required this.pleromaStatusService,
+    required this.originalStatus,
   }) {
     assert(originalStatus.inReplyToRemoteId != null);
     if (originalStatus.inReplyToStatus != null) {
@@ -48,15 +48,12 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     if (inReplyToStatus != null) {
       return;
     }
-    var inReplyToRemoteId = originalStatus.inReplyToRemoteId;
+    var inReplyToRemoteId = originalStatus.inReplyToRemoteId!;
 
-    if (inReplyToStatus == null) {
-      var replyToRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: inReplyToRemoteId);
+    var replyToRemoteStatus = await pleromaStatusService.getStatus(
+      statusRemoteId: inReplyToRemoteId,
+    );
 
-      inReplyToStatus = mapRemoteStatusToLocalStatus(replyToRemoteStatus);
-    } else {
-      throw "Can't load inReplyToStatus";
-    }
+    inReplyToStatus = replyToRemoteStatus.toDbStatusPopulatedWrapper();
   }
 }

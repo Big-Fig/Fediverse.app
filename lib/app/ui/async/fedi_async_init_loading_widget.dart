@@ -9,8 +9,8 @@ class FediAsyncInitLoadingWidget extends StatelessWidget {
   final WidgetBuilder loadingFinishedBuilder;
 
   FediAsyncInitLoadingWidget({
-    @required this.asyncInitLoadingBloc,
-    @required this.loadingFinishedBuilder,
+    required this.asyncInitLoadingBloc,
+    required this.loadingFinishedBuilder,
   });
 
   @override

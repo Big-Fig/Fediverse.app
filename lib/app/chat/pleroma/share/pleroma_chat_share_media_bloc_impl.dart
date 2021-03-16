@@ -18,16 +18,16 @@ import 'package:provider/provider.dart';
 class PleromaChatShareMediaBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareMediaBloc {
   @override
-  final IPleromaMediaAttachment mediaAttachment;
+  final IPleromaMediaAttachment? mediaAttachment;
 
   PleromaChatShareMediaBloc({
-    @required this.mediaAttachment,
-    @required IPleromaChatRepository chatRepository,
-    @required IPleromaChatMessageRepository chatMessageRepository,
-    @required IPleromaChatService pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.mediaAttachment,
+    required IPleromaChatRepository chatRepository,
+    required IPleromaChatMessageRepository chatMessageRepository,
+    required IPleromaChatService pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -40,7 +40,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   @override
   PleromaChatMessageSendData createPleromaChatMessageSendData() {
     var messageSendData = PleromaChatMessageSendData(
-      content: "${mediaAttachment.url} ${message ?? ""}".trim(),
+      content: "${mediaAttachment!.url} ${message ?? ""}".trim(),
       idempotencyKey: null,
       mediaId: null,
     );
@@ -48,8 +48,8 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   }
 
   static Widget provideToContext(BuildContext context,
-      {@required IPleromaMediaAttachment mediaAttachment,
-      @required Widget child}) {
+      {required IPleromaMediaAttachment? mediaAttachment,
+      required Widget child}) {
     return DisposableProvider<PleromaChatShareMediaBloc>(
       create: (context) => createFromContext(context, mediaAttachment),
       child: ProxyProvider<PleromaChatShareMediaBloc, IPleromaChatShareBloc>(
@@ -66,7 +66,7 @@ class PleromaChatShareMediaBloc extends PleromaChatShareBloc
   }
 
   static PleromaChatShareMediaBloc createFromContext(
-          BuildContext context, IPleromaMediaAttachment mediaAttachment) =>
+          BuildContext context, IPleromaMediaAttachment? mediaAttachment) =>
       PleromaChatShareMediaBloc(
         mediaAttachment: mediaAttachment,
         chatRepository: IPleromaChatRepository.of(

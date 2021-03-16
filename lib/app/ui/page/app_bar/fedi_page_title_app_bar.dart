@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 
 class FediPageTitleAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   final Widget leading;
   final bool centerTitle;
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   // AppBar size without bottom
   @override
@@ -19,7 +19,7 @@ class FediPageTitleAppBar extends StatelessWidget
   static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
 
   FediPageTitleAppBar({
-    @required this.title,
+    required this.title,
     this.actions,
     this.centerTitle = true,
     this.leading = const FediBackIconButton(),
@@ -38,7 +38,7 @@ class FediPageTitleAppBar extends StatelessWidget
           actions: actions,
           brightness: fediUiColorTheme.brightness,
           backgroundColor: fediUiColorTheme.white,
-          title: title != null ? FediSubHeaderText(title) : null,
+          title: title != null ? FediSubHeaderText(title!) : null,
           leading: leading,
         ),
         const FediUltraLightGreyDivider(),

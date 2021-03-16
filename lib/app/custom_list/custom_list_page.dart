@@ -82,7 +82,7 @@ class _CustomListPageState extends State<CustomListPage> {
 class _CustomListPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _CustomListPageAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -112,7 +112,7 @@ class _CustomListPageAppBar extends StatelessWidget
 
 class _CustomListPageAppBarTitleWidget extends StatelessWidget {
   const _CustomListPageAppBarTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -120,13 +120,13 @@ class _CustomListPageAppBarTitleWidget extends StatelessWidget {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     var customListBloc = ICustomListBloc.of(context);
 
-    return StreamBuilder<ICustomList>(
+    return StreamBuilder<ICustomList?>(
       stream: customListBloc.customListStream,
       initialData: customListBloc.customList,
       builder: (context, snapshot) {
-        var customList = snapshot.data;
+        var customList = snapshot.data!;
         return Text(
-          customList.title,
+          customList.title!,
           style: fediUiTextTheme.giantTitleShortBoldDarkGrey,
         );
       },
@@ -136,7 +136,7 @@ class _CustomListPageAppBarTitleWidget extends StatelessWidget {
 
 class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
   const _CustomListPageAppBarEditActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -167,10 +167,10 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
 }
 
 void goToCustomListPage({
-  @required BuildContext context,
-  @required ICustomList customList,
-  @required Function(ICustomList customList) onChanged,
-  @required VoidCallback onDeleted,
+  required BuildContext context,
+  required ICustomList? customList,
+  required Function(ICustomList? customList) onChanged,
+  required VoidCallback onDeleted,
 }) {
   Navigator.push(
     context,
@@ -184,10 +184,10 @@ void goToCustomListPage({
 }
 
 MaterialPageRoute createCustomListPageRoute({
-  @required BuildContext context,
-  @required ICustomList customList,
-  @required Function(ICustomList customList) onChanged,
-  @required VoidCallback onDeleted,
+  required BuildContext context,
+  required ICustomList? customList,
+  required Function(ICustomList? customList) onChanged,
+  required VoidCallback onDeleted,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -198,8 +198,8 @@ MaterialPageRoute createCustomListPageRoute({
         create: (context) {
           var bloc = TimelineLocalPreferencesBloc.customList(
             ILocalPreferencesService.of(context, listen: false),
-            userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-            customList: customList,
+            userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
+            customList: customList!,
           );
 
           bloc.performAsyncInit();
@@ -253,7 +253,7 @@ MaterialPageRoute createCustomListPageRoute({
                   },
                   child: StatusCachedListBlocProxyProvider(
                     child: ProxyProvider<IStatusCachedListBloc,
-                        IPleromaCachedListBloc<IStatus>>(
+                        IPleromaCachedListBloc<IStatus?>>(
                       update: (context, value, previous) => value,
                       child: StatusCachedListBlocLoadingWidget(
                         child: StatusCachedPaginationBloc.provideToContext(
@@ -262,7 +262,7 @@ MaterialPageRoute createCustomListPageRoute({
                               .provideToContext(
                             context,
                             mergeNewItemsImmediately: false,
-                            child: Provider<ICustomList>.value(
+                            child: Provider<ICustomList?>.value(
                               value: customList,
                               child: DisposableProxyProvider<ICustomList,
                                   ICustomListBloc>(

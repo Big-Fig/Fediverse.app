@@ -15,7 +15,7 @@ class RecentSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recentSearchBloc = IRecentSearchBloc.of(context);
-    return StreamBuilder<RecentSearchList>(
+    return StreamBuilder<RecentSearchList?>(
         stream: recentSearchBloc.recentSearchListStream,
         initialData: recentSearchBloc.recentSearchList,
         builder: (context, snapshot) {
@@ -26,7 +26,7 @@ class RecentSearchWidget extends StatelessWidget {
               ?.toList();
 
           var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
-          return Provider<List<String>>.value(
+          return Provider<List<String>?>.value(
             value: recentItems,
             child: Padding(
               padding: FediPadding.allBigPadding,
@@ -53,7 +53,7 @@ class RecentSearchWidget extends StatelessWidget {
 
 class _RecentSearchHeaderWidget extends StatelessWidget {
   const _RecentSearchHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -76,7 +76,7 @@ class _RecentSearchHeaderWidget extends StatelessWidget {
 
 class _RecentSearchClearButtonWidget extends StatelessWidget {
   const _RecentSearchClearButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -99,7 +99,7 @@ class _RecentSearchClearButtonWidget extends StatelessWidget {
 
 class _RecentSearchListWidget extends StatelessWidget {
   const _RecentSearchListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -133,7 +133,7 @@ class _RecentSearchListWidget extends StatelessWidget {
 
 class _RecentSearchEmptyWidget extends StatelessWidget {
   const _RecentSearchEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

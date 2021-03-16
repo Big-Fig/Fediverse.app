@@ -34,12 +34,12 @@ class AccountStatusesWithoutRepliesListBloc
       );
 
   AccountStatusesWithoutRepliesListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
-    @required IStatusRepository statusRepository,
-    @required IFilterRepository filterRepository,
-    @required IMyAccountBloc myAccountBloc,
-    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
+    required IStatusRepository statusRepository,
+    required IFilterRepository filterRepository,
+    required IMyAccountBloc myAccountBloc,
+    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -54,7 +54,7 @@ class AccountStatusesWithoutRepliesListBloc
 
   static AccountStatusesWithoutRepliesListBloc createFromContext(
       BuildContext context,
-      {@required IAccount account}) {
+      {required IAccount? account}) {
     return AccountStatusesWithoutRepliesListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
@@ -79,9 +79,9 @@ class AccountStatusesWithoutRepliesListBloc
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    @required int limit,
-    @required IStatus newerThan,
-    @required IStatus olderThan,
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
   }) async {
     var statuses = await statusRepository.getStatuses(
       filters: _statusRepositoryFilters,
@@ -107,9 +107,9 @@ class AccountStatusesWithoutRepliesListBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+      {required int? limit,
+      required IStatus? newerThan,
+      required IStatus? olderThan}) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
@@ -117,7 +117,7 @@ class AccountStatusesWithoutRepliesListBloc
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       excludeReplies: true,
-      accountRemoteId: account.remoteId,
+      accountRemoteId: account!.remoteId,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
@@ -141,7 +141,7 @@ class AccountStatusesWithoutRepliesListBloc
   Stream<bool> get settingsChangedStream => Stream.empty();
 
   static Widget provideToContext(BuildContext context,
-      {@required IAccount account, @required Widget child}) {
+      {required IAccount? account, required Widget child}) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
           AccountStatusesWithoutRepliesListBloc.createFromContext(context,
@@ -156,5 +156,5 @@ class AccountStatusesWithoutRepliesListBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

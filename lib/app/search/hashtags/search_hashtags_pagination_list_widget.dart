@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class SearchHashtagsPaginationListWidget extends StatelessWidget {
   const SearchHashtagsPaginationListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -11,7 +11,7 @@ abstract class INotificationBloc implements IDisposable {
   static INotificationBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<INotificationBloc>(context, listen: listen);
 
-  Stream<bool> get dismissedStream;
+  Stream<bool?> get dismissedStream;
 
   bool get dismissed;
 
@@ -19,23 +19,23 @@ abstract class INotificationBloc implements IDisposable {
 
   Stream<INotification> get notificationStream;
 
-  IStatus get status;
+  IStatus? get status;
 
-  Stream<IStatus> get statusStream;
+  Stream<IStatus?> get statusStream;
 
-  String get chatMessageRemoteId;
+  String? get chatMessageRemoteId;
 
-  Stream<String> get chatMessageRemoteIdStream;
+  Stream<String?> get chatMessageRemoteIdStream;
 
-  String get chatRemoteId;
+  String? get chatRemoteId;
 
-  Stream<String> get chatRemoteIdStream;
+  Stream<String?> get chatRemoteIdStream;
 
   String get remoteId;
 
-  IAccount get account;
+  IAccount? get account;
 
-  Stream<IAccount> get accountStream;
+  Stream<IAccount?> get accountStream;
 
   String get type;
 

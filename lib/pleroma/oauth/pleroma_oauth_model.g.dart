@@ -17,8 +17,8 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaOAuthToken(
-      accessToken: fields[0] as String,
-      tokenType: fields[1] as String,
+      accessToken: fields[0] as String?,
+      tokenType: fields[1] as String?,
       scope: fields[2] as dynamic,
       createdAt: fields[3] as dynamic,
     );
@@ -55,8 +55,8 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
 
 PleromaOAuthToken _$PleromaOAuthTokenFromJson(Map<String, dynamic> json) {
   return PleromaOAuthToken(
-    accessToken: json['access_token'] as String,
-    tokenType: json['token_type'] as String,
+    accessToken: json['access_token'] as String?,
+    tokenType: json['token_type'] as String?,
     scope: json['scope'],
     createdAt: json['created_at'],
   );
@@ -73,11 +73,11 @@ Map<String, dynamic> _$PleromaOAuthTokenToJson(PleromaOAuthToken instance) =>
 PleromaOAuthAuthorizeRequest _$PleromaOAuthAuthorizeRequestFromJson(
     Map<String, dynamic> json) {
   return PleromaOAuthAuthorizeRequest(
-    forceLogin: json['force_login'] as bool,
-    clientId: json['client_id'] as String,
-    redirectUri: json['redirect_uri'] as String,
-    scope: json['scope'] as String,
-    responseType: json['response_type'] as String,
+    forceLogin: json['force_login'] as bool?,
+    clientId: json['client_id'] as String?,
+    redirectUri: json['redirect_uri'] as String?,
+    scope: json['scope'] as String?,
+    responseType: json['response_type'] as String?,
   );
 }
 
@@ -94,12 +94,12 @@ Map<String, dynamic> _$PleromaOAuthAuthorizeRequestToJson(
 PleromaOAuthAccountTokenRequest _$PleromaOAuthAccountTokenRequestFromJson(
     Map<String, dynamic> json) {
   return PleromaOAuthAccountTokenRequest(
-    code: json['code'] as String,
-    scope: json['scope'] as String,
-    redirectUri: json['redirect_uri'] as String,
-    clientId: json['client_id'] as String,
-    clientSecret: json['client_secret'] as String,
-    grantType: json['grant_type'] as String,
+    code: json['code'] as String?,
+    scope: json['scope'] as String?,
+    redirectUri: json['redirect_uri'] as String?,
+    clientId: json['client_id'] as String?,
+    clientSecret: json['client_secret'] as String?,
+    grantType: json['grant_type'] as String?,
   );
 }
 
@@ -117,11 +117,11 @@ Map<String, dynamic> _$PleromaOAuthAccountTokenRequestToJson(
 PleromaOAuthAppTokenRequest _$PleromaOAuthAppTokenRequestFromJson(
     Map<String, dynamic> json) {
   return PleromaOAuthAppTokenRequest(
-    scope: json['scope'] as String,
-    redirectUri: json['redirect_uri'] as String,
-    clientId: json['client_id'] as String,
-    clientSecret: json['client_secret'] as String,
-    grantType: json['grant_type'] as String,
+    scope: json['scope'] as String?,
+    redirectUri: json['redirect_uri'] as String?,
+    clientId: json['client_id'] as String?,
+    clientSecret: json['client_secret'] as String?,
+    grantType: json['grant_type'] as String?,
   );
 }
 
@@ -138,9 +138,9 @@ Map<String, dynamic> _$PleromaOAuthAppTokenRequestToJson(
 PleromaOAuthAppTokenRevokeRequest _$PleromaOAuthAppTokenRevokeRequestFromJson(
     Map<String, dynamic> json) {
   return PleromaOAuthAppTokenRevokeRequest(
-    clientId: json['client_id'] as String,
-    clientSecret: json['client_secret'] as String,
-    token: json['token'] as String,
+    clientId: json['client_id'] as String?,
+    clientSecret: json['client_secret'] as String?,
+    token: json['token'] as String?,
   );
 }
 

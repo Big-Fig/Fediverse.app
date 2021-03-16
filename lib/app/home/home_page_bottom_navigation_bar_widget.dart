@@ -66,7 +66,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
   Widget buildTabNavBarItem(
           BuildContext context, IHomeBloc homeBloc, HomeTab tab) =>
-      StreamBuilder<HomeTab>(
+      StreamBuilder<HomeTab?>(
           stream: homeBloc.selectedTabStream,
           builder: (context, snapshot) {
             var selectedTab = snapshot.data;
@@ -104,7 +104,6 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             ),
           ),
         );
-        break;
       case HomeTab.notifications:
         return DisposableProvider<IFediBoolBadgeBloc>(
           create: (context) => NotificationUnreadExcludeTypesBoolBadgeBloc(
@@ -131,7 +130,6 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             ),
           ),
         );
-        break;
       case HomeTab.chat:
         return DisposableProvider<IFediBoolBadgeBloc>(
           create: (context) => ChatUnreadBadgeBloc(
@@ -156,7 +154,6 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             ),
           ),
         );
-        break;
       case HomeTab.account:
         return GestureDetector(
           onLongPress: () {
@@ -175,9 +172,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             ),
           ),
         );
-        break;
     }
 
-    throw "mapTabToIcon invalid tab=$tab";
   }
 }

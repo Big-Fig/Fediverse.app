@@ -47,14 +47,14 @@ class PostStatusPollWidget extends StatelessWidget {
 
 class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
   const _PostStatusPollOptionsFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var pollOptionsGroupBloc =
         IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(context);
-    return StreamBuilder<List<IStringValueFormFieldBloc>>(
+    return StreamBuilder<List<IStringValueFormFieldBloc>?>(
       stream: pollOptionsGroupBloc.itemsStream,
       builder: (context, snapshot) {
         var items = snapshot.data;
@@ -73,7 +73,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
 
 class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
   _PostStatusPollOptionsFieldItemsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -94,7 +94,7 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
 
 class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
   _PostStatusPollOptionsFieldItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -134,7 +134,7 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
 
 class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
   _PostStatusPollOptionsFieldItemFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -165,7 +165,7 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
 
 class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
   const _PostStatusPollOptionRemoteItemButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -198,7 +198,7 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
 
 class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
   const _PostStatusPollOptionsAddItemButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -221,7 +221,7 @@ class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
 
 class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
   const _PostStatusPollMultiplyFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -234,7 +234,7 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
 
 class _PostStatusPollLengthFieldWidget extends StatelessWidget {
   const _PostStatusPollLengthFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

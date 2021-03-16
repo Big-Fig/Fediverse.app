@@ -14,12 +14,12 @@ abstract class INotificationTabsBloc
 
   List<NotificationTab> get tabs;
 
-  NotificationTab get selectedTab;
+  NotificationTab? get selectedTab;
 
   Stream<NotificationTab> get selectedTabStream;
 
   void selectTab(NotificationTab tab);
 
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification> retrieveTimelineTabPaginationListBloc(NotificationTab tab);
+      INotification?>? retrieveTimelineTabPaginationListBloc(NotificationTab tab);
 }

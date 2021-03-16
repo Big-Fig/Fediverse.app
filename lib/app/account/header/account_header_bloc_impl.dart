@@ -8,7 +8,7 @@ class AccountHeaderBloc extends DisposableOwner implements IAccountHeaderBloc {
   final Brightness brightness;
 
   AccountHeaderBloc({
-    @required this.brightness,
+    required this.brightness,
   });
 
   @override

@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -22,13 +21,13 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
   final Uri url;
   final WebSocketsEventParser<T> eventParser;
 
-  IOWebSocketChannel _channel;
-  StreamSubscription _channelSubscription;
+  IOWebSocketChannel? _channel;
+  StreamSubscription? _channelSubscription;
 
   WebSocketsChannelSource({
-    @required IConnectionService connectionService,
-    @required this.url,
-    @required this.eventParser,
+    required IConnectionService connectionService,
+    required this.url,
+    required this.eventParser,
   }) {
     addDisposable(disposable: CustomDisposable(() async {
       await _disconnect();
@@ -38,25 +37,26 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     }
 
     addDisposable(
-        streamSubscription: connectionService.isConnectedStream
-            .distinct()
-            .listen((isConnected) {
-      if (isConnected) {
-        _connect();
-      } else {
-        _disconnect();
-      }
-    }));
+      streamSubscription: connectionService.isConnectedStream.distinct().listen(
+        (isConnected) {
+          if (isConnected) {
+            _connect();
+          } else {
+            _disconnect();
+          }
+        },
+      ),
+    );
   }
 
   void _connect() {
     _logger.finest(() => "_connect ${_channel == null}");
     if (_channel == null) {
       _channel = IOWebSocketChannel.connect(url);
-      _channelSubscription = _channel.stream.listen(
+      _channelSubscription = _channel!.stream.listen(
         (dynamic message) {
           _logger.finest(() => "$url message $message");
-          eventsStreamController.add(_mapChannelData(message));
+          eventsStreamController.add(_mapChannelData(message)!);
         },
         onDone: () {
           _logger.finest(() => "ws channel closed $url");
@@ -75,9 +75,9 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     _channel = null;
   }
 
-  T _mapChannelData(data) {
+  T? _mapChannelData(data) {
     if (data is String) {
-      if (data?.isNotEmpty == true) {
+      if (data.isNotEmpty == true) {
         try {
           var json = jsonDecode(data);
           var event = eventParser(json);

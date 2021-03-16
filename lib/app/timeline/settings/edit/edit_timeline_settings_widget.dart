@@ -23,7 +23,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditTimelineSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -122,7 +122,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildWithMutedField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -134,7 +134,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildOnlyMediaField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -146,7 +146,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildOnlyLocalField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -158,7 +158,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildOnlyRemoteField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -170,7 +170,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildOnlyPinnedField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -182,7 +182,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildExcludeReblogsField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -194,7 +194,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildExcludeRepliesField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -206,7 +206,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildWebSocketsUpdatesField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return buildBoolField(
       context: context,
@@ -236,7 +236,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildReplyVisibilityFilterField(
     BuildContext context,
     IEditTimelineSettingsBloc editSettingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return ProxyProvider<IEditTimelineSettingsBloc,
         ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc>(
@@ -254,7 +254,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildExcludeVisibilitiesField(
     BuildContext context,
     IEditTimelineSettingsBloc editSettingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return ProxyProvider<IEditTimelineSettingsBloc,
         IStatusVisibilityMultiSelectFromListFormFieldBloc>(
@@ -272,7 +272,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildCustomListField(
     BuildContext context,
     IEditTimelineSettingsBloc editSettingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) =>
       ProxyProvider<IEditTimelineSettingsBloc,
           ITimelineSettingsOnlyInCustomListFormFieldBloc>(
@@ -288,7 +288,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildAccountField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) {
     return ProxyProvider<IEditTimelineSettingsBloc,
         ITimelineSettingsOnlyFromAccountFormFieldBloc>(
@@ -304,7 +304,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildHashtagField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) =>
       ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
         update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
@@ -322,7 +322,7 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   Widget buildOnlyFromInstanceField(
     BuildContext context,
     IEditTimelineSettingsBloc settingsBloc,
-    AuthInstance authInstance,
+    AuthInstance? authInstance,
   ) =>
       ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
         update: (context, value, previous) => value.onlyFromInstanceFieldBloc,
@@ -337,11 +337,11 @@ class EditTimelineSettingsWidget extends StatelessWidget {
       );
 
   Widget buildBoolField({
-    @required BuildContext context,
-    @required String label,
-    String description,
-    String descriptionOnDisabled,
-    @required IBoolValueFormFieldBloc fieldBloc,
+    required BuildContext context,
+    required String label,
+    String? description,
+    String? descriptionOnDisabled,
+    required IBoolValueFormFieldBloc fieldBloc,
   }) {
     return Provider<IBoolValueFormFieldBloc>.value(
       value: fieldBloc,

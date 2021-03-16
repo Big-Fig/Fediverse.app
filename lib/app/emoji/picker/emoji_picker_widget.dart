@@ -24,8 +24,8 @@ class EmojiPickerWidget extends StatelessWidget {
   final int rowsCount;
 
   EmojiPickerWidget({
-    @required this.onEmojiSelected,
-    @required this.useImageEmoji,
+    required this.onEmojiSelected,
+    required this.useImageEmoji,
     this.rowsCount = 3,
     this.selectedCategoryItemsGridHeight = 108.0,
   });
@@ -34,7 +34,7 @@ class EmojiPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProvider<ICustomEmojiPickerBloc>(
       create: (context) {
-        EmojiPickerCustomImageUrlCategoryBloc customCategoryBloc;
+        EmojiPickerCustomImageUrlCategoryBloc? customCategoryBloc;
         if (useImageEmoji) {
           customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
             pleromaEmojiService:
@@ -57,14 +57,14 @@ class EmojiPickerWidget extends StatelessWidget {
               listen: false),
         );
 
-        var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
+        var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc?>[
           emojiPickerRecentCategoryBloc,
           if (useImageEmoji) customCategoryBloc,
           ...CustomEmojiPickerCodeCategoryBloc.allCategories,
         ];
 
         allCategoriesBlocs.forEach((bloc) {
-          bloc.performAsyncInit();
+          bloc!.performAsyncInit();
         });
         var customEmojiPickerBloc = CustomEmojiPickerBloc(
             selectedCategory: allCategoriesBlocs.first,
@@ -76,7 +76,7 @@ class EmojiPickerWidget extends StatelessWidget {
         }));
 
         customEmojiPickerBloc.addDisposable(custom: () {
-          allCategoriesBlocs.forEach((categoryBloc) => categoryBloc.dispose());
+          allCategoriesBlocs.forEach((categoryBloc) => categoryBloc!.dispose());
         });
         return customEmojiPickerBloc;
       },

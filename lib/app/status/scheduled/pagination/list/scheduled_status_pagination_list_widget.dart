@@ -16,11 +16,11 @@ class ScheduledStatusPaginationListTimelineWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   ScheduledStatusPaginationListTimelineWidget({
-    @required Key key,
-    @required this.needWatchLocalRepositoryForUpdates,
-    @required this.successCallback,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    required Key key,
+    required this.needWatchLocalRepositoryForUpdates,
+    required this.successCallback,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
@@ -30,10 +30,10 @@ class ScheduledStatusPaginationListTimelineWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IScheduledStatus> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IScheduledStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,

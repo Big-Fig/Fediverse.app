@@ -29,14 +29,14 @@ var _logger = Logger("status_cached_pagination_list_media_widget.dart");
 class StatusCachedPaginationListMediaWidget
     extends StatusCachedPaginationListBaseWidget {
   const StatusCachedPaginationListMediaWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   }) {
     var timelinePaginationListBloc = Provider.of<
             IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
@@ -46,12 +46,12 @@ class StatusCachedPaginationListMediaWidget
   }
 
   static ScrollView buildStaggeredMediaGridView({
-    @required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
-    _logger.finest(() => "buildStaggeredGridView ${items?.length}");
+    _logger.finest(() => "buildStaggeredGridView ${items.length}");
     var statusListBloc = IStatusListBloc.of(context);
     var instanceLocation = statusListBloc.instanceLocation;
     var isLocal = instanceLocation == InstanceLocation.local;
@@ -61,7 +61,7 @@ class StatusCachedPaginationListMediaWidget
         .where((IStatus status) =>
             (status.reblog?.mediaAttachments ?? status.mediaAttachments)
                 ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
-                ?.isNotEmpty ==
+                .isNotEmpty ==
             true)
         .toList();
 
@@ -69,9 +69,9 @@ class StatusCachedPaginationListMediaWidget
 
     items.forEach(
       (status) {
-        var mediaAttachments =
-            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
-                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
+        Iterable<PleromaMediaAttachment> mediaAttachments =
+            (status.reblog?.mediaAttachments ?? status.mediaAttachments ?? [])
+                .where((mediaAttachment) => mediaAttachment.isImageOrGif);
         mediaAttachments.forEach(
           (mediaAttachment) {
             statusesWithMediaAttachment.add(
@@ -132,8 +132,8 @@ class StatusCachedPaginationListMediaWidget
                       );
                     }
                   },
-                  child:
-                      DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
+                  child: DisposableProxyProvider<IStatusBloc,
+                      IStatusSensitiveBloc>(
                     update: (context, statusBloc, _) =>
                         StatusSensitiveBloc.createFromContext(
                       context: context,
@@ -182,10 +182,10 @@ class StatusCachedPaginationListMediaWidget
 
   @override
   ScrollView buildItemsCollectionView(
-          {@required BuildContext context,
-          @required List<IStatus> items,
-          @required Widget header,
-          @required Widget footer}) =>
+          {required BuildContext context,
+          required List<IStatus> items,
+          required Widget? header,
+          required Widget? footer}) =>
       buildStaggeredMediaGridView(
         context: context,
         items: items,
@@ -199,8 +199,8 @@ class _StatusWithMediaAttachment {
   final IPleromaMediaAttachment mediaAttachment;
 
   _StatusWithMediaAttachment({
-    @required this.status,
-    @required this.mediaAttachment,
+    required this.status,
+    required this.mediaAttachment,
   });
 
   @override

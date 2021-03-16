@@ -25,15 +25,15 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   final INotificationRepository notificationRepository;
 
   MyAccountFollowRequestNetworkOnlyAccountListBloc({
-    @required this.myAccountBloc,
-    @required this.pleromaMyAccountService,
-    @required this.accountRepository,
-    @required this.notificationRepository,
+    required this.myAccountBloc,
+    required this.pleromaMyAccountService,
+    required this.accountRepository,
+    required this.notificationRepository,
   });
 
   @override
   Future acceptFollowRequest({
-    @required IAccount account,
+    required IAccount account,
   }) async {
     var accountRelationship = await pleromaMyAccountService.acceptFollowRequest(
       accountRemoteId: account.remoteId,
@@ -49,11 +49,11 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     IAccount account,
     IPleromaAccountRelationship accountRelationship,
   ) async {
-    var remoteAccount = mapLocalAccountToRemoteAccount(
-      account.copyWith(
-        pleromaRelationship: accountRelationship,
-      ),
-    );
+    var pleromaAccount = account
+        .copyWith(
+          pleromaRelationship: accountRelationship,
+        )
+        .toPleromaAccount();
 
     await notificationRepository.dismissFollowRequestNotificationsFromAccount(
       account: account,
@@ -62,7 +62,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     await myAccountBloc.decreaseFollowingRequestCount();
 
     await accountRepository.upsertRemoteAccount(
-      remoteAccount,
+      pleromaAccount,
       conversationRemoteId: null,
       chatRemoteId: null,
     );
@@ -70,7 +70,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future rejectFollowRequest({
-    @required IAccount account,
+    required IAccount account,
   }) async {
     var accountRelationship = await pleromaMyAccountService.rejectFollowRequest(
         accountRemoteId: account.remoteId);
@@ -83,10 +83,10 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
     var remoteAccounts = await pleromaMyAccountService.getFollowRequests(
       pagination: PleromaPaginationRequest(
@@ -96,10 +96,15 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
       ),
     );
 
-    await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
     return remoteAccounts
-        .map((remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))
+        .map(
+          (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+        )
         .toList();
   }
 
@@ -129,7 +134,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<
         IMyAccountFollowRequestNetworkOnlyAccountListBloc>(
@@ -155,5 +160,5 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

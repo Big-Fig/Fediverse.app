@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger("timeline_widget.dart");
 
 class TimelineWidget extends StatelessWidget {
-  const TimelineWidget({Key key}) : super(key: key);
+  const TimelineWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

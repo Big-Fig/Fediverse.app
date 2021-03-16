@@ -10,9 +10,9 @@ abstract class ICurrentAuthInstanceContextInitBloc
           {bool listen = true}) =>
       Provider.of<ICurrentAuthInstanceContextInitBloc>(context, listen: listen);
 
-  CurrentAuthInstanceContextInitState get state;
+  CurrentAuthInstanceContextInitState? get state;
 
   Stream<CurrentAuthInstanceContextInitState> get stateStream;
 
-  Future refreshFromNetwork({@required bool isNeedWaitForOptionalData});
+  Future refreshFromNetwork({required bool isNeedWaitForOptionalData});
 }

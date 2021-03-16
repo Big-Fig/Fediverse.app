@@ -1,20 +1,21 @@
-import 'package:flutter/widgets.dart';
-
 class DurationPickerResult {
-  final Duration duration;
+  final Duration? duration;
   final bool canceled;
   final bool deleted;
 
   DurationPickerResult({
-    @required this.duration,
-    @required this.canceled,
-    @required this.deleted,
+    required this.duration,
+    required this.canceled,
+    required this.deleted,
   });
 
   @override
   String toString() {
-    return 'DurationPickerResult{duration: $duration,'
-        ' canceled: $canceled, deleted: $deleted}';
+    return 'DurationPickerResult{'
+        'duration: $duration, '
+        'canceled: $canceled, '
+        'deleted: $deleted'
+        '}';
   }
 
   @override

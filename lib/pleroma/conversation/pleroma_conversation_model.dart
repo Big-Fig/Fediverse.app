@@ -9,24 +9,39 @@ part 'pleroma_conversation_model.g.dart';
 
 abstract class IPleromaConversation extends IMastodonConversation {
   @override
-  IPleromaStatus get lastStatus;
+  IPleromaStatus? get lastStatus;
 
   @override
   List<IPleromaAccount> get accounts;
 
-  IPleromaConversationPleromaPart get pleroma;
+  IPleromaConversationPleromaPart? get pleroma;
 }
 
 abstract class IPleromaConversationPleromaPart {
-  List<IPleromaAccount> get recipients;
+  List<IPleromaAccount>? get recipients;
+}
+
+extension IPleromaConversationPleromaPartExtension
+    on IPleromaConversationPleromaPart {
+  PleromaConversationPleromaPart toPleromaConversationPleromaPart() {
+    if (PleromaConversationPleromaPart is PleromaConversationPleromaPart) {
+      return this as PleromaConversationPleromaPart;
+    } else {
+      return PleromaConversationPleromaPart(
+        recipients: recipients?.toPleromaAccounts(),
+      );
+    }
+  }
 }
 
 @JsonSerializable()
 class PleromaConversationPleromaPart extends IPleromaConversationPleromaPart {
   @override
-  final List<PleromaAccount> recipients;
+  final List<PleromaAccount>? recipients;
 
-  PleromaConversationPleromaPart({this.recipients});
+  PleromaConversationPleromaPart({
+    required this.recipients,
+  });
 
   factory PleromaConversationPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaConversationPleromaPartFromJson(json);
@@ -51,20 +66,20 @@ class PleromaConversation implements IPleromaConversation {
   final bool unread;
   @JsonKey(name: "last_status")
   @override
-  final PleromaStatus lastStatus;
+  final PleromaStatus? lastStatus;
   @override
   final String id;
   @override
   final List<PleromaAccount> accounts;
   @override
-  final PleromaConversationPleromaPart pleroma;
+  final PleromaConversationPleromaPart? pleroma;
 
   PleromaConversation({
-    this.unread,
-    this.lastStatus,
-    this.id,
-    this.accounts,
-    this.pleroma,
+    required this.unread,
+    required this.lastStatus,
+    required this.id,
+    required this.accounts,
+    required this.pleroma,
   });
 
   factory PleromaConversation.fromJson(Map<String, dynamic> json) =>

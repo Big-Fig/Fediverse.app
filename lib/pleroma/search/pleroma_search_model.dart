@@ -34,7 +34,11 @@ class PleromaSearchResult extends IPleromaSearchResult {
   @override
   List<PleromaStatus> statuses;
 
-  PleromaSearchResult({this.accounts, this.hashtags, this.statuses});
+  PleromaSearchResult({
+    required this.accounts,
+    required this.hashtags,
+    required this.statuses,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -50,8 +54,11 @@ class PleromaSearchResult extends IPleromaSearchResult {
 
   @override
   String toString() {
-    return 'PleromaSearchResult{accounts: $accounts,'
-        ' hashtags: $hashtags, statuses: $statuses}';
+    return 'PleromaSearchResult{'
+        'accounts: $accounts, '
+        'hashtags: $hashtags, '
+        'statuses: $statuses'
+        '}';
   }
 
   factory PleromaSearchResult.fromJson(Map<String, dynamic> json) =>

@@ -4,18 +4,25 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IDurationDateTimeValueFormFieldBloc
-    extends IValueFormFieldBloc<DurationDateTime> {
-  static IDurationDateTimeValueFormFieldBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IDurationDateTimeValueFormFieldBloc>(context, listen: listen);
+    extends IValueFormFieldBloc<DurationDateTime?> {
+  static IDurationDateTimeValueFormFieldBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IDurationDateTimeValueFormFieldBloc>(
+        context,
+        listen: listen,
+      );
 
-  Duration get maxDuration;
+  Duration? get maxDuration;
 
   Duration get minDuration;
 
-  Duration get currentValueDuration;
-  Stream<Duration> get currentValueDurationStream;
-  void changeCurrentValueDuration(Duration newValue);
+  Duration? get currentValueDuration;
+
+  Stream<Duration?> get currentValueDurationStream;
+
+  void changeCurrentValueDuration(Duration? newValue);
 
   void deleteValue();
 }

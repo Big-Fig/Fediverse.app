@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class CollapsibleOwnerWidget extends StatelessWidget {
   final Widget child;
 
-  const CollapsibleOwnerWidget({@required this.child});
+  const CollapsibleOwnerWidget({required this.child});
 
   @override
   Widget build(BuildContext context) => DisposableProvider<ICollapsibleOwnerBloc>(

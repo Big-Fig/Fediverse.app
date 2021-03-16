@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
@@ -23,7 +22,7 @@ class PleromaStatusService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,7 +36,7 @@ class PleromaStatusService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaStatusService({@required this.restService});
+  PleromaStatusService({required this.restService});
 
   @override
   Future dispose() async {
@@ -46,7 +45,7 @@ class PleromaStatusService extends DisposableOwner
 
   @override
   Future<IPleromaStatus> getStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.get(
       relativePath: join(statusRelativeUrlPath, statusRemoteId),
@@ -65,7 +64,7 @@ class PleromaStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusException(
         statusCode: httpResponse.statusCode,
@@ -83,7 +82,7 @@ class PleromaStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusException(
         statusCode: httpResponse.statusCode,
@@ -101,7 +100,7 @@ class PleromaStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusException(
         statusCode: httpResponse.statusCode,
@@ -119,7 +118,7 @@ class PleromaStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaStatusException(
         statusCode: httpResponse.statusCode,
@@ -130,7 +129,7 @@ class PleromaStatusService extends DisposableOwner
 
   @override
   Future<PleromaStatusContext> getStatusContext({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.get(
       relativePath: join(

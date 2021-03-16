@@ -18,39 +18,39 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
-  bool get isPleromaInstance;
+  bool get isPleroma;
 
   IStatus get status;
 
   Stream<IStatus> get statusStream;
 
-  IStatus get reblog;
+  IStatus? get reblog;
 
-  Stream<IStatus> get reblogStream;
+  Stream<IStatus?> get reblogStream;
 
   IStatus get reblogOrOriginal;
 
   Stream<IStatus> get reblogOrOriginalStream;
 
-  String get content;
+  String? get content;
 
-  Stream<String> get contentStream;
+  Stream<String?> get contentStream;
 
-  String get contentRawText;
+  String? get contentRawText;
 
-  Stream<String> get contentRawTextStream;
+  Stream<String?> get contentRawTextStream;
 
-  EmojiText get contentWithEmojis;
+  EmojiText? get contentWithEmojis;
 
-  Stream<EmojiText> get contentWithEmojisStream;
+  Stream<EmojiText?> get contentWithEmojisStream;
 
-  IPleromaCard get card;
+  IPleromaCard? get card;
 
-  Stream<IPleromaCard> get cardStream;
+  Stream<IPleromaCard?> get cardStream;
 
-  IPleromaCard get reblogOrOriginalCard;
+  IPleromaCard? get reblogOrOriginalCard;
 
-  Stream<IPleromaCard> get reblogOrOriginalCardStream;
+  Stream<IPleromaCard?> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
@@ -64,43 +64,40 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<DateTime> get createdAtStream;
 
-  bool get isReply => status.isReply;
-
-  bool get isHaveReblog => status.isHaveReblog;
-
   String get remoteId;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
 
-  List<IPleromaMediaAttachment> get reblogOrOriginalMediaAttachments;
+  List<IPleromaMediaAttachment>? get reblogOrOriginalMediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>>
+  Stream<List<IPleromaMediaAttachment>?>
       get reblogOrOriginalMediaAttachmentsStream;
 
-  IPleromaPoll get poll;
+  IPleromaPoll? get poll;
 
-  Stream<IPleromaPoll> get pollStream;
+  Stream<IPleromaPoll?> get pollStream;
 
   IPollBloc get pollBloc;
 
-  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
+  List<IPleromaStatusEmojiReaction>? get pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
+  Stream<List<IPleromaStatusEmojiReaction>?> get pleromaEmojiReactionsStream;
 
-  int get pleromaEmojiReactionsCount;
+  int? get pleromaEmojiReactionsCount;
 
-  Stream<int> get pleromaEmojiReactionsCountStream;
+  Stream<int?> get pleromaEmojiReactionsCountStream;
 
-  List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
+  List<IPleromaStatusEmojiReaction>?
+      get reblogPlusOriginalPleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>>
+  Stream<List<IPleromaStatusEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream;
 
-  int get reblogPlusOriginalEmojiReactionsCount;
+  int? get reblogPlusOriginalEmojiReactionsCount;
 
-  Stream<int> get reblogPlusOriginalEmojiReactionsCountStream;
+  Stream<int?> get reblogPlusOriginalEmojiReactionsCountStream;
 
   String get accountAvatar;
 
@@ -110,15 +107,15 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<bool> get favouritedStream;
 
-  List<IPleromaMention> get mentions;
+  List<IPleromaMention>? get mentions;
 
-  Stream<List<IPleromaMention>> get mentionsStream;
+  Stream<List<IPleromaMention>?> get mentionsStream;
 
-  List<IPleromaMention> get reblogOrOriginalMentions;
+  List<IPleromaMention>? get reblogOrOriginalMentions;
 
-  List<IPleromaTag> get tags;
+  List<IPleromaTag>? get tags;
 
-  List<IPleromaTag> get reblogOrOriginalTags;
+  List<IPleromaTag>? get reblogOrOriginalTags;
 
   bool get reblogged;
 
@@ -156,13 +153,13 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<int> get repliesCountStream;
 
-  String get spoilerText;
+  String? get reblogOrOriginalSpoilerText;
 
-  Stream<String> get spoilerTextStream;
+  Stream<String?> get reblogOrOriginalSpoilerTextStream;
 
-  EmojiText get spoilerTextWithEmojis;
+  EmojiText? get spoilerTextWithEmojis;
 
-  Stream<EmojiText> get spoilerTextWithEmojisStream;
+  Stream<EmojiText?> get spoilerTextWithEmojisStream;
 
   bool get nsfwSensitive;
 
@@ -174,27 +171,33 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Future refreshFromNetwork();
 
-  Future<IAccount> loadAccountByMentionUrl({@required String url});
+  Future<IAccount?> loadAccountByMentionUrl({
+    required String url,
+  });
 
-  Future<IHashtag> loadHashtagByUrl({@required String url});
+  Future<IHashtag?> loadHashtagByUrl({
+    required String url,
+  });
 
-  Future<IAccount> getInReplyToAccount();
+  Future<IAccount?> getInReplyToAccount();
 
-  Stream<IAccount> watchInReplyToAccount();
+  Stream<IAccount?> watchInReplyToAccount();
 
-  Future<IStatus> getInReplyToStatus();
+  Future<IStatus?> getInReplyToStatus();
 
-  Stream<IStatus> watchInReplyToStatus();
+  Stream<IStatus?> watchInReplyToStatus();
 
   Future<IStatus> toggleReblog();
 
   Future<IStatus> toggleFavourite();
 
   Future<IStatus> mute({
-    @required Duration duration,
+    required Duration? duration,
   });
 
-  Future<IStatus> toggleMute();
+  Future<IStatus> toggleMute({
+    required Duration? duration,
+  });
 
   Future<IStatus> toggleBookmark();
 
@@ -202,11 +205,23 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Future delete();
 
-  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
+  Future<IPleromaStatus> toggleEmojiReaction({
+    required String emoji,
+  });
 
-  Future<IStatus> onPollUpdated(IPleromaPoll poll);
+  Future<IStatus> onPollUpdated(
+    IPleromaPoll poll,
+  );
 
   bool get deleted;
 
   Stream<bool> get deletedStream;
+}
+
+extension IStatusBlocExtension on IStatusBloc {
+  bool get isHaveTextContent => content?.isNotEmpty == true;
+
+  bool get isReply => status.isReply;
+
+  bool get isHaveReblog => status.isHaveReblog;
 }

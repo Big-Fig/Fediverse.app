@@ -13,8 +13,8 @@ class ListLoadingFooterWidget extends StatelessWidget {
   const ListLoadingFooterWidget();
 }
 
-Widget _builder(BuildContext context, LoadStatus mode) {
-  Widget body;
+Widget _builder(BuildContext context, LoadStatus? mode) {
+  Widget? body;
 
   switch (mode) {
     case LoadStatus.idle:

@@ -21,19 +21,14 @@ class MediaAttachmentWidget extends StatelessWidget {
         return const MediaAttachmentImageWidget(
           maxHeight: _maxHeight,
         );
-        break;
-
       case MastodonMediaAttachmentType.video:
       case MastodonMediaAttachmentType.gifv:
         return const MediaAttachmentVideoWidget();
       case MastodonMediaAttachmentType.audio:
         return const MediaAttachmentAudioWidget();
-        break;
-
       case MastodonMediaAttachmentType.unknown:
       default:
         return const MediaAttachmentUnknownWidget();
-        break;
     }
   }
 }

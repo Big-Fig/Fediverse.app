@@ -13,8 +13,8 @@ class AccountWidget extends StatelessWidget {
   final Widget footer;
 
   const AccountWidget({
-    @required this.onStatusesTapCallback,
-    @required this.footer,
+    required this.onStatusesTapCallback,
+    required this.footer,
   });
 
   @override
@@ -53,7 +53,7 @@ class AccountWidget extends StatelessWidget {
 
 class _AccountFieldListWidget extends StatelessWidget {
   const _AccountFieldListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -70,7 +70,7 @@ class _AccountFieldListWidget extends StatelessWidget {
 
 class _AccountNoteWidget extends StatelessWidget {
   const _AccountNoteWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

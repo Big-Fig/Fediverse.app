@@ -81,14 +81,14 @@ class StatusThreadWidget extends StatelessWidget {
 
 class _StatusThreadStatusesWidget extends StatelessWidget {
   const _StatusThreadStatusesWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
 
-    return StreamBuilder<List<IStatus>>(
+    return StreamBuilder<List<IStatus?>>(
       stream: statusThreadBloc.statusesDistinctStream,
       builder: (context, snapshot) {
         var statuses = snapshot.data;
@@ -97,7 +97,7 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           );
         }
-        return Provider<List<IStatus>>.value(
+        return Provider<List<IStatus?>>.value(
           value: statuses,
           child: material.RefreshIndicator(
             onRefresh: () => statusThreadBloc.refresh(),
@@ -111,13 +111,13 @@ class _StatusThreadStatusesWidget extends StatelessWidget {
 
 class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
   const _StatusThreadInReplyToStatusWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IThreadPostStatusBloc.of(context);
-    return StreamBuilder<IStatus>(
+    return StreamBuilder<IStatus?>(
         stream: postStatusBloc.notCanceledOriginInReplyToStatusStream,
         builder: (context, snapshot) {
           var notCanceledOriginInReplyToStatus = snapshot.data;
@@ -135,7 +135,7 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).app_status_reply_replyingTo(
-                          notCanceledOriginInReplyToStatus.account.acct),
+                          notCanceledOriginInReplyToStatus.account!.acct!),
                       style: IFediUiTextTheme.of(context)
                           .mediumShortGrey
                           .copyWith(height: 1),
@@ -159,7 +159,7 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
 
 class _StatusThreadPostStatusWidget extends StatelessWidget {
   const _StatusThreadPostStatusWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -167,7 +167,7 @@ class _StatusThreadPostStatusWidget extends StatelessWidget {
     var statusThreadBloc = IStatusThreadBloc.of(context);
     return PostStatusWidget(
       hintText: S.of(context).app_status_thread_post_hint(
-            statusThreadBloc.initialStatusToFetchThread.account.acct,
+            statusThreadBloc.initialStatusToFetchThread!.account!.acct!,
           ),
     );
   }
@@ -183,7 +183,7 @@ class _StatusThreadStatusesListWidget extends StatefulWidget {
 
 class _StatusThreadStatusesListWidgetState
     extends State<_StatusThreadStatusesListWidget> {
-  StreamSubscription newItemsJumpSubscription;
+  StreamSubscription? newItemsJumpSubscription;
 
   @override
   void didChangeDependencies() {
@@ -193,7 +193,7 @@ class _StatusThreadStatusesListWidgetState
 
     newItemsJumpSubscription = statusThreadBloc.onNewStatusAddedStream.listen(
       (newItem) {
-        var index = statusThreadBloc.statuses.indexOf(newItem);
+        var index = statusThreadBloc.statuses!.indexOf(newItem);
 
         if (index > 0) {
           statusThreadBloc.jumpToIndex(index);
@@ -260,7 +260,7 @@ class _StatusThreadStatusesListWidgetState
 
 class _StatusThreadStatusesListItemWidget extends StatelessWidget {
   const _StatusThreadStatusesListItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -288,7 +288,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                 status: status,
                 statusCallback: (context, status) {
                   if (status.remoteId !=
-                      statusThreadBloc.initialStatusToFetchThread.remoteId) {
+                      statusThreadBloc.initialStatusToFetchThread!.remoteId) {
                     var isLocal = statusThreadBloc.instanceLocation ==
                         InstanceLocation.local;
                     if (isLocal) {
@@ -311,7 +311,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                 isCommentsActionEnabled: !isInFocus,
                 displayActions: true,
                 accountMentionCallback:
-                    (BuildContext context, IAccount account) {
+                    (BuildContext context, IAccount? account) {
                   IPostStatusBloc.of(context, listen: false)
                       .addAccountMentions([account]);
                 },
@@ -329,7 +329,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
 
 class _StatusThreadStatusesListEmptyWidget extends StatelessWidget {
   const _StatusThreadStatusesListEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

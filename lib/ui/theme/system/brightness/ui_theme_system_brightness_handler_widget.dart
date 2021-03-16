@@ -5,7 +5,7 @@ class UiThemeSystemBrightnessHandlerWidget extends StatefulWidget {
   final Widget child;
 
   UiThemeSystemBrightnessHandlerWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -15,7 +15,7 @@ class UiThemeSystemBrightnessHandlerWidget extends StatefulWidget {
 
 class _UiThemeSystemBrightnessHandlerWidgetState
     extends State<UiThemeSystemBrightnessHandlerWidget> {
-  VoidCallback oldOnPlatformBrightnessChanged;
+  VoidCallback? oldOnPlatformBrightnessChanged;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _UiThemeSystemBrightnessHandlerWidgetState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance!.window;
     oldOnPlatformBrightnessChanged = window.onPlatformBrightnessChanged;
 
     var uiThemeSystemHandlerBloc =
@@ -35,7 +35,7 @@ class _UiThemeSystemBrightnessHandlerWidgetState
           .onSystemBrightnessChanged(window.platformBrightness);
 
       if (oldOnPlatformBrightnessChanged != null) {
-        oldOnPlatformBrightnessChanged();
+        oldOnPlatformBrightnessChanged!();
       }
     };
 
@@ -45,7 +45,7 @@ class _UiThemeSystemBrightnessHandlerWidgetState
 
   @override
   void dispose() {
-    final window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance!.window;
 
     if (oldOnPlatformBrightnessChanged != null) {
       oldOnPlatformBrightnessChanged = null;

@@ -6,7 +6,7 @@ class NotificationTabBlocLoadingWidget extends StatelessWidget {
   final Widget child;
 
   NotificationTabBlocLoadingWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override

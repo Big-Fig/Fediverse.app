@@ -19,9 +19,9 @@ class ExternalShareService extends DisposableOwner
 
   @override
   Future share({
-    @required String popupTitle,
-    @required String text,
-    @required List<ShareUrlFile> urlFiles,
+    required String popupTitle,
+    required String? text,
+    required List<ShareUrlFile>? urlFiles,
   }) async {
     assert(text?.isNotEmpty == true || urlFiles?.isNotEmpty == true);
 
@@ -29,7 +29,7 @@ class ExternalShareService extends DisposableOwner
       if (text?.isNotEmpty == true) {
         shareSeveralUrlFilesAsLinksWithText(popupTitle, text, urlFiles);
       } else {
-        if (urlFiles.length == 1) {
+        if (urlFiles!.length == 1) {
           await shareSingleUrlFileAsBytesWithoutText(urlFiles[0], popupTitle);
         } else {
           await shareSeveralUrlFilesAsBytesWithoutText(
@@ -37,14 +37,16 @@ class ExternalShareService extends DisposableOwner
         }
       }
     } else {
-      shareTextOnly(popupTitle, text);
+      shareTextOnly(popupTitle, text!);
     }
   }
 
-  Future<String> shareSeveralUrlFilesAsBytesWithoutText(
-      List<ShareUrlFile> urlFiles, String text, String popupTitle) async {
+  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(
+      List<ShareUrlFile> urlFiles, String? text, String popupTitle) async {
     var urlFilesPossibleToShareAsBytes =
         urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
+
+    text = text ?? "";
 
     // several files sharing not supported with text
     if (urlFilesPossibleToShareAsBytes.length == 1) {
@@ -53,7 +55,7 @@ class ExternalShareService extends DisposableOwner
       var mimeType = mime(url);
       var nonFirstUrlFileToShareAsBytes = urlFiles
           .where((attachment) => attachment != firstUrlFileToShareAsBytes);
-      if (nonFirstUrlFileToShareAsBytes?.isNotEmpty == true) {
+      if (nonFirstUrlFileToShareAsBytes.isNotEmpty == true) {
         text +=
             "[${nonFirstUrlFileToShareAsBytes.map((attachment) => attachment.url).join(", ")}]";
       }
@@ -84,15 +86,15 @@ class ExternalShareService extends DisposableOwner
     // other types too big, for example video
     // todo: improve sharing other media types
     if (isPossibleToShareAsBytes(url)) {
-      Uint8List bytes = await loadBytesFromUrl(url);
+      Uint8List bytes = await loadBytesFromUrl(url!);
       // await Share.file(popupTitle, filename, bytes, mime(url));
     } else {
-      shareTextOnly(popupTitle, url);
+      shareTextOnly(popupTitle, url!);
     }
   }
 
   void shareSeveralUrlFilesAsLinksWithText(
-      String popupTitle, String text, List<ShareUrlFile> urlFiles) {
+      String popupTitle, String? text, List<ShareUrlFile>? urlFiles) {
     // Share.text(
     //   popupTitle,
     //   "$text  [${urlFiles.map((urlFile) => urlFile.url).join(", ")}]",
@@ -100,5 +102,5 @@ class ExternalShareService extends DisposableOwner
     // );
   }
 
-  bool isPossibleToShareAsBytes(String url) => mime(url).contains("image");
+  bool isPossibleToShareAsBytes(String? url) => mime(url)!.contains("image");
 }

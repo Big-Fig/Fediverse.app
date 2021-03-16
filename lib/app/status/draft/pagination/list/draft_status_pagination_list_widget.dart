@@ -15,10 +15,10 @@ class DraftStatusPaginationListTimelineWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const DraftStatusPaginationListTimelineWidget({
-    @required Key key,
-    @required this.needWatchLocalRepositoryForUpdates,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    required Key key,
+    required this.needWatchLocalRepositoryForUpdates,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
@@ -28,10 +28,10 @@ class DraftStatusPaginationListTimelineWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IDraftStatus> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IDraftStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,

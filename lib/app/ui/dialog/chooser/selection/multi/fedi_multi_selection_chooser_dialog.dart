@@ -9,11 +9,11 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future<T> showFediMultiSelectionChooserDialog<T>({
-  @required BuildContext context,
-  @required String title,
-  String content,
-  @required Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream,
+Future<T?> showFediMultiSelectionChooserDialog<T>({
+  required BuildContext context,
+  required String title,
+  String? content,
+  required Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream,
   bool cancelable = true,
 }) {
   return showFediModalBottomSheetDialog(
@@ -28,24 +28,24 @@ Future<T> showFediMultiSelectionChooserDialog<T>({
 }
 
 class FediMultiSelectChooserDialogBody extends StatelessWidget {
-  final String title;
-  final String content;
+  final String? title;
+  final String? content;
   final bool cancelable;
 
   final Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream;
 
   FediMultiSelectChooserDialogBody({
-    @required this.title,
-    @required this.content,
-    @required this.cancelable,
-    @required this.isNeedRebuildActionsStream,
+    required this.title,
+    required this.content,
+    required this.cancelable,
+    required this.isNeedRebuildActionsStream,
   });
 
   Widget _buildAction({
-    @required BuildContext context,
-    @required DialogAction action,
-    @required bool isSelected,
-    @required bool isCancelAction,
+    required BuildContext context,
+    required DialogAction action,
+    required bool? isSelected,
+    required bool isCancelAction,
   }) {
     var actionExist = action.onAction != null;
     return Padding(
@@ -56,16 +56,16 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
         children: [
           StreamBuilder<bool>(
             initialData: action.isActionEnabledFetcher != null
-                ? action.isActionEnabledFetcher(context)
+                ? action.isActionEnabledFetcher!(context)
                 : true,
             stream: action.isActionEnabledStreamFetcher != null
-                ? action.isActionEnabledStreamFetcher(context)
+                ? action.isActionEnabledStreamFetcher!(context)
                 : Stream.value(true),
             builder: (context, snapshot) {
-              var enabled = snapshot.data;
+              var enabled = snapshot.data!;
               var fediUiColorTheme = IFediUiColorTheme.of(context);
               var fediUiTextTheme = IFediUiTextTheme.of(context);
-              var color = isSelected
+              var color = isSelected!
                   ? fediUiColorTheme.primary
                   : actionExist && enabled
                       ? IFediUiColorTheme.of(context).darkGrey
@@ -74,7 +74,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                 onTap: enabled
                     ? () {
                         if (actionExist && enabled) {
-                          action.onAction(context);
+                          action.onAction!(context);
                         }
                       }
                     : null,
@@ -87,7 +87,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                         color: color,
                         onPressed: () {
                           if (actionExist && enabled) {
-                            action.onAction(context);
+                            action.onAction!(context);
                           }
                         },
                       ),
@@ -99,12 +99,18 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
                     Padding(
                       padding: FediPadding.allMediumPadding,
                       child: Text(
-                        action.label,
-                        style: action.customTextStyle ?? isSelected
-                            ? fediUiTextTheme.bigTallPrimary
-                            : actionExist && enabled
-                                ? fediUiTextTheme.bigTallDarkGrey
-                                : fediUiTextTheme.bigTallLightGrey,
+                        action.label!,
+                        style: action.customTextStyle?.copyWith(
+                                color: isSelected
+                                    ? fediUiColorTheme.primary
+                                    : actionExist && enabled
+                                        ? fediUiColorTheme.darkGrey
+                                        : fediUiColorTheme.lightGrey) ??
+                            (isSelected
+                                ? fediUiTextTheme.bigTallPrimary
+                                : actionExist && enabled
+                                    ? fediUiTextTheme.bigTallDarkGrey
+                                    : fediUiTextTheme.bigTallLightGrey),
                       ),
                     ),
                   ],
@@ -127,7 +133,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
-              title,
+              title!,
               style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
             ),
           ),
@@ -135,13 +141,13 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
-              content,
+              content!,
               style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
             ),
           ),
         Align(
           alignment: Alignment.centerLeft,
-          child: StreamBuilder(
+          child: StreamBuilder<List<SelectionDialogAction>?>(
               stream: isNeedRebuildActionsStream,
               initialData: [],
               builder: (context, snapshot) {

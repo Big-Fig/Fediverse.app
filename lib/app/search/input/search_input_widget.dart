@@ -66,7 +66,7 @@ class SearchInputWidget extends StatelessWidget {
 
 class _SearchInputClearButtonWidget extends StatelessWidget {
   const _SearchInputClearButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -79,7 +79,7 @@ class _SearchInputClearButtonWidget extends StatelessWidget {
         stream: searchInputBloc.currentInputIsNotEmptyStream,
         initialData: searchInputBloc.currentInputIsNotEmpty,
         builder: (context, snapshot) {
-          var currentInputIsNotEmpty = snapshot.data;
+          var currentInputIsNotEmpty = snapshot.data!;
 
           if (currentInputIsNotEmpty) {
             return Padding(

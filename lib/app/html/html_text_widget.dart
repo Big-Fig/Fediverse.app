@@ -25,24 +25,26 @@ class HtmlTextWidget extends StatelessWidget {
     // TODO: add linkify support
     if (htmlData.isActuallyHaveHtmlInData) {
       return Html(
-        data: htmlData.text,
+        data: htmlData.text!,
         shrinkWrap: htmlTextBloc.settings.shrinkWrap,
         onImageTap: (
-          String url,
+          String? url,
           RenderContext context,
           Map<String, String> attributes,
-          dom.Element element,
+          dom.Element? element,
         ) {
           _logger.finest(() => "onImageTap $url");
         },
         style: htmlTextBloc.htmlStyles,
         onLinkTap: (
-            String url,
-            RenderContext context,
-            Map<String, String> attributes,
-            dom.Element element,
+          String? url,
+          RenderContext context,
+          Map<String, String> attributes,
+          dom.Element? element,
         ) {
-          htmlTextBloc.onLinkClicked(url: url);
+          if (url != null) {
+            htmlTextBloc.onLinkClicked(url: url);
+          }
         },
       );
     } else {
@@ -71,7 +73,7 @@ class HtmlTextWidget extends StatelessWidget {
           alignment = Alignment.centerLeft;
       }
       var text = Text(
-        htmlData.text,
+        htmlData.text!,
         style: TextStyle(
           color: settings.color,
           fontSize: settings.fontSize,

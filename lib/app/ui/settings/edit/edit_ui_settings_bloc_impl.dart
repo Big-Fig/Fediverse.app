@@ -7,9 +7,8 @@ import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
-class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
+class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
     implements IEditUiSettingsBloc {
   final IUiSettingsBloc uiSettingBloc;
 
@@ -27,15 +26,15 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
   final List<IFediUiTheme> availableThemes;
 
   EditUiSettingsBloc({
-    @required this.uiSettingBloc,
-    @required bool isEnabled,
-    @required this.availableThemes,
+    required this.uiSettingBloc,
+    required bool isEnabled,
+    required this.availableThemes,
   })  : fediThemeFieldBloc = FediUiThemeSingleFromListValueFormFieldBloc(
           originValue: _findThemeById(availableThemes, uiSettingBloc.themeId),
           possibleValues: availableThemes,
         ),
         statusFontSizeBloc = UiSettingsFontSizeSingleFromListValueFormFieldBloc(
-          originValue: uiSettingBloc.statusFontSize,
+          originValue: uiSettingBloc.statusFontSize!,
         ),
         super(
           isEnabled: isEnabled,
@@ -48,16 +47,16 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
 
   @override
   UiSettings calculateCurrentFormFieldsSettings() => UiSettings(
-        themeId: fediThemeFieldBloc.currentValue?.id,
+        themeId: fediThemeFieldBloc.currentValue!.id,
         statusFontSize: statusFontSizeBloc.currentValue?.toJsonValue(),
       );
 
   @override
-  Future fillSettingsToFormFields(UiSettings settings) async {
+  Future fillSettingsToFormFields(UiSettings? settings) async {
     fediThemeFieldBloc.changeCurrentValue(
       _findThemeById(
         availableThemes,
-        settings.themeId,
+        settings!.themeId,
       ),
     );
 
@@ -67,8 +66,8 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings>
   }
 }
 
-IFediUiTheme _findThemeById(
-    List<IFediUiTheme> availableThemes, String themeId) {
+IFediUiTheme? _findThemeById(
+    List<IFediUiTheme> availableThemes, String? themeId) {
   if (themeId == null) {
     return null;
   }

@@ -8,7 +8,7 @@ abstract class IMediaFilePathBloc implements IDisposable {
       Provider.of<IMediaFilePathBloc>(context, listen: listen);
 
 
-  String get path;
+  String? get path;
   String get name;
   String get extension;
 }

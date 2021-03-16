@@ -6,7 +6,7 @@ class MyAccountAccountMuteActionListWidget extends StatelessWidget {
   final bool defaultMuting;
 
   const MyAccountAccountMuteActionListWidget({
-    @required this.defaultMuting,
+    required this.defaultMuting,
   });
 
   @override

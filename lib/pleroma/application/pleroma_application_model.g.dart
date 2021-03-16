@@ -18,11 +18,11 @@ class PleromaClientApplicationAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaClientApplication(
-      name: fields[0] as String,
-      website: fields[1] as String,
-      vapidKey: fields[2] as String,
-      clientId: fields[3] as String,
-      clientSecret: fields[4] as String,
+      name: fields[0] as String?,
+      website: fields[1] as String?,
+      vapidKey: fields[2] as String?,
+      clientId: fields[3] as String?,
+      clientSecret: fields[4] as String?,
     );
   }
 
@@ -59,9 +59,9 @@ class PleromaClientApplicationAdapter
 
 PleromaApplication _$PleromaApplicationFromJson(Map<String, dynamic> json) {
   return PleromaApplication(
-    name: json['name'] as String,
-    website: json['website'] as String,
-    vapidKey: json['vapid_key'] as String,
+    name: json['name'] as String?,
+    website: json['website'] as String?,
+    vapidKey: json['vapid_key'] as String?,
   );
 }
 
@@ -75,11 +75,11 @@ Map<String, dynamic> _$PleromaApplicationToJson(PleromaApplication instance) =>
 PleromaClientApplication _$PleromaClientApplicationFromJson(
     Map<String, dynamic> json) {
   return PleromaClientApplication(
-    name: json['name'] as String,
-    website: json['website'] as String,
-    vapidKey: json['vapid_key'] as String,
-    clientId: json['client_id'] as String,
-    clientSecret: json['client_secret'] as String,
+    name: json['name'] as String?,
+    website: json['website'] as String?,
+    vapidKey: json['vapid_key'] as String?,
+    clientId: json['client_id'] as String?,
+    clientSecret: json['client_secret'] as String?,
   );
 }
 

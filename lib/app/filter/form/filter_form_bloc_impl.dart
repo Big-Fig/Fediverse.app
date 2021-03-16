@@ -13,7 +13,6 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
-import 'package:flutter/widgets.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
 
@@ -26,7 +25,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final BoolValueFormFieldBloc wholeWordField;
   @override
-  DurationDateTimeValueFormFieldBloc expiresInField;
+  late DurationDateTimeValueFormFieldBloc expiresInField;
 
   @override
   final FilterContextMultiSelectFromListValueFormFieldBloc contextField;
@@ -34,9 +33,9 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   final AuthInstance currentInstance;
 
   FilterFormBloc({
-    @required IFilter initialValue,
-    @required this.currentInstance,
-  })  : phraseField = StringValueFormFieldBloc(
+    required IFilter? initialValue,
+    required this.currentInstance,
+  })   : phraseField = StringValueFormFieldBloc(
           originValue: initialValue?.phrase,
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator()
@@ -103,17 +102,19 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   IPostPleromaFilter calculateFormValue() {
     return PostPleromaFilter(
-      phrase: phraseField.currentValue,
-      irreversible: irreversibleField.currentValue,
-      wholeWord: wholeWordField.currentValue,
+      phrase: phraseField.currentValue ?? "",
+      irreversible: irreversibleField.currentValue ?? false,
+      wholeWord: wholeWordField.currentValue ?? false,
       expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
       context: contextField.currentValue
-          ?.where(
-              (contextType) => contextType != MastodonFilterContextType.unknown)
-          ?.map(
-            (contextType) => contextType.toJsonValue(),
-          )
-          ?.toList(),
+              ?.where(
+                (contextType) =>
+                    contextType != MastodonFilterContextType.unknown,
+              )
+              .map(
+                (contextType) => contextType!.toJsonValue(),
+              )
+              .toList() ?? [],
     );
   }
 }

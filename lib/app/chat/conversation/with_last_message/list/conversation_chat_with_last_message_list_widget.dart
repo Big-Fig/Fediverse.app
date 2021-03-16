@@ -18,11 +18,11 @@ class ConversationChatWithLastMessageListWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const ConversationChatWithLastMessageListWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     bool refreshOnFirstLoad = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
@@ -36,10 +36,10 @@ class ConversationChatWithLastMessageListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IConversationChatWithLastMessage> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IConversationChatWithLastMessage> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,
@@ -75,7 +75,7 @@ class ConversationChatWithLastMessageListWidget
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
       IConversationChatWithLastMessage> retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   }) {
     var paginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,

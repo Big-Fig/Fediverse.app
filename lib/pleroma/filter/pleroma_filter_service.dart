@@ -9,23 +9,23 @@ abstract class IPleromaFilterService implements IPleromaApi {
       Provider.of<IPleromaFilterService>(context, listen: listen);
 
   Future<List<IPleromaFilter>> getFilters({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future<IPleromaFilter> getFilter({
-    @required String filterRemoteId,
+    required String? filterRemoteId,
   });
 
   Future deleteFilter({
-    @required String filterRemoteId,
+    required String? filterRemoteId,
   });
 
   Future<IPleromaFilter> createFilter({
-    @required IPostPleromaFilter postPleromaFilter,
+    required IPostPleromaFilter postPleromaFilter,
   });
 
   Future<IPleromaFilter> updateFilter({
-    @required String filterRemoteId,
-    @required IPostPleromaFilter postPleromaFilter,
+    required String? filterRemoteId,
+    required IPostPleromaFilter postPleromaFilter,
   });
 }

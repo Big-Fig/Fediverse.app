@@ -31,7 +31,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
     _logger.finest(() => "build");
 
-    return StreamBuilder<List<AuthInstance>>(
+    return StreamBuilder<List<AuthInstance?>>(
       stream: instanceChooserBloc.instancesAvailableToChooseStream,
       builder: (context, snapshot) {
         var instancesAvailableToChoose = snapshot.data;
@@ -44,7 +44,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           shrinkWrap: true,
           children: [
             const _AuthInstanceChooserSelectedInstanceRowWidget(),
-            StreamBuilder<List<AuthInstance>>(
+            StreamBuilder<List<AuthInstance?>>(
                 stream: instanceChooserBloc.instancesAvailableToChooseStream,
                 builder: (context, snapshot) {
                   var instancesAvailableToChoose = snapshot.data;
@@ -55,7 +55,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                   _logger.finest(() => "build instancesAvailableToChoose "
                       "${instancesAvailableToChoose.length}");
 
-                  return Provider<List<AuthInstance>>.value(
+                  return Provider<List<AuthInstance?>>.value(
                     value: instancesAvailableToChoose,
                     child: const _AuthInstanceChooserItemsToChooseWidget(),
                   );
@@ -82,7 +82,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
 class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
   const _AuthInstanceChooserItemsToChooseWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -142,7 +142,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
 
 class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
   const _AuthInstanceChooserSelectedInstanceRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -165,7 +165,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
 
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (BuildContext context, value, previous) => value,
-      child: StreamBuilder<AuthInstance>(
+      child: StreamBuilder<AuthInstance?>(
           stream: instanceChooserBloc.selectedInstanceStream,
           builder: (context, snapshot) {
             var authInstance = snapshot.data;
@@ -189,7 +189,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
 class _AuthInstanceChooserInstanceListItemAddAccountRowWidget
     extends StatelessWidget {
   const _AuthInstanceChooserInstanceListItemAddAccountRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/media/picker/media_picker_bloc_impl.dart';
 import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,17 +16,18 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   final StreamController<List<IMediaDeviceFile>>
       acceptedFilesSelectionStreamController = StreamController.broadcast();
 
-  final int selectionCountLimit;
+  final int? selectionCountLimit;
 
   final StreamController<bool> selectionCountLimitReachedStreamController =
       StreamController();
 
   @override
   bool get isSelectionCountLimitReached {
-    if (selectionCountLimit == null) {
+    var limit = selectionCountLimit;
+    if (limit == null) {
       return false;
     } else {
-      return currentFilesMetadataSelectionCount >= selectionCountLimit;
+      return currentFilesMetadataSelectionCount >= limit;
     }
   }
 
@@ -35,7 +36,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       selectionCountLimitReachedStreamController.stream;
 
   MultiMediaPickerBloc({
-    @required this.selectionCountLimit,
+    required this.selectionCountLimit,
   }) {
     addDisposable(subject: currentFilesMetadataSelectionSubject);
     addDisposable(streamController: acceptedFilesSelectionStreamController);
@@ -47,7 +48,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       acceptedFilesSelectionStreamController.stream;
 
   @override
-  List<IMediaDeviceFileMetadata> get currentFilesMetadataSelection =>
+  List<IMediaDeviceFileMetadata>? get currentFilesMetadataSelection =>
       currentFilesMetadataSelectionSubject.value;
 
   @override
@@ -63,7 +64,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
         "selected $fileMetadataSelected");
     if (fileMetadataSelected) {
       currentFilesMetadataSelectionSubject.add(
-        currentFilesMetadataSelection
+        currentFilesMetadataSelection!
             .where(
               (currentFileMetadata) =>
                   currentFileMetadata.deviceId !=
@@ -77,7 +78,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       } else {
         currentFilesMetadataSelectionSubject.add(
           [
-            ...currentFilesMetadataSelection,
+            ...currentFilesMetadataSelection!,
             mediaDeviceFileMetadata,
           ],
         );
@@ -89,8 +90,8 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   Future acceptSelectedFilesMetadata() async {
     assert(isSomethingSelected);
     _logger.fine(
-        () => "acceptSelectedFiles ${currentFilesMetadataSelection.length}");
-    var futures = currentFilesMetadataSelection
+        () => "acceptSelectedFiles ${currentFilesMetadataSelection!.length}");
+    var futures = currentFilesMetadataSelection!
         .map((fileMetadata) => fileMetadata.loadMediaDeviceFile());
 
     var mediaFiles = await Future.wait(futures);
@@ -110,19 +111,19 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   int get currentFilesMetadataSelectionCount =>
-      currentFilesMetadataSelection.length;
+      currentFilesMetadataSelection!.length;
 
   @override
   Stream<int> get currentFilesMetadataSelectionCountStream =>
       currentFilesMetadataSelectionStream.map(
-        (selectedFiles) => currentFilesMetadataSelection.length,
+        (selectedFiles) => currentFilesMetadataSelection!.length,
       );
 
   @override
   bool isFileMetadataSelected(
       IMediaDeviceFileMetadata mediaDeviceFileMetadata) {
     var selected = _calculateIsFileSelected(
-      selectedFilesMetadata: currentFilesMetadataSelection,
+      selectedFilesMetadata: currentFilesMetadataSelection!,
       mediaDeviceFileMetadata: mediaDeviceFileMetadata,
     );
     _logger.fine(() => "isFileMetadataSelected $selected "
@@ -131,12 +132,11 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   }
 
   bool _calculateIsFileSelected({
-    List<IMediaDeviceFileMetadata> selectedFilesMetadata,
-    IMediaDeviceFileMetadata mediaDeviceFileMetadata,
+    required List<IMediaDeviceFileMetadata> selectedFilesMetadata,
+    IMediaDeviceFileMetadata? mediaDeviceFileMetadata,
   }) {
-    var found = selectedFilesMetadata.firstWhere(
+    var found = selectedFilesMetadata.firstWhereOrNull(
       (selectedFileMetadata) => selectedFileMetadata == mediaDeviceFileMetadata,
-      orElse: () => null,
     );
     return found != null;
   }

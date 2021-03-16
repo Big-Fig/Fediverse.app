@@ -17,9 +17,9 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaField(
-      name: fields[0] as String,
-      value: fields[1] as String,
-      verifiedAt: fields[2] as DateTime,
+      name: fields[0] as String?,
+      value: fields[1] as String?,
+      verifiedAt: fields[2] as DateTime?,
     );
   }
 
@@ -52,8 +52,8 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
 
 PleromaField _$PleromaFieldFromJson(Map<String, dynamic> json) {
   return PleromaField(
-    name: json['name'] as String,
-    value: json['value'] as String,
+    name: json['name'] as String?,
+    value: json['value'] as String?,
     verifiedAt: json['verified_at'] == null
         ? null
         : DateTime.parse(json['verified_at'] as String),

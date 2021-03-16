@@ -10,7 +10,7 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class CreateCustomListBloc extends EditCustomListBloc
     implements ICreateCustomListBloc {
   static CreateCustomListBloc createFromContext(
     BuildContext context, {
-    @required Function(ICustomList) onSubmit,
+    required Function(ICustomList) onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
       pleromaListService: IPleromaListService.of(
@@ -27,7 +27,7 @@ class CreateCustomListBloc extends EditCustomListBloc
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAccountService: IPleromaAccountService.of(
+      pleromaAuthAccountService: IPleromaAuthAccountService.of(
         context,
         listen: false,
       ),
@@ -61,8 +61,8 @@ class CreateCustomListBloc extends EditCustomListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required Function(ICustomList) onSubmit,
+    required Widget child,
+    required Function(ICustomList) onSubmit,
   }) {
     return DisposableProvider<ICreateCustomListBloc>(
       create: (context) => CreateCustomListBloc.createFromContext(
@@ -80,21 +80,21 @@ class CreateCustomListBloc extends EditCustomListBloc
 
   @override
   Future<ICustomList> submit() async {
-    var remoteList = await pleromaListService.createList(
+    var pleromaList = await pleromaListService.createList(
         title: customListFormBloc.titleField.currentValue);
-    var localCustomList = mapRemoteListToLocalCustomList(remoteList);
+    var localCustomList = pleromaList.toCustomList();
     submittedStreamController.add(localCustomList);
     return localCustomList;
   }
 
   CreateCustomListBloc({
-    @required IPleromaListService pleromaListService,
-    @required IStatusRepository statusRepository,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
-    @required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
+    required IPleromaListService pleromaListService,
+    required IStatusRepository statusRepository,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAuthAccountService pleromaAuthAccountService,
+    required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
           isPossibleToDelete: false,
           pleromaListService: pleromaListService,
@@ -102,7 +102,7 @@ class CreateCustomListBloc extends EditCustomListBloc
           customList: null,
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          pleromaAuthAccountService: pleromaAuthAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
           paginationSettingsBloc: paginationSettingsBloc,
         );

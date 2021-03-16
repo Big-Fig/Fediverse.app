@@ -16,9 +16,9 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
   final IPushSettingsBloc pushSettingsBloc;
 
   FcmPushPermissionCheckerBloc({
-    @required @required this.fcmPushService,
-    @required this.fcmPushPermissionAskedLocalPreferencesBloc,
-    @required this.pushSettingsBloc,
+    @required required this.fcmPushService,
+    required this.fcmPushPermissionAskedLocalPreferencesBloc,
+    required this.pushSettingsBloc,
   });
 
   @override
@@ -50,7 +50,7 @@ class FcmPushPermissionCheckerBloc extends DisposableOwner
 
   @override
   bool get isNeedCheckPermission =>
-      !fcmPushPermissionAskedLocalPreferencesBloc.value &&
+      fcmPushPermissionAskedLocalPreferencesBloc.value != true &&
       !pushSettingsBloc.isHaveSubscription;
 
   @override

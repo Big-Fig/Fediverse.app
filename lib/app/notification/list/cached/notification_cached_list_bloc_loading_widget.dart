@@ -6,7 +6,7 @@ class NotificationCachedListBlocLoadingWidget extends StatelessWidget {
   final Widget child;
 
   NotificationCachedListBlocLoadingWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override

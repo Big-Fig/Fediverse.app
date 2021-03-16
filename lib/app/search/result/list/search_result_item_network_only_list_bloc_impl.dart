@@ -21,21 +21,21 @@ class SearchResultItemNetworkOnlyListBloc
   final ISearchInputBloc searchInputBloc;
 
   SearchResultItemNetworkOnlyListBloc({
-    @required this.pleromaSearchService,
-    @required this.searchInputBloc,
+    required this.pleromaSearchService,
+    required this.searchInputBloc,
   });
 
   @override
   Future<List<ISearchResultItem>> loadItemsFromRemoteForPage(
-      {@required int itemsCountPerPage,
-      @required int pageIndex,
-      @required String minId,
-      @required String maxId}) async {
+      {required int? itemsCountPerPage,
+      required int pageIndex,
+      required String? minId,
+      required String? maxId}) async {
     var query = searchInputBloc.confirmedSearchTerm;
     List<ISearchResultItem> resultItems = [];
 
     if (query?.isNotEmpty == true) {
-      var offset = pageIndex * itemsCountPerPage;
+      var offset = pageIndex * itemsCountPerPage!;
       if (offset > 0) {
         //hack because backend include last item in next page too
         offset += 1;
@@ -50,22 +50,35 @@ class SearchResultItemNetworkOnlyListBloc
         ),
       );
 
-      searchResult.statuses.forEach((status) {
-        resultItems
-            .add(SearchResultItem.status(mapRemoteStatusToLocalStatus(status)));
-      });
-      searchResult.accounts.forEach((account) {
-        resultItems.add(
-            SearchResultItem.account(mapRemoteAccountToLocalAccount(account)));
-      });
+      searchResult.statuses.forEach(
+        (status) {
+          resultItems.add(
+            SearchResultItem.status(
+              status.toDbStatusPopulatedWrapper(),
+            ),
+          );
+        },
+      );
 
-      searchResult.hashtags.forEach((hashtag) {
-        resultItems.add(
-          SearchResultItem.hashtag(
-            mapRemoteHashtagToLocalHashtag(hashtag),
-          ),
-        );
-      });
+      searchResult.accounts.forEach(
+        (account) {
+          resultItems.add(
+            SearchResultItem.account(
+              account.toDbAccountWrapper(),
+            ),
+          );
+        },
+      );
+
+      searchResult.hashtags.forEach(
+        (hashtag) {
+          resultItems.add(
+            SearchResultItem.hashtag(
+              hashtag.toHashtag(),
+            ),
+          );
+        },
+      );
     }
 
     return resultItems;
@@ -75,14 +88,21 @@ class SearchResultItemNetworkOnlyListBloc
   IPleromaApi get pleromaApi => pleromaSearchService;
 
   static SearchResultItemNetworkOnlyListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       SearchResultItemNetworkOnlyListBloc(
-          searchInputBloc: ISearchInputBloc.of(context, listen: false),
-          pleromaSearchService:
-              IPleromaSearchService.of(context, listen: false));
+        searchInputBloc: ISearchInputBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaSearchService: IPleromaSearchService.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
       create: (context) =>
           SearchResultItemNetworkOnlyListBloc.createFromContext(context),
@@ -102,5 +122,5 @@ class SearchResultItemNetworkOnlyListBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

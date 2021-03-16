@@ -8,7 +8,7 @@ abstract class IFcmPushService extends IDisposable
     implements IAsyncInitLoadingBloc {
   Stream<String> get deviceTokenStream;
 
-  String get deviceToken;
+  String? get deviceToken;
 
   Stream<PushMessage> get messageStream;
 

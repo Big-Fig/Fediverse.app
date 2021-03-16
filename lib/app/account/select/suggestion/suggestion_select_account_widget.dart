@@ -9,20 +9,20 @@ import 'package:flutter/widgets.dart';
 
 class SuggestionSelectAccountWidget extends StatelessWidget {
   final List<Widget> itemActions;
-  final AccountCallback accountSelectedCallback;
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final AccountCallback? accountSelectedCallback;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
   final EdgeInsets itemPadding;
   final EdgeInsets headerPadding;
 
   const SuggestionSelectAccountWidget({
-    Key key,
-    @required this.itemActions,
-    @required this.accountSelectedCallback,
-    @required this.itemPadding,
-    @required this.headerPadding,
+    Key? key,
+    required this.itemActions,
+    required this.accountSelectedCallback,
+    required this.itemPadding,
+    required this.headerPadding,
     this.header,
     this.footer,
     this.alwaysShowHeader,
@@ -39,7 +39,7 @@ class SuggestionSelectAccountWidget extends StatelessWidget {
           child: AccountPaginationListWidget(
             header: Column(
               children: [
-                if (header != null) header,
+                if (header != null) header!,
                 Padding(
                   padding: headerPadding,
                   child: const SuggestionSelectAccountHeaderWidget(),
@@ -61,7 +61,7 @@ class SuggestionSelectAccountWidget extends StatelessWidget {
 
 class SuggestionSelectAccountHeaderWidget extends StatelessWidget {
   const SuggestionSelectAccountHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

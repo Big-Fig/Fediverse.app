@@ -5,7 +5,6 @@ import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dar
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger("emoji_picker_recent_category_bloc_impl.dart");
@@ -15,7 +14,7 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   final IEmojiPickerRecentCategoryLocalPreferenceBloc preferenceBloc;
 
   EmojiPickerRecentCategoryBloc({
-    @required this.preferenceBloc,
+    required this.preferenceBloc,
   });
 
   @override

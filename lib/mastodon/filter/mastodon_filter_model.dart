@@ -1,6 +1,7 @@
-import 'package:fedi/enum/enum_values.dart';
-
 abstract class IBaseMastodonFilter {
+  /// The ID of the filter in the database.
+  String get id;
+
   ///  The text to be filtered.
   String get phrase;
 
@@ -14,19 +15,16 @@ abstract class IBaseMastodonFilter {
 
   /// Should the filter consider word boundaries?
   bool get wholeWord;
-}
-
-abstract class IMastodonFilter implements IBaseMastodonFilter {
-  /// The ID of the filter in the database.
-  String get id;
 
   /// When the filter should no longer be applied
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
 }
+
+abstract class IMastodonFilter implements IBaseMastodonFilter {}
 
 abstract class IPostMastodonFilter implements IBaseMastodonFilter {
   /// When the filter should no longer be applied
-  int get expiresInSeconds;
+  int? get expiresInSeconds;
 }
 
 enum MastodonFilterContextType {
@@ -49,26 +47,74 @@ enum MastodonFilterContextType {
   unknown,
 }
 
-final _mastodonFilterContextTypeValues = EnumValues<MastodonFilterContextType>({
-  "home": MastodonFilterContextType.homeAndCustomLists,
-  "notifications": MastodonFilterContextType.notifications,
-  "public": MastodonFilterContextType.public,
-  "thread": MastodonFilterContextType.thread,
-  "account": MastodonFilterContextType.account,
-});
+const unknownMastodonFilterContextType = MastodonFilterContextType.unknown;
+
+const _homeSetMastodonFilterContextTypeValue = "home";
+const _notificationsSetMastodonFilterContextTypeValue = "notifications";
+const _publicSetMastodonFilterContextTypeValue = "public";
+const _threadSetMastodonFilterContextTypeValue = "thread";
+const _accountSetMastodonFilterContextTypeValue = "account";
+const _unknownSetMastodonFilterContextTypeValue = "unknown";
 
 extension MastodonFilterContextTypeJsonValueExtension
     on MastodonFilterContextType {
-  String toJsonValue() => _mastodonFilterContextTypeValues.enumToValueMap[this];
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case MastodonFilterContextType.homeAndCustomLists:
+        result = _homeSetMastodonFilterContextTypeValue;
+        break;
+      case MastodonFilterContextType.account:
+        result = _accountSetMastodonFilterContextTypeValue;
+        break;
+      case MastodonFilterContextType.public:
+        result = _publicSetMastodonFilterContextTypeValue;
+        break;
+      case MastodonFilterContextType.notifications:
+        result = _notificationsSetMastodonFilterContextTypeValue;
+        break;
+      case MastodonFilterContextType.thread:
+        result = _threadSetMastodonFilterContextTypeValue;
+        break;
+      case MastodonFilterContextType.unknown:
+        result = _unknownSetMastodonFilterContextTypeValue;
+        break;
+    }
+
+    return result;
+  }
 }
 
 extension MastodonFilterContextTypeStringExtension on String {
   MastodonFilterContextType toMastodonFilterContextType() {
-    if (this == null) {
-      return null;
+    MastodonFilterContextType result;
+
+    switch (this) {
+      case _homeSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.homeAndCustomLists;
+        break;
+      case _threadSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.thread;
+        break;
+      case _notificationsSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.notifications;
+        break;
+      case _publicSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.public;
+        break;
+      case _accountSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.account;
+        break;
+      case _unknownSetMastodonFilterContextTypeValue:
+        result = MastodonFilterContextType.unknown;
+        break;
+      // can't parse, default value
+      default:
+        result = unknownMastodonFilterContextType;
+        break;
     }
-    var contextType = _mastodonFilterContextTypeValues.valueToEnumMap[this];
-    contextType ??= MastodonFilterContextType.unknown;
-    return contextType;
+
+    return result;
   }
 }

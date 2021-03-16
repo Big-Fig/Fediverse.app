@@ -17,23 +17,22 @@ final _logger = Logger("edit_global_or_instance_settings_dialog.dart");
 
 typedef EditGlobalOrInstanceSettingsDialogContextContextBuilder = Widget
     Function({
-  @required BuildContext context,
-  @required Widget child,
+  required BuildContext context,
+  required Widget child,
 });
 
 void showEditGlobalOrInstanceSettingsDialog({
-  @required BuildContext context,
-  @required String subTitle,
-  @required Widget child,
-  @required
-      EditGlobalOrInstanceSettingsDialogContextContextBuilder
-          childContextBuilder,
-  @required IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc,
-  @required ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback,
+  required BuildContext context,
+  required String subTitle,
+  required Widget child,
+  required EditGlobalOrInstanceSettingsDialogContextContextBuilder
+      childContextBuilder,
+  required IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc,
+  required ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance;
+  var currentInstance = currentAuthInstanceBloc.currentInstance!;
 
   showSettingsDialog(
     context: context,
@@ -52,7 +51,7 @@ void showEditGlobalOrInstanceSettingsDialog({
           var isUseGlobalSettingsFormBoolFieldBloc =
               ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
                   context);
-          return StreamBuilder<GlobalOrInstanceSettingsType>(
+          return StreamBuilder<GlobalOrInstanceSettingsType?>(
             stream: isUseGlobalSettingsFormBoolFieldBloc
                 .globalOrInstanceSettingsTypeStream,
             initialData: isUseGlobalSettingsFormBoolFieldBloc
@@ -62,10 +61,13 @@ void showEditGlobalOrInstanceSettingsDialog({
               _logger.finest(() =>
                   "globalOrInstanceSettingsType $globalOrInstanceSettingsType");
 
-              return Provider<GlobalOrInstanceSettingsType>.value(
+              return Provider<GlobalOrInstanceSettingsType?>.value(
                 value: globalOrInstanceSettingsType,
                 child: _EditGlobalOrInstanceSettingsDialogBodyWidget(
-                  child: childContextBuilder(child: child),
+                  child: childContextBuilder(
+                    context: context,
+                    child: child,
+                  ),
                   showGlobalSettingsDialogCallback:
                       showGlobalSettingsDialogCallback,
                 ),
@@ -83,9 +85,9 @@ class _EditGlobalOrInstanceSettingsDialogBodyWidget extends StatelessWidget {
   final ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback;
 
   const _EditGlobalOrInstanceSettingsDialogBodyWidget({
-    Key key,
-    @required this.child,
-    @required this.showGlobalSettingsDialogCallback,
+    Key? key,
+    required this.child,
+    required this.showGlobalSettingsDialogCallback,
   }) : super(key: key);
 
   @override

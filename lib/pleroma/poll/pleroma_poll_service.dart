@@ -4,15 +4,21 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaPollService implements IPleromaApi {
-  static IPleromaPollService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPleromaPollService>(context, listen: listen);
+  static IPleromaPollService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaPollService>(
+        context,
+        listen: listen,
+      );
 
   Future<IPleromaPoll> getPoll({
-    @required String pollRemoteId,
+    required String pollRemoteId,
   });
 
   Future<IPleromaPoll> vote({
-    @required String pollRemoteId,
-    @required List<int> voteIndexes,
+    required String pollRemoteId,
+    required List<int> voteIndexes,
   });
 }

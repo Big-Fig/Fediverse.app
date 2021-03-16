@@ -11,11 +11,11 @@ abstract class ITimelineTabBloc extends IDisposable {
   IStatusCachedListBloc get statusCachedListBloc;
 
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
-      paginationListWithNewItemsBloc;
+      get paginationListWithNewItemsBloc;
 
   Timeline get timeline;
 
-  ITimelineLocalPreferencesBloc get timelineLocalPreferencesBloc;
+  ITimelineLocalPreferencesBloc? get timelineLocalPreferencesBloc;
 
   String get timelineId;
 

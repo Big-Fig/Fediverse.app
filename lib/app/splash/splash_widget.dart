@@ -23,7 +23,7 @@ class SplashWidget extends StatelessWidget {
 
 class _SplashVersionInfoWidget extends StatelessWidget {
   const _SplashVersionInfoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _SplashVersionInfoWidget extends StatelessWidget {
 
 class _SplashLogoWidget extends StatelessWidget {
   const _SplashLogoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

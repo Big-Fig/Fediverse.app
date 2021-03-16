@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
@@ -8,12 +9,15 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ConversationChatMessageBloc extends ChatMessageBloc
     implements IConversationChatMessageBloc {
+  final PleromaInstancePollLimits pleromaInstancePollLimits;
 
   static ConversationChatMessageBloc createFromContext(
     BuildContext context,
@@ -22,6 +26,10 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       ConversationChatMessageBloc(
+        pleromaInstancePollLimits: ICurrentAuthInstanceBloc.of(
+              context,
+              listen: false,
+            ).currentInstance?.info?.pollLimits ?? PleromaInstancePollLimits.defaultLimits,
         conversationChatService:
             IPleromaConversationService.of(context, listen: false),
         authStatusService: IPleromaAuthStatusService.of(context, listen: false),
@@ -50,14 +58,15 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   final IConversationChatBloc conversationChatBloc;
 
   ConversationChatMessageBloc({
-    @required this.conversationChatService,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.authStatusService,
-    @required this.accountRepository,
-    @required this.conversationChatBloc,
-    @required
-        IConversationChatMessage chatMessage, // for better performance we don't
+    required this.conversationChatService,
+    required this.pleromaAccountService,
+    required this.statusRepository,
+    required this.authStatusService,
+    required this.accountRepository,
+    required this.conversationChatBloc,
+    required this.pleromaInstancePollLimits,
+    required IConversationChatMessage
+        chatMessage, // for better performance we don't
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
@@ -83,9 +92,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(
-              ConversationChatMessageStatusAdapter(
-                updatedChatMessage,
-              ),
+              updatedChatMessage.toConversationChatMessageStatusAdapter(),
             );
           }
         },
@@ -95,15 +102,12 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     if (chatMessage.oldPendingRemoteId != null) {
       addDisposable(
         streamSubscription: statusRepository
-            .watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId)
+            .watchByOldPendingRemoteId(chatMessage!.oldPendingRemoteId)
             .listen(
           (updatedChatMessage) {
             if (updatedChatMessage != null) {
               _chatMessageSubject.add(
-                ConversationChatMessageStatusAdapter(
-                  updatedChatMessage,
-                ),
-              );
+                  updatedChatMessage.toConversationChatMessageStatusAdapter());
             }
           },
         ),
@@ -112,14 +116,14 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  IConversationChatMessage get chatMessage => _chatMessageSubject.value;
+  IConversationChatMessage get chatMessage => _chatMessageSubject.value!;
 
   @override
   Stream<IConversationChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.distinct();
+      _chatMessageSubject.stream.mapToNotNull().distinct();
 
   @override
-  IAccount get account => chatMessage?.account;
+  IAccount get account => chatMessage.account;
 
   @override
   Future refreshFromNetwork() async {
@@ -140,8 +144,9 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
   @override
   Future resendPendingFailed() => conversationChatBloc.postMessage(
-      postStatusData: chatMessage.status.calculatePostStatusData(),
-      oldPendingFailedConversationChatMessage: chatMessage,
-    );
-
+        postStatusData: chatMessage.status.calculatePostStatusData(
+          limits: pleromaInstancePollLimits,
+        ),
+        oldPendingFailedConversationChatMessage: chatMessage,
+      );
 }

@@ -55,7 +55,7 @@ class MyAccountAccountBlockListPage extends StatelessWidget {
 
 class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
   const _MyAccountAccountBlockListPageAddButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -93,7 +93,7 @@ class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {
 
 class _MyAccountAccountBlockListPageWarningWidget extends StatelessWidget {
   const _MyAccountAccountBlockListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

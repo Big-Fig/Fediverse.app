@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
 
     var homeBloc = IHomeBloc.of(context, listen: false);
 
-    return StreamBuilder<HomeTab>(
+    return StreamBuilder<HomeTab?>(
       stream: homeBloc.selectedTabStream.distinct(),
       initialData: homeBloc.selectedTab,
       builder: (context, snapshot) {
@@ -80,26 +80,19 @@ class HomePage extends StatelessWidget {
     switch (selectedTab) {
       case HomeTab.timelines:
         return const _HomePageTimelineTabWidget();
-        break;
       case HomeTab.notifications:
         return const _HomePageNotificationTabWidget();
-        break;
       case HomeTab.chat:
         return const _HomePageMessagesTabWidget();
-
-        break;
       case HomeTab.account:
         return const _HomePageAccountTabWidget();
-        break;
     }
-
-    throw "buildBody invalid selectedTab = $selectedTab";
   }
 }
 
 class _HomePageBackgroundWidget extends StatelessWidget {
   const _HomePageBackgroundWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -115,7 +108,7 @@ class _HomePageBackgroundWidget extends StatelessWidget {
 
 class _HomePageAccountTabWidget extends StatelessWidget {
   const _HomePageAccountTabWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -154,7 +147,7 @@ class _HomePageAccountTabWidget extends StatelessWidget {
 
 class _HomePageMessagesTabConversationWidget extends StatelessWidget {
   const _HomePageMessagesTabConversationWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -185,7 +178,7 @@ class _HomePageMessagesTabConversationWidget extends StatelessWidget {
 
 class _HomePageMessagesTabChatWidget extends StatelessWidget {
   const _HomePageMessagesTabChatWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -216,7 +209,7 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
 class _HomePageNotificationTabWidget extends StatelessWidget {
   const _HomePageNotificationTabWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -257,13 +250,13 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
 
 class _HomePageMessagesTabWidget extends StatelessWidget {
   const _HomePageMessagesTabWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var chatSettingsBloc = IChatSettingsBloc.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
       initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
       builder: (context, snapshot) {
@@ -281,7 +274,7 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
 
 class _HomePageTimelineTabWidget extends StatelessWidget {
   const _HomePageTimelineTabWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -310,7 +303,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
 
 class _HomePageBottomNavBar extends StatelessWidget {
   const _HomePageBottomNavBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

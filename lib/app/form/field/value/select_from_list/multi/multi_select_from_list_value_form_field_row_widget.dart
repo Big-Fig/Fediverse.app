@@ -17,27 +17,26 @@ typedef MultiSelectFromListValueTitleMapper<T> = String Function(
 
 class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
+  final String? description;
+  final String? descriptionOnDisabled;
 
-  final MultiSelectFromListValueIconMapper<T> valueIconMapper;
+  final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInRow;
   final bool displayIconInDialog;
 
   MultiSelectFromListValueFormFieldRowWidget({
-    @required this.label,
-    @required this.valueTitleMapper,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.displayIconInRow,
-    @required this.displayIconInDialog,
-    @required this.valueIconMapper,
+    required this.label,
+    required this.valueTitleMapper,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.displayIconInRow,
+    required this.displayIconInDialog,
+    required this.valueIconMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
       assert(valueIconMapper != null);
     }
-    assert(valueTitleMapper != null);
   }
 
   @override
@@ -61,16 +60,16 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
     extends StatelessWidget {
   final String label;
   final bool displayIconInRow;
-  final MultiSelectFromListValueIconMapper<T> valueIconMapper;
+  final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
   _MultiSelectFromListValueFormFieldRowValueWidget({
-    @required this.label,
-    @required this.valueTitleMapper,
-    @required this.displayIconInRow,
-    @required this.displayIconInDialog,
-    @required this.valueIconMapper,
+    required this.label,
+    required this.valueTitleMapper,
+    required this.displayIconInRow,
+    required this.displayIconInDialog,
+    required this.valueIconMapper,
   });
 
   @override
@@ -79,7 +78,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
       onTap: () {
         var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context,
             listen: false);
-        if (fieldBloc.isEnabled) {
+        if (fieldBloc.isEnabled!) {
           _showDialog(
             context: context,
             fieldBloc: fieldBloc,
@@ -112,8 +111,8 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
 class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
     extends StatelessWidget {
   const _MultiSelectFromListValueFormFieldRowValueTitleWidget({
-    Key key,
-    @required this.valueTitleMapper,
+    Key? key,
+    required this.valueTitleMapper,
   }) : super(key: key);
 
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
@@ -123,27 +122,27 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
     //
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
-        return StreamBuilder<List<T>>(
+        return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
             var currentValueList = snapshot.data ?? [];
             return Text(
-              currentValueList?.isNotEmpty == true
+              currentValueList.isNotEmpty == true
                   ? currentValueList
-                      ?.map(
+                      .map(
                         (currentValue) =>
                             valueTitleMapper(context, currentValue),
                       )
-                      ?.join("\n")
+                      .join("\n")
                   : S.of(context).app_filter_context_empty,
               textAlign: TextAlign.end,
-              style: isEnabled
+              style: isEnabled!
                   ? fediUiTextTheme.mediumTallDarkGrey
                   : fediUiTextTheme.mediumTallLightGrey,
             );
@@ -157,15 +156,15 @@ class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
 class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
     extends StatelessWidget {
   const _MultiSelectFromListValueFormFieldRowValueIconWidget({
-    Key key,
-    @required this.label,
-    @required this.valueIconMapper,
-    @required this.valueTitleMapper,
-    @required this.displayIconInDialog,
+    Key? key,
+    required this.label,
+    required this.valueIconMapper,
+    required this.valueTitleMapper,
+    required this.displayIconInDialog,
   }) : super(key: key);
 
   final String label;
-  final MultiSelectFromListValueIconMapper<T> valueIconMapper;
+  final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
@@ -174,12 +173,12 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
     var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
-        return StreamBuilder<List<T>>(
+        return StreamBuilder<List<T>?>(
           stream: fieldBloc.currentValueStream,
           initialData: fieldBloc.currentValue,
           builder: (context, snapshot) {
@@ -188,7 +187,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
               children: currentValueList
                       ?.map(
                         (currentValue) => FediIconButton(
-                          color: isEnabled
+                          color: isEnabled!
                               ? fediUiColorTheme.darkGrey
                               : fediUiColorTheme.lightGrey,
                           onPressed: () {
@@ -202,7 +201,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
                             );
                           },
                           icon: Icon(
-                            valueIconMapper(context, currentValue),
+                            valueIconMapper!(context, currentValue),
                           ),
                         ),
                       )
@@ -216,13 +215,13 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
   }
 }
 
-Future<T> _showDialog<T>({
-  @required BuildContext context,
-  @required String label,
-  @required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
-  @required MultiSelectFromListValueIconMapper<T> valueIconMapper,
-  @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
-  @required bool displayIconInDialog,
+Future<T?> _showDialog<T>({
+  required BuildContext context,
+  required String label,
+  required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
+  required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required bool displayIconInDialog,
 }) async {
   var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
@@ -265,11 +264,11 @@ Future<T> _showDialog<T>({
 }
 
 List<SelectionDialogAction> _calculateActions<T>({
-  @required BuildContext context,
-  @required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
-  @required MultiSelectFromListValueIconMapper<T> valueIconMapper,
-  @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
-  @required bool displayIconInDialog,
+  required BuildContext context,
+  required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
+  required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required bool displayIconInDialog,
 }) {
   var result = <SelectionDialogAction>[
     ...fieldBloc.possibleValues.map(
@@ -288,16 +287,16 @@ List<SelectionDialogAction> _calculateActions<T>({
 }
 
 SelectionDialogAction _buildDialogAction<T>({
-  @required BuildContext context,
-  @required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
-  @required T value,
-  @required List<T> selectedValues,
-  @required MultiSelectFromListValueIconMapper<T> valueIconMapper,
-  @required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
-  @required bool displayIconInDialog,
+  required BuildContext context,
+  required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required T value,
+  required List<T>? selectedValues,
+  required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
+  required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required bool displayIconInDialog,
 }) {
   return SelectionDialogAction(
-    icon: displayIconInDialog ? valueIconMapper(context, value) : null,
+    icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
     label: valueTitleMapper(context, value),
     onAction: (context) {
       fieldBloc.toggleValue(value);

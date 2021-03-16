@@ -8,12 +8,12 @@ class DurationValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   DurationValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IDurationValueFormFieldBloc, IValueFormFieldBloc<Duration>>(
+      ProxyProvider<IDurationValueFormFieldBloc, IValueFormFieldBloc<Duration?>>(
         update: (context, value, previous) => value,
         child: ValueFormFieldBlocProxyProvider<Duration>(
           child: child,

@@ -54,7 +54,7 @@ class ChatAccountsWidget extends StatelessWidget {
 
 class _ChatAccountsLoadingWidget extends StatelessWidget {
   const _ChatAccountsLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -10,38 +10,38 @@ import 'package:provider/provider.dart';
 abstract class IDraftStatusRepository
     implements
         IDisposable,
-        IReadIdListRepository<IDraftStatus, int>,
-        IWriteIdListRepository<DbDraftStatus, int> {
+        IReadIdListRepository<IDraftStatus, int?>,
+        IWriteIdListRepository<DbDraftStatus, int?> {
   static IDraftStatusRepository of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IDraftStatusRepository>(context, listen: listen);
 
   Future addDraftStatus({
-    @required IDraftStatus draftStatus,
+    required IDraftStatus draftStatus,
   });
 
   Future<List<IDraftStatus>> getDraftStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IDraftStatus> pagination,
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<IDraftStatus>> watchDraftStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IDraftStatus> pagination,
+    required ScheduledStatusRepositoryFilters filters,
+    required RepositoryPagination<IDraftStatus> pagination,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
-  Future<IDraftStatus> getDraftStatus({
-    @required ScheduledStatusRepositoryFilters filters,
+  Future<IDraftStatus?> getDraftStatus({
+    required ScheduledStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });
 
-  Stream<IDraftStatus> watchDraftStatus({
-    @required ScheduledStatusRepositoryFilters filters,
+  Stream<IDraftStatus?> watchDraftStatus({
+    required ScheduledStatusRepositoryFilters filters,
     DraftStatusOrderingTermData orderingTermData =
         DraftStatusOrderingTermData.updatedAtDesc,
   });

@@ -14,13 +14,13 @@ abstract class IMastodonStatus {
 
   DateTime get createdAt;
 
-  String get inReplyToId;
+  String? get inReplyToId;
 
-  String get inReplyToAccountId;
+  String? get inReplyToAccountId;
 
   bool get sensitive;
 
-  String get spoilerText;
+  String? get spoilerText;
 
   String get visibility;
 
@@ -44,70 +44,69 @@ abstract class IMastodonStatus {
 
   bool get pinned;
 
-  String get content;
+  String? get content;
 
-  IMastodonStatus get reblog;
+  IMastodonStatus? get reblog;
 
-  IMastodonApplication get application;
+  IMastodonApplication? get application;
 
   IMastodonAccount get account;
 
-  List<IMastodonMediaAttachment> get mediaAttachments;
+  List<IMastodonMediaAttachment>? get mediaAttachments;
 
-  List<IMastodonMention> get mentions;
+  List<IMastodonMention>? get mentions;
 
-  List<IMastodonTag> get tags;
+  List<IMastodonTag>? get tags;
 
-  List<IMastodonEmoji> get emojis;
+  List<IMastodonEmoji>? get emojis;
 
-  IMastodonPoll get poll;
+  IMastodonPoll? get poll;
 
-  IMastodonCard get card;
+  IMastodonCard? get card;
 
-  String get language;
+  String? get language;
 
   MastodonVisibility get visibilityMastodon =>
-      const MastodonVisibilityTypeConverter().fromJson(visibility);
+      visibility.toMastodonVisibility();
 }
 
 abstract class IMastodonScheduledStatus {
-  String get id;
+  String? get id;
 
   DateTime get scheduledAt;
 
   IMastodonScheduledStatusParams get params;
 
-  List<IMastodonMediaAttachment> get mediaAttachments;
+  List<IMastodonMediaAttachment>? get mediaAttachments;
 }
 
 abstract class IMastodonScheduledStatusParams {
-  String get text;
+  String? get text;
 
-  List<String> get mediaIds;
+  List<String>? get mediaIds;
 
   bool get sensitive;
 
-  String get spoilerText;
+  String? get spoilerText;
 
   String get visibility;
 
   DateTime get scheduledAt;
 
-  PleromaPostStatusPoll get poll;
+  PleromaPostStatusPoll? get poll;
 
   String get idempotency;
 
-  String get inReplyToId;
+  String? get inReplyToId;
 
-  IPleromaStatus get inReplyToPleromaStatus;
+  IPleromaStatus? get inReplyToPleromaStatus;
 
-  String get language;
+  String? get language;
 
   dynamic get applicationId;
 
   MastodonVisibility get visibilityMastodon =>
-      const MastodonVisibilityTypeConverter().fromJson(visibility);
-
+      visibility.toMastodonVisibility();
 }
 
 abstract class IMastodonPostStatusBaseRequest {
@@ -115,25 +114,25 @@ abstract class IMastodonPostStatusBaseRequest {
   /// Idempotency keys are stored for up to 1 hour,
   /// and can be any arbitrary string.
   /// Consider using a hash or UUID generated client-side.
-  String get idempotencyKey;
+  String? get idempotencyKey;
 
-  String get status;
+  String? get status;
 
-  List<String> get mediaIds;
+  List<String>? get mediaIds;
 
-  IMastodonPostStatusRequestPoll get poll;
+  IMastodonPostStatusRequestPoll? get poll;
 
   bool get sensitive;
 
-  String get spoilerText;
+  String? get spoilerText;
 
   String get visibility;
 
-  String get language;
+  String? get language;
 
   MastodonVisibility get mastodonVisibility;
 
-  String get inReplyToId;
+  String? get inReplyToId;
 }
 
 abstract class IMastodonPostStatusRequest

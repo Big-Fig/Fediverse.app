@@ -13,10 +13,10 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
   final bool defaultBlocking;
 
   const MyAccountAccountBlockActionButtonWidget({
-    Key key,
-    @required this.listBloc,
-    @required this.paginationListBloc,
-    @required this.defaultBlocking,
+    Key? key,
+    required this.listBloc,
+    required this.paginationListBloc,
+    required this.defaultBlocking,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
 
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: accountBloc.relationshipBlockingStream,
       initialData: accountBloc.relationshipBlocking,
       builder: (context, snapshot) {
@@ -35,11 +35,11 @@ class MyAccountAccountBlockActionButtonWidget extends StatelessWidget {
           asyncButtonAction: () async {
             if (relationshipBlocking) {
               await listBloc.removeAccountBlock(
-                account: accountBloc.account,
+                account: accountBloc.account!,
               );
             } else {
               await listBloc.addAccountBlock(
-                account: accountBloc.account,
+                account: accountBloc.account!,
               );
             }
             await paginationListBloc.refreshWithController();

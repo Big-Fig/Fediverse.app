@@ -35,11 +35,11 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbStatusesTable statusAlias;
-  $DbAccountsTable statusAccountAlias;
-  $DbStatusesTable statusReblogAlias;
-  $DbAccountsTable statusReblogAccountAlias;
+  late $DbAccountsTable accountAlias;
+  late $DbStatusesTable statusAlias;
+  late $DbAccountsTable statusAccountAlias;
+  late $DbStatusesTable statusReblogAlias;
+  late $DbAccountsTable statusReblogAccountAlias;
 
   // Called by the AppDatabase class
   NotificationDao(this.db) : super(db) {
@@ -66,13 +66,13 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   Future<DbNotificationPopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbNotificationPopulated> findByRemoteId(String remoteId) async =>
+  Future<DbNotificationPopulated?> findByRemoteId(String? remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
   Stream<DbNotificationPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
-  Stream<DbNotificationPopulated> watchByRemoteId(String remoteId) =>
+  Stream<DbNotificationPopulated> watchByRemoteId(String? remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
@@ -87,13 +87,13 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
             ..where((notification) => notification.id.equals(id)))
           .join(populateNotificationJoin());
 
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
       (select(db.dbNotifications)
-            ..where((notification) => notification.remoteId.like(remoteId)))
+            ..where((notification) => notification.remoteId.like(remoteId!)))
           .join(populateNotificationJoin());
 
   Future<int> insert(Insertable<DbNotification> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(db.dbNotifications).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbNotification> entity) async =>
@@ -102,7 +102,11 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   Future insertAll(Iterable<Insertable<DbNotification>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(db.dbNotifications, entities, mode: mode);
+        batch.insertAll(
+          db.dbNotifications,
+          entities as List<Insertable<DbNotification>>,
+          mode: mode,
+        );
       });
 
   Future<bool> replace(Insertable<DbNotification> entity) async =>
@@ -126,11 +130,11 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       addExcludeTypeWhere(
               SimpleSelectStatement<$DbNotificationsTable, DbNotification>
                   query,
-              List<PleromaNotificationType> excludeTypes) =>
+              List<PleromaNotificationType>? excludeTypes) =>
           query
             ..where(
               (notification) => notification.type.isNotIn(
-                excludeTypes
+                excludeTypes!
                     .map(
                       (type) => type.toJsonValue(),
                     )
@@ -180,8 +184,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   JoinedSelectStatement addExcludeContentWhere(
     JoinedSelectStatement query, {
-    @required String phrase,
-    @required bool wholeWord,
+    required String phrase,
+    required bool wholeWord,
   }) {
     final regex = r"\b" + phrase + r"\b";
     if (wholeWord) {
@@ -199,8 +203,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   JoinedSelectStatement addExcludeSpoilerTextWhere(
     JoinedSelectStatement query, {
-    @required String phrase,
-    @required bool wholeWord,
+    required String phrase,
+    required bool wholeWord,
   }) {
     final regex = r"\b" + phrase + r"\b";
     if (wholeWord) {
@@ -219,8 +223,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
-    @required DateTime minimumCreatedAt,
-    @required DateTime maximumCreatedAt,
+    required DateTime? minimumCreatedAt,
+    required DateTime? maximumCreatedAt,
   }) {
     var minimumExist = minimumCreatedAt != null;
     var maximumExist = maximumCreatedAt != null;
@@ -262,21 +266,15 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   List<DbNotificationPopulated> typedResultListToPopulated(
       List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbNotificationPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
 
     var notificationAccount = typedResult.readTable(accountAlias);
     var notificationStatus = typedResult.readTable(statusAlias);
 
-    DbStatusPopulated statusPopulated;
+    DbStatusPopulated? statusPopulated;
     if (notificationStatus?.remoteId != null) {
       var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
       var rebloggedStatus = typedResult.readTable(statusReblogAlias);
@@ -302,7 +300,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Future markAsRead({@required String remoteId}) {
+  Future markAsRead({required String? remoteId}) {
     var update = "UPDATE db_notifications "
         "SET unread = 0 "
         "WHERE remote_id = '$remoteId'";
@@ -319,7 +317,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     return query;
   }
 
-  Future markAsDismissed({@required String remoteId}) {
+  Future markAsDismissed({required String? remoteId}) {
     var update = "UPDATE db_notifications "
         "SET dismissed = 1 "
         "WHERE remote_id = '$remoteId'";
@@ -329,8 +327,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future markAsDismissedWhere({
-    @required String accountRemoteId,
-    @required PleromaNotificationType type,
+    required String? accountRemoteId,
+    required PleromaNotificationType type,
   }) {
     var update = "UPDATE db_notifications "
         "SET dismissed = 1 "

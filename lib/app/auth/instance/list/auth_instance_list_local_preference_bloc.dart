@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAuthInstanceListLocalPreferenceBloc
-    implements LocalPreferenceBloc<AuthInstanceList> {
+    implements LocalPreferenceBloc<AuthInstanceList?> {
   static IAuthInstanceListLocalPreferenceBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IAuthInstanceListLocalPreferenceBloc>(context,

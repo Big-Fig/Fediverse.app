@@ -8,21 +8,21 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditDatabaseCacheSettingsBloc
-    implements IEditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings> {
+    implements IEditGlobalOrInstanceSettingsBloc<DatabaseCacheSettings?> {
   static IEditDatabaseCacheSettingsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEditDatabaseCacheSettingsBloc>(context, listen: listen);
 
-  IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
+  IAgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?
       get ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
-  IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
+  IEntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc?
       get entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc;
 
-  ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc
+  ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc?
       get currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc;
 
-  ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc
+  ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc?
       get currentMaxAgeDatabaseCacheInfoFormFieldBloc;
 
   Future clearByLimits();

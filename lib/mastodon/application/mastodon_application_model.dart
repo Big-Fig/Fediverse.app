@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mastodon_application_model.g.dart';
@@ -9,23 +8,24 @@ part 'mastodon_application_model.g.dart';
 class MastodonApplicationRegistrationRequest {
   /// A name for your application
   @JsonKey(name: "client_name")
-  final String clientName;
+  final String? clientName;
 
   /// Where the user should be redirected after authorization.
   /// To display the authorization code to the
   /// user instead of redirecting to a web page,
   /// use urn:ietf:wg:oauth:2.0:oob in this parameter.
   @JsonKey(name: "redirect_uris")
-  final String redirectUris;
+  final String? redirectUris;
 
   /// Space separated list of scopes. If none is provided, defaults to read.
-  final String scopes;
+  final String? scopes;
 
   /// A URL to the homepage of your app
-  final String website;
+  final String? website;
+
   MastodonApplicationRegistrationRequest(
-      {@required this.clientName,
-      @required this.redirectUris,
+      {required this.clientName,
+      required this.redirectUris,
       this.scopes,
       this.website});
 
@@ -45,15 +45,15 @@ class MastodonApplicationRegistrationRequest {
 }
 
 abstract class IMastodonApplication {
-  String get name;
+  String? get name;
 
-  String get website;
+  String? get website;
 
-  String get vapidKey;
+  String? get vapidKey;
 }
 
-abstract class IMastodonClientApplication {
-  String get clientId;
+abstract class IMastodonClientApplication extends IMastodonApplication {
+  String? get clientId;
 
-  String get clientSecret;
+  String? get clientSecret;
 }

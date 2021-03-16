@@ -1,20 +1,23 @@
-import 'package:flutter/widgets.dart';
+
 
 class UploadMediaAttachmentState {
   final UploadMediaAttachmentStateType type;
   final dynamic error;
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   UploadMediaAttachmentState({
-    @required this.type,
+    required this.type,
     this.error,
     this.stackTrace,
   });
 
   @override
   String toString() {
-    return 'UploadMediaAttachmentState{type: $type,'
-        ' error: $error, stackTrace: $stackTrace}';
+    return 'UploadMediaAttachmentState{'
+        'type: $type, '
+        'error: $error, '
+        'stackTrace: $stackTrace'
+        '}';
   }
 
   @override

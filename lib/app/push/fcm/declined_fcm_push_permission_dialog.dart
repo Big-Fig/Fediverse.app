@@ -5,8 +5,8 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 
 FediBaseAlertDialog createDeclinedFcmPushPermissionDialog({
-  @required BuildContext context,
-  DialogActionCallback action,
+  required BuildContext context,
+  DialogActionCallback? action,
 }) =>
     FediSimpleAlertDialog(
       title: S.of(context).app_push_permission_declined_dialog_title,

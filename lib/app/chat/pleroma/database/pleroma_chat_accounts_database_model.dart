@@ -4,8 +4,8 @@ import 'package:moor/moor.dart';
 @DataClassName("DbChatAccount")
 class DbChatAccounts extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn? get id => integer().autoIncrement()();
 
-  TextColumn get chatRemoteId => text()();
-  TextColumn get accountRemoteId => text()();
+  TextColumn? get chatRemoteId => text()();
+  TextColumn? get accountRemoteId => text()();
 }

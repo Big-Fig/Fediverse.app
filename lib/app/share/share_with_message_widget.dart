@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShareWithMessageWidget extends StatelessWidget {
-  final Widget footer;
-  final Widget child;
+  final Widget? footer;
+  final Widget? child;
 
   const ShareWithMessageWidget({
-    @required this.footer,
-    @required this.child,
+    required this.footer,
+    required this.child,
   });
 
   @override
@@ -23,7 +23,7 @@ class ShareWithMessageWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Column(
-          children: <Widget>[
+          children: [
             if (child != null)
               Padding(
                 padding: FediPadding.allBigPadding,
@@ -33,7 +33,7 @@ class ShareWithMessageWidget extends StatelessWidget {
                 ),
               ),
             const _ShareWithMessageInputWidget(),
-            if (footer != null) footer,
+            if (footer != null) footer!,
           ],
         ),
       ],
@@ -43,7 +43,7 @@ class ShareWithMessageWidget extends StatelessWidget {
 
 class _ShareWithMessageInputWidget extends StatelessWidget {
   const _ShareWithMessageInputWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

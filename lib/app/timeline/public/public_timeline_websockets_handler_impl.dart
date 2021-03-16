@@ -7,24 +7,23 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/cupertino.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
-    @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required IStatusRepository statusRepository,
-    @required INotificationRepository notificationRepository,
-    @required IConversationChatRepository conversationRepository,
-    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
-    @required
+    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IStatusRepository statusRepository,
+    required INotificationRepository notificationRepository,
+    required IConversationChatRepository conversationRepository,
+    required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    required
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
-    @required bool onlyLocal,
-    @required bool onlyRemote,
-    @required bool onlyMedia,
-    @required WebSocketsListenType listenType,
-    @required String onlyFromInstance,
-    @required IMyAccountBloc myAccountBloc,
+    required bool? onlyLocal,
+    required bool? onlyRemote,
+    required bool? onlyMedia,
+    required WebSocketsListenType listenType,
+    required String? onlyFromInstance,
+    required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(

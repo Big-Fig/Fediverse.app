@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 class AccountNoteWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  AccountNoteWidget({@required this.textStyle});
+  AccountNoteWidget({required this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AccountNoteWidget extends StatelessWidget {
               streamSubscription: htmlTextBloc.linkClickedStream.listen(
                 (url) {
                   _onLinkClick(
-                    url: url,
+                    url: url!,
                     noteEmojiText: noteEmojiText,
                     context: context,
                   );
@@ -75,9 +75,9 @@ class AccountNoteWidget extends StatelessWidget {
   }
 
   void _onLinkClick({
-    @required BuildContext context,
-    @required String url,
-    @required EmojiText noteEmojiText,
+    required BuildContext context,
+    required String url,
+    required EmojiText noteEmojiText,
   }) {
     var accountBloc = IAccountBloc.of(context, listen: false);
 

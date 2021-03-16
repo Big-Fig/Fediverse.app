@@ -15,9 +15,14 @@ abstract class IConversationChatRepository
         IDisposable {
   static IConversationChatRepository of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IConversationChatRepository>(context, listen: listen);
+      Provider.of<IConversationChatRepository>(
+        context,
+        listen: listen,
+      );
 
-  Future<DbConversationChatWrapper> findByRemoteId(String remoteId);
+  Future<DbConversationChatWrapper?> findByRemoteId(
+    String remoteId,
+  );
 
   Future upsertRemoteConversations(
     List<IPleromaConversation> remoteConversations,
@@ -25,43 +30,45 @@ abstract class IConversationChatRepository
 
   Future deleteByRemoteId(String remoteId);
 
-  Stream<DbConversationChatWrapper> watchByRemoteId(String remoteId);
+  Stream<DbConversationChatWrapper?> watchByRemoteId(String remoteId);
 
-  Future upsertRemoteConversation(IPleromaConversation remoteConversation);
+  Future upsertRemoteConversation(
+    IPleromaConversation remoteConversation,
+  );
 
   Future<List<DbConversationChatWrapper>> getConversations({
-    @required ConversationChatRepositoryFilters filters,
-    @required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<DbConversationChatWrapper>> watchConversations({
-    @required ConversationChatRepositoryFilters filters,
-    @required RepositoryPagination<IConversationChat> pagination,
-    ConversationChatOrderingTermData orderingTermData =
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat>? pagination,
+    ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Future<DbConversationChatWrapper> getConversation({
-    @required ConversationChatRepositoryFilters filters,
-    ConversationChatOrderingTermData orderingTermData =
+  Future<DbConversationChatWrapper?> getConversation({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
-  Stream<DbConversationChatWrapper> watchConversation({
-    @required ConversationChatRepositoryFilters filters,
-    ConversationChatOrderingTermData orderingTermData =
+  Stream<DbConversationChatWrapper?> watchConversation({
+    required ConversationChatRepositoryFilters? filters,
+    ConversationChatOrderingTermData? orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
   Future updateLocalConversationByRemoteConversation({
-    @required IConversationChat oldLocalConversation,
-    @required IPleromaConversation newRemoteConversation,
+    required IConversationChat oldLocalConversation,
+    required IPleromaConversation newRemoteConversation,
   });
 
   Future<bool> markAsRead({
-    @required IConversationChat conversation,
+    required IConversationChat conversation,
   });
 
   Future<int> getTotalUnreadCount();

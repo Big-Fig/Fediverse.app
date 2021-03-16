@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
@@ -24,7 +23,7 @@ class PleromaNotificationService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -38,7 +37,7 @@ class PleromaNotificationService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaNotificationService({@required this.restService});
+  PleromaNotificationService({required this.restService});
 
   @override
   Future dispose() async {
@@ -47,7 +46,7 @@ class PleromaNotificationService extends DisposableOwner
 
   @override
   Future<IPleromaNotification> getNotification({
-    @required String notificationRemoteId,
+    required String? notificationRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -63,7 +62,7 @@ class PleromaNotificationService extends DisposableOwner
 
   @override
   Future<IPleromaNotification> markAsReadSingle({
-    @required String notificationRemoteId,
+    required String? notificationRemoteId,
   }) async {
     assert(
       restService.isPleroma,
@@ -87,7 +86,7 @@ class PleromaNotificationService extends DisposableOwner
 
   @override
   Future<List<IPleromaNotification>> markAsReadList({
-    @required String maxNotificationRemoteId,
+    required String? maxNotificationRemoteId,
   }) async {
     assert(
       restService.isPleroma,
@@ -112,15 +111,15 @@ class PleromaNotificationService extends DisposableOwner
 
   @override
   Future<List<IPleromaNotification>> getNotifications({
-    IPleromaPaginationRequest pagination,
-    List<PleromaNotificationType> excludeTypes,
-    String onlyFromAccountRemoteId,
-    List<PleromaNotificationType> includeTypes,
-    List<PleromaVisibility> excludeVisibilities,
+    IPleromaPaginationRequest? pagination,
+    List<PleromaNotificationType>? excludeTypes,
+    String? onlyFromAccountRemoteId,
+    List<PleromaNotificationType>? includeTypes,
+    List<PleromaVisibility>? excludeVisibilities,
   }) async {
     if (includeTypes?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaNotificationType includeType in includeTypes) {
+      for (PleromaNotificationType includeType in includeTypes!) {
         assert(
           IPleromaNotificationService.validPleromaTypesToInclude
               .contains(includeType),
@@ -131,7 +130,7 @@ class PleromaNotificationService extends DisposableOwner
 
     if (excludeVisibilities?.isNotEmpty == true) {
       assert(restService.isPleroma);
-      for (PleromaVisibility excludeVisibility in excludeVisibilities) {
+      for (PleromaVisibility excludeVisibility in excludeVisibilities!) {
         assert(
           IPleromaNotificationService.validPleromaVisibilityToExclude
               .contains(excludeVisibility),
@@ -141,7 +140,7 @@ class PleromaNotificationService extends DisposableOwner
     }
     if (excludeTypes?.isNotEmpty == true) {
       if (restService.isMastodon) {
-        excludeTypes = excludeTypes
+        excludeTypes = excludeTypes!
             .where(
               (excludeType) => IPleromaNotificationService
                   .validMastodonTypesToExclude
@@ -149,7 +148,7 @@ class PleromaNotificationService extends DisposableOwner
             )
             .toList();
       } else if (restService.isPleroma) {
-        excludeTypes = excludeTypes
+        excludeTypes = excludeTypes!
             .where(
               (excludeType) => IPleromaNotificationService
                   .validPleromaTypesToExclude
@@ -173,28 +172,31 @@ class PleromaNotificationService extends DisposableOwner
       RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: [
-          if (pagination != null) ...pagination?.toQueryArgs(),
+          if (pagination != null) ...pagination.toQueryArgs(),
           if (excludeTypes?.isNotEmpty == true)
-            ...excludeTypes.map(
-              (excludeType) => RestRequestQueryArg(
-                "exclude_types[]",
-                excludeType.toJsonValue(),
-              ),
-            ),
+            ...excludeTypes?.map(
+                  (excludeType) => RestRequestQueryArg(
+                    "exclude_types[]",
+                    excludeType.toJsonValue(),
+                  ),
+                ) ??
+                [],
           if (includeTypes?.isNotEmpty == true)
             ...includeTypes?.map(
-              (includeType) => RestRequestQueryArg(
-                "include_types[]",
-                includeType.toJsonValue(),
-              ),
-            ),
+                  (includeType) => RestRequestQueryArg(
+                    "include_types[]",
+                    includeType.toJsonValue(),
+                  ),
+                ) ??
+                [],
           if (excludeVisibilities?.isNotEmpty == true)
             ...excludeVisibilities?.map(
-              (excludeVisibility) => RestRequestQueryArg(
-                "exclude_visibilities[]",
-                excludeVisibility.toJsonValue(),
-              ),
-            ),
+                  (excludeVisibility) => RestRequestQueryArg(
+                    "exclude_visibilities[]",
+                    excludeVisibility.toJsonValue(),
+                  ),
+                ) ??
+                [],
         ],
       ),
     );
@@ -205,10 +207,6 @@ class PleromaNotificationService extends DisposableOwner
   PleromaNotification parseNotificationResponse(Response httpResponse) {
     var body = httpResponse.body;
 
-    // todo: report to pleroma
-    if (body == null || body == "null") {
-      return null;
-    }
     RestResponse<PleromaNotification> restResponse = RestResponse.fromResponse(
       response: httpResponse,
       resultParser: (body) {
@@ -217,7 +215,7 @@ class PleromaNotificationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaNotificationException(
         statusCode: httpResponse.statusCode,
@@ -238,7 +236,7 @@ class PleromaNotificationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaNotificationException(
         statusCode: httpResponse.statusCode,
@@ -249,7 +247,7 @@ class PleromaNotificationService extends DisposableOwner
 
   @override
   Future dismissNotification({
-    @required String notificationRemoteId,
+    required String? notificationRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(

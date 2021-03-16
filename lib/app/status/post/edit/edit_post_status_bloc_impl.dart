@@ -9,7 +9,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
@@ -19,20 +19,20 @@ class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
 
   EditPostStatusBloc({
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IScheduledStatusRepository scheduledStatusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required IPostStatusData initialData,
-    @required this.postStatusDataCallback,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
-    @required bool isPleromaInstance,
+    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required IPostStatusData initialData,
+    required this.postStatusDataCallback,
+    required int? maximumMessageLength,
+    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool? markMediaAsNsfwOnAttach,
+    required bool isPleromaInstance,
   }) : super(
           isExpirePossible: isPleromaInstance,
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -46,16 +46,19 @@ class EditPostStatusBloc extends PostStatusBloc {
 
   static EditPostStatusBloc createFromContext(
     BuildContext context, {
-    @required IPostStatusData initialData,
-    @required PostStatusDataCallback postStatusDataCallback,
+    required IPostStatusData initialData,
+    required PostStatusDataCallback postStatusDataCallback,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
     return EditPostStatusBloc(
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        context,
+        listen: false,
+      ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -75,14 +78,14 @@ class EditPostStatusBloc extends PostStatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IPostStatusData initialData,
-    @required PostStatusDataCallback postStatusDataCallback,
+    required Widget child,
+    required IPostStatusData? initialData,
+    required PostStatusDataCallback postStatusDataCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => EditPostStatusBloc.createFromContext(
         context,
-        initialData: initialData,
+        initialData: initialData!,
         postStatusDataCallback: postStatusDataCallback,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),
@@ -94,5 +97,5 @@ class EditPostStatusBloc extends PostStatusBloc {
 
   @override
   Future<bool> internalPostStatusData(IPostStatusData postStatusData) =>
-      postStatusDataCallback(postStatusData);
+      postStatusDataCallback(postStatusData as PostStatusData);
 }

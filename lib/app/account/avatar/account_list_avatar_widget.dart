@@ -25,8 +25,8 @@ class AccountListAvatarWidget extends StatelessWidget {
 
 class _AccountListAvatarBodyWidget extends StatelessWidget {
   const _AccountListAvatarBodyWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -34,7 +34,7 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accounts = Provider.of<List<IAccount>>(context);
-    if (accounts?.isNotEmpty != true) {
+    if (accounts.isNotEmpty != true) {
       return const SizedBox.shrink();
     }
 
@@ -56,8 +56,8 @@ class _AccountListAvatarBodyWidget extends StatelessWidget {
 
 class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   const _AccountListAvatarSingleAccountWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -66,7 +66,7 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(baseAvatarSize / 2),
-      child: ProxyProvider<IAccount, String>(
+      child: ProxyProvider<IAccount, String?>(
         update: (context, account, _) => account.avatar,
         child: AccountAvatarUrlWidget(
           progressSize: baseAvatarSize / 2,
@@ -79,8 +79,8 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -109,8 +109,8 @@ class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountTwoWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -148,8 +148,8 @@ class _AccountListAvatarMultiAccountTwoWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountThreeWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -197,8 +197,8 @@ class _AccountListAvatarMultiAccountThreeWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountFourWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -256,8 +256,8 @@ class _AccountListAvatarMultiAccountFourWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountFiveAndMoreWidget({
-    Key key,
-    @required this.baseAvatarSize,
+    Key? key,
+    required this.baseAvatarSize,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -325,9 +325,9 @@ class _AccountListAvatarMultiAccountFiveAndMoreWidget extends StatelessWidget {
 
 class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
   const _AccountListAvatarMultiAccountImageWidget({
-    Key key,
-    @required this.baseAvatarSize,
-    @required this.sizeMultiplier,
+    Key? key,
+    required this.baseAvatarSize,
+    required this.sizeMultiplier,
   }) : super(key: key);
 
   final double baseAvatarSize;
@@ -350,7 +350,7 @@ class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius:
             BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
-        child: ProxyProvider<IAccount, String>(
+        child: ProxyProvider<IAccount, String?>(
           update: (context, account, _) => account.avatar,
           child: AccountAvatarUrlWidget(
             progressSize: baseAvatarSize / 2 * sizeMultiplier,

@@ -1,6 +1,7 @@
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +26,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () {
-          FocusManager.instance.primaryFocus.unfocus();
+          FocusManager.instance.primaryFocus!.unfocus();
         },
         behavior: HitTestBehavior.translucent,
         child: Padding(
@@ -68,7 +70,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
 class _JoinAuthInstanceActionsWidget extends StatelessWidget {
   const _JoinAuthInstanceActionsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -94,7 +96,7 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
 
 class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
   const _JoinAuthInstanceLoginButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -116,7 +118,7 @@ class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
 
 class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
   const _JoinAuthInstanceSignUpButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -138,7 +140,7 @@ class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
 
 class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
   const _JoinAuthInstanceHostTextFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -181,7 +183,7 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
 
 class _JoinAuthInstanceLogoWidget extends StatelessWidget {
   const _JoinAuthInstanceLogoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -204,7 +206,7 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
 
 class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
   const _JoinAuthInstanceTermsOfServiceButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -247,56 +249,57 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
 Future signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
-  var asyncDialogResult =
+  AsyncDialogResult<void> asyncDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-          context: context,
-          contentMessage:
-              S.of(context).app_auth_instance_join_progress_dialog_content,
-          asyncCode: () async {
-            AuthHostBloc authHostBloc;
-            authHostBloc = AuthHostBloc.createFromContext(
-              context,
-              instanceBaseUri: hostUri,
-            );
-            await authHostBloc.checkApplicationRegistration();
-            await authHostBloc.checkIsRegistrationsEnabled();
-            await authHostBloc?.dispose();
-          },
-          errorDataBuilders: [
-        (
-          context,
-          error,
-          stackTrace,
-        ) {
-          if (error is DisabledRegistrationAuthHostException) {
-            return createRegistrationDisabledErrorData(
-              context,
-              error,
-              stackTrace,
-            );
-          } else if (error is InvitesOnlyRegistrationAuthHostException) {
-            return createRegistrationInvitesOnlyErrorData(
-              context,
-              error,
-              stackTrace,
-            );
-          } else {
-            return null;
-          }
-        },
-        (
-          context,
-          error,
-          stackTrace,
-        ) {
-          // todo: handle specific error
-          return createInstanceDeadErrorData(
+    context: context,
+    contentMessage:
+        S.of(context).app_auth_instance_join_progress_dialog_content,
+    asyncCode: () async {
+      AuthHostBloc authHostBloc;
+      authHostBloc = AuthHostBloc.createFromContext(
+        context,
+        instanceBaseUri: hostUri,
+      );
+      await authHostBloc.checkApplicationRegistration();
+      await authHostBloc.checkIsRegistrationsEnabled();
+      await authHostBloc.dispose();
+    },
+    errorDataBuilders: [
+      (
+        context,
+        error,
+        stackTrace,
+      ) {
+        if (error is DisabledRegistrationAuthHostException) {
+          return createRegistrationDisabledErrorData(
             context,
             error,
             stackTrace,
           );
+        } else if (error is InvitesOnlyRegistrationAuthHostException) {
+          return createRegistrationInvitesOnlyErrorData(
+            context,
+            error,
+            stackTrace,
+          );
+        } else {
+          return null;
         }
-      ]);
+      },
+      (
+        context,
+        error,
+        stackTrace,
+      ) {
+        // todo: handle specific error
+        return createInstanceDeadErrorData(
+          context,
+          error,
+          stackTrace,
+        );
+      }
+    ],
+  );
   if (asyncDialogResult.success) {
     var registrationResult = await goToRegisterAuthInstancePage(
       context,
@@ -312,7 +315,7 @@ Future signUpToInstance(BuildContext context) async {
 }
 
 ErrorData createInstanceDeadErrorData(
-        BuildContext context, error, StackTrace stackTrace) =>
+        BuildContext? context, error, StackTrace stackTrace) =>
     AuthInstancePleromaRestErrorData.createFromContext(
       context: context,
       error: error,
@@ -320,7 +323,7 @@ ErrorData createInstanceDeadErrorData(
     );
 
 ErrorData createRegistrationDisabledErrorData(
-        BuildContext context, error, StackTrace stackTrace) =>
+        BuildContext? context, error, StackTrace stackTrace) =>
     ErrorData(
       error: error,
       stackTrace: stackTrace,
@@ -333,7 +336,7 @@ ErrorData createRegistrationDisabledErrorData(
     );
 
 ErrorData createRegistrationInvitesOnlyErrorData(
-        BuildContext context, error, StackTrace stackTrace) =>
+        BuildContext? context, error, StackTrace stackTrace) =>
     ErrorData(
       error: error,
       stackTrace: stackTrace,
@@ -345,15 +348,15 @@ ErrorData createRegistrationInvitesOnlyErrorData(
 
 Future logInToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-  var dialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+  var dialogResult = await PleromaAsyncOperationHelper
+      .performPleromaAsyncOperation<AuthInstance?>(
     context: context,
     contentMessage:
         S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
       var hostUri = joinInstanceBloc.extractCurrentUri();
-      AuthHostBloc bloc;
+      AuthHostBloc? bloc;
       try {
         bloc = AuthHostBloc.createFromContext(
           context,
@@ -369,17 +372,24 @@ Future logInToInstance(BuildContext context) async {
     errorDataBuilders: [
       (context, error, stackTrace) {
         // todo: handle specific error
-        return createInstanceDeadErrorData(context, error, stackTrace);
+        return createInstanceDeadErrorData(
+          context,
+          error,
+          stackTrace,
+        );
       }
     ],
   );
 
-  if (dialogResult.result != null) {
+  var authInstance = dialogResult.result;
+  if (authInstance != null) {
     if (!joinInstanceBloc.isFromScratch) {
-      await Navigator.pop(context);
-      await Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
     await ICurrentAuthInstanceBloc.of(context, listen: false)
-        .changeCurrentInstance(dialogResult.result);
+        .changeCurrentInstance(
+      authInstance,
+    );
   }
 }

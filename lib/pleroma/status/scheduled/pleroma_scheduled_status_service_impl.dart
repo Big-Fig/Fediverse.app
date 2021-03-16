@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_exception
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart';
 
@@ -22,7 +21,7 @@ class PleromaScheduledStatusService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -36,11 +35,11 @@ class PleromaScheduledStatusService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaScheduledStatusService({@required this.restService});
+  PleromaScheduledStatusService({required this.restService});
 
   @override
   Future<IPleromaScheduledStatus> getScheduledStatus({
-    @required String scheduledStatusRemoteId,
+    required String scheduledStatusRemoteId,
   }) async {
     var request = RestRequest.get(
       relativePath: join(
@@ -55,7 +54,7 @@ class PleromaScheduledStatusService extends DisposableOwner
 
   @override
   Future<bool> cancelScheduledStatus({
-    @required String scheduledStatusRemoteId,
+    required String scheduledStatusRemoteId,
   }) async {
     var request = RestRequest.delete(
       relativePath: join(
@@ -70,7 +69,7 @@ class PleromaScheduledStatusService extends DisposableOwner
 
   @override
   Future<List<IPleromaScheduledStatus>> getScheduledStatuses({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       relativePath: scheduledStatusesRelativeUrlPath,
@@ -82,9 +81,10 @@ class PleromaScheduledStatusService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaScheduledStatus> reScheduleStatus(
-      {@required String scheduledStatusRemoteId,
-      @required DateTime scheduledAt}) async {
+  Future<IPleromaScheduledStatus> reScheduleStatus({
+    required String scheduledStatusRemoteId,
+    required DateTime scheduledAt,
+  }) async {
     var request = RestRequest.put(
       relativePath: join(
         scheduledStatusesRelativeUrlPath,
@@ -109,7 +109,7 @@ class PleromaScheduledStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaScheduledStatusException(
         statusCode: httpResponse.statusCode,
@@ -129,7 +129,7 @@ class PleromaScheduledStatusService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaScheduledStatusException(
         statusCode: httpResponse.statusCode,

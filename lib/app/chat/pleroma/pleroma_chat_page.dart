@@ -41,7 +41,7 @@ class PleromaChatPage extends StatelessWidget {
 
 class _PleromaChatPageAppBarWidget extends StatelessWidget {
   const _PleromaChatPageAppBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -52,7 +52,10 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
         onTap: () {
           var chatBloc = IPleromaChatBloc.of(context, listen: false);
 
-          goToPleromaChatAccountsPage(context, chatBloc.chat);
+          goToPleromaChatAccountsPage(
+            context,
+            chat: chatBloc.chat,
+          );
         },
         child: const ChatPageAppBarBodyWidget(),
       ),
@@ -60,7 +63,10 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
   }
 }
 
-void goToPleromaChatPage(BuildContext context, {@required IPleromaChat chat}) {
+void goToPleromaChatPage(
+  BuildContext context, {
+  required IPleromaChat chat,
+}) {
   Navigator.push(
     context,
     createPleromaChatPageRoute(chat),
@@ -71,8 +77,11 @@ MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IPleromaChatBloc>(
       create: (context) {
-        var chatBloc = PleromaChatBloc.createFromContext(context,
-            chat: chat, lastChatMessage: null);
+        var chatBloc = PleromaChatBloc.createFromContext(
+          context,
+          chat: chat,
+          lastChatMessage: null,
+        );
 
         // we don't need to await
         chatBloc.markAsRead();
@@ -82,9 +91,13 @@ MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
 
         currentChatBloc.onChatOpened(chat);
 
-        chatBloc.addDisposable(disposable: CustomDisposable(() async {
-          currentChatBloc.onChatClosed(chat);
-        }));
+        chatBloc.addDisposable(
+          disposable: CustomDisposable(
+            () async {
+              currentChatBloc.onChatClosed(chat);
+            },
+          ),
+        );
 
         return chatBloc;
       },

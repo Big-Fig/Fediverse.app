@@ -5,7 +5,6 @@ import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 class PleromaAuthStatusService extends PleromaStatusService
@@ -16,14 +15,14 @@ class PleromaAuthStatusService extends PleromaStatusService
   bool get isPleroma => authRestService.isPleroma;
 
   PleromaAuthStatusService({
-    @required this.authRestService,
+    required this.authRestService,
   }) : super(
           restService: authRestService,
         );
 
   @override
   Future deleteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
@@ -34,13 +33,12 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> muteStatus({
-    @required String statusRemoteId,
-    @required int expireDurationInSeconds,
+    required String statusRemoteId,
+    required int? expireDurationInSeconds,
   }) async {
     var bodyJson = <String, dynamic>{};
     if (expireDurationInSeconds != null) {
-      assert(isPleroma,
-          "expireDurationInSeconds supported only on Pleroma");
+      assert(isPleroma, "expireDurationInSeconds supported only on Pleroma");
       bodyJson["expire_in"] = expireDurationInSeconds;
     }
 
@@ -59,7 +57,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> unMuteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -75,7 +73,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> pinStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -91,7 +89,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> unPinStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -107,8 +105,8 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<List<IPleromaAccount>> favouritedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String statusRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       queryArgs: pagination?.toQueryArgs(),
@@ -125,8 +123,8 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<List<IPleromaAccount>> rebloggedBy({
-    @required String statusRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String statusRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       queryArgs: pagination?.toQueryArgs(),
@@ -143,7 +141,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> reblogStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -159,7 +157,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> unReblogStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -175,7 +173,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> favouriteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -191,7 +189,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> unFavouriteStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -207,7 +205,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> bookmarkStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -223,7 +221,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> unBookmarkStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -239,7 +237,7 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaStatus> postStatus({
-    @required IPleromaPostStatus data,
+    required IPleromaPostStatus data,
   }) async {
     var json = data.toJson();
 
@@ -259,11 +257,10 @@ class PleromaAuthStatusService extends PleromaStatusService
 
   @override
   Future<IPleromaScheduledStatus> scheduleStatus({
-    IPleromaScheduleStatus data,
+    required IPleromaScheduleStatus data,
   }) async {
     var json = data.toJson();
 
-    assert(data.scheduledAt != null);
     var request = RestRequest.post(
       relativePath: statusRelativeUrlPath,
       bodyJson: json,
@@ -273,7 +270,6 @@ class PleromaAuthStatusService extends PleromaStatusService
 
     return parseScheduledStatusResponse(httpResponse);
   }
-
 
   @override
   bool get isMastodon => authRestService.isMastodon;

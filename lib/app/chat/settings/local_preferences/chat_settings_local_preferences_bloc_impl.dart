@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 abstract class ChatSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<ChatSettings>
+    extends ObjectLocalPreferenceBloc<ChatSettings?>
     implements IChatSettingsLocalPreferencesBloc {
   ChatSettingsLocalPreferencesBloc(
       ILocalPreferencesService preferencesService,

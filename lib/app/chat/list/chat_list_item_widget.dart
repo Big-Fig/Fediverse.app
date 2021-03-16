@@ -30,7 +30,7 @@ class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
 
   const ChatListItemWidget({
-    @required this.onClick,
+    required this.onClick,
   });
 
   @override
@@ -74,7 +74,7 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
 
   const _ChatListItemGoToChatButtonWidget({
-    @required this.onClick,
+    required this.onClick,
   });
 
   @override
@@ -85,7 +85,7 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
       stream: chatBloc.isHaveUnreadStream,
       initialData: chatBloc.isHaveUnread,
       builder: (context, snapshot) {
-        var isHaveUnread = snapshot.data;
+        var isHaveUnread = snapshot.data!;
 
         return FediIconButton(
           color: isHaveUnread
@@ -106,7 +106,7 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
 
 class _ChatListItemPreviewWidget extends StatelessWidget {
   const _ChatListItemPreviewWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -124,14 +124,14 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
 
 class _ChatListItemLastMessageWidget extends StatelessWidget {
   const _ChatListItemLastMessageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
 
-    return StreamBuilder<IChatMessage>(
+    return StreamBuilder<IChatMessage?>(
       stream: chatBloc.lastChatMessageStream,
       builder: (context, snapshot) {
         var lastMessage = snapshot.data;
@@ -141,18 +141,22 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
         }
         var content = lastMessage.content;
         if (content?.isNotEmpty != true) {
-          content = lastMessage.mediaAttachments.map(
+          content = lastMessage.mediaAttachments!.map(
             (mediaAttachment) {
-              var description = mediaAttachment.description;
+              var description = mediaAttachment!.description;
               if (description?.isNotEmpty == true) {
                 return description;
               } else {
-                return path.basename(mediaAttachment.url);
+                return path.basename(mediaAttachment.url!);
               }
             },
           ).join(", ");
         } else {
-          content = _extractContent(context, lastMessage, content);
+          content = _extractContent(
+            context: context,
+            chatMessage: lastMessage,
+            content: content,
+          );
         }
 
         var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -204,15 +208,17 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
   }
 }
 
-String _extractContent(
-    BuildContext context, IChatMessage chatMessage, String content) {
-  String formattedText =
-      HtmlTextHelper.extractRawStringFromHtmlString(chatMessage.content);
+String? _extractContent({
+  required BuildContext context,
+  required IChatMessage chatMessage,
+  required String? content,
+}) {
+  String? formattedText = content?.extractRawStringFromHtmlString();
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
   if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-    formattedText = S.of(context).app_chat_preview_you(formattedText);
+    formattedText = S.of(context).app_chat_preview_you(formattedText!);
   }
 
   return formattedText;

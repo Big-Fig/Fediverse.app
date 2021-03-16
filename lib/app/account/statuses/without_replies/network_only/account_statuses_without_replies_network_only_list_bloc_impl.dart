@@ -5,29 +5,29 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 abstract class AccountStatusesWithoutRepliesNetworkOnlyListBloc
     extends AccountStatusesNetworkOnlyListBloc {
   AccountStatusesWithoutRepliesNetworkOnlyListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
-  }) : super(account: account, pleromaAccountService: pleromaAccountService);
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
+  }) : super(
+          account: account,
+          pleromaAccountService: pleromaAccountService,
+        );
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<List<IStatus>> loadItemsFromRemoteForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+  Future<List<IStatus?>> loadItemsFromRemoteForPage({
+    int? pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
-
-    var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-      accountRemoteId: account.remoteId,
+    var pleromaStatuses = await pleromaAccountService.getAccountStatuses(
+      accountRemoteId: account!.remoteId,
       excludeReplies: true,
       pagination: PleromaPaginationRequest(
         limit: itemsCountPerPage,
@@ -35,8 +35,10 @@ abstract class AccountStatusesWithoutRepliesNetworkOnlyListBloc
         maxId: maxId,
       ),
     );
-    return remoteStatuses
-        ?.map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus))
-        ?.toList();
+    return pleromaStatuses
+        .map(
+          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+        )
+        .toList();
   }
 }
