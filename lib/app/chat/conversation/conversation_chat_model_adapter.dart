@@ -11,7 +11,7 @@ extension IPleromaConversationDbExtension on IPleromaConversation {
     return DbConversation(
       id: null,
       remoteId: id,
-      unread: unread,
+      unread: unread == true,
       updatedAt: lastStatus?.createdAt,
     );
   }

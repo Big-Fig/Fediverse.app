@@ -14,16 +14,16 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_chat_messages WHERE id = :id;',
-            variables: [Variable.withInt(id)], readsFrom: {dbChatMessages})
+            variables: [Variable<int?>(id)], readsFrom: {dbChatMessages})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_chat_messages WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbChatMessages},
       updateKind: UpdateKind.delete,
     );
@@ -32,7 +32,7 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByRemoteId(String remoteId) {
     return customUpdate(
       'DELETE FROM db_chat_messages WHERE remote_id = :remoteId;',
-      variables: [Variable.withString(remoteId)],
+      variables: [Variable<String>(remoteId)],
       updates: {dbChatMessages},
       updateKind: UpdateKind.delete,
     );
@@ -60,26 +60,26 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_chat_messages WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbChatMessages}).map((QueryRow row) => row.readInt('id'));
   }
 
   Future<int> deleteOlderThanDate(DateTime createdAt) {
     return customUpdate(
       'DELETE FROM db_chat_messages WHERE created_at < :createdAt',
-      variables: [Variable.withDateTime(createdAt)],
+      variables: [Variable<DateTime>(createdAt)],
       updates: {dbChatMessages},
       updateKind: UpdateKind.delete,
     );
   }
 
-  Future<int> deleteOlderThanLocalId(int localId) {
+  Future<int> deleteOlderThanLocalId(int? localId) {
     return customUpdate(
       'DELETE FROM db_chat_messages WHERE id = :localId;',
-      variables: [Variable.withInt(localId)],
+      variables: [Variable<int?>(localId)],
       updates: {dbChatMessages},
       updateKind: UpdateKind.delete,
     );
@@ -88,7 +88,7 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<DbChatMessage> getNewestByLocalIdWithOffset(int offset) {
     return customSelect(
         'SELECT * FROM db_chat_messages ORDER BY id DESC LIMIT 1 OFFSET :offset',
-        variables: [Variable.withInt(offset)],
+        variables: [Variable<int>(offset)],
         readsFrom: {dbChatMessages}).map(dbChatMessages.mapFromRow);
   }
 }

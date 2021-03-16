@@ -155,14 +155,15 @@ class AccountRepository extends AsyncInitLoadingBloc
 
       await conversationAccountsDao.insert(
         DbConversationAccount(
-            id: null,
-            conversationRemoteId: conversationRemoteId,
-            accountRemoteId: accountRemoteId),
+          id: null,
+          conversationRemoteId: conversationRemoteId,
+          accountRemoteId: accountRemoteId,
+        ),
         mode: InsertMode.insertOrReplace,
       );
     }
     if (chatRemoteId != null) {
-      var accountRemoteId = pleromaAccount!.id;
+      var accountRemoteId = pleromaAccount.id;
 
       await chatAccountsDao.insert(
         DbChatAccount(
@@ -349,7 +350,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future addAccountFollowings({
-    required String? accountRemoteId,
+    required String accountRemoteId,
     required List<PleromaAccount> followings,
   }) async {
     await upsertRemoteAccounts(

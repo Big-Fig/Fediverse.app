@@ -4,17 +4,17 @@ import 'package:moor/moor.dart';
 @DataClassName("DbFilter")
 class DbFilters extends Table {
   // integer ids works much better in SQLite
-  IntColumn? get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
   TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
   TextColumn? get phrase => text()();
 
-  TextColumn? get context => text().nullable().map(StringListDatabaseConverter())();
+  TextColumn? get context => text().map(StringListDatabaseConverter())();
 
-  BoolColumn? get irreversible => boolean().nullable()();
+  BoolColumn? get irreversible => boolean()();
 
-  BoolColumn? get wholeWord => boolean().nullable()();
+  BoolColumn? get wholeWord => boolean()();
 
   DateTimeColumn? get expiresAt => dateTime().nullable()();
 }

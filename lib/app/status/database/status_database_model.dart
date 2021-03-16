@@ -6,7 +6,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbStatus")
 class DbStatuses extends Table {
   // integer ids works much better in SQLite
-  IntColumn? get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
   TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
@@ -18,10 +18,10 @@ class DbStatuses extends Table {
 
   BoolColumn? get sensitive => boolean()();
 
-  TextColumn? get spoilerText => text()();
+  TextColumn? get spoilerText => text().nullable()();
 
   TextColumn? get visibility =>
-      text().nullable().map(PleromaVisibilityTypeConverter())();
+      text().map(PleromaVisibilityTypeConverter())();
 
   TextColumn? get uri => text()();
 

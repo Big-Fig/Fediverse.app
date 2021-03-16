@@ -14,24 +14,24 @@ mixin _$DraftStatusDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbDraftStatus> findById(int id) {
+  Selectable<DbDraftStatus> findById(int? id) {
     return customSelect('SELECT * FROM db_draft_statuses WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbDraftStatuses}).map(dbDraftStatuses.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
             'SELECT COUNT(*) FROM db_draft_statuses WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbDraftStatuses})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_draft_statuses WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbDraftStatuses},
       updateKind: UpdateKind.delete,
     );

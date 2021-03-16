@@ -14,9 +14,9 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbStatuses}).map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_statuses WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbStatuses}).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
@@ -27,10 +27,10 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbStatuses}).map(dbStatuses.mapFromRow);
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_statuses WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbStatuses},
       updateKind: UpdateKind.delete,
     );
@@ -39,7 +39,7 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByRemoteId(String remoteId) {
     return customUpdate(
       'DELETE FROM db_statuses WHERE remote_id = :remoteId;',
-      variables: [Variable.withString(remoteId)],
+      variables: [Variable<String>(remoteId)],
       updates: {dbStatuses},
       updateKind: UpdateKind.delete,
     );
@@ -62,23 +62,23 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_statuses WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbStatuses}).map((QueryRow row) => row.readInt('id'));
   }
 
   Future<int> deleteOlderThanDate(DateTime createdAt) {
     return customUpdate(
       'DELETE FROM db_statuses WHERE created_at < :createdAt',
-      variables: [Variable.withDateTime(createdAt)],
+      variables: [Variable<DateTime>(createdAt)],
       updates: {dbStatuses},
       updateKind: UpdateKind.delete,
     );
   }
 
-  Future<int> deleteOlderThanLocalId(int localId) {
+  Future<int> deleteOlderThanLocalId(int? localId) {
     return customUpdate(
       'DELETE FROM db_statuses WHERE id = :localId;',
-      variables: [Variable.withInt(localId)],
+      variables: [Variable<int?>(localId)],
       updates: {dbStatuses},
       updateKind: UpdateKind.delete,
     );
@@ -87,7 +87,7 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<DbStatus> getNewestByLocalIdWithOffset(int offset) {
     return customSelect(
         'SELECT * FROM db_statuses ORDER BY id DESC LIMIT 1 OFFSET :offset',
-        variables: [Variable.withInt(offset)],
+        variables: [Variable<int>(offset)],
         readsFrom: {dbStatuses}).map(dbStatuses.mapFromRow);
   }
 }

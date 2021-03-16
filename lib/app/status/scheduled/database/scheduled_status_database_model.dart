@@ -4,7 +4,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbScheduledStatus")
 class DbScheduledStatuses extends Table {
   // integer ids works better in SQLite
-  IntColumn? get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
   TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
@@ -13,7 +13,7 @@ class DbScheduledStatuses extends Table {
   BoolColumn? get canceled => boolean()();
 
   TextColumn? get params =>
-      text().map(PleromaScheduledStatusParamsDatabaseConverter()).nullable()();
+      text().map(PleromaScheduledStatusParamsDatabaseConverter())();
 
   TextColumn? get mediaAttachments =>
       text().map(PleromaMediaAttachmentListDatabaseConverter()).nullable()();

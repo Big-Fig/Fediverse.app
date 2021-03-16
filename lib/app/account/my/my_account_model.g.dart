@@ -6,7 +6,7 @@ part of 'my_account_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MyAccountRemoteWrapperAdapter
+class PleromaMyAccountWrapperAdapter
     extends TypeAdapter<PleromaMyAccountWrapper> {
   @override
   final int typeId = 21;
@@ -36,7 +36,7 @@ class MyAccountRemoteWrapperAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MyAccountRemoteWrapperAdapter &&
+      other is PleromaMyAccountWrapperAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -45,18 +45,16 @@ class MyAccountRemoteWrapperAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaMyAccountWrapper _$MyAccountRemoteWrapperFromJson(
+PleromaMyAccountWrapper _$PleromaMyAccountWrapperFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountWrapper(
-    pleromaAccount: json['remote_account'] == null
-        ? null
-        : PleromaMyAccount.fromJson(
-            json['remote_account'] as Map<String, dynamic>),
+    pleromaAccount: PleromaMyAccount.fromJson(
+        json['remote_account'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$MyAccountRemoteWrapperToJson(
+Map<String, dynamic> _$PleromaMyAccountWrapperToJson(
         PleromaMyAccountWrapper instance) =>
     <String, dynamic>{
-      'remote_account': instance.pleromaAccount?.toJson(),
+      'remote_account': instance.pleromaAccount.toJson(),
     };

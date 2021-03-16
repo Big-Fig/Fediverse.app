@@ -10,7 +10,7 @@ abstract class IMastodonAccount {
 
   String? get note;
 
-  bool get bot;
+  bool? get bot;
 
   bool get locked;
 

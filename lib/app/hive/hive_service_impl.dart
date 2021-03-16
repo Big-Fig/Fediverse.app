@@ -38,6 +38,7 @@ import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/pleroma/tag/history/pleroma_tag_history_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
@@ -65,7 +66,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(AuthInstanceAdapter());
     Hive.registerAdapter(PleromaOAuthTokenAdapter());
     Hive.registerAdapter(PleromaClientApplicationAdapter());
-    Hive.registerAdapter(MyAccountRemoteWrapperAdapter());
+    Hive.registerAdapter(PleromaMyAccountWrapperAdapter());
     Hive.registerAdapter(PleromaMyAccountAdapter());
     Hive.registerAdapter(PushHandlerUnhandledListAdapter());
     Hive.registerAdapter(PleromaPushMessageBodyAdapter());

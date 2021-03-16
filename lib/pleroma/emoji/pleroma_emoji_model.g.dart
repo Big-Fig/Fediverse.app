@@ -64,8 +64,8 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
     };
     return PleromaCustomEmoji(
       tags: (fields[0] as List?)?.cast<String>(),
-      imageUrl: fields[1] as String?,
-      name: fields[2] as String?,
+      imageUrl: fields[1] as String,
+      name: fields[2] as String,
     );
   }
 
@@ -117,9 +117,9 @@ Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
 
 PleromaCustomEmoji _$PleromaCustomEmojiFromJson(Map<String, dynamic> json) {
   return PleromaCustomEmoji(
-    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList(),
-    imageUrl: json['image_url'] as String?,
-    name: json['name'] as String?,
+    tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    imageUrl: json['image_url'] as String,
+    name: json['name'] as String,
   );
 }
 

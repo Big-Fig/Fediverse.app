@@ -8,7 +8,7 @@ abstract class IChat {
 
   String get remoteId;
 
-  int? get unread;
+  int get unread;
 
   DateTime? get updatedAt;
 

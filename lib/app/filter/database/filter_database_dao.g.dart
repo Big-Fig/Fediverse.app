@@ -14,18 +14,18 @@ mixin _$FilterDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbFilters}).map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_filters WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbFilters},
       updateKind: UpdateKind.delete,
     );
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_filters WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbFilters}).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
@@ -43,10 +43,10 @@ mixin _$FilterDaoMixin on DatabaseAccessor<AppDatabase> {
         variables: [], readsFrom: {dbFilters}).map(dbFilters.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_filters WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbFilters}).map((QueryRow row) => row.readInt('id'));
   }
 }

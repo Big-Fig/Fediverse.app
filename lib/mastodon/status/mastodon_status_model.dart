@@ -26,7 +26,7 @@ abstract class IMastodonStatus {
 
   String get uri;
 
-  String get url;
+  String? get url;
 
   int get repliesCount;
 
@@ -71,7 +71,7 @@ abstract class IMastodonStatus {
 }
 
 abstract class IMastodonScheduledStatus {
-  String? get id;
+  String get id;
 
   DateTime get scheduledAt;
 

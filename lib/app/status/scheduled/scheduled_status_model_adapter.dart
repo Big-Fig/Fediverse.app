@@ -5,7 +5,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 
 extension IPleromaScheduledStatusDbExtension on IPleromaScheduledStatus {
   DbScheduledStatus toDbScheduledStatus({
-    required bool? canceled,
+    required bool canceled,
   }) {
     return DbScheduledStatus(
       id: null,
@@ -21,7 +21,7 @@ extension IPleromaScheduledStatusDbExtension on IPleromaScheduledStatus {
 extension IScheduledStatusExtension on IScheduledStatus {
   PleromaScheduledStatus toPleromaScheduledStatus() {
     return PleromaScheduledStatus(
-      id: remoteId,
+      id: remoteId!,
       mediaAttachments: mediaAttachments,
       params: params.toPleromaScheduledStatusParams(),
       scheduledAt: scheduledAt,

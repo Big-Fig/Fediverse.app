@@ -17,7 +17,7 @@ class PushMessageAdapter extends TypeAdapter<PushMessage> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushMessage(
-      typeString: fields[3] as String?,
+      typeString: fields[3] as String,
       notification: fields[1] as PushNotification?,
       data: (fields[2] as Map?)?.cast<String, dynamic>(),
     );
@@ -89,7 +89,7 @@ class PushNotificationAdapter extends TypeAdapter<PushNotification> {
 
 PushMessage _$PushMessageFromJson(Map<String, dynamic> json) {
   return PushMessage(
-    typeString: json['typeString'] as String?,
+    typeString: json['typeString'] as String,
     notification: json['notification'] == null
         ? null
         : PushNotification.fromJson(

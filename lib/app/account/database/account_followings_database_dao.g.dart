@@ -15,31 +15,31 @@ mixin _$AccountFollowingsDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbAccountFollowing> findById(int id) {
+  Selectable<DbAccountFollowing> findById(int? id) {
     return customSelect('SELECT * FROM db_account_followings WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbAccountFollowings}).map(dbAccountFollowings.mapFromRow);
   }
 
   Selectable<DbAccountFollowing> findByAccountRemoteId(String accountRemoteId) {
     return customSelect(
         'SELECT * FROM db_account_followings WHERE account_remote_id = :accountRemoteId;',
-        variables: [Variable.withString(accountRemoteId)],
+        variables: [Variable<String>(accountRemoteId)],
         readsFrom: {dbAccountFollowings}).map(dbAccountFollowings.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
             'SELECT COUNT(*) FROM db_account_followings WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbAccountFollowings})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_account_followings WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbAccountFollowings},
       updateKind: UpdateKind.delete,
     );
@@ -48,7 +48,7 @@ mixin _$AccountFollowingsDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByAccountRemoteId(String accountRemoteId) {
     return customUpdate(
       'DELETE FROM db_account_followings WHERE account_remote_id = :accountRemoteId;',
-      variables: [Variable.withString(accountRemoteId)],
+      variables: [Variable<String>(accountRemoteId)],
       updates: {dbAccountFollowings},
       updateKind: UpdateKind.delete,
     );
@@ -57,7 +57,7 @@ mixin _$AccountFollowingsDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByFollowingAccountRemoteId(String accountRemoteId) {
     return customUpdate(
       'DELETE FROM db_account_followings WHERE following_account_remote_id = :accountRemoteId;',
-      variables: [Variable.withString(accountRemoteId)],
+      variables: [Variable<String>(accountRemoteId)],
       updates: {dbAccountFollowings},
       updateKind: UpdateKind.delete,
     );
@@ -68,8 +68,8 @@ mixin _$AccountFollowingsDaoMixin on DatabaseAccessor<AppDatabase> {
     return customUpdate(
       'DELETE FROM db_account_followings WHERE following_account_remote_id = :followingAccountRemoteId AND account_remote_id = :accountRemoteId;',
       variables: [
-        Variable.withString(followingAccountRemoteId),
-        Variable.withString(accountRemoteId)
+        Variable<String>(followingAccountRemoteId),
+        Variable<String>(accountRemoteId)
       ],
       updates: {dbAccountFollowings},
       updateKind: UpdateKind.delete,

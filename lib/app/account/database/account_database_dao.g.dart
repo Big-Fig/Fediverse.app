@@ -14,16 +14,16 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbAccounts}).map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbAccount> findById(int id) {
+  Selectable<DbAccount> findById(int? id) {
     return customSelect('SELECT * FROM db_accounts WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
   Selectable<DbAccount> findByRemoteId(String remoteId) {
     return customSelect(
         'SELECT * FROM db_accounts WHERE remote_id LIKE :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
@@ -34,16 +34,16 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_accounts WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbAccounts}).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_accounts WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbAccounts},
       updateKind: UpdateKind.delete,
     );
@@ -63,17 +63,17 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         variables: [], readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_accounts WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbAccounts}).map((QueryRow row) => row.readInt('id'));
   }
 
-  Future<int> deleteOlderThanLocalId(int id) {
+  Future<int> deleteOlderThanLocalId(int? id) {
     return customUpdate(
       'DELETE FROM db_accounts WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbAccounts},
       updateKind: UpdateKind.delete,
     );
@@ -82,7 +82,7 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<DbAccount> getNewestByLocalIdWithOffset(int offset) {
     return customSelect(
         'SELECT * FROM db_accounts ORDER BY id DESC LIMIT 1 OFFSET :offset',
-        variables: [Variable.withInt(offset)],
+        variables: [Variable<int>(offset)],
         readsFrom: {dbAccounts}).map(dbAccounts.mapFromRow);
   }
 }

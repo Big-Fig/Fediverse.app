@@ -1,7 +1,4 @@
 abstract class IBaseMastodonFilter {
-  /// The ID of the filter in the database.
-  String get id;
-
   ///  The text to be filtered.
   String get phrase;
 
@@ -15,16 +12,27 @@ abstract class IBaseMastodonFilter {
 
   /// Should the filter consider word boundaries?
   bool get wholeWord;
+}
+
+abstract class IMastodonFilter implements IBaseMastodonFilter {
+  /// The ID of the filter in the database.
+  String get id;
 
   /// When the filter should no longer be applied
   DateTime? get expiresAt;
 }
 
-abstract class IMastodonFilter implements IBaseMastodonFilter {}
-
 abstract class IPostMastodonFilter implements IBaseMastodonFilter {
   /// When the filter should no longer be applied
   int? get expiresInSeconds;
+}
+
+extension MastodonFilterContextTypeStringListExtension on List<String> {
+  List<MastodonFilterContextType> toMastodonFilterContextTypes() {
+    return map(
+      (value) => value.toMastodonFilterContextType(),
+    ).toList();
+  }
 }
 
 enum MastodonFilterContextType {

@@ -48,16 +48,14 @@ class RecentSelectAccountListAdapter
 RecentSelectAccountList _$RecentSelectAccountListFromJson(
     Map<String, dynamic> json) {
   return RecentSelectAccountList(
-    recentItems: (json['recentItems'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaAccount.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    recentItems: (json['recentItems'] as List<dynamic>?)
+        ?.map((e) => PleromaAccount.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
 Map<String, dynamic> _$RecentSelectAccountListToJson(
         RecentSelectAccountList instance) =>
     <String, dynamic>{
-      'recentItems': instance.recentItems?.map((e) => e?.toJson())?.toList(),
+      'recentItems': instance.recentItems?.map((e) => e.toJson()).toList(),
     };

@@ -69,7 +69,8 @@ class PleromaFilter extends IPleromaFilter {
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType => context.toMastodonFilterContextTypes();
+  List<MastodonFilterContextType> get contextMastodonType =>
+      context.toMastodonFilterContextTypes();
 
   @override
   bool operator ==(Object other) =>
@@ -165,9 +166,11 @@ class PostPleromaFilter extends IPostPleromaFilter {
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType => context.map(
+  List<MastodonFilterContextType> get contextMastodonType => context
+      .map(
         (contextString) => contextString.toMastodonFilterContextType(),
-      ).toList();
+      )
+      .toList();
 
   @override
   bool operator ==(Object other) =>

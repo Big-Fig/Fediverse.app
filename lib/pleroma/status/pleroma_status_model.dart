@@ -126,7 +126,7 @@ abstract class IPleromaScheduledStatusParams
 @JsonSerializable()
 class PleromaScheduledStatus extends IPleromaScheduledStatus {
   @override
-  final String? id;
+  final String id;
 
   @override
   @JsonKey(name: "media_attachments")
@@ -315,7 +315,7 @@ class PleromaStatus extends IPleromaStatus {
   @override
   final String uri;
   @override
-  final String url;
+  final String? url;
   @override
   @JsonKey(name: "replies_count")
   final int repliesCount;
@@ -635,7 +635,7 @@ class PleromaPostStatus implements IPleromaPostStatus {
   PleromaPostStatus({
     required this.contentType,
     required this.expiresInSeconds,
-    required this.idempotencyKey,
+    this.idempotencyKey,
     required this.inReplyToConversationId,
     required this.inReplyToId,
     required this.language,
@@ -730,7 +730,7 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   PleromaScheduleStatus({
     required this.contentType,
     required this.expiresInSeconds,
-    required this.idempotencyKey,
+    this.idempotencyKey,
     required this.inReplyToConversationId,
     required this.inReplyToId,
     required this.language,

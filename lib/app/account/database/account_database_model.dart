@@ -5,7 +5,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbAccount")
 class DbAccounts extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().nullable().autoIncrement()();
 
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 
@@ -13,7 +13,7 @@ class DbAccounts extends Table {
 
   TextColumn get url => text()();
 
-  TextColumn get note => text()();
+  TextColumn get note => text().nullable()();
 
   BoolColumn get locked => boolean()();
 
@@ -27,7 +27,7 @@ class DbAccounts extends Table {
 
   IntColumn get statusesCount => integer()();
 
-  TextColumn get displayName => text()();
+  TextColumn get displayName => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();
 

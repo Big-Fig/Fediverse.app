@@ -121,9 +121,9 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<bool> get rebloggedStream;
 
-  bool get bookmarked;
+  bool? get bookmarked;
 
-  Stream<bool> get bookmarkedStream;
+  Stream<bool?> get bookmarkedStream;
 
   bool get muted;
 

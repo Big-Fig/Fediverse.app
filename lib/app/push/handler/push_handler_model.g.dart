@@ -17,8 +17,8 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushHandlerMessage(
-      body: fields[0] as PleromaPushMessageBody?,
-      pushMessage: fields[1] as PushMessage?,
+      body: fields[0] as PleromaPushMessageBody,
+      pushMessage: fields[1] as PushMessage,
     );
   }
 
@@ -49,17 +49,14 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
 
 PushHandlerMessage _$PushHandlerMessageFromJson(Map<String, dynamic> json) {
   return PushHandlerMessage(
-    body: json['body'] == null
-        ? null
-        : PleromaPushMessageBody.fromJson(json['body'] as Map<String, dynamic>),
-    pushMessage: json['push_message'] == null
-        ? null
-        : PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
+    body: PleromaPushMessageBody.fromJson(json['body'] as Map<String, dynamic>),
+    pushMessage:
+        PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$PushHandlerMessageToJson(PushHandlerMessage instance) =>
     <String, dynamic>{
-      'body': instance.body?.toJson(),
-      'push_message': instance.pushMessage?.toJson(),
+      'body': instance.body.toJson(),
+      'push_message': instance.pushMessage.toJson(),
     };

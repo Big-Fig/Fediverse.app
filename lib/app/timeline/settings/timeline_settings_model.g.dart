@@ -94,9 +94,10 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
     onlyRemote: json['only_remote'] as bool?,
     onlyLocal: json['only_local'] as bool?,
     withMuted: json['with_muted'] as bool?,
-    excludeVisibilitiesStrings: (json['exclude_visibilities_strings'] as List?)
-        ?.map((e) => e as String)
-        ?.toList(),
+    excludeVisibilitiesStrings:
+        (json['exclude_visibilities_strings'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
     onlyInRemoteList: json['only_in_list'] == null
         ? null
         : PleromaList.fromJson(json['only_in_list'] as Map<String, dynamic>),

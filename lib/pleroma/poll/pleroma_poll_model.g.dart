@@ -8,8 +8,8 @@ part of 'pleroma_poll_model.dart';
 
 PleromaPollOption _$PleromaPollOptionFromJson(Map<String, dynamic> json) {
   return PleromaPollOption(
-    title: json['title'] as String?,
-    votesCount: json['votes_count'] as int?,
+    title: json['title'] as String,
+    votesCount: json['votes_count'] as int,
   );
 }
 
@@ -21,28 +21,25 @@ Map<String, dynamic> _$PleromaPollOptionToJson(PleromaPollOption instance) =>
 
 PleromaPoll _$PleromaPollFromJson(Map<String, dynamic> json) {
   return PleromaPoll(
-    expired: json['expired'] as bool?,
-    expiresAt: json['expires_at'] == null
-        ? null
-        : DateTime.parse(json['expires_at'] as String),
+    expired: json['expired'] as bool,
+    expiresAt: DateTime.parse(json['expires_at'] as String),
     id: json['id'] as String?,
-    multiple: json['multiple'] as bool?,
-    options: (json['options'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaPollOption.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    ownVotes: (json['own_votes'] as List?)?.map((e) => e as int)?.toList(),
-    voted: json['voted'] as bool?,
-    votersCount: json['voters_count'] as int?,
-    votesCount: json['votes_count'] as int?,
+    multiple: json['multiple'] as bool,
+    options: (json['options'] as List<dynamic>)
+        .map((e) => PleromaPollOption.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    ownVotes:
+        (json['own_votes'] as List<dynamic>).map((e) => e as int).toList(),
+    voted: json['voted'] as bool,
+    votersCount: json['voters_count'] as int,
+    votesCount: json['votes_count'] as int,
   );
 }
 
 Map<String, dynamic> _$PleromaPollToJson(PleromaPoll instance) =>
     <String, dynamic>{
       'expired': instance.expired,
-      'expires_at': instance.expiresAt?.toIso8601String(),
+      'expires_at': instance.expiresAt.toIso8601String(),
       'id': instance.id,
       'multiple': instance.multiple,
       'options': instance.options,

@@ -316,7 +316,7 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
         params: scheduledStatus.params.toPleromaScheduledStatusParams(),
         mediaAttachments: scheduledStatus.mediaAttachments,
         id: scheduledStatus.localId,
-        remoteId: scheduledStatus.remoteId,
+        remoteId: scheduledStatus.remoteId!,
         scheduledAt: scheduledStatus.scheduledAt,
       ),
     );

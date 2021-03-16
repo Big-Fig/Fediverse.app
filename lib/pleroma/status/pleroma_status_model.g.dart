@@ -9,19 +9,13 @@ part of 'pleroma_status_model.dart';
 PleromaScheduledStatus _$PleromaScheduledStatusFromJson(
     Map<String, dynamic> json) {
   return PleromaScheduledStatus(
-    id: json['id'] as String?,
-    mediaAttachments: (json['media_attachments'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    params: json['params'] == null
-        ? null
-        : PleromaScheduledStatusParams.fromJson(
-            json['params'] as Map<String, dynamic>),
-    scheduledAt: json['scheduled_at'] == null
-        ? null
-        : DateTime.parse(json['scheduled_at'] as String),
+    id: json['id'] as String,
+    mediaAttachments: (json['media_attachments'] as List<dynamic>?)
+        ?.map((e) => PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    params: PleromaScheduledStatusParams.fromJson(
+        json['params'] as Map<String, dynamic>),
+    scheduledAt: DateTime.parse(json['scheduled_at'] as String),
   );
 }
 
@@ -31,29 +25,28 @@ Map<String, dynamic> _$PleromaScheduledStatusToJson(
       'id': instance.id,
       'media_attachments': instance.mediaAttachments,
       'params': instance.params,
-      'scheduled_at': instance.scheduledAt?.toIso8601String(),
+      'scheduled_at': instance.scheduledAt.toIso8601String(),
     };
 
 PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     Map<String, dynamic> json) {
   return PleromaScheduledStatusParams(
     text: json['text'] as String?,
-    mediaIds: (json['media_ids'] as List?)?.map((e) => e as String)?.toList(),
-    sensitive: json['sensitive'] as bool?,
+    mediaIds:
+        (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
-    visibility: json['visibility'] as String?,
-    scheduledAt: json['scheduled_at'] == null
-        ? null
-        : DateTime.parse(json['scheduled_at'] as String),
+    visibility: json['visibility'] as String,
+    scheduledAt: DateTime.parse(json['scheduled_at'] as String),
     poll: json['poll'] == null
         ? null
         : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
-    idempotency: json['idempotency'] as String?,
+    idempotency: json['idempotency'] as String,
     inReplyToId: json['in_reply_to_id'] as String?,
     applicationId: json['application_id'],
     language: json['language'] as String?,
     expiresInSeconds: json['expiresInSeconds'] as int?,
-    to: (json['to'] as List?)?.map((e) => e as String)?.toList(),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
   );
 }
@@ -68,7 +61,7 @@ Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
       'spoiler_text': instance.spoilerText,
       'visibility': instance.visibility,
       'language': instance.language,
-      'scheduled_at': instance.scheduledAt?.toIso8601String(),
+      'scheduled_at': instance.scheduledAt.toIso8601String(),
       'poll': instance.poll?.toJson(),
       'idempotency': instance.idempotency,
       'in_reply_to_id': instance.inReplyToId,
@@ -79,24 +72,22 @@ Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
 
 PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
   return PleromaStatus(
-    id: json['id'] as String?,
-    createdAt: json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
+    id: json['id'] as String,
+    createdAt: DateTime.parse(json['created_at'] as String),
     inReplyToId: json['in_reply_to_id'] as String?,
     inReplyToAccountId: json['in_reply_to_account_id'] as String?,
-    sensitive: json['sensitive'] as bool?,
+    sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
-    uri: json['uri'] as String?,
+    uri: json['uri'] as String,
     url: json['url'] as String?,
-    repliesCount: json['replies_count'] as int?,
-    reblogsCount: json['reblogs_count'] as int?,
-    favouritesCount: json['favourites_count'] as int?,
-    favourited: json['favourited'] as bool?,
-    reblogged: json['reblogged'] as bool?,
-    muted: json['muted'] as bool?,
-    bookmarked: json['bookmarked'] as bool?,
-    pinned: json['pinned'] as bool?,
+    repliesCount: json['replies_count'] as int,
+    reblogsCount: json['reblogs_count'] as int,
+    favouritesCount: json['favourites_count'] as int,
+    favourited: json['favourited'] as bool,
+    reblogged: json['reblogged'] as bool,
+    muted: json['muted'] as bool,
+    bookmarked: json['bookmarked'] as bool,
+    pinned: json['pinned'] as bool,
     content: json['content'] as String?,
     reblog: json['reblog'] == null
         ? null
@@ -105,27 +96,19 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaApplication.fromJson(
             json['application'] as Map<String, dynamic>),
-    account: json['account'] == null
-        ? null
-        : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
-    mediaAttachments: (json['media_attachments'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    mentions: (json['mentions'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaMention.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    tags: (json['tags'] as List?)
-        ?.map((e) =>
-            e == null ? null : PleromaTag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    emojis: (json['emojis'] as List?)
-        ?.map((e) =>
-            e == null ? null : PleromaEmoji.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    account: PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    mediaAttachments: (json['media_attachments'] as List<dynamic>?)
+        ?.map((e) => PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    mentions: (json['mentions'] as List<dynamic>?)
+        ?.map((e) => PleromaMention.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    tags: (json['tags'] as List<dynamic>?)
+        ?.map((e) => PleromaTag.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    emojis: (json['emojis'] as List<dynamic>?)
+        ?.map((e) => PleromaEmoji.fromJson(e as Map<String, dynamic>))
+        .toList(),
     poll: json['poll'] == null
         ? null
         : PleromaPoll.fromJson(json['poll'] as Map<String, dynamic>),
@@ -136,7 +119,7 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaStatusPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
-    visibility: json['visibility'] as String?,
+    visibility: json['visibility'] as String,
     language: json['language'] as String?,
   );
 }
@@ -144,7 +127,7 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
       'in_reply_to_id': instance.inReplyToId,
       'in_reply_to_account_id': instance.inReplyToAccountId,
       'sensitive': instance.sensitive,
@@ -189,11 +172,10 @@ PleromaStatusPleromaPart _$PleromaStatusPleromaPartFromJson(
         : PleromaContent.fromJson(json['spoiler_text'] as Map<String, dynamic>),
     expiresAt: json['expires_at'],
     threadMuted: json['thread_muted'] as bool?,
-    emojiReactions: (json['emoji_reactions'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaStatusEmojiReaction.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    emojiReactions: (json['emoji_reactions'] as List<dynamic>?)
+        ?.map((e) =>
+            PleromaStatusEmojiReaction.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -214,30 +196,22 @@ Map<String, dynamic> _$PleromaStatusPleromaPartToJson(
 PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(
     Map<String, dynamic> json) {
   return PleromaPostStatusPoll(
-    expiresInSeconds: json['expires_in'] as int?,
-    hideTotals: json['hide_totals'] as bool?,
-    multiple: json['multiple'] as bool?,
-    options: (json['options'] as List?)?.map((e) => e as String)?.toList(),
+    expiresInSeconds: json['expires_in'] as int,
+    hideTotals: json['hide_totals'] as bool,
+    multiple: json['multiple'] as bool,
+    options:
+        (json['options'] as List<dynamic>).map((e) => e as String).toList(),
   );
 }
 
 Map<String, dynamic> _$PleromaPostStatusPollToJson(
-    PleromaPostStatusPoll instance) {
-  final val = <String, dynamic>{
-    'expires_in': instance.expiresInSeconds,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('hide_totals', instance.hideTotals);
-  val['multiple'] = instance.multiple;
-  val['options'] = instance.options;
-  return val;
-}
+        PleromaPostStatusPoll instance) =>
+    <String, dynamic>{
+      'expires_in': instance.expiresInSeconds,
+      'hide_totals': instance.hideTotals,
+      'multiple': instance.multiple,
+      'options': instance.options,
+    };
 
 PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
   return PleromaPostStatus(
@@ -246,16 +220,17 @@ PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
     inReplyToId: json['in_reply_to_id'] as String?,
     language: json['language'] as String?,
-    visibility: json['visibility'] as String?,
-    mediaIds: (json['media_ids'] as List?)?.map((e) => e as String)?.toList(),
+    visibility: json['visibility'] as String,
+    mediaIds:
+        (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
     poll: json['poll'] == null
         ? null
         : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
     preview: json['preview'] as bool?,
-    sensitive: json['sensitive'] as bool?,
+    sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
     status: json['status'] as String?,
-    to: (json['to'] as List?)?.map((e) => e as String)?.toList(),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String?).toList(),
   );
 }
 
@@ -293,19 +268,18 @@ PleromaScheduleStatus _$PleromaScheduleStatusFromJson(
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
     inReplyToId: json['in_reply_to_id'] as String?,
     language: json['language'] as String?,
-    visibility: json['visibility'] as String?,
-    mediaIds: (json['media_ids'] as List?)?.map((e) => e as String)?.toList(),
+    visibility: json['visibility'] as String,
+    mediaIds:
+        (json['media_ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
     poll: json['poll'] == null
         ? null
         : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
     preview: json['preview'] as bool?,
-    sensitive: json['sensitive'] as bool?,
+    sensitive: json['sensitive'] as bool,
     spoilerText: json['spoiler_text'] as String?,
     status: json['status'] as String?,
-    to: (json['to'] as List?)?.map((e) => e as String)?.toList(),
-    scheduledAt: json['scheduled_at'] == null
-        ? null
-        : DateTime.parse(json['scheduled_at'] as String),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+    scheduledAt: DateTime.parse(json['scheduled_at'] as String),
   );
 }
 
@@ -326,20 +300,18 @@ Map<String, dynamic> _$PleromaScheduleStatusToJson(
       'status': instance.status,
       'to': instance.to,
       'scheduled_at':
-          PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt!),
+          PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt),
     };
 
 PleromaStatusEmojiReaction _$PleromaStatusEmojiReactionFromJson(
     Map<String, dynamic> json) {
   return PleromaStatusEmojiReaction(
-    name: json['name'] as String?,
-    count: json['count'] as int?,
-    me: json['me'] as bool?,
-    accounts: (json['accounts'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaAccount.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    name: json['name'] as String,
+    count: json['count'] as int,
+    me: json['me'] as bool,
+    accounts: (json['accounts'] as List<dynamic>?)
+        ?.map((e) => PleromaAccount.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

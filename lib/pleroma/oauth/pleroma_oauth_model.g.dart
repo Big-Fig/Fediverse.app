@@ -17,8 +17,8 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaOAuthToken(
-      accessToken: fields[0] as String?,
-      tokenType: fields[1] as String?,
+      accessToken: fields[0] as String,
+      tokenType: fields[1] as String,
       scope: fields[2] as dynamic,
       createdAt: fields[3] as dynamic,
     );
@@ -55,8 +55,8 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
 
 PleromaOAuthToken _$PleromaOAuthTokenFromJson(Map<String, dynamic> json) {
   return PleromaOAuthToken(
-    accessToken: json['access_token'] as String?,
-    tokenType: json['token_type'] as String?,
+    accessToken: json['access_token'] as String,
+    tokenType: json['token_type'] as String,
     scope: json['scope'],
     createdAt: json['created_at'],
   );

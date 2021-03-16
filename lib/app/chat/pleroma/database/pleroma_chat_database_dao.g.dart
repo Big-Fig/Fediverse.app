@@ -14,16 +14,16 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbChats}).map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_chats WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbChats}).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_chats WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbChats},
       updateKind: UpdateKind.delete,
     );
@@ -50,9 +50,9 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
         variables: [], readsFrom: {dbChats}).map(dbChats.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect('SELECT id FROM db_chats WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbChats}).map((QueryRow row) => row.readInt('id'));
   }
 }
