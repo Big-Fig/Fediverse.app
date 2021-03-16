@@ -8,8 +8,8 @@ class FediFormHeaderWidget extends StatelessWidget {
   final String text;
 
   const FediFormHeaderWidget({
-    @required this.text,
-    @required this.isNeedAddDivider,
+    required this.text,
+    required this.isNeedAddDivider,
   });
 
   @override

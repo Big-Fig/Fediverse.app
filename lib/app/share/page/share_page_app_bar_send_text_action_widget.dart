@@ -21,7 +21,7 @@ class SharePageAppBarSendTextActionWidget extends StatelessWidget {
           builder: (context, onPressed) {
             return FediTextButton(
               text: S.of(context).app_share_action_send,
-              onPressed: isPossibleToShare ? onPressed : null,
+              onPressed: isPossibleToShare! ? onPressed : null,
             );
           },
           successToastMessage: S.of(context).app_share_toast_success,

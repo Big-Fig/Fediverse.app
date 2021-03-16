@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class FediFormRowLabel extends StatelessWidget {
   final String text;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   FediFormRowLabel(
     this.text, {

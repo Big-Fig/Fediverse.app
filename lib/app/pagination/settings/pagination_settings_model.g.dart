@@ -17,7 +17,7 @@ class PaginationSettingsAdapter extends TypeAdapter<PaginationSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PaginationSettings(
-      pageSize: fields[0] as String,
+      pageSize: fields[0] as String?,
     );
   }
 
@@ -46,7 +46,7 @@ class PaginationSettingsAdapter extends TypeAdapter<PaginationSettings> {
 
 PaginationSettings _$PaginationSettingsFromJson(Map<String, dynamic> json) {
   return PaginationSettings(
-    pageSize: json['page_size'] as String,
+    pageSize: json['page_size'] as String?,
   );
 }
 

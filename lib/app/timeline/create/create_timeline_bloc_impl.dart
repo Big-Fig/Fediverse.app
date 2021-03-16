@@ -19,7 +19,6 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef TimelineSavedCallback = Function(Timeline timeline);
@@ -29,30 +28,31 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final AuthInstance authInstance;
 
   @override
-  IEditTimelineSettingsBloc get editTimelineSettingsBloc =>
-      editTimelineSettingsBlocSubject.value;
+  IEditTimelineSettingsBloc? get editTimelineSettingsBloc =>
+      editTimelineSettingsBlocSubject.value!;
 
   @override
   Stream<IEditTimelineSettingsBloc> get editTimelineSettingsBlocStream =>
       editTimelineSettingsBlocSubject.stream;
 
-  BehaviorSubject<IEditTimelineSettingsBloc> editTimelineSettingsBlocSubject;
+  late BehaviorSubject<IEditTimelineSettingsBloc>
+      editTimelineSettingsBlocSubject;
 
   @override
-  List<IFormItemBloc> currentItems = [];
+  late List<IFormItemBloc> currentItems = [];
 
-  TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  late TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
   @override
-  ITimelineSettingsBloc timelineSettingsBloc;
+  late ITimelineSettingsBloc timelineSettingsBloc;
 
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   CreateTimelineBloc({
-    @required this.timelineSavedCallback,
-    @required this.authInstance,
-    @required this.webSocketsSettingsBloc,
-    @required ILocalPreferencesService localPreferencesService,
+    required this.timelineSavedCallback,
+    required this.authInstance,
+    required this.webSocketsSettingsBloc,
+    required ILocalPreferencesService localPreferencesService,
   }) : super(isAllItemsInitialized: false) {
     var timelineId = TimelineSettings.generateUniqueTimelineId();
 
@@ -110,7 +110,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     addDisposable(
       streamSubscription: typeFieldBloc.currentValueStream.listen(
         (timelineType) {
-          _onTypeChanged(timelineType);
+          _onTypeChanged(timelineType!);
         },
       ),
     );
@@ -136,8 +136,8 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     );
     timelineLocalPreferencesBloc.setValue(
       Timeline(
-        id: idFieldBloc.currentValue,
-        typeString: timelineType?.toJsonValue(),
+        id: idFieldBloc.currentValue!,
+        typeString: timelineType.toJsonValue(),
         settings: TimelineSettings.createDefaultSettings(
           timelineType,
         ),
@@ -159,7 +159,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       idFieldBloc,
       nameFieldBloc,
       typeFieldBloc,
-      editTimelineSettingsBloc,
+      if (editTimelineSettingsBloc != null) editTimelineSettingsBloc!,
     ];
     onFormItemsChanged();
   }
@@ -170,13 +170,13 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   }
 
   @override
-  IStringValueFormFieldBloc idFieldBloc;
+  late IStringValueFormFieldBloc idFieldBloc;
 
   @override
-  IStringValueFormFieldBloc nameFieldBloc;
+  late IStringValueFormFieldBloc nameFieldBloc;
 
   @override
-  ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+  late ITimelineTypeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   bool get isSomethingChanged => true;
@@ -187,11 +187,11 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
   Future save() async {
     var timeline = Timeline(
-      id: idFieldBloc.currentValue,
+      id: idFieldBloc.currentValue!,
       label: nameFieldBloc.currentValue,
-      typeString: typeFieldBloc.currentValue.toJsonValue(),
+      typeString: typeFieldBloc.currentValue!.toJsonValue(),
       isPossibleToDelete: true,
-      settings: editTimelineSettingsBloc.currentSettings,
+      settings: editTimelineSettingsBloc!.currentSettings!,
     );
     timelineSavedCallback(timeline);
   }

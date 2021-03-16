@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 
 class FediEmptyWidget extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final String? subTitle;
 
   FediEmptyWidget({
-    @required this.title,
+    required this.title,
     this.subTitle,
   });
 
@@ -28,7 +28,7 @@ class FediEmptyWidget extends StatelessWidget {
           if (subTitle != null) const FediSmallVerticalSpacer(),
           if (subTitle != null)
             Text(
-              subTitle,
+              subTitle!,
               textAlign: TextAlign.center,
               style: fediUiTextTheme.bigTallDarkGrey,
             ),

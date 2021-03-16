@@ -17,21 +17,21 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
   final IPleromaMyAccountService pleromaMyAccountService;
 
   MyAccountDomainBlockNetworkOnlyDomainListBloc({
-    @required this.pleromaAuthAccountService,
-    @required this.pleromaMyAccountService,
+    required this.pleromaAuthAccountService,
+    required this.pleromaMyAccountService,
   });
 
   @override
-  Future removeDomainBlock({@required String domain}) async {
+  Future removeDomainBlock({required String domain}) async {
     await pleromaAuthAccountService.unBlockDomain(domain: domain);
   }
 
   @override
   Future<List<DomainBlock>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
     var remoteDomains = await pleromaMyAccountService.getDomainBlocks(
       pagination: PleromaPaginationRequest(
@@ -59,12 +59,12 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
         pleromaAuthAccountService: IPleromaAccountService.of(
           context,
           listen: false,
-        ),
+        ) as IPleromaAuthAccountService,
       );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IMyAccountDomainBlockNetworkOnlyListBloc>(
       create: (context) =>

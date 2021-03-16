@@ -7,13 +7,13 @@ import 'package:flutter/widgets.dart';
 class PleromaAsyncOperationButtonBuilderWidget
     extends AsyncOperationButtonBuilderWidget {
   PleromaAsyncOperationButtonBuilderWidget({
-    @required ButtonBuilder builder,
-    @required AsyncButtonAction asyncButtonAction,
-    String progressContentMessage,
-    String successToastMessage,
+    required ButtonBuilder builder,
+    required AsyncButtonAction asyncButtonAction,
+    String? progressContentMessage,
+    String? successToastMessage,
     bool showProgressDialog = true,
     List<ErrorDataBuilder> errorAlertDialogBuilders = const [],
-    ErrorCallback errorCallback,
+    ErrorCallback? errorCallback,
   }) : super(
             builder: builder,
             asyncButtonAction: asyncButtonAction,
@@ -29,14 +29,15 @@ class PleromaAsyncOperationButtonBuilderWidget
             ]);
 
   @override
-  Future<AsyncDialogResult<T>> performAsyncOperation<T>(
-      {BuildContext context}) {
+  Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+    required BuildContext context,
+  }) {
     return PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         errorCallback: errorCallback,
         contentMessage: progressContentMessage,
         errorDataBuilders: errorDataBuilders,
         showProgressDialog: showProgressDialog,
-        asyncCode: asyncButtonAction);
+        asyncCode: asyncButtonAction as Future<T> Function());
   }
 }

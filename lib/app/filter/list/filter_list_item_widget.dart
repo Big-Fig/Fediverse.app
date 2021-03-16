@@ -31,7 +31,7 @@ class FilterListItemWidget extends StatelessWidget {
           },
           onDelete: () async {
             await IFilterRepository.of(context, listen: false)
-                .deleteById(filterBloc.filter.localId);
+                .deleteById(filterBloc.filter!.localId);
             _refresh(context);
           },
         );
@@ -59,7 +59,7 @@ class FilterListItemWidget extends StatelessWidget {
 
 class _FilterListItemExpiredWidget extends StatelessWidget {
   const _FilterListItemExpiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -70,7 +70,7 @@ class _FilterListItemExpiredWidget extends StatelessWidget {
       stream: filterBloc.isExpiredStream,
       initialData: filterBloc.isExpired,
       builder: (context, snapshot) {
-        var isExpired = snapshot.data;
+        var isExpired = snapshot.data!;
         if (isExpired) {
           return Text(
             S.of(context).app_filter_expired,
@@ -86,7 +86,7 @@ class _FilterListItemExpiredWidget extends StatelessWidget {
 
 class _FilterListItemPhraseWidget extends StatelessWidget {
   const _FilterListItemPhraseWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -97,7 +97,7 @@ class _FilterListItemPhraseWidget extends StatelessWidget {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
 
     return Text(
-      filterBloc.filter.phrase,
+      filterBloc.filter!.phrase!,
       style: fediUiTextTheme.bigTallBoldDarkGrey,
     );
   }

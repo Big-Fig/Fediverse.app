@@ -1,14 +1,31 @@
 import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/pleroma/tag/history/pleroma_tag_history_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 
-IHashtag mapRemoteHashtagToLocalHashtag(IPleromaTag pleromaTag) => Hashtag(
-      name: pleromaTag.name,
-      url: pleromaTag.url,
-      history: pleromaTag.history,
-    );
+extension IPleromaTagExtension on IPleromaTag {
+  Hashtag toHashtag() {
+    if (this is Hashtag) {
+      return this as Hashtag;
+    } else {
+      return Hashtag(
+        name: name,
+        url: url,
+        history: history,
+      );
+    }
+  }
+}
 
-PleromaTag mapLocalHashtagToRemoteHashtag(IHashtag hashtag) => PleromaTag(
-      name: hashtag.name,
-      url: hashtag.url,
-      history: hashtag.history,
-    );
+extension IHashtagExtension on IHashtag {
+  PleromaTag toPleromaTag() {
+    if (this is PleromaTag) {
+      return this as PleromaTag;
+    } else {
+      return PleromaTag(
+        name: name,
+        url: url,
+        history: history?.toPleromaTagHistories(),
+      );
+    }
+  }
+}

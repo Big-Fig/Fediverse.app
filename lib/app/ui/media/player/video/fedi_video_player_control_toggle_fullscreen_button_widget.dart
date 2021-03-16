@@ -36,7 +36,7 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
 class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
     extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -68,7 +68,7 @@ Future<dynamic> pushFullScreenPage(
         Animation<double> secondaryAnimation) {
       return AnimatedBuilder(
         animation: animation,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return DisposableProvider<IVideoMediaPlayerBloc>(
             create: (context) => VideoMediaPlayerBloc(
               mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
@@ -115,7 +115,7 @@ Future<dynamic> pushFullScreenPage(
 class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
     extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -130,7 +130,7 @@ class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
 
 class _FediVideoPlayerToggleControlFullscreenPage extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenPage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

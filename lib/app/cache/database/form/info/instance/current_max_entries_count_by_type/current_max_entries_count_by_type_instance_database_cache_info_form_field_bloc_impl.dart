@@ -4,13 +4,13 @@ import 'package:fedi/form/field/info/info_form_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc
-    extends InfoFormFieldBloc<int>
+    extends InfoFormFieldBloc<int?>
     implements
         ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc {
   final IDatabaseService databaseService;
 
   CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc({
-    @required this.databaseService,
+    required this.databaseService,
   });
 
   @override

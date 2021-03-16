@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountPleromaNoRichTextFieldWidget extends StatelessWidget {
   const EditMyAccountPleromaNoRichTextFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

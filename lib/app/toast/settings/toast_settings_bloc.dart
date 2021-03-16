@@ -6,13 +6,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IToastSettingsBloc
-    implements IGlobalOrInstanceSettingsBloc<ToastSettings> {
+    implements IGlobalOrInstanceSettingsBloc<ToastSettings?> {
   static IToastSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IToastSettingsBloc>(context, listen: listen);
 
-  bool get favourite;
+  bool? get favourite;
 
-  Stream<bool> get favouriteStream;
+  Stream<bool?> get favouriteStream;
 
   void changeFavourite(bool value);
 
@@ -22,41 +22,41 @@ abstract class IToastSettingsBloc
 
   void changeHandlingType(ToastHandlingType value);
 
-  bool get follow;
+  bool? get follow;
 
-  Stream<bool> get followStream;
+  Stream<bool?> get followStream;
 
   void changeFollow(bool value);
 
-  bool get mention;
+  bool? get mention;
 
-  Stream<bool> get mentionStream;
+  Stream<bool?> get mentionStream;
 
   void changeMention(bool value);
 
-  bool get reblog;
+  bool? get reblog;
 
-  Stream<bool> get reblogStream;
+  Stream<bool?> get reblogStream;
 
   void changeReblog(bool value);
 
-  bool get poll;
+  bool? get poll;
 
-  Stream<bool> get pollStream;
+  Stream<bool?> get pollStream;
 
   void changePoll(bool value);
 
-  bool get pleromaChatMention;
+  bool? get pleromaChatMention;
 
-  Stream<bool> get pleromaChatMentionStream;
+  Stream<bool?> get pleromaChatMentionStream;
 
   void changePleromaChatMention(bool value);
 
-  bool get pleromaEmojiReaction;
+  bool? get pleromaEmojiReaction;
 
-  Stream<bool> get pleromaEmojiReactionStream;
+  Stream<bool?> get pleromaEmojiReactionStream;
 
   void changePleromaEmojiReaction(bool value);
 
-  bool isNotificationTypeEnabled(PleromaNotificationType pleromaNotificationType);
+  bool? isNotificationTypeEnabled(PleromaNotificationType pleromaNotificationType);
 }

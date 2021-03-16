@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,11 +7,11 @@ part 'pleroma_push_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeRequest {
-  PleromaPushSubscribeData data;
-  PleromaPushSubscribeRequestSubscription subscription;
+  PleromaPushSubscribeData? data;
+  PleromaPushSubscribeRequestSubscription? subscription;
 
   PleromaPushSubscribeRequest(
-      {@required this.data, @required this.subscription});
+      {required this.data, required this.subscription});
 
   @override
   bool operator ==(Object other) =>
@@ -46,18 +45,18 @@ class PleromaPushSubscribeRequest {
 class PleromaPushSubscription {
   // todo: pleroma id is string but mastodon is int
   final dynamic id;
-  final String endpoint;
-  final PleromaPushSettingsDataAlerts alerts;
+  final String? endpoint;
+  final PleromaPushSettingsDataAlerts? alerts;
   @JsonKey(name: "server_key")
-  final String serverKey;
-  PleromaPushSubscribeRequestSubscription subscription;
+  final String? serverKey;
+  PleromaPushSubscribeRequestSubscription? subscription;
 
   PleromaPushSubscription(
-      {@required this.id,
-      @required this.endpoint,
-      @required this.alerts,
-      @required this.serverKey,
-      @required this.subscription});
+      {required this.id,
+      required this.endpoint,
+      required this.alerts,
+      required this.serverKey,
+      required this.subscription});
 
   @override
   String toString() {
@@ -97,7 +96,7 @@ class PleromaPushSubscription {
 
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeData {
-  PleromaPushSettingsDataAlerts alerts;
+  PleromaPushSettingsDataAlerts? alerts;
 
   PleromaPushSubscribeData({this.alerts});
 
@@ -132,29 +131,29 @@ class PleromaPushSubscribeData {
   includeIfNull: false,
 )
 class PleromaPushSettingsDataAlerts {
-  final bool favourite;
+  final bool? favourite;
 
-  final bool follow;
+  final bool? follow;
 
-  final bool mention;
+  final bool? mention;
 
-  final bool reblog;
+  final bool? reblog;
 
-  final bool poll;
+  final bool? poll;
 
   @JsonKey(name: "pleroma:chat_mention")
-  final bool pleromaChatMention;
+  final bool? pleromaChatMention;
   @JsonKey(name: "pleroma:emoji_reaction")
-  final bool pleromaEmojiReaction;
+  final bool? pleromaEmojiReaction;
 
   PleromaPushSettingsDataAlerts({
-    @required this.favourite,
-    @required this.follow,
-    @required this.mention,
-    @required this.reblog,
-    @required this.poll,
-    @required this.pleromaChatMention,
-    @required this.pleromaEmojiReaction,
+    required this.favourite,
+    required this.follow,
+    required this.mention,
+    required this.reblog,
+    required this.poll,
+    required this.pleromaChatMention,
+    required this.pleromaEmojiReaction,
   });
 
   PleromaPushSettingsDataAlerts.defaultAllEnabled()
@@ -214,11 +213,11 @@ class PleromaPushSettingsDataAlerts {
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeRequestSubscription {
   /// Endpoint URL that is called when a notification event occurs.
-  String endpoint;
-  PleromaPushSubscriptionKeys keys;
+  String? endpoint;
+  PleromaPushSubscriptionKeys? keys;
 
   PleromaPushSubscribeRequestSubscription(
-      {@required this.endpoint, @required this.keys});
+      {required this.endpoint, required this.keys});
 
   @override
   String toString() {
@@ -256,12 +255,12 @@ class PleromaPushSubscribeRequestSubscription {
 class PleromaPushSubscriptionKeys {
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
-  String p256dh;
+  String? p256dh;
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
-  String auth;
+  String? auth;
 
-  PleromaPushSubscriptionKeys({@required this.p256dh, @required this.auth});
+  PleromaPushSubscriptionKeys({required this.p256dh, required this.auth});
 
   @override
   bool operator ==(Object other) =>
@@ -311,10 +310,10 @@ class PleromaPushMessageBody {
   final String notificationType;
 
   PleromaPushMessageBody({
-    this.notificationId,
-    this.server,
-    this.account,
-    this.notificationType,
+    required this.notificationId,
+    required this.server,
+    required this.account,
+    required this.notificationType,
   });
 
   factory PleromaPushMessageBody.fromJson(Map<String, dynamic> json) =>

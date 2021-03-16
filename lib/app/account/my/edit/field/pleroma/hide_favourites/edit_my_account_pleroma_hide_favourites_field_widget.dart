@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountPleromaHideFavouritesFieldWidget extends StatelessWidget {
   const EditMyAccountPleromaHideFavouritesFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

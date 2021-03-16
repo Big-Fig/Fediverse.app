@@ -69,7 +69,7 @@ class InstanceDetailsWidget extends StatelessWidget {
 
 class _InstanceDetailsBodyWidget extends StatelessWidget {
   const _InstanceDetailsBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -115,7 +115,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
 
 class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
   const _InstanceDetailsBodyMetadataWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -125,7 +125,7 @@ class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveMetadataFieldsStream,
       initialData: instanceDetailsBloc.isHaveMetadataFields,
       builder: (context, snapshot) {
-        var isHaveMetadataFields = snapshot.data;
+        var isHaveMetadataFields = snapshot.data!;
         if (isHaveMetadataFields) {
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -147,7 +147,7 @@ class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
   const _InstanceDetailsPleromaUploadLimitsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -157,7 +157,7 @@ class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveUploadLimitsFieldsStream,
       initialData: instanceDetailsBloc.isHaveUploadLimitsFields,
       builder: (context, snapshot) {
-        var isHaveUploadLimitsFields = snapshot.data;
+        var isHaveUploadLimitsFields = snapshot.data!;
         if (isHaveUploadLimitsFields) {
           return Column(
             children: [
@@ -181,7 +181,7 @@ class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
 
 class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
   const _InstanceDetailsBodyMessagesLimitsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -191,7 +191,7 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
       initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
       builder: (context, snapshot) {
-        var isHaveMessagesLimitsFields = snapshot.data;
+        var isHaveMessagesLimitsFields = snapshot.data!;
         if (isHaveMessagesLimitsFields) {
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -216,7 +216,7 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
 
 class _InstanceDetailsBodyRegistrationsWidget extends StatelessWidget {
   const _InstanceDetailsBodyRegistrationsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -226,7 +226,7 @@ class _InstanceDetailsBodyRegistrationsWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveRegistrationsFieldsStream,
       initialData: instanceDetailsBloc.isHaveRegistrationsFields,
       builder: (context, snapshot) {
-        var isHaveRegistrationsFields = snapshot.data;
+        var isHaveRegistrationsFields = snapshot.data!;
 
         if (isHaveRegistrationsFields) {
           return Column(
@@ -252,7 +252,7 @@ class _InstanceDetailsBodyRegistrationsWidget extends StatelessWidget {
 
 class _InstanceDetailsBodyDetailsWidget extends StatelessWidget {
   const _InstanceDetailsBodyDetailsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -262,7 +262,7 @@ class _InstanceDetailsBodyDetailsWidget extends StatelessWidget {
         stream: instanceDetailsBloc.isHaveDetailsFieldsStream,
         initialData: instanceDetailsBloc.isHaveDetailsFields,
         builder: (context, snapshot) {
-          var isHaveDetailsFields = snapshot.data;
+          var isHaveDetailsFields = snapshot.data!;
           if (isHaveDetailsFields) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -285,14 +285,14 @@ class _InstanceDetailsBodyDetailsWidget extends StatelessWidget {
 
 class _InstanceDetailsTitleWidget extends StatelessWidget {
   const _InstanceDetailsTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.titleStream,
       initialData: instanceDetailsBloc.title,
       builder: (context, snapshot) {
@@ -300,7 +300,7 @@ class _InstanceDetailsTitleWidget extends StatelessWidget {
 
         if (title?.isNotEmpty == true) {
           return Text(
-            title,
+            title!,
             style: IFediUiTextTheme.of(context).bigBoldDarkGrey,
           );
         } else {
@@ -313,14 +313,14 @@ class _InstanceDetailsTitleWidget extends StatelessWidget {
 
 class _InstanceDetailsDescriptionWidget extends StatelessWidget {
   const _InstanceDetailsDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.descriptionOrShortDescriptionStream,
       initialData: instanceDetailsBloc.descriptionOrShortDescription,
       builder: (context, snapshot) {
@@ -329,7 +329,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
         var fediUiColorTheme = IFediUiColorTheme.of(context);
         var textScaleFactor = MediaQuery.of(context).textScaleFactor;
         if (descriptionOrShortDescription?.isNotEmpty == true) {
-          return Provider<String>.value(
+          return Provider<String?>.value(
             value: descriptionOrShortDescription,
             child: DisposableProxyProvider<String, IHtmlTextBloc>(
               update: (context, descriptionOrShortDescription, _) {
@@ -357,7 +357,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                     (url) {
                       UrlHelper.handleUrlClickWithInstanceLocation(
                         context: context,
-                        url: url,
+                        url: url!,
                         instanceLocationBloc: instanceDetailsBloc,
                       );
                     },
@@ -374,27 +374,25 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
       },
     );
   }
-
-
 }
 
 class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
   const _InstanceDetailsVersionTypeWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<PleromaInstanceVersionType>(
+    return StreamBuilder<PleromaInstanceVersionType?>(
       stream: instanceDetailsBloc.versionTypeStream,
       initialData: instanceDetailsBloc.versionType,
       builder: (context, snapshot) {
         var versionType = snapshot.data;
 
         if (versionType != null) {
-          String versionTypeString;
+          late String versionTypeString;
 
           switch (versionType) {
             case PleromaInstanceVersionType.pleroma:
@@ -427,14 +425,14 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
 
 class _InstanceDetailsEmailWidget extends StatelessWidget {
   const _InstanceDetailsEmailWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.emailStream,
       initialData: instanceDetailsBloc.email,
       builder: (context, snapshot) {
@@ -477,13 +475,13 @@ class _InstanceDetailsEmailWidget extends StatelessWidget {
 
 class _InstanceDetailsRowWidget extends StatelessWidget {
   const _InstanceDetailsRowWidget({
-    Key key,
-    @required this.label,
-    @required this.value,
+    Key? key,
+    required this.label,
+    required this.value,
   }) : super(key: key);
 
   final String label;
-  final String value;
+  final String? value;
   static const padding = FediPadding.allBigPadding;
 
   @override
@@ -505,19 +503,19 @@ class _InstanceDetailsRowWidget extends StatelessWidget {
 }
 
 class _InstanceDetailsRowValueWidget extends StatelessWidget {
-  final String value;
-  final Color customColor;
+  final String? value;
+  final Color? customColor;
 
   const _InstanceDetailsRowValueWidget({
-    Key key,
-    @required this.value,
+    Key? key,
+    required this.value,
     this.customColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      value,
+      value!,
       textAlign: TextAlign.end,
       style: IFediUiTextTheme.of(context)
           .bigTallMediumGrey
@@ -529,8 +527,8 @@ class _InstanceDetailsRowValueWidget extends StatelessWidget {
 
 class _InstanceDetailsRowLabelWidget extends StatelessWidget {
   const _InstanceDetailsRowLabelWidget({
-    Key key,
-    @required this.label,
+    Key? key,
+    required this.label,
   }) : super(key: key);
 
   final String label;
@@ -551,14 +549,14 @@ class _InstanceDetailsRowLabelWidget extends StatelessWidget {
 
 class _InstanceDetailsVersionWidget extends StatelessWidget {
   const _InstanceDetailsVersionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.versionStream,
       initialData: instanceDetailsBloc.version,
       builder: (context, snapshot) {
@@ -579,7 +577,7 @@ class _InstanceDetailsVersionWidget extends StatelessWidget {
 
 class _InstanceDetailsStatsWidget extends StatelessWidget {
   const _InstanceDetailsStatsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -590,13 +588,13 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveStatsFieldsStream,
       initialData: instanceDetailsBloc.isHaveStatsFields,
       builder: (context, snapshot) {
-        var isHaveStatsFields = snapshot.data;
+        var isHaveStatsFields = snapshot.data!;
         if (isHaveStatsFields) {
-          return StreamBuilder<MastodonInstanceStats>(
+          return StreamBuilder<MastodonInstanceStats?>(
               stream: instanceDetailsBloc.statsStream,
               initialData: instanceDetailsBloc.stats,
               builder: (context, snapshot) {
-                var stats = snapshot.data;
+                var stats = snapshot.data!;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -639,8 +637,8 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
 
 class _InstanceDetailsGroupTitleWidget extends StatelessWidget {
   const _InstanceDetailsGroupTitleWidget({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   final String title;
@@ -668,14 +666,14 @@ class _InstanceDetailsGroupTitleWidget extends StatelessWidget {
 
 class _InstanceDetailsThumbnailWidget extends StatelessWidget {
   const _InstanceDetailsThumbnailWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.thumbnailStream,
       initialData: instanceDetailsBloc.thumbnail,
       builder: (context, snapshot) {
@@ -696,14 +694,14 @@ class _InstanceDetailsThumbnailWidget extends StatelessWidget {
 
 class _InstanceDetailsLanguagesWidget extends StatelessWidget {
   const _InstanceDetailsLanguagesWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<List<String>>(
+    return StreamBuilder<List<String>?>(
       stream: instanceDetailsBloc.languagesStream,
       initialData: instanceDetailsBloc.languages,
       builder: (context, snapshot) {
@@ -724,14 +722,14 @@ class _InstanceDetailsLanguagesWidget extends StatelessWidget {
 
 class _InstanceDetailsRegistrationEnabledWidget extends StatelessWidget {
   const _InstanceDetailsRegistrationEnabledWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: instanceDetailsBloc.registrationsStream,
       initialData: instanceDetailsBloc.registrations,
       builder: (context, snapshot) {
@@ -754,14 +752,14 @@ class _InstanceDetailsRegistrationEnabledWidget extends StatelessWidget {
 
 class _InstanceDetailsApprovalRequiredWidget extends StatelessWidget {
   const _InstanceDetailsApprovalRequiredWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: instanceDetailsBloc.approvalRequiredStream,
       initialData: instanceDetailsBloc.approvalRequired,
       builder: (context, snapshot) {
@@ -785,14 +783,14 @@ class _InstanceDetailsApprovalRequiredWidget extends StatelessWidget {
 
 class _InstanceDetailsInvitesEnablesWidget extends StatelessWidget {
   const _InstanceDetailsInvitesEnablesWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: instanceDetailsBloc.invitesEnabledStream,
       initialData: instanceDetailsBloc.invitesEnabled,
       builder: (context, snapshot) {
@@ -816,7 +814,7 @@ class _InstanceDetailsInvitesEnablesWidget extends StatelessWidget {
 
 class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   const _InstanceDetailsContactAccountWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -827,14 +825,14 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
     var isLocal = instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaAccount>(
+    return StreamBuilder<IPleromaAccount?>(
       stream: instanceDetailsBloc.contactAccountStream,
       initialData: instanceDetailsBloc.contactAccount,
       builder: (context, snapshot) {
         var contactAccount = snapshot.data;
 
         if (contactAccount != null) {
-          var account = mapRemoteAccountToLocalAccount(contactAccount);
+          var account = contactAccount.toDbAccountWrapper();
           return Provider<IAccount>.value(
             value: account,
             child: DisposableProxyProvider<IAccount, IAccountBloc>(
@@ -899,9 +897,9 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
   }
 
   void _goToAccount({
-    @required BuildContext context,
-    @required bool isLocal,
-    @required DbAccountWrapper account,
+    required BuildContext context,
+    required bool isLocal,
+    required DbAccountWrapper account,
   }) {
     if (isLocal) {
       goToLocalAccountDetailsPage(
@@ -920,7 +918,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 class _InstanceDetailsContactAccountDisplayNameAndAcctWidget
     extends StatelessWidget {
   const _InstanceDetailsContactAccountDisplayNameAndAcctWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -941,14 +939,14 @@ class _InstanceDetailsContactAccountDisplayNameAndAcctWidget
 
 class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMaxTootCharsLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.maxTootCharsStream,
       initialData: instanceDetailsBloc.maxTootChars,
       builder: (context, snapshot) {
@@ -969,14 +967,14 @@ class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaChatMessageLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaChatMessageLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.chatLimitStream,
       initialData: instanceDetailsBloc.chatLimit,
       builder: (context, snapshot) {
@@ -998,14 +996,14 @@ class _InstanceDetailsPleromaChatMessageLimitWidget extends StatelessWidget {
 class _InstanceDetailsPleromaImageDescriptionLimitWidget
     extends StatelessWidget {
   const _InstanceDetailsPleromaImageDescriptionLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.descriptionLimitStream,
       initialData: instanceDetailsBloc.descriptionLimit,
       builder: (context, snapshot) {
@@ -1028,7 +1026,7 @@ class _InstanceDetailsPleromaImageDescriptionLimitWidget
 
 class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
   const _InstanceDetailsPleromaPollLimitsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -1039,9 +1037,9 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
         stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
         initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
         builder: (context, snapshot) {
-          var isHaveMessagesLimitsFields = snapshot.data;
+          var isHaveMessagesLimitsFields = snapshot.data!;
           if (isHaveMessagesLimitsFields) {
-            return StreamBuilder<PleromaInstancePollLimits>(
+            return StreamBuilder<PleromaInstancePollLimits?>(
               stream: instanceDetailsBloc.pollLimitsStream,
               initialData: instanceDetailsBloc.pollLimits,
               builder: (context, snapshot) {
@@ -1064,7 +1062,7 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
                           value: formatDuration(
                             context: context,
                             duration:
-                                Duration(seconds: pollLimits.minExpiration),
+                                Duration(seconds: pollLimits.minExpiration!),
                           ),
                         ),
                       if (pollLimits.maxExpiration != null)
@@ -1075,7 +1073,7 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
                           value: formatDuration(
                             context: context,
                             duration:
-                                Duration(seconds: pollLimits.maxExpiration),
+                                Duration(seconds: pollLimits.maxExpiration!),
                           ),
                         ),
                       if (pollLimits.maxOptionChars != null)
@@ -1108,14 +1106,14 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
   const _InstanceDetailsPleromaUploadMediaLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.uploadLimitStream,
       initialData: instanceDetailsBloc.uploadLimit,
       builder: (context, snapshot) {
@@ -1141,14 +1139,14 @@ class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
 class _InstanceDetailsPleromaUploadAccountAvatarLimitWidget
     extends StatelessWidget {
   const _InstanceDetailsPleromaUploadAccountAvatarLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.avatarUploadLimitStream,
       initialData: instanceDetailsBloc.avatarUploadLimit,
       builder: (context, snapshot) {
@@ -1174,14 +1172,14 @@ class _InstanceDetailsPleromaUploadAccountAvatarLimitWidget
 class _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget
     extends StatelessWidget {
   const _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.backgroundUploadLimitStream,
       initialData: instanceDetailsBloc.backgroundUploadLimit,
       builder: (context, snapshot) {
@@ -1208,14 +1206,14 @@ class _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget
 class _InstanceDetailsPleromaUploadAccountBannerLimitWidget
     extends StatelessWidget {
   const _InstanceDetailsPleromaUploadAccountBannerLimitWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: instanceDetailsBloc.bannerUploadLimitStream,
       initialData: instanceDetailsBloc.bannerUploadLimit,
       builder: (context, snapshot) {
@@ -1240,14 +1238,14 @@ class _InstanceDetailsPleromaUploadAccountBannerLimitWidget
 
 class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMetadataFeaturesWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<List<String>>(
+    return StreamBuilder<List<String>?>(
       stream: instanceDetailsBloc.pleromaMetadataFeaturesStream,
       initialData: instanceDetailsBloc.pleromaMetadataFeatures,
       builder: (context, snapshot) {
@@ -1270,7 +1268,7 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMetadataFederationWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -1281,9 +1279,9 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
       stream: instanceDetailsBloc.isHaveFederationFieldsStream,
       initialData: instanceDetailsBloc.isHaveFederationFields,
       builder: (context, snapshot) {
-        var isHaveFederationFields = snapshot.data;
+        var isHaveFederationFields = snapshot.data!;
         if (isHaveFederationFields) {
-          return StreamBuilder<PleromaInstancePleromaPartMetadataFederation>(
+          return StreamBuilder<PleromaInstancePleromaPartMetadataFederation?>(
             stream: instanceDetailsBloc.pleromaMetadataFederationStream,
             initialData: instanceDetailsBloc.pleromaMetadataFederation,
             builder: (context, snapshot) {
@@ -1298,38 +1296,38 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                           .of(context)
                           .app_instance_details_field_federation_title,
                     ),
-                    if (pleromaMetadataFederation?.enabled != null)
+                    if (pleromaMetadataFederation.enabled != null)
                       _InstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_enabled_label,
-                        value: pleromaMetadataFederation.enabled
+                        value: pleromaMetadataFederation.enabled!
                             ? S.of(context).app_instance_details_value_bool_true
                             : S
                                 .of(context)
                                 .app_instance_details_value_bool_false,
                       ),
-                    if (pleromaMetadataFederation?.exclusions != null)
+                    if (pleromaMetadataFederation.exclusions != null)
                       _InstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_exclusions_label,
-                        value: pleromaMetadataFederation.enabled
+                        value: pleromaMetadataFederation.enabled!
                             ? S.of(context).app_instance_details_value_bool_true
                             : S
                                 .of(context)
                                 .app_instance_details_value_bool_false,
                       ),
-                    if (pleromaMetadataFederation?.mrfPolicies?.isNotEmpty ==
+                    if (pleromaMetadataFederation.mrfPolicies?.isNotEmpty ==
                         true)
                       _InstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_mrfPolicies_label,
                         value:
-                            pleromaMetadataFederation?.mrfPolicies?.join("\n"),
+                            pleromaMetadataFederation.mrfPolicies?.join("\n"),
                       ),
-                    if (pleromaMetadataFederation?.mrfObjectAge?.threshold !=
+                    if (pleromaMetadataFederation.mrfObjectAge?.threshold !=
                         null)
                       _InstanceDetailsRowWidget(
                         label: S
@@ -1338,28 +1336,27 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                         value: formatDuration(
                           context: context,
                           duration: Duration(
-                            seconds: pleromaMetadataFederation
-                                ?.mrfObjectAge?.threshold,
+                            seconds: pleromaMetadataFederation!
+                                .mrfObjectAge!.threshold!,
                           ),
                         ),
                       ),
-                    if (pleromaMetadataFederation?.mrfObjectAge?.actions !=
-                        null)
+                    if (pleromaMetadataFederation.mrfObjectAge?.actions != null)
                       _InstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_mrfObjectAge_actions_label,
-                        value: pleromaMetadataFederation?.mrfObjectAge?.actions
+                        value: pleromaMetadataFederation.mrfObjectAge?.actions
                             ?.join("\n"),
                       ),
                     if (pleromaMetadataFederation
-                            ?.quarantinedInstances?.isNotEmpty ==
+                            .quarantinedInstances?.isNotEmpty ==
                         true)
                       _InstanceDetailsRowWidget(
                         label: S
                             .of(context)
                             .app_instance_details_field_federation_quarantinedInstances_label,
-                        value: pleromaMetadataFederation?.quarantinedInstances
+                        value: pleromaMetadataFederation.quarantinedInstances
                             ?.join("\n"),
                       ),
                   ],
@@ -1380,7 +1377,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
 class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
     extends StatelessWidget {
   const _InstanceDetailsPleromaMetadataFieldsLimitsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -1391,10 +1388,10 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
       stream: instanceDetailsBloc.isHaveMessagesLimitsFieldsStream,
       initialData: instanceDetailsBloc.isHaveMessagesLimitsFields,
       builder: (context, snapshot) {
-        var isHaveMessagesLimitsFields = snapshot.data;
+        var isHaveMessagesLimitsFields = snapshot.data!;
 
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<PleromaInstancePleromaPartMetadataFieldLimits>(
+          return StreamBuilder<PleromaInstancePleromaPartMetadataFieldLimits?>(
             stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
             initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
             builder: (context, snapshot) {
@@ -1458,14 +1455,14 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
 
 class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
   const _InstanceDetailsPleromaMetadataPostFormatsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<List<String>>(
+    return StreamBuilder<List<String>?>(
       stream: instanceDetailsBloc.pleromaMetadataPostFormatsStream,
       initialData: instanceDetailsBloc.pleromaMetadataPostFormats,
       builder: (context, snapshot) {
@@ -1488,14 +1485,14 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
 
 class _InstanceDetailsVapidPublicKeyWidget extends StatelessWidget {
   const _InstanceDetailsVapidPublicKeyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: instanceDetailsBloc.vapidPublicKeyStream,
       initialData: instanceDetailsBloc.vapidPublicKey,
       builder: (context, snapshot) {

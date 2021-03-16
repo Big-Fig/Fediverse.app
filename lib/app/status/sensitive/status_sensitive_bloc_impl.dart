@@ -15,27 +15,27 @@ class StatusSensitiveBloc extends DisposableOwner
   final IStatusSensitiveDisplayTimeStorageBloc
       statusSensitiveDisplayTimeStorageBloc;
 
-  IStatus get status => statusBloc.status;
+  IStatus? get status => statusBloc.status;
 
-  bool get displayEnabled => _displayEnabledSubject.value;
+  bool? get displayEnabled => _displayEnabledSubject!.value;
 
-  Stream<bool> get displayEnabledStream => _displayEnabledSubject.stream;
+  Stream<bool> get displayEnabledStream => _displayEnabledSubject!.stream;
 
   bool get nsfwSensitive => statusBloc.nsfwSensitive;
 
-  Stream<bool> get nsfwSensitiveStream => statusBloc.nsfwSensitiveStream;
+  Stream<bool?> get nsfwSensitiveStream => statusBloc.nsfwSensitiveStream;
 
   bool get containsSpoiler => statusBloc.containsSpoiler;
 
   Stream<bool> get containsSpoilerStream => statusBloc.containsSpoilerStream;
 
   // ignore: close_sinks
-  BehaviorSubject<bool> _displayEnabledSubject;
+  BehaviorSubject<bool>? _displayEnabledSubject;
 
   StatusSensitiveBloc({
-    @required this.statusBloc,
-    @required this.statusSensitiveSettingsBloc,
-    @required this.statusSensitiveDisplayTimeStorageBloc,
+    required this.statusBloc,
+    required this.statusSensitiveSettingsBloc,
+    required this.statusSensitiveDisplayTimeStorageBloc,
     bool initialDisplayEnabled = false,
   }) {
     if (initialDisplayEnabled) {
@@ -50,7 +50,7 @@ class StatusSensitiveBloc extends DisposableOwner
     if (statusLastDisplayEnabledTime != null) {
       var diff = statusLastDisplayEnabledTime.difference(DateTime.now()).abs();
 
-      if (diff < statusSensitiveSettingsBloc.nsfwDisplayDelayDuration) {
+      if (diff < statusSensitiveSettingsBloc.nsfwDisplayDelayDuration!) {
         initialDisplayEnabled = true;
       }
     }
@@ -61,14 +61,14 @@ class StatusSensitiveBloc extends DisposableOwner
 
   @override
   void enableDisplay() {
-    _displayEnabledSubject.add(true);
+    _displayEnabledSubject!.add(true);
     statusSensitiveDisplayTimeStorageBloc.onStatusDisplayEnabled(
       status: status,
     );
   }
 
   @override
-  bool get containsSpoilerAndDisplaySpoilerContentEnabled {
+  bool? get containsSpoilerAndDisplaySpoilerContentEnabled {
     if (containsSpoiler) {
       return displayEnabled;
     } else {
@@ -79,7 +79,7 @@ class StatusSensitiveBloc extends DisposableOwner
   @override
   Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream =>
       Rx.combineLatest2(containsSpoilerStream, displayEnabledStream,
-          (containsSpoiler, displayEnabled) {
+          (dynamic containsSpoiler, dynamic displayEnabled) {
         if (containsSpoiler) {
           return displayEnabled;
         } else {
@@ -88,7 +88,7 @@ class StatusSensitiveBloc extends DisposableOwner
       });
 
   @override
-  bool get nsfwSensitiveAndDisplayNsfwContentEnabled {
+  bool? get nsfwSensitiveAndDisplayNsfwContentEnabled {
     if (nsfwSensitive) {
       return displayEnabled;
     } else {
@@ -100,7 +100,7 @@ class StatusSensitiveBloc extends DisposableOwner
   @override
   Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream =>
       Rx.combineLatest2(nsfwSensitiveStream, displayEnabledStream,
-          (nsfwSensitive, displayEnabled) {
+          (dynamic nsfwSensitive, dynamic displayEnabled) {
         if (nsfwSensitive) {
           return displayEnabled;
         } else {
@@ -123,9 +123,9 @@ class StatusSensitiveBloc extends DisposableOwner
         containsSpoilerStream,
         displayEnabledStream,
         (
-          nsfwSensitive,
-          containsSpoiler,
-          displayEnabled,
+          dynamic nsfwSensitive,
+          dynamic containsSpoiler,
+          dynamic displayEnabled,
         ) =>
             StatusSensitiveWarningState(
           nsfwSensitive: nsfwSensitive,
@@ -135,15 +135,15 @@ class StatusSensitiveBloc extends DisposableOwner
       );
 
   @override
-  bool get isAlwaysShowNsfw => statusSensitiveSettingsBloc.isAlwaysShowNsfw;
+  bool? get isAlwaysShowNsfw => statusSensitiveSettingsBloc.isAlwaysShowNsfw;
 
   @override
-  bool get isAlwaysShowSpoiler =>
+  bool? get isAlwaysShowSpoiler =>
       statusSensitiveSettingsBloc.isAlwaysShowSpoiler;
 
   static StatusSensitiveBloc createFromContext({
-    @required BuildContext context,
-    @required IStatusBloc statusBloc,
+    required BuildContext context,
+    required IStatusBloc statusBloc,
     bool initialDisplayEnabled = false,
   }) =>
       StatusSensitiveBloc(

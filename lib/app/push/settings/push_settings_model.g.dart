@@ -17,13 +17,13 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushSettings(
-      favourite: fields[1] as bool,
-      follow: fields[2] as bool,
-      mention: fields[3] as bool,
-      reblog: fields[4] as bool,
-      poll: fields[5] as bool,
-      pleromaChatMention: fields[6] as bool,
-      pleromaEmojiReaction: fields[7] as bool,
+      favourite: fields[1] as bool?,
+      follow: fields[2] as bool?,
+      mention: fields[3] as bool?,
+      reblog: fields[4] as bool?,
+      poll: fields[5] as bool?,
+      pleromaChatMention: fields[6] as bool?,
+      pleromaEmojiReaction: fields[7] as bool?,
     );
   }
 
@@ -64,13 +64,13 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
 
 PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
   return PushSettings(
-    favourite: json['favourite'] as bool,
-    follow: json['follow'] as bool,
-    mention: json['mention'] as bool,
-    reblog: json['reblog'] as bool,
-    poll: json['poll'] as bool,
-    pleromaChatMention: json['pleromaChatMention'] as bool,
-    pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool,
+    favourite: json['favourite'] as bool?,
+    follow: json['follow'] as bool?,
+    mention: json['mention'] as bool?,
+    reblog: json['reblog'] as bool?,
+    poll: json['poll'] as bool?,
+    pleromaChatMention: json['pleromaChatMention'] as bool?,
+    pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool?,
   );
 }
 

@@ -7,7 +7,7 @@ abstract class ICollapsibleItemBloc {
 
   Stream<bool> get isPossibleToCollapseStream;
 
-  bool get isCollapsed;
+  bool? get isCollapsed;
 
   Stream<bool> get isCollapsedStream;
 

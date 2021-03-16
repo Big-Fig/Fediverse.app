@@ -1,7 +1,7 @@
 import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
-import 'package:fedi/app/message/post_message_select_media_attachment_type_to_pick_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
+import 'package:fedi/app/message/post_message_select_media_attachment_type_to_pick_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -14,32 +14,29 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context);
 
-    return StreamBuilder<PostMessageSelectedAction>(
-        stream: postMessageBloc.selectedActionStream,
-        builder: (context, snapshot) {
-          var selectedAction = snapshot.data;
+    return StreamBuilder<PostMessageSelectedAction?>(
+      stream: postMessageBloc.selectedActionStream,
+      builder: (context, snapshot) {
+        var selectedAction = snapshot.data;
 
-          switch (selectedAction) {
-            case PostMessageSelectedAction.attach:
-              return const _PostMessageSelectedActionAttachWidget();
-              break;
-            case PostMessageSelectedAction.emoji:
-              return const _PostMessageSelectedActionEmojiWidget();
-              break;
-            case PostMessageSelectedAction.poll:
-              return const _PostMessageSelectedActionPollWidget();
-              break;
-            default:
-              return const SizedBox.shrink();
-              break;
-          }
-        });
+        switch (selectedAction) {
+          case PostMessageSelectedAction.attach:
+            return const _PostMessageSelectedActionAttachWidget();
+          case PostMessageSelectedAction.emoji:
+            return const _PostMessageSelectedActionEmojiWidget();
+          case PostMessageSelectedAction.poll:
+            return const _PostMessageSelectedActionPollWidget();
+          default:
+            return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _PostMessageSelectedActionPollWidget extends StatelessWidget {
   const _PostMessageSelectedActionPollWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -61,7 +58,7 @@ class _PostMessageSelectedActionPollWidget extends StatelessWidget {
 
 class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
   const _PostMessageSelectedActionEmojiWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -87,7 +84,7 @@ class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
 
 class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
   const _PostMessageSelectedActionAttachWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

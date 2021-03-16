@@ -18,7 +18,8 @@ var _conversationAccountsAliasId = "conversationAccounts";
       "SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_conversations WHERE id = :id;",
   "deleteById": "DELETE FROM db_conversations WHERE id = :id;",
-  "deleteByRemoteId": "DELETE FROM db_conversations WHERE remote_id = :remoteId;",
+  "deleteByRemoteId":
+      "DELETE FROM db_conversations WHERE remote_id = :remoteId;",
   "clear": "DELETE FROM db_conversations",
   "getAll": "SELECT * FROM db_conversations",
   "findLocalIdByRemoteId": "SELECT id FROM db_conversations WHERE remote_id = "
@@ -27,8 +28,8 @@ var _conversationAccountsAliasId = "conversationAccounts";
 class ConversationDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbConversationAccountsTable conversationAccountsAlias;
+  $DbAccountsTable? accountAlias;
+  $DbConversationAccountsTable? conversationAccountsAlias;
 
   // Called by the AppDatabase class
   ConversationDao(this.db) : super(db) {
@@ -38,7 +39,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<int> insert(Insertable<DbConversation> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(db.dbConversations).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbConversation> entity) async =>
@@ -47,7 +48,9 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   Future insertAll(Iterable<Insertable<DbConversation>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(db.dbConversations, entities, mode: mode);
+        batch.insertAll(
+            db.dbConversations, entities as List<Insertable<DbConversation>>,
+            mode: mode);
       });
 
   Future<bool> replace(Insertable<DbConversation> entity) async =>
@@ -75,8 +78,8 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbConversationsTable, DbConversation>
       addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbConversationsTable, DbConversation> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
@@ -120,7 +123,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-        status.mediaAttachments.isNotNull() |
+            status.mediaAttachments.isNotNull() |
             status.mediaAttachments.equals(""));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();

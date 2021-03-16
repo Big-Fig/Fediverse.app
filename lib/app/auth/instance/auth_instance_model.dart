@@ -19,17 +19,17 @@ part 'auth_instance_model.g.dart';
 class AuthInstance extends IJsonObject {
   @HiveField(0)
   @JsonKey(name: "url_schema")
-  final String urlSchema;
+  final String? urlSchema;
   @HiveField(1)
   @JsonKey(name: "url_host")
-  final String urlHost;
+  final String? urlHost;
   @HiveField(2)
-  final String acct;
+  final String? acct;
   @HiveField(3)
-  final PleromaOAuthToken token;
+  final PleromaOAuthToken? token;
   @HiveField(4)
   @JsonKey(name: "auth_code")
-  final String authCode;
+  final String? authCode;
 
   @HiveField(5)
   @JsonKey(name: "is_pleroma_instance")
@@ -38,10 +38,10 @@ class AuthInstance extends IJsonObject {
   bool get isMastodon => !isPleroma;
 
   @HiveField(6)
-  final PleromaClientApplication application;
+  final PleromaClientApplication? application;
 
   @HiveField(7)
-  final PleromaInstance info;
+  final PleromaInstance? info;
 
   bool get isSupportChats =>
       info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") ==
@@ -52,19 +52,19 @@ class AuthInstance extends IJsonObject {
   Uri get uri => Uri(scheme: urlSchema, host: urlHost);
 
   AuthInstance({
-    this.urlSchema,
-    this.urlHost,
-    this.acct,
-    this.token,
-    this.authCode,
-    this.isPleroma,
-    this.application,
-    this.info,
+    required this.urlSchema,
+    required this.urlHost,
+    required this.acct,
+    required this.token,
+    required this.authCode,
+    required this.isPleroma,
+    required this.application,
+    required this.info,
   });
 
-  bool get isSubscribeToAccountFeatureSupported => isPleroma;
+  bool? get isSubscribeToAccountFeatureSupported => isPleroma;
 
-  bool get isAccountFavouritesFeatureSupported => isPleroma;
+  bool? get isAccountFavouritesFeatureSupported => isPleroma;
 
   @override
   bool operator ==(Object other) =>
@@ -101,18 +101,18 @@ class AuthInstance extends IJsonObject {
   }
 
   bool isInstanceWithHostAndAcct(
-          {@required String host, @required String acct}) =>
+          {required String? host, required String? acct}) =>
       this.acct == acct && urlHost == host;
 
   AuthInstance copyWith({
-    String urlSchema,
-    String urlHost,
-    String acct,
-    PleromaOAuthToken token,
-    String authCode,
-    bool isPleroma,
-    PleromaClientApplication application,
-    PleromaInstance info,
+    String? urlSchema,
+    String? urlHost,
+    String? acct,
+    PleromaOAuthToken? token,
+    String? authCode,
+    bool? isPleroma,
+    PleromaClientApplication? application,
+    IPleromaInstance? info,
   }) {
     return AuthInstance(
       urlSchema: urlSchema ?? this.urlSchema,
@@ -122,7 +122,7 @@ class AuthInstance extends IJsonObject {
       authCode: authCode ?? this.authCode,
       isPleroma: isPleroma ?? this.isPleroma,
       application: application ?? this.application,
-      info: info ?? this.info,
+      info: info?.toPleromaInstance() ?? this.info,
     );
   }
 

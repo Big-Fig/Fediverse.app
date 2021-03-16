@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 
 class FediYesNoAlertDialog extends FediBaseAlertDialog {
   FediYesNoAlertDialog({
-    @required BuildContext context,
-    @required DialogActionCallback yesAction,
-    @required DialogActionCallback noAction,
-    String title,
-    String contentText,
-    String yesActionLabel,
-    String noActionLabel,
+    required BuildContext context,
+    required DialogActionCallback yesAction,
+    required DialogActionCallback noAction,
+    String? title,
+    String? contentText,
+    String? yesActionLabel,
+    String? noActionLabel,
   }) : super(
             title: title,
             contentText: contentText,

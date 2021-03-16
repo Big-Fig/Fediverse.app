@@ -12,5 +12,5 @@ abstract class IStatusReplyLoaderBloc
 
   IStatus get originalStatus;
 
-  IStatus get inReplyToStatus;
+  IStatus? get inReplyToStatus;
 }

@@ -4,8 +4,8 @@ import 'package:moor/moor.dart';
 @DataClassName("DbStatusHashtag")
 class DbStatusHashtags extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn? get id => integer().autoIncrement()();
 
-  TextColumn get statusRemoteId => text()();
-  TextColumn get hashtag => text()();
+  TextColumn? get statusRemoteId => text()();
+  TextColumn? get hashtag => text()();
 }

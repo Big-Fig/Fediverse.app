@@ -5,18 +5,22 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPaginationSettingsBloc
-    implements IGlobalOrInstanceSettingsBloc<PaginationSettings> {
+    implements IGlobalOrInstanceSettingsBloc<PaginationSettings?> {
   static const PaginationPageSize defaultPageSizeValue =
       PaginationPageSize.size20;
 
-  static IPaginationSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPaginationSettingsBloc>(context, listen: listen);
+  static IPaginationSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPaginationSettingsBloc>(
+        context,
+        listen: listen,
+      );
 
-  PaginationPageSize get pageSize;
+  PaginationPageSize? get pageSize;
 
-  Stream<PaginationPageSize> get pageSizeStream;
+  Stream<PaginationPageSize?> get pageSizeStream;
 
   Future changePageSize(PaginationPageSize value);
-
 }

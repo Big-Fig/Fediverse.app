@@ -14,28 +14,28 @@ import 'package:provider/provider.dart';
 class NotificationCachedPaginationBloc
     extends CachedPleromaPaginationBloc<INotification>
     implements INotificationCachedPaginationBloc {
-  final INotificationCachedListBloc notificationListService;
+  final INotificationCachedListBloc? notificationListService;
 
   NotificationCachedPaginationBloc({
-    @required this.notificationListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.notificationListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  IPleromaApi get pleromaApi => notificationListService.pleromaApi;
+  IPleromaApi get pleromaApi => notificationListService!.pleromaApi;
 
   @override
   Future<List<INotification>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<INotification> olderPage,
-    @required CachedPaginationPage<INotification> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<INotification>? olderPage,
+    required CachedPaginationPage<INotification>? newerPage,
   }) =>
-      notificationListService.loadLocalItems(
+      notificationListService!.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
         olderThan: newerPage?.items?.last,
@@ -43,15 +43,15 @@ class NotificationCachedPaginationBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<INotification> olderPage,
-    @required CachedPaginationPage<INotification> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<INotification>? olderPage,
+    required CachedPaginationPage<INotification>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
-    return notificationListService.refreshItemsFromRemoteForPage(
+    return notificationListService!.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
       newerThan: olderPage?.items?.first,
       olderThan: newerPage?.items?.last,
@@ -60,7 +60,7 @@ class NotificationCachedPaginationBloc
 
   static NotificationCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       NotificationCachedPaginationBloc(
         notificationListService:
@@ -74,8 +74,8 @@ class NotificationCachedPaginationBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    int maximumCachedPagesCount,
+    required Widget child,
+    int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<INotification>,

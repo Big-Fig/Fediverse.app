@@ -18,7 +18,7 @@ class RecentSelectAccountListAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecentSelectAccountList(
-      recentItems: (fields[0] as List)?.cast<PleromaAccount>(),
+      recentItems: (fields[0] as List?)?.cast<PleromaAccount>(),
     );
   }
 
@@ -48,7 +48,7 @@ class RecentSelectAccountListAdapter
 RecentSelectAccountList _$RecentSelectAccountListFromJson(
     Map<String, dynamic> json) {
   return RecentSelectAccountList(
-    recentItems: (json['recentItems'] as List)
+    recentItems: (json['recentItems'] as List?)
         ?.map((e) => e == null
             ? null
             : PleromaAccount.fromJson(e as Map<String, dynamic>))

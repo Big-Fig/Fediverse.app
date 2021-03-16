@@ -10,13 +10,13 @@ class StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IStatusVisibilitySelectSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<PleromaVisibility>>(
+          ISingleSelectFromListValueFormFieldBloc<PleromaVisibility?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<PleromaVisibility>(
           child: child,

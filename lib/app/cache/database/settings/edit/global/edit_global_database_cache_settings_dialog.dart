@@ -14,7 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditGlobalDatabaseCacheSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalSettingsDialog(
     context: context,

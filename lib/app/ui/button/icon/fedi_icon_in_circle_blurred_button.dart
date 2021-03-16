@@ -16,7 +16,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
 
   const FediIconInCircleBlurredButton(
     this.iconData, {
-    @required this.onPressed,
+    required this.onPressed,
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,

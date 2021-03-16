@@ -11,8 +11,8 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
   final List<T> items;
 
   FediTabIndicatorBloc({
-    @required this.tabController,
-    @required this.items,
+    required this.tabController,
+    required this.items,
   }) : selectedIndexSubject = BehaviorSubject.seeded(tabController.index) {
     addDisposable(subject: selectedIndexSubject);
 
@@ -33,14 +33,14 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
   BehaviorSubject<int> selectedIndexSubject;
 
   @override
-  T get selectedItem => items[selectedIndex];
+  T get selectedItem => items[selectedIndex!];
 
   @override
   Stream<T> get selectedItemStream =>
       selectedIndexStream.map((selectedIndex) => items[selectedIndex]);
 
   @override
-  int get selectedIndex => selectedIndexSubject.value;
+  int? get selectedIndex => selectedIndexSubject.value;
 
   @override
   Stream<int> get selectedIndexStream => selectedIndexSubject.stream;

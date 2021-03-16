@@ -14,9 +14,9 @@ class MyAccountDomainBlockNetworkOnlyPaginationBloc
   final INetworkOnlyListBloc<DomainBlock> listBloc;
 
   MyAccountDomainBlockNetworkOnlyPaginationBloc({
-    @required this.listBloc,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -27,7 +27,7 @@ class MyAccountDomainBlockNetworkOnlyPaginationBloc
 
   static MyAccountDomainBlockNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       MyAccountDomainBlockNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -43,10 +43,10 @@ class MyAccountDomainBlockNetworkOnlyPaginationBloc
 
   @override
   Future<List<DomainBlock>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required PaginationPage<DomainBlock> olderPage,
-    @required PaginationPage<DomainBlock> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<DomainBlock>? olderPage,
+    required PaginationPage<DomainBlock>? newerPage,
   }) =>
       listBloc.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,

@@ -14,7 +14,7 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<AccountStatusesTab> accountTabs;
 
   const AccountTabTextTabIndicatorItemWidget({
-    @required this.accountTabs,
+    required this.accountTabs,
   });
 
   @override
@@ -38,8 +38,8 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
                 },
                 isTransparent: true,
                 tabToTextMapper:
-                    (BuildContext context, AccountStatusesTab tab) =>
-                        mapTabToTitle(context, tab),
+                    (BuildContext context, AccountStatusesTab? tab) =>
+                        mapTabToTitle(context, tab!),
               ),
             ),
           );
@@ -50,21 +50,14 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
     switch (tab) {
       case AccountStatusesTab.withReplies:
         return S.of(context).app_account_statuses_tab_withReplies;
-        break;
       case AccountStatusesTab.withoutReplies:
         return S.of(context).app_account_statuses_tab_withoutReplies;
-        break;
       case AccountStatusesTab.pinned:
         return S.of(context).app_account_statuses_tab_pinned;
-        break;
       case AccountStatusesTab.media:
         return S.of(context).app_account_statuses_tab_media;
-        break;
       case AccountStatusesTab.favourites:
         return S.of(context).app_account_statuses_tab_favourites;
-        break;
     }
-
-    throw "Invalid tab $tab";
   }
 }

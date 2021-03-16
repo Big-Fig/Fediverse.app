@@ -9,10 +9,10 @@ abstract class IPleromaStatusService implements IPleromaApi {
       Provider.of<IPleromaStatusService>(context, listen: listen);
 
   Future<IPleromaStatus> getStatus({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 
   Future<IPleromaStatusContext> getStatusContext({
-    @required String statusRemoteId,
+    required String statusRemoteId,
   });
 }

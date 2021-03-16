@@ -30,7 +30,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   Stream<String> get deviceTokenStream => _deviceTokenSubject.stream;
 
   @override
-  String get deviceToken => _deviceTokenSubject.value;
+  String? get deviceToken => _deviceTokenSubject.value;
 
   // ignore: close_sinks
   final BehaviorSubject<PushMessage> _messageSubject = BehaviorSubject();
@@ -93,7 +93,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
         Map<String, dynamic> data = message.data;
-        RemoteNotification notification = message.notification;
+        RemoteNotification? notification = message.notification;
 
         _onNewMessage(
           PushMessage(
@@ -112,7 +112,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         Map<String, dynamic> data = message.data;
-        RemoteNotification notification = message.notification;
+        RemoteNotification? notification = message.notification;
 
         _onNewMessage(
           PushMessage(
@@ -160,7 +160,7 @@ PushMessage parseCloudMessage(
 
 // Json serialization accepts Map<String, dynamic>
 // but we have Map<dynamic, dynamic> originally
-Map<String, dynamic> _remapForJson(raw) => (raw as Map)
+Map<String, dynamic>? _remapForJson(raw) => (raw as Map?)
     ?.map((key, value) => MapEntry<String, dynamic>(key.toString(), value));
 
 Map<String, dynamic> _remapToStringObjectMap(Map data) {

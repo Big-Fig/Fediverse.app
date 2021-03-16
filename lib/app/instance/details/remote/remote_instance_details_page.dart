@@ -33,7 +33,7 @@ MaterialPageRoute createRemoteInstanceDetailsPageRoute(Uri remoteInstanceUri) =>
 
 void goToRemoteInstanceDetailsPage(
   BuildContext context, {
-  @required Uri remoteInstanceUri,
+  required Uri remoteInstanceUri,
 }) {
   Navigator.push(
     context,

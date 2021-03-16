@@ -22,9 +22,9 @@ class MediaPickerFileGridWidget
   final WidgetBuilder headerItemBuilder;
 
   MediaPickerFileGridWidget({
-    Key key,
-    ScrollController scrollController,
-    @required this.headerItemBuilder,
+    Key? key,
+    ScrollController? scrollController,
+    required this.headerItemBuilder,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -42,10 +42,10 @@ class MediaPickerFileGridWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IMediaDeviceFileMetadata> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IMediaDeviceFileMetadata> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
     assert(header == null && footer == null,
         "Grid view don't support header or footer");
@@ -80,14 +80,14 @@ class MediaPickerFileGridWidget
   IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,
       IMediaDeviceFileMetadata> retrievePaginationListBloc(
     BuildContext context, {
-    bool listen,
+    required bool listen,
   }) =>
       IMediaDeviceFilePaginationListBloc.of(context, listen: listen);
 }
 
 class _MediaPickerFileGridItemWidget extends StatelessWidget {
   const _MediaPickerFileGridItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

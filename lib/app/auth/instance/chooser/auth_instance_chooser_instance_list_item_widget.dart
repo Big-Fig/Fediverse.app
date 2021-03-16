@@ -49,7 +49,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
 class _AuthInstanceChooserInstanceListItemAccountInfoWidget
     extends StatelessWidget {
   const _AuthInstanceChooserInstanceListItemAccountInfoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,7 +91,7 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
 class _AuthInstanceChooserInstanceListItemUserAtHostWidget
     extends StatelessWidget {
   const _AuthInstanceChooserInstanceListItemUserAtHostWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -109,7 +109,7 @@ class _AuthInstanceChooserInstanceListItemUserAtHostWidget
 class _AuthInstanceChooserInstanceListItemSelectedIconWidget
     extends StatelessWidget {
   const _AuthInstanceChooserInstanceListItemSelectedIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -132,7 +132,7 @@ class _AuthInstanceChooserInstanceListItemSelectedIconWidget
 class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
     extends StatelessWidget {
   const _AuthInstanceChooserInstanceListItemLogoutButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -152,8 +152,8 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
               instanceListItemBloc.instance.userAtHost),
           onAction: (context) async {
             if (instanceListItemBloc.isSelected) {
-              await Navigator.of(context).pop();
-              await Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
               var authHostBloc = AuthHostBloc.createFromContext(
                 context,
                 instanceBaseUri: instanceListItemBloc.instance.uri,
@@ -161,10 +161,11 @@ class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
               await authHostBloc.performAsyncInit();
               await authHostBloc.logout();
             } else {
-              await Navigator.of(context).pop();
-              await Navigator.of(context).pop();
-              await instanceChooserBloc
-                  .removeInstance(instanceListItemBloc.instance);
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              await instanceChooserBloc.removeInstance(
+                instanceListItemBloc.instance,
+              );
             }
           },
         ).show(context);

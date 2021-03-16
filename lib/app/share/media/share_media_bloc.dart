@@ -6,5 +6,5 @@ abstract class IShareMediaBloc {
   static IShareMediaBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IShareMediaBloc>(context, listen: listen);
 
-  IPleromaMediaAttachment get mediaAttachment;
+  IPleromaMediaAttachment? get mediaAttachment;
 }

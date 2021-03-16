@@ -8,7 +8,7 @@ abstract class ICameraMediaService extends IDisposable {
   static ICameraMediaService of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICameraMediaService>(context, listen: listen);
 
-  Future<File> pickImageFromCamera();
+  Future<File?> pickImageFromCamera();
 
-  Future<File> pickVideoFromCamera();
+  Future<File?> pickVideoFromCamera();
 }

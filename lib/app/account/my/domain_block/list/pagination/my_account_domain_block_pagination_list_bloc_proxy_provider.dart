@@ -9,7 +9,7 @@ class MyAccountDomainBlockPaginationListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  MyAccountDomainBlockPaginationListBlocProxyProvider({@required this.child});
+  MyAccountDomainBlockPaginationListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

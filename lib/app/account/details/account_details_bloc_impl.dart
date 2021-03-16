@@ -20,23 +20,23 @@ class AccountDetailsBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
   @override
-  NestedScrollController nestedScrollController;
+  NestedScrollController? nestedScrollController;
 
   @override
-  INestedScrollControllerBloc nestedScrollControllerBloc;
+  INestedScrollControllerBloc? nestedScrollControllerBloc;
 
   @override
-  IFediNestedScrollViewBloc fediNestedScrollViewBloc;
+  IFediNestedScrollViewBloc? fediNestedScrollViewBloc;
 
   AccountDetailsBloc({
-    @required this.currentAuthInstanceBloc,
+    required this.currentAuthInstanceBloc,
   }) : tabs = <AccountStatusesTab>[
           AccountStatusesTab.withoutReplies,
           AccountStatusesTab.pinned,
           AccountStatusesTab.media,
           AccountStatusesTab.withReplies,
           if (currentAuthInstanceBloc
-              .currentInstance.isAccountFavouritesFeatureSupported)
+              .currentInstance!.isAccountFavouritesFeatureSupported!)
             AccountStatusesTab.favourites,
         ] {
     nestedScrollController = NestedScrollController(centerScroll: false);
@@ -50,7 +50,7 @@ class AccountDetailsBloc extends DisposableOwner
     addDisposable(disposable: nestedScrollControllerBloc);
     addDisposable(custom: () {
       try {
-        nestedScrollController.dispose();
+        nestedScrollController!.dispose();
       } catch (e) {
         _logger.warning(() => "error during nestedScrollController.dispose()");
       }
@@ -59,6 +59,6 @@ class AccountDetailsBloc extends DisposableOwner
 
   @override
   void scrollToTop() {
-    nestedScrollControllerBloc.scrollToTop();
+    nestedScrollControllerBloc!.scrollToTop();
   }
 }

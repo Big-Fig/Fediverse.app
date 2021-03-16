@@ -8,14 +8,14 @@ class ListValueFormFieldBlocProxyProvider<T> extends StatelessWidget {
   final Widget child;
 
   ListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) =>
-      ProxyProvider<IListValueFormFieldBloc<T>, IValueFormFieldBloc<List<T>>>(
+      ProxyProvider<IListValueFormFieldBloc<T>, IValueFormFieldBloc<List<T>?>>(
         update: (context, value, previous) => value,
-        child: ValueFormFieldBlocProxyProvider<List<T>>(
+        child: ValueFormFieldBlocProxyProvider<List<T>?>(
           child: child,
         ),
       );

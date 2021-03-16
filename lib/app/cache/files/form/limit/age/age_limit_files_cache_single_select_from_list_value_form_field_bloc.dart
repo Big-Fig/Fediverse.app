@@ -1,6 +1,6 @@
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
 
 abstract class IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
     implements
-        ISingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType> {}
+        ISingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType?> {}

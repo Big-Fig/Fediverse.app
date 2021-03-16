@@ -6,7 +6,7 @@ IFilter mapRemoteFilterToLocalFilter(
   IPleromaFilter remoteFilter,
 ) =>
     DbFilterPopulatedWrapper(
-      DbFilterPopulated(
+      dbFilterPopulated: DbFilterPopulated(
         dbFilter: mapRemoteFilterToDbFilter(
           remoteFilter,
         ),

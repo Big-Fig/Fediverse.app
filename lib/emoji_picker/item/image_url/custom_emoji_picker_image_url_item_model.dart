@@ -20,8 +20,8 @@ class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
   @JsonKey(name: "image_url")
   final String imageUrl;
   CustomEmojiPickerImageUrlItem({
-    this.imageUrl,
-    this.name,
+    required this.imageUrl,
+    required this.name,
   });
 
   @override

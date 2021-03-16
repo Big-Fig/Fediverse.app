@@ -15,12 +15,12 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger("remote_account_bloc_impl.dart");
 
 class RemoteAccountBloc extends AccountBloc {
-  final Uri instanceUri;
+  final Uri? instanceUri;
 
   RemoteAccountBloc({
-    @required IPleromaAccountService pleromaAccountService,
-    @required IAccount account,
-    @required this.instanceUri,
+    required IPleromaAccountService? pleromaAccountService,
+    required IAccount account,
+    required this.instanceUri,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) : super(
@@ -32,7 +32,7 @@ class RemoteAccountBloc extends AccountBloc {
 
   static RemoteAccountBloc createFromContext(
     BuildContext context, {
-    @required IAccount account,
+    required IAccount account,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) {
@@ -56,9 +56,9 @@ class RemoteAccountBloc extends AccountBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IAccount account,
-    @required bool isNeedRefreshFromNetworkOnInit,
-    @required Widget child,
+    required IAccount account,
+    required bool isNeedRefreshFromNetworkOnInit,
+    required Widget child,
   }) {
     return DisposableProvider<IAccountBloc>(
       create: (context) => RemoteAccountBloc.createFromContext(
@@ -74,12 +74,12 @@ class RemoteAccountBloc extends AccountBloc {
   InstanceLocation get instanceLocation => InstanceLocation.remote;
 
   @override
-  Uri get remoteInstanceUriOrNull => instanceUri;
+  Uri? get remoteInstanceUriOrNull => instanceUri;
 
   @override
   Future actualInit({
-    @required IAccount account,
-    @required bool isNeedRefreshFromNetworkOnInit,
+    required IAccount account,
+    required bool isNeedRefreshFromNetworkOnInit,
   }) async {
     if (isNeedRefreshFromNetworkOnInit == true) {
       await refreshFromNetwork(isNeedPreFetchRelationship: false);
@@ -87,28 +87,22 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork({
-    @required bool isNeedPreFetchRelationship,
+  Future refreshFromNetwork({
+    required bool isNeedPreFetchRelationship,
   }) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     var remoteAccount = await loadRemoteAccount();
 
-    if (remoteAccount != null) {
-      accountSubject.add(
-        mapRemoteAccountToLocalAccount(
-          remoteAccount,
-        ),
-      );
-    }
-
-    return remoteAccount != null;
+    accountSubject.add(
+      remoteAccount.toDbAccountWrapper(),
+    );
   }
 
   @override
   Future<IPleromaAccountRelationship> mute({
-    @required bool notifications,
-    @required Duration duration,
+    required bool notifications,
+    required Duration? duration,
   }) {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
@@ -159,8 +153,8 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  IPleromaAccountRelationship get relationship => null;
+  IPleromaAccountRelationship? get relationship => null;
 
   @override
-  Stream<IPleromaAccountRelationship> get relationshipStream => null;
+  Stream<IPleromaAccountRelationship>? get relationshipStream => null;
 }

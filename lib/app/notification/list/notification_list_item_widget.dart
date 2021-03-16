@@ -42,7 +42,7 @@ class NotificationListItemWidget extends StatelessWidget {
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
     var bodyWidget = const _NotificationListItemBodyWidget();
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: notificationBloc.dismissedStream,
       builder: (context, snapshot) {
         var dismissed = snapshot.data;
@@ -65,7 +65,7 @@ class NotificationListItemWidget extends StatelessWidget {
 
 class _NotificationListItemBodyDismissedWidget extends StatelessWidget {
   const _NotificationListItemBodyDismissedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -86,7 +86,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
     return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
       update: (context, value, previous) => LocalAccountBloc.createFromContext(
         context,
-        account: value.account,
+        account: value.account!,
         isNeedWatchWebSocketsEvents: false,
         isNeedRefreshFromNetworkOnInit: false,
         isNeedWatchLocalRepositoryForUpdates: false,
@@ -117,7 +117,7 @@ class _NotificationListItemBodyWidget extends StatelessWidget {
 
 class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
   const _NotificationListItemBodyDismissActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -136,7 +136,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
 
 class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
   const _NotificationListItemBodyMarkAsReadActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -155,14 +155,14 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
 
 class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
   const _NotificationListItemBodySlidableChildWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: notificationBloc.unreadStream,
       builder: (context, snapshot) {
         var unread = snapshot.data ?? true;
@@ -178,7 +178,7 @@ class _NotificationListItemBodySlidableChildWidget extends StatelessWidget {
 class _NotificationListItemBodySlidableChildContentWidget
     extends StatelessWidget {
   const _NotificationListItemBodySlidableChildContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -208,7 +208,7 @@ class _NotificationListItemBodySlidableChildContentWidget
 
 class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   const _NotificationListItemBodyMainAreaWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -241,7 +241,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    await notificationBloc.notification.goToRelatedPage(context);
+    await notificationBloc.notification!.goToRelatedPage(context);
   }
 
   void _onNotificationLongPress(BuildContext context) {
@@ -279,7 +279,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
 
 class _NotificationListItemContentWidget extends StatelessWidget {
   const _NotificationListItemContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -300,7 +300,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.mention:
         rawText = S.of(context).app_notification_header_mention(
-              _extractStatusRawContent(notificationBloc),
+              _extractStatusRawContent(notificationBloc)!,
             );
         break;
       case PleromaNotificationType.poll:
@@ -314,12 +314,12 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
         rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
-              notificationBloc.notification.emoji,
+              notificationBloc.notification!.emoji!,
             );
         break;
       case PleromaNotificationType.pleromaChatMention:
         rawText = S.of(context).app_notification_header_pleromaChatMention(
-              _extractStatusRawContent(notificationBloc),
+              _extractStatusRawContent(notificationBloc)!,
             );
         break;
       case PleromaNotificationType.pleromaReport:
@@ -329,17 +329,17 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.unknown:
         var isHaveStatus = notificationBloc.status != null;
-        String statusText;
+        String? statusText;
         if (isHaveStatus) {
           statusText = _extractStatusRawContent(notificationBloc);
         } else {
           statusText = "";
         }
 
-        var isHaveEmoji = notificationBloc.notification.emoji != null;
-        String emojiText;
+        var isHaveEmoji = notificationBloc.notification!.emoji != null;
+        String? emojiText;
         if (isHaveEmoji) {
-          emojiText = notificationBloc.notification.emoji;
+          emojiText = notificationBloc.notification!.emoji;
         } else {
           emojiText = "";
         }
@@ -381,16 +381,18 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     );
   }
 
-  String _extractStatusRawContent(INotificationBloc notificationBloc) {
+  String? _extractStatusRawContent(INotificationBloc notificationBloc) {
     var content = notificationBloc.status?.content;
 
     if (content != null) {
-      content = HtmlTextHelper.extractRawStringFromHtmlString(content);
+      content = content.extractRawStringFromHtmlString();
       var mediaAttachments =
           notificationBloc.notification.status?.mediaAttachments;
       if (content.isEmpty && mediaAttachments?.isNotEmpty == true) {
-        content = mediaAttachments
-            .map((mediaAttachment) => mediaAttachment.description)
+        content = mediaAttachments!
+            .map(
+              (mediaAttachment) => mediaAttachment.description,
+            )
             .join(", ");
       }
     }
@@ -401,7 +403,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
 
 class _NotificationListItemAccountDisplayNameWidget extends StatelessWidget {
   const _NotificationListItemAccountDisplayNameWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -414,12 +416,12 @@ class _NotificationListItemAccountDisplayNameWidget extends StatelessWidget {
 
 class _NotificationListItemIconWidget extends StatelessWidget {
   const _NotificationListItemIconWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    IconData iconData;
+    IconData? iconData;
     var notificationBloc = INotificationBloc.of(context);
     Color iconColor = IFediUiColorTheme.of(context).primary;
 
@@ -483,7 +485,7 @@ class _NotificationListItemIconWidget extends StatelessWidget {
 
 class _NotificationListItemAvatarWidget extends StatelessWidget {
   const _NotificationListItemAvatarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -506,18 +508,18 @@ class _NotificationListItemAvatarWidget extends StatelessWidget {
 
 class _NotificationListItemCreatedAtWidget extends StatelessWidget {
   const _NotificationListItemCreatedAtWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: notificationBloc.unreadStream,
         initialData: notificationBloc.unread,
         builder: (context, snapshot) {
-          var unread = snapshot.data;
+          var unread = snapshot.data!;
           return NotificationCreatedAtWidget(
             textStyle: unread
                 ? fediUiTextTheme.smallShortPrimaryDark

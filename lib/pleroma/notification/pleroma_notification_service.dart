@@ -53,27 +53,27 @@ abstract class IPleromaNotificationService implements IPleromaAuthApi {
   ];
 
   Future<List<IPleromaNotification>> getNotifications({
-    IPleromaPaginationRequest pagination,
-    List<PleromaNotificationType> excludeTypes,
-    String onlyFromAccountRemoteId,
-    List<PleromaNotificationType> includeTypes,
-    List<PleromaVisibility> excludeVisibilities,
+    IPleromaPaginationRequest? pagination,
+    List<PleromaNotificationType>? excludeTypes,
+    String? onlyFromAccountRemoteId,
+    List<PleromaNotificationType>? includeTypes,
+    List<PleromaVisibility>? excludeVisibilities,
   });
 
   Future<IPleromaNotification> getNotification({
-    @required String notificationRemoteId,
+    required String notificationRemoteId,
   });
 
   Future<IPleromaNotification> markAsReadSingle({
-    @required String notificationRemoteId,
+    required String notificationRemoteId,
   });
 
   Future<List<IPleromaNotification>> markAsReadList({
-    @required String maxNotificationRemoteId,
+    required String maxNotificationRemoteId,
   });
 
   Future dismissNotification({
-    @required String notificationRemoteId,
+    required String notificationRemoteId,
   });
 
   Future dismissAll();

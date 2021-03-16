@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 abstract class MediaSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<MediaSettings>
+    extends ObjectLocalPreferenceBloc<MediaSettings?>
     implements IMediaSettingsLocalPreferencesBloc {
   MediaSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService,

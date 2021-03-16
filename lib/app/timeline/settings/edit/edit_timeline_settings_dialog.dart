@@ -19,14 +19,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditTimelineSettingsDialog({
-  @required BuildContext context,
-  @required Timeline timeline,
+  required BuildContext context,
+  required Timeline timeline,
 }) {
   showSettingsDialog(
     context: context,
     title: S.of(context).app_timeline_settings_title,
     subTitle: S.of(context).app_timeline_settings_content(
-          timeline.calculateLabel(context),
+          timeline.calculateLabel(context)!,
         ),
     child: Provider<Timeline>.value(
       value: timeline,
@@ -54,7 +54,7 @@ void showEditTimelineSettingsDialog({
                   authInstance: ICurrentAuthInstanceBloc.of(
                     context,
                     listen: false,
-                  ).currentInstance,
+                  ).currentInstance!,
                   settingsBloc: timelineSettingsBloc,
                   webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
                     context,
@@ -78,7 +78,7 @@ TimelineLocalPreferencesBloc _createTimelinePreferencesBloc(
   var localPreferencesService = ILocalPreferencesService.of(context);
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance;
+  var currentInstance = currentAuthInstanceBloc.currentInstance!;
   return TimelineLocalPreferencesBloc.byId(
     localPreferencesService,
     userAtHost: currentInstance.userAtHost,

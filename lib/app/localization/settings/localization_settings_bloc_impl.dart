@@ -3,7 +3,6 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:flutter/widgets.dart';
 
 class LocalizationSettingsBloc extends DisposableOwner
     implements ILocalizationSettingsBloc {
@@ -11,23 +10,26 @@ class LocalizationSettingsBloc extends DisposableOwner
       localizationSettingsLocalPreferencesBloc;
 
   LocalizationSettingsBloc({
-    @required this.localizationSettingsLocalPreferencesBloc,
+    required this.localizationSettingsLocalPreferencesBloc,
   });
 
   @override
-  LocalizationSettings get settingsData =>
+  LocalizationSettings? get settingsData =>
       localizationSettingsLocalPreferencesBloc.value;
 
   @override
-  Stream<LocalizationSettings> get settingsDataStream =>
+  Stream<LocalizationSettings?> get settingsDataStream =>
       localizationSettingsLocalPreferencesBloc.stream;
 
   @override
-  LocalizationLocale get localizationLocale => settingsData.localizationLocale;
+  LocalizationLocale? get localizationLocale =>
+      settingsData?.localizationLocale;
 
   @override
-  Stream<LocalizationLocale> get localizationLocaleStream =>
-      settingsDataStream.map((settings) => settings.localizationLocale);
+  Stream<LocalizationLocale?> get localizationLocaleStream =>
+      settingsDataStream.map(
+        (settings) => settings?.localizationLocale,
+      );
 
   @override
   void changeLocalizationLocale(LocalizationLocale value) {
@@ -39,7 +41,7 @@ class LocalizationSettingsBloc extends DisposableOwner
   }
 
   @override
-  Future updateSettings(LocalizationSettings newSettings) async {
+  Future updateSettings(LocalizationSettings? newSettings) async {
     await localizationSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

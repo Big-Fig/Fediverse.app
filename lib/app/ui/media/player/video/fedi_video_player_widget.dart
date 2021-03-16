@@ -38,7 +38,7 @@ class FediVideoPlayerWidget extends StatelessWidget {
 
 class _FediVideoPlayerErrorWidget extends StatelessWidget {
   const _FediVideoPlayerErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class _FediVideoPlayerErrorWidget extends StatelessWidget {
 
 class _FediVideoPlayerErrorBodyWidget extends StatelessWidget {
   const _FediVideoPlayerErrorBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -83,7 +83,7 @@ class _FediVideoPlayerErrorBodyWidget extends StatelessWidget {
 
 class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
   const _FediVideoPlayerErrorDetailsButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -106,7 +106,7 @@ class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
 
 class _FediVideoPlayerErrorDescWidget extends StatelessWidget {
   const _FediVideoPlayerErrorDescWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -123,7 +123,7 @@ class _FediVideoPlayerErrorDescWidget extends StatelessWidget {
 
 class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {
   const _FediVideoPlayerErrorReloadButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -141,7 +141,7 @@ class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {
 
 class _FediVideoPlayerBodyWidget extends StatelessWidget {
   const _FediVideoPlayerBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -174,7 +174,7 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
 
 class _FediVideoPlayerInitializedWidget extends StatelessWidget {
   const _FediVideoPlayerInitializedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -192,7 +192,7 @@ class _FediVideoPlayerInitializedWidget extends StatelessWidget {
 
 class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
   const _FediVideoPlayerNotInitializedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -207,7 +207,7 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
             stream: mediaPlayerBloc.isInitializingStream,
             initialData: mediaPlayerBloc.isInitializing,
             builder: (context, snapshot) {
-              var isInitializing = snapshot.data;
+              var isInitializing = snapshot.data!;
 
               if (isInitializing) {
                 return const SizedBox.shrink();
@@ -231,7 +231,7 @@ class _FediVideoPlayerNotInitializedWidget extends StatelessWidget {
 
 class _FediVideoPlayerControlsWidget extends StatelessWidget {
   const _FediVideoPlayerControlsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -242,7 +242,7 @@ class _FediVideoPlayerControlsWidget extends StatelessWidget {
         stream: videoMediaPlayerBloc.isControlsVisibleStream,
         initialData: videoMediaPlayerBloc.isControlsVisible,
         builder: (context, snapshot) {
-          var isControlsVisible = snapshot.data;
+          var isControlsVisible = snapshot.data!;
           if (isControlsVisible) {
             return const Positioned(
               bottom: 0.0,
@@ -259,7 +259,7 @@ class _FediVideoPlayerControlsWidget extends StatelessWidget {
 
 class _FediVideoPlayerControlsBodyWidget extends StatelessWidget {
   const _FediVideoPlayerControlsBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

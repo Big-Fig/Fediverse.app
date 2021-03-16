@@ -18,7 +18,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   final Map<Uri, IWebSocketsChannel> urlToChannel = {};
 
   WebSocketsService({
-    @required this.configBloc,
+    required this.configBloc,
   }) {
     addDisposable(
       disposable: CustomDisposable(
@@ -33,14 +33,16 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   @override
   IWebSocketsChannel<T>
       getOrCreateWebSocketsChannel<T extends WebSocketsEvent>({
-    @required IWebSocketsChannelConfig<T> config,
+    required IWebSocketsChannelConfig<T> config,
   }) {
     var url = config.calculateWebSocketsUrl();
     if (!urlToChannel.containsKey(url)) {
       urlToChannel[url] = createChannel<T>(config);
     }
 
-    return urlToChannel[url];
+
+    // todo: think about cast
+    return urlToChannel[url]! as IWebSocketsChannel<T>;
   }
 
   IWebSocketsChannel createChannel<T extends WebSocketsEvent>(

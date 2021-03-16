@@ -10,11 +10,11 @@ class FediPlayerControlDurationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var duration = Provider.of<Duration>(context);
+    var duration = Provider.of<Duration?>(context);
     int totalMinutes;
     var durationExist = duration != null;
     if (durationExist) {
-      totalMinutes = duration.inMinutes +
+      totalMinutes = duration!.inMinutes +
           duration.inHours * 60 +
           duration.inDays * 24 * 60;
     } else {

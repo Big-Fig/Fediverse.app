@@ -6,13 +6,15 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
-import 'package:fedi/app/cache/database/database_cache_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/instance/instance_database_cache_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/cache/files/files_cache_service_impl.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_bloc.dart';
@@ -43,6 +45,7 @@ import 'package:fedi/app/chat/settings/chat_settings_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -175,8 +178,6 @@ import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service.dart';
 import 'package:fedi/web_sockets/service/web_sockets_service_impl.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("current_auth_instance_context_bloc_imp.dart");
@@ -184,13 +185,13 @@ var _logger = Logger("current_auth_instance_context_bloc_imp.dart");
 class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     implements ICurrentAuthInstanceContextBloc {
   final AuthInstance currentInstance;
-  final AppContextBloc appContextBloc;
+  final IAppContextBloc appContextBloc;
 
   bool get isPleromaInstance => currentInstance.isPleroma;
 
   CurrentAuthInstanceContextBloc({
-    @required this.currentInstance,
-    @required this.appContextBloc,
+    required this.currentInstance,
+    required this.appContextBloc,
   });
 
   @override
@@ -203,7 +204,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     IFcmPushService fcmPushService = appContextBloc.get();
     IPushHandlerBloc pushHandlerBloc = appContextBloc.get();
 
-    var globalProviderService = this;
+    CurrentAuthInstanceContextBloc globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
 
@@ -326,7 +327,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaAuthRestService = PleromaAuthRestService(
       restService: restService,
       connectionService: connectionService,
-      accessToken: currentInstance.token.accessToken,
+      accessToken: currentInstance.token!.accessToken,
       isPleroma: isPleromaInstance,
     );
     addDisposable(disposable: pleromaAuthRestService);
@@ -569,7 +570,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     if (timelinesHomeTabStorageLocalPreferencesBloc
-            .value?.timelineIds?.isNotEmpty !=
+            .value?.timelineIds.isNotEmpty !=
         true) {
       var remoteLists = await pleromaListService.getLists();
 
@@ -847,7 +848,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
-        accessToken: currentInstance.token.accessToken,
+        accessToken: currentInstance.token!.accessToken,
         baseUri: currentInstance.uri,
         connectionService: connectionService);
 
@@ -910,18 +911,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var filesCacheService = FilesCacheService(
       connectionService: connectionService,
       key: userAtHost,
-      stalePeriod: filesCacheSettingsBloc.filesCacheAgeLimitType?.toDuration(),
+      stalePeriod:
+          filesCacheSettingsBloc.filesCacheAgeLimitType?.toDurationOrNull(),
       maxNrOfCacheObjects:
-          filesCacheSettingsBloc.filesCacheSizeLimitCountType?.toCount(),
+          filesCacheSettingsBloc.filesCacheSizeLimitCountType?.toCountOrNull(),
     );
     addDisposable(disposable: filesCacheService);
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
     await moorDatabaseService.clearByLimits(
-      ageLimit: databaseCacheSettingsBloc.ageLimit?.toDuration(),
+      ageLimit: databaseCacheSettingsBloc.ageLimit?.toDurationOrNull(),
       entriesCountByTypeLimit:
-          databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCount(),
+          databaseCacheSettingsBloc.entriesCountByTypeLimit?.toCountOrNull(),
     );
   }
 }

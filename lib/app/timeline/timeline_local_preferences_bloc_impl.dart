@@ -11,18 +11,17 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 
-class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
+class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline?>
     implements ITimelineLocalPreferencesBloc {
   @override
-  final Timeline defaultValue;
+  final Timeline? defaultValue;
 
   TimelineLocalPreferencesBloc.byId(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
-    @required String timelineId,
-    @required this.defaultValue,
+    required String userAtHost,
+    required String? timelineId,
+    required this.defaultValue,
   }) : super(
           preferencesService,
           "$userAtHost.timeline.$timelineId",
@@ -32,8 +31,8 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
 
   TimelineLocalPreferencesBloc.customList(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
-    @required ICustomList customList,
+    required String userAtHost,
+    required ICustomList customList,
   }) : this.byId(
           preferencesService,
           userAtHost: userAtHost,
@@ -43,7 +42,7 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
             label: customList.title,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultCustomListSettings(
-              onlyInRemoteList: mapLocalCustomListToRemoteList(customList),
+              onlyInRemoteList: customList.toPleromaList(),
             ),
             typeString: TimelineType.customList.toJsonValue(),
           ),
@@ -51,8 +50,8 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
 
   TimelineLocalPreferencesBloc.hashtag(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
-    @required IHashtag hashtag,
+    required String userAtHost,
+    required IHashtag hashtag,
   }) : this.byId(
           preferencesService,
           userAtHost: userAtHost,
@@ -70,8 +69,8 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
 
   TimelineLocalPreferencesBloc.account(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
-    @required IAccount account,
+    required String userAtHost,
+    required IAccount account,
   }) : this.byId(
           preferencesService,
           userAtHost: userAtHost,
@@ -81,7 +80,8 @@ class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
             label: account.acct,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultAccountSettings(
-                onlyFromRemoteAccount: mapLocalAccountToRemoteAccount(account)),
+              onlyFromRemoteAccount: account.toPleromaAccount(),
+            ),
             typeString: TimelineType.account.toJsonValue(),
           ),
         );

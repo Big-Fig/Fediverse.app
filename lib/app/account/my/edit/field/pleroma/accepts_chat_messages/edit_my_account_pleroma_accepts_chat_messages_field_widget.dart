@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class EditMyAccountPleromaAcceptsChatMessagesFieldWidget
     extends StatelessWidget {
   const EditMyAccountPleromaAcceptsChatMessagesFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

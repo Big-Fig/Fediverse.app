@@ -9,15 +9,15 @@ abstract class IDatabaseService implements IDisposable {
   Future clearAll();
 
   Future clearByLimits({
-    @required Duration ageLimit,
-    @required int entriesCountByTypeLimit,
+    required Duration? ageLimit,
+    required int? entriesCountByTypeLimit,
   });
 
   Future delete();
 
   Future<int> calculateSizeInBytes();
 
-  Future<DateTime> calculateOldestEntryAge();
+  Future<DateTime?> calculateOldestEntryAge();
 
   Future<int> calculateMaxCountByType();
 }

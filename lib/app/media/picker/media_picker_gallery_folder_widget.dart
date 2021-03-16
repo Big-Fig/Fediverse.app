@@ -16,8 +16,8 @@ class FileGalleryFolderWidget extends StatelessWidget {
   final PermissionButtonBuilder permissionButtonBuilder;
 
   FileGalleryFolderWidget({
-    @required this.headerItemBuilder,
-    @required this.permissionButtonBuilder,
+    required this.headerItemBuilder,
+    required this.permissionButtonBuilder,
   });
 
   @override

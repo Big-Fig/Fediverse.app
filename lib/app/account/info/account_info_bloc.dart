@@ -10,5 +10,5 @@ abstract class IAccountInfoBloc implements IDisposable {
 
 
  Brightness get brightness;
- OnClickUiCallback get onStatusesTapCallback;
+ OnClickUiCallback? get onStatusesTapCallback;
 }

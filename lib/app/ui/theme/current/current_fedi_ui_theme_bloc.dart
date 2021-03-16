@@ -8,13 +8,13 @@ abstract class ICurrentFediUiThemeBloc implements IDisposable {
           {bool listen = true}) =>
       Provider.of<ICurrentFediUiThemeBloc>(context, listen: listen);
 
-  IFediUiTheme get adaptiveBrightnessCurrentTheme;
+  IFediUiTheme? get adaptiveBrightnessCurrentTheme;
 
-  Stream<IFediUiTheme> get adaptiveBrightnessCurrentThemeStream;
+  Stream<IFediUiTheme?> get adaptiveBrightnessCurrentThemeStream;
 
-  IFediUiTheme get currentTheme;
+  IFediUiTheme? get currentTheme;
 
-  Stream<IFediUiTheme> get currentThemeStream;
+  Stream<IFediUiTheme?> get currentThemeStream;
 
   Future changeTheme(IFediUiTheme theme);
 }

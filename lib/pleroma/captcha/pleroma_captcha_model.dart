@@ -1,42 +1,41 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_captcha_model.g.dart';
 
 abstract class IPleromaCaptcha {
-  String get answerData;
+  String? get answerData;
 
-  int get secondsValid;
+  int? get secondsValid;
 
-  String get token;
+  String? get token;
 
-  String get type;
+  String? get type;
 
   PleromaCaptchaType get pleromaType;
 
-  String get url;
+  String? get url;
 }
 
 @JsonSerializable()
 class PleromaCaptcha implements IPleromaCaptcha {
   @override
   @JsonKey(name: "answer_data")
-  final String answerData;
+  final String? answerData;
 
   @override
   @JsonKey(name: "seconds_valid")
-  final int secondsValid;
+  final int? secondsValid;
 
   @override
-  final String token;
+  final String? token;
 
   @override
-  final String type;
+  final String? type;
 
   @override
-  final String url;
+  final String? url;
 
   @override
   PleromaCaptchaType get pleromaType {
@@ -53,11 +52,11 @@ class PleromaCaptcha implements IPleromaCaptcha {
   }
 
   PleromaCaptcha({
-    @required this.answerData,
-    @required this.secondsValid,
-    @required this.token,
-    @required this.type,
-    @required this.url,
+    required this.answerData,
+    required this.secondsValid,
+    required this.token,
+    required this.type,
+    required this.url,
   });
 
   @override

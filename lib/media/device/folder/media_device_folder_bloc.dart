@@ -12,9 +12,9 @@ abstract class IMediaDeviceFolderBloc
       Provider.of<IMediaDeviceFolderBloc>(context, listen: listen);
 
   Future<List<IMediaDeviceFileMetadata>> loadPagedFiles({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required IMediaDeviceFileMetadata olderThan,
-    @required IMediaDeviceFileMetadata newerThan,
+    required int? pageIndex,
+    required int? itemsCountPerPage,
+    required IMediaDeviceFileMetadata? olderThan,
+    required IMediaDeviceFileMetadata? newerThan,
   });
 }

@@ -18,7 +18,7 @@ class PostMessageWidget extends StatelessWidget {
   final String hintText;
 
   const PostMessageWidget({
-    @required this.hintText,
+    required this.hintText,
   });
 
   @override
@@ -55,7 +55,7 @@ class PostMessageWidget extends StatelessWidget {
 
 class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
   const _PostMessageMediaAttachmentsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -66,9 +66,9 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
           postMessageBloc.isAnySelectedActionVisibleStream,
           postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
           (bool isAnySelectedActionVisible,
-              List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
+              List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs) {
         isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
-        var mediaBlocs = mediaAttachmentBlocs.where((bloc) => bloc.isMedia);
+        var mediaBlocs = mediaAttachmentBlocs!.where((bloc) => bloc.isMedia);
 
         var nonMediaBlocs = mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
 
@@ -124,8 +124,8 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
 
 class _PostMessageTextContentWidget extends StatelessWidget {
   const _PostMessageTextContentWidget({
-    Key key,
-    @required this.hintText,
+    Key? key,
+    required this.hintText,
   }) : super(key: key);
 
   final String hintText;
@@ -166,7 +166,7 @@ class _PostMessageTextContentWidget extends StatelessWidget {
 
 class _PostMessageMaximizeActionWidget extends StatelessWidget {
   const _PostMessageMaximizeActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

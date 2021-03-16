@@ -10,7 +10,7 @@ class FediPackageInfoHelper {
   static const prodAppAppleId = "1478806281";
   static const devAppAppleId = "1514926758";
 
-  static PackageInfo _packageInfo;
+  static PackageInfo? _packageInfo;
 
   static Future<String> getAppName() async {
     if (await isProdPackageId()) {
@@ -25,7 +25,7 @@ class FediPackageInfoHelper {
 
   static Future<String> getPackageId() async {
     await _calculatePackageInfo();
-    return _packageInfo.packageName;
+    return _packageInfo!.packageName;
   }
 
   static Future<String> getAppAppleId() async {

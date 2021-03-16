@@ -25,8 +25,8 @@ class EditMyAccountPleromaBackgroundFieldWidget extends StatelessWidget {
   final double backgroundHeight;
 
   const EditMyAccountPleromaBackgroundFieldWidget({
-    Key key,
-    @required this.backgroundHeight,
+    Key? key,
+    required this.backgroundHeight,
   }) : super(key: key);
 
   @override
@@ -48,8 +48,8 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
   final MediaImageSource imageSource;
 
   const EditMyAccountPleromaBackgroundFieldImageWidget({
-    Key key,
-    @required this.imageSource,
+    Key? key,
+    required this.imageSource,
   }) : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
       );
     } else if (imageSource?.file != null) {
       return Image.file(
-        imageSource.file,
+        imageSource.file!,
         fit: BoxFit.cover,
       );
     } else {
@@ -82,14 +82,14 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
   final double backgroundHeight;
 
   const EditMyAccountPleromaBackgroundFieldValueWidget({
-    Key key,
-    @required this.backgroundHeight,
+    Key? key,
+    required this.backgroundHeight,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
-    return StreamBuilder<MediaImageSource>(
+    return StreamBuilder<MediaImageSource?>(
       stream: editMyAccountBloc.backgroundField.imageSourceStream,
       builder: (context, snapshot) {
         var imageSource = snapshot.data;
@@ -134,7 +134,7 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
 
 class _EditMyAccountPleromaBackgroundAddButtonWidget extends StatelessWidget {
   const _EditMyAccountPleromaBackgroundAddButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -152,7 +152,7 @@ class _EditMyAccountPleromaBackgroundAddButtonWidget extends StatelessWidget {
 
 class EditMyAccountPleromaBackgroundLabelWidget extends StatelessWidget {
   const EditMyAccountPleromaBackgroundLabelWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -166,7 +166,7 @@ class EditMyAccountPleromaBackgroundLabelWidget extends StatelessWidget {
 class EditMyAccountPleromaBackgroundFieldEditButtonWidget
     extends StatelessWidget {
   const EditMyAccountPleromaBackgroundFieldEditButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -191,12 +191,15 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
             mediaDeviceFile,
           );
 
-          try {
-            await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
-          } catch (e, stackTrace) {
-            _logger.warning(
-                "startChoosingFileToUploadBackground error", e, stackTrace);
-            showMediaAttachmentFailedNotificationOverlay(context, e);
+          if (filePickerFile != null) {
+            try {
+              await editMyAccountBloc.backgroundField
+                  .pickNewFile(filePickerFile);
+            } catch (e, stackTrace) {
+              _logger.warning(
+                  "startChoosingFileToUploadBackground error", e, stackTrace);
+              showMediaAttachmentFailedNotificationOverlay(context, e);
+            }
           }
         }
       },
@@ -207,7 +210,7 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
 class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
     extends StatelessWidget {
   const EditMyAccountPleromaBackgroundFieldDeleteButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -239,12 +242,14 @@ void startChoosingFileToUploadBackground(
       mediaDeviceFile,
     );
 
-    try {
-      await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
-    } catch (e, stackTrace) {
-      _logger.warning(
-          "startChoosingFileToUploadBackground error", e, stackTrace);
-      showMediaAttachmentFailedNotificationOverlay(context, e);
+    if (filePickerFile != null) {
+      try {
+        await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
+      } catch (e, stackTrace) {
+        _logger.warning(
+            "startChoosingFileToUploadBackground error", e, stackTrace);
+        showMediaAttachmentFailedNotificationOverlay(context, e);
+      }
     }
   }
 }

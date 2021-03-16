@@ -8,11 +8,11 @@ class AccountInfoBloc extends DisposableOwner implements IAccountInfoBloc {
   @override
   final Brightness brightness;
   @override
-  final OnClickUiCallback onStatusesTapCallback;
+  final OnClickUiCallback? onStatusesTapCallback;
 
   AccountInfoBloc({
-    @required this.brightness,
-    @required this.onStatusesTapCallback,
+    required this.brightness,
+    required this.onStatusesTapCallback,
   });
 
   @override

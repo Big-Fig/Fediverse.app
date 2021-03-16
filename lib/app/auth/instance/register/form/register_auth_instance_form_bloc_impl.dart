@@ -21,7 +21,7 @@ import 'package:flutter/widgets.dart';
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
   @override
-  IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
+  late IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
   final ILocalizationSettingsBloc localizationSettingsBloc;
 
@@ -29,13 +29,13 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final Uri instanceBaseUri;
 
   @override
-  final bool approvalRequired;
+  final bool? approvalRequired;
 
   RegisterAuthInstanceFormBloc({
-    @required IPleromaCaptchaService pleromaCaptchaService,
-    @required this.instanceBaseUri,
-    @required this.approvalRequired,
-    @required this.localizationSettingsBloc,
+    required IPleromaCaptchaService? pleromaCaptchaService,
+    required this.instanceBaseUri,
+    required this.approvalRequired,
+    required this.localizationSettingsBloc,
   }) : super(isAllItemsInitialized: false) {
     localeFieldBloc = LocalizationLocaleSingleFromListValueFormFieldBloc(
       originValue: localizationSettingsBloc.localizationLocale,
@@ -83,7 +83,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   ]);
 
   @override
-  LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
+  late LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
 
   @override
   final StringValueFormFieldBloc emailFieldBloc = StringValueFormFieldBloc(
@@ -136,7 +136,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
     final captcha = captchaFieldBloc?.captcha;
     final captchaSolution = captchaFieldBloc?.currentValue;
     final agreeTermsOfService = agreeTermsOfServiceFieldBloc?.currentValue;
-    LocalizationLocale locale = localeFieldBloc?.currentValue;
+    LocalizationLocale? locale = localeFieldBloc?.currentValue;
 
     final reason = reasonFieldBloc.currentValue;
 
@@ -149,7 +149,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       captchaSolution: captchaSolution,
       captchaAnswerData: captcha?.answerData,
       captchaToken: captcha?.token,
-      reason: approvalRequired ? reason : null,
+      reason: approvalRequired! ? reason : null,
     );
 
     return request;

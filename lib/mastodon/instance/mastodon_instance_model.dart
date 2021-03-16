@@ -7,43 +7,43 @@ import 'package:json_annotation/json_annotation.dart';
 part 'mastodon_instance_model.g.dart';
 
 abstract class IMastodonInstanceHistory {
-  String get week;
+  String? get week;
 
-  String get statuses;
+  String? get statuses;
 
-  String get logins;
+  String? get logins;
 
-  String get registrations;
+  String? get registrations;
 }
 
 abstract class IMastodonInstance {
-  String get uri;
+  String? get uri;
 
-  String get title;
+  String? get title;
 
-  String get shortDescription;
+  String? get shortDescription;
 
-  String get description;
+  String? get description;
 
-  String get email;
+  String? get email;
 
-  String get version;
+  String? get version;
 
-  MastodonUrls get urls;
+  MastodonUrls? get urls;
 
-  MastodonInstanceStats get stats;
+  MastodonInstanceStats? get stats;
 
-  String get thumbnail;
+  String? get thumbnail;
 
-  List<String> get languages;
+  List<String>? get languages;
 
-  bool get registrations;
+  bool? get registrations;
 
-  bool get approvalRequired;
+  bool? get approvalRequired;
 
-  bool get invitesEnabled;
+  bool? get invitesEnabled;
 
-  IMastodonAccount get contactAccount;
+  IMastodonAccount? get contactAccount;
 }
 
 @JsonSerializable()
@@ -55,13 +55,13 @@ abstract class IMastodonInstance {
 class MastodonInstanceStats {
   @JsonKey(name: "user_count")
   @HiveField(0)
-  final int userCount;
+  final int? userCount;
   @JsonKey(name: "status_count")
   @HiveField(1)
-  final int statusCount;
+  final int? statusCount;
   @JsonKey(name: "domain_count")
   @HiveField(2)
-  final int domainCount;
+  final int? domainCount;
 
   MastodonInstanceStats({this.userCount, this.statusCount, this.domainCount});
 
@@ -108,7 +108,7 @@ class MastodonInstanceStats {
 class MastodonUrls {
   @JsonKey(name: "streaming_api")
   @HiveField(0)
-  final String streamingApi;
+  final String? streamingApi;
 
   MastodonUrls({this.streamingApi});
 

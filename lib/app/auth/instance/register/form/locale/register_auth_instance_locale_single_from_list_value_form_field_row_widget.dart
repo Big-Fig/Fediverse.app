@@ -14,8 +14,8 @@ class RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget
           label: S
               .of(context)
               .app_auth_instance_register_field_locale_label,
-          valueTitleMapper: (context, LocalizationLocale value) =>
-              value.toLabel(context),
+          valueTitleMapper: (context, LocalizationLocale? value) =>
+              value?.toLabel(context) ?? "",
           description: S
               .of(context)
               .app_auth_instance_register_field_locale_description,

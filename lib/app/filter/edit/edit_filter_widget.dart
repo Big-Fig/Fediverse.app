@@ -31,7 +31,7 @@ class EditFilterWidget extends StatelessWidget {
 
 class _EditFilterDescriptionWidget extends StatelessWidget {
   const _EditFilterDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _EditFilterDescriptionWidget extends StatelessWidget {
 
 class _EditFilterDeleteButton extends StatelessWidget {
   const _EditFilterDeleteButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

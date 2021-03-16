@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditInstancePushSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditInstanceSettingsDialog(
     context: context,

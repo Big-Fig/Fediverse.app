@@ -15,7 +15,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
   CachedPaginationListWithNewItemsMergeOverlayButton({
-    @required this.textBuilder,
+    required this.textBuilder,
   });
 
   @override
@@ -40,13 +40,13 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
                 stream: Rx.combineLatest2(
                     scrollControllerBloc.scrollDirectionStream.distinct(),
                     scrollControllerBloc.scrolledToTopStream,
-                    (scrollDirection, scrolledToTop) =>
+                    (dynamic scrollDirection, dynamic scrolledToTop) =>
                         isNeedShowMergeItems(scrollDirection, scrolledToTop)),
                 initialData: isNeedShowMergeItems(
                     scrollControllerBloc.scrollDirection,
                     scrollControllerBloc.scrolledToTop),
                 builder: (context, snapshot) {
-                  var isNeedShowMergeItems = snapshot.data;
+                  var isNeedShowMergeItems = snapshot.data!;
 
                   _logger.finest(
                       () => "isNeedShowMergeItems $isNeedShowMergeItems");
@@ -68,17 +68,17 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
   }
 
   bool isNeedShowMergeItems(
-          ScrollDirection scrollDirection, bool scrolledToTop) =>
+          ScrollDirection? scrollDirection, bool? scrolledToTop) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
-      scrolledToTop;
+      scrolledToTop!;
 
   Widget buildMergeNewItemsButton(
-      {@required
+      {required
           BuildContext context,
-      @required
+      required
           ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
-      @required
+      required
           int updateItemsCount}) {
     return FediPrimaryFilledTextButtonWithBorder(
       textBuilder(context, updateItemsCount),

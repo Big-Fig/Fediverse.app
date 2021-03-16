@@ -5,7 +5,6 @@ import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -15,28 +14,28 @@ class PleromaCaptchaService extends DisposableOwner
     implements IPleromaCaptchaService {
   final captchaRelativeUrlPath = "/api/pleroma/captcha";
   @override
-  final IPleromaRestService restService;
+  final IPleromaRestService? restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService.pleromaApiStateStream;
+      restService!.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService!.pleromaApiState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
+  Stream<bool> get isApiReadyToUseStream => restService!.isApiReadyToUseStream;
 
   @override
-  bool get isApiReadyToUse => restService.isApiReadyToUse;
+  bool get isApiReadyToUse => restService!.isApiReadyToUse;
 
   @override
-  bool get isConnected => restService.isConnected;
+  bool get isConnected => restService!.isConnected;
 
   @override
-  Stream<bool> get isConnectedStream => restService.isConnectedStream;
+  Stream<bool> get isConnectedStream => restService!.isConnectedStream;
 
-  PleromaCaptchaService({@required this.restService});
+  PleromaCaptchaService({required this.restService});
 
   IPleromaCaptcha parseCaptchaResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -49,9 +48,9 @@ class PleromaCaptchaService extends DisposableOwner
 
   @override
   Future<IPleromaCaptcha> getCaptcha() async {
-    var httpResponse = await restService.sendHttpRequest(
+    var httpResponse = await restService!.sendHttpRequest(
       RestRequest.get(relativePath: captchaRelativeUrlPath),
-    );
+    )!;
 
     return parseCaptchaResponse(httpResponse);
   }

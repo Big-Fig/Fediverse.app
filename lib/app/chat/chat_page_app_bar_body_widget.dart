@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class ChatPageAppBarBodyWidget extends StatelessWidget {
   const ChatPageAppBarBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

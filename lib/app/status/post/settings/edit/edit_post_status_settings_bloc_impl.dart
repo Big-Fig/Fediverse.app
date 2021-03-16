@@ -11,23 +11,22 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 
 class EditPostStatusSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings>
+    extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings?>
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
   final List<PleromaVisibility> pleromaVisibilityPossibleValues;
   @override
-  IStatusVisibilitySelectSingleFromListValueFormFieldBloc
+  late IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       defaultVisibilityFormFieldBloc;
 
   @override
-  IBoolValueFormFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
+  late IBoolValueFormFieldBloc markMediaAsNsfwOnAttachFormFieldBloc;
 
   @override
-  LocalizationLocaleSingleFromListValueFormFieldBloc
+  late LocalizationLocaleSingleFromListValueFormFieldBloc
       defaultStatusLocaleFormFieldBloc;
 
   @override
@@ -38,11 +37,11 @@ class EditPostStatusSettingsBloc
       ];
 
   EditPostStatusSettingsBloc({
-    @required this.postStatusSettingsBloc,
-    @required this.pleromaVisibilityPossibleValues,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.postStatusSettingsBloc,
+    required this.pleromaVisibilityPossibleValues,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: postStatusSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -52,18 +51,18 @@ class EditPostStatusSettingsBloc
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySelectSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.defaultVisibilityPleroma,
+      originValue: currentSettings!.defaultVisibilityPleroma,
       isEnabled: isEnabled,
       possibleValues: pleromaVisibilityPossibleValues,
     );
     markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.markMediaAsNsfwOnAttach,
+      originValue: currentSettings!.markMediaAsNsfwOnAttach,
       isEnabled: isEnabled,
     );
 
     defaultStatusLocaleFormFieldBloc =
         LocalizationLocaleSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.defaultStatusLocale,
+      originValue: currentSettings!.defaultStatusLocale,
       isEnabled: isEnabled,
       possibleValues: supportedLocalizationLocaleList,
     );
@@ -78,19 +77,19 @@ class EditPostStatusSettingsBloc
   @override
   PostStatusSettings calculateCurrentFormFieldsSettings() => PostStatusSettings(
         defaultVisibilityString:
-            defaultVisibilityFormFieldBloc.currentValue.toJsonValue(),
+            defaultVisibilityFormFieldBloc.currentValue?.toJsonValue(),
         markMediaAsNsfwOnAttach:
             markMediaAsNsfwOnAttachFormFieldBloc.currentValue,
         defaultStatusLocale: defaultStatusLocaleFormFieldBloc.currentValue,
       );
 
   @override
-  Future fillSettingsToFormFields(PostStatusSettings settings) async {
+  Future fillSettingsToFormFields(PostStatusSettings? settings) async {
     defaultVisibilityFormFieldBloc
-        .changeCurrentValue(settings.defaultVisibilityPleroma);
+        .changeCurrentValue(settings?.defaultVisibilityPleroma);
     markMediaAsNsfwOnAttachFormFieldBloc
-        .changeCurrentValue(settings.markMediaAsNsfwOnAttach);
+        .changeCurrentValue(settings?.markMediaAsNsfwOnAttach);
     defaultStatusLocaleFormFieldBloc
-        .changeCurrentValue(settings.defaultStatusLocale);
+        .changeCurrentValue(settings?.defaultStatusLocale);
   }
 }

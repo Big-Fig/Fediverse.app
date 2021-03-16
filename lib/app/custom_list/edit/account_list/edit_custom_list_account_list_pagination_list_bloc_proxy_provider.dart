@@ -12,7 +12,7 @@ class EditCustomListAccountListPaginationListBlocProxyProvider
   final Widget child;
 
   EditCustomListAccountListPaginationListBlocProxyProvider(
-      {@required this.child});
+      {required this.child});
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

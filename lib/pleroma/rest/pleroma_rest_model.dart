@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("pleroma_rest_exception.dart");
@@ -11,11 +10,11 @@ class PleromaRestException implements Exception {
   final int statusCode;
   final String body;
 
-  String decodedErrorDescription;
+  String? decodedErrorDescription;
 
   String get decodedErrorDescriptionOrBody => decodedErrorDescription ?? body;
 
-  PleromaRestException({@required this.statusCode, @required this.body}) {
+  PleromaRestException({required this.statusCode, required this.body}) {
     try {
       var jsonBody = jsonDecode(body);
       decodedErrorDescription = jsonBody[jsonBodyErrorKey];
@@ -32,7 +31,7 @@ class PleromaRestException implements Exception {
 
 class PleromaThrottledRestException extends PleromaRestException {
   PleromaThrottledRestException(
-      {@required int statusCode, @required String body})
+      {required int statusCode, required String body})
       : super(statusCode: statusCode, body: body);
 
   @override
@@ -43,7 +42,7 @@ class PleromaThrottledRestException extends PleromaRestException {
 
 class PleromaForbiddenRestException extends PleromaRestException {
   PleromaForbiddenRestException(
-      {@required int statusCode, @required String body})
+      {required int statusCode, required String body})
       : super(statusCode: statusCode, body: body);
 }
 
@@ -57,7 +56,7 @@ class PleromaInvalidCredentialsForbiddenRestException
       "The access token was revoked";
 
   PleromaInvalidCredentialsForbiddenRestException(
-      {@required int statusCode, @required String body})
+      {required int statusCode, required String body})
       : super(statusCode: statusCode, body: body);
 
   @override

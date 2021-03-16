@@ -8,7 +8,12 @@ abstract class IMediaDeviceFilePaginationBloc
     implements
         ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFileMetadata>,
             IMediaDeviceFileMetadata> {
-  static IMediaDeviceFilePaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IMediaDeviceFilePaginationBloc>(context, listen: listen);
+  static IMediaDeviceFilePaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IMediaDeviceFilePaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

@@ -13,32 +13,32 @@ final _dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   final IMyAccountBloc myAccountBloc;
 
-  BehaviorSubject<List<IChatMessage>> currentChatMessagesSelectionSubject =
+  BehaviorSubject<List<IChatMessage?>> currentChatMessagesSelectionSubject =
       BehaviorSubject.seeded([]);
 
   ChatSelectionBloc({
-    @required this.myAccountBloc,
+    required this.myAccountBloc,
   }) {
     addDisposable(subject: currentChatMessagesSelectionSubject);
   }
 
   @override
   bool get isAllSelectedItemsFromMe => _calculateIsAllSelectedItemsFromMe(
-        currentSelection: currentSelection,
-        myAccountBloc: myAccountBloc,
+        currentSelection: currentSelection!,
+        myAccountBloc: myAccountBloc as MyAccountBloc,
       );
 
   @override
   Stream<bool> get isAllSelectedItemsFromMeStream => currentSelectionStream.map(
         (currentSelection) => _calculateIsAllSelectedItemsFromMe(
           currentSelection: currentSelection,
-          myAccountBloc: myAccountBloc,
+          myAccountBloc: myAccountBloc as MyAccountBloc,
         ),
       );
 
   static bool _calculateIsAllSelectedItemsFromMe({
-    @required List<IChatMessage> currentSelection,
-    @required MyAccountBloc myAccountBloc,
+    required List<IChatMessage?> currentSelection,
+    required MyAccountBloc myAccountBloc,
   }) {
     return currentSelection.fold(
       true,
@@ -48,11 +48,11 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  List<IChatMessage> get currentSelection =>
-      currentChatMessagesSelectionSubject.value;
+  List<IChatMessage>? get currentSelection =>
+      currentChatMessagesSelectionSubject.value as List<IChatMessage>?;
 
   @override
-  Stream<List<IChatMessage>> get currentSelectionStream =>
+  Stream<List<IChatMessage?>> get currentSelectionStream =>
       currentChatMessagesSelectionSubject.stream;
 
   @override
@@ -80,35 +80,35 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
       );
 
   static bool _calculateIsSomethingSelected({
-    @required List<IChatMessage> currentChatMessagesSelection,
+    required List<IChatMessage?>? currentChatMessagesSelection,
   }) =>
       currentChatMessagesSelection?.isNotEmpty == true;
 
   static int _calculateSelectedItemsCount({
-    @required List<IChatMessage> currentChatMessagesSelection,
+    required List<IChatMessage?>? currentChatMessagesSelection,
   }) =>
       currentChatMessagesSelection?.length ?? 0;
 
   @override
   String calculateSelectionAsRawText() {
-    var rawText = currentSelection.map((chatMessage) {
+    var rawText = currentSelection!.map((chatMessage) {
       var chatMessageText = "";
-      chatMessageText += chatMessage.account.acct;
+      chatMessageText += chatMessage.account!.acct!;
       chatMessageText += " ";
-      chatMessageText += "(${chatMessage.account.displayName})";
+      chatMessageText += "(${chatMessage.account!.displayName})";
       chatMessageText += " ";
-      chatMessageText += "${_dateFormat.format(chatMessage.createdAt)}";
+      chatMessageText += "${_dateFormat.format(chatMessage.createdAt!)}";
       if (chatMessage.content?.isNotEmpty == true) {
         chatMessageText += "\n";
-        chatMessageText += chatMessage.content;
+        chatMessageText += chatMessage.content!;
       }
 
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {
         chatMessageText += "\n";
         chatMessageText += "[";
-        chatMessageText += chatMessage.mediaAttachments
+        chatMessageText += chatMessage.mediaAttachments!
             .map(
-              (mediaAttachment) => mediaAttachment.url,
+              (mediaAttachment) => mediaAttachment!.url,
             )
             .join(", ");
         chatMessageText += "]";
@@ -125,27 +125,27 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  void addItemToSelection(IChatMessage chatMessage) {
+  void addItemToSelection(IChatMessage? chatMessage) {
     currentChatMessagesSelectionSubject.add(
       [
-        ...currentSelection,
+        ...currentSelection!,
         chatMessage,
       ],
     );
   }
 
   @override
-  void removeItemFromSelection(IChatMessage chatMessage) {
+  void removeItemFromSelection(IChatMessage? chatMessage) {
     currentChatMessagesSelectionSubject.add(
-      currentSelection
+      currentSelection!
           .where((currentChatMessage) =>
-              currentChatMessage.remoteId != chatMessage.remoteId)
+              currentChatMessage.remoteId != chatMessage!.remoteId)
           .toList(),
     );
   }
 
   @override
-  void toggleItemSelected(IChatMessage chatMessage) {
+  void toggleItemSelected(IChatMessage? chatMessage) {
     var chatMessageSelected = isItemSelected(chatMessage);
 
     if (chatMessageSelected) {
@@ -156,23 +156,23 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   }
 
   @override
-  bool isItemSelected(IChatMessage chatMessage) =>
+  bool isItemSelected(IChatMessage? chatMessage) =>
       _calculateIsChatMessageSelected(
-          currentChatMessagesSelection: currentSelection,
-          chatMessageRemoteId: chatMessage.remoteId);
+          currentChatMessagesSelection: currentSelection!,
+          chatMessageRemoteId: chatMessage!.remoteId);
 
   @override
-  Stream<bool> isItemSelectedStream(IChatMessage chatMessage) =>
+  Stream<bool> isItemSelectedStream(IChatMessage? chatMessage) =>
       currentSelectionStream.map(
         (currentChatMessagesSelection) => _calculateIsChatMessageSelected(
           currentChatMessagesSelection: currentChatMessagesSelection,
-          chatMessageRemoteId: chatMessage.remoteId,
+          chatMessageRemoteId: chatMessage!.remoteId,
         ),
       );
 
   static bool _calculateIsChatMessageSelected({
-    @required List<IChatMessage> currentChatMessagesSelection,
-    @required String chatMessageRemoteId,
+    required List<IChatMessage?> currentChatMessagesSelection,
+    required String? chatMessageRemoteId,
   }) {
     var found = findChatMessageByRemoteId(
       currentChatMessagesSelection: currentChatMessagesSelection,
@@ -182,13 +182,13 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
     return found != null;
   }
 
-  static IChatMessage findChatMessageByRemoteId({
-    @required List<IChatMessage> currentChatMessagesSelection,
-    @required String chatMessageRemoteId,
+  static IChatMessage? findChatMessageByRemoteId({
+    required List<IChatMessage?> currentChatMessagesSelection,
+    required String? chatMessageRemoteId,
   }) {
     var found = currentChatMessagesSelection.firstWhere(
       (currentChatMessage) =>
-          currentChatMessage.remoteId == chatMessageRemoteId,
+          currentChatMessage!.remoteId == chatMessageRemoteId,
       orElse: () => null,
     );
 
@@ -207,7 +207,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) =>
       DisposableProvider<IChatSelectionBloc>(
         create: (context) => ChatSelectionBloc.createFromContext(

@@ -26,7 +26,7 @@ class StatusCachedPaginationListTimelineWidget
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   }) {
     var timelinePaginationListBloc = Provider.of<
             IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
@@ -36,17 +36,17 @@ class StatusCachedPaginationListTimelineWidget
   }
 
   const StatusCachedPaginationListTimelineWidget({
-    Key key,
-    Widget header,
+    Key? key,
+    Widget? header,
     this.forceFirstItemPadding = false,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customLoadingWidget,
-    Widget customEmptyWidget,
-    @required this.needWatchLocalRepositoryForUpdates,
-    ScrollController scrollController,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customLoadingWidget,
+    Widget? customEmptyWidget,
+    required this.needWatchLocalRepositoryForUpdates,
+    ScrollController? scrollController,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -60,10 +60,10 @@ class StatusCachedPaginationListTimelineWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
     var statusListBloc = IStatusListBloc.of(context);
     var instanceLocation = statusListBloc.instanceLocation;

@@ -4,7 +4,6 @@ import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_categor
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_model.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerCodeCategoryBloc {
@@ -66,8 +65,8 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
   @override
   final List<CustomEmojiPickerCodeItem> items;
   CustomEmojiPickerCodeCategoryBloc({
-    @required this.type,
-    @required this.items,
+    required this.type,
+    required this.items,
   });
 
   static CustomEmojiPickerCodeCategoryBloc createCodeCategoryFromMap(

@@ -38,18 +38,18 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   final IPleromaAuthRestService pleromaAuthRestService;
 
   CurrentAuthInstanceContextInitBloc({
-    @required this.myAccountBloc,
-    @required this.pleromaInstanceService,
-    @required this.currentAuthInstanceBloc,
-    @required this.pleromaAuthRestService,
-    @required this.pleromaFilterService,
-    @required this.pleromaConversationService,
-    @required this.pleromaChatService,
-    @required this.pleromaNotificationService,
-    @required this.filterRepository,
-    @required this.notificationRepository,
-    @required this.conversationChatRepository,
-    @required this.pleromaChatRepository,
+    required this.myAccountBloc,
+    required this.pleromaInstanceService,
+    required this.currentAuthInstanceBloc,
+    required this.pleromaAuthRestService,
+    required this.pleromaFilterService,
+    required this.pleromaConversationService,
+    required this.pleromaChatService,
+    required this.pleromaNotificationService,
+    required this.filterRepository,
+    required this.notificationRepository,
+    required this.conversationChatRepository,
+    required this.pleromaChatRepository,
   }) {
     addDisposable(subject: stateSubject);
 
@@ -72,14 +72,14 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
   @override
   Future refreshFromNetwork({
-    @required bool isNeedWaitForOptionalData,
+    required bool isNeedWaitForOptionalData,
   }) async {
     instanceInfoUpdatedDuringRequiredDataUpdate = false;
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
     var isConnected = pleromaInstanceService.isConnected;
     _logger.finest(() => "refresh isApiReadyToUse $isConnected");
 
-    bool requiredDataRefreshSuccess;
+    bool? requiredDataRefreshSuccess;
 
     if (isConnected) {
       try {
@@ -143,8 +143,8 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future refreshOptionalData() async {
-    var isPleroma = currentAuthInstanceBloc.currentInstance.isPleroma;
-    var isMastodon = currentAuthInstanceBloc.currentInstance.isMastodon;
+    var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma!;
+    var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
 
     var actualNotificationUnreadCount = await notificationRepository.getCount(
       filters: NotificationRepositoryFilters(onlyUnread: true),
@@ -154,14 +154,14 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     var actualPleromaChatUnreadCount =
         await pleromaChatRepository.getTotalUnreadCount();
 
-    int myAccountUnreadNotificationsCount;
-    int myAccountUnreadConversationCount;
+    late int myAccountUnreadNotificationsCount;
+    late int myAccountUnreadConversationCount;
 
     if (isPleroma) {
       myAccountUnreadConversationCount =
-          myAccountBloc.myAccount.pleromaUnreadConversationCount ?? 0;
+          myAccountBloc.myAccount!.pleromaUnreadConversationCount ?? 0;
       myAccountUnreadNotificationsCount =
-          myAccountBloc.myAccount.pleromaUnreadNotificationsCount ?? 0;
+          myAccountBloc.myAccount!.pleromaUnreadNotificationsCount ?? 0;
     }
 
     var isNeedUpdateChats = isPleroma && (actualPleromaChatUnreadCount == 0);
@@ -197,7 +197,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
   Future updateInstanceInformation() async {
     var info = await pleromaInstanceService.getInstance();
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
     currentInstance = currentInstance.copyWith(info: info);
     await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
   }
@@ -207,7 +207,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
       BehaviorSubject.seeded(CurrentAuthInstanceContextInitState.loading);
 
   @override
-  CurrentAuthInstanceContextInitState get state => stateSubject.value;
+  CurrentAuthInstanceContextInitState? get state => stateSubject.value;
 
   @override
   Stream<CurrentAuthInstanceContextInitState> get stateStream =>

@@ -6,15 +6,14 @@ import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditPaginationSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<PaginationSettings>
+    extends EditGlobalOrInstanceSettingsBloc<PaginationSettings?>
     implements IEditPaginationSettingsBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   @override
-  PaginationPageSizeSingleFromListValueFormFieldBloc pageSizeFieldBloc;
+  late PaginationPageSizeSingleFromListValueFormFieldBloc pageSizeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -22,20 +21,20 @@ class EditPaginationSettingsBloc
       ];
 
   EditPaginationSettingsBloc({
-    @required this.paginationSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.paginationSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: paginationSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           isEnabled: isEnabled,
           isAllItemsInitialized: false,
-    isGlobalForced: isGlobalForced,
+          isGlobalForced: isGlobalForced,
         ) {
     pageSizeFieldBloc = PaginationPageSizeSingleFromListValueFormFieldBloc(
       isEnabled: isEnabled,
-      originValue: currentSettings.pageSizeAsUiSettingsFontSize,
+      originValue: currentSettings?.pageSizeAsUiSettingsFontSize,
     );
 
     addDisposable(disposable: pageSizeFieldBloc);
@@ -49,9 +48,9 @@ class EditPaginationSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(PaginationSettings settings) async {
+  Future fillSettingsToFormFields(PaginationSettings? settings) async {
     pageSizeFieldBloc.changeCurrentValue(
-      settings.pageSizeAsUiSettingsFontSize,
+      settings?.pageSizeAsUiSettingsFontSize,
     );
   }
 }

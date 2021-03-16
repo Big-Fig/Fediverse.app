@@ -13,7 +13,7 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
     PaginationPage<IMediaDeviceFileMetadata>,
     IMediaDeviceFileMetadata> implements IMediaDeviceFilePaginationListBloc {
   MediaDeviceFilePaginationListBloc(
-      {@required IMediaDeviceFilePaginationBloc paginationBloc})
+      {required IMediaDeviceFilePaginationBloc paginationBloc})
       : super(paginationBloc: paginationBloc);
 
   static MediaDeviceFilePaginationListBloc createFromContext(
@@ -23,12 +23,12 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
           IPaginationBloc<PaginationPage<IMediaDeviceFileMetadata>, IMediaDeviceFileMetadata>>(
         context,
         listen: false,
-      ),
+      ) as IMediaDeviceFilePaginationBloc,
     );
   }
 
   static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+          {required Widget child}) =>
       DisposableProvider<IMediaDeviceFilePaginationListBloc>(
         create: (context) =>
             MediaDeviceFilePaginationListBloc.createFromContext(

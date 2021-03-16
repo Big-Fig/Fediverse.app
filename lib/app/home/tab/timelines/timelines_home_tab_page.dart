@@ -84,20 +84,20 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
   }
 
   void _subscribeForUnreadCountUpdates({
-    @required TimelineTabListBloc timelineTabListBloc,
-    @required IHomeBloc homeBloc,
+    required TimelineTabListBloc timelineTabListBloc,
+    required IHomeBloc homeBloc,
   }) {
-    StreamSubscription listener;
+    StreamSubscription? listener;
     timelineTabListBloc.addDisposable(
       streamSubscription: timelineTabListBloc.mainTimelineTabBlocStream.listen(
         (mainTimelineTabBloc) {
           if (mainTimelineTabBloc != null) {
             if (listener != null) {
-              listener.cancel();
+              listener!.cancel();
             }
 
             listener = mainTimelineTabBloc
-                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
+                .paginationListWithNewItemsBloc!.unmergedNewItemsCountStream
                 .listen((unreadCount) {
               homeBloc.updateTimelinesUnread(
                   unreadCount != null && unreadCount > 0);
@@ -112,12 +112,12 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
 
 class _TimelinesHomeTabPageBlocsListProvider extends StatelessWidget {
   _TimelinesHomeTabPageBlocsListProvider({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TimelineTabBlocsList>(
+    return StreamBuilder<TimelineTabBlocsList?>(
         stream: ITimelineTabListBloc.of(context, listen: false)
             .timelineTabBlocsListStream,
         builder: (context, snapshot) {
@@ -125,7 +125,7 @@ class _TimelinesHomeTabPageBlocsListProvider extends StatelessWidget {
 
           _logger.finest(
               () => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
-          return Provider<TimelineTabBlocsList>.value(
+          return Provider<TimelineTabBlocsList?>.value(
             value: timelineTabBlocsList,
             child: _TimelinesHomeTabPageBody(),
           );
@@ -153,7 +153,7 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
           return FediNestedScrollViewWithNestedScrollableTabsBloc(
             nestedScrollControllerBloc:
                 timelinesHomeTabBloc.nestedScrollControllerBloc,
-            tabController: value?.tabController,
+            tabController: value.tabController,
           );
         },
         child: FediNestedScrollViewWithNestedScrollableTabsWidget(
@@ -191,27 +191,27 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
       BuildContext context, int index, Widget child) {
     var timelineTabListBloc = ITimelineTabListBloc.of(context, listen: false);
     var tabBloc =
-        timelineTabListBloc.timelineTabBlocsList.timelineTabBlocs[index];
+        timelineTabListBloc.timelineTabBlocsList!.timelineTabBlocs[index];
 
     _logger.finest(() => "tabBodyProviderBuilder index ${index} "
         "tabBloc ${tabBloc.timelineId}");
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,
-      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
+      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc?>(
         update: (context, value, previous) =>
             value.timelineLocalPreferencesBloc,
         // value: tabBloc.timelineLocalPreferencesBloc,
         child: ProxyProvider<
             ITimelineTabBloc,
             ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
-                IStatus>>(
+                IStatus?>?>(
           // value: tabBloc.paginationListWithNewItemsBloc,
           update: (context, value, previous) =>
               value.paginationListWithNewItemsBloc,
           child: CachedPaginationListWithNewItemsBlocProxyProvider<
               CachedPaginationPage<IStatus>, IStatus>(
-            child: ProxyProvider<ITimelineTabBloc, IStatusCachedListBloc>(
+            child: ProxyProvider<ITimelineTabBloc, IStatusCachedListBloc?>(
               // value: tabBloc.paginationListWithNewItemsBloc,
               update: (context, value, previous) => value.statusCachedListBloc,
               child: StatusCachedListBlocProxyProvider(
@@ -227,7 +227,7 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
 
 class _TimelinesHomeTabPageBodyHeaderSecondRowWidget extends StatelessWidget {
   const _TimelinesHomeTabPageBodyHeaderSecondRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -249,7 +249,7 @@ class _TimelinesHomeTabPageBodyHeaderSecondRowWidget extends StatelessWidget {
 
 class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
   const _TimelinesHomeTabPageBodyHeaderFirstRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -294,7 +294,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
 
 class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
   const _TimelinesHomeTabIndicatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -313,7 +313,7 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
 
 class _TimelinesHomeTabPageTabLoadingWidget extends StatelessWidget {
   const _TimelinesHomeTabPageTabLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

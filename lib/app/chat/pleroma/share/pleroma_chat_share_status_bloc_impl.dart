@@ -22,13 +22,13 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
   final IStatus status;
 
   PleromaChatShareStatusBloc({
-    @required this.status,
-    @required IPleromaChatRepository chatRepository,
-    @required IPleromaChatMessageRepository chatMessageRepository,
-    @required IPleromaChatService pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.status,
+    required IPleromaChatRepository chatRepository,
+    required IPleromaChatMessageRepository chatMessageRepository,
+    required IPleromaChatService pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -40,26 +40,24 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
 
   @override
   PleromaChatMessageSendData createPleromaChatMessageSendData() {
-    String accountAcctAndDisplayName;
-    if (status.account != null) {
-      accountAcctAndDisplayName =
-          status.account.acct + " (${status.account.displayName})";
-    }
+    var accountAcctAndDisplayName =
+        status.account.acct + " (${status.account.displayName})";
+
     var statusSpoiler = status.spoilerText;
     var statusContent = status.content?.isNotEmpty == true
-        ? HtmlTextHelper.extractRawStringFromHtmlString(status.content)
+        ? status.content?.extractRawStringFromHtmlString()
         : null;
     var statusUrl = status.url;
     var statusMediaAttachmentsString = status.mediaAttachments
         ?.map((mediaAttachment) => mediaAttachment.url)
-        ?.join(", ");
+        .join(", ");
 
     if (statusMediaAttachmentsString != null) {
       statusMediaAttachmentsString = "[$statusMediaAttachmentsString]";
     }
     var additionalMessage = message;
 
-    var contentParts = <String>[
+    var contentParts = <String?>[
       accountAcctAndDisplayName,
       statusSpoiler,
       statusContent,
@@ -70,15 +68,18 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
 
     var content = contentParts.join("\n\n");
     var messageSendData = PleromaChatMessageSendData(
-      content: content?.trim(),
+      content: content.trim(),
       mediaId: null,
       idempotencyKey: null,
     );
     return messageSendData;
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IStatus status, @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus status,
+    required Widget child,
+  }) {
     return DisposableProvider<PleromaChatShareStatusBloc>(
       create: (context) => createFromContext(context, status),
       child: ProxyProvider<PleromaChatShareStatusBloc, IPleromaChatShareBloc>(
@@ -114,8 +115,13 @@ class PleromaChatShareStatusBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+        pleromaAccountService: IPleromaAccountService.of(
+          context,
+          listen: false,
+        ),
       );
 }

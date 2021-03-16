@@ -11,7 +11,7 @@ abstract class IStatusActionMuteBloc implements IDisposable {
   }) =>
       Provider.of<IStatusActionMuteBloc>(context, listen: listen);
 
-  IStatus get statusForMute;
+  IStatus? get statusForMute;
 
   IDurationDateTimeValueFormFieldBloc get expireDurationFieldBloc;
 

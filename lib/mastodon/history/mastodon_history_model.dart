@@ -1,5 +1,5 @@
-abstract class IMastodonHistory {
-  int get dayInUnixTimestamp;
+abstract class IMastodonTagHistory {
+  int? get dayInUnixTimestamp;
 
   // int(pleroma) or String(mastodon)
   dynamic get uses;

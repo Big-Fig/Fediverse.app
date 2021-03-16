@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,11 +16,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
         TItem> extends CachedPaginationListBloc<TPage, TItem>
     implements ICachedPaginationListWithNewItemsBloc<TPage, TItem> {
   @override
-  TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
+  TItem? get newerItem => items.isNotEmpty == true ? items.first : null;
 
   @override
-  Stream<TItem> get newerItemStream => itemsStream
-      .map((items) => items?.isNotEmpty == true ? items.first : null);
+  Stream<TItem?> get newerItemStream => itemsStream
+      .map((items) => items.isNotEmpty == true ? items.first : null);
 
   Stream<List<TItem>> watchItemsNewerThanItem(TItem item);
 
@@ -36,14 +36,14 @@ abstract class CachedPaginationListWithNewItemsBloc<
       BehaviorSubject.seeded([]);
 
   // ignore: cancel_subscriptions
-  StreamSubscription newItemsSubscription;
+  StreamSubscription? newItemsSubscription;
 
   final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
 
   CachedPaginationListWithNewItemsBloc({
-    @required this.mergeNewItemsImmediately,
+    required this.mergeNewItemsImmediately,
     this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
-    @required ICachedPaginationBloc<TPage, TItem> paginationBloc,
+    required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
     addDisposable(subject: mergedNewItemsSubject);
     addDisposable(subject: unmergedNewItemsSubject);
@@ -59,7 +59,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
             newItemsSubscription?.cancel();
 
             newItemsSubscription = watchItemsNewerThanItem(newerItem)
-                .skipWhile((newItems) => newItems?.isNotEmpty != true)
+                .skipWhile((newItems) => newItems.isNotEmpty != true)
                 .listen(
               (newItems) {
                 // we need to filter again to be sure that newerItem is no
@@ -85,8 +85,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
                     "\t newItems ${newItems.length} \n"
                     "\t actuallyNew = ${actuallyNew.length}");
 
-                if (actuallyNew?.isNotEmpty == true) {
-                  if (currentItems?.isNotEmpty != true &&
+                if (actuallyNew.isNotEmpty == true) {
+                  if (currentItems.isNotEmpty != true &&
                       mergeNewItemsImmediatelyWhenItemsIsEmpty) {
                     // merge immediately
                     mergedNewItemsSubject.add(actuallyNew);
@@ -107,7 +107,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       addDisposable(
         streamSubscription: unmergedNewItemsStream.listen(
           (unmergedNewItems) {
-            if (unmergedNewItems?.isNotEmpty == true) {
+            if (unmergedNewItems.isNotEmpty == true) {
               mergeNewItems();
             }
           },
@@ -117,16 +117,15 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   List<TItem> removeDuplicatesAndUpdate({
-    @required List<TItem> actuallyNew,
-    @required List<TItem> currentItems,
+    required List<TItem> actuallyNew,
+    required List<TItem> currentItems,
   }) {
     return actuallyNew.where(
       (newItem) {
         bool isAlreadyExist;
-        if (currentItems?.isNotEmpty == true) {
-          var found = currentItems.firstWhere(
+        if (currentItems.isNotEmpty == true) {
+          var found = currentItems.firstWhereOrNull(
             (oldItem) => isItemsEqual(newItem, oldItem),
-            orElse: () => null,
           );
 
           isAlreadyExist = found != null;
@@ -149,17 +148,17 @@ abstract class CachedPaginationListWithNewItemsBloc<
   Stream<List<TItem>> get itemsStream => Rx.combineLatest2(
         mergedNewItemsStream,
         super.itemsStream,
-        (mergedNewItems, items) => _calculateNewItems(
+        (dynamic mergedNewItems, dynamic items) => _calculateNewItems(
           items: items,
           mergedNewItems: mergedNewItems,
         ),
       );
 
   List<TItem> _calculateNewItems({
-    @required List<TItem> items,
-    @required List<TItem> mergedNewItems,
+    required List<TItem>? items,
+    required List<TItem>? mergedNewItems,
   }) {
-    List<TItem> result;
+    List<TItem>? result;
 
     if (items == null && mergedNewItems == null) {
       result = null;
@@ -180,10 +179,10 @@ abstract class CachedPaginationListWithNewItemsBloc<
     _logger.finest(() => "_calculateNewItems"
         " \n"
         "\t items = ${items?.length} \n"
-        "\t mergedNewItems = ${mergedNewItems.length} \n"
+        "\t mergedNewItems = ${mergedNewItems!.length} \n"
         "\t result = ${result?.length}");
 
-    return result;
+    return result!;
   }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
@@ -192,18 +191,18 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveUnmergedNewItems) => unmergedNewItemsCount > 0);
 
   @override
-  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value;
+  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value!;
 
   @override
   Stream<List<TItem>> get unmergedNewItemsStream =>
       unmergedNewItemsSubject.stream;
 
   @override
-  int get unmergedNewItemsCount => unmergedNewItems?.length ?? 0;
+  int get unmergedNewItemsCount => unmergedNewItems.length;
 
   @override
   Stream<int> get unmergedNewItemsCountStream => unmergedNewItemsStream
-      .map((unmergedNewItems) => unmergedNewItems?.length ?? 0);
+      .map((unmergedNewItems) => unmergedNewItems.length);
 
   bool get isHaveMergedNewItems => mergedNewItemsCount > 0;
 
@@ -211,17 +210,17 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
   @override
-  List<TItem> get mergedNewItems => mergedNewItemsSubject.value;
+  List<TItem> get mergedNewItems => mergedNewItemsSubject.value!;
 
   @override
   Stream<List<TItem>> get mergedNewItemsStream => mergedNewItemsSubject.stream;
 
   @override
-  int get mergedNewItemsCount => mergedNewItems?.length ?? 0;
+  int get mergedNewItemsCount => mergedNewItems.length;
 
   @override
   Stream<int> get mergedNewItemsCountStream =>
-      mergedNewItemsStream.map((mergedNewItems) => mergedNewItems?.length ?? 0);
+      mergedNewItemsStream.map((mergedNewItems) => mergedNewItems.length);
 
   @override
   void mergeNewItems() {
@@ -265,7 +264,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   bool isItemsEqual(TItem a, TItem b);
 
-  void onNewItemsMerged(List<TItem> unmergedNewItems) {
+  void onNewItemsMerged(List<TItem>? unmergedNewItems) {
     // nothing by default
   }
 }

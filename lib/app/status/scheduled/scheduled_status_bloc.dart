@@ -6,17 +6,16 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusBloc implements IDisposable {
-
   static IScheduledStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScheduledStatusBloc>(context, listen: listen);
 
-  ScheduledStatusState get state;
+  ScheduledStatusState? get state;
 
-  Stream<ScheduledStatusState> get stateStream;
+  Stream<ScheduledStatusState?> get stateStream;
 
-  String get remoteId;
+  String? get remoteId;
 
-  IScheduledStatus get scheduledStatus;
+  IScheduledStatus? get scheduledStatus;
 
   Stream<IScheduledStatus> get scheduledStatusStream;
 
@@ -24,15 +23,17 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   Stream<DateTime> get scheduledAtStream;
 
-  String get spoilerText;
+  String? get spoilerText;
 
-  Stream<String> get spoilerTextStream;
+  Stream<String?> get spoilerTextStream;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+  Stream<List<IPleromaMediaAttachment>?> get mediaAttachmentsStream;
 
-  Future reSchedule({@required DateTime scheduledAt});
+  Future reSchedule({
+    required DateTime scheduledAt,
+  });
 
   Future cancelSchedule();
 

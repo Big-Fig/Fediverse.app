@@ -20,7 +20,7 @@ class GlobalSettingsListPage extends StatelessWidget {
 
 class _GlobalSettingsBody extends StatelessWidget {
   const _GlobalSettingsBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

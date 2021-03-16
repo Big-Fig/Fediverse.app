@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditInstanceSettingsDialog({
-  @required BuildContext context,
-  @required String subTitle,
-  @required Widget child,
+  required BuildContext context,
+  required String subTitle,
+  required Widget child,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance;
+  var currentInstance = currentAuthInstanceBloc.currentInstance!;
   showSettingsDialog(
     context: context,
     title: S.of(context).app_account_home_tab_menu_action_instance_settings(

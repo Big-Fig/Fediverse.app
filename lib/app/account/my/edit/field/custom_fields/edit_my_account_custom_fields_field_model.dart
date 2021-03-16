@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 
 class EditMyAccountCustomFieldsItemFieldData {
   final ILinkPairFormGroupBloc customField;
-  final ILinkPairFormGroupBloc nextCustomField;
+  final ILinkPairFormGroupBloc? nextCustomField;
   final int index;
 
   EditMyAccountCustomFieldsItemFieldData({
-    @required this.customField,
-    @required this.nextCustomField,
-    @required this.index,
+    required this.customField,
+    required this.nextCustomField,
+    required this.index,
   });
 
   int get number => index + 1;

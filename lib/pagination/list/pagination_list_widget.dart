@@ -13,18 +13,19 @@ import 'package:pull_to_refresh/src/smart_refresher.dart';
 var _logger = Logger("pagination_list_dart");
 
 abstract class PaginationListWidget<T> extends StatelessWidget {
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
-  final ScrollController scrollController;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
+  final ScrollController? scrollController;
   final bool refreshOnFirstLoad;
 
-  // nothing by default
-  Future<bool> additionalPreRefreshAction(BuildContext context) async => true;
+  Future additionalPreRefreshAction(BuildContext context) async {
+    // nothing by default
+  }
 
   const PaginationListWidget({
-    Key key,
+    Key? key,
     this.scrollController,
     this.header,
     this.footer,
@@ -34,24 +35,24 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }) : super(key: key);
 
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<T> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<T> items,
+    required Widget? header,
+    required Widget? footer,
   });
 
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   });
 
   static ListView buildItemsListView<T>({
-    @required BuildContext context,
-    @required List<T> items,
-    @required Widget header,
-    @required Widget footer,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
+    required BuildContext? context,
+    required List<T> items,
+    required Widget? header,
+    required Widget? footer,
+    required IndexedWidgetBuilder itemBuilder,
+    required ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
   }) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
@@ -127,7 +128,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // SmartRefresher require ScrollView as child
     // If child is StreamBuilder SmartRefresher builds all items widget
     // instead visible only
-    return StreamBuilder<List<T>>(
+    return StreamBuilder<List<T>?>(
       stream: paginationListBloc.itemsDistinctStream,
       builder: (context, snapshot) {
         var items = snapshot.data;
@@ -184,9 +185,9 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (alwaysShowHeader == true) header,
+          if (alwaysShowHeader == true) header!,
           Expanded(child: child),
-          if (alwaysShowFooter == true) footer,
+          if (alwaysShowFooter == true) footer!,
         ],
       );
     }
@@ -194,16 +195,16 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   Widget buildSmartRefresherBody(
     BuildContext context,
-    List<T> items,
+    List<T>? items,
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
   );
 
   Widget buildSmartRefresher(
     IPaginationListBloc paginationListBloc,
     BuildContext context,
-    List<T> items,
+    List<T>? items,
     RefreshController refreshController,
-    ScrollController scrollController,
+    ScrollController? scrollController,
     Widget Function(BuildContext context) smartRefresherBodyBuilder,
   );
 }

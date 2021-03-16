@@ -12,7 +12,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
   final String label;
 
   AccountHeaderStatisticWidget({
-    @required this.label,
+    required this.label,
   });
 
   @override
@@ -32,9 +32,9 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
 
 class AccountHeaderStatisticBodyWidget extends StatelessWidget {
   const AccountHeaderStatisticBodyWidget({
-    Key key,
-    @required this.valueString,
-    @required this.label,
+    Key? key,
+    required this.valueString,
+    required this.label,
   }) : super(key: key);
 
   final String valueString;

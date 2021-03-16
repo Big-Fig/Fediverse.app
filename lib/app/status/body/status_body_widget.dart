@@ -55,7 +55,7 @@ class StatusBodyWidget extends StatelessWidget {
 
 class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
   const _StatusBodyChildWithWarningsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -96,7 +96,7 @@ class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
 
 class _StatusBodyWithoutContentWidget extends StatelessWidget {
   const _StatusBodyWithoutContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -122,8 +122,8 @@ class _StatusBodyContentWidget extends StatelessWidget {
   final bool showSpoiler;
 
   const _StatusBodyContentWidget({
-    Key key,
-    @required this.showSpoiler,
+    Key? key,
+    required this.showSpoiler,
   }) : super(key: key);
 
   @override
@@ -159,20 +159,20 @@ class _StatusBodyContentWidget extends StatelessWidget {
 
 class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
   const _StatusBodyContentMediaAttachmentsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
+    return StreamBuilder<List<IPleromaMediaAttachment>?>(
       stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return Provider<List<IPleromaMediaAttachment>>.value(
+          return Provider<List<IPleromaMediaAttachment>?>.value(
             value: mediaAttachments,
             child: DisposableProxyProvider<List<IPleromaMediaAttachment>,
                 IMediaAttachmentListBloc>(
@@ -193,11 +193,11 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
 
 class _StatusBodyPollWidget extends StatelessWidget {
   const _StatusBodyPollWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc>(
+  Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc?>(
         update: (context, statusBloc, _) => statusBloc.pollBloc,
         child: PollWidget(),
       );
@@ -205,13 +205,13 @@ class _StatusBodyPollWidget extends StatelessWidget {
 
 class _StatusBodyCardWidget extends StatelessWidget {
   const _StatusBodyCardWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<IPleromaCard>(
+    return StreamBuilder<IPleromaCard?>(
         stream: statusBloc.reblogOrOriginalCardStream,
         builder: (context, snapshot) {
           var card = snapshot.data;
@@ -229,7 +229,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
 
 class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
   const _StatusBodyCollapsibleButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -257,7 +257,7 @@ class _StatusBodyCollapsibleButtonWidget extends StatelessWidget {
 
 class _StatusBodySpoilerChipWidget extends StatelessWidget {
   const _StatusBodySpoilerChipWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -273,7 +273,7 @@ class _StatusBodySpoilerChipWidget extends StatelessWidget {
 
 class _StatusBodyChipsWidget extends StatelessWidget {
   const _StatusBodyChipsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -300,7 +300,7 @@ class _StatusBodyChipsWidget extends StatelessWidget {
 
 class _StatusBodyNsfwChipWidget extends StatelessWidget {
   const _StatusBodyNsfwChipWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -332,7 +332,7 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<EmojiText>(
+    return StreamBuilder<EmojiText?>(
         stream: statusBloc.contentWithEmojisStream.distinct(),
         initialData: statusBloc.contentWithEmojis,
         builder: (context, snapshot) {
@@ -341,7 +341,7 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
           _logger.finest(() => "contentWithEmojis $contentWithEmojis");
 
           if (contentWithEmojis?.text?.isNotEmpty == true) {
-            return Provider<EmojiText>.value(
+            return Provider<EmojiText?>.value(
               value: contentWithEmojis,
               child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
             );
@@ -354,7 +354,7 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
 
 class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
   const _StatusBodyContentWithEmojisCollapsibleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -390,7 +390,7 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
 
 class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
   const _StatusBodyContentWithEmojisHtmlTextWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -401,7 +401,7 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
 
     var uiSettingsBloc = IUiSettingsBloc.of(context);
 
-    return StreamBuilder<UiSettingsFontSize>(
+    return StreamBuilder<UiSettingsFontSize?>(
         stream: uiSettingsBloc.statusFontSizeStream,
         builder: (context, snapshot) {
           var statusFontSize = snapshot.data;

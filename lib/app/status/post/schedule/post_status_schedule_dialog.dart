@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
 void showPostStatusScheduleDialog({
-  @required BuildContext context,
-  @required IPostStatusBloc postStatusBloc,
+  required BuildContext context,
+  required IPostStatusBloc postStatusBloc,
 }) async {
   var newTime = await showStatusDateTimePickerDialog(
     context: context,
@@ -21,8 +21,7 @@ void showPostStatusScheduleDialog({
   var now = DateTime.now();
   var minDateTimeToSchedule =
       now.add(IPostStatusBloc.requiredDurationToSelectDateTime);
-  var beforeMinDateTimeToSchedule = newTime.isBefore(minDateTimeToSchedule);
-  if (newTime != null && beforeMinDateTimeToSchedule) {
+  if (newTime != null && newTime.isBefore(minDateTimeToSchedule)) {
     await FediSimpleAlertDialog(
       context: context,
       title:

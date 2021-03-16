@@ -5,13 +5,13 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:moor/moor.dart';
 
 class AccountRepositoryFilters {
-  final IConversationChat onlyInConversation;
-  final IPleromaChat onlyInChat;
-  final IStatus onlyInStatusRebloggedBy;
-  final IStatus onlyInStatusFavouritedBy;
-  final IAccount onlyInAccountFollowers;
-  final IAccount onlyInAccountFollowing;
-  final String searchQuery;
+  final IConversationChat? onlyInConversation;
+  final IPleromaChat? onlyInChat;
+  final IStatus? onlyInStatusRebloggedBy;
+  final IStatus? onlyInStatusFavouritedBy;
+  final IAccount? onlyInAccountFollowers;
+  final IAccount? onlyInAccountFollowing;
+  final String? searchQuery;
 
   AccountRepositoryFilters({
     this.onlyInConversation,
@@ -24,14 +24,14 @@ class AccountRepositoryFilters {
   });
 
   static AccountRepositoryFilters createForOnlyInConversation({
-    @required IConversationChat conversation,
+    required IConversationChat? conversation,
   }) =>
       AccountRepositoryFilters(
         onlyInConversation: conversation,
       );
 
   static AccountRepositoryFilters createForOnlyInChat({
-    @required IPleromaChat chat,
+    required IPleromaChat chat,
   }) =>
       AccountRepositoryFilters(
         onlyInChat: chat,
@@ -94,8 +94,8 @@ class AccountRepositoryOrderingTermData {
   );
 
   const AccountRepositoryOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   @override

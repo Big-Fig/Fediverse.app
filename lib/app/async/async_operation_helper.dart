@@ -14,15 +14,15 @@ class AsyncOperationHelper {
     timeoutErrorAlertDialogBuilder
   ];
 
-  static Future<AsyncDialogResult<T>> performAsyncOperation<T>({
-    @required BuildContext context,
-    @required Future<T> asyncCode(),
-    String contentMessage,
+  static Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+    required BuildContext context,
+    required Future<T> asyncCode(),
+    String? contentMessage,
     List<ErrorDataBuilder> errorDataBuilders = defaultErrorDataBuilders,
     bool createDefaultErrorDataUnhandledError = true,
     bool showNotificationOnError = true,
     bool showProgressDialog = true,
-    ErrorCallback errorCallback,
+    ErrorCallback? errorCallback,
     bool cancelable = false,
   }) =>
       doAsyncOperationWithDialog(
@@ -33,7 +33,7 @@ class AsyncOperationHelper {
             errorCallback(context, errorData);
           }
           if (showNotificationOnError) {
-            IToastService.of(context, listen: false).showErrorToast(
+            IToastService.of(context!, listen: false).showErrorToast(
               context: context,
               title: errorData.titleCreator(context),
               content: errorData.contentCreator(context),
@@ -48,8 +48,8 @@ class AsyncOperationHelper {
         cancelable: cancelable,
       );
 
-  static ErrorData socketErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? socketErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {
@@ -67,8 +67,8 @@ class AsyncOperationHelper {
     }
   }
 
-  static ErrorData timeoutErrorAlertDialogBuilder(
-    BuildContext context,
+  static ErrorData? timeoutErrorAlertDialogBuilder(
+    BuildContext? context,
     dynamic error,
     StackTrace stackTrace,
   ) {

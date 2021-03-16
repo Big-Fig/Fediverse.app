@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MultiSelectAccountWidget extends StatelessWidget {
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const MultiSelectAccountWidget({
     this.header,
@@ -41,7 +41,7 @@ class MultiSelectAccountWidget extends StatelessWidget {
 
 class _MultiSelectAccountItemActionWidget extends StatelessWidget {
   const _MultiSelectAccountItemActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

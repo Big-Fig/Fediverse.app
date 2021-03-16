@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MediaAttachmentImageWidget extends StatelessWidget {
-  final double maxHeight;
+  final double? maxHeight;
 
   const MediaAttachmentImageWidget({this.maxHeight});
 
@@ -27,7 +27,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
         imageBuilder: (context, imageProvider) {
           if (maxHeight != null) {
             return LimitedBox(
-              maxHeight: maxHeight,
+              maxHeight: maxHeight!,
               child: Image(
                 fit: BoxFit.cover,
                 image: imageProvider,
@@ -49,7 +49,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
 
 class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
   const _MediaAttachmentImageLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
 
 class _MediaAttachmentImageErrorWidget extends StatelessWidget {
   const _MediaAttachmentImageErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

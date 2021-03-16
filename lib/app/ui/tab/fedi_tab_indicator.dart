@@ -22,23 +22,19 @@ class FediTabIndicator extends Decoration {
 
   const FediTabIndicator({
     this.indicatorHeight = 20.0,
-    @required this.indicatorColor,
+    required this.indicatorColor,
     this.indicatorRadius = 100.0,
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
     this.padding = FediPadding.horizontalSmallPadding,
     this.insets = FediPadding.horizontalSmallPadding,
-  })  : assert(indicatorHeight != null),
-        assert(indicatorColor != null),
-        assert(indicatorRadius != null),
-        assert(padding != null),
-        assert(insets != null);
+  });
 
   @override
-  Decoration lerpFrom(Decoration a, double t) {
+  Decoration? lerpFrom(Decoration? a, double t) {
     if (a is FediTabIndicator) {
       return FediTabIndicator(
-        padding: EdgeInsetsGeometry.lerp(a.padding, padding, t),
-        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t),
+        padding: EdgeInsetsGeometry.lerp(a.padding, padding, t)!,
+        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t)!,
         indicatorColor: a.indicatorColor,
         indicatorHeight: a.indicatorHeight,
         indicatorRadius: a.indicatorRadius,
@@ -49,11 +45,11 @@ class FediTabIndicator extends Decoration {
   }
 
   @override
-  Decoration lerpTo(Decoration b, double t) {
+  Decoration? lerpTo(Decoration? b, double t) {
     if (b is FediTabIndicator) {
       return FediTabIndicator(
-        padding: EdgeInsetsGeometry.lerp(padding, b.padding, t),
-        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t),
+        padding: EdgeInsetsGeometry.lerp(padding, b.padding, t)!,
+        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t)!,
         indicatorColor: b.indicatorColor,
         indicatorHeight: b.indicatorHeight,
         indicatorRadius: b.indicatorRadius,
@@ -64,15 +60,13 @@ class FediTabIndicator extends Decoration {
   }
 
   @override
-  _BubblePainter createBoxPainter([VoidCallback onChanged]) {
+  _BubblePainter createBoxPainter([VoidCallback? onChanged]) {
     return _BubblePainter(this, onChanged);
   }
 }
 
 class _BubblePainter extends BoxPainter {
-  _BubblePainter(this.decoration, VoidCallback onChanged)
-      : assert(decoration != null),
-        super(onChanged);
+  _BubblePainter(this.decoration, VoidCallback? onChanged) : super(onChanged);
 
   final FediTabIndicator decoration;
 
@@ -89,9 +83,6 @@ class _BubblePainter extends BoxPainter {
   TabBarIndicatorSize get tabBarIndicatorSize => decoration.tabBarIndicatorSize;
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    assert(rect != null);
-    assert(textDirection != null);
-
     Rect indicator = padding.resolve(textDirection).inflateRect(rect);
 
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
@@ -116,12 +107,11 @@ class _BubblePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    assert(configuration != null);
     assert(configuration.size != null);
     final Rect rect = Offset(
-            offset.dx, (configuration.size.height / 2) - indicatorHeight / 2) &
-        Size(configuration.size.width, indicatorHeight);
-    final TextDirection textDirection = configuration.textDirection;
+            offset.dx, (configuration.size!.height / 2) - indicatorHeight / 2) &
+        Size(configuration.size!.width, indicatorHeight);
+    final TextDirection textDirection = configuration.textDirection!;
     final Rect indicator = _indicatorRectFor(rect, textDirection);
     final Paint paint = Paint();
     paint.color = indicatorColor;

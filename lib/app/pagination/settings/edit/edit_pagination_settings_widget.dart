@@ -8,7 +8,7 @@ class EditPaginationSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditPaginationSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -24,13 +24,13 @@ class EditPaginationSettingsWidget extends StatelessWidget {
 
 class _EditPaginationSettingsPageSizeFieldWidget extends StatelessWidget {
   const _EditPaginationSettingsPageSizeFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IEditPaginationSettingsBloc,
-          IPaginationPageSizeSingleFromListValueFormFieldBloc>(
+          IPaginationPageSizeSingleFromListValueFormFieldBloc?>(
         update: (context, value, previous) => value.pageSizeFieldBloc,
         child: const PaginationPageSizeSingleFromListValueFormFieldRowWidget(),
       );

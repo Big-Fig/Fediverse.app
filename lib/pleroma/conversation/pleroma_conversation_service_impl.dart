@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 class PleromaConversationService extends DisposableOwner
@@ -19,13 +18,12 @@ class PleromaConversationService extends DisposableOwner
   @override
   final IPleromaAuthRestService restService;
 
-
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -39,18 +37,18 @@ class PleromaConversationService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaConversationService({@required this.restService});
+  PleromaConversationService({required this.restService});
 
   @override
-  Future<List<IPleromaStatus>> getConversationStatuses({
-    @required String conversationRemoteId,
-    IPleromaPaginationRequest pagination,
+  Future<List<IPleromaStatus>?> getConversationStatuses({
+    required String? conversationRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var request = RestRequest.get(
       relativePath: join(pleromaConversationRelativeUrlPath,
           conversationRemoteId, conversationStatusesRelativeUrlPath),
       queryArgs: [
-        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
       ],
     );
     var httpResponse = await restService.sendHttpRequest(request);
@@ -73,8 +71,8 @@ class PleromaConversationService extends DisposableOwner
   }
 
   @override
-  Future<IPleromaConversation> getConversation({
-    @required String conversationRemoteId,
+  Future<IPleromaConversation?> getConversation({
+    required String? conversationRemoteId,
   }) async {
     var request = RestRequest.get(
       relativePath: join(
@@ -103,19 +101,19 @@ class PleromaConversationService extends DisposableOwner
 
   @override
   Future<List<IPleromaConversation>> getConversations({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
     // pleroma only recipients
-    List<String> recipientsIds,
+    List<String>? recipientsIds,
   }) async {
     var queryArgs = [
-      ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
+      ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
     ];
 
     if (recipientsIds?.isNotEmpty == true) {
       // array
       // todo: pleroma only
       queryArgs.addAll(
-        recipientsIds?.map(
+        recipientsIds!.map(
           (id) => RestRequestQueryArg(
             "recipients[]",
             id,
@@ -139,7 +137,7 @@ class PleromaConversationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaConversationException(
         statusCode: httpResponse.statusCode,
@@ -150,7 +148,7 @@ class PleromaConversationService extends DisposableOwner
 
   @override
   Future<bool> deleteConversation({
-    @required String conversationRemoteId,
+    required String? conversationRemoteId,
   }) async {
     var request = RestRequest.delete(
       relativePath: join(
@@ -179,7 +177,7 @@ class PleromaConversationService extends DisposableOwner
 
   @override
   Future<IPleromaConversation> markConversationAsRead({
-    @required String conversationRemoteId,
+    required String conversationRemoteId,
   }) async {
     var request = RestRequest.post(
       relativePath: join(
@@ -198,7 +196,7 @@ class PleromaConversationService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaConversationException(
         statusCode: httpResponse.statusCode,

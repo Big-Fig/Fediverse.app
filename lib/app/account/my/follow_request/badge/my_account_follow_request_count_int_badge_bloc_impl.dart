@@ -9,11 +9,11 @@ class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
 
   MyAccountFollowRequestCountIntBadgeBloc({
-    @required this.myAccountBloc,
+    required this.myAccountBloc,
   });
 
   @override
-  Stream<int> get badgeStream => myAccountBloc.followRequestsCountStream;
+  Stream<int?> get badgeStream => myAccountBloc.followRequestsCountStream;
 
   static MyAccountFollowRequestCountIntBadgeBloc createFromContext(
     BuildContext context,
@@ -25,7 +25,7 @@ class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IFediIntBadgeBloc>(
       create: (context) =>

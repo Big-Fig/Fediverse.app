@@ -23,11 +23,11 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner implements ID
   final IMediaDeviceFilePaginationListBloc filesPaginationListBloc;
 
   MediaDeviceGallerySelectedFolderData({
-    @required this.folder,
-    @required this.folderBloc,
-    @required this.filesListBloc,
-    @required this.filesPaginationBloc,
-    @required this.filesPaginationListBloc,
+    required this.folder,
+    required this.folderBloc,
+    required this.filesListBloc,
+    required this.filesPaginationBloc,
+    required this.filesPaginationListBloc,
   });
 
   @override
@@ -63,15 +63,15 @@ abstract class IMediaDeviceGalleryBloc
 
   Stream<MediaDeviceGalleryState> get galleryStateStream;
 
-  MediaDeviceGalleryState get galleryState;
+  MediaDeviceGalleryState? get galleryState;
 
   Stream<List<IMediaDeviceFolder>> get foldersStream;
 
-  List<IMediaDeviceFolder> get folders;
+  List<IMediaDeviceFolder>? get folders;
 
-  MediaDeviceGallerySelectedFolderData get selectedFolderData;
+  MediaDeviceGallerySelectedFolderData? get selectedFolderData;
 
-  Stream<MediaDeviceGallerySelectedFolderData> get selectedFolderDataStream;
+  Stream<MediaDeviceGallerySelectedFolderData?> get selectedFolderDataStream;
 
   Future selectFolder(IMediaDeviceFolder folder);
 

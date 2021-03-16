@@ -4,9 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageBloc implements IChatMessageBloc {
-  static IPleromaChatMessageBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaChatMessageBloc>(context, listen: listen);
+  static IPleromaChatMessageBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaChatMessageBloc>(
+        context,
+        listen: listen,
+      );
 
   @override
   IPleromaChatMessage get chatMessage;

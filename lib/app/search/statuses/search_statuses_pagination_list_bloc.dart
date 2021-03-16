@@ -11,8 +11,8 @@ class SearchStatusesPaginationListBloc
   final ISearchInputBloc searchInputBloc;
 
   SearchStatusesPaginationListBloc({
-    @required this.searchInputBloc,
-    @required IPaginationBloc<PaginationPage<IStatus>, IStatus> paginationBloc,
+    required this.searchInputBloc,
+    required IPaginationBloc<PaginationPage<IStatus>, IStatus> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(
       streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(

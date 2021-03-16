@@ -28,13 +28,13 @@ class StatusFavouriteActionWidget extends StatelessWidget {
 
 class _StatusFavouriteActionButtonWidget extends StatelessWidget {
   const _StatusFavouriteActionButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: statusBloc.favouritedStream,
         initialData: statusBloc.favourited,
         builder: (context, snapshot) {
@@ -43,7 +43,7 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
               showProgressDialog: false,
               builder: (context, onPressed) => FediIconButton(
                     iconSize: FediSizes.bigIconSize,
-                    color: favourited
+                    color: favourited!
                         ? IFediUiColorTheme.of(context).secondary
                         : IFediUiColorTheme.of(context).darkGrey,
                     icon: favourited
@@ -58,13 +58,13 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
 
 class _StatusFavouriteActionCounterWidget extends StatelessWidget {
   const _StatusFavouriteActionCounterWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
       builder: (context, snapshot) {
         var favouritesCount = snapshot.data;

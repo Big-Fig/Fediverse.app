@@ -13,12 +13,12 @@ abstract class IMyAccountAccountMuteNetworkOnlyAccountListBloc
           listen: listen);
 
   Future changeAccountMute({
-    @required IAccount account,
-    @required bool notifications,
-    @required Duration duration,
+    required IAccount? account,
+    required bool notifications,
+    required Duration? duration,
   });
 
-  Future removeAccountMute({@required IAccount account});
+  Future removeAccountMute({required IAccount? account});
 
-  Future addAccountMute({@required IAccount account});
+  Future addAccountMute({required IAccount account});
 }

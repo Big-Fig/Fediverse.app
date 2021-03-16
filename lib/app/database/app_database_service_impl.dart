@@ -22,15 +22,15 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   final String dbName;
 
   AppDatabaseService({
-    @required this.dbName,
+    required this.dbName,
   });
 
-  AppDatabase appDatabase;
+  late AppDatabase appDatabase;
 
-  MoorInspector inspector;
+  late MoorInspector inspector;
 
-  String filePath;
-  File file;
+  late String filePath;
+  late File file;
 
   @override
   Future<int> calculateSizeInBytes() => file.length();
@@ -124,14 +124,14 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DateTime> calculateOldestEntryAge() async {
+  Future<DateTime?> calculateOldestEntryAge() async {
     var oldestStatus = await appDatabase.statusDao.oldest().getSingle();
     var oldestNotification =
         await appDatabase.notificationDao.oldest().getSingle();
     var oldestChatMessage =
         await appDatabase.chatMessageDao.oldest().getSingle();
 
-    var dateTimes = <DateTime>[
+    var dateTimes = <DateTime?>[
       oldestStatus?.createdAt,
       oldestNotification?.createdAt,
       oldestChatMessage?.createdAt,
@@ -140,7 +140,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     var oldestDateTime;
     if (dateTimes.isNotEmpty) {
       oldestDateTime = dateTimes.reduce(
-          (value, element) => value.isBefore(element) ? value : element);
+          (value, element) => value!.isBefore(element!) ? value : element);
     }
 
     return oldestDateTime;
@@ -156,8 +156,8 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future clearByLimits({
-    @required Duration ageLimit,
-    @required int entriesCountByTypeLimit,
+    required Duration? ageLimit,
+    required int? entriesCountByTypeLimit,
   }) async {
     _logger.finest(() => "clearByLimits \n"
         "ageLimit $ageLimit \n"
@@ -181,7 +181,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
             .getSingle();
         if (oldestAccountToStartToDelete != null) {
           await appDatabase.accountDao
-              .deleteOlderThanLocalId(oldestAccountToStartToDelete.id);
+              .deleteOlderThanLocalId(oldestAccountToStartToDelete.id!);
         }
       }
 
@@ -192,7 +192,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
             .getSingle();
         if (oldestStatusToStartToDelete != null) {
           await appDatabase.statusDao
-              .deleteOlderThanLocalId(oldestStatusToStartToDelete.id);
+              .deleteOlderThanLocalId(oldestStatusToStartToDelete.id!);
         }
       }
 
@@ -204,7 +204,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
             .getSingle();
         if (oldestNotificationToStartToDelete != null) {
           await appDatabase.notificationDao
-              .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id);
+              .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id!);
         }
       }
 
@@ -215,7 +215,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
             .getSingle();
         if (oldestChatMessageToStartToDelete != null) {
           await appDatabase.chatMessageDao
-              .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id);
+              .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id!);
         }
       }
     }

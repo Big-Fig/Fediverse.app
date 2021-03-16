@@ -1,15 +1,14 @@
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:flutter/material.dart';
 
 class AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType>
+    extends SingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType?>
     implements IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc {
   AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc({
     bool isNullValuePossible = false,
-    @required FilesCacheAgeLimitType originValue,
+    required FilesCacheAgeLimitType? originValue,
     bool isEnabled = true,
     List<FormValueFieldValidation<FilesCacheAgeLimitType>> validators =
         const [],

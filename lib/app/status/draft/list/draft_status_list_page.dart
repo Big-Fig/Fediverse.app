@@ -25,7 +25,7 @@ class DraftStatusListPage extends StatelessWidget {
     );
   }
 
-  const DraftStatusListPage({Key key}) : super(key: key);
+  const DraftStatusListPage({Key? key}) : super(key: key);
 }
 
 class _DraftStatusListPageEmptyWidget extends StatelessWidget {

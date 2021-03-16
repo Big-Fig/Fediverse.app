@@ -20,13 +20,14 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/validation/value_form_field_non_null_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
-import 'package:flutter/widgets.dart';
 
 class EditTimelineSettingsBloc
-    extends EditInstanceSettingsBloc<TimelineSettings>
+    extends EditInstanceSettingsBloc<TimelineSettings?>
     implements IEditTimelineSettingsBloc {
   final AuthInstance authInstance;
   @override
@@ -84,13 +85,13 @@ class EditTimelineSettingsBloc
   final IStringValueFormFieldBloc onlyFromInstanceFieldBloc;
 
   EditTimelineSettingsBloc({
-    @required this.settingsBloc,
-    @required this.timelineType,
-    @required this.authInstance,
-    @required this.isNullableValuesPossible,
-    @required bool isEnabled,
-    @required this.webSocketsSettingsBloc,
-  })  : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
+    required this.settingsBloc,
+    required this.timelineType,
+    required this.authInstance,
+    required this.isNullableValuesPossible,
+    required bool isEnabled,
+    required this.webSocketsSettingsBloc,
+  })   : excludeRepliesFieldBloc = BoolValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.excludeReplies ?? false,
           isEnabled: timelineType
               .isExcludeRepliesFilterSupportedOnInstance(authInstance),
@@ -181,10 +182,10 @@ class EditTimelineSettingsBloc
         ),
         webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
           originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
-              webSocketsSettingsBloc.handlingType.isEnabled,
+              webSocketsSettingsBloc.handlingType!.isEnabled,
           isEnabled: timelineType
                   .isWebSocketsUpdatesFilterSupportedOnInstance(authInstance) &&
-              webSocketsSettingsBloc.handlingType.isEnabled,
+              webSocketsSettingsBloc.handlingType!.isEnabled,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
           originValue: settingsBloc.settingsData?.onlyFromInstance,
@@ -242,8 +243,8 @@ class EditTimelineSettingsBloc
     var oldOnlyRemote = oldPreferences?.onlyRemote;
     var oldOnlyLocal = oldPreferences?.onlyLocal;
 
-    var newOnlyRemote = onlyRemoteFieldBloc.currentValue;
-    var newOnlyLocal = onlyLocalFieldBloc.currentValue;
+    bool? newOnlyRemote = onlyRemoteFieldBloc.currentValue;
+    bool? newOnlyLocal = onlyLocalFieldBloc.currentValue;
 
     if (newOnlyLocal == true && oldOnlyLocal == false) {
       onlyFromInstanceExist = false;
@@ -271,13 +272,13 @@ class EditTimelineSettingsBloc
       onlyLocal: newOnlyLocal,
       withMuted: withMutedFieldBloc.currentValue,
       excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-          ?.map((visibility) => visibility.toJsonValue())
-          ?.toList(),
-      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue,
+          ?.toPleromaVisibilityStrings(),
+      onlyInRemoteList: onlyInCustomListFieldBloc.currentValue?.toPleromaList(),
       withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
       replyVisibilityFilterString:
           replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
-      onlyFromRemoteAccount: onlyFromAccountFieldBloc.currentValue,
+      onlyFromRemoteAccount:
+          onlyFromAccountFieldBloc.currentValue?.toPleromaAccount(),
       excludeReblogs: excludeReblogsFieldBloc.currentValue,
       onlyPinned: onlyPinnedFieldBloc.currentValue,
       webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue,
@@ -286,7 +287,7 @@ class EditTimelineSettingsBloc
   }
 
   @override
-  Future fillSettingsToFormFields(TimelineSettings settings) async {
+  Future fillSettingsToFormFields(TimelineSettings? settings) async {
     if (settings == null) {
       return;
     }

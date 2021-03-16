@@ -28,7 +28,7 @@ class UploadMediaAttachmentListNonMediaItemWidget extends StatefulWidget {
 
 class _UploadMediaAttachmentListNonMediaItemWidgetState
     extends State<UploadMediaAttachmentListNonMediaItemWidget> {
-  StreamSubscription streamSubscription;
+  StreamSubscription? streamSubscription;
 
   @override
   void didChangeDependencies() {
@@ -60,13 +60,13 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
         var uploadState = snapshot.data;
         return FutureBuilder(
           future: mediaItemBloc.calculateFilePath(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
             var filePath = snapshot.data;
             var isUploaded =
                 uploadState?.type == UploadMediaAttachmentStateType.uploaded;
 
             if (isUploaded) {
-              return Provider<String>.value(
+              return Provider<String?>.value(
                 value: filePath,
                 child: DisposableProxyProvider<String, IMediaFilePathBloc>(
                   update: (context, filePath, _) =>
@@ -103,47 +103,45 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
 class _UploadMediaAttachmentListNonMediaItemActionsWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemActionsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mediaItemBloc = IUploadMediaAttachmentBloc.of(context);
-    return StreamBuilder<UploadMediaAttachmentState>(
-        stream: mediaItemBloc.uploadStateStream,
-        initialData: mediaItemBloc.uploadState,
-        builder: (context, snapshot) {
-          var uploadState = snapshot.data;
+    return StreamBuilder<UploadMediaAttachmentState?>(
+      stream: mediaItemBloc.uploadStateStream,
+      initialData: mediaItemBloc.uploadState,
+      builder: (context, snapshot) {
+        var uploadState = snapshot.data;
 
-          switch (
-              uploadState.type ?? UploadMediaAttachmentStateType.uploading) {
-            case UploadMediaAttachmentStateType.uploading:
-              return const _UploadMediaAttachmentListNonMediaItemLoadingWidget();
-              break;
-            case UploadMediaAttachmentStateType.notUploaded:
-            case UploadMediaAttachmentStateType.uploaded:
-              return const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
-            case UploadMediaAttachmentStateType.failed:
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
-                  const FediSmallHorizontalSpacer(),
-                  const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
-                ],
-              );
-            default:
-              throw "Invalid state uploadState ${uploadState}";
-              break;
-          }
-        });
+        switch (uploadState?.type ?? UploadMediaAttachmentStateType.uploading) {
+          case UploadMediaAttachmentStateType.uploading:
+            return const _UploadMediaAttachmentListNonMediaItemLoadingWidget();
+          case UploadMediaAttachmentStateType.notUploaded:
+          case UploadMediaAttachmentStateType.uploaded:
+            return const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget();
+          case UploadMediaAttachmentStateType.failed:
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
+                const FediSmallHorizontalSpacer(),
+                const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
+              ],
+            );
+          default:
+            throw "Invalid state uploadState ${uploadState}";
+        }
+      },
+    );
   }
 }
 
 class _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -159,7 +157,7 @@ class _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget
 class _UploadMediaAttachmentListNonMediaItemLoadingWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -182,7 +180,7 @@ class _UploadMediaAttachmentListNonMediaItemLoadingWidget
 class _UploadMediaAttachmentListNonMediaItemErrorWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListNonMediaItemErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

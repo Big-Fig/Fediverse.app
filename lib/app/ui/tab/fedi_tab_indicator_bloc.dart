@@ -16,7 +16,7 @@ abstract class IFediTabIndicatorBloc<T> implements IDisposable {
 
   Stream<T> get selectedItemStream;
 
-  int get selectedIndex;
+  int? get selectedIndex;
 
   Stream<int> get selectedIndexStream;
 

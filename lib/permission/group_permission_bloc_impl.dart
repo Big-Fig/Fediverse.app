@@ -9,18 +9,18 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
   GroupPermissionBloc(this.permissionBlocs);
 
   @override
-  Stream<bool> get permissionGrantedStream =>
+  Stream<bool?> get permissionGrantedStream =>
       permissionStatusStream.map(IPermissionBloc.mapPermissionStatusToBool);
 
   @override
-  bool get permissionGranted =>
+  bool? get permissionGranted =>
       IPermissionBloc.mapPermissionStatusToBool(permissionStatus);
 
   // ignore: close_sinks
   BehaviorSubject<PermissionStatus> permissionStatusSubject = BehaviorSubject();
 
   @override
-  PermissionStatus get permissionStatus => permissionStatusSubject.value;
+  PermissionStatus? get permissionStatus => permissionStatusSubject.value;
 
   @override
   Stream<PermissionStatus> get permissionStatusStream =>
@@ -28,7 +28,7 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
 
   @override
   Future<PermissionStatus> requestPermission() async {
-    var permissionStatuses = <PermissionStatus>[];
+    var permissionStatuses = <PermissionStatus?>[];
     for (var permissionBloc in permissionBlocs) {
       permissionStatuses.add(await permissionBloc.requestPermission());
     }
@@ -37,10 +37,10 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
   }
 
   PermissionStatus _onPermissionStatusesChanged(
-      List<PermissionStatus> permissionStatuses) {
+      List<PermissionStatus?> permissionStatuses) {
     var allGranted = true;
     for (var permissionStatus in permissionStatuses) {
-      allGranted &= IPermissionBloc.mapPermissionStatusToBool(permissionStatus);
+      allGranted &= IPermissionBloc.mapPermissionStatusToBool(permissionStatus)!;
       if (!allGranted) {
         break;
       }

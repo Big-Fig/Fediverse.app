@@ -4,7 +4,6 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,21 +15,21 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
     implements ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc {
   final IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc;
 
-  final BehaviorSubject<bool> currentValueSubject;
+  final BehaviorSubject<bool?> currentValueSubject;
 
-  final BehaviorSubject<GlobalOrInstanceSettingsType>
+  final BehaviorSubject<GlobalOrInstanceSettingsType?>
       globalOrInstanceSettingsTypeSubject;
 
   @override
-  GlobalOrInstanceSettingsType get globalOrInstanceSettingsType =>
+  GlobalOrInstanceSettingsType? get globalOrInstanceSettingsType =>
       globalOrInstanceSettingsTypeSubject.value;
 
   @override
-  Stream<GlobalOrInstanceSettingsType> get globalOrInstanceSettingsTypeStream =>
+  Stream<GlobalOrInstanceSettingsType?> get globalOrInstanceSettingsTypeStream =>
       globalOrInstanceSettingsTypeSubject.stream;
 
   SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc({
-    @required this.globalOrInstanceSettingsBloc,
+    required this.globalOrInstanceSettingsBloc,
     bool isEnabled = true,
   })  : currentValueSubject =
             BehaviorSubject.seeded(globalOrInstanceSettingsBloc.isGlobal),
@@ -44,12 +43,12 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   }
 
   @override
-  void changeCurrentValue(bool newValue) async {
+  void changeCurrentValue(bool? newValue) async {
     var oldValue = currentValue;
     _logger.finest(() => "changeCurrentValue $newValue oldValue $oldValue");
 
     if (newValue != oldValue) {
-      if (newValue) {
+      if (newValue!) {
         globalOrInstanceSettingsTypeSubject.add(null);
         await globalOrInstanceSettingsBloc.cloneGlobalToInstanceSettings();
         await globalOrInstanceSettingsBloc.clearInstanceSettings();
@@ -80,10 +79,10 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   }
 
   @override
-  bool get currentValue => currentValueSubject.value;
+  bool? get currentValue => currentValueSubject.value;
 
   @override
-  Stream<bool> get currentValueStream => currentValueSubject.stream;
+  Stream<bool?> get currentValueStream => currentValueSubject.stream;
 
   @override
   List<FormItemValidationError> get errors => [];

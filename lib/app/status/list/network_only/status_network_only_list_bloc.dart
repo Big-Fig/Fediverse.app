@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusNetworkOnlyListBloc extends DisposableOwner
-    implements INetworkOnlyListBloc<IStatus>, IStatusListBloc {
+    implements INetworkOnlyListBloc<IStatus?>, IStatusListBloc {
   static IStatusNetworkOnlyListBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IStatusNetworkOnlyListBloc>(context, listen: listen);

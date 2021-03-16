@@ -5,7 +5,6 @@ import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 class PleromaAuthRestService extends PleromaRestService
@@ -16,13 +15,13 @@ class PleromaAuthRestService extends PleromaRestService
   @override
   final bool isPleroma;
 
-  final String accessToken;
+  final String? accessToken;
 
   PleromaAuthRestService({
-    @required IRestService restService,
-    @required IConnectionService connectionService,
-    @required this.isPleroma,
-    @required this.accessToken,
+    required IRestService restService,
+    required IConnectionService connectionService,
+    required this.isPleroma,
+    required this.accessToken,
   }) : super(
           restService: restService,
           connectionService: connectionService,
@@ -33,7 +32,7 @@ class PleromaAuthRestService extends PleromaRestService
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {
-    request.headers.addAll(createAuthHeaders());
+    request.headers!.addAll(createAuthHeaders());
     return super.sendHttpRequest(request);
   }
 
@@ -41,10 +40,10 @@ class PleromaAuthRestService extends PleromaRestService
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
           T request) {
-    request.headers.addAll(createAuthHeaders());
+    request.headers!.addAll(createAuthHeaders());
     return super.uploadFileMultipartRequest(request);
   }
 
   @override
-  bool get isMastodon => !isPleroma;
+  bool get isMastodon => !isPleroma!;
 }

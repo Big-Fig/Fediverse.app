@@ -15,12 +15,12 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
   final double borderWidth;
   final IconData icon;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   const FediTransparentIconTextButtonWithBorder(
     this.text,
     this.icon, {
-    @required this.onPressed,
+    required this.onPressed,
     this.height = FediSizes.textButtonHeight,
     this.borderWidth = 1,
     this.textStyle,
@@ -66,7 +66,7 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
                           text,
                           textAlign: TextAlign.center,
                           style: textStyle.copyWith(
-                            color: textStyle.color.withOpacity(0.8),
+                            color: textStyle.color!.withOpacity(0.8),
                           ),
                         ),
                       ],

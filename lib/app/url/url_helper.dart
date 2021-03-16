@@ -26,8 +26,8 @@ class UrlHelper {
     ..._pleromaTagUrlParts,
   ];
 
-  static String extractHashtagFromTagUrlIfExist(String url) {
-    String hashtag;
+  static String? extractHashtagFromTagUrlIfExist(String url) {
+    String? hashtag;
 
     url = url.toLowerCase();
 
@@ -47,9 +47,9 @@ class UrlHelper {
   }
 
   static Future handleUrlClickWithInstanceLocation({
-    @required BuildContext context,
-    @required String url,
-    @required IInstanceLocationBloc instanceLocationBloc,
+    required BuildContext context,
+    required String url,
+    required IInstanceLocationBloc instanceLocationBloc,
   }) async {
     var isLocal =
         instanceLocationBloc.instanceLocation == InstanceLocation.local;
@@ -72,7 +72,7 @@ class UrlHelper {
       var currentAuthInstanceBloc =
           ICurrentAuthInstanceBloc.of(context, listen: false);
 
-      var localInstanceDomain = currentAuthInstanceBloc.currentInstance.urlHost;
+      var localInstanceDomain = currentAuthInstanceBloc.currentInstance!.urlHost;
 
       if (isLocal) {
         // status or account note with hashtag fetched from local instance
@@ -86,7 +86,7 @@ class UrlHelper {
             context: context,
             url: url,
             remoteInstanceDomain: urlHost,
-            localInstanceDomain: localInstanceDomain,
+            localInstanceDomain: localInstanceDomain!,
             hashtag: hashtag,
           );
         } else {
@@ -102,14 +102,14 @@ class UrlHelper {
       } else {
         // status or account note with hashtag fetched from remote instance
 
-        var remoteInstanceDomain =
-            instanceLocationBloc.remoteInstanceUriOrNull?.host;
+        String remoteInstanceDomain =
+            instanceLocationBloc.remoteInstanceUriOrNull!.host;
 
         return showRemoteInstanceHashtagActionsDialog(
           context: context,
           url: url,
           remoteInstanceDomain: remoteInstanceDomain,
-          localInstanceDomain: localInstanceDomain,
+          localInstanceDomain: localInstanceDomain!,
           hashtag: hashtag,
         );
       }
@@ -125,7 +125,7 @@ class UrlHelper {
 
   static String _calculateRemoteInstanceAbsoluteUrl(
       IInstanceLocationBloc instanceLocationBloc, String url) {
-    var remoteInstanceUriOrNull = instanceLocationBloc.remoteInstanceUriOrNull;
+    var remoteInstanceUriOrNull = instanceLocationBloc.remoteInstanceUriOrNull!;
 
     var urlHost = remoteInstanceUriOrNull.host;
     var urlSchema = remoteInstanceUriOrNull.scheme;
@@ -139,16 +139,16 @@ class UrlHelper {
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
-    var urlHost = currentAuthInstanceBloc.currentInstance.urlHost;
-    var urlSchema = currentAuthInstanceBloc.currentInstance.urlSchema;
+    var urlHost = currentAuthInstanceBloc.currentInstance!.urlHost;
+    var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
 
     url = "${urlSchema}://$urlHost$url";
     return url;
   }
 
   static Future handleUrlClickOnLocalInstanceLocation({
-    @required BuildContext context,
-    @required String url,
+    required BuildContext context,
+    required String url,
   }) async {
     var uri = Uri.parse(url);
 
@@ -165,8 +165,8 @@ class UrlHelper {
   }
 
   static Future handleUrlClick({
-    @required BuildContext context,
-    @required String url,
+    required BuildContext context,
+    required String url,
   }) async {
     var isCanLaunch = await canLaunch(url);
     _logger.finest(() => "handleUrlClick isCanLaunch $isCanLaunch $url");

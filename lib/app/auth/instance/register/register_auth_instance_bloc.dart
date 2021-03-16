@@ -7,9 +7,14 @@ import 'package:provider/provider.dart';
 
 abstract class IRegisterAuthInstanceBloc
     implements IDisposable, IAsyncInitLoadingBloc {
-  static IRegisterAuthInstanceBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
+  static IRegisterAuthInstanceBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IRegisterAuthInstanceBloc>(
+        context,
+        listen: listen,
+      );
 
   bool get isReadyToSubmit;
 

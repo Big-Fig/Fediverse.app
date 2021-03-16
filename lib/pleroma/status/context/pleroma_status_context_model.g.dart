@@ -8,12 +8,12 @@ part of 'pleroma_status_context_model.dart';
 
 PleromaStatusContext _$PleromaStatusContextFromJson(Map<String, dynamic> json) {
   return PleromaStatusContext(
-    descendants: (json['descendants'] as List)
+    descendants: (json['descendants'] as List?)
         ?.map((e) => e == null
             ? null
             : PleromaStatus.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    ancestors: (json['ancestors'] as List)
+    ancestors: (json['ancestors'] as List?)
         ?.map((e) => e == null
             ? null
             : PleromaStatus.fromJson(e as Map<String, dynamic>))

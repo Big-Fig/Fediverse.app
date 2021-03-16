@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 
 class MediaAttachmentNonMediaWidget extends StatelessWidget {
   final double opacity;
-  final Widget actionsWidget;
+  final Widget? actionsWidget;
 
   // final String filePath;
 
   const MediaAttachmentNonMediaWidget({
     this.opacity = 1.0,
-    @required this.actionsWidget, // @required this.filePath,
+    required this.actionsWidget, // @required this.filePath,
   });
 
   @override

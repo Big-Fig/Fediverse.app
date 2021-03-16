@@ -6,7 +6,6 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_m
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     implements IPleromaChatWithLastMessageRepository {
@@ -14,8 +13,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
   final IPleromaChatMessageRepository chatMessageRepository;
 
   PleromaChatWithLastMessageRepository({
-    @required this.chatRepository,
-    @required this.chatMessageRepository,
+    required this.chatRepository,
+    required this.chatMessageRepository,
   });
 
   @override
@@ -25,8 +24,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<IPleromaChatWithLastMessage>> getChatsWithLastMessage({
-    @required PleromaChatRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChat> pagination,
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat> pagination,
     PleromaChatOrderingTermData orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
   }) async {
@@ -58,8 +57,8 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IPleromaChatWithLastMessage>> watchChatsWithLastMessage({
-    @required PleromaChatRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChat> pagination,
+    required PleromaChatRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChat> pagination,
     PleromaChatOrderingTermData orderingTermData =
         PleromaChatOrderingTermData.updatedAtDesc,
   }) {

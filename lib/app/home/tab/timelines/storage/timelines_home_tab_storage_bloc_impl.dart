@@ -21,18 +21,21 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   final ITimelinesHomeTabStorageLocalPreferencesBloc preferences;
 
   final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
-      BehaviorSubject.seeded(TimelinesHomeTabStorageUiState.view);
+      BehaviorSubject.seeded(
+    TimelinesHomeTabStorageUiState.view,
+  );
 
   @override
-  TimelinesHomeTabStorageUiState get uiState => uiStateSubject.value;
+  TimelinesHomeTabStorageUiState? get uiState => uiStateSubject.value;
+
   @override
   Stream<TimelinesHomeTabStorageUiState> get uiStateStream =>
       uiStateSubject.stream;
 
   TimelinesHomeTabStorageBloc({
-    @required this.preferencesService,
-    @required this.preferences,
-    @required this.authInstance,
+    required this.preferencesService,
+    required this.preferences,
+    required this.authInstance,
   }) {
     addDisposable(
       streamSubscription: timelineIdsStream.listen(
@@ -58,7 +61,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
       await bloc.performAsyncInit();
 
-      var timeline = bloc.value;
+      Timeline timeline = bloc.value!;
       timelines.add(timeline);
       await bloc.dispose();
     }
@@ -67,19 +70,20 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<String> get timelineIds => storage?.timelineIds;
+  List<String> get timelineIds => storage?.timelineIds ?? [];
 
   @override
   Stream<List<String>> get timelineIdsStream =>
-      storageStream.map((storage) => storage?.timelineIds);
+      storageStream.map((storage) => storage?.timelineIds ?? []);
 
   BehaviorSubject<List<Timeline>> timelinesSubject = BehaviorSubject.seeded([]);
 
   @override
-  List<Timeline> get timelines => timelinesSubject.value;
+  List<Timeline> get timelines => timelinesSubject.value ?? [];
 
   @override
   Stream<List<Timeline>> get timelinesStream => timelinesSubject.stream;
+
   @override
   Stream<List<Timeline>> get timelinesDistinctStream =>
       timelinesStream.distinct(
@@ -87,37 +91,40 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  List<TimelinesHomeTabStorageListItem> get timelineStorageItems =>
-      timelines.map(
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems => timelines
+      .map(
         (timeline) => TimelinesHomeTabStorageListItem(timeline),
-      )?.toList();
+      )
+      .toList();
 
   @override
   Stream<List<TimelinesHomeTabStorageListItem>>
       get timelineStorageItemsStream => timelinesStream.map(
-            (timelines) => timelines?.map(
-              (timeline) => TimelinesHomeTabStorageListItem(timeline),
-            )?.toList(),
+            (timelines) => timelines
+                .map(
+                  (timeline) => TimelinesHomeTabStorageListItem(timeline),
+                )
+                .toList(),
           );
 
   @override
   Stream<List<TimelinesHomeTabStorageListItem>>
       get timelineStorageItemsDistinctStream =>
-      timelineStorageItemsStream.distinct(
+          timelineStorageItemsStream.distinct(
             (a, b) => _listEqual(a, b),
-      );
+          );
 
   @override
-  TimelinesHomeTabStorage get storage => preferences.value;
+  TimelinesHomeTabStorage? get storage => preferences.value;
 
   @override
-  Stream<TimelinesHomeTabStorage> get storageStream => preferences.stream;
+  Stream<TimelinesHomeTabStorage?> get storageStream => preferences.stream;
 
   @override
   Future onItemsUpdated(List<Timeline> timelines) async {
     var newTimelineIds = timelines.map((timeline) => timeline.id).toList();
     _logger.finest(() => "onItemsChanged $newTimelineIds");
-    var updatedStorage = storage.copyWith(timelineIds: newTimelineIds);
+    var updatedStorage = storage!.copyWith(timelineIds: newTimelineIds);
     await preferences.setValue(updatedStorage);
   }
 
@@ -173,7 +180,6 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
   @override
   void swapItemsAt(int oldIndex, int newIndex) {
-
     final oldValue = timelines.removeAt(oldIndex);
     timelines.insert(newIndex, oldValue);
 
@@ -183,7 +189,8 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  int indexOfKey(Key key) => timelineStorageItems.indexWhere((item) => item.key == key);
+  int indexOfKey(Key key) =>
+      timelineStorageItems.indexWhere((item) => item.key == key);
 
   @override
   Timeline timelineOfKey(Key key) => timelines[indexOfKey(key)];

@@ -27,7 +27,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: ProxyProvider<IRegisterAuthInstanceBloc,
-                    IRegisterAuthInstanceFormBloc>(
+                    IRegisterAuthInstanceFormBloc?>(
                   update: (context, value, previous) =>
                       value.registerAuthInstanceFormBloc,
                   child: const RegisterAuthInstanceFormWidget(),
@@ -45,7 +45,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceSubmitButtonWidget extends StatelessWidget {
   const _RegisterAuthInstanceSubmitButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -55,7 +55,7 @@ class _RegisterAuthInstanceSubmitButtonWidget extends StatelessWidget {
       stream: registerAuthInstanceBloc.isReadyToSubmitStream,
       initialData: registerAuthInstanceBloc.isReadyToSubmit,
       builder: (context, snapshot) {
-        var readyToSubmit = snapshot.data;
+        var readyToSubmit = snapshot.data!;
         var onPressed;
         if (readyToSubmit) {
           onPressed = () async {

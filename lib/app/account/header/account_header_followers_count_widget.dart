@@ -9,15 +9,21 @@ import 'package:provider/provider.dart';
 
 class AccountHeaderFollowersCountWidget extends StatelessWidget {
   const AccountHeaderFollowersCountWidget();
+
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+    var isLocal = accountBloc.instanceLocation.isLocal;
     return InkWell(
-      onTap: isLocal ? () {
-        goToAccountFollowerAccountListPage(context, accountBloc.account);
-      } : null,
-      child: StreamBuilder<bool>(
+      onTap: isLocal
+          ? () {
+              goToAccountFollowerAccountListPage(
+                context: context,
+                account: accountBloc.account!,
+              );
+            }
+          : null,
+      child: StreamBuilder<bool?>(
         stream: accountBloc.pleromaHideFollowersCountStream,
         initialData: accountBloc.pleromaHideFollowersCount,
         builder: (context, snapshot) {
@@ -38,18 +44,17 @@ class AccountHeaderFollowersCountWidget extends StatelessWidget {
 
 class _AccountHeaderFollowersCountBodyWidget extends StatelessWidget {
   const _AccountHeaderFollowersCountBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<int>(
+    return StreamBuilder<int?>(
       stream: accountBloc.followersCountStream,
       builder: (context, snapshot) {
         var count = snapshot.data;
-        return Provider<int>.value(
+        return Provider<int?>.value(
           value: count,
           child: AccountHeaderStatisticWidget(
             label: S.of(context).app_account_info_followers,

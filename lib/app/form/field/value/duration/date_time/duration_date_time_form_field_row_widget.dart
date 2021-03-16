@@ -14,12 +14,12 @@ import 'package:flutter/material.dart';
 // todo: refactor to use common widgets with  DurationValueFormFieldRowWidget
 class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
-  final String negativeValue;
+  final String? description;
+  final String? descriptionOnDisabled;
+  final String? negativeValue;
 
   DurationDateTimeValueFormFieldRowWidget({
-    @required this.label,
+    required this.label,
     this.description,
     this.descriptionOnDisabled,
     this.negativeValue,
@@ -42,19 +42,19 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
 
 class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
   final String popupTitle;
-  final String negativeValue;
+  final String? negativeValue;
 
   const _DurationDateTimeValueFormFieldRowValueWidget({
-    Key key,
-    @required this.popupTitle,
-    @required this.negativeValue,
+    Key? key,
+    required this.popupTitle,
+    required this.negativeValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
@@ -64,7 +64,7 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () {
-                if (isEnabled) {
+                if (isEnabled!) {
                   _showDurationPicker(
                     popupTitle: popupTitle,
                     context: context,
@@ -84,10 +84,10 @@ class _DurationDateTimeValueFormFieldRowValueWidget extends StatelessWidget {
 }
 
 class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
-  final String negativeValue;
+  final String? negativeValue;
 
   const DurationDateTimeValueFormFieldRowValueTextWidget({
-    @required this.negativeValue,
+    required this.negativeValue,
   });
 
   @override
@@ -95,18 +95,18 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
         var isEnabled = snapshot.data;
-        return StreamBuilder<Duration>(
+        return StreamBuilder<Duration?>(
           stream: fieldBloc.currentValueDurationStream,
           initialData: fieldBloc.currentValueDuration,
           builder: (context, snapshot) {
             var currentValue = snapshot.data;
 
-            String durationText;
+            String? durationText;
             if (currentValue == null) {
               durationText = S.of(context).app_duration_value_null;
             } else {
@@ -120,8 +120,8 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
               }
             }
             return Text(
-              durationText,
-              style: isEnabled
+              durationText!,
+              style: isEnabled!
                   ? fediUiTextTheme.bigTallBoldMediumGrey
                   : fediUiTextTheme.bigTallBoldLightGrey,
             );
@@ -137,7 +137,7 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
   final String popupTitle;
 
   const DurationDateTimeValueFormFieldRowIconButtonWidget({
-    @required this.popupTitle,
+    required this.popupTitle,
   });
 
   @override
@@ -145,11 +145,11 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
     var fieldBloc = IDurationDateTimeValueFormFieldBloc.of(context);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: fieldBloc.isEnabledStream,
       initialData: fieldBloc.isEnabled,
       builder: (context, snapshot) {
-        var isEnabled = snapshot.data;
+        var isEnabled = snapshot.data!;
         return FediIconButton(
           icon: Icon(FediIcons.chevron_down),
           color: isEnabled
@@ -170,8 +170,8 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
 }
 
 void _showDurationPicker({
-  @required BuildContext context,
-  @required String popupTitle,
+  required BuildContext context,
+  required String popupTitle,
 }) async {
   var fieldBloc =
       IDurationDateTimeValueFormFieldBloc.of(context, listen: false);

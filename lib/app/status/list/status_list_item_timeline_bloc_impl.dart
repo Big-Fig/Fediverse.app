@@ -3,7 +3,6 @@ import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:flutter/widgets.dart';
 
 class StatusListItemTimelineBloc extends DisposableOwner
     implements IStatusListItemTimelineBloc {
@@ -19,9 +18,9 @@ class StatusListItemTimelineBloc extends DisposableOwner
       isReply && (!displayReplyToStatus || isFirstReplyInThread);
 
   @override
-  final StatusAndContextCallback statusCallback;
+  final StatusAndContextCallback? statusCallback;
   @override
-  final AccountCallback accountMentionCallback;
+  final AccountCallback? accountMentionCallback;
   @override
   final bool displayActions;
   @override
@@ -35,7 +34,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
   @override
   final bool collapsible;
   @override
-  final IPleromaMediaAttachment initialMediaAttachment;
+  final IPleromaMediaAttachment? initialMediaAttachment;
 
   @override
   final bool isCommentsActionEnabled;
@@ -53,26 +52,26 @@ class StatusListItemTimelineBloc extends DisposableOwner
       isReply && isFirstReplyInThread && displayReplyToStatus;
 
   StatusListItemTimelineBloc._private({
-    @required this.status,
-    @required this.collapsible,
-    @required this.displayActions,
-    @required this.displayAccountHeader,
-    @required this.displayThisThreadAction,
-    @required this.displayReplyToStatus,
-    @required this.isFirstReplyInThread,
-    @required this.accountMentionCallback,
-    @required this.statusCallback,
-    @required this.initialMediaAttachment,
-    @required this.isCommentsActionEnabled,
+    required this.status,
+    required this.collapsible,
+    required this.displayActions,
+    required this.displayAccountHeader,
+    required this.displayThisThreadAction,
+    required this.displayReplyToStatus,
+    required this.isFirstReplyInThread,
+    required this.accountMentionCallback,
+    required this.statusCallback,
+    required this.initialMediaAttachment,
+    required this.isCommentsActionEnabled,
   }) : super();
 
   StatusListItemTimelineBloc.list({
-    @required IStatus status,
-    @required bool collapsible,
+    required IStatus status,
+    required bool collapsible,
     bool isFirstReplyInThread = true,
     bool displayActions = true,
-    @required StatusAndContextCallback statusCallback,
-    @required IPleromaMediaAttachment initialMediaAttachment,
+    required StatusAndContextCallback? statusCallback,
+    required IPleromaMediaAttachment? initialMediaAttachment,
   }) : this._private(
           status: status,
           collapsible: collapsible,
@@ -88,14 +87,14 @@ class StatusListItemTimelineBloc extends DisposableOwner
         );
 
   StatusListItemTimelineBloc.thread({
-    @required IStatus status,
-    @required bool collapsible,
-    @required bool displayAccountHeader,
-    @required bool displayActions,
-    @required StatusAndContextCallback statusCallback,
-    @required AccountCallback accountMentionCallback,
-    @required IPleromaMediaAttachment initialMediaAttachment,
-    @required bool isCommentsActionEnabled,
+    required IStatus status,
+    required bool collapsible,
+    required bool displayAccountHeader,
+    required bool displayActions,
+    required StatusAndContextCallback statusCallback,
+    required AccountCallback accountMentionCallback,
+    required IPleromaMediaAttachment? initialMediaAttachment,
+    required bool isCommentsActionEnabled,
   }) : this._private(
           status: status,
           collapsible: collapsible,

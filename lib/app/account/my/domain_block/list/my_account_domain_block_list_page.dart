@@ -55,11 +55,11 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
 }
 
 class _MyAccountDomainBlockListPageBody extends StatelessWidget {
-  final Widget customEmptyWidget;
-  final Widget customLoadingWidget;
+  final Widget? customEmptyWidget;
+  final Widget? customLoadingWidget;
 
   const _MyAccountDomainBlockListPageBody({
-    Key key,
+    Key? key,
     this.customEmptyWidget,
     this.customLoadingWidget,
   }) : super(key: key);
@@ -82,7 +82,7 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
 
 class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
   const _MyAccountDomainBlockListPageAddButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -105,7 +105,7 @@ class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
 
 class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
   const _MyAccountDomainBlockListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -118,7 +118,7 @@ class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
 
 class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
   const _MyAccountDomainBlockListPageRemoveItemAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

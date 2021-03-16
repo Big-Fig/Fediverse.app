@@ -7,9 +7,9 @@ class FediFadeShaderMask extends StatelessWidget {
   final Widget child;
 
   FediFadeShaderMask({
-    @required this.fadingPercent,
-    @required this.fadingColor,
-    @required this.child,
+    required this.fadingPercent,
+    required this.fadingColor,
+    required this.child,
   });
 
   @override

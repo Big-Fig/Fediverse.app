@@ -1,4 +1,5 @@
-import 'package:fedi/app/cache/database/database_cache_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/database_cache_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preferences_bloc.dart';
@@ -9,7 +10,10 @@ class GlobalDatabaseCacheSettingsLocalPreferencesBloc
     implements IGlobalDatabaseCacheSettingsLocalPreferencesBloc {
   GlobalDatabaseCacheSettingsLocalPreferencesBloc(
       ILocalPreferencesService preferencesService)
-      : super(preferencesService, "cache.database.settings.global");
+      : super(
+          preferencesService,
+          "cache.database.settings.global",
+        );
 
   @override
   DatabaseCacheSettings get defaultValue => DatabaseCacheSettings(

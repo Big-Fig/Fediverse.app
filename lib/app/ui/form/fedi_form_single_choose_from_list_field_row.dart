@@ -19,29 +19,29 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final bool isEnabled;
   final bool nullable;
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
-  final String error;
+  final String? description;
+  final String? descriptionOnDisabled;
+  final String? error;
   final String chooserTitle;
   final T value;
   final List<T> possibleValues;
-  final ValueToTextMapper<T> valueToTextMapper;
-  final ValueToIconMapper<T> valueToIconMapper;
-  final ValueChangedCallback<T> onChanged;
+  final ValueToTextMapper<T>? valueToTextMapper;
+  final ValueToIconMapper<T>? valueToIconMapper;
+  final ValueChangedCallback<T?> onChanged;
 
   FediFormSingleChooseFromListFieldRow({
-    @required this.isEnabled,
-    @required this.nullable,
-    @required this.label,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.error,
-    @required this.chooserTitle,
-    @required this.value,
-    @required this.possibleValues,
-    @required this.valueToTextMapper,
-    @required this.valueToIconMapper,
-    @required this.onChanged,
+    required this.isEnabled,
+    required this.nullable,
+    required this.label,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.error,
+    required this.chooserTitle,
+    required this.value,
+    required this.possibleValues,
+    required this.valueToTextMapper,
+    required this.valueToIconMapper,
+    required this.onChanged,
   });
 
   @override
@@ -69,10 +69,10 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                                     (possibleValue) => SelectionDialogAction(
                                       isSelected: value == possibleValue,
                                       label: valueToTextMapper != null
-                                          ? valueToTextMapper(possibleValue)
+                                          ? valueToTextMapper!(possibleValue)
                                           : null,
                                       icon: valueToIconMapper != null
-                                          ? valueToIconMapper(possibleValue)
+                                          ? valueToIconMapper!(possibleValue)
                                           : null,
                                       onAction: (context) {
                                         onChanged(value, possibleValue);
@@ -91,7 +91,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                           Padding(
                             padding: FediPadding.horizontalSmallPadding,
                             child: Icon(
-                              valueToIconMapper(value),
+                              valueToIconMapper!(value),
                               color: isEnabled
                                   ? IFediUiColorTheme.of(context).darkGrey
                                   : IFediUiColorTheme.of(context).lightGrey,
@@ -101,7 +101,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                           Padding(
                             padding: FediPadding.horizontalSmallPadding,
                             child: Text(
-                              valueToTextMapper(value),
+                              valueToTextMapper!(value),
                               style: isEnabled
                                   ? IFediUiTextTheme.of(context).mediumShortDarkGrey
                                   : IFediUiTextTheme.of(context).mediumShortLightGrey,

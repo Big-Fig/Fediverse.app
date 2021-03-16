@@ -24,34 +24,34 @@ abstract class IConversationChatBloc
   Stream<IConversationChat> get chatStream;
 
   @override
-  IConversationChatMessage get lastChatMessage;
+  IConversationChatMessage? get lastChatMessage;
 
   @override
-  IConversationChatMessage get lastPublishedChatMessage;
+  IConversationChatMessage? get lastPublishedChatMessage;
 
   @override
-  Stream<IConversationChatMessage> get lastChatMessageStream;
+  Stream<IConversationChatMessage?> get lastChatMessageStream;
 
-  Stream<IConversationChatMessage> get onMessageLocallyHiddenStream;
+  Stream<IConversationChatMessage?> get onMessageLocallyHiddenStream;
 
   Future postMessage({
-    @required IPostStatusData postStatusData,
-    @required IConversationChatMessage oldPendingFailedConversationChatMessage,
+    required IPostStatusData postStatusData,
+    required IConversationChatMessage? oldPendingFailedConversationChatMessage,
   });
 
   Future deleteMessage({
-    @required IConversationChatMessage conversationChatMessage,
+    required IConversationChatMessage conversationChatMessage,
   });
 }
 
 extension IConversationChatBlocExtension on IConversationChatBloc {
-  IConversationChat get conversation => chat;
+  IConversationChat? get conversation => chat;
 
-  Stream<IConversationChat> get conversationStream => chatStream;
+  Stream<IConversationChat?> get conversationStream => chatStream;
 
-  IStatus get lastStatus => lastChatMessage?.status;
+  IStatus? get lastStatus => lastChatMessage?.status;
 
-  Stream<IStatus> get lastStatusStream => lastChatMessageStream.map(
+  Stream<IStatus?> get lastStatusStream => lastChatMessageStream.map(
         (lastChatMessage) => lastChatMessage?.status,
       );
 }

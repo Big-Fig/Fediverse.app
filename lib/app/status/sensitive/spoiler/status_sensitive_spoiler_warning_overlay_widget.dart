@@ -8,14 +8,14 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
   const StatusSensitiveSpoilerWarningOverlayWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowSpoiler = statusSensitiveBloc.isAlwaysShowSpoiler;
+    var isAlwaysShowSpoiler = statusSensitiveBloc.isAlwaysShowSpoiler!;
     if (isAlwaysShowSpoiler) {
       return child;
     } else {
@@ -38,7 +38,7 @@ class StatusSensitiveSpoilerWarningOverlayWidget extends StatelessWidget {
 
 class _StatusSensitiveSpoilerWarningOverlayBodyWidget extends StatelessWidget {
   const _StatusSensitiveSpoilerWarningOverlayBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -7,20 +7,20 @@ import 'package:logging/logging.dart';
 final _logger = Logger("date_time_duration_picker.dart");
 
 Future<DurationPickerResult> showDateTimeDurationPicker({
-  @required BuildContext context,
-  @required String popupTitle,
-  @required Duration minDuration,
-  @required Duration currentDuration,
-  @required Duration maxDuration,
-  @required bool isDeletePossible,
+  required BuildContext context,
+  required String? popupTitle,
+  required Duration? minDuration,
+  required Duration? currentDuration,
+  required Duration? maxDuration,
+  required bool isDeletePossible,
 }) async {
   var minDateTimeJiffy = Jiffy();
   var maxDateTimeJiffy = Jiffy();
   var currentDateTimeJiffy = Jiffy();
 
-  DateTime minDateTime;
-  DateTime maxDateTime;
-  DateTime currentDateTime;
+  DateTime? minDateTime;
+  DateTime? maxDateTime;
+  DateTime? currentDateTime;
 
   if (minDuration != null) {
     minDateTimeJiffy.add(duration: minDuration);
@@ -61,7 +61,7 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
     onConfirm: (date) {},
   );
 
-  Duration resultDuration;
+  Duration? resultDuration;
 
   var now = DateTime.now();
   if (pickedDateTime != null) {
@@ -71,10 +71,10 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
         (minDuration == null || diffDuration > minDuration)) {
       resultDuration = diffDuration;
     } else {
-      if ((maxDuration != null && diffDuration > maxDuration)) {
+      if (maxDuration != null && diffDuration > maxDuration) {
         resultDuration = maxDuration;
       } else {
-        resultDuration = minDuration;
+        resultDuration = minDuration!;
       }
     }
   } else {

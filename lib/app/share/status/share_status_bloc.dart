@@ -6,5 +6,5 @@ abstract class IShareStatusBloc {
   static IShareStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IShareStatusBloc>(context, listen: listen);
 
-  IStatus get status;
+  IStatus? get status;
 }

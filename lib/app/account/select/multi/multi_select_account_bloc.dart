@@ -10,9 +10,9 @@ abstract class IMultiSelectAccountBloc implements IDisposable {
           {bool listen = true}) =>
       Provider.of<IMultiSelectAccountBloc>(context, listen: listen);
 
-  List<IAccount> get selectedAccounts;
+  List<IAccount>? get selectedAccounts;
 
-  Stream<List<IAccount>> get selectedAccountsStream;
+  Stream<List<IAccount>?> get selectedAccountsStream;
 
   bool get isSomethingSelected;
 

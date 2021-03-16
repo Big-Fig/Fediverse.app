@@ -35,9 +35,9 @@ class ConversationChatShareStatusPage extends StatelessWidget {
 }
 
 void goToConversationShareStatusPage({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
+  required BuildContext context,
+  required IStatus? status,
+  required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
     context,
@@ -50,9 +50,9 @@ void goToConversationShareStatusPage({
 }
 
 MaterialPageRoute createConversationShareStatusPageRoute({
-  @required BuildContext context,
-  @required IStatus status,
-  @required InstanceLocation instanceLocation,
+  required BuildContext context,
+  required IStatus? status,
+  required InstanceLocation instanceLocation,
 }) {
   return MaterialPageRoute(
     builder: (context) => ConversationChatShareStatusBloc.provideToContext(

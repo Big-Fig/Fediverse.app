@@ -5,7 +5,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/image_url/custom_emoji_picker_image_url_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -16,42 +15,49 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IPleromaEmojiService pleromaEmojiService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
-  preferenceBloc;
+      preferenceBloc;
 
   EmojiPickerCustomImageUrlCategoryBloc({
-    @required this.pleromaEmojiService,
-    @required this.currentAuthInstanceBloc,
-    @required this.preferenceBloc,
+    required this.pleromaEmojiService,
+    required this.currentAuthInstanceBloc,
+    required this.preferenceBloc,
   });
 
   @override
   Future internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
-    if (currentInstance.isPleroma) {
+    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    if (currentInstance.isPleroma!) {
       // old instances may not have this API
       var urlHost = currentInstance.urlHost;
       var urlSchema = currentInstance.urlSchema;
       unawaited(
-          pleromaEmojiService.getCustomEmojis().then((customEmojis) async {
-        var emojiItems = customEmojis
-            .map((customEmoji) => CustomEmojiPickerImageUrlItem(
-                  imageUrl: "$urlSchema://$urlHost/${customEmoji.imageUrl}",
-                  name: customEmoji.name,
-                ))
-            .toList();
-        await preferenceBloc.setValue(
-          EmojiPickerCustomImageUrlCategoryItems(
-            items: emojiItems,
-          ),
-        );
-      }).catchError((e, stackTrace) {
-        _logger.warning(
-            () => "internalAsyncInit error: fetch remote emoji "
-                "list",
-            e,
-            stackTrace);
-      }));
+        pleromaEmojiService.getCustomEmojis().then(
+          (customEmojis) async {
+            var emojiItems = customEmojis!
+                .map(
+                  (customEmoji) => CustomEmojiPickerImageUrlItem(
+                    imageUrl: "$urlSchema://$urlHost/${customEmoji.imageUrl}",
+                    name: customEmoji.name,
+                  ),
+                )
+                .toList();
+            await preferenceBloc.setValue(
+              EmojiPickerCustomImageUrlCategoryItems(
+                items: emojiItems,
+              ),
+            );
+          },
+        ).catchError(
+          (e, stackTrace) {
+            _logger.warning(
+                () => "internalAsyncInit error: fetch remote emoji "
+                    "list",
+                e,
+                stackTrace);
+          },
+        ),
+      );
     }
   }
 
@@ -60,6 +66,6 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
       preferenceBloc.value?.items ?? [];
 
   @override
-  Stream<List<CustomEmojiPickerImageUrlItem>> get itemsStream =>
+  Stream<List<CustomEmojiPickerImageUrlItem>?> get itemsStream =>
       preferenceBloc.stream.map((list) => list?.items);
 }

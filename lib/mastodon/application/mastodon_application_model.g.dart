@@ -10,10 +10,10 @@ MastodonApplicationRegistrationRequest
     _$MastodonApplicationRegistrationRequestFromJson(
         Map<String, dynamic> json) {
   return MastodonApplicationRegistrationRequest(
-    clientName: json['client_name'] as String,
-    redirectUris: json['redirect_uris'] as String,
-    scopes: json['scopes'] as String,
-    website: json['website'] as String,
+    clientName: json['client_name'] as String?,
+    redirectUris: json['redirect_uris'] as String?,
+    scopes: json['scopes'] as String?,
+    website: json['website'] as String?,
   );
 }
 

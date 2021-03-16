@@ -16,12 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstancePostStatusSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   var isPleromaInstance = ICurrentAuthInstanceBloc.of(
     context,
     listen: false,
-  ).currentInstance.isPleroma;
+  ).currentInstance!.isPleroma;
 
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -30,8 +30,8 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditPostStatusSettingsBloc>(
@@ -49,7 +49,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
             context,
             listen: false,
           ),
-          pleromaVisibilityPossibleValues: isPleromaInstance
+          pleromaVisibilityPossibleValues: isPleromaInstance!
               ? [
                   PleromaVisibility.public,
                   PleromaVisibility.unlisted,
@@ -72,7 +72,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editPostStatusSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );

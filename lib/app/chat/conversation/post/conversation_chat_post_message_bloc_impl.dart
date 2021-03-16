@@ -10,7 +10,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
@@ -19,26 +19,27 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
   final IConversationChatBloc conversationChatBloc;
 
   ConversationChatPostMessageBloc({
-    @required this.conversationChatBloc,
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IScheduledStatusRepository scheduledStatusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
-    @required String language,
+    required this.conversationChatBloc,
+    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int? maximumMessageLength,
+    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool? markMediaAsNsfwOnAttach,
+    required String? language,
   }) : super(
           isExpirePossible: false,
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.private.toJsonValue(),
             language: language,
-            inReplyToConversationId: conversationChatBloc.conversation.remoteId,
+            inReplyToConversationId:
+                conversationChatBloc.conversation!.remoteId,
           ),
           // we don't need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,
@@ -51,26 +52,36 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
 
   static ConversationChatPostMessageBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat conversation,
+    required IConversationChat? conversation,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
 
     return ConversationChatPostMessageBloc(
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
-      statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaMediaAttachmentService:
-          IPleromaMediaAttachmentService.of(context, listen: false),
+      pleromaAuthStatusService: IPleromaAuthStatusService.of(
+        context,
+        listen: false,
+      ),
+      statusRepository: IStatusRepository.of(
+        context,
+        listen: false,
+      ),
+      pleromaMediaAttachmentService: IPleromaMediaAttachmentService.of(
+        context,
+        listen: false,
+      ),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
-      markMediaAsNsfwOnAttach:
-          IPostStatusSettingsBloc.of(context, listen: false)
-              .markMediaAsNsfwOnAttach,
-      language: IPostStatusSettingsBloc.of(context, listen: false)
-          .defaultStatusLocale
-          ?.localeString,
+      markMediaAsNsfwOnAttach: IPostStatusSettingsBloc.of(
+        context,
+        listen: false,
+      ).markMediaAsNsfwOnAttach,
+      language: IPostStatusSettingsBloc.of(
+        context,
+        listen: false,
+      ).defaultStatusLocale?.localeString,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
         listen: false,
@@ -84,8 +95,8 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required Widget child,
+    required IConversationChat? conversation,
+    required Widget child,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => ConversationChatPostMessageBloc.createFromContext(
@@ -100,7 +111,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
   bool get isPossibleToChangeVisibility => false;
 
   @override
-  Future<bool> actualPostStatus() async {
+  Future actualPostStatus() async {
     var currentPostStatusData = calculateCurrentPostStatusData();
 
     unawaited(
@@ -109,7 +120,5 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
         oldPendingFailedConversationChatMessage: null,
       ),
     );
-
-    return true;
   }
 }

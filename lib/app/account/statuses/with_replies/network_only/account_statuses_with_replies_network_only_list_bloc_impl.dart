@@ -11,31 +11,31 @@ import 'package:moor/moor.dart';
 abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
     extends AccountStatusesNetworkOnlyListBloc {
   AccountStatusesWithRepliesNetworkOnlyListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(account: account, pleromaAccountService: pleromaAccountService);
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<List<IStatus>> loadItemsFromRemoteForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+  Future<List<IStatus?>> loadItemsFromRemoteForPage({
+    int? pageIndex,
+    int? itemsCountPerPage,
+    String? minId,
+    String? maxId,
   }) async {
 
-    var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-      accountRemoteId: account.remoteId,
+    var pleromaStatuses = await pleromaAccountService.getAccountStatuses(
+      accountRemoteId: account!.remoteId,
       pagination: PleromaPaginationRequest(
         limit: itemsCountPerPage,
         sinceId: minId,
         maxId: maxId,
       ),
     );
-    return remoteStatuses
-        ?.map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus))
-        ?.toList();
+    return pleromaStatuses
+        .map((pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper())
+        .toList();
   }
 }

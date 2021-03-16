@@ -15,10 +15,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountInfoWidget extends StatelessWidget {
-  final OnClickUiCallback onStatusesTapCallback;
+  final OnClickUiCallback? onStatusesTapCallback;
 
   MyAccountInfoWidget({
-    @required this.onStatusesTapCallback,
+    required this.onStatusesTapCallback,
   });
 
   @override
@@ -61,4 +61,4 @@ class MyAccountInfoWidget extends StatelessWidget {
 }
 
 void _onStatusesTapCallback(BuildContext context) =>
-    IAccountInfoBloc.of(context, listen: false).onStatusesTapCallback(context);
+    IAccountInfoBloc.of(context, listen: false).onStatusesTapCallback!(context);

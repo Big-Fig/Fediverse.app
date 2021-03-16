@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -24,7 +23,7 @@ class PleromaListService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -38,7 +37,9 @@ class PleromaListService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaListService({@required this.restService});
+  PleromaListService({
+    required this.restService,
+  });
 
   IPleromaList parseListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -87,14 +88,14 @@ class PleromaListService extends DisposableOwner
           listRelativeUrlPath,
         ),
       ),
-    );
+    )!;
 
     return parseListListResponse(httpResponse);
   }
 
   @override
   Future<IPleromaList> getList({
-    @required String listRemoteId,
+    required String listRemoteId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -103,14 +104,14 @@ class PleromaListService extends DisposableOwner
           listRemoteId,
         ),
       ),
-    );
+    )!;
 
     return parseListResponse(httpResponse);
   }
 
   @override
   Future deleteList({
-    @required String listRemoteId,
+    required String? listRemoteId,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(
@@ -124,7 +125,7 @@ class PleromaListService extends DisposableOwner
 
   @override
   Future<IPleromaList> createList({
-    @required String title,
+    required String? title,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
@@ -135,15 +136,15 @@ class PleromaListService extends DisposableOwner
           "title": title,
         },
       ),
-    );
+    )!;
 
     return parseListResponse(httpResponse);
   }
 
   @override
   Future<IPleromaList> updateList({
-    @required String listRemoteId,
-    @required String title,
+    required String? listRemoteId,
+    required String? title,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
@@ -155,15 +156,15 @@ class PleromaListService extends DisposableOwner
           "title": title,
         },
       ),
-    );
+    )!;
 
     return parseListResponse(httpResponse);
   }
 
   @override
   Future<List<IPleromaAccount>> getListAccounts({
-    @required String listRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String? listRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -173,15 +174,15 @@ class PleromaListService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    );
+    )!;
 
     return parseAccountListResponse(httpResponse);
   }
 
   @override
   Future addAccountsToList({
-    @required String listRemoteId,
-    @required List<String> accountIds,
+    required String? listRemoteId,
+    required List<String?> accountIds,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.post(
@@ -199,8 +200,8 @@ class PleromaListService extends DisposableOwner
 
   @override
   Future removeAccountsFromList({
-    @required String listRemoteId,
-    @required List<String> accountIds,
+    required String? listRemoteId,
+    required List<String?> accountIds,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(

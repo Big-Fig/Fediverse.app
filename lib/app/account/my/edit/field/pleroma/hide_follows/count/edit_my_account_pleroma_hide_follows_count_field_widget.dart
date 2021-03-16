@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountPleromaHideFollowsCountFieldWidget extends StatelessWidget {
   const EditMyAccountPleromaHideFollowsCountFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

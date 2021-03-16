@@ -3,8 +3,8 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:flutter/cupertino.dart';
 
 class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
-  final Widget customLoadingWidget;
-  final Widget customEmptyWidget;
+  final Widget? customLoadingWidget;
+  final Widget? customEmptyWidget;
 
   const MyAccountAccountMuteAccountPaginationListWidget({
     this.customEmptyWidget,
@@ -29,7 +29,7 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
 class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
     extends StatelessWidget {
   const _MyAccountAccountMuteAccountPaginationListRemoveActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -2,8 +2,8 @@ import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:moor/moor.dart';
 
 class FilterRepositoryFilters {
-  final List<MastodonFilterContextType> onlyWithContextTypes;
-  final bool notExpired;
+  final List<MastodonFilterContextType>? onlyWithContextTypes;
+  final bool? notExpired;
 
   FilterRepositoryFilters({
     this.onlyWithContextTypes,
@@ -48,8 +48,8 @@ class FilterOrderingTermData {
   );
 
   const FilterOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   @override

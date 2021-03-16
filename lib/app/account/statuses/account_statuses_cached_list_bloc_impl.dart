@@ -12,18 +12,16 @@ import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
-  final IAccount account;
+  final IAccount? account;
   final IPleromaAccountService pleromaAccountService;
 
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final IMyAccountBloc myAccountBloc;
-  List<IFilter> filters;
+  late List<IFilter> filters;
 
   List<StatusTextCondition> get excludeTextConditions => filters
       .map(
@@ -32,17 +30,17 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
       .toList();
 
   AccountStatusesCachedListBloc({
-    @required this.account,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.filterRepository,
-    @required this.myAccountBloc,
-    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+    required this.account,
+    required this.pleromaAccountService,
+    required this.statusRepository,
+    required this.filterRepository,
+    required this.myAccountBloc,
+    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super() {
     addDisposable(
       disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
         listenType: WebSocketsListenType.foreground,
-        accountId: account.remoteId,
+        accountId: account!.remoteId,
         notification: false,
       ),
     );
@@ -56,7 +54,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
+    var isAccountIsMe = myAccountBloc.checkAccountIsMe(account!);
     if (isAccountIsMe) {
       filters = [];
     } else {

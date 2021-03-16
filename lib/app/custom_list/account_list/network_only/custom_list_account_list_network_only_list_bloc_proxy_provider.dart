@@ -10,7 +10,7 @@ class CustomListAccountListNetworkOnlyListBlocProxyProvider
   final Widget child;
 
   CustomListAccountListNetworkOnlyListBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

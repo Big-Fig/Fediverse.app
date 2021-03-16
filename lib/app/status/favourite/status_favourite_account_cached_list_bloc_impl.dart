@@ -15,7 +15,6 @@ import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger = Logger("status_favourite_account_list_service_impl.dart");
 
@@ -31,19 +30,20 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
       );
 
   StatusFavouriteAccountCachedListBloc({
-    @required this.pleromaAuthStatusService,
-    @required this.accountRepository,
-    @required this.status,
+    required this.pleromaAuthStatusService,
+    required this.accountRepository,
+    required this.status,
   });
 
   @override
   IPleromaApi get pleromaApi => pleromaAuthStatusService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThanAccount = $newerThan"
         "\t olderThanAccount = $olderThan");
@@ -59,31 +59,23 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    if (remoteAccounts != null) {
-      await accountRepository.upsertRemoteAccounts(
-        remoteAccounts,
-        conversationRemoteId: null,
-        chatRemoteId: null,
-      );
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
 
-      await accountRepository.updateStatusFavouritedBy(
-        statusRemoteId: status.remoteId,
-        favouritedByAccounts: remoteAccounts,
-      );
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "accounts is null");
-      return false;
-    }
+    await accountRepository.updateStatusFavouritedBy(
+      statusRemoteId: status.remoteId,
+      favouritedByAccounts: remoteAccounts,
+    );
   }
 
   @override
   Future<List<IAccount>> loadLocalItems({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThanAccount=$newerThan"
@@ -105,19 +97,20 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
 
   static StatusFavouriteAccountCachedListBloc createFromContext(
     BuildContext context, {
-    @required IStatus status,
+    required IStatus status,
   }) =>
       StatusFavouriteAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthStatusService:
-            IPleromaStatusService.of(context, listen: false),
+            IPleromaStatusService.of(context, listen: false)
+                as IPleromaAuthStatusService,
         status: status,
       );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IStatus status,
-    @required Widget child,
+    required IStatus status,
+    required Widget child,
   }) =>
       DisposableProvider<IAccountCachedListBloc>(
         create: (context) =>
@@ -132,5 +125,5 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

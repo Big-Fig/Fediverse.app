@@ -18,9 +18,9 @@ abstract class IStatusListItemTimelineBloc implements IDisposable {
 
   bool get isCommentsActionEnabled;
 
-  StatusAndContextCallback get statusCallback;
+  StatusAndContextCallback? get statusCallback;
 
-  AccountCallback get accountMentionCallback;
+  AccountCallback? get accountMentionCallback;
 
   bool get displayActions;
 
@@ -38,7 +38,7 @@ abstract class IStatusListItemTimelineBloc implements IDisposable {
 
   bool get collapsible;
 
-  IPleromaMediaAttachment get initialMediaAttachment;
+  IPleromaMediaAttachment? get initialMediaAttachment;
 
   bool get isFirstReplyAndDisplayReplyToStatus;
 

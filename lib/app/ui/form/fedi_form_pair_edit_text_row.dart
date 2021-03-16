@@ -2,27 +2,27 @@ import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
+import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormPairEditTextRow extends StatelessWidget {
   final String label;
   final String nameHint;
-  final StringValueFormFieldBloc nameStringFieldBloc;
-  final StringValueFormFieldBloc valueStringFieldBloc;
+  final IStringValueFormFieldBloc nameStringFieldBloc;
+  final IStringValueFormFieldBloc valueStringFieldBloc;
   final String valueHint;
   final Widget ending;
-  final FocusNode nextFocusNode;
+  final FocusNode? nextFocusNode;
 
   FediFormPairEditTextRow({
-    @required this.label,
-    @required this.nameHint,
-    @required this.valueHint,
-    @required this.nameStringFieldBloc,
-    @required this.valueStringFieldBloc,
-    @required this.ending,
-    @required this.nextFocusNode,
+    required this.label,
+    required this.nameHint,
+    required this.valueHint,
+    required this.nameStringFieldBloc,
+    required this.valueStringFieldBloc,
+    required this.ending,
+    required this.nextFocusNode,
   });
 
   @override
@@ -37,14 +37,14 @@ class FediFormPairEditTextRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: StreamBuilder<List<FormItemValidationError>>(
+                child: StreamBuilder<List<FormItemValidationError?>?>(
                     stream: nameStringFieldBloc.errorsStream,
                     initialData: nameStringFieldBloc.errors,
                     builder: (context, snapshot) {
                       var errors = snapshot.data;
 
                       var error =
-                          errors?.isNotEmpty == true ? errors.first : null;
+                          errors?.isNotEmpty == true ? errors!.first : null;
                       return FediTransparentEditTextField(
                         maxLength: nameStringFieldBloc.maxLength,
                         expanded: false,
@@ -68,14 +68,14 @@ class FediFormPairEditTextRow extends StatelessWidget {
               const FediBigHorizontalSpacer(),
               Expanded(
                 flex: 2,
-                child: StreamBuilder<List<FormItemValidationError>>(
+                child: StreamBuilder<List<FormItemValidationError?>?>(
                     stream: valueStringFieldBloc.errorsStream,
                     initialData: valueStringFieldBloc.errors,
                     builder: (context, snapshot) {
                       var errors = snapshot.data;
 
                       var error =
-                          errors?.isNotEmpty == true ? errors.first : null;
+                          errors?.isNotEmpty == true ? errors!.first : null;
 
                       return FediTransparentEditTextField(
                         maxLength: valueStringFieldBloc.maxLength,
@@ -86,7 +86,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                         onSubmitted: isHaveNext
                             ? (_) {
                                 valueStringFieldBloc.focusNode.unfocus();
-                                nextFocusNode.requestFocus();
+                                nextFocusNode!.requestFocus();
                               }
                             : null,
                         textInputAction: isHaveNext

@@ -19,18 +19,17 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 typedef AccountListLoader = Future<List<IAccount>> Function({
-  @required int limit,
-  @required IAccount newerThan,
-  @required IAccount olderThan,
+  required int? limit,
+  required IAccount? newerThan,
+  required IAccount? olderThan,
 });
 
 typedef PleromaAccountListLoader = Future<List<IPleromaAccount>> Function({
-  @required int limit,
-  @required IAccount newerThan,
-  @required IAccount olderThan,
+  required int? limit,
+  required IAccount? newerThan,
+  required IAccount? olderThan,
 });
 
 var _logger = Logger("select_account_list_bloc_impl.dart");
@@ -50,21 +49,21 @@ class SelectAccountListBloc extends DisposableOwner
   Stream<IAccount> get accountSelectedStream =>
       accountSelectedStreamController.stream;
 
-  final PleromaAccountListLoader customEmptySearchRemoteAccountListLoader;
-  final AccountListLoader customEmptySearchLocalAccountListLoader;
+  final PleromaAccountListLoader? customEmptySearchRemoteAccountListLoader;
+  final AccountListLoader? customEmptySearchLocalAccountListLoader;
   @override
   ISearchInputBloc searchInputBloc;
 
-  String get searchText => searchInputBloc.confirmedSearchTerm;
+  String? get searchText => searchInputBloc.confirmedSearchTerm;
 
   SelectAccountListBloc({
-    @required this.pleromaAuthAccountService,
-    @required this.accountRepository,
-    @required this.myAccountBloc,
-    @required this.excludeMyAccount,
-    @required this.customEmptySearchRemoteAccountListLoader,
-    @required this.customEmptySearchLocalAccountListLoader,
-    @required this.followingsOnly,
+    required this.pleromaAuthAccountService,
+    required this.accountRepository,
+    required this.myAccountBloc,
+    required this.excludeMyAccount,
+    required this.customEmptySearchRemoteAccountListLoader,
+    required this.customEmptySearchLocalAccountListLoader,
+    required this.followingsOnly,
   }) : searchInputBloc = SearchInputBloc() {
     addDisposable(disposable: searchInputBloc);
     addDisposable(streamController: accountSelectedStreamController);
@@ -74,10 +73,11 @@ class SelectAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaAuthAccountService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
@@ -88,20 +88,20 @@ class SelectAccountListBloc extends DisposableOwner
     if (searchTermExist) {
       var following = followingsOnly == true;
       remoteAccounts = await pleromaAuthAccountService.search(
-        query: searchText,
+        query: searchText!,
         resolve: true,
         following: following,
       );
 
       if (following) {
         await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts,
+          accountRemoteId: myAccountBloc.account!.remoteId,
+          followings: remoteAccounts as List<PleromaAccount>,
         );
       }
     } else {
       if (customEmptySearchRemoteAccountListLoader != null) {
-        remoteAccounts = await customEmptySearchRemoteAccountListLoader(
+        remoteAccounts = await customEmptySearchRemoteAccountListLoader!(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
@@ -113,8 +113,8 @@ class SelectAccountListBloc extends DisposableOwner
           newerThan: newerThan,
         );
         await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account.remoteId,
-          followings: remoteAccounts,
+          accountRemoteId: myAccountBloc.account!.remoteId,
+          followings: remoteAccounts as List<PleromaAccount>,
         );
       }
     }
@@ -132,9 +132,9 @@ class SelectAccountListBloc extends DisposableOwner
   }
 
   Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
-    @required IAccount olderThan,
-    @required IAccount newerThan,
-    @required int limit,
+    required IAccount? olderThan,
+    required IAccount? newerThan,
+    required int? limit,
   }) async {
     // my account followings by default
     return await pleromaAuthAccountService.getAccountFollowings(
@@ -143,15 +143,15 @@ class SelectAccountListBloc extends DisposableOwner
         maxId: olderThan?.remoteId,
         limit: limit,
       ),
-      accountRemoteId: myAccountBloc.account.remoteId,
+      accountRemoteId: myAccountBloc.account!.remoteId,
     );
   }
 
   @override
   Future<List<IAccount>> loadLocalItems({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
@@ -178,7 +178,7 @@ class SelectAccountListBloc extends DisposableOwner
       );
     } else {
       if (customEmptySearchLocalAccountListLoader != null) {
-        accounts = await customEmptySearchLocalAccountListLoader(
+        accounts = await customEmptySearchLocalAccountListLoader!(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
@@ -202,7 +202,7 @@ class SelectAccountListBloc extends DisposableOwner
         }
 
         if (valid && searchText != null) {
-          valid &= account.acct.contains(searchText);
+          valid &= account.acct!.contains(searchText!);
         }
         return valid;
       }).toList();
@@ -213,9 +213,9 @@ class SelectAccountListBloc extends DisposableOwner
   }
 
   Future<List<IAccount>> defaultEmptySearchLocalAccountListLoader({
-    @required IAccount olderThan,
-    @required IAccount newerThan,
-    @required int limit,
+    required IAccount? olderThan,
+    required IAccount? newerThan,
+    required int? limit,
   }) async {
     return await accountRepository.getAccounts(
       filters: AccountRepositoryFilters(
@@ -232,17 +232,18 @@ class SelectAccountListBloc extends DisposableOwner
 
   static SelectAccountListBloc createFromContext(
     BuildContext context, {
-    @required bool excludeMyAccount,
-    @required PleromaAccountListLoader customRemoteAccountListLoader,
-    @required AccountListLoader customLocalAccountListLoader,
-    @required bool followingsOnly,
+    required bool excludeMyAccount,
+    required PleromaAccountListLoader? customRemoteAccountListLoader,
+    required AccountListLoader? customLocalAccountListLoader,
+    required bool followingsOnly,
   }) =>
       SelectAccountListBloc(
         excludeMyAccount: excludeMyAccount,
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthAccountService:
-            IPleromaAccountService.of(context, listen: false),
+            IPleromaAccountService.of(context, listen: false)
+                as IPleromaAuthAccountService,
         customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
         customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,
         followingsOnly: followingsOnly,
@@ -250,11 +251,11 @@ class SelectAccountListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required bool excludeMyAccount,
-    @required bool followingsOnly,
-    @required Widget child,
-    @required PleromaAccountListLoader customRemoteAccountListLoader,
-    @required AccountListLoader customLocalAccountListLoader,
+    required bool excludeMyAccount,
+    required bool followingsOnly,
+    required Widget child,
+    required PleromaAccountListLoader? customRemoteAccountListLoader,
+    required AccountListLoader? customLocalAccountListLoader,
   }) {
     return DisposableProvider<ISelectAccountListBloc>(
       create: (context) => SelectAccountListBloc.createFromContext(
@@ -277,5 +278,5 @@ class SelectAccountListBloc extends DisposableOwner
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

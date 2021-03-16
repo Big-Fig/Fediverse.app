@@ -31,12 +31,12 @@ class FilterFormWidget extends StatelessWidget {
 
 class _FilterFormExpiresInFieldWidget extends StatelessWidget {
   const _FilterFormExpiresInFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc>(
+    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc?>(
       update: (context, value, previous) => value.expiresInField,
       child: DurationDateTimeValueFormFieldRowWidget(
         label: S.of(context).app_filter_edit_field_expiresIn_label,
@@ -51,7 +51,7 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
 
 class _FilterFormContextFieldWidget extends StatelessWidget {
   const _FilterFormContextFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class _FilterFormContextFieldWidget extends StatelessWidget {
 
 class _FilterFormIrreversibleFieldWidget extends StatelessWidget {
   const _FilterFormIrreversibleFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -87,7 +87,7 @@ class _FilterFormIrreversibleFieldWidget extends StatelessWidget {
 
 class _FilterFormWholeWordFieldWidget extends StatelessWidget {
   const _FilterFormWholeWordFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -106,7 +106,7 @@ class _FilterFormWholeWordFieldWidget extends StatelessWidget {
 
 class _FilterFormPhraseFieldWidget extends StatelessWidget {
   const _FilterFormPhraseFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

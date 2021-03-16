@@ -10,10 +10,10 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 
 abstract class IMyAccountBloc extends IAccountBloc {
-  String get noteUnescaped {
+  String? get noteUnescaped {
     final HtmlUnescape _unescape = HtmlUnescape();
     if (note != null) {
-      var unescaped = _unescape.convert(note);
+      var unescaped = _unescape.convert(note!);
       // todo: remove hack
       // on Mastodon instances note wrapped in <p></p>
       if (unescaped.startsWith("<p>") && unescaped.endsWith("</p>")) {
@@ -28,9 +28,9 @@ abstract class IMyAccountBloc extends IAccountBloc {
   static IMyAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMyAccountBloc>(context, listen: listen);
 
-  IMyAccount get myAccount;
+  IMyAccount? get myAccount;
 
-  Stream<IMyAccount> get myAccountStream;
+  Stream<IMyAccount?> get myAccountStream;
 
   AuthInstance get instance;
 
@@ -40,7 +40,9 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkIsStatusFromMe(IStatus status);
 
-  Future updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
+  Future updateMyAccountByMyPleromaAccount(IPleromaMyAccount pleromaMyAccount);
+
+  Future updateMyAccountByMyAccount(IMyAccount myAccount);
 
   Future decreaseFollowingRequestCount();
 
@@ -48,23 +50,23 @@ abstract class IMyAccountBloc extends IAccountBloc {
 }
 
 extension IMyAccountBlocExtension on IMyAccountBloc {
-  int get followRequestsCount => myAccount.followRequestsCount;
+  int? get followRequestsCount => myAccount!.followRequestsCount;
 
-  Stream<int> get followRequestsCountStream => myAccountStream.map(
-        (myAccount) => myAccount.followRequestsCount,
+  Stream<int?> get followRequestsCountStream => myAccountStream.map(
+        (myAccount) => myAccount!.followRequestsCount,
       );
 
-  int get pleromaUnreadNotificationsCount =>
-      myAccount.pleromaUnreadNotificationsCount;
+  int? get pleromaUnreadNotificationsCount =>
+      myAccount!.pleromaUnreadNotificationsCount;
 
-  Stream<int> get pleromaUnreadNotificationsCountStream => myAccountStream.map(
-        (myAccount) => myAccount.pleromaUnreadNotificationsCount,
+  Stream<int?> get pleromaUnreadNotificationsCountStream => myAccountStream.map(
+        (myAccount) => myAccount!.pleromaUnreadNotificationsCount,
       );
 
-  int get pleromaUnreadConversationCount =>
-      myAccount.pleromaUnreadConversationCount;
+  int? get pleromaUnreadConversationCount =>
+      myAccount!.pleromaUnreadConversationCount;
 
-  Stream<int> get pleromaUnreadConversationCountStream => myAccountStream.map(
-        (myAccount) => myAccount.pleromaUnreadConversationCount,
+  Stream<int?> get pleromaUnreadConversationCountStream => myAccountStream.map(
+        (myAccount) => myAccount!.pleromaUnreadConversationCount,
       );
 }

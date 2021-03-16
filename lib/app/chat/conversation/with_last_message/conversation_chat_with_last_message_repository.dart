@@ -15,16 +15,16 @@ abstract class IConversationChatWithLastMessageRepository
 
   Future<List<IConversationChatWithLastMessage>>
       getConversationsWithLastMessage({
-    @required ConversationChatRepositoryFilters filters,
-    @required RepositoryPagination<IConversationChat> pagination,
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat> pagination,
     ConversationChatOrderingTermData orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });
 
   Stream<List<IConversationChatWithLastMessage>>
       watchConversationsWithLastMessage({
-    @required ConversationChatRepositoryFilters filters,
-    @required RepositoryPagination<IConversationChat> pagination,
+    required ConversationChatRepositoryFilters? filters,
+    required RepositoryPagination<IConversationChat> pagination,
     ConversationChatOrderingTermData orderingTermData =
         ConversationChatOrderingTermData.updatedAtDesc,
   });

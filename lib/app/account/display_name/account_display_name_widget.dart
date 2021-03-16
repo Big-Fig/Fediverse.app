@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
   final TextOverflow textOverflow;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final TextAlign textAlign;
 
   const AccountDisplayNameWidget({
@@ -23,20 +23,16 @@ class AccountDisplayNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    // hack to avoid non-fatal crashes during account switch
-    if(accountBloc == null) {
-      return const SizedBox.shrink();
-    }
     var fediUiColorTheme = IFediUiColorTheme.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     var textStyle =
         this.textStyle ?? fediUiTextTheme.bigShortBoldDarkGrey;
 
     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    return StreamProvider.value(
+    return StreamProvider<EmojiText?>.value(
       value: accountBloc.displayNameEmojiTextStream,
       initialData: accountBloc.displayNameEmojiText,
-      child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+      child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
         update: (context, emojiText, _) {
           var input = emojiText?.text;
 

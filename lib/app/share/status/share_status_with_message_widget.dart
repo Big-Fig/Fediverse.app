@@ -8,10 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class ShareStatusWithMessageWidget extends StatelessWidget {
-  final Widget footer;
+  final Widget? footer;
 
   const ShareStatusWithMessageWidget({
-    @required this.footer,
+    required this.footer,
   });
 
   @override
@@ -27,8 +27,14 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
           title: status.spoilerText,
           description: status.content,
           image: status.mediaAttachments?.isNotEmpty == true
-              ? status.mediaAttachments.first.url
+              ? status.mediaAttachments!.first.url
               : null,
+          embedUrl: null,
+          providerUrl: null,
+          width: null,
+          height: null,
+          providerName: null,
+          html: null,
         ),
         child: Padding(
           padding: const EdgeInsets.only(

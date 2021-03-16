@@ -13,7 +13,7 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
         stream: collapsibleBloc.isAtLeastOneVisibleItemExpandedStream,
         initialData: collapsibleBloc.isAtLeastOneVisibleItemExpanded,
         builder: (context, snapshot) {
-          var isAtLeastOneVisibleItemExpanded = snapshot.data;
+          var isAtLeastOneVisibleItemExpanded = snapshot.data!;
 
           if (isAtLeastOneVisibleItemExpanded) {
             return FediIconInCircleFilledButton(

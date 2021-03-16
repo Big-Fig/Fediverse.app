@@ -11,15 +11,15 @@ class AccountFieldListItemWidget extends StatelessWidget {
   final Brightness brightness;
 
   const AccountFieldListItemWidget({
-    @required this.field,
-    @required this.brightness,
+    required this.field,
+    required this.brightness,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        String url = UrlHelper.extractUrl(field.valueAsRawUrl);
+        String url = UrlHelper.extractUrl(field.valueAsRawUrl!);
         var accountBloc = IAccountBloc.of(context, listen: false);
         UrlHelper.handleUrlClickWithInstanceLocation(
           context: context,

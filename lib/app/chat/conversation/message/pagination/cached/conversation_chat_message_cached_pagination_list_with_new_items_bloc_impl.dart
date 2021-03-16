@@ -27,10 +27,10 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   final IConversationChatBloc conversationChatBloc;
 
   ConversationChatMessageCachedPaginationListWithNewItemsBloc({
-    @required bool mergeNewItemsImmediately,
-    @required this.chatMessageCachedListService,
-    @required this.conversationChatBloc,
-    @required
+    required bool mergeNewItemsImmediately,
+    required this.chatMessageCachedListService,
+    required this.conversationChatBloc,
+    required
         ICachedPaginationBloc<TPage, IConversationChatMessage>
             cachedPaginationBloc,
   }) : super(
@@ -49,16 +49,16 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     addDisposable(subject: hiddenItemsSubject);
   }
 
-  final BehaviorSubject<List<IConversationChatMessage>> hiddenItemsSubject =
+  final BehaviorSubject<List<IConversationChatMessage?>?> hiddenItemsSubject =
       BehaviorSubject.seeded([]);
 
-  List<IConversationChatMessage> get hiddenItems => hiddenItemsSubject.value;
+  List<IConversationChatMessage?>? get hiddenItems => hiddenItemsSubject.value;
 
-  Stream<List<IConversationChatMessage>> get hiddenItemsStream =>
+  Stream<List<IConversationChatMessage?>?> get hiddenItemsStream =>
       hiddenItemsSubject.stream;
 
-  void hideItem(IConversationChatMessage itemToHide) {
-    hiddenItems.add(itemToHide);
+  void hideItem(IConversationChatMessage? itemToHide) {
+    hiddenItems!.add(itemToHide);
     hiddenItemsSubject.add(hiddenItems);
   }
 
@@ -77,14 +77,14 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   List<IConversationChatMessage> excludeHiddenItems(
       List<IConversationChatMessage> superItems,
-      List<IConversationChatMessage> hiddenItems,
+      List<IConversationChatMessage?>? hiddenItems,
       ) {
-    if (hiddenItems.isEmpty) {
+    if (hiddenItems!.isEmpty) {
       return superItems;
     }
     superItems.removeWhere((currentItem) =>
     hiddenItems.firstWhere(
-            (hiddenItem) => isItemsEqual(hiddenItem, currentItem),
+            (hiddenItem) => isItemsEqual(hiddenItem!, currentItem),
         orElse: () => null) !=
         null);
 
@@ -115,7 +115,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     if (a?.createdAt == null && b?.createdAt != null) {
       return -1;
     }
-    return a.createdAt.compareTo(b.createdAt);
+    return a.createdAt!.compareTo(b.createdAt!);
   }
 
   @override
@@ -128,7 +128,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
   static ConversationChatMessageCachedPaginationListWithNewItemsBloc
       createFromContext(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
+    required bool mergeNewItemsImmediately,
   }) {
     return ConversationChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
@@ -141,7 +141,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
               IConversationChatMessage>>(
         context,
         listen: false,
-      ),
+      ) as ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>, IConversationChatMessage>,
       conversationChatBloc: IConversationChatBloc.of(
         context,
         listen: false,
@@ -151,13 +151,13 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   static Widget provideToContext(
     BuildContext context, {
-    @required bool mergeNewItemsImmediately,
-    @required Widget child,
+    required bool mergeNewItemsImmediately,
+    required Widget child,
   }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IConversationChatMessage>,
-            IConversationChatMessage>>(
+            IConversationChatMessage?>>(
       create: (context) =>
           ConversationChatMessageCachedPaginationListWithNewItemsBloc
               .createFromContext(

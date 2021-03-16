@@ -15,7 +15,6 @@ import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 
 class PostStatusDataStatusStatusAdapter implements IStatus {
   @override
@@ -27,30 +26,30 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   final PostStatusData postStatusData;
 
   @override
-  final int localId;
+  final int? localId;
 
   @override
   final PendingState pendingState;
 
   @override
-  final String oldPendingRemoteId;
+  final String? oldPendingRemoteId;
 
   @override
-  final String wasSentWithIdempotencyKey;
+  final String? wasSentWithIdempotencyKey;
 
   PostStatusDataStatusStatusAdapter({
-    @required this.account,
-    @required this.postStatusData,
-    @required this.createdAt,
-    @required this.localId,
-    @required this.pendingState,
-    @required this.oldPendingRemoteId,
-    @required this.wasSentWithIdempotencyKey,
+    required this.account,
+    required this.postStatusData,
+    required this.createdAt,
+    required this.localId,
+    required this.pendingState,
+    required this.oldPendingRemoteId,
+    required this.wasSentWithIdempotencyKey,
   });
 
   // we need unique not-null remoteId, because database schema require it
   DbStatus toDbStatus({
-    @required String fakeUniqueRemoteRemoteId,
+    required String fakeUniqueRemoteRemoteId,
   }) =>
       DbStatus(
         id: null,
@@ -92,19 +91,23 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
         deleted: deleted,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
+        wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
+        card: card,
+        hiddenLocallyOnDevice: hiddenLocallyOnDevice,
+        emojis: emojis,
       );
 
   @override
-  PleromaApplication get application => null;
+  PleromaApplication? get application => null;
 
   @override
   bool get bookmarked => false;
 
   @override
-  PleromaCard get card => null;
+  PleromaCard? get card => null;
 
   @override
-  String get content => postStatusData.text;
+  String? get content => postStatusData.text;
 
   @override
   List<PleromaEmoji> get emojis => [];
@@ -116,14 +119,14 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   int get favouritesCount => 0;
 
   @override
-  String get inReplyToAccountRemoteId =>
+  String? get inReplyToAccountRemoteId =>
       postStatusData.inReplyToPleromaStatus?.account?.id;
 
   @override
-  String get inReplyToRemoteId => postStatusData.inReplyToPleromaStatus?.id;
+  String? get inReplyToRemoteId => postStatusData.inReplyToPleromaStatus?.id;
 
   @override
-  String get language => postStatusData.language;
+  String? get language => postStatusData.language;
 
   @override
   List<PleromaMention> get mentions => [];
@@ -138,40 +141,40 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get pinned => false;
 
   @override
-  PleromaContent get pleromaContent => null;
+  PleromaContent? get pleromaContent => null;
 
   @override
-  int get pleromaConversationId => null;
+  int? get pleromaConversationId => null;
 
   @override
-  int get pleromaDirectConversationId => null;
+  int? get pleromaDirectConversationId => null;
 
   @override
-  List<PleromaStatusEmojiReaction> get pleromaEmojiReactions => null;
+  List<PleromaStatusEmojiReaction>? get pleromaEmojiReactions => null;
 
   @override
-  DateTime get pleromaExpiresAt => null;
+  DateTime? get pleromaExpiresAt => null;
 
   @override
-  String get pleromaInReplyToAccountAcct => null;
+  String? get pleromaInReplyToAccountAcct => null;
 
   @override
-  bool get pleromaLocal => null;
+  bool? get pleromaLocal => null;
 
   @override
-  PleromaContent get pleromaSpoilerText => null;
+  PleromaContent? get pleromaSpoilerText => null;
 
   @override
-  bool get pleromaThreadMuted => null;
+  bool? get pleromaThreadMuted => null;
 
   @override
-  PleromaPoll get poll => postStatusData?.poll?.toPleromaPoll();
+  PleromaPoll? get poll => postStatusData.poll?.toPleromaPoll();
 
   @override
-  IStatus get reblog => null;
+  IStatus? get reblog => null;
 
   @override
-  String get reblogStatusRemoteId => null;
+  String? get reblogStatusRemoteId => null;
 
   @override
   bool get reblogged => false;
@@ -180,7 +183,9 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   int get reblogsCount => 0;
 
   @override
-  String get remoteId => null;
+  String get remoteId => throw UnsupportedError(
+        "remoteId not exist in PostStatusDataStatusStatusAdapter",
+      );
 
   @override
   int get repliesCount => 0;
@@ -207,72 +212,68 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get isReply => postStatusData.inReplyToPleromaStatus != null;
 
   @override
-  IStatus get inReplyToStatus => postStatusData.inReplyToPleromaStatus != null
-      ? mapRemoteStatusToLocalStatus(postStatusData.inReplyToPleromaStatus)
-      : null;
+  IStatus? get inReplyToStatus =>
+      postStatusData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
 
   @override
-  List<PleromaMediaAttachment> get mediaAttachments =>
+  List<PleromaMediaAttachment>? get mediaAttachments =>
       postStatusData.mediaAttachments;
 
   @override
-  bool get deleted => null;
-
+  bool get deleted => false;
 
   @override
-  bool get hiddenLocallyOnDevice => null;
+  bool get hiddenLocallyOnDevice => false;
 
   @override
   IStatus copyWith({
-    IAccount account,
-    IStatus reblog,
-    int id,
-    String remoteId,
-    DateTime createdAt,
-    IStatus inReplyToStatus,
-    String inReplyToRemoteId,
-    String inReplyToAccountRemoteId,
-    bool nsfwSensitive,
-    String spoilerText,
-    PleromaVisibility visibility,
-    String uri,
-    String url,
-    int repliesCount,
-    int reblogsCount,
-    int favouritesCount,
-    bool favourited,
-    bool reblogged,
-    bool muted,
-    bool bookmarked,
-    bool pinned,
-    String content,
-    String reblogStatusRemoteId,
-    PleromaApplication application,
-    String accountRemoteId,
-    List<PleromaMediaAttachment> mediaAttachments,
-    List<PleromaMention> mentions,
-    List<PleromaTag> tags,
-    List<PleromaEmoji> emojis,
-    PleromaPoll poll,
-    PleromaCard card,
-    String language,
-    PleromaContent pleromaContent,
-    int pleromaConversationId,
-    int pleromaDirectConversationId,
-    String pleromaInReplyToAccountAcct,
-    bool pleromaLocal,
-    PleromaContent pleromaSpoilerText,
-    DateTime pleromaExpiresAt,
-    bool pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
-    bool deleted,
-    PendingState pendingState,
-    String oldPendingRemoteId,
-    bool hiddenLocallyOnDevice,
-    String wasSentWithIdempotencyKey,
+    IAccount? account,
+    IStatus? reblog,
+    int? id,
+    String? remoteId,
+    DateTime? createdAt,
+    IStatus? inReplyToStatus,
+    String? inReplyToRemoteId,
+    String? inReplyToAccountRemoteId,
+    bool? nsfwSensitive,
+    String? spoilerText,
+    PleromaVisibility? visibility,
+    String? uri,
+    String? url,
+    int? repliesCount,
+    int? reblogsCount,
+    int? favouritesCount,
+    bool? favourited,
+    bool? reblogged,
+    bool? muted,
+    bool? bookmarked,
+    bool? pinned,
+    String? content,
+    String? reblogStatusRemoteId,
+    PleromaApplication? application,
+    String? accountRemoteId,
+    List<PleromaMediaAttachment>? mediaAttachments,
+    List<PleromaMention>? mentions,
+    List<PleromaTag>? tags,
+    List<PleromaEmoji>? emojis,
+    PleromaPoll? poll,
+    PleromaCard? card,
+    String? language,
+    PleromaContent? pleromaContent,
+    int? pleromaConversationId,
+    int? pleromaDirectConversationId,
+    String? pleromaInReplyToAccountAcct,
+    bool? pleromaLocal,
+    PleromaContent? pleromaSpoilerText,
+    DateTime? pleromaExpiresAt,
+    bool? pleromaThreadMuted,
+    List<PleromaStatusEmojiReaction?>? pleromaEmojiReactions,
+    bool? deleted,
+    PendingState? pendingState,
+    String? oldPendingRemoteId,
+    bool? hiddenLocallyOnDevice,
+    String? wasSentWithIdempotencyKey,
   }) {
     throw UnsupportedError("Not supported for non-published statuses");
   }
-
-
 }

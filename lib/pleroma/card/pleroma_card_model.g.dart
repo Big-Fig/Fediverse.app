@@ -1,5 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+import 'package:collection/collection.dart' show IterableExtension;
 part of 'pleroma_card_model.dart';
 
 // **************************************************************************
@@ -8,19 +9,19 @@ part of 'pleroma_card_model.dart';
 
 PleromaCard _$PleromaCardFromJson(Map<String, dynamic> json) {
   return PleromaCard(
-    authorName: json['author_name'] as String,
-    authorUrl: json['author_url'] as String,
-    description: json['description'] as String,
-    embedUrl: json['embed_url'] as String,
-    height: json['height'] as int,
-    html: json['html'] as String,
-    image: json['image'] as String,
-    providerName: json['provider_name'] as String,
-    providerUrl: json['provider_url'] as String,
-    title: json['title'] as String,
+    authorName: json['author_name'] as String?,
+    authorUrl: json['author_url'] as String?,
+    description: json['description'] as String?,
+    embedUrl: json['embed_url'] as String?,
+    height: json['height'] as int?,
+    html: json['html'] as String?,
+    image: json['image'] as String?,
+    providerName: json['provider_name'] as String?,
+    providerUrl: json['provider_url'] as String?,
+    title: json['title'] as String?,
     type: _$enumDecodeNullable(_$MastodonCardTypeEnumMap, json['type']),
-    url: json['url'] as String,
-    width: json['width'] as int,
+    url: json['url'] as String?,
+    width: json['width'] as int?,
   );
 }
 
@@ -36,15 +37,15 @@ Map<String, dynamic> _$PleromaCardToJson(PleromaCard instance) =>
       'provider_name': instance.providerName,
       'provider_url': instance.providerUrl,
       'title': instance.title,
-      'type': _$MastodonCardTypeEnumMap[instance.type],
+      'type': _$MastodonCardTypeEnumMap[instance.type!],
       'url': instance.url,
       'width': instance.width,
     };
 
-T _$enumDecode<T>(
+T? _$enumDecode<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
@@ -52,7 +53,7 @@ T _$enumDecode<T>(
   }
 
   final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
+      .singleWhereOrNull((e) => e.value == source)
       ?.key;
 
   if (value == null && unknownValue == null) {
@@ -62,10 +63,10 @@ T _$enumDecode<T>(
   return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(
+T? _$enumDecodeNullable<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     return null;

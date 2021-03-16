@@ -8,15 +8,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediTransparentTextButtonWithBorder extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
 
-  final double width;
+  final double? width;
   final double height;
 
   final double borderWidth;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   final Color color;
 
@@ -27,13 +27,13 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
 
   FediTransparentTextButtonWithBorder(
     this.text, {
-    @required this.onPressed,
+    required this.onPressed,
     this.width,
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
-    @required this.color,
-    @required this.expanded,
+    required this.color,
+    required this.expanded,
     this.borderVisible = true,
     this.limitMinWidth = false,
   });
@@ -67,7 +67,7 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
               child: Padding(
                 padding: FediPadding.buttonHorizontalPadding,
                 child: Text(
-                  text,
+                  text!,
                   textAlign: TextAlign.center,
                   style: textStyle.copyWith(
                     color: color,

@@ -45,20 +45,20 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbStatusesTable reblogAlias;
-  $DbAccountsTable reblogAccountAlias;
-  $DbStatusesTable replyAlias;
-  $DbAccountsTable replyAccountAlias;
-  $DbStatusesTable replyReblogAlias;
-  $DbAccountsTable replyReblogAccountAlias;
-  $DbStatusesTable statusAlias;
-  $DbStatusHashtagsTable statusHashtagsAlias;
-  $DbStatusListsTable statusListsAlias;
-  $DbAccountFollowingsTable accountFollowingsAlias;
-  $DbAccountFollowingsTable replyToAccountFollowingsAlias;
-  $DbConversationStatusesTable conversationStatusesAlias;
-  $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
+  late $DbAccountsTable accountAlias;
+  late $DbStatusesTable reblogAlias;
+  late $DbAccountsTable reblogAccountAlias;
+  late $DbStatusesTable replyAlias;
+  late $DbAccountsTable replyAccountAlias;
+  late $DbStatusesTable replyReblogAlias;
+  late $DbAccountsTable replyReblogAccountAlias;
+  $DbStatusesTable? statusAlias;
+  late $DbStatusHashtagsTable statusHashtagsAlias;
+  late $DbStatusListsTable statusListsAlias;
+  late $DbAccountFollowingsTable accountFollowingsAlias;
+  late $DbAccountFollowingsTable replyToAccountFollowingsAlias;
+  late $DbConversationStatusesTable conversationStatusesAlias;
+  late $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
@@ -100,10 +100,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   Stream<DbStatusPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
-  Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
+  Future<DbStatusPopulated> findByRemoteId(String? remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
-  Stream<DbStatusPopulated> watchByRemoteId(String remoteId) =>
+  Stream<DbStatusPopulated> watchByRemoteId(String? remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   Future<DbStatusPopulated> findByOldPendingRemoteId(
@@ -112,7 +112,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           await _findByOldPendingRemoteId(oldPendingRemoteId).getSingle());
 
   Stream<DbStatusPopulated> watchByOldPendingRemoteId(
-          String oldPendingRemoteId) =>
+          String? oldPendingRemoteId) =>
       (_findByOldPendingRemoteId(oldPendingRemoteId)
           .watchSingle()
           .map(typedResultToPopulated));
@@ -149,11 +149,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ),
       );
 
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
       (select(db.dbStatuses)
             ..where(
               (status) => status.remoteId.like(
-                remoteId,
+                remoteId!,
               ),
             ))
           .join(
@@ -168,7 +168,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       );
 
   JoinedSelectStatement<Table, DataClass> _findByOldPendingRemoteId(
-          String oldPendingRemoteId) =>
+          String? oldPendingRemoteId) =>
       (select(db.dbStatuses)
             ..where(
               (status) => status.oldPendingRemoteId.equals(
@@ -186,17 +186,23 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ),
       );
 
-  Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbStatus> entity, {InsertMode? mode}) async =>
       into(db.dbStatuses).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbStatus> entity) async =>
       into(db.dbStatuses).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-          Iterable<Insertable<DbStatus>> entities, InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(db.dbStatuses, entities, mode: mode);
-      });
+          Iterable<Insertable<DbStatus>?> entities, InsertMode mode) async =>
+      await batch(
+        (batch) {
+          batch.insertAll(
+            db.dbStatuses,
+            entities as List<Insertable<DbStatus>>,
+            mode: mode,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbStatus> entity) async =>
       await update(db.dbStatuses).replace(entity);
@@ -206,7 +212,12 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
-      await (update(db.dbStatuses)..where((i) => i.id.equals(localId)))
+      await (update(db.dbStatuses)
+            ..where(
+              (i) => i.id.equals(
+                localId,
+              ),
+            ))
           .write(entity);
     } else {
       localId = await insert(entity);
@@ -230,7 +241,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String localDomain) =>
+          String? localDomain) =>
       query
         ..where((status) =>
             status.pleromaLocal.equals(true) |
@@ -239,7 +250,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String localDomain) =>
+          String? localDomain) =>
       query
         ..where((status) => (status.pleromaLocal.equals(true).not() &
             status.url.like("%$localDomain%").not()));
@@ -247,13 +258,13 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String instance) =>
+          String? instance) =>
       query..where((status) => status.url.like("%$instance%"));
 
   void addExcludeTextWhere(
     JoinedSelectStatement<Table, DataClass> query, {
-    @required String phrase,
-    @required bool wholeWord,
+    required String? phrase,
+    required bool wholeWord,
   }) {
     addExcludeTextConditionWhere(
       query,
@@ -288,14 +299,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // todo: improve performance: remove url.like filter. Add local flag on insert
   JoinedSelectStatement addExcludeTextConditionWhere(
     JoinedSelectStatement query, {
-    @required String tableName,
-    @required String fieldName,
-    @required String phrase,
-    @required bool wholeWord,
+    required String tableName,
+    required String fieldName,
+    required String? phrase,
+    required bool wholeWord,
   }) {
     String expressionCondition;
     if (wholeWord) {
-      final regex = r"\b" + phrase + r"\b";
+      final regex = r"\b" + phrase! + r"\b";
       expressionCondition = "NOT REGEXP '$regex'";
     } else {
       expressionCondition = "NOT LIKE '%$phrase%'";
@@ -310,32 +321,32 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   JoinedSelectStatement addFollowingWhere(
-          JoinedSelectStatement query, String accountRemoteId) =>
+          JoinedSelectStatement query, String? accountRemoteId) =>
       query
         ..where(CustomExpression<bool>(
             "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'"));
 
   JoinedSelectStatement addHashtagWhere(
-          JoinedSelectStatement query, String hashtag) =>
+          JoinedSelectStatement query, String? hashtag) =>
       query
         ..where(CustomExpression<bool>(
             "$_statusHashtagsAliasId.hashtag = '$hashtag'"));
 
   JoinedSelectStatement addListWhere(
-          JoinedSelectStatement query, String listRemoteId) =>
+          JoinedSelectStatement query, String? listRemoteId) =>
       query
         ..where(CustomExpression<bool>(
             "$_statusListsAliasId.list_remote_id = '$listRemoteId'"));
 
   JoinedSelectStatement addConversationWhere(
-          JoinedSelectStatement query, String conversationRemoteId) =>
+          JoinedSelectStatement query, String? conversationRemoteId) =>
       query
         ..where(CustomExpression<bool>(
             "$_conversationStatusesAliasId.conversation_remote_id"
             " = '$conversationRemoteId'"));
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
-          JoinedSelectStatement query, String myAccountRemoteId) =>
+          JoinedSelectStatement query, String? myAccountRemoteId) =>
       query
         ..where(
           CustomExpression<bool>(
@@ -365,7 +376,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String accountRemoteId) =>
+          String? accountRemoteId) =>
       query..where((status) => status.accountRemoteId.equals(accountRemoteId));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
@@ -418,7 +429,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus>
       addOnlyInReplyToAccountRemoteIdOrNotReply(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-    String accountRemoteId,
+    String? accountRemoteId,
   ) =>
           query
             ..where((status) =>
@@ -436,8 +447,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   /// chronological order
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
@@ -459,8 +470,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
-    @required DateTime minimumDateTimeExcluding,
-    @required DateTime maximumDateTimeExcluding,
+    required DateTime? minimumDateTimeExcluding,
+    required DateTime? maximumDateTimeExcluding,
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
@@ -485,7 +496,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       List<PleromaVisibility> excludeVisibilities) {
     assert(excludeVisibilities?.isNotEmpty == true);
 
-    List<String> excludeVisibilityStrings = excludeVisibilities
+    List<String?> excludeVisibilityStrings = excludeVisibilities
         .map((visibility) => visibility.toJsonValue())
         .toList();
 
@@ -514,24 +525,16 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
             .toList());
 
   List<DbStatusPopulated> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-    return typedResult.map(typedResultToPopulated).toList();
-  }
+    List<TypedResult> typedResult,
+  ) =>
+      typedResult.map(typedResultToPopulated).toList();
 
   DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     DbStatus rebloggedStatus;
     DbAccount rebloggedStatusAccount;
     rebloggedStatus = typedResult.readTable(reblogAlias);
     rebloggedStatusAccount = typedResult.readTable(reblogAccountAlias);
-//
-//    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
-//    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
+
     return DbStatusPopulated(
       reblogDbStatus: rebloggedStatus,
       reblogDbStatusAccount: rebloggedStatusAccount,
@@ -546,12 +549,12 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   List<Join<Table, DataClass>> populateStatusJoin({
-    @required includeAccountFollowing,
-    @required includeReplyToAccountFollowing,
-    @required includeStatusHashtags,
-    @required includeStatusLists,
-    @required includeConversations,
-    @required includeHomeTimeline,
+    required includeAccountFollowing,
+    required includeReplyToAccountFollowing,
+    required includeStatusHashtags,
+    required includeStatusLists,
+    required includeConversations,
+    required includeHomeTimeline,
   }) {
     return [
       ...(includeHomeTimeline
@@ -634,7 +637,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     ];
   }
 
-  Future incrementRepliesCount({@required String remoteId}) {
+  Future incrementRepliesCount({required String? remoteId}) {
     var update = "UPDATE db_statuses "
         "SET replies_count = replies_count + 1 "
         "WHERE remote_id = '$remoteId'";
@@ -643,7 +646,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return query;
   }
 
-  Future markAsDeleted({@required String remoteId}) {
+  Future markAsDeleted({required String? remoteId}) {
     var update = "UPDATE db_statuses "
         "SET deleted = 1 "
         "WHERE remote_id = '$remoteId'";
@@ -652,7 +655,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return query;
   }
 
-  Future markAsHiddenLocallyOnDevice({@required int localId}) {
+  Future markAsHiddenLocallyOnDevice({required int? localId}) {
     var update = "UPDATE db_statuses "
         "SET hidden_locally_on_device = 1 "
         "WHERE id = '$localId'";

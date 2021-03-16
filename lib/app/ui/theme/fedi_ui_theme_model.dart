@@ -462,7 +462,7 @@ class FediUiTextTheme implements IFediUiTextTheme {
   Color get _errorColor => colorTheme.error;
 
   const FediUiTextTheme({
-    @required this.colorTheme,
+    required this.colorTheme,
   });
 
   @override

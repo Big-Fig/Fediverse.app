@@ -14,7 +14,7 @@ part 'recent_search_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class RecentSearchList implements IJsonObject {
   @HiveField(0)
-  final List<String> recentItems;
+  final List<String>? recentItems;
   RecentSearchList({this.recentItems});
 
   @override

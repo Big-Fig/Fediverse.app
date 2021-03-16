@@ -84,7 +84,6 @@ import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -95,7 +94,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
 
-    var globalProviderService = this;
+    AppContextBloc globalProviderService = this;
 
     var loggingService = LoggingService();
     await globalProviderService
@@ -456,15 +455,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   }
 
   Future _checkReviewAppDialog({
-    @required AppAnalyticsBloc appAnalyticsBloc,
-    @required InAppReviewBloc inAppReviewBloc,
+    required AppAnalyticsBloc appAnalyticsBloc,
+    required InAppReviewBloc inAppReviewBloc,
   }) async {
     final appOpenedCountToShowAppReview = 5;
-    var isAppRated = appAnalyticsBloc.isAppRated;
+    var isAppRated = appAnalyticsBloc.isAppRated!;
     var appOpenedCount = appAnalyticsBloc.appOpenedCount;
     var isProdPackageId = await FediPackageInfoHelper.isProdPackageId();
     var isNeedRequestReview =
-        (!isAppRated && appOpenedCount >= appOpenedCountToShowAppReview) &&
+        (!isAppRated && appOpenedCount! >= appOpenedCountToShowAppReview) &&
             isProdPackageId;
     _logger.finest(
         () => " appOpenedCountToShowAppReview $appOpenedCountToShowAppReview \n"

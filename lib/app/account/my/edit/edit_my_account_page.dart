@@ -39,7 +39,7 @@ class EditMyAccountPage extends StatelessWidget {
 
   void handleBackPressed(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var isSomethingChanged = editMyAccountBloc.isSomethingChanged;
+    var isSomethingChanged = editMyAccountBloc.isSomethingChanged!;
     if (isSomethingChanged) {
       alertUnsaved(context);
     } else {
@@ -65,7 +65,7 @@ class EditMyAccountPage extends StatelessWidget {
 
 class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
   const _EditMyAccountPageAppBarSaveAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -98,7 +98,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
           builder: (BuildContext context, onPressed) =>
               FediPageAppBarTextActionWidget(
             text: S.of(context).app_account_my_edit_action_save,
-            onPressed: isReadyToSubmit ? onPressed : null,
+            onPressed: isReadyToSubmit! ? onPressed : null,
           ),
         );
       },

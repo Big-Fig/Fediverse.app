@@ -6,12 +6,11 @@ import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
-class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
+class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     implements IEditPushSettingsBloc {
   final IPushSettingsBloc pushSettingsBloc;
-  final AuthInstance currentInstance;
+  final AuthInstance? currentInstance;
 
   @override
   final IBoolValueFormFieldBloc favouriteFieldBloc;
@@ -40,9 +39,9 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
       ];
 
   EditPushSettingsBloc({
-    @required this.pushSettingsBloc,
-    @required this.currentInstance,
-    @required bool isEnabled,
+    required this.pushSettingsBloc,
+    required this.currentInstance,
+    required bool isEnabled,
   })  : favouriteFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.favourite,
           isEnabled: isEnabled,
@@ -62,15 +61,15 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
         pollFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.poll,
           isEnabled:
-              isEnabled && currentInstance.isMastodon, // only mastodon
+              isEnabled && currentInstance!.isMastodon, // only mastodon
         ),
         pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.pleromaChatMention,
-          isEnabled: isEnabled && currentInstance.isPleroma,
+          isEnabled: isEnabled && currentInstance!.isPleroma!,
         ),
         pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.pleromaEmojiReaction,
-          isEnabled: isEnabled && currentInstance.isPleroma,
+          isEnabled: isEnabled && currentInstance!.isPleroma!,
         ),
         super(
           isEnabled: isEnabled,
@@ -98,9 +97,9 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings>
       );
 
   @override
-  Future fillSettingsToFormFields(PushSettings settings) async {
+  Future fillSettingsToFormFields(PushSettings? settings) async {
     favouriteFieldBloc.changeCurrentValue(
-      settings.favourite,
+      settings!.favourite,
     );
     followFieldBloc.changeCurrentValue(
       settings.follow,

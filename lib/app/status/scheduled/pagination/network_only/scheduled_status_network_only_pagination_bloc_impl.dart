@@ -14,9 +14,9 @@ class ScheduledStatusNetworkOnlyPaginationBloc
   final INetworkOnlyListBloc<IScheduledStatus> listService;
 
   ScheduledStatusNetworkOnlyPaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -27,7 +27,7 @@ class ScheduledStatusNetworkOnlyPaginationBloc
 
   static ScheduledStatusNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       ScheduledStatusNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -43,10 +43,10 @@ class ScheduledStatusNetworkOnlyPaginationBloc
 
   @override
   Future<List<IScheduledStatus>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required PaginationPage<IScheduledStatus> olderPage,
-    @required PaginationPage<IScheduledStatus> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<IScheduledStatus>? olderPage,
+    required PaginationPage<IScheduledStatus>? newerPage,
   }) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,

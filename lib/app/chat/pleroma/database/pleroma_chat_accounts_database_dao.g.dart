@@ -40,7 +40,7 @@ mixin _$ChatAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
         }).map(dbChatAccounts.mapFromRow);
   }
 
-  Selectable<DbChatAccount> findByAccountRemoteId(String accountRemoteId) {
+  Selectable<DbChatAccount?> findByAccountRemoteId(String accountRemoteId) {
     return customSelect(
         'SELECT * FROM db_chat_accounts WHERE account_remote_id = :accountRemoteId;',
         variables: [Variable.withString(accountRemoteId)],

@@ -28,7 +28,7 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
   Future<int> upsert(Insertable<DbDraftStatus> entity) =>
       into(dbDraftStatuses).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbDraftStatus>> entities,
+  Future insertAll(List<Insertable<DbDraftStatus>> entities,
           InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(dbDraftStatuses, entities, mode: mode);
@@ -62,16 +62,10 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
 
   List<DbDraftStatus> typedResultListToPopulated(
       List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbDraftStatus typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
 
     return typedResult.readTable(db.dbDraftStatuses);
   }
@@ -81,8 +75,8 @@ class DraftStatusDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
       addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query, {
-    @required DateTime minimumUpdatedAtExcluding,
-    @required DateTime maximumUpdatedAtExcluding,
+    required DateTime? minimumUpdatedAtExcluding,
+    required DateTime? maximumUpdatedAtExcluding,
   }) {
     var minimumExist = minimumUpdatedAtExcluding != null;
     var maximumExist = maximumUpdatedAtExcluding != null;

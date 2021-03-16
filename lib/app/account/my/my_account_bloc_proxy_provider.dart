@@ -7,7 +7,7 @@ class MyAccountBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   MyAccountBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

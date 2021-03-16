@@ -38,7 +38,7 @@ class GlobalSettingsListWidget extends StatelessWidget {
 
 class _GlobalSettingsLocalizationRowWidget extends StatelessWidget {
   const _GlobalSettingsLocalizationRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class _GlobalSettingsLocalizationRowWidget extends StatelessWidget {
 
 class _GlobalSettingsUiRowWidget extends StatelessWidget {
   const _GlobalSettingsUiRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -70,7 +70,7 @@ class _GlobalSettingsUiRowWidget extends StatelessWidget {
 
 class _GlobalSettingsPaginationRowWidget extends StatelessWidget {
   const _GlobalSettingsPaginationRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -86,7 +86,7 @@ class _GlobalSettingsPaginationRowWidget extends StatelessWidget {
 
 class _GlobalSettingsMediaRowWidget extends StatelessWidget {
   const _GlobalSettingsMediaRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -102,7 +102,7 @@ class _GlobalSettingsMediaRowWidget extends StatelessWidget {
 
 class _GlobalSettingsToastRowWidget extends StatelessWidget {
   const _GlobalSettingsToastRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -118,7 +118,7 @@ class _GlobalSettingsToastRowWidget extends StatelessWidget {
 
 class _GlobalSettingsStatusSensitiveRowWidget extends StatelessWidget {
   const _GlobalSettingsStatusSensitiveRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -134,7 +134,7 @@ class _GlobalSettingsStatusSensitiveRowWidget extends StatelessWidget {
 
 class _GlobalSettingsPostStatusRowWidget extends StatelessWidget {
   const _GlobalSettingsPostStatusRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -150,7 +150,7 @@ class _GlobalSettingsPostStatusRowWidget extends StatelessWidget {
 
 class _GlobalSettingsChatRowWidget extends StatelessWidget {
   const _GlobalSettingsChatRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -166,7 +166,7 @@ class _GlobalSettingsChatRowWidget extends StatelessWidget {
 
 class _GlobalSettingsWebSocketsRowWidget extends StatelessWidget {
   const _GlobalSettingsWebSocketsRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -182,7 +182,7 @@ class _GlobalSettingsWebSocketsRowWidget extends StatelessWidget {
 
 class _GlobalSettingsDatabaseCacheRowWidget extends StatelessWidget {
   const _GlobalSettingsDatabaseCacheRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -198,7 +198,7 @@ class _GlobalSettingsDatabaseCacheRowWidget extends StatelessWidget {
 
 class _GlobalSettingsFilesCacheRowWidget extends StatelessWidget {
   const _GlobalSettingsFilesCacheRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

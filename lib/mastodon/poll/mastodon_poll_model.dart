@@ -1,5 +1,5 @@
 abstract class IMastodonPoll {
-  String get id;
+  String? get id;
 
   DateTime get expiresAt;
 

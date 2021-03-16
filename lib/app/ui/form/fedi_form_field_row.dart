@@ -9,15 +9,15 @@ import 'package:flutter/material.dart';
 
 class FediFormFieldRow extends StatelessWidget {
   final Widget label;
-  final Widget description;
-  final Widget descriptionOnDisabled;
+  final Widget? description;
+  final Widget? descriptionOnDisabled;
   final Widget valueChild;
 
   FediFormFieldRow({
-    @required this.label,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.valueChild,
+    required this.label,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.valueChild,
   });
 
   @override
@@ -46,20 +46,20 @@ class FediFormFieldRow extends StatelessWidget {
 
 class _FediFormFieldRowErrorWidget extends StatelessWidget {
   const _FediFormFieldRowErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var formFieldBloc = IFormFieldBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
-    return StreamBuilder<List<FormItemValidationError>>(
+    return StreamBuilder<List<FormItemValidationError?>?>(
       stream: formFieldBloc.errorsStream,
       initialData: formFieldBloc.errors,
       builder: (context, snapshot) {
         var errors = snapshot.data;
 
-        var error = errors?.isNotEmpty == true ? errors.first : null;
+        var error = errors?.isNotEmpty == true ? errors!.first : null;
 
         if (error != null) {
           return Text(
@@ -76,34 +76,34 @@ class _FediFormFieldRowErrorWidget extends StatelessWidget {
 
 class _FediFormFieldRowDescriptionWidget extends StatelessWidget {
   const _FediFormFieldRowDescriptionWidget({
-    Key key,
-    @required this.description,
-    @required this.descriptionOnDisabled,
+    Key? key,
+    required this.description,
+    required this.descriptionOnDisabled,
   }) : super(key: key);
-  final Widget description;
-  final Widget descriptionOnDisabled;
+  final Widget? description;
+  final Widget? descriptionOnDisabled;
 
   @override
   Widget build(BuildContext context) {
     var formFieldBloc = IFormFieldBloc.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: formFieldBloc.isEnabledStream,
       initialData: formFieldBloc.isEnabled,
       builder: (context, snapshot) {
-        var isEnabled = snapshot.data;
+        var isEnabled = snapshot.data!;
 
         if (isEnabled) {
           if (description != null) {
-            return description;
+            return description!;
           } else {
             return const SizedBox.shrink();
           }
         } else {
           if (descriptionOnDisabled != null) {
-            return descriptionOnDisabled;
+            return descriptionOnDisabled!;
           } else {
             if (description != null) {
-              return description;
+              return description!;
             } else {
               return const SizedBox.shrink();
             }
@@ -116,15 +116,15 @@ class _FediFormFieldRowDescriptionWidget extends StatelessWidget {
 
 class SimpleFediFormFieldRow extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
+  final String? description;
+  final String? descriptionOnDisabled;
   final Widget valueChild;
 
   SimpleFediFormFieldRow({
-    @required this.label,
-    @required this.description,
-    @required this.descriptionOnDisabled,
-    @required this.valueChild,
+    required this.label,
+    required this.description,
+    required this.descriptionOnDisabled,
+    required this.valueChild,
   });
 
   @override

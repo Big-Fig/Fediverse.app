@@ -11,14 +11,12 @@ import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
-  Logger _logger;
+  late Logger _logger;
 
   String get logTag;
 
@@ -32,23 +30,23 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   final IMyAccountBloc myAccountBloc;
 
-  final String statusListRemoteId;
-  final String statusConversationRemoteId;
+  final String? statusListRemoteId;
+  final String? statusConversationRemoteId;
   final bool isFromHomeTimeline;
   final WebSocketsListenType listenType;
 
   WebSocketsChannelHandler({
-    @required this.webSocketsChannel,
-    @required this.statusRepository,
-    @required this.conversationRepository,
-    @required this.notificationRepository,
-    @required this.chatNewMessagesHandlerBloc,
-    @required this.conversationChatNewMessagesHandlerBloc,
-    @required this.statusListRemoteId,
-    @required this.statusConversationRemoteId,
-    @required this.myAccountBloc,
-    @required this.isFromHomeTimeline,
-    @required this.listenType,
+    required this.webSocketsChannel,
+    required this.statusRepository,
+    required this.conversationRepository,
+    required this.notificationRepository,
+    required this.chatNewMessagesHandlerBloc,
+    required this.conversationChatNewMessagesHandlerBloc,
+    required this.statusListRemoteId,
+    required this.statusConversationRemoteId,
+    required this.myAccountBloc,
+    required this.isFromHomeTimeline,
+    required this.listenType,
   }) {
     _logger = Logger(logTag);
     _logger.finest(() =>
@@ -70,12 +68,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     _logger.finest(() => "event $event");
 
     // todo: report bug to pleroma
-    if (event?.payload == null || event?.payload == "null") {
+    if (event.payload == null || event.payload == "null") {
       _logger.warning(() => "event payload is empty");
       return;
     }
 
-    switch (event?.eventType) {
+    switch (event.eventType) {
       case PleromaWebSocketsEventType.update:
         await statusRepository.upsertRemoteStatus(event.parsePayloadAsStatus(),
             isFromHomeTimeline: isFromHomeTimeline,
@@ -106,10 +104,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         }
         break;
       case PleromaWebSocketsEventType.delete:
-        var statusRemoteId = event.payload;
+        var statusRemoteId = event.payload!;
 
         await statusRepository.markStatusAsDeleted(
-            statusRemoteId: statusRemoteId);
+          statusRemoteId: statusRemoteId,
+        );
         break;
       case PleromaWebSocketsEventType.filtersChanged:
         // nothing
@@ -122,6 +121,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
       case PleromaWebSocketsEventType.pleromaChatUpdate:
         var chat = event.parsePayloadAsChat();
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
+        break;
+      case PleromaWebSocketsEventType.unknown:
+        // TODO: Handle this case.
         break;
     }
   }

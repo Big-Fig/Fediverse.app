@@ -8,7 +8,7 @@ abstract class IConnectionService
     implements DisposableOwner, IAsyncInitLoadingBloc {
   Stream<ConnectivityResult> get connectionStateStream;
 
-  ConnectivityResult get connectionState;
+  ConnectivityResult? get connectionState;
 
   Stream<bool> get isConnectedStream;
 

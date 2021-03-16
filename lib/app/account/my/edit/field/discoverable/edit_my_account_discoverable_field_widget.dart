@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountDiscoverableFieldWidget extends StatelessWidget {
   const EditMyAccountDiscoverableFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,11 +16,11 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
   @override
-  final int maximumFileSizeInBytes;
+  final int? maximumFileSizeInBytes;
 
   final IMediaDeviceFile mediaDeviceFile;
   @override
-  IPleromaMediaAttachment pleromaMediaAttachment;
+  IPleromaMediaAttachment? pleromaMediaAttachment;
 
   // ignore: close_sinks
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =
@@ -35,12 +34,12 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       uploadStateSubject.stream;
 
   @override
-  UploadMediaAttachmentState get uploadState => uploadStateSubject.value;
+  UploadMediaAttachmentState? get uploadState => uploadStateSubject.value;
 
   UploadMediaAttachmentBlocDevice({
-    @required this.pleromaMediaAttachmentService,
-    @required this.mediaDeviceFile,
-    @required this.maximumFileSizeInBytes,
+    required this.pleromaMediaAttachmentService,
+    required this.mediaDeviceFile,
+    required this.maximumFileSizeInBytes,
   }) {
     assert(pleromaMediaAttachmentService != null);
     addDisposable(subject: uploadStateSubject);
@@ -53,15 +52,15 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
 
   @override
   Future startUpload() async {
-    assert(uploadState.type == UploadMediaAttachmentStateType.notUploaded ||
-        uploadState.type == UploadMediaAttachmentStateType.failed);
+    assert(uploadState!.type == UploadMediaAttachmentStateType.notUploaded ||
+        uploadState!.type == UploadMediaAttachmentStateType.failed);
 
     var file = await mediaDeviceFile.loadFile();
     var fileLength = await file.length();
 
     if (maximumFileSizeInBytes != null &&
         maximumFileSizeInBytes != 0 &&
-        fileLength > maximumFileSizeInBytes) {
+        fileLength > maximumFileSizeInBytes!) {
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.failed,

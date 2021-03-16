@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -17,8 +18,6 @@ import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {
@@ -29,8 +28,8 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
 
-  String get message {
-    var message = shareMessageInputBloc.messageField.currentValue;
+  String? get message {
+    String? message = shareMessageInputBloc.messageField.currentValue;
 
     if (message?.isNotEmpty != true) {
       message = null;
@@ -43,13 +42,13 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   ConversationChatShareBloc({
-    @required this.conversationRepository,
-    @required this.statusRepository,
-    @required this.pleromaConversationService,
-    @required this.pleromaAuthStatusService,
-    @required IPleromaAccountService pleromaAccountService,
-    @required this.myAccountBloc,
-    @required this.accountRepository,
+    required this.conversationRepository,
+    required this.statusRepository,
+    required this.pleromaConversationService,
+    required this.pleromaAuthStatusService,
+    required IPleromaAccountService pleromaAccountService,
+    required this.myAccountBloc,
+    required this.accountRepository,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
@@ -63,11 +62,13 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     final pleromaVisibility = PleromaVisibility.direct;
 
     var targetAccounts = [account];
+    var sendData = createSendData(
+        to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
+        visibility: pleromaVisibility,
+      );
     var accountsPleromaStatus = await pleromaAuthStatusService.postStatus(
-        data: createSendData(
-      to: "${targetAccounts.map((account) => "@${account.acct}").join(", ")}",
-      visibility: pleromaVisibility,
-    ));
+      data: sendData,
+    );
 
     await statusRepository.upsertRemoteStatus(
       accountsPleromaStatus,
@@ -79,15 +80,15 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   }
 
   IPleromaPostStatus createSendData({
-    @required String to,
-    @required PleromaVisibility visibility,
+    required String to,
+    required PleromaVisibility visibility,
   });
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     // default exist only for first page
     if (newerThan != null || olderThan != null) {
@@ -111,10 +112,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       accounts.addAll(
         conversationAccounts.where(
           (account) {
-            var notOwn = account.remoteId != myAccountBloc.account.remoteId;
-            var alreadyExist = accounts.firstWhere(
-                    (accountsItem) => accountsItem.remoteId == account.remoteId,
-                    orElse: () => null) !=
+            var notOwn = account.remoteId != myAccountBloc.account!.remoteId;
+            var alreadyExist = accounts.firstWhereOrNull((accountsItem) =>
+                    accountsItem.remoteId == account.remoteId) !=
                 null;
             return notOwn && !alreadyExist;
           },
@@ -127,9 +127,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<List<IPleromaAccount>> customRemoteAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     // default exist only for first page
     if (newerThan != null || olderThan != null) {
@@ -148,15 +148,14 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     var pleromaAccounts = <IPleromaAccount>[];
 
     for (var pleromaConversation in pleromaConversations) {
-      var pleromaConversationAccounts = pleromaConversation.accounts;
+      var pleromaConversationAccounts = pleromaConversation.accounts!;
       pleromaAccounts.addAll(
         pleromaConversationAccounts.where(
           (pleromaAccount) {
-            var notOwn = pleromaAccount.id != myAccountBloc.account.remoteId;
-            var alreadyAdded = pleromaAccounts.firstWhere(
+            var notOwn = pleromaAccount.id != myAccountBloc.account!.remoteId;
+            var alreadyAdded = pleromaAccounts.firstWhereOrNull(
                     (pleromaAccountsItem) =>
-                        pleromaAccountsItem.id == pleromaAccount.id,
-                    orElse: () => null) !=
+                        pleromaAccountsItem.id == pleromaAccount.id) !=
                 null;
             return notOwn && !alreadyAdded;
           },

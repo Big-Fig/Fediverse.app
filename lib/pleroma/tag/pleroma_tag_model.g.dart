@@ -17,9 +17,9 @@ class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaTag(
-      name: fields[0] as String,
-      url: fields[1] as String,
-      history: (fields[2] as List)?.cast<PleromaHistory>(),
+      name: fields[0] as String?,
+      url: fields[1] as String?,
+      history: (fields[2] as List?)?.cast<PleromaHistory>(),
     );
   }
 
@@ -52,9 +52,9 @@ class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
 
 PleromaTag _$PleromaTagFromJson(Map<String, dynamic> json) {
   return PleromaTag(
-    name: json['name'] as String,
-    url: json['url'] as String,
-    history: (json['history'] as List)
+    name: json['name'] as String?,
+    url: json['url'] as String?,
+    history: (json['history'] as List?)
         ?.map((e) => e == null
             ? null
             : PleromaHistory.fromJson(e as Map<String, dynamic>))

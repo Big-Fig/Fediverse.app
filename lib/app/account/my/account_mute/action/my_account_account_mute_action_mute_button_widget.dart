@@ -12,8 +12,8 @@ class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
   final bool defaultMuting;
 
   const MyAccountAccountMuteActionMuteButtonWidget({
-    Key key,
-    @required this.defaultMuting,
+    Key? key,
+    required this.defaultMuting,
   }) : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
 
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: accountBloc.relationshipMutingStream,
       builder: (context, snapshot) {
         var relationshipMuting = snapshot.data ?? defaultMuting;

@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/filter/pleroma_filter_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 class FilterCachedListBloc extends IFilterCachedListBloc {
   final IPleromaFilterService pleromaFilterService;
@@ -18,15 +17,15 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
   IPleromaApi get pleromaApi => pleromaFilterService;
 
   FilterCachedListBloc({
-    @required this.pleromaFilterService,
-    @required this.filterRepository,
+    required this.pleromaFilterService,
+    required this.filterRepository,
   });
 
   @override
   Future<List<IFilter>> loadLocalItems({
-    @required int limit,
-    @required IFilter newerThan,
-    @required IFilter olderThan,
+    required int? limit,
+    required IFilter? newerThan,
+    required IFilter? olderThan,
   }) {
     return filterRepository.getFilters(
       pagination: RepositoryPagination(
@@ -42,10 +41,10 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IFilter newerThan,
-    @required IFilter olderThan,
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IFilter? newerThan,
+    required IFilter? olderThan,
   }) async {
     // todo: don't exclude pleroma types on mastodon instances
     var remoteFilters = await pleromaFilterService.getFilters(
@@ -56,23 +55,24 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
       ),
     );
 
-    if (remoteFilters != null) {
-      await filterRepository.upsertRemoteFilters(remoteFilters);
-      return true;
-    } else {
-      return false;
-    }
+    await filterRepository.upsertRemoteFilters(remoteFilters);
   }
 
   static FilterCachedListBloc createFromContext(BuildContext context) =>
       FilterCachedListBloc(
-          pleromaFilterService:
-              IPleromaFilterService.of(context, listen: false),
-          filterRepository: IFilterRepository.of(context, listen: false));
+        pleromaFilterService: IPleromaFilterService.of(
+          context,
+          listen: false,
+        ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IFilterCachedListBloc>(
       create: (context) => FilterCachedListBloc.createFromContext(

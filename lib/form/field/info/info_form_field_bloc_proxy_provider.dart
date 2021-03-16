@@ -7,7 +7,7 @@ class InfoFormFieldBlocProxyProvider<T> extends StatelessWidget {
   final Widget child;
 
   InfoFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

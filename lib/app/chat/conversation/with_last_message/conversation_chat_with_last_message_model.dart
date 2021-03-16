@@ -1,28 +1,31 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class IConversationChatWithLastMessage {
   IConversationChat get chat;
 
-  IConversationChatMessage get lastChatMessage;
+  IConversationChatMessage? get lastChatMessage;
 }
 
-class ConversationChatWithLastMessageWrapper extends IConversationChatWithLastMessage {
+class ConversationChatWithLastMessageWrapper
+    extends IConversationChatWithLastMessage {
   @override
   IConversationChat chat;
 
   @override
-  IConversationChatMessage lastChatMessage;
+  IConversationChatMessage? lastChatMessage;
+
   ConversationChatWithLastMessageWrapper({
-    @required this.chat,
-    @required this.lastChatMessage,
+    required this.chat,
+    required this.lastChatMessage,
   });
 
   @override
   String toString() {
-    return 'ChatWithLastMessageWrapper{chat: $chat,'
-        ' lastChatMessage: $lastChatMessage}';
+    return 'ChatWithLastMessageWrapper{'
+        'chat: $chat, '
+        'lastChatMessage: $lastChatMessage'
+        '}';
   }
 
   @override
@@ -32,6 +35,7 @@ class ConversationChatWithLastMessageWrapper extends IConversationChatWithLastMe
           runtimeType == other.runtimeType &&
           chat == other.chat &&
           lastChatMessage == other.lastChatMessage;
+
   @override
   int get hashCode => chat.hashCode ^ lastChatMessage.hashCode;
 }

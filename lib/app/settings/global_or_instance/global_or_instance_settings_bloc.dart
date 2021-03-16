@@ -2,7 +2,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 
-abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
+abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings?>
     implements ISettingsBloc<T> {
   GlobalOrInstanceSettings<T> get globalOrInstanceSettings;
 
@@ -16,13 +16,13 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
 
   Stream<bool> get isGlobalStream;
 
-  T get globalSettingsData;
+  T? get globalSettingsData;
 
-  Stream<T> get globalSettingsDataStream;
+  Stream<T?> get globalSettingsDataStream;
 
-  T get instanceSettingsData;
+  T? get instanceSettingsData;
 
-  Stream<T> get instanceSettingsDataStream;
+  Stream<T?> get instanceSettingsDataStream;
 
   Future clearInstanceSettings();
 

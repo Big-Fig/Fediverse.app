@@ -23,8 +23,8 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   final HtmlTextSettings settings;
 
   HtmlTextBloc({
-    @required this.inputData,
-    @required this.settings,
+    required this.inputData,
+    required this.settings,
   })  : htmlData = _calculateHtmlData(
           inputData: inputData,
           settings: settings,
@@ -43,7 +43,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
   final HtmlTextResultData htmlData;
 
   @override
-  void onLinkClicked({@required String url}) {
+  void onLinkClicked({required String url}) {
     linkClickedStreamController.add(url);
   }
 
@@ -63,21 +63,21 @@ final RegExp findHtmlFragmentsRegex = RegExp(r"</?\s*[a-z-][^>]*\s*>");
 final HtmlUnescape _unescape = HtmlUnescape();
 
 HtmlTextResultData _calculateHtmlData({
-  @required HtmlTextInputData inputData,
-  @required HtmlTextSettings settings,
+  required HtmlTextInputData inputData,
+  required HtmlTextSettings settings,
 }) {
   HtmlTextResultData resultData;
   var input = inputData.input;
 
   if (input != null) {
-    var text = input?.trim() ?? "";
+    var text = input.trim() ?? "";
 
     var alreadyHaveHtmlInText = false;
     if (inputData.isHaveEmojis) {
-      for (int i = 0; i < inputData.emojis.length; i++) {
-        var emoji = inputData.emojis[i];
-        String shortcode = emoji.shortcode;
-        String url = emoji.url;
+      for (int i = 0; i < inputData.emojis!.length; i++) {
+        var emoji = inputData.emojis![i];
+        String? shortcode = emoji.shortcode;
+        String? url = emoji.url;
 
         text = text.replaceAll(
             ":$shortcode:",
@@ -95,11 +95,11 @@ HtmlTextResultData _calculateHtmlData({
 
     if (settings.drawNewLines) {
       if (isActuallyHaveHtmlInData) {
-        text = text?.replaceAll("\n", "</br>");
+        text = text.replaceAll("\n", "</br>");
       }
     } else {
-      text = text?.replaceAll("\n", "");
-      text = text?.replaceAll("<(/)*br>", "");
+      text = text.replaceAll("\n", "");
+      text = text.replaceAll("<(/)*br>", "");
     }
 
     if (!isActuallyHaveHtmlInData) {
@@ -125,8 +125,8 @@ HtmlTextResultData _calculateHtmlData({
 }
 
 Map<String, Style> _calculateHtmlStyles({
-  @required HtmlTextInputData inputData,
-  @required HtmlTextSettings settings,
+  required HtmlTextInputData inputData,
+  required HtmlTextSettings settings,
 }) {
   var fontSizeValue = settings.fontSize;
 

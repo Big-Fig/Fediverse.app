@@ -47,7 +47,7 @@ class ChatSelectionWidget extends StatelessWidget {
 
 class _ChatSelectionCountWidget extends StatelessWidget {
   const _ChatSelectionCountWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

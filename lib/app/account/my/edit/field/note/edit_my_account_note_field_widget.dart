@@ -7,11 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class EditMyAccountNoteFieldWidget extends StatelessWidget {
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
 
   const EditMyAccountNoteFieldWidget({
-    Key key,
+    Key? key,
     this.onSubmitted,
     this.textInputAction = TextInputAction.done,
   }) : super(key: key);

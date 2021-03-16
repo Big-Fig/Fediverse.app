@@ -40,7 +40,7 @@ class MultiMediaPickerPage extends StatelessWidget {
 
 class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
   const _MultiMediaPickerPageBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,7 +91,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
 class _MultiMediaPickerPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _MultiMediaPickerPageAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -114,7 +114,7 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
 
 class _MultiMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   const _MultiMediaPickerPageAppBarEmptyTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -130,7 +130,7 @@ class _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc
   final IMultiMediaPickerBloc multiMediaPickerBloc;
 
   _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc({
-    @required this.multiMediaPickerBloc,
+    required this.multiMediaPickerBloc,
   });
 
   @override
@@ -140,7 +140,7 @@ class _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc
 
 class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
   const _MultiMediaPickerPageAppBarAttachAction({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -151,7 +151,7 @@ class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
       stream: multiMediaPickerBloc.isSomethingSelectedStream,
       initialData: multiMediaPickerBloc.isSomethingSelected,
       builder: (context, snapshot) {
-        var isSomethingSelected = snapshot.data;
+        var isSomethingSelected = snapshot.data!;
         return DisposableProvider<IFediIntBadgeBloc>(
           create: (context) =>
               _MultiMediaPickerPageAppBarAttachActionIntBadgeBloc(
@@ -176,13 +176,13 @@ class _MultiMediaPickerPageAppBarAttachAction extends StatelessWidget {
   }
 }
 
-Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(
+Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
   BuildContext context, {
   List<MediaDeviceFileType> typesToPick = const [
     MediaDeviceFileType.image,
     MediaDeviceFileType.video
   ],
-  @required int selectionCountLimit,
+  required int? selectionCountLimit,
 }) async {
   if (selectionCountLimit == 1) {
     var singlePickedFile = await goToSingleMediaPickerPage(
@@ -241,7 +241,8 @@ Future<List<IMediaDeviceFile>> goToMultiMediaPickerPage(
                     content: S
                         .of(context)
                         .file_picker_multi_selectionCountLimitReached_notification_content(
-                            selectionCountLimit),
+                          selectionCountLimit!,
+                        ),
                   );
                 },
               ),

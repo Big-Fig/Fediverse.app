@@ -10,6 +10,32 @@ var _logger = Logger("pleroma_field_model.dart");
 
 abstract class IPleromaField implements IMastodonField {}
 
+extension IPleromaFieldExtension on IPleromaField {
+  PleromaField toPleromaField() {
+    if (this is PleromaField) {
+      return this as PleromaField;
+    } else {
+      return PleromaField(
+        name: name,
+        value: value,
+        verifiedAt: verifiedAt,
+      );
+    }
+  }
+}
+
+extension IPleromaFieldListExtension on List<IPleromaField> {
+  List<PleromaField> toPleromaFields() {
+    if (this is List<PleromaField>) {
+      return this as List<PleromaField>;
+    } else {
+      return map(
+        (field) => field.toPleromaField(),
+      ).toList();
+    }
+  }
+}
+
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
@@ -19,16 +45,20 @@ abstract class IPleromaField implements IMastodonField {}
 class PleromaField implements IPleromaField {
   @override
   @HiveField(0)
-  final String name;
+  final String? name;
   @override
   @HiveField(1)
-  final String value;
+  final String? value;
   @override
   @HiveField(2)
   @JsonKey(name: "verified_at")
-  final DateTime verifiedAt;
+  final DateTime? verifiedAt;
 
-  PleromaField({this.name, this.value, this.verifiedAt});
+  PleromaField({
+    required this.name,
+    required this.value,
+    required this.verifiedAt,
+  });
 
   factory PleromaField.fromJson(Map<String, dynamic> json) =>
       _$PleromaFieldFromJson(json);
@@ -53,10 +83,10 @@ class PleromaField implements IPleromaField {
   }
 
   @override
-  String get valueAsRawUrl {
+  String? get valueAsRawUrl {
     if (value?.isNotEmpty == true) {
       try {
-        var parsed = HtmlParser.parseHTML(value);
+        var parsed = HtmlParser.parseHTML(value!);
         var allLinkElements = parsed.getElementsByTagName("a");
         if (allLinkElements?.isNotEmpty == true) {
           return allLinkElements.first.attributes["href"];
@@ -74,7 +104,7 @@ class PleromaField implements IPleromaField {
 
   @override
   String get valueAsRawUrlWithoutSchema {
-    var rawUrl = valueAsRawUrl;
+    var rawUrl = valueAsRawUrl!;
     try {
       var uri = Uri.parse(rawUrl);
       return "${uri.host}${uri.path}";

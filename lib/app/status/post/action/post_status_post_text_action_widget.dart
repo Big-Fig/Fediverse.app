@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 typedef PostStatusActionCallback = Function(BuildContext context);
 
 class PostStatusPostTextActionWidget extends StatelessWidget {
-  final PostStatusActionCallback successCallback;
+  final PostStatusActionCallback? successCallback;
 
   PostStatusPostTextActionWidget({this.successCallback});
 
@@ -40,7 +40,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
               }
               FocusScope.of(context).requestFocus(FocusNode()); //remove focus
               if (success && successCallback != null) {
-                successCallback(context);
+                successCallback!(context);
               }
             },
             errorAlertDialogBuilders: [
@@ -63,7 +63,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             builder: (BuildContext context, onPressed) {
               return FediPrimaryFilledTextButtonWithBorder(
                 S.of(context).app_status_post_action_post,
-                onPressed: isReadyToPost ? onPressed : null,
+                onPressed: isReadyToPost! ? onPressed : null,
                 expanded: false,
               );
             },

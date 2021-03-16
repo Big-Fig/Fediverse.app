@@ -12,10 +12,10 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
 
   final MyAccountFollowRequestCountIntBadgeBloc followRequestCountIntBadgeBloc;
 
-  FediIntBadgeBlocSumAdapter fediIntBadgeBlocSumAdapter;
+  FediIntBadgeBlocSumAdapter? fediIntBadgeBlocSumAdapter;
 
   AccountHomeTabMenuActionsIntBadgeBloc({
-    @required this.myAccountBloc,
+    required this.myAccountBloc,
   }) : followRequestCountIntBadgeBloc = MyAccountFollowRequestCountIntBadgeBloc(
           myAccountBloc: myAccountBloc,
         ) {
@@ -29,7 +29,7 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
   }
 
   @override
-  Stream<int> get badgeStream => fediIntBadgeBlocSumAdapter.badgeStream;
+  Stream<int> get badgeStream => fediIntBadgeBlocSumAdapter!.badgeStream;
 
   static AccountHomeTabMenuActionsIntBadgeBloc createFromContext(
     BuildContext context,
@@ -41,7 +41,7 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IFediIntBadgeBloc>(
       create: (context) =>

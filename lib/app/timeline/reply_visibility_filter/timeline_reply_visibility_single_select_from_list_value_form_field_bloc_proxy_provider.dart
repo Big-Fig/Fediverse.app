@@ -10,14 +10,14 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyPr
   final Widget child;
 
   TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<
-              PleromaReplyVisibilityFilter>>(
+              PleromaReplyVisibilityFilter?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
             PleromaReplyVisibilityFilter>(

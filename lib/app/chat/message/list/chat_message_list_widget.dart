@@ -29,13 +29,13 @@ class ChatMessageListWidget<T extends IChatMessage>
     extends FediPaginationListWidget<T> {
   final WidgetBuilder itemBuilder;
 
-  final Function(BuildContext context, {@required Widget child})
+  final Function(BuildContext context, {required Widget child})
       itemContextBuilder;
 
   const ChatMessageListWidget({
-    Key key,
-    @required this.itemBuilder,
-    @required this.itemContextBuilder,
+    Key? key,
+    required this.itemBuilder,
+    required this.itemContextBuilder,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -45,7 +45,7 @@ class ChatMessageListWidget<T extends IChatMessage>
   @override
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
     BuildContext context, {
-    @required bool listen,
+    required bool listen,
   }) {
     var timelinePaginationListBloc =
         Provider.of<IPaginationListBloc<PaginationPage<T>, T>>(context,
@@ -58,9 +58,9 @@ class ChatMessageListWidget<T extends IChatMessage>
   Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
           BuildContext context,
-          List<T> items,
+          List<T>? items,
           RefreshController refreshController,
-          ScrollController scrollController,
+          ScrollController? scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
       FediListSmartRefresherWidget(
         key: key,
@@ -99,10 +99,10 @@ class ChatMessageListWidget<T extends IChatMessage>
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IChatMessage> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IChatMessage> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
     assert(header == null, "header not supported");
     assert(footer == null, "footer not supported");
@@ -113,7 +113,7 @@ class ChatMessageListWidget<T extends IChatMessage>
       itemBuilder: (BuildContext context, int index) {
         var item = _calculateChatMessageListItem<T>(
           index: index,
-          items: items,
+          items: items as List<T>,
         );
 
         return Provider<ChatMessageListItem<T>>.value(
@@ -176,8 +176,8 @@ class _ChatMessageListItemWidget<T extends IChatMessage>
   final WidgetBuilder itemBuilder;
 
   const _ChatMessageListItemWidget({
-    Key key,
-    @required this.itemBuilder,
+    Key? key,
+    required this.itemBuilder,
   }) : super(key: key);
 
   @override
@@ -199,7 +199,7 @@ class _ChatMessageListItemWidget<T extends IChatMessage>
 
 class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
   const _ChatMessageListDaySeparatorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -209,7 +209,7 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
       padding: FediPadding.allSmallPadding,
       child: Center(
           child: Text(
-        _daySeparatorDateFormat.format(message.createdAt),
+        _daySeparatorDateFormat.format(message.createdAt!),
         style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
       )),
     );
@@ -217,11 +217,11 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
 }
 
 ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
-  @required int index,
-  @required List<T> items,
+  required int index,
+  required List<T> items,
 }) {
-  T nextMessage;
-  T previousMessage;
+  T? nextMessage;
+  T? previousMessage;
   if (index > 0) {
     previousMessage = items[index - 1];
   }
@@ -230,9 +230,9 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
   }
   var currentMessage = items[index];
 
-  DateTime currentCreatedAt = currentMessage.createdAt;
-  DateTime previousCreatedAt = previousMessage?.createdAt;
-  DateTime nextCreatedAt = nextMessage?.createdAt;
+  DateTime? currentCreatedAt = currentMessage.createdAt;
+  DateTime? previousCreatedAt = previousMessage?.createdAt;
+  DateTime? nextCreatedAt = nextMessage?.createdAt;
 
   bool isFirstInDayGroup;
   bool isLastInDayGroup;
@@ -244,9 +244,9 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
     isFirstInDayGroup =
         !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
     var isSameAccount =
-        currentMessage.account?.remoteId == previousMessage.account?.remoteId;
+        currentMessage.account?.remoteId == previousMessage!.account?.remoteId;
     isFirstInMinuteGroup =
-        !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
+        !(CustomDateUtils.isSameMinute(currentCreatedAt!, previousCreatedAt) &&
             isSameAccount);
   } else {
     isFirstInDayGroup = true;
@@ -254,10 +254,10 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
   }
   if (nextCreatedAt != null) {
     var isSameAccount =
-        currentMessage.account?.remoteId == nextMessage.account?.remoteId;
+        currentMessage.account?.remoteId == nextMessage!.account?.remoteId;
     isLastInDayGroup = !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
     isLastInMinuteGroup =
-        !(CustomDateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
+        !(CustomDateUtils.isSameMinute(currentCreatedAt!, nextCreatedAt) &&
             isSameAccount);
   } else {
     isLastInDayGroup = true;

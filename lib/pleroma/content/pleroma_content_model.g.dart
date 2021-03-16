@@ -8,7 +8,7 @@ part of 'pleroma_content_model.dart';
 
 PleromaContent _$PleromaContentFromJson(Map<String, dynamic> json) {
   return PleromaContent(
-    textPlain: json['text/plain'] as String,
+    textPlain: json['text/plain'] as String?,
   );
 }
 

@@ -16,7 +16,7 @@ class PostStatusPollActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
-    return StreamBuilder<PostMessageSelectedAction>(
+    return StreamBuilder<PostMessageSelectedAction?>(
         stream: postMessageBloc.selectedActionStream,
         initialData: postMessageBloc.selectedAction,
         builder: (context, snapshot) {
@@ -40,7 +40,7 @@ class PostStatusPollActionWidget extends StatelessWidget {
               stream: postStatusPollBloc.isSomethingChangedStream,
               initialData: postStatusPollBloc.isSomethingChanged,
               builder: (context, snapshot) {
-                var isSomethingChanged = snapshot.data;
+                var isSomethingChanged = snapshot.data!;
                 if (isSomethingChanged) {
                   return DisposableProxyProvider<IPostStatusPollBloc,
                       IFediBoolBadgeBloc>(

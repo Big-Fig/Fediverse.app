@@ -3,11 +3,11 @@ import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:moor/moor.dart';
 
 class NotificationRepositoryFilters {
-  final PleromaNotificationType onlyWithType;
-  final List<PleromaNotificationType> excludeTypes;
+  final PleromaNotificationType? onlyWithType;
+  final List<PleromaNotificationType>? excludeTypes;
   final bool onlyNotDismissed;
-  final bool onlyUnread;
-  final List<StatusTextCondition> excludeStatusTextConditions;
+  final bool? onlyUnread;
+  final List<StatusTextCondition>? excludeStatusTextConditions;
 
   NotificationRepositoryFilters({
     this.onlyWithType,
@@ -61,8 +61,8 @@ class NotificationOrderingTermData {
   final OrderingMode orderingMode;
 
   const NotificationOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   static const NotificationOrderingTermData remoteIdDesc =

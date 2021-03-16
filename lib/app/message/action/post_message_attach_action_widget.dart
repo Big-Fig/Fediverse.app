@@ -19,7 +19,7 @@ class PostMessageAttachActionWidget extends StatelessWidget {
         initialData:
             postMessageBloc.mediaAttachmentsBloc.isPossibleToAttachMedia,
         builder: (context, snapshot) {
-          var isPossibleToAttach = snapshot.data;
+          var isPossibleToAttach = snapshot.data!;
 
           var onPressed;
           if (isPossibleToAttach) {
@@ -28,7 +28,7 @@ class PostMessageAttachActionWidget extends StatelessWidget {
             };
           }
 
-          return StreamBuilder<PostMessageSelectedAction>(
+          return StreamBuilder<PostMessageSelectedAction?>(
               stream: postMessageBloc.selectedActionStream,
               initialData: postMessageBloc.selectedAction,
               builder: (context, snapshot) {

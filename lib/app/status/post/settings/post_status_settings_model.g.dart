@@ -17,9 +17,9 @@ class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PostStatusSettings(
-      markMediaAsNsfwOnAttach: fields[0] as bool,
-      defaultVisibilityString: fields[1] as String,
-      defaultStatusLocale: fields[2] as LocalizationLocale,
+      markMediaAsNsfwOnAttach: fields[0] as bool?,
+      defaultVisibilityString: fields[1] as String?,
+      defaultStatusLocale: fields[2] as LocalizationLocale?,
     );
   }
 
@@ -52,8 +52,8 @@ class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
 
 PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) {
   return PostStatusSettings(
-    markMediaAsNsfwOnAttach: json['mark_media_as_nsfw_on_attach'] as bool,
-    defaultVisibilityString: json['default_visibility'] as String,
+    markMediaAsNsfwOnAttach: json['mark_media_as_nsfw_on_attach'] as bool?,
+    defaultVisibilityString: json['default_visibility'] as String?,
     defaultStatusLocale: json['default_status_locale'] == null
         ? null
         : LocalizationLocale.fromJson(

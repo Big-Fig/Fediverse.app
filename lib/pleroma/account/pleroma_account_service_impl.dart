@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -27,7 +26,7 @@ class PleromaAccountService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -41,14 +40,20 @@ class PleromaAccountService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAccountService({@required this.restService});
+  PleromaAccountService({
+    required this.restService,
+  });
 
-  List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
+  List<PleromaAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaAccount.listFromJsonString(httpResponse.body);
+      return PleromaAccount.listFromJsonString(
+        httpResponse.body,
+      );
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -58,7 +63,9 @@ class PleromaAccountService extends DisposableOwner
       return PleromaAccountIdentityProof.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -111,8 +118,8 @@ class PleromaAccountService extends DisposableOwner
 
   @override
   Future<List<IPleromaAccount>> getAccountFollowings({
-    @required String accountRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String? accountRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -130,7 +137,7 @@ class PleromaAccountService extends DisposableOwner
 
   @override
   Future<IPleromaAccount> getAccount({
-    @required String accountRemoteId,
+    required String? accountRemoteId,
   }) async {
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -143,11 +150,10 @@ class PleromaAccountService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaAccount>> getAccountFollowers({
-    @required String accountRemoteId,
-    IPleromaPaginationRequest pagination,
+  Future<List<PleromaAccount>> getAccountFollowers({
+    required String accountRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath:
@@ -163,18 +169,18 @@ class PleromaAccountService extends DisposableOwner
 
   @override
   Future<List<IPleromaStatus>> getAccountStatuses({
-    @required String accountRemoteId,
-    String tagged,
-    bool pinned,
-    bool excludeReplies,
-    bool excludeReblogs,
-    List<String> excludeVisibilities,
-    bool withMuted,
-    bool onlyWithMedia,
-    IPleromaPaginationRequest pagination,
+    required String accountRemoteId,
+    String? tagged,
+    bool? pinned,
+    bool? excludeReplies,
+    bool? excludeReblogs,
+    List<String>? excludeVisibilities,
+    bool? withMuted,
+    bool? onlyWithMedia,
+    IPleromaPaginationRequest? pagination,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "statuses"),
         queryArgs: [
@@ -183,23 +189,25 @@ class PleromaAccountService extends DisposableOwner
           RestRequestQueryArg("exclude_replies", excludeReplies?.toString()),
           RestRequestQueryArg("exclude_reblogs", excludeReblogs?.toString()),
           if (excludeVisibilities?.isNotEmpty == true)
-            ...excludeVisibilities.map(
+            ...excludeVisibilities!.map(
               (excludeVisibility) => RestRequestQueryArg(
                 "exclude_visibilities[]",
-                excludeVisibility?.toString(),
+                excludeVisibility.toString(),
               ),
             ),
           RestRequestQueryArg("with_muted", withMuted?.toString()),
           RestRequestQueryArg("only_media", onlyWithMedia?.toString()),
-        ]));
+        ],
+      ),
+    );
 
     return parseStatusListResponse(httpResponse);
   }
 
   @override
   Future<List<IPleromaStatus>> getAccountFavouritedStatuses({
-    @required String accountRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String? accountRemoteId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(

@@ -2,14 +2,13 @@ import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';
 import 'package:fedi/app/chat/settings/local_preferences/chat_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc_local_preferences_impl.dart';
-import 'package:flutter/widgets.dart';
 
 class ChatSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ChatSettings>
+    extends GlobalOrInstanceSettingsLocalPreferencesBloc<ChatSettings?>
     implements IChatSettingsBloc {
   ChatSettingsBloc({
-    @required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
-    @required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
+    required IChatSettingsLocalPreferencesBloc globalLocalPreferencesBloc,
+    required IChatSettingsLocalPreferencesBloc instanceLocalPreferencesBloc,
   }) : super(
           globalLocalPreferencesBloc: globalLocalPreferencesBloc,
           instanceLocalPreferencesBloc: instanceLocalPreferencesBloc,
@@ -18,7 +17,7 @@ class ChatSettingsBloc
   @override
   Future changeCountConversationsInChatsUnreadBadges(bool value) async =>
       updateSettings(
-        settingsData.copyWith(
+        settingsData?.copyWith(
           countConversationsInChatsUnreadBadges: value,
         ),
       );
@@ -26,25 +25,25 @@ class ChatSettingsBloc
   @override
   Future changeReplaceConversationsWithPleromaChats(bool value) async =>
       updateSettings(
-        settingsData.copyWith(
+        settingsData?.copyWith(
           replaceConversationsWithPleromaChats: value,
         ),
       );
 
   @override
-  bool get countConversationsInChatsUnreadBadges =>
-      settingsData.countConversationsInChatsUnreadBadges;
+  bool? get countConversationsInChatsUnreadBadges =>
+      settingsData?.countConversationsInChatsUnreadBadges;
 
   @override
-  Stream<bool> get countConversationsInChatsUnreadBadgesStream =>
+  Stream<bool?> get countConversationsInChatsUnreadBadgesStream =>
       settingsDataStream
-          .map((settings) => settings.countConversationsInChatsUnreadBadges);
+          .map((settings) => settings?.countConversationsInChatsUnreadBadges);
 
   @override
-  bool get replaceConversationsWithPleromaChats =>
-      settingsData.replaceConversationsWithPleromaChats;
+  bool? get replaceConversationsWithPleromaChats =>
+      settingsData?.replaceConversationsWithPleromaChats;
 
   @override
-  Stream<bool> get replaceConversationsWithPleromaChatsStream => settingsDataStream
-      .map((settings) => settings.replaceConversationsWithPleromaChats);
+  Stream<bool?> get replaceConversationsWithPleromaChatsStream => settingsDataStream
+      .map((settings) => settings?.replaceConversationsWithPleromaChats);
 }

@@ -21,13 +21,16 @@ class PushHandlerMessage {
   final PushMessage pushMessage;
 
   PushHandlerMessage({
-    this.body,
-    this.pushMessage,
+    required this.body,
+    required this.pushMessage,
   });
 
   @override
   String toString() {
-    return 'PushHandlerMessage{body: $body, pushMessage: $pushMessage}';
+    return 'PushHandlerMessage{'
+        'body: $body, '
+        'pushMessage: $pushMessage'
+        '}';
   }
 
   @override
@@ -39,8 +42,8 @@ class PushHandlerMessage {
           pushMessage == other.pushMessage;
 
   PushHandlerMessage copyWith({
-    PleromaPushMessageBody body,
-    PushMessage pushMessage,
+    PleromaPushMessageBody? body,
+    PushMessage? pushMessage,
   }) =>
       PushHandlerMessage(
         body: body ?? this.body,

@@ -15,10 +15,10 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   final Uri instanceUri;
 
   RemoteStatusThreadBloc({
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
-    @required IPleromaStatusService pleromaStatusService,
-    @required this.instanceUri,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment? initialMediaAttachment,
+    required IPleromaStatusService pleromaStatusService,
+    required this.instanceUri,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           initialStatusToFetchThread: initialStatusToFetchThread,
@@ -27,8 +27,8 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
 
   static RemoteStatusThreadBloc createFromContext(
     BuildContext context, {
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment? initialMediaAttachment,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
@@ -50,9 +50,9 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IStatus initialStatusToFetchThread,
-    @required IPleromaMediaAttachment initialMediaAttachment,
-    @required Widget child,
+    required IStatus initialStatusToFetchThread,
+    required IPleromaMediaAttachment initialMediaAttachment,
+    required Widget child,
   }) {
     return DisposableProvider<IStatusThreadBloc>(
       create: (context) => RemoteStatusThreadBloc.createFromContext(

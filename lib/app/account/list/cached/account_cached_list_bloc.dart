@@ -8,23 +8,29 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IAccount>, IAccountListBloc {
-  static IAccountCachedListBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IAccountCachedListBloc>(context, listen: listen);
+  static IAccountCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IAccountCachedListBloc>(
+        context,
+        listen: listen,
+      );
 
   @override
   IPleromaApi get pleromaApi;
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-      {@required int limit,
-      @required IAccount newerThan,
-      @required IAccount olderThan});
+  Future<List<IAccount>> loadLocalItems({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
+  });
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   });
 }

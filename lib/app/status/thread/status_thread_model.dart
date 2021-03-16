@@ -1,13 +1,12 @@
 import 'package:fedi/app/status/status_model.dart';
-import 'package:flutter/widgets.dart';
 
 class StatusThreadStatusAtIndex {
   final IStatus status;
   final int index;
 
   StatusThreadStatusAtIndex({
-    @required this.status,
-    @required this.index,
+    required this.status,
+    required this.index,
   });
 
   @override

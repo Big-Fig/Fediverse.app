@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
@@ -8,6 +9,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart' as pleroma_lib;
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,7 +39,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
         ),
       );
 
-  final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
+  final BehaviorSubject<IPleromaChatMessage?> _chatMessageSubject;
 
   final IPleromaChatService pleromaChatService;
   final IPleromaAccountService pleromaAccountService;
@@ -46,13 +48,12 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatMessageBloc({
-    @required this.pleromaChatService,
-    @required this.pleromaAccountService,
-    @required this.chatMessageRepository,
-    @required this.accountRepository,
-    @required this.pleromaChatBloc,
-    @required
-        IPleromaChatMessage chatMessage, // for better performance we don't
+    required this.pleromaChatService,
+    required this.pleromaAccountService,
+    required this.chatMessageRepository,
+    required this.accountRepository,
+    required this.pleromaChatBloc,
+    required IPleromaChatMessage chatMessage, // for better performance we don't
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
@@ -74,7 +75,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   void watchLocalRepositoryChanges() {
     addDisposable(
       streamSubscription:
-          chatMessageRepository.watchByRemoteId(chatMessage.remoteId).listen(
+          chatMessageRepository!.watchByRemoteId(chatMessage!.remoteId).listen(
         (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
@@ -83,10 +84,11 @@ class PleromaChatMessageBloc extends ChatMessageBloc
       ),
     );
 
-    if (chatMessage.oldPendingRemoteId != null) {
+    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
+    if (oldPendingRemoteId != null) {
       addDisposable(
         streamSubscription: chatMessageRepository
-            .watchByOldPendingRemoteId(chatMessage.oldPendingRemoteId)
+            .watchByOldPendingRemoteId(oldPendingRemoteId)
             .listen(
           (updatedChatMessage) {
             if (updatedChatMessage != null) {
@@ -99,14 +101,14 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  IPleromaChatMessage get chatMessage => _chatMessageSubject.value;
+  IPleromaChatMessage get chatMessage => _chatMessageSubject.value!;
 
   @override
   Stream<IPleromaChatMessage> get chatMessageStream =>
-      _chatMessageSubject.stream.distinct();
+      _chatMessageSubject.stream.mapToNotNull().distinct();
 
   @override
-  IAccount get account => chatMessage?.account;
+  IAccount get account => chatMessage.account;
 
   @override
   Future refreshFromNetwork() async {
@@ -114,16 +116,13 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  Future delete() => pleromaChatBloc.deleteMessage(
+  Future delete() => pleromaChatBloc!.deleteMessage(
         pleromaChatMessage: chatMessage,
       );
 
   @override
   Future resendPendingFailed() {
-    var mediaId;
-    if (chatMessage.mediaAttachments?.isNotEmpty == true) {
-      mediaId = chatMessage.mediaAttachments.first.id;
-    }
+    String? mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
     var pleromaChatMessageSendData = pleroma_lib.PleromaChatMessageSendData(
       content: chatMessage.content,
@@ -135,9 +134,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
       pleromaChatMessageSendData: pleromaChatMessageSendData,
       oldPendingFailedPleromaChatMessage: chatMessage,
       pleromaChatMessageSendDataMediaAttachment:
-          chatMessage.mediaAttachments?.isNotEmpty == true
-              ? chatMessage.mediaAttachments.first
-              : null,
+          chatMessage.mediaAttachments?.singleOrNull,
     );
   }
 }

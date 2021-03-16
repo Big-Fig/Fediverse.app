@@ -9,11 +9,11 @@ abstract class IFediNestedScrollViewBloc extends IDisposable {
           {bool listen = true}) =>
       Provider.of<IFediNestedScrollViewBloc>(context, listen: listen);
 
-  INestedScrollControllerBloc get nestedScrollControllerBloc;
+  INestedScrollControllerBloc? get nestedScrollControllerBloc;
 
-  NestedScrollController get nestedScrollController;
+  NestedScrollController? get nestedScrollController;
 
-  bool get isNestedScrollViewBodyStartedScroll;
+  bool? get isNestedScrollViewBodyStartedScroll;
 
   Stream<bool> get isNestedScrollViewBodyStartedScrollStream;
 
@@ -21,7 +21,7 @@ abstract class IFediNestedScrollViewBloc extends IDisposable {
 
   Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream;
 
-  int get scrollOffset;
+  int? get scrollOffset;
 
   Stream<int> get scrollOffsetStream;
 }

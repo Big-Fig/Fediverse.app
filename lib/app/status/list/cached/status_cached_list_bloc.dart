@@ -10,9 +10,16 @@ abstract class IStatusCachedListBloc
     implements
         DisposableOwner,
         IPleromaCachedListBloc<IStatus>,
-        IAsyncInitLoadingBloc, IStatusListBloc {
-  static IStatusCachedListBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IStatusCachedListBloc>(context, listen: listen);
+        IAsyncInitLoadingBloc,
+        IStatusListBloc {
+  static IStatusCachedListBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusCachedListBloc>(
+        context,
+        listen: listen,
+      );
 
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item);
 

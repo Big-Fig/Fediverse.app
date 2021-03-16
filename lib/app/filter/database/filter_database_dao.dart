@@ -39,13 +39,13 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   Future<DbFilterPopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbFilterPopulated> findByRemoteId(String remoteId) async =>
+  Future<DbFilterPopulated> findByRemoteId(String? remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
   Stream<DbFilterPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
-  Stream<DbFilterPopulated> watchByRemoteId(String remoteId) =>
+  Stream<DbFilterPopulated> watchByRemoteId(String? remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
@@ -59,11 +59,11 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
       (select(db.dbFilters)..where((filter) => filter.id.equals(id)))
           .join(populateFilterJoin());
 
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbFilters)..where((filter) => filter.remoteId.like(remoteId)))
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
+      (select(db.dbFilters)..where((filter) => filter.remoteId.like(remoteId!)))
           .join(populateFilterJoin());
 
-  Future<int> insert(Insertable<DbFilter> entity, {InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbFilter> entity, {InsertMode? mode}) async =>
       into(db.dbFilters).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbFilter> entity) async =>
@@ -72,7 +72,8 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
   Future insertAll(
           Iterable<Insertable<DbFilter>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(db.dbFilters, entities, mode: mode);
+        batch.insertAll(db.dbFilters, entities as List<Insertable<DbFilter>>,
+            mode: mode);
       });
 
   Future<bool> replace(Insertable<DbFilter> entity) async =>
@@ -97,8 +98,8 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    required String? minimumRemoteIdExcluding,
+    required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
@@ -168,17 +169,10 @@ class FilterDao extends DatabaseAccessor<AppDatabase> with _$FilterDaoMixin {
 
   List<DbFilterPopulated> typedResultListToPopulated(
       List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbFilterPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
-
     return DbFilterPopulated(
       dbFilter: typedResult.readTable(db.dbFilters),
     );

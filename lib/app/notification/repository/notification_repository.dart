@@ -14,79 +14,84 @@ abstract class INotificationRepository
         IReadIdListRepository<INotification, int>,
         IWriteIdListRepository<DbNotification, int>,
         IDisposable {
-  static INotificationRepository of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<INotificationRepository>(context, listen: listen);
+  static INotificationRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<INotificationRepository>(
+        context,
+        listen: listen,
+      );
 
-  Future<INotification> findByRemoteId(String remoteId);
+  Future<INotification?> findByRemoteId(String remoteId);
 
   Future upsertRemoteNotifications(
     List<IPleromaNotification> remoteNotifications, {
-    @required bool unread,
+    required bool? unread,
   });
 
-  Stream<INotification> watchByRemoteId(String remoteId);
+  Stream<INotification?> watchByRemoteId(String remoteId);
 
   Future updateLocalNotificationByRemoteNotification({
-    @required INotification oldLocalNotification,
-    @required IPleromaNotification newRemoteNotification,
-    @required bool unread,
+    required INotification oldLocalNotification,
+    required IPleromaNotification newRemoteNotification,
+    required bool? unread,
   });
 
   Future upsertRemoteNotification(
     IPleromaNotification remoteNotification, {
-    @required bool unread,
+    required bool? unread,
   });
 
   Future<int> getCount({
-    @required NotificationRepositoryFilters filters,
+    required NotificationRepositoryFilters? filters,
   });
 
   Stream<int> watchCount({
-    @required NotificationRepositoryFilters filters,
+    required NotificationRepositoryFilters? filters,
   });
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
-    @required NotificationRepositoryFilters filters,
-    @required RepositoryPagination<INotification> pagination,
-    NotificationOrderingTermData orderingTermData =
+    required NotificationRepositoryFilters? filters,
+    required RepositoryPagination<INotification>? pagination,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   });
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
-    @required NotificationRepositoryFilters filters,
-    @required RepositoryPagination<INotification> pagination,
-    NotificationOrderingTermData orderingTermData =
+    required NotificationRepositoryFilters? filters,
+    required RepositoryPagination<INotification>? pagination,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   });
 
-  Future<DbNotificationPopulatedWrapper> getNotification({
-    @required NotificationRepositoryFilters filters,
-    NotificationOrderingTermData orderingTermData =
+  Future<DbNotificationPopulatedWrapper?> getNotification({
+    required NotificationRepositoryFilters? filters,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   });
 
-  Stream<DbNotificationPopulatedWrapper> watchNotification({
-    @required NotificationRepositoryFilters filters,
-    NotificationOrderingTermData orderingTermData =
+  Stream<DbNotificationPopulatedWrapper?> watchNotification({
+    required NotificationRepositoryFilters? filters,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   });
 
   Future markAsRead({
-    @required INotification notification,
+    required INotification notification,
   });
 
   Future dismiss({
-    @required INotification notification,
+    required INotification notification,
   });
 
   Future dismissFollowRequestNotificationsFromAccount({
-    @required IAccount account,
+    required IAccount account,
   });
 
   Future dismissAll();
 
   Future markAllAsRead();
 
-  Future<DbNotificationPopulatedWrapper> getNewest();
+  Future<DbNotificationPopulatedWrapper?> getNewest();
 }

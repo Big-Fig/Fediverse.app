@@ -31,7 +31,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
 class _FediAudioPlayerControlsPausePlayButtonBodyWidget
     extends StatelessWidget {
   const _FediAudioPlayerControlsPausePlayButtonBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
         var isPlaying = snapshot.data ?? false;
         return AsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
-          builder: (BuildContext context, void Function() onPressed) {
+          builder: (BuildContext context, void Function()? onPressed) {
             return FediIconButton(
               icon: Icon(isPlaying ? FediIcons.pause : FediIcons.play),
               iconSize: 16.0,
@@ -64,7 +64,7 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
 class _FediAudioPlayerControlsPausePlayButtonLoadingWidget
     extends StatelessWidget {
   const _FediAudioPlayerControlsPausePlayButtonLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

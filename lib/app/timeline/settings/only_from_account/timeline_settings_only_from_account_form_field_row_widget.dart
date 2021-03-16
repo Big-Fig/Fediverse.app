@@ -8,24 +8,24 @@ import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyFromAccountFormFieldRowWidget
     extends StatelessWidget {
-  final String description;
+  final String? description;
   final String descriptionOnDisabled;
 
   TimelineSettingsOnlyFromAccountFormFieldRowWidget({
-    @required this.description,
-    @required this.descriptionOnDisabled,
+    required this.description,
+    required this.descriptionOnDisabled,
   });
 
   @override
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyFromAccountFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaAccount>(
+    return StreamBuilder<IPleromaAccount?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaAccount>(
+        return FediFormSingleChooseCustomFromListFieldRow<IPleromaAccount?>(
           isNullValuePossible: fieldBloc.isNullValuePossible,
           isEnabled: fieldBloc.isEnabled,
           error: fieldBloc.isHaveAtLeastOneError
@@ -41,7 +41,8 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
               context,
               accountSelectedCallback: (context, account) {
                 fieldBloc.changeCurrentValue(
-                    mapLocalAccountToRemoteAccount(account));
+                  account.toPleromaAccount(),
+                );
                 Navigator.of(context).pop();
               },
               excludeMyAccount: true,

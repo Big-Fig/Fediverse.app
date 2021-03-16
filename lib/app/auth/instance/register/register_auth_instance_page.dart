@@ -30,9 +30,9 @@ class RegisterAuthInstancePage extends StatelessWidget {
       );
 }
 
-Future<AuthHostRegistrationResult> goToRegisterAuthInstancePage(
+Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
   BuildContext context, {
-  @required Uri instanceBaseUri,
+  required Uri instanceBaseUri,
 }) async =>
     Navigator.push(
       context,
@@ -41,11 +41,18 @@ Future<AuthHostRegistrationResult> goToRegisterAuthInstancePage(
           create: (context) {
             var registerAuthInstanceBloc = RegisterAuthInstanceBloc(
               instanceBaseUri: instanceBaseUri,
-              localPreferencesService:
-                  ILocalPreferencesService.of(context, listen: false),
-              connectionService: IConnectionService.of(context, listen: false),
-              currentInstanceBloc:
-                  ICurrentAuthInstanceBloc.of(context, listen: false),
+              localPreferencesService: ILocalPreferencesService.of(
+                context,
+                listen: false,
+              ),
+              connectionService: IConnectionService.of(
+                context,
+                listen: false,
+              ),
+              currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                context,
+                listen: false,
+              ),
               pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
                   IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                 context,
@@ -64,10 +71,10 @@ Future<AuthHostRegistrationResult> goToRegisterAuthInstancePage(
                   if (registrationResult.isPossibleToLogin) {
                     await ICurrentAuthInstanceBloc.of(context, listen: false)
                         .changeCurrentInstance(
-                      registrationResult.authInstance,
+                      registrationResult.authInstance!,
                     );
                   } else {
-                    if (registrationResult.approvalRequired) {
+                    if (registrationResult.approvalRequired!) {
                       _showApprovalRequiredToast(context);
                     } else if (registrationResult.emailConfirmationRequired) {
                       _showEmailConfirmationRequiredToast(context);
@@ -119,7 +126,7 @@ void _showEmailConfirmationRequiredToast(BuildContext context) {
 
 void _showCantLoginToast(
   BuildContext context, {
-  @required String errorDescription,
+  required String? errorDescription,
 }) {
   IToastService.of(context, listen: false).showInfoToast(
     context: context,
@@ -128,6 +135,6 @@ void _showCantLoginToast(
     content: S
         .of(context)
         .app_auth_instance_register_cantLogin_notification_content(
-            errorDescription),
+            errorDescription ?? ""),
   );
 }

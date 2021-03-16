@@ -15,13 +15,13 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
         IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-    return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
+    return StreamBuilder<List<IUploadMediaAttachmentBloc>?>(
         stream: mediaAttachmentsCollectionBloc.onlyMediaAttachmentBlocsStream,
         builder: (context, snapshot) {
           var mediaItemBlocs = snapshot.data;
 
           if (mediaItemBlocs?.isNotEmpty == true) {
-            if (mediaItemBlocs.length == 1) {
+            if (mediaItemBlocs!.length == 1) {
               return Padding(
                 padding: const EdgeInsets.only(
                   left: FediSizes.bigPadding,

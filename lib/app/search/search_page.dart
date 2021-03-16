@@ -43,7 +43,7 @@ void goToSearchPage(
             SearchBloc.createFromContext(context, startTab: startTab),
         child: ProxyProvider<ISearchBloc, ISearchInputBloc>(
           update: (BuildContext context, ISearchBloc value,
-                  ISearchInputBloc previous) =>
+                  ISearchInputBloc? previous) =>
               value.searchInputBloc,
           child: DisposableProvider<IRecentSearchBloc>(
             create: (context) => RecentSearchBloc(

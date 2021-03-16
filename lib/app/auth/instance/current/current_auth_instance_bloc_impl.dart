@@ -14,23 +14,23 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   final ICurrentAuthInstanceLocalPreferenceBloc currentLocalPreferenceBloc;
 
   CurrentAuthInstanceBloc({
-    @required this.instanceListBloc,
-    @required this.currentLocalPreferenceBloc,
+    required this.instanceListBloc,
+    required this.currentLocalPreferenceBloc,
   });
 
   @override
-  AuthInstance get currentInstance => currentLocalPreferenceBloc.value;
+  AuthInstance? get currentInstance => currentLocalPreferenceBloc.value;
 
   @override
-  Stream<AuthInstance> get currentInstanceStream =>
+  Stream<AuthInstance?> get currentInstanceStream =>
       currentLocalPreferenceBloc.stream;
 
   @override
-  Future changeCurrentInstance(AuthInstance instance) async {
+  Future changeCurrentInstance(AuthInstance? instance) async {
     _logger.finest(() => "changeCurrentInstance $instance");
 
     var found = instanceListBloc.availableInstances?.firstWhere(
-        (existInstance) => existInstance.userAtHost == instance.userAtHost,
+        (existInstance) => existInstance!.userAtHost == instance!.userAtHost,
         orElse: () => null);
 
     if (found == null) {

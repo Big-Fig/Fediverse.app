@@ -20,14 +20,14 @@ class RecentSelectAccountWidget extends StatelessWidget {
   final List<Widget> itemActions;
   final EdgeInsets itemPadding;
 
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const RecentSelectAccountWidget({
-    @required this.itemActions,
-    @required this.itemPadding,
+    required this.itemActions,
+    required this.itemPadding,
     this.header,
     this.footer,
     this.alwaysShowHeader,
@@ -37,18 +37,19 @@ class RecentSelectAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var recentSelectAccountBloc = IRecentSelectAccountBloc.of(context);
-    return StreamBuilder<RecentSelectAccountList>(
+    return StreamBuilder<RecentSelectAccountList?>(
       stream: recentSelectAccountBloc.recentSelectAccountListStream,
       initialData: recentSelectAccountBloc.recentSelectAccountList,
       builder: (context, snapshot) {
         var recentSelectAccountList = snapshot.data;
 
         var recentItems = recentSelectAccountList?.recentItems
-            ?.map((remoteAccount) =>
-                mapRemoteAccountToLocalAccount(remoteAccount))
+            ?.map(
+              (remoteAccount) => remoteAccount.toDbAccountWrapper(),
+            )
             ?.toList();
 
-        return Provider<List<IAccount>>.value(
+        return Provider<List<IAccount>?>.value(
           value: recentItems,
           child: _RecentSelectAccountListWidget(
             itemActions: itemActions,
@@ -56,7 +57,7 @@ class RecentSelectAccountWidget extends StatelessWidget {
             header: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (header != null) header,
+                if (header != null) header!,
                 Padding(
                   padding: FediPadding.allMediumPadding,
                   child: Column(
@@ -82,7 +83,7 @@ class RecentSelectAccountWidget extends StatelessWidget {
 
 class _RecentSelectAccountHeaderWidget extends StatelessWidget {
   const _RecentSelectAccountHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -103,15 +104,15 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
   final List<Widget> itemActions;
   final EdgeInsets itemPadding;
 
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const _RecentSelectAccountListWidget({
-    Key key,
-    @required this.itemActions,
-    @required this.itemPadding,
+    Key? key,
+    required this.itemActions,
+    required this.itemPadding,
     this.header,
     this.footer,
     this.alwaysShowHeader,
@@ -127,7 +128,7 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
     if (recentItemsIsNotEmpty) {
       return ListView(
         children: [
-          if (header != null) header,
+          if (header != null) header!,
           ...recentItems.map(
             (account) => Provider.value(
               value: account,
@@ -149,15 +150,15 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (footer != null) footer,
+          if (footer != null) footer!,
         ],
       );
     } else {
       return Column(
         children: [
-          if (alwaysShowHeader && header != null) header,
+          if (alwaysShowHeader! && header != null) header!,
           const _RecentSelectAccountListEmptyWidget(),
-          if (alwaysShowFooter && footer != null) footer,
+          if (alwaysShowFooter! && footer != null) footer!,
         ],
       );
     }
@@ -166,7 +167,7 @@ class _RecentSelectAccountListWidget extends StatelessWidget {
 
 class _RecentSelectAccountListEmptyWidget extends StatelessWidget {
   const _RecentSelectAccountListEmptyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

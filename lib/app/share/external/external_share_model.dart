@@ -1,9 +1,9 @@
-import 'package:flutter/widgets.dart';
+
 
 class ShareUrlFile {
-  final String url;
-  final String filename;
-  ShareUrlFile({@required this.url, @required this.filename});
+  final String? url;
+  final String? filename;
+  ShareUrlFile({required this.url, required this.filename});
 
   @override
   bool operator ==(Object other) =>

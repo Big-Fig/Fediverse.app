@@ -39,7 +39,7 @@ class ChatMessageListItemWidget<T extends IChatMessage>
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: chatMessageBloc.isHiddenLocallyOnDeviceStream,
       initialData: chatMessageBloc.isHiddenLocallyOnDevice,
       builder: (context, snapshot) {
@@ -58,13 +58,13 @@ class ChatMessageListItemWidget<T extends IChatMessage>
 class _ChatMessageListItemDeletedWrapperWidget<T extends IChatMessage>
     extends StatelessWidget {
   const _ChatMessageListItemDeletedWrapperWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: chatMessageBloc.isDeletedStream,
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
@@ -87,7 +87,7 @@ class _ChatMessageListItemDeletedWrapperWidget<T extends IChatMessage>
 
 class _ChatMessageListItemDeletedOverlayWidget extends StatelessWidget {
   const _ChatMessageListItemDeletedOverlayWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -101,7 +101,7 @@ class _ChatMessageListItemDeletedOverlayWidget extends StatelessWidget {
 class _ChatMessageListItemBodyWidget<T extends IChatMessage>
     extends StatelessWidget {
   const _ChatMessageListItemBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -119,7 +119,9 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
 
     var alignment =
         isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
-    var maxWidthConstraints = BoxConstraints(maxWidth: deviceWidth * 0.80);
+    var maxWidthConstraints = BoxConstraints(
+      maxWidth: deviceWidth * 0.80,
+    );
     return Align(
       alignment: alignment,
       child: Column(
@@ -163,13 +165,13 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
 
 class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
   const _ChatMessageListItemMetadataPendingStateWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var chatMessageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<PendingState>(
+    return StreamBuilder<PendingState?>(
       stream: chatMessageBloc.pendingStateStream,
       builder: (context, snapshot) {
         var pendingState = snapshot.data;
@@ -182,7 +184,6 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
           case PendingState.notSentYet:
           case PendingState.published:
             return const SizedBox.shrink();
-            break;
           case PendingState.pending:
             return Padding(
               padding: FediPadding.horizontalSmallPadding,
@@ -190,7 +191,6 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                 size: 24.0,
               ),
             );
-            break;
           case PendingState.fail:
             return FediIconButton(
               icon: Icon(
@@ -204,10 +204,7 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                 );
               },
             );
-            break;
         }
-
-        return const SizedBox.shrink();
       },
     );
   }
@@ -215,7 +212,7 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
 
 class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
   const _ChatMessageListItemContentContainerWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -278,7 +275,7 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
 
 class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
   const _ChatMessageListItemMetadataCreatedAtWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -287,7 +284,7 @@ class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: Text(
-        TimeOfDay.fromDateTime(messageBloc.createdAt).format(context),
+        TimeOfDay.fromDateTime(messageBloc.createdAt!).format(context),
         style: IFediUiTextTheme.of(context).smallShortGrey,
       ),
     );
@@ -296,13 +293,13 @@ class _ChatMessageListItemMetadataCreatedAtWidget extends StatelessWidget {
 
 class _ChatMessageListItemCardWidget extends StatelessWidget {
   const _ChatMessageListItemCardWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<IPleromaCard>(
+    return StreamBuilder<IPleromaCard?>(
       stream: messageBloc.cardStream,
       initialData: messageBloc.card,
       builder: (context, snapshot) {
@@ -323,7 +320,7 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
 
 class _ChatMessageListItemContentWidget extends StatelessWidget {
   const _ChatMessageListItemContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -347,13 +344,13 @@ class _ChatMessageListItemContentWidget extends StatelessWidget {
 
 class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   const _ChatMessageListItemMediaContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
+    return StreamBuilder<List<IPleromaMediaAttachment?>?>(
       stream: messageBloc.mediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
@@ -361,7 +358,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<List<IPleromaMediaAttachment>>.value(
+        return Provider<List<IPleromaMediaAttachment?>?>.value(
           value: mediaAttachments,
           child: InkWell(
             onTap: () {
@@ -388,7 +385,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
 
 class _ChatMessageListItemTextContentWidget extends StatelessWidget {
   const _ChatMessageListItemTextContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -398,7 +395,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
     var isChatMessageFromMe =
         myAccountBloc.checkIsChatMessageFromMe(messageBloc.chatMessage);
 
-    return StreamBuilder<EmojiText>(
+    return StreamBuilder<EmojiText?>(
       stream: messageBloc.contentWithEmojisStream,
       initialData: messageBloc.contentWithEmojis,
       builder: (context, snapshot) {
@@ -407,7 +404,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
         if (contentWithEmojis?.text?.isNotEmpty == true) {
           var fediUiColorTheme = IFediUiColorTheme.of(context);
           var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-          return Provider<EmojiText>.value(
+          return Provider<EmojiText?>.value(
             value: contentWithEmojis,
             child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
               update: (context, emojiText, _) {
@@ -438,7 +435,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                     (url) {
                       UrlHelper.handleUrlClickOnLocalInstanceLocation(
                         context: context,
-                        url: url,
+                        url: url!,
                       );
                     },
                   ),

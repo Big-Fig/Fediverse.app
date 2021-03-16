@@ -7,7 +7,7 @@ class ValueFormFieldBlocProxyProvider<T> extends StatelessWidget {
   final Widget child;
 
   ValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

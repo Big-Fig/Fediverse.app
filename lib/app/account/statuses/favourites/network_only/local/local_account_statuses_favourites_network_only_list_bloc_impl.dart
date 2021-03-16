@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 class LocalAccountStatusesFavouritesNetworkOnlyListBloc
     extends AccountStatusesFavouritesNetworkOnlyListBloc {
   LocalAccountStatusesFavouritesNetworkOnlyListBloc({
-    @required IAccount account,
-    @required IPleromaAccountService pleromaAccountService,
+    required IAccount? account,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(
           account: account,
           pleromaAccountService: pleromaAccountService,
@@ -23,7 +23,7 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
 
   static LocalAccountStatusesFavouritesNetworkOnlyListBloc createFromContext(
       BuildContext context,
-      {@required IAccount account}) {
+      {required IAccount? account}) {
     return LocalAccountStatusesFavouritesNetworkOnlyListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
@@ -31,7 +31,7 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
   }
 
   static Widget provideToContext(BuildContext context,
-      {@required IAccount account, @required Widget child}) {
+      {required IAccount? account, required Widget child}) {
     return DisposableProvider<IStatusNetworkOnlyListBloc>(
       create: (context) =>
           LocalAccountStatusesFavouritesNetworkOnlyListBloc.createFromContext(
@@ -42,7 +42,7 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
         update: (context, value, previous) => value,
         child: StatusNetworkOnlyListBlocProxyProvider(
           child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
+              INetworkOnlyListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: child,
           ),
@@ -55,5 +55,5 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

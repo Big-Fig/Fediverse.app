@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
   final Widget child;
 
-  FediIntBadgeBlocBoolAdapterProxyProvider({@required this.child});
+  FediIntBadgeBlocBoolAdapterProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 
-abstract class IGlobalSettingsBloc<T extends ISettings>
+abstract class IGlobalSettingsBloc<T extends ISettings?>
     implements ISettingsBloc<T> {}

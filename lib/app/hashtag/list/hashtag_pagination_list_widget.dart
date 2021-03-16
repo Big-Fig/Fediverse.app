@@ -16,10 +16,10 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
 
   @override
   ScrollView buildItemsCollectionView({
-    BuildContext context,
-    List<IHashtag> items,
-    Widget header,
-    Widget footer,
+    BuildContext? context,
+    required List<IHashtag> items,
+    Widget? header,
+    Widget? footer,
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
@@ -39,7 +39,7 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
 
   @override
   IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
               context,
               listen: false);

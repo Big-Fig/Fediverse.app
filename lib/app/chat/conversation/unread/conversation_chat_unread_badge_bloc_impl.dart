@@ -8,7 +8,7 @@ class ConversationChatUnreadBadgeBloc extends DisposableOwner
   final IConversationChatRepository conversationChatRepository;
 
   ConversationChatUnreadBadgeBloc({
-    @required this.conversationChatRepository,
+    required this.conversationChatRepository,
   });
 
   @override

@@ -5,9 +5,9 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 
-Future<T> showFediModalBottomSheetDialog<T>({
-  @required BuildContext context,
-  @required Widget child,
+Future<T?> showFediModalBottomSheetDialog<T>({
+  required BuildContext context,
+  required Widget child,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(context, listen: false);
   return showModalBottomSheet<T>(
@@ -28,8 +28,8 @@ Future<T> showFediModalBottomSheetDialog<T>({
 
 class _FediModalBottomSheetDialogBodyWidget extends StatelessWidget {
   const _FediModalBottomSheetDialogBodyWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;

@@ -6,18 +6,17 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditChatSettingsBloc
-    extends EditGlobalOrInstanceSettingsBloc<ChatSettings>
+    extends EditGlobalOrInstanceSettingsBloc<ChatSettings?>
     implements IEditChatSettingsBloc {
   final IChatSettingsBloc chatSettingsBloc;
 
   @override
-  IBoolValueFormFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
+  late IBoolValueFormFieldBloc countConversationsInChatsUnreadBadgesFieldBloc;
 
   @override
-  IBoolValueFormFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
+  late IBoolValueFormFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -26,10 +25,10 @@ class EditChatSettingsBloc
       ];
 
   EditChatSettingsBloc({
-    @required this.chatSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.chatSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: chatSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -38,11 +37,11 @@ class EditChatSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.countConversationsInChatsUnreadBadges,
+      originValue: currentSettings?.countConversationsInChatsUnreadBadges,
       isEnabled: isEnabled,
     );
     replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.replaceConversationsWithPleromaChats,
+      originValue: currentSettings?.replaceConversationsWithPleromaChats,
       isEnabled: isEnabled,
     );
 
@@ -61,12 +60,12 @@ class EditChatSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(ChatSettings settings) async {
+  Future fillSettingsToFormFields(ChatSettings? settings) async {
     countConversationsInChatsUnreadBadgesFieldBloc.changeCurrentValue(
-      settings.countConversationsInChatsUnreadBadges,
+      settings?.countConversationsInChatsUnreadBadges,
     );
     replaceConversationsWithPleromaChatsFieldBloc.changeCurrentValue(
-      settings.replaceConversationsWithPleromaChats,
+      settings?.replaceConversationsWithPleromaChats,
     );
   }
 }

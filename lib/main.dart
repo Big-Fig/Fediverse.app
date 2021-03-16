@@ -16,7 +16,6 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
-import 'package:fedi/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
@@ -61,7 +60,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +67,7 @@ import 'generated/l10n.dart';
 
 var _logger = Logger("main.dart");
 
-CurrentAuthInstanceContextBloc currentInstanceContextBloc;
+late CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -178,8 +176,8 @@ void runInitFailedApp() {
 }
 
 void runInitializedSplashApp({
-  @required AppContextBloc appContextBloc,
-  @required String appTitle,
+  required IAppContextBloc appContextBloc,
+  required String appTitle,
 }) {
   runZonedGuarded(
     () async {
@@ -201,9 +199,9 @@ void runInitializedSplashApp({
 }
 
 void runInitializedApp({
-  @required AppContextBloc appContextBloc,
-  @required AuthInstance currentInstance,
-  @required String appTitle,
+  required IAppContextBloc appContextBloc,
+  required AuthInstance? currentInstance,
+  required String appTitle,
 }) {
   _logger.finest(() => "runInitializedApp $runInitializedApp");
   runZonedGuarded(
@@ -223,9 +221,9 @@ void runInitializedApp({
 }
 
 Future runInitializedCurrentInstanceApp({
-  @required AppContextBloc appContextBloc,
-  @required String appTitle,
-  @required AuthInstance currentInstance,
+  required IAppContextBloc appContextBloc,
+  required String appTitle,
+  required AuthInstance currentInstance,
 }) async {
   await runZonedGuarded(
     () async {
@@ -233,7 +231,7 @@ Future runInitializedCurrentInstanceApp({
         appContextBloc: appContextBloc,
         appTitle: appTitle,
       );
-      await currentInstanceContextBloc?.dispose();
+      await currentInstanceContextBloc.dispose();
 
       currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
         currentInstance: currentInstance,
@@ -272,8 +270,8 @@ Future runInitializedCurrentInstanceApp({
 }
 
 CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
-  @required BuildContext context,
-  @required INotificationPushLoaderBloc pushLoaderBloc,
+  required BuildContext context,
+  required INotificationPushLoaderBloc pushLoaderBloc,
 }) {
   _logger.finest(() => "createCurrentInstanceContextBloc");
   var currentAuthInstanceContextLoadingBloc =
@@ -349,24 +347,24 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
                       var notification =
                           launchOrResumePushLoaderNotification.notification;
                       if (notification.isContainsChat) {
-                        await navigatorKey.currentState.push(
+                        await navigatorKey.currentState!.push(
                           createPleromaChatPageRoute(
-                            await currentInstanceContextBloc
+                            (await currentInstanceContextBloc
                                 .get<IPleromaChatRepository>()
                                 .findByRemoteId(
-                                  notification.chatRemoteId,
-                                ),
+                                  notification.chatRemoteId!,
+                                ))!,
                           ),
                         );
                       } else if (notification.isContainsStatus) {
-                        await navigatorKey.currentState.push(
+                        await navigatorKey.currentState!.push(
                           createLocalStatusThreadPageRoute(
-                            status: notification.status,
+                            status: notification.status!,
                             initialMediaAttachment: null,
                           ),
                         );
                       } else if (notification.isContainsAccount) {
-                        await navigatorKey.currentState.push(
+                        await navigatorKey.currentState!.push(
                           createLocalAccountDetailsPageRoute(
                             notification.account,
                           ),
@@ -387,7 +385,7 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
 }
 
 Widget buildAuthInstanceContextInitWidget({
-  @required INotificationPushLoaderBloc pushLoaderBloc,
+  required INotificationPushLoaderBloc pushLoaderBloc,
 }) =>
     CurrentAuthInstanceContextInitWidget(
       child: DisposableProvider<IHomeBloc>(
@@ -416,7 +414,7 @@ Widget buildAuthInstanceContextInitWidget({
       ),
     );
 
-void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
+void runInitializedLoginApp(IAppContextBloc appContextBloc, String appTitle) {
   runZonedGuarded(
     () async {
       runApp(
@@ -436,9 +434,9 @@ void runInitializedLoginApp(AppContextBloc appContextBloc, String appTitle) {
   );
 }
 
-HomeTab calculateHomeTabForNotification(
-    NotificationPushLoaderNotification launchOrResumePushLoaderNotification) {
-  HomeTab homeTab;
+HomeTab? calculateHomeTabForNotification(
+    NotificationPushLoaderNotification? launchOrResumePushLoaderNotification) {
+  HomeTab? homeTab;
   if (launchOrResumePushLoaderNotification != null) {
     var notification = launchOrResumePushLoaderNotification.notification;
     if (notification.isContainsChat) {
@@ -460,9 +458,9 @@ class FediApp extends StatelessWidget {
   final String appTitle;
 
   FediApp({
-    @required this.child,
-    @required this.instanceInitialized,
-    @required this.appTitle,
+    required this.child,
+    required this.instanceInitialized,
+    required this.appTitle,
   });
 
   @override
@@ -476,7 +474,7 @@ class FediApp extends StatelessWidget {
         ILocalizationSettingsBloc.of(context, listen: false);
 
     return UiThemeSystemBrightnessHandlerWidget(
-      child: StreamBuilder<IFediUiTheme>(
+      child: StreamBuilder<IFediUiTheme?>(
           stream: currentFediUiThemeBloc.adaptiveBrightnessCurrentThemeStream,
           builder: (context, snapshot) {
             var currentTheme = snapshot.data;
@@ -492,15 +490,15 @@ class FediApp extends StatelessWidget {
 
             return provideCurrentTheme(
               currentTheme: currentTheme ?? lightFediUiTheme,
-              child: StreamBuilder<LocalizationLocale>(
+              child: StreamBuilder<LocalizationLocale?>(
                 stream: localizationSettingsBloc.localizationLocaleStream,
                 builder: (context, snapshot) {
                   var localizationLocale = snapshot.data;
 
-                  Locale locale;
+                  Locale? locale;
                   if (localizationLocale != null) {
                     locale = Locale.fromSubtags(
-                      languageCode: localizationLocale.languageCode,
+                      languageCode: localizationLocale.languageCode!,
                       countryCode: localizationLocale.countryCode,
                       scriptCode: localizationLocale.scriptCode,
                     );
@@ -555,8 +553,8 @@ class FediApp extends StatelessWidget {
   }
 
   Widget provideCurrentTheme({
-    @required Widget child,
-    @required IFediUiTheme currentTheme,
+    required Widget child,
+    required IFediUiTheme currentTheme,
   }) =>
       Provider<IFediUiTheme>.value(
         value: currentTheme,

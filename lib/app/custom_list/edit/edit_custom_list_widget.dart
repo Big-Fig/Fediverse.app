@@ -58,7 +58,7 @@ class EditCustomListWidget extends StatelessWidget {
 
 class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
   const _EditCustomListAccountDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
 
 class _EditCustomListDeleteButton extends StatelessWidget {
   const _EditCustomListDeleteButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,7 +91,7 @@ class _EditCustomListDeleteButton extends StatelessWidget {
 
 class _EditCustomListBodyWidget extends StatelessWidget {
   const _EditCustomListBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -103,7 +103,7 @@ class _EditCustomListBodyWidget extends StatelessWidget {
 
 class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
   const _EditCustomListEmptySearchChildWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -150,21 +150,21 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
 
 class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   const _EditCustomListBodyAlreadyAddedAccountsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditCustomListBloc,
-        ICustomListAccountListNetworkOnlyListBloc>(
+        ICustomListAccountListNetworkOnlyListBloc?>(
       update: (context, editCustomListBloc, previous) =>
           editCustomListBloc.customListAccountListNetworkOnlyListBloc,
       child:
-          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc>(
+          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc?>(
         update: (context, editCustomListBloc, previous) =>
             editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
         child: ProxyProvider<IEditCustomListBloc,
-            IEditCustomListAccountListPaginationListBloc>(
+            IEditCustomListAccountListPaginationListBloc?>(
           update: (context, editCustomListBloc, previous) =>
               editCustomListBloc.editCustomListAccountListPaginationListBloc,
           child: EditCustomListAccountListPaginationListBlocProxyProvider(
@@ -191,7 +191,7 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
 
 class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
   const _EditCustomListBodyAddedHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -205,8 +205,8 @@ class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
   final Widget emptySearchChild;
 
   const _EditCustomListBodySearchToAddAccountsWidget({
-    Key key,
-    @required this.emptySearchChild,
+    Key? key,
+    required this.emptySearchChild,
   }) : super(key: key);
 
   @override
@@ -241,8 +241,8 @@ class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
 
 class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {
   const _EditCustomListBodySearchToAddAccountsBodyWidget({
-    Key key,
-    @required this.emptySearchChild,
+    Key? key,
+    required this.emptySearchChild,
   }) : super(key: key);
 
   final Widget emptySearchChild;
@@ -284,7 +284,7 @@ void _accountSelectedCallback(BuildContext context, IAccount account) {
 
 class _EditCustomListBodySearchHeader extends StatelessWidget {
   const _EditCustomListBodySearchHeader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -17,9 +17,9 @@ class PleromaChatMessageCachedPaginationBloc
   final IPleromaChatMessageCachedListBloc chatMessageListService;
 
   PleromaChatMessageCachedPaginationBloc({
-    @required this.chatMessageListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.chatMessageListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -30,10 +30,10 @@ class PleromaChatMessageCachedPaginationBloc
 
   @override
   Future<List<IPleromaChatMessage>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IPleromaChatMessage> olderPage,
-    @required CachedPaginationPage<IPleromaChatMessage> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IPleromaChatMessage>? olderPage,
+    required CachedPaginationPage<IPleromaChatMessage>? newerPage,
   }) =>
       chatMessageListService.loadLocalItems(
         limit: itemsCountPerPage,
@@ -42,11 +42,11 @@ class PleromaChatMessageCachedPaginationBloc
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IPleromaChatMessage> olderPage,
-    @required CachedPaginationPage<IPleromaChatMessage> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IPleromaChatMessage?>? olderPage,
+    required CachedPaginationPage<IPleromaChatMessage?>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
@@ -60,12 +60,13 @@ class PleromaChatMessageCachedPaginationBloc
 
   static PleromaChatMessageCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       PleromaChatMessageCachedPaginationBloc(
         chatMessageListService: Provider.of<IPleromaChatMessageCachedListBloc>(
-            context,
-            listen: false),
+          context,
+          listen: false,
+        ),
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,
@@ -76,8 +77,8 @@ class PleromaChatMessageCachedPaginationBloc
   static Widget provideToContext(
     BuildContext context, {
     int itemsCountPerPage = 20,
-    int maximumCachedPagesCount,
-    @required Widget child,
+    int? maximumCachedPagesCount,
+    required Widget child,
   }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
@@ -88,8 +89,9 @@ class PleromaChatMessageCachedPaginationBloc
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IPleromaChatMessage>,
-          IPleromaChatMessage>(child: child),
+          CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(
+        child: child,
+      ),
     );
   }
 }

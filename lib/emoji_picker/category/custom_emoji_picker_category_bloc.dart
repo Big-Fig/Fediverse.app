@@ -12,5 +12,5 @@ abstract class ICustomEmojiPickerCategoryBloc
 
   List<CustomEmojiPickerItem> get items;
 
-  Stream<List<CustomEmojiPickerItem>> get itemsStream;
+  Stream<List<CustomEmojiPickerItem>?> get itemsStream;
 }

@@ -61,7 +61,7 @@ void _goToAccountDetailsPage(BuildContext context, IAccount account) {
 
 class _StatusFavouriteAccountListPrivacyWarningWidget extends StatelessWidget {
   const _StatusFavouriteAccountListPrivacyWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

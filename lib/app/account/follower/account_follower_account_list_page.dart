@@ -29,7 +29,11 @@ class AccountFollowerAccountListPage extends StatelessWidget {
 }
 
 void goToAccountFollowerAccountListPage(
-    BuildContext context, IAccount account) {
+{
+  required BuildContext context,
+  required IAccount account,
+}
+) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) {
@@ -40,7 +44,7 @@ void goToAccountFollowerAccountListPage(
           context,
           child: AccountPaginationListBloc.provideToContext(
             context,
-            child: Provider<IAccount>.value(
+            child: Provider<IAccount?>.value(
               value: account,
               child: const AccountFollowerAccountListPage(),
             ),

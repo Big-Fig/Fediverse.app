@@ -7,7 +7,7 @@ class FilePickerOrUrlFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   FilePickerOrUrlFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

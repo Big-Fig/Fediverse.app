@@ -12,8 +12,8 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/pleroma/status/auth/pleroma_auth_status_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -27,42 +27,43 @@ class ThreadPostStatusBloc extends PostStatusBloc
   final IStatusThreadBloc statusThreadBloc;
 
   @override
-  IStatus get notCanceledOriginInReplyToStatus =>
-      (originInReplyToStatus != null && !originInReplyToStatusCanceled)
+  IStatus? get notCanceledOriginInReplyToStatus =>
+      (originInReplyToStatus != null && !originInReplyToStatusCanceled!)
           ? originInReplyToStatus
           : null;
 
   @override
-  Stream<IStatus> get notCanceledOriginInReplyToStatusStream =>
-      originInReplyToStatusCanceledStream.map((originInReplyToStatusCanceled) =>
-          (originInReplyToStatus != null && !originInReplyToStatusCanceled)
-              ? originInReplyToStatus
-              : null);
+  Stream<IStatus?> get notCanceledOriginInReplyToStatusStream =>
+      originInReplyToStatusCanceledStream.map(
+        (originInReplyToStatusCanceled) =>
+            (originInReplyToStatus != null && !originInReplyToStatusCanceled)
+                ? originInReplyToStatus
+                : null,
+      );
 
   ThreadPostStatusBloc({
-    @required IStatus inReplyToStatus,
-    @required this.statusThreadBloc,
-    @required IPleromaStatusService pleromaStatusService,
-    @required IStatusRepository statusRepository,
-    @required IScheduledStatusRepository scheduledStatusRepository,
-    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-    @required int maximumMessageLength,
-    @required PleromaInstancePollLimits pleromaInstancePollLimits,
-    @required int maximumFileSizeInBytes,
-    @required bool markMediaAsNsfwOnAttach,
-    @required String language,
-    @required bool isPleromaInstance,
+    required IStatus inReplyToStatus,
+    required this.statusThreadBloc,
+    required IPleromaAuthStatusService pleromaAuthStatusService,
+    required IStatusRepository statusRepository,
+    required IScheduledStatusRepository scheduledStatusRepository,
+    required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    required int? maximumMessageLength,
+    required PleromaInstancePollLimits? pleromaInstancePollLimits,
+    required int? maximumFileSizeInBytes,
+    required bool? markMediaAsNsfwOnAttach,
+    required String? language,
+    required bool isPleromaInstance,
   }) : super(
           isExpirePossible: isPleromaInstance,
-          pleromaAuthStatusService: pleromaStatusService,
+          pleromaAuthStatusService: pleromaAuthStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.public.toJsonValue(),
             language: language,
-            inReplyToPleromaStatus:
-                mapLocalStatusToRemoteStatus(inReplyToStatus),
+            inReplyToPleromaStatus: inReplyToStatus.toPleromaStatus(),
           ),
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
@@ -73,15 +74,18 @@ class ThreadPostStatusBloc extends PostStatusBloc
     addDisposable(subject: originInReplyToStatusCanceledSubject);
   }
 
-  static ThreadPostStatusBloc createFromContext(BuildContext context,
-      {@required IStatus inReplyToStatus}) {
+  static ThreadPostStatusBloc createFromContext(
+    BuildContext context, {
+    required IStatus inReplyToStatus,
+  }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
-        .currentInstance
-        .info;
+        .currentInstance!
+        .info!;
     return ThreadPostStatusBloc(
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
-      pleromaStatusService: IPleromaStatusService.of(context, listen: false),
+      pleromaAuthStatusService:
+          IPleromaAuthStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
           IPleromaMediaAttachmentService.of(context, listen: false),
@@ -102,8 +106,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
     );
   }
 
-  static Widget provideToContext(BuildContext context,
-      {@required IStatus inReplyToStatus, @required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IStatus inReplyToStatus,
+    required Widget child,
+  }) {
     return DisposableProvider<IThreadPostStatusBloc>(
       create: (context) => ThreadPostStatusBloc.createFromContext(
         context,
@@ -125,11 +132,13 @@ class ThreadPostStatusBloc extends PostStatusBloc
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     _logger.finest(() => "onStatusPosted $onStatusPosted");
     var status = await statusRepository.findByRemoteId(remoteStatus.id);
-    statusThreadBloc.addStatusInThread(status);
+    if (status != null) {
+      statusThreadBloc.addStatusInThread(status);
+    }
   }
 
   @override
-  bool get originInReplyToStatusCanceled =>
+  bool? get originInReplyToStatusCanceled =>
       originInReplyToStatusCanceledSubject.value;
 
   @override
@@ -146,14 +155,14 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   IStatus calculateInReplyToStatusField() {
-    IStatus result;
-    if (originInReplyToStatus != null && originInReplyToStatusCanceled) {
+    IStatus? result;
+    if (originInReplyToStatus != null && originInReplyToStatusCanceled!) {
       var statuses = statusThreadBloc.statuses;
       if (mentionedAccts?.isNotEmpty == true) {
-        IStatus statusToReply;
-        for (var acct in mentionedAccts) {
-          statusToReply = statuses.reversed.firstWhere(
-              (status) => status.account.acct == acct,
+        IStatus? statusToReply;
+        for (var acct in mentionedAccts!) {
+          statusToReply = statuses!.reversed.firstWhere(
+              (status) => status!.account!.acct == acct,
               orElse: () => null);
           if (statusToReply != null) {
             _logger.finest(() => "calculateInReplyToStatusRemoteId "
@@ -166,12 +175,12 @@ class ThreadPostStatusBloc extends PostStatusBloc
         } else {
           _logger.finest(() => "calculateInReplyToStatusRemoteId "
               "statusToReply by acct not found => $result");
-          result = statuses.last;
+          result = statuses!.last;
         }
       } else {
         _logger.finest(() => "calculateInReplyToStatusRemoteId "
             "statusToReply last => $result");
-        result = statuses.last;
+        result = statuses!.last;
       }
     } else {
       _logger.finest(() => "calculateInReplyToStatusRemoteId "
@@ -179,7 +188,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       result = super.calculateInReplyToStatusField();
     }
     _logger.finest(() => "calculateInReplyToStatusRemoteId $result");
-    return result;
+    return result!;
   }
 
   @override
@@ -198,10 +207,10 @@ class ThreadPostStatusBloc extends PostStatusBloc
   }
 
   @override
-  List<String> calculateToField() {
+  List<String>? calculateToField() {
     if (pleromaAuthStatusService.isPleroma) {
-      if (originInReplyToStatus != null && !originInReplyToStatusCanceled) {
-        var inReplyToStatusAcct = originInReplyToStatus.account.acct;
+      if (originInReplyToStatus != null && !originInReplyToStatusCanceled!) {
+        var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 
         var toField = [...mentionedAccts];
 

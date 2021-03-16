@@ -13,16 +13,16 @@ abstract class IPleromaAnnouncementService implements IPleromaApi {
   });
 
   Future dismissAnnouncement({
-    @required String announcementId,
+    required String announcementId,
   });
 
   Future addAnnouncementReaction({
-    @required String announcementId,
-    @required String name,
+    required String announcementId,
+    required String name,
   });
 
   Future removeAnnouncementReaction({
-    @required String announcementId,
-    @required String name,
+    required String announcementId,
+    required String name,
   });
 }

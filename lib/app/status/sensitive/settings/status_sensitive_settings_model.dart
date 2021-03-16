@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,23 +13,23 @@ class StatusSensitiveSettings
     implements IJsonObject, ISettings<StatusSensitiveSettings> {
   @HiveField(0)
   @JsonKey(name: "is_always_show_spoiler")
-  final bool isAlwaysShowSpoiler;
+  final bool? isAlwaysShowSpoiler;
   @HiveField(1)
   @JsonKey(name: "is_always_show_nsfw")
-  final bool isAlwaysShowNsfw;
+  final bool? isAlwaysShowNsfw;
 
   @HiveField(2)
   @JsonKey(name: "nsfw_display_delay_duration_seconds_total")
-  final int nsfwDisplayDelayDurationMicrosecondsTotal;
+  final int? nsfwDisplayDelayDurationMicrosecondsTotal;
 
   Duration get nsfwDisplayDelayDuration => Duration(
-        microseconds: nsfwDisplayDelayDurationMicrosecondsTotal,
+        microseconds: nsfwDisplayDelayDurationMicrosecondsTotal!,
       );
 
   StatusSensitiveSettings({
-    @required this.isAlwaysShowSpoiler,
-    @required this.isAlwaysShowNsfw,
-    @required this.nsfwDisplayDelayDurationMicrosecondsTotal,
+    required this.isAlwaysShowSpoiler,
+    required this.isAlwaysShowNsfw,
+    required this.nsfwDisplayDelayDurationMicrosecondsTotal,
   });
 
   @override
@@ -77,9 +76,9 @@ class StatusSensitiveSettings
   StatusSensitiveSettings clone() => copyWith();
 
   StatusSensitiveSettings copyWith({
-    bool isAlwaysShowSpoiler,
-    bool isAlwaysShowNsfw,
-    int nsfwDisplayDelayDurationMicrosecondsTotal,
+    bool? isAlwaysShowSpoiler,
+    bool? isAlwaysShowNsfw,
+    int? nsfwDisplayDelayDurationMicrosecondsTotal,
   }) =>
       StatusSensitiveSettings(
         isAlwaysShowSpoiler: isAlwaysShowSpoiler ?? this.isAlwaysShowSpoiler,

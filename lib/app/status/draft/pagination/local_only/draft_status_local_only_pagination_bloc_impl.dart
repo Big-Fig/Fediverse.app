@@ -16,9 +16,9 @@ class DraftStatusLocalOnlyPaginationBloc
   final ILocalOnlyListBloc<IDraftStatus> listService;
 
   DraftStatusLocalOnlyPaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -26,7 +26,7 @@ class DraftStatusLocalOnlyPaginationBloc
 
   static DraftStatusLocalOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       DraftStatusLocalOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -42,8 +42,8 @@ class DraftStatusLocalOnlyPaginationBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required int maximumCachedPagesCount,
+    required Widget child,
+    required int? maximumCachedPagesCount,
   }) =>
       DisposableProvider<
           IPaginationBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
@@ -63,9 +63,9 @@ class DraftStatusLocalOnlyPaginationBloc
 
   @override
   PaginationPage<IDraftStatus> createPage({
-    int pageIndex,
-    List<IDraftStatus> loadedItems,
-    int itemsCountPerPage,
+    required int pageIndex,
+    required List<IDraftStatus> loadedItems,
+    required int? itemsCountPerPage,
   }) =>
       PaginationPage(
           requestedLimitPerPage: itemsCountPerPage,
@@ -74,10 +74,10 @@ class DraftStatusLocalOnlyPaginationBloc
 
   @override
   Future<List<IDraftStatus>> loadItemsFromLocalForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    PaginationPage<IDraftStatus> olderPage,
-    PaginationPage<IDraftStatus> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<IDraftStatus>? olderPage,
+    required PaginationPage<IDraftStatus>? newerPage,
   }) {
     return listService.loadItemsFromLocalForPage(
       itemsCountPerPage: itemsCountPerPage,

@@ -31,7 +31,7 @@ class RegisterAuthInstanceFormWidget extends StatelessWidget {
           const _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget(),
           const _RegisterAuthInstanceFormLocaleFieldWidget(),
           const _RegisterAuthInstanceFormCaptchaFieldWidget(),
-          if (registerAuthInstanceBloc.approvalRequired)
+          if (registerAuthInstanceBloc.approvalRequired!)
             const _RegisterAuthInstanceFormReasonFieldWidget(),
         ],
       ),
@@ -41,12 +41,12 @@ class RegisterAuthInstanceFormWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormCaptchaFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormCaptchaFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
-          IRegisterAuthInstanceFormBloc, ICaptchaStringValueFormFieldBloc>(
+          IRegisterAuthInstanceFormBloc, ICaptchaStringValueFormFieldBloc?>(
         update: (context, value, previous) => value.captchaFieldBloc,
         child: FormCaptchaStringFormFieldRowWidget(
           label: S.of(context).app_auth_instance_register_field_captcha_label,
@@ -61,13 +61,13 @@ class _RegisterAuthInstanceFormCaptchaFieldWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormLocaleFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormLocaleFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IRegisterAuthInstanceFormBloc,
-        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
+        ILocalizationLocaleSingleFromListValueFormFieldBloc?>(
       update: (context, value, previous) => value.localeFieldBloc,
       builder: (context, snapshot) =>
           const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
@@ -77,7 +77,7 @@ class _RegisterAuthInstanceFormLocaleFieldWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormUsernameFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormUsernameFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -97,7 +97,7 @@ class _RegisterAuthInstanceFormUsernameFieldWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormEmailFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormEmailFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -117,7 +117,7 @@ class _RegisterAuthInstanceFormEmailFieldWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormReasonFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormReasonFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -137,7 +137,7 @@ class _RegisterAuthInstanceFormReasonFieldWidget extends StatelessWidget {
 
 class _RegisterAuthInstanceFormPasswordFieldWidget extends StatelessWidget {
   const _RegisterAuthInstanceFormPasswordFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -159,7 +159,7 @@ class _RegisterAuthInstanceFormPasswordFieldWidget extends StatelessWidget {
 class _RegisterAuthInstanceFormConfirmPasswordFieldWidget
     extends StatelessWidget {
   const _RegisterAuthInstanceFormConfirmPasswordFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -182,7 +182,7 @@ class _RegisterAuthInstanceFormConfirmPasswordFieldWidget
 class _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget
     extends StatelessWidget {
   const _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -201,13 +201,13 @@ class _RegisterAuthInstanceFormAcceptTermsOfServiceFieldWidget
 }
 
 Widget _buildTextField({
-  @required BuildContext context,
-  @required IStringValueFormFieldBloc formStringFieldBloc,
-  @required String hintText,
-  @required String labelText,
-  @required bool autocorrect,
-  @required bool obscureText,
-  @required IStringValueFormFieldBloc nextFormStringFieldBloc,
+  required BuildContext context,
+  required IStringValueFormFieldBloc formStringFieldBloc,
+  required String hintText,
+  required String labelText,
+  required bool autocorrect,
+  required bool obscureText,
+  required IStringValueFormFieldBloc? nextFormStringFieldBloc,
 }) {
   var isHaveNextField = nextFormStringFieldBloc != null;
 
@@ -221,7 +221,7 @@ Widget _buildTextField({
       onSubmitted: isHaveNextField
           ? (String value) {
               formStringFieldBloc.focusNode.unfocus();
-              nextFormStringFieldBloc.focusNode.requestFocus();
+              nextFormStringFieldBloc!.focusNode.requestFocus();
             }
           : null,
       textInputAction:

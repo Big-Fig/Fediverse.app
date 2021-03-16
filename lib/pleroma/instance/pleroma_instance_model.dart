@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logging/logging.dart';
@@ -16,6 +16,40 @@ abstract class IPleromaInstanceHistory extends IMastodonInstanceHistory {}
 enum PleromaInstanceVersionType { pleroma, mastodon, unknown }
 
 extension IPleromaInstanceExtension on IPleromaInstance {
+  PleromaInstance toPleromaInstance() {
+    if (this is PleromaInstance) {
+      return this as PleromaInstance;
+    } else {
+      return PleromaInstance(
+        approvalRequired: approvalRequired,
+        avatarUploadLimit: avatarUploadLimit,
+        backgroundUploadLimit: backgroundUploadLimit,
+        bannerUploadLimit: bannerUploadLimit,
+        contactAccount: contactAccount?.toPleromaAccount(),
+        email: email,
+        languages: languages,
+        maxTootChars: maxTootChars,
+        pleroma: pleroma,
+        pollLimits: pollLimits,
+        registrations: registrations,
+        shortDescription: shortDescription,
+        stats: stats,
+        thumbnail: thumbnail,
+        title: title,
+        uri: uri,
+        urls: urls,
+        vapidPublicKey: vapidPublicKey,
+        backgroundImage: backgroundImage,
+        chatLimit: chatLimit,
+        description: description,
+        descriptionLimit: descriptionLimit,
+        invitesEnabled: invitesEnabled,
+        uploadLimit: uploadLimit,
+        version: version,
+      );
+    }
+  }
+
   static const pleromaVersionPart = "(compatible; Pleroma";
 
   PleromaInstanceVersionType get versionType {
@@ -23,7 +57,7 @@ extension IPleromaInstanceExtension on IPleromaInstance {
     if (version == null) {
       return PleromaInstanceVersionType.unknown;
     }
-    var containsPleroma = version.contains(pleromaVersionPart);
+    var containsPleroma = version!.contains(pleromaVersionPart);
     if (containsPleroma) {
       return PleromaInstanceVersionType.pleroma;
     } else {
@@ -37,22 +71,22 @@ extension IPleromaInstanceExtension on IPleromaInstance {
 @JsonSerializable()
 class PleromaInstanceHistory extends IPleromaInstanceHistory {
   @override
-  final String logins;
+  final String? logins;
 
   @override
-  final String registrations;
+  final String? registrations;
 
   @override
-  final String statuses;
+  final String? statuses;
 
   @override
-  final String week;
+  final String? week;
 
   PleromaInstanceHistory({
-    @required this.logins,
-    @required this.registrations,
-    @required this.statuses,
-    @required this.week,
+    required this.logins,
+    required this.registrations,
+    required this.statuses,
+    required this.week,
   });
 
   @override
@@ -94,30 +128,30 @@ class PleromaInstanceHistory extends IPleromaInstanceHistory {
 }
 
 abstract class IPleromaInstance extends IMastodonInstance {
-  int get maxTootChars;
+  int? get maxTootChars;
 
-  PleromaInstancePollLimits get pollLimits;
+  PleromaInstancePollLimits? get pollLimits;
 
-  int get uploadLimit;
+  int? get uploadLimit;
 
-  int get avatarUploadLimit;
+  int? get avatarUploadLimit;
 
-  int get backgroundUploadLimit;
+  int? get backgroundUploadLimit;
 
-  int get bannerUploadLimit;
+  int? get bannerUploadLimit;
 
-  int get descriptionLimit;
+  int? get descriptionLimit;
 
-  int get chatLimit;
+  int? get chatLimit;
 
-  PleromaInstancePleromaPart get pleroma;
+  PleromaInstancePleromaPart? get pleroma;
 
-  String get vapidPublicKey;
+  String? get vapidPublicKey;
 
-  String get backgroundImage;
+  String? get backgroundImage;
 
   @override
-  IPleromaAccount get contactAccount;
+  IPleromaAccount? get contactAccount;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -128,10 +162,10 @@ abstract class IPleromaInstance extends IMastodonInstance {
 @HiveType(typeId: -32 + 58)
 class PleromaInstancePleromaPart {
   @HiveField(0)
-  final PleromaInstancePleromaPartMetadata metadata;
+  final PleromaInstancePleromaPartMetadata? metadata;
 
   PleromaInstancePleromaPart({
-    @required this.metadata,
+    required this.metadata,
   });
 
   @override
@@ -173,22 +207,22 @@ class PleromaInstancePleromaPart {
 class PleromaInstancePleromaPartMetadataFieldLimits {
   @HiveField(0)
   @JsonKey(name: "max_fields")
-  final int maxFields;
+  final int? maxFields;
   @JsonKey(name: "max_remote_fields")
   @HiveField(1)
-  final int maxRemoteFields;
+  final int? maxRemoteFields;
   @JsonKey(name: "name_length")
   @HiveField(2)
-  final int nameLength;
+  final int? nameLength;
   @JsonKey(name: "value_length")
   @HiveField(3)
-  final int valueLength;
+  final int? valueLength;
 
   PleromaInstancePleromaPartMetadataFieldLimits({
-    @required this.maxFields,
-    @required this.maxRemoteFields,
-    @required this.nameLength,
-    @required this.valueLength,
+    required this.maxFields,
+    required this.maxRemoteFields,
+    required this.nameLength,
+    required this.valueLength,
   });
 
   factory PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
@@ -218,13 +252,13 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
 @HiveType(typeId: -32 + 98)
 class PleromaInstancePleromaPartMetadataFederationMfrObjectAge {
   @HiveField(0)
-  final int threshold;
+  final int? threshold;
   @HiveField(1)
-  final List<String> actions;
+  final List<String>? actions;
 
   PleromaInstancePleromaPartMetadataFederationMfrObjectAge({
-    @required this.threshold,
-    @required this.actions,
+    required this.threshold,
+    required this.actions,
   });
 
   @override
@@ -271,25 +305,25 @@ class PleromaInstancePleromaPartMetadataFederationMfrObjectAge {
 @HiveType(typeId: -32 + 99)
 class PleromaInstancePleromaPartMetadataFederation {
   @HiveField(0)
-  final bool enabled;
+  final bool? enabled;
   @HiveField(1)
-  final bool exclusions;
+  final bool? exclusions;
   @HiveField(2)
   @JsonKey(name: "mrf_object_age")
-  final PleromaInstancePleromaPartMetadataFederationMfrObjectAge mrfObjectAge;
+  final PleromaInstancePleromaPartMetadataFederationMfrObjectAge? mrfObjectAge;
   @HiveField(3)
   @JsonKey(name: "mrf_policies")
-  final List<String> mrfPolicies;
+  final List<String>? mrfPolicies;
   @HiveField(4)
   @JsonKey(name: "quarantined_instances")
-  final List<String> quarantinedInstances;
+  final List<String>? quarantinedInstances;
 
   PleromaInstancePleromaPartMetadataFederation({
-    @required this.enabled,
-    @required this.exclusions,
-    @required this.mrfObjectAge,
-    @required this.mrfPolicies,
-    @required this.quarantinedInstances,
+    required this.enabled,
+    required this.exclusions,
+    required this.mrfObjectAge,
+    required this.mrfPolicies,
+    required this.quarantinedInstances,
   });
 
   @override
@@ -350,26 +384,26 @@ class PleromaInstancePleromaPartMetadataFederation {
 @HiveType(typeId: -32 + 60)
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
-  final List<String> features;
+  final List<String>? features;
 
   @HiveField(2)
   @JsonKey(name: "post_formats")
-  final List<String> postFormats;
+  final List<String>? postFormats;
   @HiveField(3)
   @JsonKey(name: "account_activation_required")
-  final bool accountActivationRequired;
+  final bool? accountActivationRequired;
   @HiveField(4)
   @JsonKey(name: "fields_limits")
-  final PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
+  final PleromaInstancePleromaPartMetadataFieldLimits? fieldsLimits;
   @HiveField(5)
-  final PleromaInstancePleromaPartMetadataFederation federation;
+  final PleromaInstancePleromaPartMetadataFederation? federation;
 
   PleromaInstancePleromaPartMetadata({
-    @required this.features,
-    @required this.federation,
-    @required this.postFormats,
-    @required this.accountActivationRequired,
-    @required this.fieldsLimits,
+    required this.features,
+    required this.federation,
+    required this.postFormats,
+    required this.accountActivationRequired,
+    required this.fieldsLimits,
   });
 
   @override
@@ -427,24 +461,47 @@ class PleromaInstancePleromaPartMetadata {
 //@HiveType()
 @HiveType(typeId: -32 + 63)
 class PleromaInstancePollLimits {
+  static const Duration defaultMinPollExpiration = Duration(minutes: 10);
+  static const Duration defaultMaxPollExpiration = Duration(days: 365);
+  static const Duration defaultPollExpiration = Duration(days: 1);
+  static const int defaultMaxPollOptions = 20;
+  static const int defaultMaxOptionChars = 256;
+  static final PleromaInstancePollLimits defaultLimits =
+      PleromaInstancePollLimits(
+    maxExpiration: defaultMaxPollExpiration.totalSeconds,
+    minExpiration: defaultMinPollExpiration.totalSeconds,
+    maxOptionChars: defaultMaxOptionChars,
+    maxOptions: defaultMaxPollOptions,
+  );
+
+  Duration get minExpirationDurationOrDefault =>
+      maxExpiration?.toDuration() ?? defaultMinPollExpiration;
+
+  Duration get maxExpirationDurationOrDefault =>
+      maxExpiration?.toDuration() ?? defaultMaxPollExpiration;
+
+  int get maxOptionsOrDefault => maxOptions ?? defaultMaxPollOptions;
+
+  int get maxOptionCharsOrDefault => maxOptionChars ?? defaultMaxOptionChars;
+
   @HiveField(0)
   @JsonKey(name: "max_expiration")
-  final int maxExpiration;
+  final int? maxExpiration;
   @HiveField(1)
   @JsonKey(name: "max_option_chars")
-  final int maxOptionChars;
+  final int? maxOptionChars;
   @HiveField(2)
   @JsonKey(name: "max_options")
-  final int maxOptions;
+  final int? maxOptions;
   @HiveField(3)
   @JsonKey(name: "min_expiration")
-  final int minExpiration;
+  final int? minExpiration;
 
-  PleromaInstancePollLimits({
-    @required this.maxExpiration,
-    @required this.maxOptionChars,
-    @required this.maxOptions,
-    @required this.minExpiration,
+  const PleromaInstancePollLimits({
+    required this.maxExpiration,
+    required this.maxOptionChars,
+    required this.maxOptions,
+    required this.minExpiration,
   });
 
   factory PleromaInstancePollLimits.fromJson(Map<String, dynamic> json) =>
@@ -472,35 +529,35 @@ class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(0)
   @JsonKey(name: "approval_required")
-  final bool approvalRequired;
+  final bool? approvalRequired;
 
   @override
   @HiveField(1)
   @JsonKey(name: "avatar_upload_limit")
-  final int avatarUploadLimit;
+  final int? avatarUploadLimit;
 
   @override
   @HiveField(2)
   @JsonKey(name: "background_upload_limit")
-  final int backgroundUploadLimit;
+  final int? backgroundUploadLimit;
 
   @override
   @HiveField(3)
   @JsonKey(name: "banner_upload_limit")
-  final int bannerUploadLimit;
+  final int? bannerUploadLimit;
 
   @override
   @HiveField(4)
   @JsonKey(name: "contact_account")
-  final PleromaAccount contactAccount;
+  final PleromaAccount? contactAccount;
 
   @override
   @HiveField(5)
-  final String email;
+  final String? email;
 
   @override
   @HiveField(6)
-  final List<String> languages;
+  final List<String>? languages;
 
   @override
   @HiveField(7)
@@ -508,9 +565,9 @@ class PleromaInstance extends IPleromaInstance {
     name: "max_toot_chars",
     fromJson: PleromaInstance.parseMaxTootChars,
   )
-  final int maxTootChars;
+  final int? maxTootChars;
 
-  static int parseMaxTootChars(json) {
+  static int? parseMaxTootChars(json) {
     if (json == null) {
       return null;
     }
@@ -528,111 +585,112 @@ class PleromaInstance extends IPleromaInstance {
 
   @override
   @HiveField(8)
-  final PleromaInstancePleromaPart pleroma;
+  final PleromaInstancePleromaPart? pleroma;
 
   @override
   @HiveField(9)
   @JsonKey(name: "poll_limits")
-  final PleromaInstancePollLimits pollLimits;
+  final PleromaInstancePollLimits? pollLimits;
 
   @override
   @HiveField(10)
-  final bool registrations;
+  final bool? registrations;
 
   @override
   @HiveField(11)
   @JsonKey(name: "short_description")
-  final String shortDescription;
+  final String? shortDescription;
 
   @override
   @HiveField(12)
-  final MastodonInstanceStats stats;
+  final MastodonInstanceStats? stats;
 
   @override
   @HiveField(13)
-  final String thumbnail;
+  final String? thumbnail;
 
   @override
   @HiveField(14)
-  final String title;
+  final String? title;
 
   @override
   @HiveField(15)
   @JsonKey(name: "upload_limit")
-  final int uploadLimit;
+  final int? uploadLimit;
 
   @override
   @HiveField(16)
-  final String uri;
+  final String? uri;
 
   @override
   @HiveField(17)
-  final MastodonUrls urls;
+  final MastodonUrls? urls;
 
   @override
   @HiveField(18)
   @JsonKey(name: "vapid_public_key")
-  final String vapidPublicKey;
+  final String? vapidPublicKey;
 
   @override
   @HiveField(19)
-  final String version;
+  final String? version;
 
   @override
   @HiveField(20)
   @JsonKey(name: "background_image")
-  final String backgroundImage;
+  final String? backgroundImage;
 
   @override
   @HiveField(21)
   @JsonKey(name: "chat_limit")
-  final int chatLimit;
+  final int? chatLimit;
 
   @override
   @HiveField(22)
-  final String description;
+  final String? description;
 
   @override
   @HiveField(23)
   @JsonKey(name: "description_limit")
-  final int descriptionLimit;
+  final int? descriptionLimit;
 
   @override
   @HiveField(24)
   @JsonKey(name: "invites_enabled")
-  final bool invitesEnabled;
+  final bool? invitesEnabled;
 
   PleromaInstance({
-    @required this.approvalRequired,
-    @required this.avatarUploadLimit,
-    @required this.backgroundUploadLimit,
-    @required this.bannerUploadLimit,
-    @required this.contactAccount,
-    @required this.email,
-    @required this.languages,
-    @required this.maxTootChars,
-    @required this.pleroma,
-    @required this.pollLimits,
-    @required this.registrations,
-    @required this.shortDescription,
-    @required this.stats,
-    @required this.thumbnail,
-    @required this.title,
-    @required this.uploadLimit,
-    @required this.uri,
-    @required this.urls,
-    @required this.vapidPublicKey,
-    @required this.version,
-    @required this.backgroundImage,
-    @required this.chatLimit,
-    @required this.description,
-    @required this.descriptionLimit,
-    @required this.invitesEnabled,
+    required this.approvalRequired,
+    required this.avatarUploadLimit,
+    required this.backgroundUploadLimit,
+    required this.bannerUploadLimit,
+    required this.contactAccount,
+    required this.email,
+    required this.languages,
+    required this.maxTootChars,
+    required this.pleroma,
+    required this.pollLimits,
+    required this.registrations,
+    required this.shortDescription,
+    required this.stats,
+    required this.thumbnail,
+    required this.title,
+    required this.uploadLimit,
+    required this.uri,
+    required this.urls,
+    required this.vapidPublicKey,
+    required this.version,
+    required this.backgroundImage,
+    required this.chatLimit,
+    required this.description,
+    required this.descriptionLimit,
+    required this.invitesEnabled,
   });
 
   @override
   String toString() {
-    return 'PleromaInstance{approvalRequired: $approvalRequired,'
+    return 'PleromaInstance{'
+        ' approvalRequired: $approvalRequired,'
         ' avatarUploadLimit: $avatarUploadLimit,'
         ' backgroundUploadLimit: $backgroundUploadLimit,'
         ' bannerUploadLimit: $bannerUploadLimit,'
@@ -644,8 +702,8 @@ class PleromaInstance extends IPleromaInstance {
         ' uploadLimit: $uploadLimit, uri: $uri, urls: $urls,'
         ' vapidPublicKey: $vapidPublicKey, version: $version,'
         ' backgroundImage: $backgroundImage, chatLimit: $chatLimit,'
-        ' description: $description, descriptionLimit: $descriptionLimit, '
-        'invitesEnabled: $invitesEnabled}';
+        ' description: $description, descriptionLimit: $descriptionLimit,'
+        ' invitesEnabled: $invitesEnabled}';
   }
 
   @override

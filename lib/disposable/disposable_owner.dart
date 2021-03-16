@@ -13,15 +13,15 @@ class DisposableOwner extends IDisposable {
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
   void addDisposable({
-    IDisposable disposable,
-    StreamSubscription streamSubscription,
-    TextEditingController textEditingController,
-    ScrollController scrollController,
-    FocusNode focusNode,
-    Subject subject,
-    StreamController streamController,
-    Timer timer,
-    FutureOr Function() custom,
+    IDisposable? disposable,
+    StreamSubscription? streamSubscription,
+    TextEditingController? textEditingController,
+    ScrollController? scrollController,
+    FocusNode? focusNode,
+    Subject? subject,
+    StreamController? streamController,
+    Timer? timer,
+    FutureOr Function()? custom,
   }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);

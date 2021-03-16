@@ -7,16 +7,22 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
-  static IChatBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatBloc>(context, listen: listen);
+  static IChatBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IChatBloc>(
+        context,
+        listen: listen,
+      );
 
-  IChat get chat;
+  IChat? get chat;
 
-  Stream<IChat> get chatStream;
+  Stream<IChat?> get chatStream;
 
-  int get unreadCount;
+  int? get unreadCount;
 
-  Stream<int> get unreadCountStream;
+  Stream<int?> get unreadCountStream;
 
   bool get isCountInUnreadSupported;
 
@@ -24,19 +30,19 @@ abstract class IChatBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   Stream<bool> get isHaveUnreadStream;
 
-  IChatMessage get lastChatMessage;
+  IChatMessage? get lastChatMessage;
 
-  IChatMessage get lastPublishedChatMessage;
+  IChatMessage? get lastPublishedChatMessage;
 
-  Stream<IChatMessage> get lastChatMessageStream;
+  Stream<IChatMessage?> get lastChatMessageStream;
 
-  List<IAccount> get accounts;
+  List<IAccount>? get accounts;
 
   Stream<List<IAccount>> get accountsStream;
 
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
 
-  Stream<DateTime> get updatedAtStream;
+  Stream<DateTime?> get updatedAtStream;
 
   Future refreshFromNetwork();
 

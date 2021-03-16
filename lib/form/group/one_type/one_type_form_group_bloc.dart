@@ -16,13 +16,13 @@ abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
 
   void changeFields(List<T> fields);
 
-  int get maximumFieldsCount;
+  int? get maximumFieldsCount;
 
   bool get isMaximumFieldsCountReached;
 
   Stream<bool> get isMaximumFieldsCountReachedStream;
 
-  int get minimumFieldsCount;
+  int? get minimumFieldsCount;
 
   bool get isMinimumFieldsCountReached;
 
@@ -42,7 +42,7 @@ abstract class IOneTypeFormGroupBloc<T extends IFormItemBloc>
 
   bool isLast(T item);
 
-  T findNextItemFor(T item);
+  T? findNextItemFor(T item);
 
   int indexOf(T item);
 }

@@ -8,6 +8,6 @@ class InstanceDatabaseCacheSettingsLocalPreferencesBloc
     implements IInstanceDatabaseCacheSettingsLocalPreferencesBloc {
   InstanceDatabaseCacheSettingsLocalPreferencesBloc(
     ILocalPreferencesService preferencesService, {
-    @required String userAtHost,
+    required String userAtHost,
   }) : super(preferencesService, "cache.database.settings.instance.$userAtHost");
 }

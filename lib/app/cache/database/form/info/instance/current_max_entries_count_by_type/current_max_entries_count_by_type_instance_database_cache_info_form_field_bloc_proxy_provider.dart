@@ -9,13 +9,13 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyPro
   final Widget child;
 
   CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ICurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc,
-          IInfoFormFieldBloc<int>>(
+          IInfoFormFieldBloc<int?>>(
         update: (context, value, previous) => value,
         child: InfoFormFieldBlocProxyProvider<int>(
           child: child,

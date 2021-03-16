@@ -8,7 +8,6 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart'
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditStatusSensitiveSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<StatusSensitiveSettings>
@@ -16,13 +15,13 @@ class EditStatusSensitiveSettingsBloc
   final IStatusSensitiveSettingsBloc statusSensitiveSettingsBloc;
 
   @override
-  IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
+  late IDurationValueFormFieldBloc nsfwDisplayDelayDurationFieldBloc;
 
   @override
-  IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
+  late IBoolValueFormFieldBloc isAlwaysShowSpoilerFieldBloc;
 
   @override
-  IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
+  late IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -32,10 +31,10 @@ class EditStatusSensitiveSettingsBloc
       ];
 
   EditStatusSensitiveSettingsBloc({
-    @required this.statusSensitiveSettingsBloc,
-    @required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
-    @required bool isEnabled,
-    @required bool isGlobalForced,
+    required this.statusSensitiveSettingsBloc,
+    required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
+    required bool isEnabled,
+    required bool isGlobalForced,
   }) : super(
           globalOrInstanceSettingsBloc: statusSensitiveSettingsBloc,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -44,18 +43,18 @@ class EditStatusSensitiveSettingsBloc
           isGlobalForced: isGlobalForced,
         ) {
     nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
-      originValue: currentSettings.nsfwDisplayDelayDuration,
+      originValue: currentSettings?.nsfwDisplayDelayDuration,
       minDuration: Duration(minutes: 1),
       maxDuration: Duration(days: 1),
       isNullValuePossible: true,
       isEnabled: isEnabled,
     );
     isAlwaysShowSpoilerFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.isAlwaysShowSpoiler,
+      originValue: currentSettings?.isAlwaysShowSpoiler,
       isEnabled: isEnabled,
     );
     isAlwaysShowNsfwFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.isAlwaysShowNsfw,
+      originValue: currentSettings?.isAlwaysShowNsfw,
       isEnabled: isEnabled,
     );
 
@@ -70,7 +69,7 @@ class EditStatusSensitiveSettingsBloc
   StatusSensitiveSettings calculateCurrentFormFieldsSettings() =>
       StatusSensitiveSettings(
         nsfwDisplayDelayDurationMicrosecondsTotal:
-            nsfwDisplayDelayDurationFieldBloc.currentValue.inMicroseconds,
+            nsfwDisplayDelayDurationFieldBloc.currentValue?.inMicroseconds,
         isAlwaysShowSpoiler: isAlwaysShowSpoilerFieldBloc.currentValue,
         isAlwaysShowNsfw: isAlwaysShowNsfwFieldBloc.currentValue,
       );

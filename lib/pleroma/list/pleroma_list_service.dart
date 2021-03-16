@@ -12,34 +12,34 @@ abstract class IPleromaListService implements IPleromaApi {
   Future<List<IPleromaList>> getLists();
 
   Future<List<IPleromaAccount>> getListAccounts({
-    @required String listRemoteId,
-    IPleromaPaginationRequest pagination,
+    required String? listRemoteId,
+    IPleromaPaginationRequest? pagination,
   });
 
   Future addAccountsToList({
-    @required String listRemoteId,
-    @required List<String> accountIds,
+    required String? listRemoteId,
+    required List<String?> accountIds,
   });
 
   Future removeAccountsFromList({
-    @required String listRemoteId,
-    @required List<String> accountIds,
+    required String? listRemoteId,
+    required List<String?> accountIds,
   });
 
   Future<IPleromaList> getList({
-    @required String listRemoteId,
+    required String listRemoteId,
   });
 
   Future deleteList({
-    @required String listRemoteId,
+    required String? listRemoteId,
   });
 
   Future<IPleromaList> createList({
-    @required String title,
+    required String? title,
   });
 
   Future<IPleromaList> updateList({
-    @required String listRemoteId,
-    @required String title,
+    required String? listRemoteId,
+    required String? title,
   });
 }

@@ -1,12 +1,11 @@
 import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_validation.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:flutter/widgets.dart';
 
 class PasswordMatchStringValueFormFieldBloc extends StringValueFormFieldBloc {
-  String passwordValue;
+  String? passwordValue;
 
-  void changePasswordValue(String passwordValue) {
+  void changePasswordValue(String? passwordValue) {
     this.passwordValue = passwordValue;
     revalidate();
   }
@@ -24,10 +23,10 @@ class PasswordMatchStringValueFormFieldBloc extends StringValueFormFieldBloc {
       ];
 
   PasswordMatchStringValueFormFieldBloc({
-    @required int maxLength,
+    required int? maxLength,
   }) : super(
           originValue: null,
-          validators: null,
+          validators: [],
           maxLength: maxLength,
         );
 }

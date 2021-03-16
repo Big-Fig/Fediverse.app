@@ -9,14 +9,14 @@ import 'package:flutter/widgets.dart';
 class FediDismissIconButton extends StatelessWidget {
   const FediDismissIconButton({this.customOnPressed});
 
-  final VoidCallback customOnPressed;
+  final VoidCallback? customOnPressed;
 
   @override
   Widget build(BuildContext context) {
     return FediIconButton(
       onPressed: () {
         if (customOnPressed != null) {
-          customOnPressed();
+          customOnPressed!();
         } else {
           Navigator.of(context).pop();
         }

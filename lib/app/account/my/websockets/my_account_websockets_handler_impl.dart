@@ -12,18 +12,18 @@ import 'package:flutter/widgets.dart';
 
 class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
   MyAccountWebSocketsHandler({
-    @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required IStatusRepository statusRepository,
-    @required INotificationRepository notificationRepository,
-    @required IConversationChatRepository conversationRepository,
-    @required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
-    @required
+    required IPleromaWebSocketsService pleromaWebSocketsService,
+    required IStatusRepository statusRepository,
+    required INotificationRepository notificationRepository,
+    required IConversationChatRepository conversationRepository,
+    required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    required
         IConversationChatNewMessagesHandlerBloc
             conversationChatNewMessagesHandlerBloc,
-    @required bool chat,
-    @required bool notification,
-    @required WebSocketsListenType listenType,
-    @required IMyAccountBloc myAccountBloc,
+    required bool chat,
+    required bool notification,
+    required WebSocketsListenType listenType,
+    required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
           webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(

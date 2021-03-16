@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditUiSettingsBloc
-    implements IEditGlobalSettingsBloc<UiSettings> {
+    implements IEditGlobalSettingsBloc<UiSettings?> {
   static IEditUiSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditUiSettingsBloc>(context, listen: listen);
 

@@ -59,7 +59,7 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
         variables: [], readsFrom: {dbStatuses}).map(dbStatuses.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_statuses WHERE remote_id = :remoteId;',
         variables: [Variable.withString(remoteId)],

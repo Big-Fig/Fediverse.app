@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 abstract class IGlobalUiSettingsLocalPreferencesBloc
     implements IUiSettingsLocalPreferencesBloc {
-  static IGlobalUiSettingsLocalPreferencesBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IGlobalUiSettingsLocalPreferencesBloc>(context,
-          listen: listen);
+  static IGlobalUiSettingsLocalPreferencesBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IGlobalUiSettingsLocalPreferencesBloc>(
+        context,
+        listen: listen,
+      );
 }

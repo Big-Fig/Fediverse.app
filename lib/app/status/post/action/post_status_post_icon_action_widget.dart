@@ -35,7 +35,7 @@ class PostStatusPostIconActionWidget extends StatelessWidget {
             builder: (BuildContext context, onPressed) {
               return FediIconButton(
                 icon: Icon(FediIcons.send),
-                onPressed: isReadyToPost ? onPressed : null,
+                onPressed: isReadyToPost! ? onPressed : null,
               );
             },
           );

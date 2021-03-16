@@ -8,5 +8,5 @@ class SuggestionSelectAccountBloc extends DisposableOwner
   @override
   final IAccountCachedListBloc accountCachedListBloc;
 
-  SuggestionSelectAccountBloc({@required this.accountCachedListBloc});
+  SuggestionSelectAccountBloc({required this.accountCachedListBloc});
 }

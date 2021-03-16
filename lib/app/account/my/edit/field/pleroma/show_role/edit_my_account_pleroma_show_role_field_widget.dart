@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountPleromaShowRoleFieldWidget extends StatelessWidget {
   const EditMyAccountPleromaShowRoleFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

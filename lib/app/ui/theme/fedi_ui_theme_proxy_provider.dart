@@ -7,7 +7,7 @@ class FediUiThemeProxyProvider extends StatelessWidget {
   final Widget child;
 
   FediUiThemeProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

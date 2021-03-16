@@ -5,27 +5,30 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
-import 'package:flutter/widgets.dart';
 
-DbConversation mapRemoteConversationToDbConversationChat(
-    IPleromaConversation remoteConversation) {
-  return DbConversation(
-    id: null,
-    remoteId: remoteConversation.id,
-    unread: remoteConversation.unread,
-    updatedAt: remoteConversation?.lastStatus?.createdAt
-  );
+extension IPleromaConversationDbExtension on IPleromaConversation {
+  DbConversation toDbConversation() {
+    return DbConversation(
+      id: null,
+      remoteId: id,
+      unread: unread,
+      updatedAt: lastStatus?.createdAt,
+    );
+  }
 }
 
-PleromaConversation mapLocalConversationChatToRemoteConversation(
-    IConversationChat conversation,
-    {@required IStatus lastStatus,
-    @required List<IAccount> accounts}) {
-  var unread = conversation.unread;
-  return PleromaConversation(
-    unread: (unread != null && unread > 0) ? true : false,
-    lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
-    id: conversation.remoteId,
-    accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList(),
-  );
+extension IConversationChatExtension on IConversationChat {
+  PleromaConversation toPleromaConversation({
+    required IStatus? lastStatus,
+    required List<IAccount> accounts,
+  }) {
+    var unread = this.unread;
+    return PleromaConversation(
+      unread: (unread != null && unread > 0) ? true : false,
+      lastStatus: lastStatus?.toPleromaStatus(),
+      id: remoteId,
+      accounts: accounts.toPleromaAccounts(),
+      pleroma: pleroma?.toPleromaConversationPleromaPart(),
+    );
+  }
 }

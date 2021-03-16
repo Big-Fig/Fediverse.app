@@ -4,12 +4,18 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPollBloc implements IDisposable {
-  static IPollBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPollBloc>(context, listen: listen);
+  static IPollBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPollBloc>(
+        context,
+        listen: listen,
+      );
 
-  IPleromaPoll get poll;
+  IPleromaPoll? get poll;
 
-  Stream<IPleromaPoll> get pollStream;
+  Stream<IPleromaPoll?> get pollStream;
 
   bool get isNeedShowResultsWithoutVote;
 
@@ -45,9 +51,9 @@ abstract class IPollBloc implements IDisposable {
 
   Future vote();
 
-  void onPollUpdated(IPleromaPoll poll);
+  void onPollUpdated(IPleromaPoll? poll);
 
-  Future<bool> refreshFromNetwork();
+  Future refreshFromNetwork();
 
   void showResultsWithoutVote();
 

@@ -13,9 +13,9 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   final IConversationChatCurrentBloc currentChatBloc;
 
   ConversationChatNewMessagesHandlerBloc({
-    @required this.conversationChatService,
-    @required this.conversationRepository,
-    @required this.currentChatBloc,
+    required this.conversationChatService,
+    required this.conversationRepository,
+    required this.currentChatBloc,
   });
 
   @override

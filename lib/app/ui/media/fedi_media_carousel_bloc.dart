@@ -7,7 +7,7 @@ abstract class IFediMediaCarouselBloc<T> implements IDisposable {
       {bool listen = true}) =>
       Provider.of<IFediMediaCarouselBloc<T>>(context, listen: listen);
   List<T> get items;
-  int get currentIndex;
+  int? get currentIndex;
   Stream<int> get currentIndexStream;
 
   void selectIndex(int index);

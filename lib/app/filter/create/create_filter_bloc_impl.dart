@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   static CreateFilterBloc createFromContext(
     BuildContext context, {
-    @required Function(IFilter) onSubmit,
+    required Function(IFilter)? onSubmit,
   }) {
     var createFilterBloc = CreateFilterBloc(
       pleromaFilterService: IPleromaFilterService.of(
@@ -46,7 +46,7 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
       currentInstance: ICurrentAuthInstanceBloc.of(
         context,
         listen: false,
-      ).currentInstance,
+      ).currentInstance!,
     );
 
     if (onSubmit != null) {
@@ -60,8 +60,8 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required Function(IFilter) onSubmit,
+    required Widget child,
+    required Function(IFilter) onSubmit,
   }) {
     return DisposableProvider<ICreateFilterBloc>(
       create: (context) => CreateFilterBloc.createFromContext(
@@ -79,7 +79,7 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
 
   @override
   Future<IPleromaFilter> actuallySubmitFilter(
-      String listRemoteId, IPostPleromaFilter postPleromaFilter) async {
+      String? listRemoteId, IPostPleromaFilter postPleromaFilter) async {
     var remoteFilter = await pleromaFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,
     );
@@ -88,13 +88,13 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   CreateFilterBloc({
-    @required IPleromaFilterService pleromaFilterService,
-    @required IStatusRepository statusRepository,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
-    @required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
-    @required AuthInstance currentInstance,
+    required IPleromaFilterService pleromaFilterService,
+    required IStatusRepository statusRepository,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAccountService pleromaAccountService,
+    required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
+    required AuthInstance currentInstance,
   }) : super(
           isPossibleToDelete: false,
           pleromaFilterService: pleromaFilterService,

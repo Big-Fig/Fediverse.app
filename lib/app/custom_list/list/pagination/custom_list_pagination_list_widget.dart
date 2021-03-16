@@ -17,14 +17,14 @@ class CustomListPaginationListWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const CustomListPaginationListWidget({
-    Key key,
-    ScrollController scrollController,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    Widget customEmptyWidget,
-    Widget customLoadingWidget,
+    Key? key,
+    ScrollController? scrollController,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    Widget? customEmptyWidget,
+    Widget? customLoadingWidget,
     bool refreshOnFirstLoad = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
@@ -41,10 +41,10 @@ class CustomListPaginationListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    BuildContext context,
-    List<ICustomList> items,
-    Widget header,
-    Widget footer,
+    BuildContext? context,
+    required List<ICustomList> items,
+    Widget? header,
+    Widget? footer,
   }) {
     return PaginationListWidget.buildItemsListView(
       context: context,
@@ -73,7 +73,7 @@ class CustomListPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {bool? listen}) =>
           Provider.of<
               IPaginationListBloc<PaginationPage<ICustomList>,
                   ICustomList>>(context, listen: false);

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -25,17 +26,17 @@ class LocalStatusBloc extends StatusBloc {
   final IPleromaAuthStatusService pleromaAuthStatusService;
 
   LocalStatusBloc({
-    @required this.statusRepository,
-    @required this.accountRepository,
-    @required this.isNeedWatchLocalRepositoryForUpdates,
-    @required this.pleromaAuthStatusService,
-    @required IPleromaAccountService pleromaAccountService,
-    @required
-        IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService,
-    @required IPleromaPollService pleromaPollService,
-    @required IStatus status,
-    @required bool isNeedRefreshFromNetworkOnInit,
-    @required bool delayInit,
+    required this.statusRepository,
+    required this.accountRepository,
+    required this.isNeedWatchLocalRepositoryForUpdates,
+    required this.pleromaAuthStatusService,
+    required IPleromaAccountService pleromaAccountService,
+    required IPleromaStatusEmojiReactionService
+        pleromaStatusEmojiReactionService,
+    required IPleromaPollService pleromaPollService,
+    required IStatus status,
+    required bool isNeedRefreshFromNetworkOnInit,
+    required bool delayInit,
   }) : super(
           pleromaStatusService: pleromaAuthStatusService,
           pleromaAccountService: pleromaAccountService,
@@ -44,14 +45,12 @@ class LocalStatusBloc extends StatusBloc {
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
-        ) {
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
-  }
+        );
 
   static LocalStatusBloc createFromContext(
     BuildContext context, {
-    @required
-        IStatus status, // for better performance we don't update account too
+    required IStatus
+        status, // for better performance we don't update account too
     // often
     bool isNeedRefreshFromNetworkOnInit = false,
     //  improve performance in timeline unnecessary recreations
@@ -93,14 +92,14 @@ class LocalStatusBloc extends StatusBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    @required
-        IStatus status, // for better performance we don't update account too
+    required IStatus
+        status, // for better performance we don't update account too
     // often
     bool isNeedRefreshFromNetworkOnInit = false,
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     bool isNeedWatchLocalRepositoryForUpdates = true,
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IStatusBloc>(
       create: (context) => LocalStatusBloc.createFromContext(
@@ -116,12 +115,11 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IAccount> loadAccountByMentionUrl({
-    @required String url,
+  Future<IAccount?> loadAccountByMentionUrl({
+    required String url,
   }) async {
-    var foundMention = reblogOrOriginalMentions?.firstWhere(
+    var foundMention = reblogOrOriginalMentions?.firstWhereOrNull(
       (mention) => mention.url == url,
-      orElse: () => null,
     );
 
     var account;
@@ -146,49 +144,44 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IAccount> getInReplyToAccount() {
-    assert(status.inReplyToAccountRemoteId != null);
+  Future<IAccount?> getInReplyToAccount() {
     return accountRepository.findByRemoteId(
-      status.inReplyToAccountRemoteId,
+      status.inReplyToAccountRemoteId!,
     );
   }
 
   @override
-  Stream<IAccount> watchInReplyToAccount() {
-    assert(status.inReplyToAccountRemoteId != null);
+  Stream<IAccount?> watchInReplyToAccount() {
     return accountRepository.watchByRemoteId(
-      status.inReplyToAccountRemoteId,
+      status.inReplyToAccountRemoteId!,
     );
   }
 
   @override
-  Future<IStatus> getInReplyToStatus() async {
-    assert(status.inReplyToRemoteId != null);
+  Future<IStatus?> getInReplyToStatus() async {
     if (status.inReplyToStatus != null) {
       return status.inReplyToStatus;
     }
     return await statusRepository.findByRemoteId(
-      status.inReplyToRemoteId,
+      status.inReplyToRemoteId!,
     );
   }
 
   @override
-  Stream<IStatus> watchInReplyToStatus() {
+  Stream<IStatus?> watchInReplyToStatus() {
     assert(status.inReplyToRemoteId != null);
     return statusRepository.watchByRemoteId(
-      status.inReplyToRemoteId,
+      status.inReplyToRemoteId!,
     );
   }
 
   @override
-  Future<IStatus> onPollUpdated(IPleromaPoll poll) async {
+  Future<IStatus> onPollUpdated(IPleromaPoll? poll) async {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
     await statusRepository.updateById(
       status.localId,
-      dbStatusFromStatus(
-        updatedLocalStatus,
-      ),
+      updatedLocalStatus.toDbStatus(),
     );
 
     return updatedLocalStatus;
@@ -196,8 +189,8 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future actualInit({
-    @required IStatus status,
-    @required bool isNeedRefreshFromNetworkOnInit,
+    required IStatus status,
+    required bool isNeedRefreshFromNetworkOnInit,
   }) async {
     if (isNeedWatchLocalRepositoryForUpdates) {
       addDisposable(
@@ -234,7 +227,11 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    return statusRepository.findByRemoteId(remoteStatus.id);
+    var result = await statusRepository.findByRemoteId(
+      remoteStatus.id,
+    );
+
+    return result!;
   }
 
   @override
@@ -258,12 +255,16 @@ class LocalStatusBloc extends StatusBloc {
       conversationRemoteId: null,
     );
 
-    return statusRepository.findByRemoteId(remoteStatus.id);
+    var result = await statusRepository.findByRemoteId(
+      remoteStatus.id,
+    );
+
+    return result!;
   }
 
   @override
   Future<IStatus> mute({
-    @required Duration duration,
+    required Duration? duration,
   }) async {
     if (duration != null) {
       assert(
@@ -278,14 +279,16 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IStatus> toggleMute() async {
+  Future<IStatus> toggleMute({
+    required Duration? duration,
+  }) async {
     return await _actualMuteUnmute(
-      expireDurationInSeconds: null,
+      expireDurationInSeconds: duration?.totalSeconds,
     );
   }
 
   Future<IStatus> _actualMuteUnmute({
-    @required int expireDurationInSeconds,
+    required int? expireDurationInSeconds,
   }) async {
     IPleromaStatus remoteStatus;
 
@@ -305,9 +308,11 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    return statusRepository.findByRemoteId(
+    
+    var result = await statusRepository.findByRemoteId(
       reblogOrOriginal.remoteId,
     );
+    return result!;
   }
 
   @override
@@ -328,9 +333,10 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    return statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteId(
       reblogOrOriginal.remoteId,
     );
+    return result!;
   }
 
   @override
@@ -358,9 +364,10 @@ class LocalStatusBloc extends StatusBloc {
       newRemoteStatus: remoteStatus,
     );
 
-    return statusRepository.findByRemoteId(
+    var result = await statusRepository.findByRemoteId(
       reblogOrOriginal.remoteId,
     );
+    return result!;
   }
 
   @override
@@ -376,12 +383,12 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IPleromaStatus> toggleEmojiReaction({
-    @required String emoji,
+    required String emoji,
   }) async {
     var alreadyAdded;
-    var foundEmojiReaction = pleromaEmojiReactions?.firstWhere(
+    var foundEmojiReaction = pleromaEmojiReactions?.firstWhereOrNull(
         (emojiReaction) => emojiReaction.name == emoji,
-        orElse: () => null);
+    );
 
     if (foundEmojiReaction != null) {
       alreadyAdded = foundEmojiReaction.me;
@@ -389,14 +396,14 @@ class LocalStatusBloc extends StatusBloc {
       alreadyAdded = false;
     }
 
-    IPleromaStatus remoteStatus;
+    IPleromaStatus? remoteStatus;
     if (alreadyAdded) {
-      remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
+      remoteStatus = await pleromaStatusEmojiReactionService!.removeReaction(
         statusRemoteId: status.remoteId,
         emoji: emoji,
       );
     } else {
-      remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
+      remoteStatus = await pleromaStatusEmojiReactionService!.addReaction(
         statusRemoteId: status.remoteId,
         emoji: emoji,
       );
@@ -420,17 +427,17 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future refreshFromNetwork() async {
-    IPleromaStatus remoteStatus = await loadRemoteStatus();
+    var remoteStatus = await loadRemoteStatus();
 
-    return _updateByRemoteStatus(remoteStatus);
+    return await _updateByRemoteStatus(remoteStatus);
   }
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 
   @override
-  bool get isPleromaInstance => pleromaAuthStatusService.isPleroma;
+  bool get isPleroma => pleromaAuthStatusService.isPleroma;
 }

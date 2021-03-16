@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showPostStatusExpireDialog({
-  @required BuildContext context,
-  @required IPostStatusBloc postStatusBloc,
+  required BuildContext context,
+  required IPostStatusBloc postStatusBloc,
 }) async {
   var newDuration = await showStatusDurationPickerDialog(
     context: context,

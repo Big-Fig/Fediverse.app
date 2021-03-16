@@ -9,13 +9,13 @@ typedef ValueToTextMapper<T> = String Function(BuildContext context, T value);
 
 class InfoFormFieldRowWidget<T> extends StatelessWidget {
   final String label;
-  final String description;
+  final String? description;
   final ValueToTextMapper<T> valueToTextMapper;
 
   InfoFormFieldRowWidget({
-    @required this.label,
-    @required this.description,
-    @required this.valueToTextMapper,
+    required this.label,
+    required this.description,
+    required this.valueToTextMapper,
   });
 
   @override
@@ -33,8 +33,8 @@ class InfoFormFieldRowWidget<T> extends StatelessWidget {
 
 class _InfoFormFieldRowValueWidget<T> extends StatelessWidget {
   const _InfoFormFieldRowValueWidget({
-    Key key,
-    @required this.valueToTextMapper,
+    Key? key,
+    required this.valueToTextMapper,
   }) : super(key: key);
 
   final ValueToTextMapper<T> valueToTextMapper;

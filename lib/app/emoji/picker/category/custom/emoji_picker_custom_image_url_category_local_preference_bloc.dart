@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_model.dart';
 
 abstract class IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
-    implements LocalPreferenceBloc<EmojiPickerCustomImageUrlCategoryItems> {
+    implements LocalPreferenceBloc<EmojiPickerCustomImageUrlCategoryItems?> {
   static IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(context,

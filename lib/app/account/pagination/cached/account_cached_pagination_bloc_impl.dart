@@ -16,9 +16,9 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
   final IPleromaCachedListBloc<IAccount> listService;
 
   AccountCachedPaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -28,11 +28,12 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
   @override
-  Future<List<IAccount>> loadLocalItems(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required CachedPaginationPage<IAccount> olderPage,
-          @required CachedPaginationPage<IAccount> newerPage}) =>
+  Future<List<IAccount>> loadLocalItems({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IAccount>? olderPage,
+    required CachedPaginationPage<IAccount>? newerPage,
+  }) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThan: olderPage?.items?.first,
@@ -40,11 +41,12 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required CachedPaginationPage<IAccount> olderPage,
-      @required CachedPaginationPage<IAccount> newerPage}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IAccount>? olderPage,
+    required CachedPaginationPage<IAccount>? newerPage,
+  }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -57,7 +59,7 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
 
   static AccountCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       AccountCachedPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -73,11 +75,11 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    int maximumCachedPagesCount,
+    required Widget child,
+    int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
+        ICachedPaginationBloc<CachedPaginationPage<IAccount?>, IAccount?>>(
       create: (context) => AccountCachedPaginationBloc.createFromContext(
         context,
         maximumCachedPagesCount: maximumCachedPagesCount,

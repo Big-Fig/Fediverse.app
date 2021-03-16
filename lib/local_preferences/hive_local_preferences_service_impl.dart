@@ -3,7 +3,6 @@ import 'package:fedi/disposable/async_disposable.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 
@@ -13,9 +12,9 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
   final String boxName;
 
-  HiveLocalPreferencesService({@required this.boxName});
+  HiveLocalPreferencesService({required this.boxName});
 
-  Box _box;
+  late Box _box;
 
   @override
   Future internalAsyncInit() async {
@@ -49,45 +48,45 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> setString(String key, String value) async {
+  Future<bool> setString(String key, String? value) async {
     await _box.put(key, value);
     return true;
   }
 
   @override
-  Future<bool> setIntPreference(String key, int value) async {
+  Future<bool> setIntPreference(String key, int? value) async {
     await _box.put(key, value);
     return true;
   }
 
   @override
-  Future<bool> setBoolPreference(String key, bool value) async {
+  Future<bool> setBoolPreference(String key, bool? value) async {
     await _box.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setObjectPreference(
-      String key, IJsonObject preferencesObject) async {
+      String key, IJsonObject? preferencesObject) async {
     await _box.put(key, preferencesObject);
     return true;
   }
 
   @override
-  bool getBoolPreference(
+  bool? getBoolPreference(
     String key,
   ) =>
       _box.get(key);
 
   @override
-  String getStringPreference(String key) => _box.get(key);
+  String? getStringPreference(String key) => _box.get(key);
 
   @override
-  int getIntPreference(String key, {@required int defaultValue}) =>
+  int? getIntPreference(String key) =>
       _box.get(key);
 
   @override
-  T getObjectPreference<T>(
+  T? getObjectPreference<T>(
     String key,
     T jsonConverter(Map<String, dynamic> jsonData),
   ) {

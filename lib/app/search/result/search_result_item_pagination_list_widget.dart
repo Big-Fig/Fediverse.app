@@ -29,11 +29,11 @@ class SearchResultItemPaginationListWidget
 
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   const SearchResultItemPaginationListWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     bool refreshOnFirstLoad = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
@@ -47,20 +47,20 @@ class SearchResultItemPaginationListWidget
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<ISearchResultItem> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<ISearchResultItem> items,
+    required Widget? header,
+    required Widget? footer,
   }) {
-    SearchResultItemType previousType;
+    SearchResultItemType? previousType;
 
-    var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
+    List<_ItemOrSeparator<ISearchResultItem?>> itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
     items.forEach((item) {
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem>(
+              _ItemOrSeparator<ISearchResultItem?>(
                 item: null,
                 separator: S.of(context).app_search_tab_statuses,
               ),
@@ -68,7 +68,7 @@ class SearchResultItemPaginationListWidget
             break;
           case SearchResultItemType.account:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem>(
+              _ItemOrSeparator<ISearchResultItem?>(
                 item: null,
                 separator: S.of(context).app_search_tab_accounts,
               ),
@@ -76,7 +76,7 @@ class SearchResultItemPaginationListWidget
             break;
           case SearchResultItemType.hashtag:
             itemWithSeparators.add(
-              _ItemOrSeparator<ISearchResultItem>(
+              _ItemOrSeparator<ISearchResultItem?>(
                 item: null,
                 separator: S.of(context).app_search_tab_hashtags,
               ),
@@ -90,7 +90,7 @@ class SearchResultItemPaginationListWidget
     });
 
     return PaginationListWidget.buildItemsListView<
-        _ItemOrSeparator<ISearchResultItem>>(
+        _ItemOrSeparator<ISearchResultItem?>>(
       context: context,
       keyboardDismissBehavior:keyboardDismissBehavior,
       items: itemWithSeparators,
@@ -103,25 +103,20 @@ class SearchResultItemPaginationListWidget
           return Padding(
             padding: FediPadding.allMediumPadding,
             child: Text(
-              itemOrSeparator.separator,
+              itemOrSeparator.separator!,
               style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
             ),
           );
         } else {
-          var item = itemOrSeparator.item;
+          var item = itemOrSeparator.item!;
 
           switch (item.type) {
             case SearchResultItemType.status:
               return buildStatusListItem(item, index);
-              break;
             case SearchResultItemType.account:
               return buildAccountListItem(item.account);
-              break;
             case SearchResultItemType.hashtag:
               return buildHashtagListItem(item, index);
-              break;
-            default:
-              throw "Invalid item.type ${item.type}";
           }
         }
       },
@@ -129,7 +124,7 @@ class SearchResultItemPaginationListWidget
   }
 
   Widget buildHashtagListItem(ISearchResultItem item, int index) {
-    return Provider<IHashtag>.value(
+    return Provider<IHashtag?>.value(
       value: item.hashtag,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
@@ -138,8 +133,8 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) {
-    return Provider<IStatus>.value(
+  Provider<IStatus?> buildStatusListItem(ISearchResultItem item, int index) {
+    return Provider<IStatus?>.value(
       value: item.status,
       child: FediListTile(
         isFirstInList: index == 0, //                isFirstInList: false,
@@ -156,8 +151,8 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Provider<IAccount> buildAccountListItem(IAccount account) {
-    return Provider<IAccount>.value(
+  Provider<IAccount?> buildAccountListItem(IAccount? account) {
+    return Provider<IAccount?>.value(
       value: account,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
           update: (context, account, oldValue) =>
@@ -180,7 +175,7 @@ class SearchResultItemPaginationListWidget
 
   @override
   IPaginationListBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>
-      retrievePaginationListBloc(BuildContext context, {bool listen}) =>
+      retrievePaginationListBloc(BuildContext context, {required bool listen}) =>
           Provider.of<
               IPaginationListBloc<PaginationPage<ISearchResultItem>,
                   ISearchResultItem>>(context, listen: listen);
@@ -195,9 +190,9 @@ void _accountSelectedCallback(BuildContext context, IAccount account) {
 
 class _ItemOrSeparator<T> {
   final T item;
-  final String separator;
+  final String? separator;
 
-  _ItemOrSeparator({@required this.item, @required this.separator}) {
+  _ItemOrSeparator({required this.item, required this.separator}) {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));
   }

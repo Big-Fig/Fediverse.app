@@ -5,12 +5,17 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAccountPublicService implements IPleromaApi {
-  static IPleromaAccountPublicService of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaAccountPublicService>(context, listen: listen);
+  static IPleromaAccountPublicService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaAccountPublicService>(
+        context,
+        listen: listen,
+      );
 
   Future<PleromaOAuthToken> registerAccount({
-    @required IPleromaAccountRegisterRequest request,
-    @required String appAccessToken,
+    required IPleromaAccountRegisterRequest request,
+    required String appAccessToken,
   });
 }

@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart';
 
 class FediIndeterminateProgressDialog extends FediProgressDialog {
   FediIndeterminateProgressDialog(
-      {String titleMessage,
-      String contentMessage,
+      {String? titleMessage,
+      String? contentMessage,
       bool cancelable = false,
-      @required CancelableOperation cancelableOperation})
+      required CancelableOperation? cancelableOperation})
       : super(
             titleMessage: titleMessage,
             contentMessage: contentMessage,

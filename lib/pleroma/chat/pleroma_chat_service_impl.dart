@@ -6,7 +6,6 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -23,7 +22,7 @@ class PleromaChatService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,7 +36,7 @@ class PleromaChatService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaChatService({@required this.restService});
+  PleromaChatService({required this.restService});
 
   List<IPleromaChat> parseChatListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -94,7 +93,7 @@ class PleromaChatService extends DisposableOwner
 
   @override
   Future<List<IPleromaChat>> getChats({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
@@ -103,15 +102,15 @@ class PleromaChatService extends DisposableOwner
         // https://git.pleroma.social/pleroma/pleroma/-/issues/2140
         // queryArgs: pagination?.toQueryArgs(),
       ),
-    );
+    )!;
 
     return parseChatListResponse(httpResponse);
   }
 
   @override
   Future<List<IPleromaChatMessage>> getChatMessages({
-    @required String chatId,
-    IPleromaPaginationRequest pagination,
+    required String? chatId,
+    IPleromaPaginationRequest? pagination,
   }) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -125,15 +124,15 @@ class PleromaChatService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
         ],
       ),
-    );
+    )!;
 
     return parseChatMessageListResponse(httpResponse);
   }
 
   @override
   Future<IPleromaChat> markChatAsRead({
-    @required String chatId,
-    @required String lastReadChatMessageId,
+    required String? chatId,
+    required String? lastReadChatMessageId,
   }) async {
     assert(chatId?.isNotEmpty == true);
     assert(lastReadChatMessageId != null);
@@ -148,14 +147,14 @@ class PleromaChatService extends DisposableOwner
           "last_read_id": lastReadChatMessageId,
         },
       ),
-    );
+    )!;
 
     return parseChatResponse(httpResponse);
   }
 
   @override
   Future<IPleromaChat> getOrCreateChatByAccountId({
-    @required String accountId,
+    required String? accountId,
   }) async {
     assert(accountId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -166,14 +165,14 @@ class PleromaChatService extends DisposableOwner
           accountId,
         ),
       ),
-    );
+    )!;
 
     return parseChatResponse(httpResponse);
   }
 
   @override
   Future<IPleromaChat> getChat({
-    @required String id,
+    required String? id,
   }) async {
     assert(id?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -183,15 +182,15 @@ class PleromaChatService extends DisposableOwner
           id,
         ),
       ),
-    );
+    )!;
 
     return parseChatResponse(httpResponse);
   }
 
   @override
   Future<IPleromaChatMessage> sendMessage({
-    @required String chatId,
-    @required IPleromaChatMessageSendData data,
+    required String? chatId,
+    required IPleromaChatMessageSendData data,
   }) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
@@ -207,15 +206,15 @@ class PleromaChatService extends DisposableOwner
         },
         bodyJson: data.toJson(),
       ),
-    );
+    )!;
 
     return parseChatMessageResponse(httpResponse);
   }
 
   @override
   Future deleteChatMessage({
-    @required String chatMessageRemoteId,
-    @required String chatId,
+    required String? chatMessageRemoteId,
+    required String? chatId,
   }) async {
     await restService.sendHttpRequest(
       RestRequest.delete(

@@ -1,12 +1,28 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 
-ICustomList mapRemoteListToLocalCustomList(IPleromaList pleromaList) => CustomList(
-      remoteId: pleromaList.id,
-      title: pleromaList.title,
-    );
+extension IPleromaListExtension on IPleromaList {
+  CustomList toCustomList() {
+    if (this is CustomList) {
+      return this as CustomList;
+    } else {
+      return CustomList(
+        remoteId: id,
+        title: title,
+      );
+    }
+  }
+}
 
-IPleromaList mapLocalCustomListToRemoteList(ICustomList customList) => PleromaList(
-      id: customList.remoteId,
-      title: customList.title,
-    );
+extension ICustomListExtension on ICustomList {
+  PleromaList toPleromaList() {
+    if (this is PleromaList) {
+      return this as PleromaList;
+    } else {
+      return PleromaList(
+        id: remoteId,
+        title: title,
+      );
+    }
+  }
+}

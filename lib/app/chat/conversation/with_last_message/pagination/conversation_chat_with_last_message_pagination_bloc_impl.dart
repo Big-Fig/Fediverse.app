@@ -5,17 +5,16 @@ import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.d
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:flutter/cupertino.dart';
 
 class ConversationChatWithLastMessagePaginationBloc
     extends CachedPleromaPaginationBloc<IConversationChatWithLastMessage>
     implements IConversationChatWithLastMessagePaginationBloc {
-  final IConversationChatWithLastMessageCachedBloc listService;
+  final IConversationChatWithLastMessageCachedListBloc listService;
 
   ConversationChatWithLastMessagePaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -26,10 +25,10 @@ class ConversationChatWithLastMessagePaginationBloc
 
   @override
   Future<List<IConversationChatWithLastMessage>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IConversationChatWithLastMessage> olderPage,
-    @required CachedPaginationPage<IConversationChatWithLastMessage> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IConversationChatWithLastMessage?>? olderPage,
+    required CachedPaginationPage<IConversationChatWithLastMessage?>? newerPage,
   }) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
@@ -38,11 +37,11 @@ class ConversationChatWithLastMessagePaginationBloc
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IConversationChatWithLastMessage> olderPage,
-    @required CachedPaginationPage<IConversationChatWithLastMessage> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IConversationChatWithLastMessage>? olderPage,
+    required CachedPaginationPage<IConversationChatWithLastMessage>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));

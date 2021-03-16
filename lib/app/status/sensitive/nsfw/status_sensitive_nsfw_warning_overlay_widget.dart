@@ -8,14 +8,14 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
   StatusSensitiveNsfwWarningOverlayWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     var statusSensitiveBloc = IStatusSensitiveBloc.of(context);
 
-    var isAlwaysShowNsfw = statusSensitiveBloc.isAlwaysShowNsfw;
+    var isAlwaysShowNsfw = statusSensitiveBloc.isAlwaysShowNsfw!;
     if (isAlwaysShowNsfw) {
       return child;
     } else {
@@ -38,7 +38,7 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
 
 class _StatusSensitiveNsfwWarningOverlayBodyWidget extends StatelessWidget {
   const _StatusSensitiveNsfwWarningOverlayBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

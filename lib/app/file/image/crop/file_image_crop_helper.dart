@@ -5,10 +5,10 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-Future<File> goToCropImagePage({
-  @required BuildContext context,
-  @required File file,
-  @required isForceCropToSquare,
+Future<File?> goToCropImagePage({
+  required BuildContext context,
+  required File file,
+  required isForceCropToSquare,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(
     context,

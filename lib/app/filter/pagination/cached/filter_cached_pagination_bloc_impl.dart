@@ -16,9 +16,9 @@ class FilterCachedPaginationBloc extends CachedPleromaPaginationBloc<IFilter>
   final IFilterCachedListBloc filterListService;
 
   FilterCachedPaginationBloc({
-    @required this.filterListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.filterListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -29,37 +29,37 @@ class FilterCachedPaginationBloc extends CachedPleromaPaginationBloc<IFilter>
 
   @override
   Future<List<IFilter>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IFilter> olderPage,
-    @required CachedPaginationPage<IFilter> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IFilter>? olderPage,
+    required CachedPaginationPage<IFilter>? newerPage,
   }) =>
       filterListService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.first,
+        olderThan: newerPage?.items.last,
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IFilter> olderPage,
-    @required CachedPaginationPage<IFilter> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IFilter>? olderPage,
+    required CachedPaginationPage<IFilter>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
     return filterListService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.first,
+      olderThan: newerPage?.items.last,
     );
   }
 
   static FilterCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       FilterCachedPaginationBloc(
         filterListService:
@@ -73,8 +73,8 @@ class FilterCachedPaginationBloc extends CachedPleromaPaginationBloc<IFilter>
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    int maximumCachedPagesCount,
+    required Widget child,
+    int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IFilter>, IFilter>>(

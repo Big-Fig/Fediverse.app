@@ -14,7 +14,6 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -36,10 +35,10 @@ class NotificationRepository extends AsyncInitLoadingBloc
   final IPleromaChatMessageRepository chatMessageRepository;
 
   NotificationRepository({
-    @required AppDatabase appDatabase,
-    @required this.accountRepository,
-    @required this.statusRepository,
-    @required this.chatMessageRepository,
+    required AppDatabase appDatabase,
+    required this.accountRepository,
+    required this.statusRepository,
+    required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
 
   @override
@@ -51,17 +50,19 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteNotification(
     IPleromaNotification remoteNotification, {
-    @required bool unread,
+    required bool? unread,
   }) async {
     _logger.finer(() => "upsertRemoteNotification ${remoteNotification.id} "
         "$remoteNotification");
     var remoteAccount = remoteNotification.account;
 
-    await accountRepository.upsertRemoteAccount(
-      remoteAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
+    if (remoteAccount != null) {
+      await accountRepository.upsertRemoteAccount(
+        remoteAccount,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+      );
+    }
 
     var remoteStatus = remoteNotification.status;
     if (remoteStatus != null) {
@@ -73,12 +74,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
     }
     var remoteChatMessage = remoteNotification.chatMessage;
     if (remoteChatMessage != null) {
-      await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
+      await chatMessageRepository.upsertRemoteChatMessage(
+        remoteChatMessage,
+      );
     }
-
     await upsert(
-      mapRemoteNotificationToDbNotification(
-        remoteNotification,
+      remoteNotification.toDbNotification(
         unread: unread,
       ),
     );
@@ -86,18 +87,19 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteNotifications(
-    List<IPleromaNotification> remoteNotifications, {
-    @required bool unread,
+    List<IPleromaNotification>? remoteNotifications, {
+    required bool? unread,
   }) async {
     _logger.finer(
-        () => "upsertRemoteNotifications ${remoteNotifications.length} ");
-    if (remoteNotifications.isEmpty) {
+        () => "upsertRemoteNotifications ${remoteNotifications!.length} ");
+    if (remoteNotifications!.isEmpty) {
       return;
     }
 
     List<IPleromaAccount> remoteAccounts = remoteNotifications
+        .where((remoteNotification) => remoteNotification.account != null)
         .map(
-          (remoteNotification) => remoteNotification.account,
+          (remoteNotification) => remoteNotification.account!,
         )
         .toList();
 
@@ -108,11 +110,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
     );
 
     List<IPleromaStatus> remoteStatuses = remoteNotifications
+        .where((remoteNotification) => remoteNotification.status != null)
         .map(
-          (remoteNotification) => remoteNotification.status,
-        )
-        .where(
-          (remoteStatus) => remoteStatus != null,
+          (remoteNotification) => remoteNotification.status!,
         )
         .toList();
 
@@ -123,39 +123,41 @@ class NotificationRepository extends AsyncInitLoadingBloc
     );
 
     List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
+        .where((remoteNotification) => remoteNotification.chatMessage != null)
         .map(
-          (remoteNotification) => remoteNotification.chatMessage,
-        )
-        .where(
-          (remoteChatMessage) => remoteChatMessage != null,
+          (remoteNotification) => remoteNotification.chatMessage!,
         )
         .toList();
 
     await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
 
-    await upsertAll(remoteNotifications
-        .map(
-          (remoteNotification) => mapRemoteNotificationToDbNotification(
-            remoteNotification,
-            unread: unread,
-          ),
-        )
-        .toList());
+    await upsertAll(
+      remoteNotifications
+          .map(
+            (remoteNotification) =>
+                remoteNotification.toDbNotification(unread: unread),
+          )
+          .toList(),
+    );
   }
 
   @override
-  Future<DbNotificationPopulatedWrapper> findByRemoteId(
+  Future<DbNotificationPopulatedWrapper?> findByRemoteId(
     String remoteId,
-  ) async =>
-      mapDataClassToItem(
-        await dao.findByRemoteId(remoteId),
-      );
+  ) async {
+    var found = await dao.findByRemoteId(remoteId);
+    if (found != null) {
+      return mapDataClassToItem(found);
+    } else {
+      return null;
+    }
+  }
 
   @override
   Future<List<DbNotificationPopulatedWrapper>> getNotifications({
-    @required NotificationRepositoryFilters filters,
-    @required RepositoryPagination<INotification> pagination,
-    NotificationOrderingTermData orderingTermData =
+    required NotificationRepositoryFilters? filters,
+    required RepositoryPagination<INotification>? pagination,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
@@ -172,9 +174,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
-    @required NotificationRepositoryFilters filters,
-    @required RepositoryPagination<INotification> pagination,
-    NotificationOrderingTermData orderingTermData =
+    required NotificationRepositoryFilters? filters,
+    required RepositoryPagination<INotification>? pagination,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
@@ -191,9 +193,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery({
-    @required NotificationRepositoryFilters filters,
-    @required RepositoryPagination<INotification> pagination,
-    @required NotificationOrderingTermData orderingTermData,
+    required NotificationRepositoryFilters? filters,
+    required RepositoryPagination<INotification>? pagination,
+    required NotificationOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -216,8 +218,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
       dao.addExcludeTypeWhere(query, filters?.excludeTypes);
     }
 
-    if (filters?.onlyWithType != null) {
-      dao.addOnlyWithTypeWhere(query, filters?.onlyWithType);
+    var onlyWithType = filters?.onlyWithType;
+    if (onlyWithType != null) {
+      dao.addOnlyWithTypeWhere(query, onlyWithType);
     }
 
     if (filters?.onlyNotDismissed == true) {
@@ -239,26 +242,28 @@ class NotificationRepository extends AsyncInitLoadingBloc
       dao.populateNotificationJoin(),
     );
 
-    if (filters?.excludeStatusTextConditions?.isNotEmpty == true) {
-      for (var condition in filters?.excludeStatusTextConditions) {
+    var excludeStatusTextConditions = filters?.excludeStatusTextConditions;
+    if (excludeStatusTextConditions != null) {
+      for (var condition in excludeStatusTextConditions) {
         dao.addExcludeContentWhere(
           joinQuery,
-          phrase: condition.phrase,
-          wholeWord: condition.wholeWord,
+          phrase: condition.phrase!,
+          wholeWord: condition.wholeWord!,
         );
         dao.addExcludeSpoilerTextWhere(
           joinQuery,
-          phrase: condition.phrase,
-          wholeWord: condition.wholeWord,
+          phrase: condition.phrase!,
+          wholeWord: condition.wholeWord!,
         );
       }
     }
 
     var finalQuery = joinQuery;
 
-    if (pagination?.limit != null) {
+    var limit = pagination?.limit;
+    if (limit != null) {
       finalQuery.limit(
-        pagination?.limit,
+        limit,
         offset: pagination?.offset,
       );
     }
@@ -301,7 +306,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       (dao.watchById(id)).map(mapDataClassToItem);
 
   @override
-  Stream<INotification> watchByRemoteId(String remoteId) {
+  Stream<INotification> watchByRemoteId(String? remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
     return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
   }
@@ -330,7 +335,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbNotification item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int id, DbNotification dbNotification) {
+  Future<bool> updateById(int? id, DbNotification dbNotification) {
     if (dbNotification.id != id) {
       dbNotification = dbNotification.copyWith(id: id);
     }
@@ -339,25 +344,21 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   DbNotificationPopulatedWrapper mapDataClassToItem(
       DbNotificationPopulated dataClass) {
-    if (dataClass == null) {
-      return null;
-    }
-    return DbNotificationPopulatedWrapper(dataClass);
+    return DbNotificationPopulatedWrapper(
+      dbNotificationPopulated: dataClass,
+    );
   }
 
   Insertable<DbNotification> mapItemToDataClass(
       DbNotificationPopulatedWrapper item) {
-    if (item == null) {
-      return null;
-    }
     return item.dbNotificationPopulated.dbNotification;
   }
 
   @override
   Future updateLocalNotificationByRemoteNotification({
-    @required INotification oldLocalNotification,
-    @required IPleromaNotification newRemoteNotification,
-    @required bool unread,
+    required INotification oldLocalNotification,
+    required IPleromaNotification newRemoteNotification,
+    required bool? unread,
   }) async {
     _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
         "\t old: $oldLocalNotification \n"
@@ -365,24 +366,27 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = newRemoteNotification.account;
 
-    await accountRepository.upsertRemoteAccount(
-      remoteAccount,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-    );
+    if (remoteAccount != null) {
+      await accountRepository.upsertRemoteAccount(
+        remoteAccount,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+      );
+    }
 
     var remoteStatus = newRemoteNotification.status;
 
-    await statusRepository.upsertRemoteStatus(
-      remoteStatus,
-      conversationRemoteId: null,
-      listRemoteId: null,
-    );
+    if (remoteStatus != null) {
+      await statusRepository.upsertRemoteStatus(
+        remoteStatus,
+        conversationRemoteId: null,
+        listRemoteId: null,
+      );
+    }
 
     await updateById(
       oldLocalNotification.localId,
-      mapRemoteNotificationToDbNotification(
-        newRemoteNotification,
+      newRemoteNotification.toDbNotification(
         unread: unread,
       ),
     );
@@ -390,8 +394,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbNotificationPopulatedWrapper> getNotification({
-    @required NotificationRepositoryFilters filters,
-    NotificationOrderingTermData orderingTermData =
+    required NotificationRepositoryFilters? filters,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   }) async {
     var query = createQuery(
@@ -408,9 +412,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<DbNotificationPopulatedWrapper> watchNotification({
-    @required NotificationRepositoryFilters filters,
-    NotificationOrderingTermData orderingTermData =
+  Stream<DbNotificationPopulatedWrapper?> watchNotification({
+    required NotificationRepositoryFilters? filters,
+    NotificationOrderingTermData? orderingTermData =
         NotificationOrderingTermData.createdAtDesc,
   }) {
     var query = createQuery(
@@ -432,7 +436,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   Selectable<int> createCountQuery({
-    @required NotificationRepositoryFilters filters,
+    required NotificationRepositoryFilters? filters,
   }) {
     // todo: select only ID, without other fields
     var query = createQuery(
@@ -453,16 +457,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future markAsRead({@required INotification notification}) {
+  Future markAsRead({required INotification notification}) {
     return dao.markAsRead(
-      remoteId: notification.remoteId,
+      remoteId: notification!.remoteId,
     );
   }
 
   @override
-  Future dismiss({@required INotification notification}) {
+  Future dismiss({required INotification notification}) {
     return dao.markAsDismissed(
-      remoteId: notification.remoteId,
+      remoteId: notification!.remoteId,
     );
   }
 
@@ -473,18 +477,18 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<int> getCount({
-    @required NotificationRepositoryFilters filters,
+    required NotificationRepositoryFilters? filters,
   }) =>
       createCountQuery(filters: filters).getSingle();
 
   @override
   Stream<int> watchCount({
-    @required NotificationRepositoryFilters filters,
+    required NotificationRepositoryFilters? filters,
   }) =>
       createCountQuery(filters: filters).watchSingle();
 
   @override
-  Future<DbNotificationPopulatedWrapper> getNewest() => getNotification(
+  Future<DbNotificationPopulatedWrapper?> getNewest() => getNotification(
         filters: null,
       );
 
@@ -493,7 +497,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future dismissFollowRequestNotificationsFromAccount({
-    @required IAccount account,
+    required IAccount account,
   }) =>
       dao.markAsDismissedWhere(
         accountRemoteId: account.remoteId,

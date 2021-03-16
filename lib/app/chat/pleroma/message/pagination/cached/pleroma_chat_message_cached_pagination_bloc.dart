@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaChatMessageCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<IPleromaChatMessage> {
-  static IPleromaChatMessageCachedPaginationBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaChatMessageCachedPaginationBloc>(context, listen: listen);
+  static IPleromaChatMessageCachedPaginationBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaChatMessageCachedPaginationBloc>(
+        context,
+        listen: listen,
+      );
 }

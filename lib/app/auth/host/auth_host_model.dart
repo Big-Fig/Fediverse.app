@@ -24,23 +24,23 @@ class CantRegisterAppAuthHostException implements Exception {
 }
 
 class AuthHostRegistrationResult {
-  bool get approvalRequired => pleromaInstance.approvalRequired;
+  bool? get approvalRequired => pleromaInstance.approvalRequired;
 
   final dynamic authInstanceFetchError;
   final PleromaOAuthToken token;
   final IPleromaInstance pleromaInstance;
-  final AuthInstance authInstance;
+  final AuthInstance? authInstance;
 
   AuthHostRegistrationResult({
-    @required this.authInstanceFetchError,
-    @required this.token,
-    @required this.pleromaInstance,
-    @required this.authInstance,
+    required this.authInstanceFetchError,
+    required this.token,
+    required this.pleromaInstance,
+    required this.authInstance,
   });
 
   bool get isPossibleToLogin =>
       authInstance != null &&
-      !approvalRequired &&
+      !approvalRequired! &&
       !emailConfirmationRequired &&
       authInstanceFetchError == null;
 
@@ -50,9 +50,11 @@ class AuthHostRegistrationResult {
   @override
   String toString() {
     return 'AuthHostRegistrationResult{'
-        ' authInstanceFetchError: $authInstanceFetchError,'
-        ' token: $token, pleromaInstance: $pleromaInstance,'
-        ' authInstance: $authInstance}';
+        'authInstanceFetchError: $authInstanceFetchError, '
+        'token: $token, '
+        'pleromaInstance: $pleromaInstance, '
+        'authInstance: $authInstance'
+        '}';
   }
 
   @override

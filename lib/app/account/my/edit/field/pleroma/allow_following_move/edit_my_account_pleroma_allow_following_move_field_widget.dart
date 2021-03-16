@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class EditMyAccountPleromaAllowFollowingMoveFieldWidget
     extends StatelessWidget {
   const EditMyAccountPleromaAllowFollowingMoveFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

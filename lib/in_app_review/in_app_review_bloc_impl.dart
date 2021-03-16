@@ -1,6 +1,5 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:logging/logging.dart';
 
@@ -10,7 +9,7 @@ class InAppReviewBloc extends DisposableOwner implements IInAppReviewBloc {
   final String appStoreId;
 
   InAppReviewBloc({
-    @required this.appStoreId,
+    required this.appStoreId,
   });
 
   final InAppReview inAppReview = InAppReview.instance;

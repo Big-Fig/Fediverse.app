@@ -1,25 +1,29 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 
 abstract class IConversationChat implements IChat {
+  IPleromaConversationPleromaPart? get pleroma;
   @override
   IConversationChat copyWith({
-    int id,
-    String remoteId,
-    int unread,
-    DateTime updatedAt,
-    List<IAccount> accounts,
+    int? id,
+    String? remoteId,
+    int? unread,
+    DateTime? updatedAt,
+    List<IAccount>? accounts,
   });
 }
 
 class DbConversationChatWrapper implements IConversationChat {
   final DbConversation dbConversation;
 
-  DbConversationChatWrapper(this.dbConversation);
+  DbConversationChatWrapper({
+    required this.dbConversation,
+});
 
   @override
-  int get localId => dbConversation.id;
+  int? get localId => dbConversation.id;
 
   @override
   String get remoteId => dbConversation.remoteId;
@@ -29,26 +33,28 @@ class DbConversationChatWrapper implements IConversationChat {
 
   @override
   String toString() {
-    return 'DbConversationChatWrapper{dbConversation: $dbConversation}';
+    return 'DbConversationChatWrapper{'
+        'dbConversation: $dbConversation'
+        '}';
   }
 
   @override
   DbConversationChatWrapper copyWith({
-    int id,
-    String remoteId,
-    int unread,
-    DateTime updatedAt,
-    List<IAccount> accounts,
+    int? id,
+    String? remoteId,
+    int? unread,
+    DateTime? updatedAt,
+    List<IAccount>? accounts,
   }) {
     return DbConversationChatWrapper(
-      dbConversation.copyWith(
+      dbConversation:dbConversation.copyWith(
         id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
         unread: unread != null
             ? unread > 0
                 ? true
                 : false
-            : this.unread,
+            : this.unread as bool?,
         updatedAt: updatedAt ?? this.updatedAt,
       ),
     );
@@ -69,5 +75,9 @@ class DbConversationChatWrapper implements IConversationChat {
   List<IAccount> get accounts => throw UnimplementedError();
 
   @override
-  DateTime get updatedAt => dbConversation.updatedAt;
+  DateTime? get updatedAt => dbConversation.updatedAt;
+
+  @override
+  // TODO: implement pleroma
+  IPleromaConversationPleromaPart? get pleroma => throw UnimplementedError();
 }

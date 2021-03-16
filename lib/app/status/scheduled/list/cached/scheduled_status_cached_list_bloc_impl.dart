@@ -11,7 +11,6 @@ import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.d
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger("scheduled_status_cached_list_bloc_impl.dart");
@@ -30,8 +29,8 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       );
 
   ScheduledStatusCachedListBloc({
-    @required this.scheduledStatusRepository,
-    @required this.pleromaScheduledStatusService,
+    required this.scheduledStatusRepository,
+    required this.pleromaScheduledStatusService,
   }) : super();
 
   @override
@@ -46,7 +45,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
               IScheduledStatusRepository.of(context, listen: false));
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<IScheduledStatusCachedListBloc>(
       create: (context) =>
           ScheduledStatusCachedListBloc.createFromContext(context),
@@ -59,9 +58,9 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   @override
   Future<List<IScheduledStatus>> loadLocalItems({
-    @required int limit,
-    @required IScheduledStatus newerThan,
-    @required IScheduledStatus olderThan,
+    required int? limit,
+    required IScheduledStatus? newerThan,
+    required IScheduledStatus? olderThan,
   }) async {
     var statuses = await scheduledStatusRepository.getScheduledStatuses(
       filters: _scheduledStatusRepositoryFilters,
@@ -89,10 +88,10 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IScheduledStatus newerThan,
-    @required IScheduledStatus olderThan,
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IScheduledStatus? newerThan,
+    required IScheduledStatus? olderThan,
   }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
@@ -108,21 +107,13 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       ),
     );
 
-    if (remoteStatuses != null) {
-      await scheduledStatusRepository
-          .upsertRemoteScheduledStatuses(remoteStatuses);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
-      return false;
-    }
+    await scheduledStatusRepository
+        .upsertRemoteScheduledStatuses(remoteStatuses);
   }
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

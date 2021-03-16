@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger =
     Logger("conversation_chat_status_list_context_api_bloc_impl.dart");
@@ -16,31 +15,30 @@ var _logger =
 class ConversationChatStatusListContextApiBloc
     extends ConversationChatStatusListBloc {
   final IPleromaStatusService pleromaStatusService;
-  final IStatus statusToFetchContext;
+  final IStatus? statusToFetchContext;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   ConversationChatStatusListContextApiBloc({
-    @required this.pleromaStatusService,
-    @required IConversationChat conversation,
-    @required this.statusToFetchContext,
-    @required IStatusRepository statusRepository,
+    required this.pleromaStatusService,
+    required IConversationChat? conversation,
+    required this.statusToFetchContext,
+    required IStatusRepository statusRepository,
   }) : super(
           conversation: conversation,
           statusRepository: statusRepository,
-        ) {
-    assert(statusToFetchContext != null);
-  }
+        );
 
   @override
   IPleromaApi get pleromaApi => pleromaStatusService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t conversation = $conversation"
         "\t newerThan = $newerThan"
@@ -53,29 +51,25 @@ class ConversationChatStatusListContextApiBloc
       return false;
     }
     var remoteContext = await pleromaStatusService.getStatusContext(
-        statusRemoteId: statusToFetchContext.remoteId);
+      statusRemoteId: statusToFetchContext!.remoteId,
+    );
 
     var remoteStatuses = <PleromaStatus>[
-      ...remoteContext.descendants,
-      ...remoteContext.ancestors,
+      ...remoteContext.descendants as Iterable<PleromaStatus>,
+      ...remoteContext.ancestors as Iterable<PleromaStatus>,
     ];
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null, conversationRemoteId: conversation.remoteId);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
-      return false;
-    }
+    await statusRepository.upsertRemoteStatuses(
+      remoteStatuses,
+      listRemoteId: null,
+      conversationRemoteId: conversation!.remoteId,
+    );
   }
 
   static ConversationChatStatusListContextApiBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required IStatus statusToFetchContext,
+    required IConversationChat? conversation,
+    required IStatus? statusToFetchContext,
   }) =>
       ConversationChatStatusListContextApiBloc(
         conversation: conversation,
@@ -88,5 +82,5 @@ class ConversationChatStatusListContextApiBloc
   Stream<bool> get settingsChangedStream => Stream.empty();
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

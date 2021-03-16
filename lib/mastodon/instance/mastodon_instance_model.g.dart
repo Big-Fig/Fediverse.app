@@ -17,9 +17,9 @@ class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MastodonInstanceStats(
-      userCount: fields[0] as int,
-      statusCount: fields[1] as int,
-      domainCount: fields[2] as int,
+      userCount: fields[0] as int?,
+      statusCount: fields[1] as int?,
+      domainCount: fields[2] as int?,
     );
   }
 
@@ -57,7 +57,7 @@ class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MastodonUrls(
-      streamingApi: fields[0] as String,
+      streamingApi: fields[0] as String?,
     );
   }
 
@@ -87,9 +87,9 @@ class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
 MastodonInstanceStats _$MastodonInstanceStatsFromJson(
     Map<String, dynamic> json) {
   return MastodonInstanceStats(
-    userCount: json['user_count'] as int,
-    statusCount: json['status_count'] as int,
-    domainCount: json['domain_count'] as int,
+    userCount: json['user_count'] as int?,
+    statusCount: json['status_count'] as int?,
+    domainCount: json['domain_count'] as int?,
   );
 }
 
@@ -103,7 +103,7 @@ Map<String, dynamic> _$MastodonInstanceStatsToJson(
 
 MastodonUrls _$MastodonUrlsFromJson(Map<String, dynamic> json) {
   return MastodonUrls(
-    streamingApi: json['streaming_api'] as String,
+    streamingApi: json['streaming_api'] as String?,
   );
 }
 

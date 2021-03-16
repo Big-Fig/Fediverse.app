@@ -3,10 +3,9 @@ import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instanc
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
+abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings?>
     extends EditSettingsBloc<T>
     implements IEditGlobalOrInstanceSettingsBloc<T> {
   @override
@@ -24,11 +23,11 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
   bool get isInstance => globalOrInstanceSettingsBloc.isInstance;
 
   EditGlobalOrInstanceSettingsBloc({
-    @required this.globalOrInstanceSettingsBloc,
-    @required this.globalOrInstanceSettingsType,
-    @required this.isGlobalForced,
-    @required bool isEnabled,
-    @required bool isAllItemsInitialized,
+    required this.globalOrInstanceSettingsBloc,
+    required this.globalOrInstanceSettingsType,
+    required this.isGlobalForced,
+    required bool isEnabled,
+    required bool isAllItemsInitialized,
   }) : super(
           isEnabled: isEnabled,
           settingsBloc: globalOrInstanceSettingsBloc,
@@ -36,16 +35,17 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
         );
 
   @override
-  T get currentSettings => _calculateCurrentSettings(
+  T? get currentSettings => _calculateCurrentSettings(
         instanceSettingsData: globalOrInstanceSettingsBloc.instanceSettingsData,
         globalSettingsData: globalOrInstanceSettingsBloc.globalSettingsData,
       );
 
   @override
-  Stream<T> get currentSettingsStream => Rx.combineLatest2(
+  Stream<T?> get currentSettingsStream => Rx.combineLatest2(
         globalOrInstanceSettingsBloc.instanceSettingsDataStream,
         globalOrInstanceSettingsBloc.globalSettingsDataStream,
-        (instanceSettingsData, globalSettingsData) => _calculateCurrentSettings(
+        (T? instanceSettingsData, T? globalSettingsData) =>
+            _calculateCurrentSettings(
           instanceSettingsData: instanceSettingsData,
           globalSettingsData: globalSettingsData,
         ),
@@ -66,17 +66,15 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
     }
   }
 
-  T _calculateCurrentSettings({
-    @required T instanceSettingsData,
-    @required T globalSettingsData,
+  T? _calculateCurrentSettings({
+    required T? instanceSettingsData,
+    required T? globalSettingsData,
   }) {
     switch (globalOrInstanceSettingsType) {
       case GlobalOrInstanceSettingsType.instance:
         return instanceSettingsData;
-        break;
       case GlobalOrInstanceSettingsType.global:
         return globalSettingsData;
-        break;
       default:
         return globalSettingsData;
     }

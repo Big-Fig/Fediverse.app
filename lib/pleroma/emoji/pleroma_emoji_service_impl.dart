@@ -8,9 +8,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
-import 'package:path/path.dart';
 
 class PleromaEmojiService extends DisposableOwner
     implements IPleromaEmojiService {
@@ -23,7 +21,7 @@ class PleromaEmojiService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -37,7 +35,7 @@ class PleromaEmojiService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaEmojiService({@required this.restService});
+  PleromaEmojiService({required this.restService});
 
   @override
   Future dispose() async {
@@ -45,10 +43,9 @@ class PleromaEmojiService extends DisposableOwner
   }
 
   @override
-  Future<List<IPleromaCustomEmoji>> getCustomEmojis(
-      {@required String emojiRemoteId}) async {
+  Future<List<IPleromaCustomEmoji>> getCustomEmojis() async {
     var request = RestRequest.get(
-        relativePath: join(emojiRelativeUrlPath, emojiRemoteId));
+        relativePath: emojiRelativeUrlPath);
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePleromaCustomEmojiListResponse(httpResponse);
@@ -64,7 +61,7 @@ class PleromaEmojiService extends DisposableOwner
         if (jsonData == null || !(jsonData is Map<String, dynamic>)) {
           return [];
         } else {
-          var map = jsonData as Map<String, dynamic>;
+          var map = jsonData;
           return map.entries.map((entry) {
             var name = entry.key;
             var json = entry.value;
@@ -81,7 +78,7 @@ class PleromaEmojiService extends DisposableOwner
     );
 
     if (restResponse.isSuccess) {
-      return restResponse.body;
+      return restResponse.body!;
     } else {
       throw PleromaEmojiException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);

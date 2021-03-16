@@ -6,6 +6,7 @@ import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -13,11 +14,11 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class AddMyAccountDomainBlockDialog extends FediDialog {
-  IAddMyAccountDomainBlockBloc addMyAccountDomainBlockBloc;
+  IAddMyAccountDomainBlockBloc? addMyAccountDomainBlockBloc;
 
   AddMyAccountDomainBlockDialog.createFromContext({
-    @required BuildContext context,
-    @required VoidCallback successCallback,
+    required BuildContext context,
+    required VoidCallback successCallback,
   }) : super(
             actionsBorderVisible: true,
             title: S.of(context).app_account_my_domainBlock_add_dialog_title,
@@ -47,7 +48,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
             actionsAxis: Axis.horizontal,
             cancelable: true) {
     addMyAccountDomainBlockBloc = AddMyAccountDomainBlockBloc(
-      pleromaAuthAccountService: IPleromaAccountService.of(
+      pleromaAuthAccountService: IPleromaAuthAccountService.of(
         context,
         listen: false,
       ),

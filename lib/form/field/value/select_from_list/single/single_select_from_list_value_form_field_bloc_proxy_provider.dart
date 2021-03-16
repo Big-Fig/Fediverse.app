@@ -9,7 +9,7 @@ class SingleSelectFromListValueFormFieldBlocProxyProvider<T>
   final Widget child;
 
   SingleSelectFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

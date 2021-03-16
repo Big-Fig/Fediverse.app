@@ -22,14 +22,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 void showAccountActionMoreDialog({
-  @required BuildContext context,
-  @required IAccountBloc accountBloc,
+  required BuildContext context,
+  required IAccountBloc accountBloc,
 }) {
   showFediModalBottomSheetDialog(
     context: context,
     child: Provider<IAccountBloc>.value(
       value: accountBloc,
-      child: Provider<IAccount>.value(
+      child: Provider<IAccount?>.value(
         value: accountBloc.account,
         child: const AccountActionMoreDialog(
           cancelable: true,
@@ -45,8 +45,8 @@ class AccountActionMoreDialog extends StatelessWidget {
   final bool showReportAction;
 
   const AccountActionMoreDialog({
-    @required this.cancelable,
-    @required this.showReportAction,
+    required this.cancelable,
+    required this.showReportAction,
   });
 
   @override
@@ -58,7 +58,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaAccountRelationship>(
+    return StreamBuilder<IPleromaAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;
@@ -79,7 +79,7 @@ class AccountActionMoreDialog extends StatelessWidget {
             if (isLocal && showReportAction)
               AccountActionMoreDialog.buildAccountReportAction(context),
             if (isLocal &&
-                currentInstance.isSubscribeToAccountFeatureSupported &&
+                currentInstance!.isSubscribeToAccountFeatureSupported! &&
                 isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountSubscribeAction(context),
             buildAccountInstanceInfoAction(context),
@@ -131,14 +131,14 @@ class AccountActionMoreDialog extends StatelessWidget {
   static DialogAction buildAccountBlockDomainAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return DialogAction(
-      icon: accountBloc.relationship.domainBlocking == true
+      icon: accountBloc.relationship!.domainBlocking == true
           ? FediIcons.domain_block
           : FediIcons.domain_unblock,
-      label: accountBloc.relationship.domainBlocking == true
+      label: accountBloc.relationship!.domainBlocking == true
           ? S.of(context).app_account_action_unblockDomain(
-              accountBloc.acctRemoteDomainOrNull)
+              accountBloc.acctRemoteDomainOrNull!)
           : S.of(context).app_account_action_blockDomain(
-              accountBloc.acctRemoteDomainOrNull),
+              accountBloc.acctRemoteDomainOrNull!),
       onAction: (context) async {
         await accountBloc.toggleBlockDomain();
         Navigator.of(context).pop();
@@ -153,12 +153,12 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     // todo: remove hack
     if (accountBloc is RemoteAccountBloc) {
-      remoteDomainOrNull ??= accountBloc.instanceUri.host;
+      remoteDomainOrNull ??= accountBloc.instanceUri!.host;
     }
 
     var currentInstanceUrlHost =
         ICurrentAuthInstanceBloc.of(context, listen: false)
-            .currentInstance
+            .currentInstance!
             .urlHost;
 
     var isLocal = remoteDomainOrNull == null;
@@ -166,7 +166,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_instanceDetails(
-            isLocal ? currentInstanceUrlHost : remoteDomainOrNull,
+            isLocal ? currentInstanceUrlHost! : remoteDomainOrNull!,
           ),
       onAction: (context) async {
         if (isLocal) {
@@ -278,7 +278,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     return DialogAction(
       icon: FediIcons.instance,
       label: S.of(context).app_account_action_openOnRemoteInstance(
-          accountBloc.acctRemoteDomainOrNull),
+          accountBloc.acctRemoteDomainOrNull!),
       onAction: (context) async {
         await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           context,

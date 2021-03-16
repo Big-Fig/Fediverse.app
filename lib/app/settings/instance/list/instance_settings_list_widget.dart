@@ -36,7 +36,7 @@ class InstanceSettingsListWidget extends StatelessWidget {
 
 class _InstanceSettingsMediaRowWidget extends StatelessWidget {
   const _InstanceSettingsMediaRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -52,7 +52,7 @@ class _InstanceSettingsMediaRowWidget extends StatelessWidget {
 
 class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
   const _InstanceSettingsCacheAndPaginationRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -68,7 +68,7 @@ class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
 
 class _InstanceSettingsPushRowWidget extends StatelessWidget {
   const _InstanceSettingsPushRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -84,7 +84,7 @@ class _InstanceSettingsPushRowWidget extends StatelessWidget {
 
 class _InstanceSettingsToastRowWidget extends StatelessWidget {
   const _InstanceSettingsToastRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -100,7 +100,7 @@ class _InstanceSettingsToastRowWidget extends StatelessWidget {
 
 class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
   const _InstanceSettingsStatusSensitiveRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -116,7 +116,7 @@ class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
 
 class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
   const _InstanceStatusPostSensitiveRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -132,7 +132,7 @@ class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
 
 class _InstanceSettingsChatRowWidget extends StatelessWidget {
   const _InstanceSettingsChatRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -148,7 +148,7 @@ class _InstanceSettingsChatRowWidget extends StatelessWidget {
 
 class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
   const _InstanceSettingsWebSocketsRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -164,7 +164,7 @@ class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
 
 class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
   const _InstanceSettingsDatabaseCacheRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -180,7 +180,7 @@ class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
 
 class _InstanceSettingsFilesCacheRowWidget extends StatelessWidget {
   const _InstanceSettingsFilesCacheRowWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

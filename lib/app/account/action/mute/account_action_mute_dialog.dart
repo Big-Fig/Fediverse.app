@@ -13,9 +13,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-Future<T> showAccountActionMuteDialog<T>({
-  @required BuildContext context,
-  @required IAccountBloc accountBloc,
+Future<T?> showAccountActionMuteDialog<T>({
+  required BuildContext context,
+  required IAccountBloc accountBloc,
 }) => AccountActionMuteDialog(
     accountBloc: accountBloc,
     actionsBorderVisible: false,
@@ -44,9 +44,9 @@ class AccountActionMuteDialog extends FediDialog {
   final IAccountActionMuteBloc accountActionMuteBloc;
 
   AccountActionMuteDialog({
-    @required IAccountBloc accountBloc,
-    @required String title,
-    @required List<DialogAction> actions,
+    required IAccountBloc accountBloc,
+    required String title,
+    required List<DialogAction> actions,
     Axis actionsAxis = Axis.horizontal,
     bool cancelable = true,
     bool actionsBorderVisible = true,
@@ -86,7 +86,7 @@ class AccountActionMuteDialog extends FediDialog {
 
 class _AccountActionMuteDialogExpireField extends StatelessWidget {
   const _AccountActionMuteDialogExpireField({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -103,7 +103,7 @@ class _AccountActionMuteDialogExpireField extends StatelessWidget {
 
 class _AccountActionMuteDialogDescriptionWidget extends StatelessWidget {
   const _AccountActionMuteDialogDescriptionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -116,7 +116,7 @@ class _AccountActionMuteDialogDescriptionWidget extends StatelessWidget {
 
 class _AccountActionMuteDialogNotificationsField extends StatelessWidget {
   const _AccountActionMuteDialogNotificationsField({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

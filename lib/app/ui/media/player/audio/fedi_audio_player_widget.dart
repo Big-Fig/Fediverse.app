@@ -38,7 +38,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
 
 class _FediAudioPlayerErrorWidget extends StatelessWidget {
   const _FediAudioPlayerErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -67,7 +67,7 @@ class _FediAudioPlayerErrorWidget extends StatelessWidget {
 
 class _FediAudioPlayerErrorBodyWidget extends StatelessWidget {
   const _FediAudioPlayerErrorBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -86,7 +86,7 @@ class _FediAudioPlayerErrorBodyWidget extends StatelessWidget {
 
 class _FediAudioPlayerErrorBodyContentWidget extends StatelessWidget {
   const _FediAudioPlayerErrorBodyContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -103,7 +103,7 @@ class _FediAudioPlayerErrorBodyContentWidget extends StatelessWidget {
 
 class _FediAudioPlayerShowErrorButtonWidget extends StatelessWidget {
   const _FediAudioPlayerShowErrorButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -123,7 +123,7 @@ class _FediAudioPlayerShowErrorButtonWidget extends StatelessWidget {
 
 class _FediAudioPlayerErrorReloadButtonWidget extends StatelessWidget {
   const _FediAudioPlayerErrorReloadButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

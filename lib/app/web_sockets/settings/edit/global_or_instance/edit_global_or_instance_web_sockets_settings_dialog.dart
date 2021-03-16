@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void showEditGlobalOrInstanceWebSocketsSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
@@ -23,8 +23,8 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
       shrinkWrap: true,
     ),
     childContextBuilder: ({
-      @required BuildContext context,
-      @required Widget child,
+      required BuildContext context,
+      required Widget child,
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditWebSocketsSettingsBloc>(
@@ -50,7 +50,7 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
           streamSubscription:
               isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
             (isUseGlobalSettings) {
-              editWebSocketsSettingsBloc.changeEnabled(!isUseGlobalSettings);
+              editWebSocketsSettingsBloc.changeEnabled(!isUseGlobalSettings!);
             },
           ),
         );

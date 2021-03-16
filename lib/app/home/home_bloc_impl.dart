@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,24 +17,24 @@ const List<HomeTab> _tabs = [
 
 class HomeBloc extends DisposableOwner implements IHomeBloc {
   // ignore: close_sinks
-  final BehaviorSubject<HomeTab> _selectedTabSubject;
-  final StreamController<HomeTab> _reselectedTabStreamController =
+  final BehaviorSubject<HomeTab?> _selectedTabSubject;
+  final StreamController<HomeTab?> _reselectedTabStreamController =
       StreamController.broadcast();
 
   @override
-  Stream<HomeTab> get selectedTabStream => _selectedTabSubject.stream;
+  Stream<HomeTab?> get selectedTabStream => _selectedTabSubject.stream;
 
   @override
-  HomeTab get selectedTab => _selectedTabSubject.value;
+  HomeTab? get selectedTab => _selectedTabSubject.value;
 
   final BehaviorSubject<bool> _isTimelinesUnreadSubject =
       BehaviorSubject.seeded(false);
   @override
-  bool get isTimelinesUnread => _isTimelinesUnreadSubject.value;
+  bool? get isTimelinesUnread => _isTimelinesUnreadSubject.value;
   @override
   Stream<bool> get isTimelinesUnreadStream => _isTimelinesUnreadSubject.stream;
 
-  HomeBloc({@required HomeTab startTab})
+  HomeBloc({required HomeTab? startTab})
       : _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     _logger.finest(() => "constructor");
     addDisposable(subject: _selectedTabSubject);
@@ -44,7 +43,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   }
 
   @override
-  void selectTab(HomeTab tab) {
+  void selectTab(HomeTab? tab) {
 
     _logger.finest(() => "selectTab $tab");
     if (selectedTab == tab) {
@@ -63,12 +62,12 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   List<HomeTab> get tabs => _tabs;
 
   @override
-  Stream<HomeTab> get reselectedTabStream =>
+  Stream<HomeTab?> get reselectedTabStream =>
       _reselectedTabStreamController.stream;
 
   @override
   Stream<bool> get selectedTabReselectedStream => Rx.combineLatest2(
       selectedTabStream,
       reselectedTabStream,
-      (selectedTab, reselectedTab) => selectedTab == reselectedTab);
+      (dynamic selectedTab, dynamic reselectedTab) => selectedTab == reselectedTab);
 }

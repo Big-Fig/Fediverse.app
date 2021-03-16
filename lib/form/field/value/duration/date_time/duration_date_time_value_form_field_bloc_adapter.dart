@@ -1,5 +1,6 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
+import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
@@ -12,15 +13,15 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
       this.durationDateTimeValueFormFieldBloc);
 
   @override
-  Duration get currentValue =>
+  Duration? get currentValue =>
       durationDateTimeValueFormFieldBloc.currentValueDuration;
 
   @override
-  Stream<Duration> get currentValueStream =>
+  Stream<Duration?> get currentValueStream =>
       durationDateTimeValueFormFieldBloc.currentValueDurationStream;
 
   @override
-  void changeCurrentValue(Duration newValue) {
+  void changeCurrentValue(Duration? newValue) {
     durationDateTimeValueFormFieldBloc.changeCurrentValueDuration(newValue);
   }
 
@@ -54,10 +55,10 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
       durationDateTimeValueFormFieldBloc.errorsStream;
 
   @override
-  bool get isEnabled => durationDateTimeValueFormFieldBloc.isEnabled;
+  bool? get isEnabled => durationDateTimeValueFormFieldBloc.isEnabled;
 
   @override
-  Stream<bool> get isEnabledStream =>
+  Stream<bool?> get isEnabledStream =>
       durationDateTimeValueFormFieldBloc.isEnabledStream;
 
   @override
@@ -81,21 +82,38 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
       durationDateTimeValueFormFieldBloc.isSomethingChangedStream;
 
   @override
-  Duration get maxDuration => durationDateTimeValueFormFieldBloc.maxDuration;
+  Duration? get maxDuration => durationDateTimeValueFormFieldBloc.maxDuration;
 
   @override
   Duration get minDuration => durationDateTimeValueFormFieldBloc.minDuration;
 
   @override
-  Duration get originValue =>
+  Duration? get originValue =>
       durationDateTimeValueFormFieldBloc.originValue?.duration;
 
   @override
-  void updateValidators(List validators) {
-    durationDateTimeValueFormFieldBloc.updateValidators(validators);
+  void updateValidators(List<FormValueFieldValidation<Duration?>> validators) {
+    durationDateTimeValueFormFieldBloc.updateValidators(
+      validators
+          .map(
+            (validator) => (DurationDateTime? durationDateTime) => validator(
+                  durationDateTime?.duration,
+                ),
+          )
+          .toList(),
+    );
   }
 
   @override
-  List<FormValueFieldValidation> get validators =>
-      durationDateTimeValueFormFieldBloc.validators;
+  List<FormValueFieldValidation<Duration?>> get validators =>
+      durationDateTimeValueFormFieldBloc.validators
+          .map(
+            (validator) => (Duration? duration) => validator(
+                  DurationDateTime(
+                    duration: duration,
+                    dateTime: null,
+                  ),
+                ),
+          )
+          .toList();
 }

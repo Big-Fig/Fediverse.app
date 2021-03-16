@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountBotFieldWidget extends StatelessWidget {
   const EditMyAccountBotFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

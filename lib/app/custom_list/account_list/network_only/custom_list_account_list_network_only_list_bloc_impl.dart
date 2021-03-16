@@ -6,7 +6,6 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 final _logger =
@@ -14,44 +13,45 @@ final _logger =
 
 class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountListNetworkOnlyListBloc {
-  final ICustomList customList;
+  final ICustomList? customList;
   final IPleromaListService pleromaListService;
 
   @override
   IPleromaApi get pleromaApi => pleromaListService;
 
   CustomListAccountListNetworkOnlyListBloc({
-    @required this.customList,
-    @required this.pleromaListService,
+    required this.customList,
+    required this.pleromaListService,
   });
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
-    int pageIndex,
-    int itemsCountPerPage,
-    String minId,
-    String maxId,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required String? minId,
+    required String? maxId,
   }) async {
     List<IAccount> result;
     if (customList == null) {
       result = [];
     } else {
-      var remoteAccounts = await pleromaListService.getListAccounts(
+      var pleromaAccounts = await pleromaListService.getListAccounts(
         pagination: PleromaPaginationRequest(
           limit: itemsCountPerPage,
           sinceId: minId,
           maxId: maxId,
         ),
-        listRemoteId: customList.remoteId,
+        listRemoteId: customList!.remoteId,
       );
-      result = remoteAccounts
-          ?.map(
-              (remoteAccount) => mapRemoteAccountToLocalAccount(remoteAccount))
-          ?.toList();
+      result = pleromaAccounts
+          .map(
+            (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+          )
+          .toList();
     }
     _logger.finest(() => "loadItemsFromRemoteForPage \n"
         "customList ${customList?.remoteId} \n"
-        "result ${result?.length} ");
+        "result ${result.length} ");
     return result;
   }
 }

@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 class FilterContextMultiSelectFromListValueFormFieldWidget
     extends StatelessWidget {
   final String label;
-  final String description;
-  final String descriptionOnDisabled;
+  final String? description;
+  final String? descriptionOnDisabled;
 
   const FilterContextMultiSelectFromListValueFormFieldWidget({
-    @required this.label,
+    required this.label,
     this.description,
     this.descriptionOnDisabled,
   });
@@ -22,7 +22,7 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IFilterContextMultiSelectFromListValueFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType>>(
+        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType?>>(
       update: (context, value, _) => value,
       child: MultiSelectFromListValueFormFieldBlocProxyProvider<
           MastodonFilterContextType>(
@@ -45,25 +45,17 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
 
       case MastodonFilterContextType.homeAndCustomLists:
         return S.of(context).app_filter_context_type_home_and_lists;
-        break;
       case MastodonFilterContextType.notifications:
         return S.of(context).app_filter_context_type_notifications;
-        break;
       case MastodonFilterContextType.public:
         return S.of(context).app_filter_context_type_public;
-        break;
       case MastodonFilterContextType.thread:
         return S.of(context).app_filter_context_type_threads;
-        break;
       case MastodonFilterContextType.account:
         return S.of(context).app_filter_context_type_account;
-        break;
       case MastodonFilterContextType.unknown:
         return S.of(context).app_filter_context_type_unknown;
-        break;
     }
-
-    throw "Unsupported contextType $contextType";
   }
 }
 

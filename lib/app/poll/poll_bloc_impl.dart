@@ -6,7 +6,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
@@ -17,7 +17,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   @override
   bool get isNeedShowResultsWithoutVote =>
-      isNeedShowResultsWithoutVoteSubject.value;
+      isNeedShowResultsWithoutVoteSubject.value!;
 
   @override
   Stream<bool> get isNeedShowResultsWithoutVoteStream =>
@@ -26,32 +26,34 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   final BehaviorSubject<List<IPleromaPollOption>> selectedVotesSubject =
       BehaviorSubject.seeded([]);
 
-  final IPleromaPollService pleromaPollService;
+  final IPleromaPollService? pleromaPollService;
 
   final InstanceLocation instanceLocation;
 
   PollBloc({
-    @required IPleromaPoll poll,
-    @required this.pleromaPollService,
-    @required this.instanceLocation,
+    required IPleromaPoll poll,
+    required this.pleromaPollService,
+    required this.instanceLocation,
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     addDisposable(subject: pollSubject);
     addDisposable(subject: selectedVotesSubject);
     addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
 
     if (!poll.expired) {
-      if (poll.expiresAt != null) {
-        var diff = DateTime.now().difference(poll.expiresAt).abs();
+      var diff = DateTime.now()
+          .difference(
+            poll.expiresAt,
+          )
+          .abs();
 
-        addDisposable(
-          timer: Timer(
-            diff,
-            () {
-              refreshFromNetwork();
-            },
-          ),
-        );
-      }
+      addDisposable(
+        timer: Timer(
+          diff,
+          () {
+            refreshFromNetwork();
+          },
+        ),
+      );
     }
   }
 
@@ -59,7 +61,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       instanceLocation == InstanceLocation.local;
 
   @override
-  IPleromaPoll get poll => pollSubject.value;
+  IPleromaPoll get poll => pollSubject.value!;
 
   @override
   Stream<IPleromaPoll> get pollStream => pollSubject.stream;
@@ -68,8 +70,9 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   bool get isPossibleToVote => isLocalInstanceLocation && poll.isPossibleToVote;
 
   @override
-  Stream<bool> get isPossibleToVoteStream => pollStream
-      .map((poll) => isLocalInstanceLocation && poll.isPossibleToVote);
+  Stream<bool> get isPossibleToVoteStream => pollStream.map(
+        (poll) => isLocalInstanceLocation && poll.isPossibleToVote,
+      );
 
   @override
   DateTime get expiresAt => poll.expiresAt;
@@ -90,8 +93,9 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   int get votersCount => poll.votersCount;
 
   @override
-  Stream<int> get votersCountStream =>
-      pollStream.map((poll) => poll.votersCount);
+  Stream<int> get votersCountStream => pollStream.map(
+        (poll) => poll.votersCount,
+      );
 
   @override
   void onPollOptionSelected(IPleromaPollOption pollOption) {
@@ -119,8 +123,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       voteIndexes.add(index);
     });
 
-    var updatedPoll = await pleromaPollService.vote(
-        pollRemoteId: poll.id, voteIndexes: voteIndexes);
+    var updatedPoll = await pleromaPollService!.vote(
+      pollRemoteId: poll.id!,
+      voteIndexes: voteIndexes,
+    );
 
     pollSubject.add(updatedPoll);
 
@@ -128,34 +134,33 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  List<IPleromaPollOption> get selectedVotes => selectedVotesSubject.value;
+  List<IPleromaPollOption> get selectedVotes => selectedVotesSubject.value!;
 
   @override
   Stream<List<IPleromaPollOption>> get selectedVotesStream =>
-      selectedVotesSubject.stream;
+      selectedVotesSubject.stream.mapToNotNull();
 
   @override
   bool get isVoted => selectedVotes.isNotEmpty;
 
   @override
-  Stream<bool> get isVotedStream =>
-      selectedVotesStream.map((selectedVotes) => selectedVotes.isNotEmpty);
+  Stream<bool> get isVotedStream => selectedVotesStream.map(
+        (selectedVotes) => selectedVotes.isNotEmpty,
+      );
 
   @override
-  void onPollUpdated(IPleromaPoll poll) {
-    pollSubject.add(poll);
+  void onPollUpdated(IPleromaPoll? poll) {
+    // TODO: WTF?
+    pollSubject.add(poll!);
   }
 
   @override
-  Future<bool> refreshFromNetwork() async {
-    var remotePoll = await pleromaPollService.getPoll(pollRemoteId: poll.id);
-    var success = remotePoll != null;
+  Future refreshFromNetwork() async {
+    var remotePoll = await pleromaPollService!.getPoll(
+      pollRemoteId: poll.id!,
+    );
 
-    if (success) {
-      pollSubject.add(remotePoll);
-    }
-
-    return success;
+    pollSubject.add(remotePoll);
   }
 
   @override

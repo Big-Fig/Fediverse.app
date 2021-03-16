@@ -34,23 +34,23 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
-      INotification> retrieveTimelineTabPaginationListBloc(
+      INotification?>? retrieveTimelineTabPaginationListBloc(
           NotificationTab tab) =>
-      tabsMap[tab].paginationListWithNewItemsBloc;
+      tabsMap[tab]!.paginationListWithNewItemsBloc;
 
   @override
   void selectTab(NotificationTab tab) {
-    selectedTabSubject.add(tab);
+    selectedTabSubject!.add(tab);
   }
 
   // ignore: close_sinks
-  BehaviorSubject<NotificationTab> selectedTabSubject;
+  BehaviorSubject<NotificationTab>? selectedTabSubject;
 
   @override
-  NotificationTab get selectedTab => selectedTabSubject.value;
+  NotificationTab? get selectedTab => selectedTabSubject!.value;
 
   @override
-  Stream<NotificationTab> get selectedTabStream => selectedTabSubject.stream;
+  Stream<NotificationTab> get selectedTabStream => selectedTabSubject!.stream;
 
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
@@ -58,12 +58,12 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   NotificationsTabsBloc({
-    @required NotificationTab startTab,
-    @required this.pleromaNotificationService,
-    @required this.notificationRepository,
-    @required this.filterRepository,
-    @required this.paginationSettingsBloc,
-    @required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
+    required NotificationTab startTab,
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required this.filterRepository,
+    required this.paginationSettingsBloc,
+    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
@@ -92,7 +92,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
         filterRepository: IFilterRepository.of(
           context,
           listen: false,
-        ),
+        ) as FilterRepository,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,
           listen: false,

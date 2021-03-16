@@ -10,11 +10,11 @@ final _logger = Logger("async_init_loading_widget.dart");
 class AsyncInitLoadingWidget extends StatelessWidget {
   final IAsyncInitLoadingBloc asyncInitLoadingBloc;
   final WidgetBuilder loadingFinishedBuilder;
-  final Widget loadingWidget;
+  final Widget? loadingWidget;
 
   AsyncInitLoadingWidget({
-    @required this.asyncInitLoadingBloc,
-    @required this.loadingFinishedBuilder,
+    required this.asyncInitLoadingBloc,
+    required this.loadingFinishedBuilder,
     this.loadingWidget,
   }) {
     var state = asyncInitLoadingBloc.initLoadingState;
@@ -34,47 +34,43 @@ class AsyncInitLoadingWidget extends StatelessWidget {
     }
 
     return StreamBuilder<AsyncInitLoadingState>(
-        stream: asyncInitLoadingBloc.initLoadingStateStream,
-        initialData: asyncInitLoadingBloc.initLoadingState,
-        builder: (context, snapshot) {
-          var loadingState = snapshot.data;
+      stream: asyncInitLoadingBloc.initLoadingStateStream,
+      initialData: asyncInitLoadingBloc.initLoadingState,
+      builder: (context, snapshot) {
+        var loadingState = snapshot.data;
 
-          switch (loadingState) {
-            case AsyncInitLoadingState.notStarted:
-              return Padding(
+        switch (loadingState) {
+          case AsyncInitLoadingState.notStarted:
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(S.of(context).async_init_state_notStarted),
+              ),
+            );
+          case AsyncInitLoadingState.loading:
+            Widget? child;
+            if (loadingWidget == null) {
+              child = CircularProgressIndicator();
+            } else {
+              child = loadingWidget;
+            }
+            return Center(child: child);
+          case AsyncInitLoadingState.finished:
+            return loadingFinishedBuilder(context);
+          case AsyncInitLoadingState.failed:
+            return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(S.of(context).async_init_state_notStarted),
-                ),
-              );
-              break;
-            case AsyncInitLoadingState.loading:
-              Widget child;
-              if (loadingWidget == null) {
-                child = CircularProgressIndicator();
-              } else {
-                child = loadingWidget;
-              }
-              return Center(child: child);
-              break;
-            case AsyncInitLoadingState.finished:
-              return loadingFinishedBuilder(context);
-              break;
-            case AsyncInitLoadingState.failed:
-              return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      S.of(context).async_init_state_failed(
-                            asyncInitLoadingBloc.initLoadingException
-                                .toString(),
-                          ),
-                    ),
-                  ));
-              break;
-          }
+                  child: Text(
+                    S.of(context).async_init_state_failed(
+                          asyncInitLoadingBloc.initLoadingException.toString(),
+                        ),
+                  ),
+                ));
+        }
 
-          throw "Invalid AsyncInitLoadingState $loadingState";
-        });
+        throw "Invalid AsyncInitLoadingState $loadingState";
+      },
+    );
   }
 }

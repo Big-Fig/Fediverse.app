@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 
 enum MediaDeviceFileType {
   image,
@@ -59,9 +58,9 @@ class FileMediaDeviceFileMetadata extends IMediaDeviceFileMetadata {
   final MediaDeviceFileType type;
 
   FileMediaDeviceFileMetadata({
-    @required this.originalFile,
-    @required this.isNeedDeleteAfterUsage,
-    @required this.type,
+    required this.originalFile,
+    required this.isNeedDeleteAfterUsage,
+    required this.type,
   });
 
   @override
@@ -103,9 +102,9 @@ class FileMediaDeviceFile extends IMediaDeviceFile {
   final bool isNeedDeleteAfterUsage;
 
   FileMediaDeviceFile({
-    @required this.originalFile,
-    @required this.isNeedDeleteAfterUsage,
-    @required this.metadata,
+    required this.originalFile,
+    required this.isNeedDeleteAfterUsage,
+    required this.metadata,
   });
 
   @override

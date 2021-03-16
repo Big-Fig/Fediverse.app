@@ -8,11 +8,11 @@ import 'package:provider/provider.dart';
 abstract class PleromaChatPaginationListBaseWidget
     extends FediPaginationListWidget<IPleromaChatWithLastMessage> {
   PleromaChatPaginationListBaseWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -27,7 +27,7 @@ abstract class PleromaChatPaginationListBaseWidget
   IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
           IPleromaChatWithLastMessage>
       retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+          {required bool listen}) {
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
             IPleromaChatWithLastMessage>>(context, listen: listen);

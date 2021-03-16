@@ -7,7 +7,6 @@ import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -25,7 +24,7 @@ class FilterRepository extends AsyncInitLoadingBloc
   final FilterDao dao;
 
   FilterRepository({
-    @required AppDatabase appDatabase,
+    required AppDatabase appDatabase,
   }) : dao = appDatabase.filterDao;
 
   @override
@@ -61,7 +60,7 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbFilterPopulatedWrapper> findByRemoteId(
-    String remoteId,
+    String? remoteId,
   ) async =>
       mapDataClassToItem(
         await dao.findByRemoteId(remoteId),
@@ -69,8 +68,8 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbFilterPopulatedWrapper>> getFilters({
-    @required FilterRepositoryFilters filters,
-    @required RepositoryPagination<IFilter> pagination,
+    required FilterRepositoryFilters filters,
+    required RepositoryPagination<IFilter>? pagination,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   }) async {
@@ -89,8 +88,8 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbFilterPopulatedWrapper>> watchFilters({
-    @required FilterRepositoryFilters filters,
-    @required RepositoryPagination<IFilter> pagination,
+    required FilterRepositoryFilters filters,
+    required RepositoryPagination<IFilter> pagination,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   }) {
@@ -106,9 +105,9 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery({
-    @required FilterRepositoryFilters filters,
-    @required RepositoryPagination<IFilter> pagination,
-    @required FilterOrderingTermData orderingTermData,
+    required FilterRepositoryFilters? filters,
+    required RepositoryPagination<IFilter>? pagination,
+    required FilterOrderingTermData? orderingTermData,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t filters=$filters\n"
@@ -127,7 +126,10 @@ class FilterRepository extends AsyncInitLoadingBloc
     }
 
     if (filters?.onlyWithContextTypes?.isNotEmpty == true) {
-      dao.addContextTypesWhere(query, filters?.onlyWithContextTypes);
+      dao.addContextTypesWhere(
+        query,
+        filters!.onlyWithContextTypes!,
+      );
     }
 
     if (filters?.notExpired == true) {
@@ -146,8 +148,12 @@ class FilterRepository extends AsyncInitLoadingBloc
 
     var finalQuery = joinQuery;
 
-    if (pagination?.limit != null) {
-      finalQuery.limit(pagination?.limit, offset: pagination?.offset);
+    var limit = pagination?.limit;
+    if (limit != null) {
+      finalQuery.limit(
+        limit,
+        offset: pagination?.offset,
+      );
     }
     return finalQuery;
   }
@@ -178,8 +184,8 @@ class FilterRepository extends AsyncInitLoadingBloc
   Future clear() => dao.clear();
 
   @override
-  Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id);
+  Future<bool> deleteById(int? id) async {
+    var affectedRows = await dao.deleteById(id!);
     assert(affectedRows == 0 || affectedRows == 1);
     return (affectedRows) == 1;
   }
@@ -193,7 +199,7 @@ class FilterRepository extends AsyncInitLoadingBloc
       (dao.watchById(id)).map(mapDataClassToItem);
 
   @override
-  Stream<IFilter> watchByRemoteId(String remoteId) {
+  Stream<IFilter> watchByRemoteId(String? remoteId) {
     _logger.finest(() => "watchByRemoteId $remoteId");
     return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
   }
@@ -220,7 +226,7 @@ class FilterRepository extends AsyncInitLoadingBloc
   Future<int> upsert(DbFilter item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int id, DbFilter dbFilter) {
+  Future<bool> updateById(int? id, DbFilter dbFilter) {
     if (dbFilter.id != id) {
       dbFilter = dbFilter.copyWith(id: id);
     }
@@ -228,35 +234,29 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   DbFilterPopulatedWrapper mapDataClassToItem(DbFilterPopulated dataClass) {
-    if (dataClass == null) {
-      return null;
-    }
-    return DbFilterPopulatedWrapper(dataClass);
+    return DbFilterPopulatedWrapper(dbFilterPopulated:dataClass);
   }
 
-  Insertable<DbFilter> mapItemToDataClass(DbFilterPopulatedWrapper item) {
-    if (item == null) {
-      return null;
-    }
+  Insertable<DbFilter>? mapItemToDataClass(DbFilterPopulatedWrapper item) {
     return item.dbFilterPopulated.dbFilter;
   }
 
   @override
   Future updateLocalFilterByRemoteFilter({
-    @required IFilter oldLocalFilter,
-    @required IPleromaFilter newRemoteFilter,
+    required IFilter? oldLocalFilter,
+    required IPleromaFilter newRemoteFilter,
   }) async {
     _logger.finer(() => "updateLocalFilterByRemoteFilter \n"
         "\t old: $oldLocalFilter \n"
         "\t newRemoteFilter: $newRemoteFilter");
 
     await updateById(
-        oldLocalFilter.localId, mapRemoteFilterToDbFilter(newRemoteFilter));
+        oldLocalFilter!.localId, mapRemoteFilterToDbFilter(newRemoteFilter));
   }
 
   @override
   Future<DbFilterPopulatedWrapper> getFilter({
-    @required FilterRepositoryFilters filters,
+    required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   }) async {
@@ -275,7 +275,7 @@ class FilterRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbFilterPopulatedWrapper> watchFilter({
-    @required FilterRepositoryFilters filters,
+    required FilterRepositoryFilters filters,
     FilterOrderingTermData orderingTermData =
         FilterOrderingTermData.remoteIdDesc,
   }) {

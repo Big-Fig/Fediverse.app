@@ -7,19 +7,19 @@ abstract class IScrollControllerBloc extends IDisposable {
   static IScrollControllerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScrollControllerBloc>(context, listen: listen);
 
-  ScrollController get scrollController;
+  ScrollController? get scrollController;
 
-  bool get scrolledToTop;
+  bool? get scrolledToTop;
 
   Stream<bool> get scrolledToTopStream;
 
-  ScrollDirection get scrollDirection;
+  ScrollDirection? get scrollDirection;
 
-  Stream<ScrollDirection> get scrollDirectionStream;
+  Stream<ScrollDirection?> get scrollDirectionStream;
 
-  ScrollDirection get longScrollDirection;
+  ScrollDirection? get longScrollDirection;
 
-  Stream<ScrollDirection> get longScrollDirectionStream;
+  Stream<ScrollDirection?> get longScrollDirectionStream;
 
   void scrollToTop();
 }

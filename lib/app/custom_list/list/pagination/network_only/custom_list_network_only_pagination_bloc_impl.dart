@@ -17,9 +17,9 @@ class CustomListNetworkOnlyPaginationBloc
   final INetworkOnlyListBloc<ICustomList> listService;
 
   CustomListNetworkOnlyPaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -30,7 +30,7 @@ class CustomListNetworkOnlyPaginationBloc
 
   static CustomListNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       CustomListNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -46,10 +46,10 @@ class CustomListNetworkOnlyPaginationBloc
 
   @override
   Future<List<ICustomList>> loadItemsFromRemoteForPage(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required PaginationPage<ICustomList> olderPage,
-          @required PaginationPage<ICustomList> newerPage}) =>
+          {required int pageIndex,
+          required int? itemsCountPerPage,
+          required PaginationPage<ICustomList>? olderPage,
+          required PaginationPage<ICustomList>? newerPage}) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
         pageIndex: pageIndex,
@@ -58,7 +58,7 @@ class CustomListNetworkOnlyPaginationBloc
       );
 
   static Widget provideToContext(BuildContext context,
-          {@required Widget child}) =>
+          {required Widget child}) =>
       DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
         create: (context) =>
             CustomListNetworkOnlyPaginationBloc.createFromContext(context),

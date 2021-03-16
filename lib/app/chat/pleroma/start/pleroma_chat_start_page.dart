@@ -38,7 +38,7 @@ class PleromaChatStartPage extends StatelessWidget {
 
 void _accountSelectedCallback(BuildContext context, IAccount account) async {
   var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<IPleromaChat>(
+      .performPleromaAsyncOperation<IPleromaChat?>(
     context: context,
     asyncCode: () async {
       var chatRepository = IPleromaChatRepository.of(context, listen: false);
@@ -49,12 +49,11 @@ void _accountSelectedCallback(BuildContext context, IAccount account) async {
         var pleromaChatService = IPleromaChatService.of(context, listen: false);
 
         var remoteChat = await pleromaChatService.getOrCreateChatByAccountId(
-            accountId: account.remoteId);
+          accountId: account.remoteId,
+        );
 
-        if (remoteChat != null) {
-          await chatRepository.upsertRemoteChat(remoteChat);
-          chat = await chatRepository.findByRemoteId(remoteChat.id);
-        }
+        await chatRepository.upsertRemoteChat(remoteChat);
+        chat = await chatRepository.findByRemoteId(remoteChat.id);
       }
 
       return chat;

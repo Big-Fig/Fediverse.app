@@ -7,44 +7,44 @@ import 'package:flutter/material.dart';
 
 class FediFilledEditTextField extends StatelessWidget {
   final String hintText;
-  final String errorText;
+  final String? errorText;
   final bool expanded;
   final bool autofocus;
   final TextEditingController textEditingController;
-  final Widget leading;
-  final Widget ending;
-  final FocusNode focusNode;
-  final int maxLines;
+  final Widget? leading;
+  final Widget? ending;
+  final FocusNode? focusNode;
+  final int? maxLines;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final bool autocorrect;
-  final BoxBorder border;
-  final Color backgroundColor;
+  final BoxBorder? border;
+  final Color? backgroundColor;
   final bool highlightMentions;
-  final int maxLength;
+  final int? maxLength;
 
   // todo: refactor to own widget
   final bool filled;
 
   FediFilledEditTextField({
-    @required this.textEditingController,
-    @required this.hintText,
-    @required this.errorText,
-    @required this.maxLines,
-    @required this.onSubmitted,
-    @required this.textInputAction,
+    required this.textEditingController,
+    required this.hintText,
+    required this.errorText,
+    required this.maxLines,
+    required this.onSubmitted,
+    required this.textInputAction,
     this.leading,
     this.border,
     this.backgroundColor,
     this.ending,
-    @required this.expanded,
-    @required this.autofocus,
+    required this.expanded,
+    required this.autofocus,
     this.focusNode,
     this.autocorrect = true,
     this.keyboardType,
-    @required this.highlightMentions,
-    @required this.maxLength,
+    required this.highlightMentions,
+    required this.maxLength,
     this.filled = true,
   });
 
@@ -67,7 +67,7 @@ class FediFilledEditTextField extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (containLeading) leading,
+            if (containLeading) leading!,
             Flexible(
               child: FediBaseEditTextField(
                 highlightMentions: highlightMentions,
@@ -94,7 +94,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 displayBorder: false,
               ),
             ),
-            if (containEnding) ending,
+            if (containEnding) ending!,
           ],
         ),
       ),

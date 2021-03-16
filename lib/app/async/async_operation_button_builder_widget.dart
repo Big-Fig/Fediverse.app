@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 typedef Future AsyncButtonAction();
-typedef Widget ButtonBuilder(BuildContext context, VoidCallback onPressed);
+typedef Widget ButtonBuilder(BuildContext context, VoidCallback? onPressed);
 
 var _logger = Logger("async_button_widget.dart");
 
@@ -15,15 +15,15 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   final AsyncButtonAction asyncButtonAction;
   final ButtonBuilder builder;
   final bool showProgressDialog;
-  final String progressContentMessage;
-  final String successToastMessage;
-  final ErrorCallback errorCallback;
+  final String? progressContentMessage;
+  final String? successToastMessage;
+  final ErrorCallback? errorCallback;
 
   final List<ErrorDataBuilder> errorDataBuilders;
 
   AsyncOperationButtonBuilderWidget({
-    @required this.builder,
-    @required this.asyncButtonAction,
+    required this.builder,
+    required this.asyncButtonAction,
     this.showProgressDialog = true,
     this.progressContentMessage,
     this.successToastMessage,
@@ -35,15 +35,16 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   _AsyncOperationButtonBuilderWidgetState createState() =>
       _AsyncOperationButtonBuilderWidgetState();
 
-  Future<AsyncDialogResult<T>> performAsyncOperation<T>(
-      {BuildContext context}) {
+  Future<AsyncDialogResult<T?>> performAsyncOperation<T>({
+    required BuildContext context,
+  }) {
     return AsyncOperationHelper.performAsyncOperation(
         context: context,
         errorCallback: errorCallback,
         contentMessage: progressContentMessage,
         errorDataBuilders: errorDataBuilders,
         showProgressDialog: showProgressDialog,
-        asyncCode: asyncButtonAction);
+        asyncCode: asyncButtonAction as Future<T> Function());
   }
 }
 

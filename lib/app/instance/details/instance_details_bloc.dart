@@ -19,193 +19,201 @@ abstract class IInstanceDetailsBloc
 
   Uri get instanceUri;
 
-  IPleromaInstance get instance;
+  IPleromaInstance? get instance;
 
-  Stream<IPleromaInstance> get instanceStream;
+  Stream<IPleromaInstance?> get instanceStream;
 
   Future<IPleromaInstance> refresh();
 }
 
 extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
-  String get instanceUriDomain => instanceUri?.host;
+  String get instanceUriDomain => instanceUri.host;
 
-  String get title => instance?.title;
+  String? get title => instance?.title;
 
-  Stream<String> get titleStream =>
+  Stream<String?> get titleStream =>
       instanceStream.map((instance) => instance?.title);
 
-  String get shortDescription => instance?.shortDescription;
+  String? get shortDescription => instance?.shortDescription;
 
-  Stream<String> get shortDescriptionStream =>
+  Stream<String?> get shortDescriptionStream =>
       instanceStream.map((instance) => instance?.shortDescription);
 
-  String get description => instance?.description;
+  String? get description => instance?.description;
 
-  Stream<String> get descriptionStream =>
+  Stream<String?> get descriptionStream =>
       instanceStream.map((instance) => instance?.description);
 
-  String get descriptionOrShortDescription =>
+  String? get descriptionOrShortDescription =>
       instance?.description?.isNotEmpty == true
           ? instance?.description
           : instance?.shortDescription;
 
-  Stream<String> get descriptionOrShortDescriptionStream =>
+  Stream<String?> get descriptionOrShortDescriptionStream =>
       instanceStream.map((instance) => instance?.description?.isNotEmpty == true
-          ? instance.description
-          : instance.shortDescription);
+          ? instance!.description
+          : instance!.shortDescription);
 
-  String get email => instance?.email;
+  String? get email => instance?.email;
 
-  Stream<String> get emailStream =>
+  Stream<String?> get emailStream =>
       instanceStream.map((instance) => instance?.email);
 
-  String get version => instance?.version;
+  String? get version => instance?.version;
 
-  Stream<String> get versionStream =>
+  Stream<String?> get versionStream =>
       instanceStream.map((instance) => instance?.version);
 
-  PleromaInstanceVersionType get versionType => instance?.versionType;
+  PleromaInstanceVersionType? get versionType => instance?.versionType;
 
-  Stream<PleromaInstanceVersionType> get versionTypeStream =>
+  Stream<PleromaInstanceVersionType?> get versionTypeStream =>
       instanceStream.map((instance) => instance?.versionType);
 
-  MastodonUrls get urls => instance?.urls;
+  MastodonUrls? get urls => instance?.urls;
 
-  Stream<MastodonUrls> get urlsStream =>
+  Stream<MastodonUrls?> get urlsStream =>
       instanceStream.map((instance) => instance?.urls);
 
-  MastodonInstanceStats get stats => instance?.stats;
+  MastodonInstanceStats? get stats => instance?.stats;
 
-  Stream<MastodonInstanceStats> get statsStream =>
+  Stream<MastodonInstanceStats?> get statsStream =>
       instanceStream.map((instance) => instance?.stats);
 
-  String get thumbnail => instance?.thumbnail;
+  String? get thumbnail => instance?.thumbnail;
 
-  Stream<String> get thumbnailStream =>
+  Stream<String?> get thumbnailStream =>
       instanceStream.map((instance) => instance?.thumbnail);
 
-  List<String> get languages => instance?.languages;
+  List<String>? get languages => instance?.languages;
 
-  Stream<List<String>> get languagesStream =>
+  Stream<List<String>?> get languagesStream =>
       instanceStream.map((instance) => instance?.languages);
 
-  bool get registrations => instance?.registrations;
+  bool? get registrations => instance?.registrations;
 
-  Stream<bool> get registrationsStream =>
+  Stream<bool?> get registrationsStream =>
       instanceStream.map((instance) => instance?.registrations);
 
-  bool get approvalRequired => instance?.approvalRequired;
+  bool? get approvalRequired => instance?.approvalRequired;
 
-  Stream<bool> get approvalRequiredStream =>
+  Stream<bool?> get approvalRequiredStream =>
       instanceStream.map((instance) => instance?.approvalRequired);
 
-  bool get invitesEnabled => instance?.invitesEnabled;
+  bool? get invitesEnabled => instance?.invitesEnabled;
 
-  Stream<bool> get invitesEnabledStream =>
+  Stream<bool?> get invitesEnabledStream =>
       instanceStream.map((instance) => instance?.invitesEnabled);
 
-  int get maxTootChars => instance?.maxTootChars != null
-      ? int.parse(instance?.maxTootChars?.toString())
+  int? get maxTootChars {
+    var maxTootChars = instance?.maxTootChars;
+
+    return maxTootChars != null
+      ? int.parse(maxTootChars.toString())
       : null;
+  }
 
-  Stream<int> get maxTootCharsStream =>
-      instanceStream.map((instance) => instance?.maxTootChars != null
-          ? int.parse(instance?.maxTootChars?.toString())
-          : null);
+  Stream<int?> get maxTootCharsStream =>
+      instanceStream.map((instance) {
+        var maxTootChars = instance?.maxTootChars;
 
-  PleromaInstancePollLimits get pollLimits => instance?.pollLimits;
+        return maxTootChars != null
+            ? int.parse(maxTootChars.toString())
+            : null;
+      });
 
-  Stream<PleromaInstancePollLimits> get pollLimitsStream =>
+  PleromaInstancePollLimits? get pollLimits => instance?.pollLimits;
+
+  Stream<PleromaInstancePollLimits?> get pollLimitsStream =>
       instanceStream.map((instance) => instance?.pollLimits);
 
-  int get uploadLimit => instance?.uploadLimit;
+  int? get uploadLimit => instance?.uploadLimit;
 
-  Stream<int> get uploadLimitStream =>
+  Stream<int?> get uploadLimitStream =>
       instanceStream.map((instance) => instance?.uploadLimit);
 
-  int get avatarUploadLimit => instance?.avatarUploadLimit;
+  int? get avatarUploadLimit => instance?.avatarUploadLimit;
 
-  Stream<int> get avatarUploadLimitStream =>
+  Stream<int?> get avatarUploadLimitStream =>
       instanceStream.map((instance) => instance?.avatarUploadLimit);
 
-  int get backgroundUploadLimit => instance?.backgroundUploadLimit;
+  int? get backgroundUploadLimit => instance?.backgroundUploadLimit;
 
-  Stream<int> get backgroundUploadLimitStream =>
+  Stream<int?> get backgroundUploadLimitStream =>
       instanceStream.map((instance) => instance?.backgroundUploadLimit);
 
-  int get bannerUploadLimit => instance?.bannerUploadLimit;
+  int? get bannerUploadLimit => instance?.bannerUploadLimit;
 
-  Stream<int> get bannerUploadLimitStream =>
+  Stream<int?> get bannerUploadLimitStream =>
       instanceStream.map((instance) => instance?.bannerUploadLimit);
 
-  int get descriptionLimit => instance?.descriptionLimit;
+  int? get descriptionLimit => instance?.descriptionLimit;
 
-  Stream<int> get descriptionLimitStream =>
+  Stream<int?> get descriptionLimitStream =>
       instanceStream.map((instance) => instance?.descriptionLimit);
 
-  int get chatLimit => instance?.chatLimit;
+  int? get chatLimit => instance?.chatLimit;
 
-  Stream<int> get chatLimitStream =>
+  Stream<int?> get chatLimitStream =>
       instanceStream.map((instance) => instance?.chatLimit);
 
-  PleromaInstancePleromaPart get pleroma => instance?.pleroma;
+  PleromaInstancePleromaPart? get pleroma => instance?.pleroma;
 
-  Stream<PleromaInstancePleromaPart> get pleromaStream =>
+  Stream<PleromaInstancePleromaPart?> get pleromaStream =>
       instanceStream.map((instance) => instance?.pleroma);
 
-  PleromaInstancePleromaPartMetadata get pleromaMetadata =>
+  PleromaInstancePleromaPartMetadata? get pleromaMetadata =>
       instance?.pleroma?.metadata;
 
-  Stream<PleromaInstancePleromaPartMetadata> get pleromaMetadataStream =>
+  Stream<PleromaInstancePleromaPartMetadata?> get pleromaMetadataStream =>
       instanceStream.map((instance) => instance?.pleroma?.metadata);
 
-  List<String> get pleromaMetadataFeatures =>
+  List<String>? get pleromaMetadataFeatures =>
       instance?.pleroma?.metadata?.features;
 
-  Stream<List<String>> get pleromaMetadataFeaturesStream =>
+  Stream<List<String>?> get pleromaMetadataFeaturesStream =>
       instanceStream.map((instance) => instance?.pleroma?.metadata?.features);
 
-  PleromaInstancePleromaPartMetadataFederation get pleromaMetadataFederation =>
+  PleromaInstancePleromaPartMetadataFederation? get pleromaMetadataFederation =>
       instance?.pleroma?.metadata?.federation;
 
-  Stream<PleromaInstancePleromaPartMetadataFederation>
+  Stream<PleromaInstancePleromaPartMetadataFederation?>
       get pleromaMetadataFederationStream => instanceStream
           .map((instance) => instance?.pleroma?.metadata?.federation);
 
-  List<String> get pleromaMetadataPostFormats =>
+  List<String>? get pleromaMetadataPostFormats =>
       instance?.pleroma?.metadata?.postFormats;
 
-  Stream<List<String>> get pleromaMetadataPostFormatsStream => instanceStream
+  Stream<List<String>?> get pleromaMetadataPostFormatsStream => instanceStream
       .map((instance) => instance?.pleroma?.metadata?.postFormats);
 
-  bool get pleromaMetadataAccountActivationRequired =>
+  bool? get pleromaMetadataAccountActivationRequired =>
       instance?.pleroma?.metadata?.accountActivationRequired;
 
-  Stream<bool> get pleromaMetadataAccountActivationRequiredStream =>
+  Stream<bool?> get pleromaMetadataAccountActivationRequiredStream =>
       instanceStream.map(
           (instance) => instance?.pleroma?.metadata?.accountActivationRequired);
 
-  PleromaInstancePleromaPartMetadataFieldLimits
+  PleromaInstancePleromaPartMetadataFieldLimits?
       get pleromaMetadataFieldsLimits =>
           instance?.pleroma?.metadata?.fieldsLimits;
 
-  Stream<PleromaInstancePleromaPartMetadataFieldLimits>
+  Stream<PleromaInstancePleromaPartMetadataFieldLimits?>
       get pleromaMetadataFieldsLimitsStream => instanceStream
           .map((instance) => instance?.pleroma?.metadata?.fieldsLimits);
 
-  String get vapidPublicKey => instance?.vapidPublicKey;
+  String? get vapidPublicKey => instance?.vapidPublicKey;
 
-  Stream<String> get vapidPublicKeyStream =>
+  Stream<String?> get vapidPublicKeyStream =>
       instanceStream.map((instance) => instance?.vapidPublicKey);
 
-  String get backgroundImage => instance?.backgroundImage;
+  String? get backgroundImage => instance?.backgroundImage;
 
-  Stream<String> get backgroundImageStream =>
+  Stream<String?> get backgroundImageStream =>
       instanceStream.map((instance) => instance?.backgroundImage);
 
-  IPleromaAccount get contactAccount => instance?.contactAccount;
+  IPleromaAccount? get contactAccount => instance?.contactAccount;
 
-  Stream<IPleromaAccount> get contactAccountStream =>
+  Stream<IPleromaAccount?> get contactAccountStream =>
       instanceStream.map((instance) => instance?.contactAccount);
 
   bool get isHaveDetailsFields => _calculateIsHaveDetailsFields(instance);
@@ -267,50 +275,50 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       );
 }
 
-bool _calculateIsHaveDetailsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveDetailsFields(IPleromaInstance? instance) =>
     instance?.email != null ||
     instance?.version != null ||
     instance?.languages != null ||
     instance?.vapidPublicKey != null;
 
-bool _calculateIsHaveRegistrationsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveRegistrationsFields(IPleromaInstance? instance) =>
     instance?.registrations != null ||
     instance?.approvalRequired != null ||
     instance?.invitesEnabled != null;
 
-bool _calculateIsHaveStatsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveStatsFields(IPleromaInstance? instance) =>
     instance?.stats?.domainCount != null ||
     instance?.stats?.statusCount != null ||
     instance?.stats?.userCount != null;
 
-bool _calculateIsHaveUploadLimitsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveUploadLimitsFields(IPleromaInstance? instance) =>
     instance?.uploadLimit != null ||
     instance?.avatarUploadLimit != null ||
     instance?.bannerUploadLimit != null ||
     instance?.backgroundUploadLimit != null;
 
-bool _calculateIsHaveMessagesLimitsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveMessagesLimitsFields(IPleromaInstance? instance) =>
     instance?.maxTootChars != null ||
     instance?.chatLimit != null ||
     instance?.descriptionLimit != null;
 
-bool _calculateIsHavePollLimitsFields(IPleromaInstance instance) =>
+bool _calculateIsHavePollLimitsFields(IPleromaInstance? instance) =>
     instance?.pollLimits?.maxOptions != null ||
     instance?.pollLimits?.maxOptionChars != null ||
     instance?.pollLimits?.maxExpiration != null ||
     instance?.pollLimits?.minExpiration != null;
 
-bool _calculateIsHaveFieldsLimitsFields(IPleromaInstance instance) =>
+bool _calculateIsHaveFieldsLimitsFields(IPleromaInstance? instance) =>
     instance?.pleroma?.metadata?.fieldsLimits?.valueLength != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.nameLength != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.maxRemoteFields != null ||
     instance?.pleroma?.metadata?.fieldsLimits?.maxFields != null;
 
-bool _calculateIsHaveMetadataFields(IPleromaInstance instance) =>
+bool _calculateIsHaveMetadataFields(IPleromaInstance? instance) =>
     instance?.pleroma?.metadata?.features?.isNotEmpty == true ||
     instance?.pleroma?.metadata?.postFormats?.isNotEmpty == true;
 
-bool _calculateIsHaveFederationFields(IPleromaInstance instance) =>
+bool _calculateIsHaveFederationFields(IPleromaInstance? instance) =>
     instance?.pleroma?.metadata?.federation?.enabled != null ||
     instance?.pleroma?.metadata?.federation?.exclusions != null ||
     instance?.pleroma?.metadata?.federation?.mrfObjectAge != null ||

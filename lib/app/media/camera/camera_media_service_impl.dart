@@ -9,22 +9,22 @@ class CameraMediaService extends DisposableOwner
   final ImagePicker imagePicker = ImagePicker();
 
   @override
-  Future<File> pickImageFromCamera() async {
+  Future<File?> pickImageFromCamera() async {
     var pickerImage = await imagePicker.getImage(source: ImageSource.camera);
     var file = fileFromImage(pickerImage);
     return file;
   }
 
   @override
-  Future<File> pickVideoFromCamera() async {
+  Future<File?> pickVideoFromCamera() async {
     var pickerImage = await imagePicker.getVideo(source: ImageSource.camera);
     var file = fileFromImage(pickerImage);
     return file;
   }
 
-  File fileFromImage(PickedFile imageFile) {
+  File? fileFromImage(PickedFile? imageFile) {
     var path = imageFile?.path;
-    File file;
+    File? file;
     if (path != null) {
       file = File(path);
     }

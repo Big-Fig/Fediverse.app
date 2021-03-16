@@ -1,5 +1,5 @@
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
+import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:moor/moor.dart';
@@ -22,9 +22,9 @@ var _chatAccountsAliasId = "chatAccounts";
       ":remoteId;",
 })
 class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
-    final AppDatabase db;
-  $DbAccountsTable accountAlias;
-  $DbChatAccountsTable chatAccountsAlias;
+  final AppDatabase db;
+  late $DbAccountsTable accountAlias;
+  $DbChatAccountsTable? chatAccountsAlias;
 
   // Called by the AppDatabase class
   ChatDao(this.db) : super(db) {
@@ -47,13 +47,13 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Future<DbPleromaChatPopulated> findById(int id) async =>
       typedResultToPopulated(await _findById(id).getSingle());
 
-  Future<DbPleromaChatPopulated> findByRemoteId(String remoteId) async =>
+  Future<DbPleromaChatPopulated> findByRemoteId(String? remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
   Stream<DbPleromaChatPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
-  Stream<DbPleromaChatPopulated> watchByRemoteId(String remoteId) =>
+  Stream<DbPleromaChatPopulated> watchByRemoteId(String? remoteId) =>
       (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
@@ -67,12 +67,12 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
       (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id)))
           .join(populateChatJoin());
 
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String? remoteId) =>
       (select(db.dbChats)
-            ..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
+            ..where((chatMessage) => chatMessage.remoteId.like(remoteId!)))
           .join(populateChatJoin());
 
-  Future<int> insert(Insertable<DbChat> entity, {InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbChat> entity, {InsertMode? mode}) async =>
       into(db.dbChats).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbChat> entity) async =>
@@ -80,19 +80,30 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   Future insertAll(
           Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(db.dbChats, entities, mode: mode);
-      });
+      await batch(
+        (batch) {
+          batch.insertAll(
+            db.dbChats,
+            entities as List<Insertable<DbChat>>,
+            mode: mode,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbChat> entity) async =>
       await update(db.dbChats).replace(entity);
 
   Future<int> updateByRemoteId(
-      String remoteId, Insertable<DbChat> entity) async {
-    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
+    String remoteId,
+    Insertable<DbChat> entity,
+  ) async {
+    var localId = await findLocalIdByRemoteId(remoteId).getSingleOrNull();
 
     if (localId != null && localId >= 0) {
-      await (update(db.dbChats)..where((i) => i.id.equals(localId)))
+      await (update(db.dbChats)
+            ..where(
+              (i) => i.id.equals(localId),
+            ))
           .write(entity);
     } else {
       localId = await insert(entity);
@@ -106,8 +117,8 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
-    @required DateTime minimumDateTimeExcluding,
-    @required DateTime maximumDateTimeExcluding,
+    required DateTime? minimumDateTimeExcluding,
+    required DateTime? maximumDateTimeExcluding,
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
@@ -127,13 +138,17 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     return query;
   }
 
-  Future<int> incrementUnreadCount(
-      {@required String chatRemoteId, @required DateTime updatedAt}) {
+  Future<int> incrementUnreadCount({
+    required String? chatRemoteId,
+    required DateTime updatedAt,
+  }) {
     var update = "UPDATE db_chats "
         "SET unread = unread + 1,"
         " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ 1000} "
         "WHERE remote_id = '$chatRemoteId'";
-    var query = db.customUpdate(update, updates: {dbChats});
+    var query = db.customUpdate(update, updates: {
+      dbChats,
+    });
 
     return query;
   }
@@ -149,7 +164,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
     var mapped = query.map((row) => row.read(unreadCount));
-    return mapped.map((value) => value.toInt());
+    return mapped.map((value) => value!.toInt());
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
@@ -174,16 +189,10 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   List<DbPleromaChatPopulated> typedResultListToPopulated(
       List<TypedResult> typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return typedResult.map(typedResultToPopulated).toList();
   }
 
   DbPleromaChatPopulated typedResultToPopulated(TypedResult typedResult) {
-    if (typedResult == null) {
-      return null;
-    }
     return DbPleromaChatPopulated(
         dbChat: typedResult.readTable(db.dbChats),
         dbAccount: typedResult.readTable(accountAlias));

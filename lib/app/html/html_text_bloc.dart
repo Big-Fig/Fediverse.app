@@ -5,18 +5,26 @@ import 'package:flutter_html/style.dart';
 import 'package:provider/provider.dart';
 
 abstract class IHtmlTextBloc implements IDisposable {
-  static IHtmlTextBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IHtmlTextBloc>(context, listen: listen);
+  static IHtmlTextBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IHtmlTextBloc>(
+        context,
+        listen: listen,
+      );
 
   HtmlTextInputData get inputData;
 
   HtmlTextSettings get settings;
 
-  Stream<String> get linkClickedStream;
+  Stream<String?> get linkClickedStream;
 
   HtmlTextResultData get htmlData;
 
   Map<String, Style> get htmlStyles;
 
-  void onLinkClicked({@required String url});
+  void onLinkClicked({
+    required String url,
+  });
 }

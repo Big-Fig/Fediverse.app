@@ -10,13 +10,13 @@ class ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IToastHandlingTypeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<ToastHandlingType>>(
+          ISingleSelectFromListValueFormFieldBloc<ToastHandlingType?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
             ToastHandlingType>(

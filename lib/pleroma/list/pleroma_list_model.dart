@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:fedi/mastodon/list/mastodon_list_model.dart';
@@ -8,6 +7,31 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_list_model.g.dart';
 
 abstract class IPleromaList extends IMastodonList {}
+
+extension IPleromaListExtension on IPleromaList {
+  PleromaList toPleromaList() {
+    if (this is PleromaList) {
+      return this as PleromaList;
+    } else {
+      return PleromaList(
+        id: id,
+        title: title,
+      );
+    }
+  }
+}
+
+extension IPleromaListListExtension on List<IPleromaList> {
+  List<PleromaList> toPleromaList() {
+    if (this is List<PleromaList>) {
+      return this as List<PleromaList>;
+    } else {
+      return map(
+        (list) => list.toPleromaList(),
+      ).toList();
+    }
+  }
+}
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -23,7 +47,11 @@ class PleromaList extends IPleromaList {
   @override
   @HiveField(1)
   String title;
-  PleromaList({this.id, this.title});
+
+  PleromaList({
+    required this.id,
+    required this.title,
+  });
 
   factory PleromaList.fromJson(Map<String, dynamic> json) =>
       _$PleromaListFromJson(json);

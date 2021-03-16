@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 class FediBackIconButton extends StatelessWidget {
   const FediBackIconButton({this.customOnPressed});
 
-  final VoidCallback customOnPressed;
+  final VoidCallback? customOnPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class FediBackIconButton extends StatelessWidget {
       ),
       onPressed: () {
         if (customOnPressed != null) {
-          customOnPressed();
+          customOnPressed!();
         } else {
           Navigator.of(context).pop();
         }

@@ -23,19 +23,20 @@ part 'conversation_chat_accounts_database_dao.g.dart';
 })
 class ConversationAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationAccountsDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   ConversationAccountsDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbConversationAccount> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(dbConversationAccounts).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbConversationAccount>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbConversationAccounts, entities);
+        batch.insertAll(dbConversationAccounts,
+            entities as List<Insertable<DbConversationAccount>>);
       });
 
   Future<bool> replace(Insertable<DbConversationAccount> entity) async =>

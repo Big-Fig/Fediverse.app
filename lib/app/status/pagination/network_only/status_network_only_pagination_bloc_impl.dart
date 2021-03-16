@@ -17,9 +17,9 @@ class StatusNetworkOnlyPaginationBloc
   final INetworkOnlyListBloc<IStatus> listService;
 
   StatusNetworkOnlyPaginationBloc(
-      {@required this.listService,
-      @required IPaginationSettingsBloc paginationSettingsBloc,
-      @required int maximumCachedPagesCount})
+      {required this.listService,
+      required IPaginationSettingsBloc paginationSettingsBloc,
+      required int? maximumCachedPagesCount})
       : super(
             maximumCachedPagesCount: maximumCachedPagesCount,
             paginationSettingsBloc: paginationSettingsBloc);
@@ -29,7 +29,7 @@ class StatusNetworkOnlyPaginationBloc
 
   static StatusNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       StatusNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -45,10 +45,10 @@ class StatusNetworkOnlyPaginationBloc
 
   @override
   Future<List<IStatus>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required PaginationPage<IStatus> olderPage,
-    @required PaginationPage<IStatus> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<IStatus>? olderPage,
+    required PaginationPage<IStatus>? newerPage,
   }) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
@@ -59,8 +59,8 @@ class StatusNetworkOnlyPaginationBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    int maximumCachedPagesCount,
+    required Widget child,
+    int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
         INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(

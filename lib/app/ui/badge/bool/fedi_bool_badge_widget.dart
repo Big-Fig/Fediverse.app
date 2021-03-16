@@ -11,7 +11,7 @@ class FediBoolBadgeWidget extends StatelessWidget {
   static const badgeDefaultOffset = 2.0;
 
   const FediBoolBadgeWidget({
-    @required this.child,
+    required this.child,
     this.offset = badgeDefaultOffset,
   });
 
@@ -19,7 +19,7 @@ class FediBoolBadgeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediBoolBadgeBloc = IFediBoolBadgeBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: fediBoolBadgeBloc.badgeStream.distinct(),
         builder: (context, snapshot) {
           var unread = snapshot.data;

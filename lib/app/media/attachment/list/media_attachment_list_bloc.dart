@@ -10,7 +10,7 @@ abstract class IMediaAttachmentListBloc implements IDisposable {
 
   int get currentIndex;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
+  List<IPleromaMediaAttachment?> get mediaAttachments;
 
-  IPleromaMediaAttachment get initialMediaAttachment;
+  IPleromaMediaAttachment? get initialMediaAttachment;
 }

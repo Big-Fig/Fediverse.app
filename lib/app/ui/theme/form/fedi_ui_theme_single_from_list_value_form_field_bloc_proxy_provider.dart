@@ -10,16 +10,16 @@ class FediUiThemeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   FediUiThemeSingleFromListValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IFediUiThemeSingleFromListValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<IFediUiTheme>>(
+          ISingleSelectFromListValueFormFieldBloc<IFediUiTheme?>>(
         update: (context, value, previous) => value,
         child:
-            SingleSelectFromListValueFormFieldBlocProxyProvider<IFediUiTheme>(
+            SingleSelectFromListValueFormFieldBlocProxyProvider<IFediUiTheme?>(
           child: child,
         ),
       );

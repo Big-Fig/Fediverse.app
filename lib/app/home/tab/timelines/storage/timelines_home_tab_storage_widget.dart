@@ -50,7 +50,7 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,7 +126,7 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
 class _TimelinesHomeTabStorageListAddTimelineItemWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStorageListAddTimelineItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -139,7 +139,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
       builder: (context, snapshot) {
         var uiState = snapshot.data;
 
-        Widget child;
+        late Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = const SizedBox.shrink();
@@ -178,7 +178,7 @@ class _TimelinesHomeTabStorageListAddTimelineItemWidget
 
 class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -195,7 +195,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
       },
       child: FediSelectionItemRowWidget(
         key: Key(
-          timeline.id,
+          timeline.id!,
         ),
         leading: const _TimelinesHomeTabStorageListItemLeadingWidget(),
         title: const _TimelinesHomeTabStorageListItemTitleWidget(),
@@ -207,14 +207,14 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemTitleWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var timeline = Provider.of<Timeline>(context);
 
-    var label = timeline.calculateLabel(context);
+    var label = timeline.calculateLabel(context)!;
     return InkWell(
       onTap: () {
         showEditTimelineSettingsDialog(
@@ -236,7 +236,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemEndingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -248,7 +248,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var uiState = snapshot.data;
 
-        Widget child;
+        late Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
             child = flutter_reorderable_list.ReorderableListener(
@@ -281,7 +281,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
 
 class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemLeadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -334,7 +334,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
 class _TimelinesHomeTabStorageListItemRemoveButtonWidget
     extends StatelessWidget {
   const _TimelinesHomeTabStorageListItemRemoveButtonWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -357,7 +357,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                   contentText: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_content(
-                          timeline.calculateLabel(context)),
+                          timeline.calculateLabel(context)!),
                   okActionLabel: S
                       .of(context)
                       .app_timeline_storage_delete_dialog_action_delete,

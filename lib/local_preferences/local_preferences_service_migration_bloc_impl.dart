@@ -1,6 +1,5 @@
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger("local_preferences_service_migration_bloc_impl.dart");
@@ -11,8 +10,8 @@ abstract class LocalPreferencesServiceMigrationBloc
   final ILocalPreferencesService outputService;
 
   LocalPreferencesServiceMigrationBloc({
-    @required this.inputService,
-    @required this.outputService,
+    required this.inputService,
+    required this.outputService,
   });
 
   @override

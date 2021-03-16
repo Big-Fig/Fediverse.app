@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EditMyAccountLockedFieldWidget extends StatelessWidget {
   const EditMyAccountLockedFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

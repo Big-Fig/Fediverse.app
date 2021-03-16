@@ -12,8 +12,8 @@ class DraftStatusOrderingTermData {
   final OrderingMode orderingMode;
 
   const DraftStatusOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   static const DraftStatusOrderingTermData localIdDesc =

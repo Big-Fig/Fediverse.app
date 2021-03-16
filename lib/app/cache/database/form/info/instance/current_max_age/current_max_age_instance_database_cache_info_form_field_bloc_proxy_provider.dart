@@ -9,13 +9,13 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider
   final Widget child;
 
   CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc,
-          IInfoFormFieldBloc<DateTime>>(
+          IInfoFormFieldBloc<DateTime?>>(
         update: (context, value, previous) => value,
         child: InfoFormFieldBlocProxyProvider<DateTime>(
           child: child,

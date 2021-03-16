@@ -7,8 +7,8 @@ import 'package:fedi/ui/theme/ui_theme_model.dart';
 import 'package:flutter/widgets.dart';
 
 Future showChatMessagePendingActionsDialog({
-  @required BuildContext context,
-  @required IChatMessageBloc chatMessageBloc,
+  required BuildContext context,
+  required IChatMessageBloc chatMessageBloc,
 }) {
   return FediActionsDialog(
     context: context,
@@ -26,7 +26,7 @@ Future showChatMessagePendingActionsDialog({
           );
 
           if (dialogResult.success) {
-            await Navigator.of(context).pop();
+            Navigator.of(context).pop();
           }
         },
       ),
@@ -41,7 +41,7 @@ Future showChatMessagePendingActionsDialog({
           );
 
           if (dialogResult.success) {
-            await Navigator.of(context).pop();
+            Navigator.of(context).pop();
           }
         },
       ),

@@ -1,5 +1,5 @@
 class AsyncDialogResult<T> {
-  final T result;
+  final T? result;
   final bool success;
   final bool canceled;
   final dynamic handledError;

@@ -17,7 +17,7 @@ final _logger = Logger("account_report_bloc_impl.dart");
 
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
-  final IAccount account;
+  final IAccount? account;
 
   final IPleromaAuthAccountService pleromaAuthAccountService;
 
@@ -34,15 +34,15 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   );
 
   @override
-  final List<IStatus> statuses;
+  final List<IStatus?> statuses;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   AccountReportBloc({
-    @required this.account,
-    @required this.pleromaAuthAccountService,
-    @required this.statuses,
+    required this.account,
+    required this.pleromaAuthAccountService,
+    required this.statuses,
   }) : super(
           isAllItemsInitialized: true,
         ) {
@@ -57,14 +57,14 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
       ];
 
   @override
-  bool get isAccountOnRemoteHost => account.isAcctOnRemoteHost;
+  bool get isAccountOnRemoteHost => account!.isAcctOnRemoteHost;
 
   @override
   Future<bool> send() async {
     var accountReportRequest = PleromaAccountReportRequest(
-      accountId: account.remoteId,
+      accountId: account!.remoteId,
       statusIds: statuses?.isNotEmpty == true
-          ? statuses?.map((status) => status.remoteId)?.toList()
+          ? statuses?.map((status) => status!.remoteId)?.toList()
           : null,
       comment: messageStringValueFormFieldBloc.currentValue,
       forward: isAccountOnRemoteHost
@@ -82,5 +82,5 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   }
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

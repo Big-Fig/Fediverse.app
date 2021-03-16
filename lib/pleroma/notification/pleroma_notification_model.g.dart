@@ -9,8 +9,8 @@ part of 'pleroma_notification_model.dart';
 PleromaNotificationPleromaPart _$PleromaNotificationPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaNotificationPleromaPart(
-    isSeen: json['is_seen'] as bool,
-    isMuted: json['is_muted'] as bool,
+    isSeen: json['is_seen'] as bool?,
+    isMuted: json['is_muted'] as bool?,
   );
 }
 
@@ -29,8 +29,8 @@ PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-    id: json['id'] as String,
-    type: json['type'] as String,
+    id: json['id'] as String?,
+    type: json['type'] as String?,
     status: json['status'] == null
         ? null
         : PleromaStatus.fromJson(json['status'] as Map<String, dynamic>),
@@ -38,7 +38,7 @@ PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaChatMessage.fromJson(
             json['chat_message'] as Map<String, dynamic>),
-    emoji: json['emoji'] as String,
+    emoji: json['emoji'] as String?,
     pleroma: json['pleroma'] == null
         ? null
         : PleromaNotificationPleromaPart.fromJson(

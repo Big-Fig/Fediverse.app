@@ -1,25 +1,26 @@
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   @override
-  bool get isHaveChangesAndNoErrors => !isHaveAtLeastOneError && isSomethingChanged;
+  bool get isHaveChangesAndNoErrors =>
+      !isHaveAtLeastOneError && isSomethingChanged;
 
   @override
 //  Stream<bool> get isReadyToSubmitStream => isSomethingChangedStream;
   Stream<bool> get isHaveChangesAndNoErrorsStream => Rx.combineLatest2(
       isHaveAtLeastOneErrorStream,
       isSomethingChangedStream,
-      (isHaveAtLeastOneError, isSomethingChanged) =>
+      (bool isHaveAtLeastOneError, bool isSomethingChanged) =>
           !isHaveAtLeastOneError && isSomethingChanged).asBroadcastStream();
 
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 
   FormBloc({
-    @required bool isAllItemsInitialized,
+    required bool isAllItemsInitialized,
   }) {
     addDisposable(subject: itemsSubject);
     if (isAllItemsInitialized) {
@@ -28,10 +29,11 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   }
 
   @override
-  Stream<List<IFormItemBloc>> get itemsStream => itemsSubject.stream;
+  Stream<List<IFormItemBloc>> get itemsStream =>
+      itemsSubject.stream.mapToNotNull();
 
   @override
-  List<IFormItemBloc> get items => itemsSubject.value;
+  List<IFormItemBloc> get items => itemsSubject.value!;
 
   List<IFormItemBloc> get currentItems;
 

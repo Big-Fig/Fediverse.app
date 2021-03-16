@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void showEditGlobalChatSettingsDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) {
   showEditGlobalSettingsDialog(
     context: context,

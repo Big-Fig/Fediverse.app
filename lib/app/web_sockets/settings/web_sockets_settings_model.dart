@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,13 +12,13 @@ part 'web_sockets_settings_model.g.dart';
 class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @HiveField(0)
   @JsonKey(name: "type_string")
-  final String typeString;
+  final String? typeString;
 
   WebSocketsSettings({
-    @required this.typeString,
+    required this.typeString,
   });
 
-  WebSocketsHandlingType get type => typeString.toWebSocketsHandlingType();
+  WebSocketsHandlingType? get type => typeString?.toWebSocketsHandlingType();
 
   @override
   bool operator ==(Object other) =>
@@ -50,7 +49,7 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   WebSocketsSettings clone() => copyWith();
 
   WebSocketsSettings copyWith({
-    String typeString,
+    String? typeString,
   }) =>
       WebSocketsSettings(
         typeString: typeString ?? this.typeString,

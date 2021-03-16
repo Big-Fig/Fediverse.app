@@ -18,7 +18,7 @@ class PleromaInstancePleromaPartAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPart(
-      metadata: fields[0] as PleromaInstancePleromaPartMetadata,
+      metadata: fields[0] as PleromaInstancePleromaPartMetadata?,
     );
   }
 
@@ -53,10 +53,10 @@ class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadataFieldLimits(
-      maxFields: fields[0] as int,
-      maxRemoteFields: fields[1] as int,
-      nameLength: fields[2] as int,
-      valueLength: fields[3] as int,
+      maxFields: fields[0] as int?,
+      maxRemoteFields: fields[1] as int?,
+      nameLength: fields[2] as int?,
+      valueLength: fields[3] as int?,
     );
   }
 
@@ -100,8 +100,8 @@ class PleromaInstancePleromaPartMetadataFederationMfrObjectAgeAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
-      threshold: fields[0] as int,
-      actions: (fields[1] as List)?.cast<String>(),
+      threshold: fields[0] as int?,
+      actions: (fields[1] as List?)?.cast<String>(),
     );
   }
 
@@ -139,12 +139,12 @@ class PleromaInstancePleromaPartMetadataFederationAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadataFederation(
-      enabled: fields[0] as bool,
-      exclusions: fields[1] as bool,
+      enabled: fields[0] as bool?,
+      exclusions: fields[1] as bool?,
       mrfObjectAge:
-          fields[2] as PleromaInstancePleromaPartMetadataFederationMfrObjectAge,
-      mrfPolicies: (fields[3] as List)?.cast<String>(),
-      quarantinedInstances: (fields[4] as List)?.cast<String>(),
+          fields[2] as PleromaInstancePleromaPartMetadataFederationMfrObjectAge?,
+      mrfPolicies: (fields[3] as List?)?.cast<String>(),
+      quarantinedInstances: (fields[4] as List?)?.cast<String>(),
     );
   }
 
@@ -188,11 +188,11 @@ class PleromaInstancePleromaPartMetadataAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadata(
-      features: (fields[0] as List)?.cast<String>(),
-      federation: fields[5] as PleromaInstancePleromaPartMetadataFederation,
-      postFormats: (fields[2] as List)?.cast<String>(),
-      accountActivationRequired: fields[3] as bool,
-      fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits,
+      features: (fields[0] as List?)?.cast<String>(),
+      federation: fields[5] as PleromaInstancePleromaPartMetadataFederation?,
+      postFormats: (fields[2] as List?)?.cast<String>(),
+      accountActivationRequired: fields[3] as bool?,
+      fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits?,
     );
   }
 
@@ -235,10 +235,10 @@ class PleromaInstancePollLimitsAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePollLimits(
-      maxExpiration: fields[0] as int,
-      maxOptionChars: fields[1] as int,
-      maxOptions: fields[2] as int,
-      minExpiration: fields[3] as int,
+      maxExpiration: fields[0] as int?,
+      maxOptionChars: fields[1] as int?,
+      maxOptions: fields[2] as int?,
+      minExpiration: fields[3] as int?,
     );
   }
 
@@ -278,31 +278,31 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstance(
-      approvalRequired: fields[0] as bool,
-      avatarUploadLimit: fields[1] as int,
-      backgroundUploadLimit: fields[2] as int,
-      bannerUploadLimit: fields[3] as int,
-      contactAccount: fields[4] as PleromaAccount,
-      email: fields[5] as String,
-      languages: (fields[6] as List)?.cast<String>(),
-      maxTootChars: fields[7] as int,
-      pleroma: fields[8] as PleromaInstancePleromaPart,
-      pollLimits: fields[9] as PleromaInstancePollLimits,
-      registrations: fields[10] as bool,
-      shortDescription: fields[11] as String,
-      stats: fields[12] as MastodonInstanceStats,
-      thumbnail: fields[13] as String,
-      title: fields[14] as String,
-      uploadLimit: fields[15] as int,
-      uri: fields[16] as String,
-      urls: fields[17] as MastodonUrls,
-      vapidPublicKey: fields[18] as String,
-      version: fields[19] as String,
-      backgroundImage: fields[20] as String,
-      chatLimit: fields[21] as int,
-      description: fields[22] as String,
-      descriptionLimit: fields[23] as int,
-      invitesEnabled: fields[24] as bool,
+      approvalRequired: fields[0] as bool?,
+      avatarUploadLimit: fields[1] as int?,
+      backgroundUploadLimit: fields[2] as int?,
+      bannerUploadLimit: fields[3] as int?,
+      contactAccount: fields[4] as PleromaAccount?,
+      email: fields[5] as String?,
+      languages: (fields[6] as List?)?.cast<String>(),
+      maxTootChars: fields[7] as int?,
+      pleroma: fields[8] as PleromaInstancePleromaPart?,
+      pollLimits: fields[9] as PleromaInstancePollLimits?,
+      registrations: fields[10] as bool?,
+      shortDescription: fields[11] as String?,
+      stats: fields[12] as MastodonInstanceStats?,
+      thumbnail: fields[13] as String?,
+      title: fields[14] as String?,
+      uploadLimit: fields[15] as int?,
+      uri: fields[16] as String?,
+      urls: fields[17] as MastodonUrls?,
+      vapidPublicKey: fields[18] as String?,
+      version: fields[19] as String?,
+      backgroundImage: fields[20] as String?,
+      chatLimit: fields[21] as int?,
+      description: fields[22] as String?,
+      descriptionLimit: fields[23] as int?,
+      invitesEnabled: fields[24] as bool?,
     );
   }
 
@@ -380,10 +380,10 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
 PleromaInstanceHistory _$PleromaInstanceHistoryFromJson(
     Map<String, dynamic> json) {
   return PleromaInstanceHistory(
-    logins: json['logins'] as String,
-    registrations: json['registrations'] as String,
-    statuses: json['statuses'] as String,
-    week: json['week'] as String,
+    logins: json['logins'] as String?,
+    registrations: json['registrations'] as String?,
+    statuses: json['statuses'] as String?,
+    week: json['week'] as String?,
   );
 }
 
@@ -416,10 +416,10 @@ PleromaInstancePleromaPartMetadataFieldLimits
     _$PleromaInstancePleromaPartMetadataFieldLimitsFromJson(
         Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadataFieldLimits(
-    maxFields: json['max_fields'] as int,
-    maxRemoteFields: json['max_remote_fields'] as int,
-    nameLength: json['name_length'] as int,
-    valueLength: json['value_length'] as int,
+    maxFields: json['max_fields'] as int?,
+    maxRemoteFields: json['max_remote_fields'] as int?,
+    nameLength: json['name_length'] as int?,
+    valueLength: json['value_length'] as int?,
   );
 }
 
@@ -436,8 +436,8 @@ PleromaInstancePleromaPartMetadataFederationMfrObjectAge
     _$PleromaInstancePleromaPartMetadataFederationMfrObjectAgeFromJson(
         Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
-    threshold: json['threshold'] as int,
-    actions: (json['actions'] as List)?.map((e) => e as String)?.toList(),
+    threshold: json['threshold'] as int?,
+    actions: (json['actions'] as List?)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -453,15 +453,15 @@ PleromaInstancePleromaPartMetadataFederation
     _$PleromaInstancePleromaPartMetadataFederationFromJson(
         Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadataFederation(
-    enabled: json['enabled'] as bool,
-    exclusions: json['exclusions'] as bool,
+    enabled: json['enabled'] as bool?,
+    exclusions: json['exclusions'] as bool?,
     mrfObjectAge: json['mrf_object_age'] == null
         ? null
         : PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
             json['mrf_object_age'] as Map<String, dynamic>),
     mrfPolicies:
-        (json['mrf_policies'] as List)?.map((e) => e as String)?.toList(),
-    quarantinedInstances: (json['quarantined_instances'] as List)
+        (json['mrf_policies'] as List?)?.map((e) => e as String)?.toList(),
+    quarantinedInstances: (json['quarantined_instances'] as List?)
         ?.map((e) => e as String)
         ?.toList(),
   );
@@ -480,14 +480,14 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFederationToJson(
 PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
     Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadata(
-    features: (json['features'] as List)?.map((e) => e as String)?.toList(),
+    features: (json['features'] as List?)?.map((e) => e as String)?.toList(),
     federation: json['federation'] == null
         ? null
         : PleromaInstancePleromaPartMetadataFederation.fromJson(
             json['federation'] as Map<String, dynamic>),
     postFormats:
-        (json['post_formats'] as List)?.map((e) => e as String)?.toList(),
-    accountActivationRequired: json['account_activation_required'] as bool,
+        (json['post_formats'] as List?)?.map((e) => e as String)?.toList(),
+    accountActivationRequired: json['account_activation_required'] as bool?,
     fieldsLimits: json['fields_limits'] == null
         ? null
         : PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
@@ -508,10 +508,10 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
 PleromaInstancePollLimits _$PleromaInstancePollLimitsFromJson(
     Map<String, dynamic> json) {
   return PleromaInstancePollLimits(
-    maxExpiration: json['max_expiration'] as int,
-    maxOptionChars: json['max_option_chars'] as int,
-    maxOptions: json['max_options'] as int,
-    minExpiration: json['min_expiration'] as int,
+    maxExpiration: json['max_expiration'] as int?,
+    maxOptionChars: json['max_option_chars'] as int?,
+    maxOptions: json['max_options'] as int?,
+    minExpiration: json['min_expiration'] as int?,
   );
 }
 
@@ -526,16 +526,16 @@ Map<String, dynamic> _$PleromaInstancePollLimitsToJson(
 
 PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
   return PleromaInstance(
-    approvalRequired: json['approval_required'] as bool,
-    avatarUploadLimit: json['avatar_upload_limit'] as int,
-    backgroundUploadLimit: json['background_upload_limit'] as int,
-    bannerUploadLimit: json['banner_upload_limit'] as int,
+    approvalRequired: json['approval_required'] as bool?,
+    avatarUploadLimit: json['avatar_upload_limit'] as int?,
+    backgroundUploadLimit: json['background_upload_limit'] as int?,
+    bannerUploadLimit: json['banner_upload_limit'] as int?,
     contactAccount: json['contact_account'] == null
         ? null
         : PleromaAccount.fromJson(
             json['contact_account'] as Map<String, dynamic>),
-    email: json['email'] as String,
-    languages: (json['languages'] as List)?.map((e) => e as String)?.toList(),
+    email: json['email'] as String?,
+    languages: (json['languages'] as List?)?.map((e) => e as String)?.toList(),
     maxTootChars: PleromaInstance.parseMaxTootChars(json['max_toot_chars']),
     pleroma: json['pleroma'] == null
         ? null
@@ -545,25 +545,25 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaInstancePollLimits.fromJson(
             json['poll_limits'] as Map<String, dynamic>),
-    registrations: json['registrations'] as bool,
-    shortDescription: json['short_description'] as String,
+    registrations: json['registrations'] as bool?,
+    shortDescription: json['short_description'] as String?,
     stats: json['stats'] == null
         ? null
         : MastodonInstanceStats.fromJson(json['stats'] as Map<String, dynamic>),
-    thumbnail: json['thumbnail'] as String,
-    title: json['title'] as String,
-    uploadLimit: json['upload_limit'] as int,
-    uri: json['uri'] as String,
+    thumbnail: json['thumbnail'] as String?,
+    title: json['title'] as String?,
+    uploadLimit: json['upload_limit'] as int?,
+    uri: json['uri'] as String?,
     urls: json['urls'] == null
         ? null
         : MastodonUrls.fromJson(json['urls'] as Map<String, dynamic>),
-    vapidPublicKey: json['vapid_public_key'] as String,
-    version: json['version'] as String,
-    backgroundImage: json['background_image'] as String,
-    chatLimit: json['chat_limit'] as int,
-    description: json['description'] as String,
-    descriptionLimit: json['description_limit'] as int,
-    invitesEnabled: json['invites_enabled'] as bool,
+    vapidPublicKey: json['vapid_public_key'] as String?,
+    version: json['version'] as String?,
+    backgroundImage: json['background_image'] as String?,
+    chatLimit: json['chat_limit'] as int?,
+    description: json['description'] as String?,
+    descriptionLimit: json['description_limit'] as int?,
+    invitesEnabled: json['invites_enabled'] as bool?,
   );
 }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -28,10 +27,10 @@ class PleromaOAuthToken implements IJsonObject {
   final dynamic createdAt;
 
   PleromaOAuthToken({
-    this.accessToken,
-    this.tokenType,
-    this.scope,
-    this.createdAt,
+    required this.accessToken,
+    required this.tokenType,
+    required this.scope,
+    required this.createdAt,
   });
 
   @override
@@ -74,16 +73,16 @@ class PleromaOAuthAuthorizeRequest {
   /// Forces the user to re-login,
   /// which is necessary for authorizing with multiple accounts from the same instance.
 
-  final bool forceLogin;
+  final bool? forceLogin;
   @JsonKey(name: "response_type")
 
   ///  should be always code for this request
 
-  final String responseType;
+  final String? responseType;
 
   /// from application object
   @JsonKey(name: "client_id")
-  final String clientId;
+  final String? clientId;
   @JsonKey(name: "redirect_uri")
 
   /// Set a URI to redirect the user to.
@@ -91,18 +90,18 @@ class PleromaOAuthAuthorizeRequest {
   /// then the authorization code will be shown instead.
   /// Must match one of the redirect URIs declared during app registration.
 
-  final String redirectUri;
+  final String? redirectUri;
 
   /// List of requested OAuth scopes, separated by spaces (or by pluses,
   /// if using query parameters). Must be a subset of scopes declared during
   /// app registration. If not provided, defaults to read.
-  final String scope;
+  final String? scope;
 
   PleromaOAuthAuthorizeRequest(
-      {@required this.forceLogin,
-      @required this.clientId,
-      @required this.redirectUri,
-      @required this.scope,
+      {required this.forceLogin,
+      required this.clientId,
+      required this.redirectUri,
+      required this.scope,
       this.responseType = "code"});
 
   factory PleromaOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
@@ -117,27 +116,27 @@ class PleromaOAuthAuthorizeRequest {
 @JsonSerializable()
 class PleromaOAuthAccountTokenRequest {
   @JsonKey(name: "grant_type")
-  final String grantType;
+  final String? grantType;
 
   /// A user authorization code, obtained via /oauth/authorize
-  final String code;
+  final String? code;
 
-  final String scope;
+  final String? scope;
 
   @JsonKey(name: "redirect_uri")
-  final String redirectUri;
+  final String? redirectUri;
 
   @JsonKey(name: "client_id")
-  String clientId;
+  String? clientId;
   @JsonKey(name: "client_secret")
-  String clientSecret;
+  String? clientSecret;
 
   PleromaOAuthAccountTokenRequest(
-      {@required this.code,
-      @required this.scope,
-      @required this.redirectUri,
-      @required this.clientId,
-      @required this.clientSecret,
+      {required this.code,
+      required this.scope,
+      required this.redirectUri,
+      required this.clientId,
+      required this.clientSecret,
       this.grantType = "authorization_code"});
 
   @override
@@ -160,17 +159,17 @@ class PleromaOAuthAccountTokenRequest {
 @JsonSerializable()
 class PleromaOAuthAppTokenRequest {
   @JsonKey(name: "grant_type")
-  final String grantType;
+  final String? grantType;
 
-  final String scope;
+  final String? scope;
 
   @JsonKey(name: "redirect_uri")
-  final String redirectUri;
+  final String? redirectUri;
 
   @JsonKey(name: "client_id")
-  String clientId;
+  String? clientId;
   @JsonKey(name: "client_secret")
-  String clientSecret;
+  String? clientSecret;
 
   PleromaOAuthAppTokenRequest(
       {this.scope,
@@ -198,16 +197,16 @@ class PleromaOAuthAppTokenRequest {
 @JsonSerializable()
 class PleromaOAuthAppTokenRevokeRequest {
   @JsonKey(name: "client_id")
-  String clientId;
+  String? clientId;
   @JsonKey(name: "client_secret")
-  String clientSecret;
+  String? clientSecret;
 
-  String token;
+  String? token;
 
   PleromaOAuthAppTokenRevokeRequest(
-      {@required this.clientId,
-      @required this.clientSecret,
-      @required this.token});
+      {required this.clientId,
+      required this.clientSecret,
+      required this.token});
 
   @override
   String toString() {

@@ -1,31 +1,67 @@
-import 'package:fedi/enum/enum_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 enum PendingState {
-  notSentYet, published, pending, fail,
+  notSentYet,
+  published,
+  pending,
+  fail,
 }
 
+const _notSenYetPendingStateJsonValue = "notSentYet";
+const _publishedPendingStateJsonValue = "published";
+const _pendingPendingStateJsonValue = "pending";
+const _failPendingStateJsonValue = "fail";
 
-extension PendingStateJsonValueExtension on PendingState {
-  String toJsonValue() => _pendingStateValues.enumToValueMap[this];
+extension PendingStateExtension on PendingState {
+  String toJsonValue() {
+    String result;
+
+    switch (this) {
+      case PendingState.notSentYet:
+        result = _notSenYetPendingStateJsonValue;
+        break;
+      case PendingState.pending:
+        result = _publishedPendingStateJsonValue;
+        break;
+      case PendingState.published:
+        result = _pendingPendingStateJsonValue;
+        break;
+      case PendingState.fail:
+        result = _failPendingStateJsonValue;
+        break;
+    }
+
+    return result;
+  }
 }
 
 extension PendingStateStringExtension on String {
   PendingState toPendingState() {
-    var pendingState = _pendingStateValues.valueToEnumMap[this];
-    return pendingState;
+    PendingState result;
+
+    switch (this) {
+      case _notSenYetPendingStateJsonValue:
+        result = PendingState.notSentYet;
+        break;
+      case _publishedPendingStateJsonValue:
+        result = PendingState.published;
+        break;
+      case _pendingPendingStateJsonValue:
+        result = PendingState.pending;
+        break;
+      case _failPendingStateJsonValue:
+        result = PendingState.fail;
+        break;
+      // can't parse
+      default:
+        throw "Invalid PendingState $PendingState";
+    }
+
+    return result;
   }
 }
 
-final _pendingStateValues = EnumValues({
-  "notSentYet": PendingState.notSentYet,
-  "published": PendingState.published,
-  "pending": PendingState.pending,
-  "fail": PendingState.fail,
-});
-
-class PendingStateTypeConverter
-    implements JsonConverter<PendingState, String> {
+class PendingStateTypeConverter implements JsonConverter<PendingState, String> {
   const PendingStateTypeConverter();
 
   @override

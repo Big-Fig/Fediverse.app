@@ -7,11 +7,11 @@ abstract class IPleromaChatCurrentBloc implements IDisposable {
   static IPleromaChatCurrentBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaChatCurrentBloc>(context, listen: listen);
 
-  IPleromaChat get currentChat;
+  IPleromaChat? get currentChat;
 
-  Stream<IPleromaChat> get currentChatStream;
+  Stream<IPleromaChat?> get currentChatStream;
 
-  void onChatOpened(IPleromaChat chat);
+  void onChatOpened(IPleromaChat? chat);
 
-  void onChatClosed(IPleromaChat chat);
+  void onChatClosed(IPleromaChat? chat);
 }

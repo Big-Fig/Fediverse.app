@@ -52,44 +52,44 @@ class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
 class _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _PostMessageSelectMediaAttachmentTypeToPickActionWidget(
-        iconData: FediIcons.audio,
-        label: S.of(context).app_media_attachment_type_audio,
-        onTap: () async {
-          var pickedFilesResult =
-              await FilePicker.platform.pickFiles(type: FileType.audio);
-          var pickedFile;
+      iconData: FediIcons.audio,
+      label: S.of(context).app_media_attachment_type_audio,
+      onTap: () async {
+        var pickedFilesResult =
+            await FilePicker.platform.pickFiles(type: FileType.audio);
+        var pickedFile;
 
-          if (pickedFilesResult.files?.isNotEmpty == true) {
-            pickedFile = File(pickedFilesResult.files.first.path);
-          }
-          if (pickedFile != null) {
-            var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
-              type: MediaDeviceFileType.other,
-              isNeedDeleteAfterUsage: false,
-              originalFile: pickedFile,
-            );
+        if (pickedFilesResult?.files.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult!.files.first.path!);
+        }
+        if (pickedFile != null) {
+          var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
+            type: MediaDeviceFileType.other,
+            isNeedDeleteAfterUsage: false,
+            originalFile: pickedFile,
+          );
 
-            var mediaDeviceFile =
-                await mediaDeviceFileMetadata.loadMediaDeviceFile();
-            var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
-            await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
-          }
-        });
+          var mediaDeviceFile =
+              await mediaDeviceFileMetadata.loadMediaDeviceFile();
+          var attachmentsCollectionBloc =
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+          await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
+        }
+      },
+    );
   }
 }
 
 class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -101,8 +101,8 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
         var pickedFilesResult = await FilePicker.platform.pickFiles();
         var pickedFile;
 
-        if (pickedFilesResult.files?.isNotEmpty == true) {
-          pickedFile = File(pickedFilesResult.files.first.path);
+        if (pickedFilesResult?.files?.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult!.files.first.path!);
         }
         if (pickedFile != null) {
           var mediaDeviceFileMetadata = FileMediaDeviceFileMetadata(
@@ -125,7 +125,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
 class _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -159,7 +159,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget
 class _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -193,7 +193,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget
 class _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -221,10 +221,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget
 class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
     extends StatelessWidget {
   const _PostMessageSelectMediaAttachmentTypeToPickActionWidget({
-    Key key,
-    @required this.iconData,
-    @required this.label,
-    @required this.onTap,
+    Key? key,
+    required this.iconData,
+    required this.label,
+    required this.onTap,
   }) : super(key: key);
 
   final IconData iconData;

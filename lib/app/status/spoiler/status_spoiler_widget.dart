@@ -23,16 +23,16 @@ class StatusSpoilerWidget extends StatelessWidget {
     var uiSettingsBloc = IUiSettingsBloc.of(context);
     var fediUiTextTheme = IFediUiTextTheme.of(context);
 
-    return StreamBuilder<EmojiText>(
+    return StreamBuilder<EmojiText?>(
       stream: statusBloc.spoilerTextWithEmojisStream,
       builder: (context, snapshot) {
         var spoilerEmojiText = snapshot.data;
         if (spoilerEmojiText?.text?.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
-        return Provider<EmojiText>.value(
+        return Provider<EmojiText?>.value(
           value: spoilerEmojiText,
-          child: StreamBuilder<UiSettingsFontSize>(
+          child: StreamBuilder<UiSettingsFontSize?>(
               stream: uiSettingsBloc.statusFontSizeStream,
               builder: (context, snapshot) {
                 var statusFontSize = snapshot.data;

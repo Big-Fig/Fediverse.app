@@ -8,14 +8,14 @@ import 'package:overlay_support/overlay_support.dart';
 class OverlayNotificationService extends DisposableOwner
     implements IOverlayNotificationService {
   OverlaySupportEntry showFediNotificationOverlay(Widget content,
-      {Widget leading,
-      Widget subtitle,
-      Widget trailing,
-      EdgeInsetsGeometry contentPadding,
-      Color background,
-      Color foreground,
+      {Widget? leading,
+      Widget? subtitle,
+      Widget? trailing,
+      EdgeInsetsGeometry? contentPadding,
+      Color? background,
+      Color? foreground,
       double elevation = 16,
-      Key key,
+      Key? key,
       bool autoDismiss = true,
       bool slideDismiss = false,
       NotificationPosition position = NotificationPosition.top}) {
@@ -56,10 +56,10 @@ class OverlayNotificationService extends DisposableOwner
 
   @override
   void showNotification({
-    @required Widget child,
-    @required bool slideDismissible,
-    @required Key key,
-    @required Duration duration,
+    required Widget child,
+    required bool slideDismissible,
+    required Key key,
+    required Duration duration,
   }) {
     showOverlayNotification(
       (context) {

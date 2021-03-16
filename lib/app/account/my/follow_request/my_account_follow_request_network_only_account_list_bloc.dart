@@ -12,7 +12,7 @@ abstract class IMyAccountFollowRequestNetworkOnlyAccountListBloc
       Provider.of<IMyAccountFollowRequestNetworkOnlyAccountListBloc>(context,
           listen: listen);
 
-  Future acceptFollowRequest({@required IAccount account});
+  Future acceptFollowRequest({required IAccount account});
 
-  Future rejectFollowRequest({@required IAccount account});
+  Future rejectFollowRequest({required IAccount account});
 }

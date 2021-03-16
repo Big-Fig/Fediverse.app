@@ -18,9 +18,9 @@ class ConversationChatStatusListConversationApiBloc
   final IPleromaConversationService pleromaConversationService;
 
   ConversationChatStatusListConversationApiBloc({
-    @required IConversationChat conversation,
-    @required this.pleromaConversationService,
-    @required IStatusRepository statusRepository,
+    required IConversationChat? conversation,
+    required this.pleromaConversationService,
+    required IStatusRepository statusRepository,
   }) : super(conversation: conversation, statusRepository: statusRepository);
 
   @override
@@ -28,9 +28,9 @@ class ConversationChatStatusListConversationApiBloc
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+      {required int? limit,
+      required IStatus? newerThan,
+      required IStatus? olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t conversation = $conversation"
         "\t newerThan = $newerThan"
@@ -38,7 +38,7 @@ class ConversationChatStatusListConversationApiBloc
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(
-      conversationRemoteId: conversation.remoteId,
+      conversationRemoteId: conversation!.remoteId,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
@@ -48,7 +48,7 @@ class ConversationChatStatusListConversationApiBloc
 
     if (remoteStatuses != null) {
       await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null, conversationRemoteId: conversation.remoteId);
+          listRemoteId: null, conversationRemoteId: conversation!.remoteId);
 
       return true;
     } else {
@@ -60,7 +60,7 @@ class ConversationChatStatusListConversationApiBloc
 
   static ConversationChatStatusListConversationApiBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat conversation,
+    required IConversationChat? conversation,
   }) =>
       ConversationChatStatusListConversationApiBloc(
         conversation: conversation,
@@ -79,5 +79,5 @@ class ConversationChatStatusListConversationApiBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 }

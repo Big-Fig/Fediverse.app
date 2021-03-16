@@ -52,7 +52,7 @@ Widget _itemBuilder(BuildContext context) =>
 
 Widget _itemContextBuilder(
   BuildContext context, {
-  @required Widget child,
+  required Widget child,
 }) {
   return DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
     update: (context, chatMessage, _) =>

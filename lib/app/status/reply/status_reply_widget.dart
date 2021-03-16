@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 class StatusReplyWidget extends StatelessWidget {
   final bool collapsible;
 
-  StatusReplyWidget({@required this.collapsible});
+  StatusReplyWidget({required this.collapsible});
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +36,13 @@ class StatusReplyWidget extends StatelessWidget {
           case AsyncInitLoadingState.notStarted:
           case AsyncInitLoadingState.loading:
             return const _StatusReplyLoadingWidget();
-            break;
           case AsyncInitLoadingState.finished:
-            return Provider<IStatus>.value(
+            return Provider<IStatus?>.value(
               value: statusReplyLoaderBloc.inReplyToStatus,
               child: _buildStatusListItemTimelineWidget(),
             );
-            break;
           case AsyncInitLoadingState.failed:
             return _StatusReplyFailedWidget();
-            break;
         }
 
         throw "Invalid loadingState $loadingState";
@@ -69,7 +66,7 @@ class StatusReplyWidget extends StatelessWidget {
 
 class _StatusReplyFailedWidget extends StatelessWidget {
   const _StatusReplyFailedWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -85,7 +82,7 @@ class _StatusReplyFailedWidget extends StatelessWidget {
 
 class _StatusReplyLoadingWidget extends StatelessWidget {
   const _StatusReplyLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

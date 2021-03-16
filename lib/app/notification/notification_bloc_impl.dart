@@ -7,6 +7,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/stream/stream_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
@@ -16,20 +17,26 @@ var _logger = Logger("notification_bloc_impl.dart");
 
 class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
-  INotification get notification => _notificationSubject.value;
+  INotification get notification => _notificationSubject.value!;
 
   @override
   Stream<INotification> get notificationStream =>
-      _notificationSubject.stream.distinct();
+      _notificationSubject.stream.mapToNotNull().distinct();
 
   static NotificationBloc createFromContext(
-          BuildContext context, INotification notification,
-          {bool isNeedWatchLocalRepositoryForUpdates = true}) =>
+    BuildContext context,
+    INotification notification, {
+    bool isNeedWatchLocalRepositoryForUpdates = true,
+  }) =>
       NotificationBloc(
-        pleromaNotificationService:
-            IPleromaNotificationService.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
+        pleromaNotificationService: IPleromaNotificationService.of(
+          context,
+          listen: false,
+        ),
+        notificationRepository: INotificationRepository.of(
+          context,
+          listen: false,
+        ),
         notification: notification,
         needRefreshFromNetworkOnInit: false,
         isNeedWatchLocalRepositoryForUpdates:
@@ -43,9 +50,9 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   NotificationBloc({
-    @required this.pleromaNotificationService,
-    @required this.notificationRepository,
-    @required INotification notification,
+    required this.pleromaNotificationService,
+    required this.notificationRepository,
+    required INotification notification,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -54,29 +61,40 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }) : _notificationSubject = BehaviorSubject.seeded(notification) {
     addDisposable(subject: _notificationSubject);
 
-    assert(needRefreshFromNetworkOnInit != null);
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
-
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
-        _init(notification, needRefreshFromNetworkOnInit);
+        _init(
+          notification,
+          needRefreshFromNetworkOnInit,
+        );
       });
     } else {
-      _init(notification, needRefreshFromNetworkOnInit);
+      _init(
+        notification,
+        needRefreshFromNetworkOnInit,
+      );
     }
   }
 
-  void _init(INotification notification, bool needRefreshFromNetworkOnInit) {
+  void _init(
+    INotification notification,
+    bool needRefreshFromNetworkOnInit,
+  ) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
-            streamSubscription: notificationRepository
-                .watchByRemoteId(notification.remoteId)
-                .listen((updatedNotification) {
-          if (updatedNotification != null) {
-            _notificationSubject.add(updatedNotification);
-          }
-        }));
+          streamSubscription: notificationRepository
+              .watchByRemoteId(
+            notification.remoteId,
+          )
+              .listen(
+            (updatedNotification) {
+              if (updatedNotification != null) {
+                _notificationSubject.add(updatedNotification);
+              }
+            },
+          ),
+        );
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -85,53 +103,66 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   @override
-  IAccount get account => notification?.account;
+  IAccount? get account => notification.account;
 
   @override
-  Stream<IAccount> get accountStream =>
-      notificationStream.map((notification) => notification.account).distinct();
-
-  @override
-  IStatus get status => notification?.status;
-
-  @override
-  Stream<IStatus> get statusStream =>
-      notificationStream.map((notification) => notification.status).distinct();
-
-  @override
-  String get chatMessageRemoteId => notification.chatMessageRemoteId;
-
-  @override
-  Stream<String> get chatMessageRemoteIdStream => notificationStream
-      .map((notification) => notification.chatMessageRemoteId);
-
-  @override
-  String get chatRemoteId => notification.chatRemoteId;
-
-  @override
-  Stream<String> get chatRemoteIdStream =>
-      notificationStream.map((notification) => notification.chatRemoteId);
-
-  @override
-  DateTime get createdAt => notification?.createdAt;
-
-  @override
-  Stream<DateTime> get createdAtStream => notificationStream
-      .map((notification) => notification?.createdAt)
+  Stream<IAccount?> get accountStream => notificationStream
+      .map(
+        (notification) => notification.account,
+      )
       .distinct();
 
   @override
-  bool get unread => notification?.unread;
+  IStatus? get status => notification.status;
 
   @override
-  Stream<bool> get unreadStream =>
-      notificationStream.map((notification) => notification?.unread).distinct();
+  Stream<IStatus?> get statusStream => notificationStream
+      .map(
+        (notification) => notification.status,
+      )
+      .distinct();
+
+  @override
+  String? get chatMessageRemoteId => notification.chatMessageRemoteId;
+
+  @override
+  Stream<String?> get chatMessageRemoteIdStream => notificationStream.map(
+        (notification) => notification.chatMessageRemoteId,
+      );
+
+  @override
+  String? get chatRemoteId => notification.chatRemoteId;
+
+  @override
+  Stream<String?> get chatRemoteIdStream =>
+      notificationStream.map((notification) => notification.chatRemoteId);
+
+  @override
+  DateTime get createdAt => notification.createdAt;
+
+  @override
+  Stream<DateTime> get createdAtStream => notificationStream
+      .map((notification) => notification.createdAt)
+      .distinct();
+
+  @override
+  bool get unread => notification.unread == true;
+
+  @override
+  Stream<bool> get unreadStream => notificationStream
+      .map(
+        (notification) => notification.unread == true,
+      )
+      .distinct();
 
   Future refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
-        notificationRemoteId: remoteId);
+      notificationRemoteId: remoteId,
+    );
 
-    return _updateByRemoteNotification(remoteNotification);
+    if (remoteNotification != null) {
+      await _updateByRemoteNotification(remoteNotification);
+    }
   }
 
   Future _updateByRemoteNotification(IPleromaNotification remoteNotification) {
@@ -163,7 +194,8 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Future dismiss() async {
     await pleromaNotificationService.dismissNotification(
-        notificationRemoteId: notification.remoteId);
+      notificationRemoteId: notification.remoteId,
+    );
 
     await notificationRepository.dismiss(notification: notification);
   }
@@ -171,7 +203,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
   Future markAsRead() async {
     await notificationRepository.markAsRead(notification: notification);
-    if (pleromaNotificationService.isPleroma) {
+    if (pleromaNotificationService.isPleroma!) {
       unawaited(
         pleromaNotificationService.markAsReadSingle(
           notificationRemoteId: notification.remoteId,
@@ -181,11 +213,12 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   @override
-  bool get dismissed => notification.dismissed;
+  bool get dismissed => notification.dismissed == true;
 
   @override
-  Stream<bool> get dismissedStream =>
-      notificationStream.map((notification) => notification.dismissed);
+  Stream<bool?> get dismissedStream => notificationStream.map(
+        (notification) => notification.dismissed == true,
+      );
 
   @override
   NotificationState get state => NotificationState(
@@ -197,7 +230,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Stream<NotificationState> get stateStream => Rx.combineLatest2(
         dismissedStream,
         unreadStream,
-        (dismissed, unread) => NotificationState(
+        (dynamic dismissed, dynamic unread) => NotificationState(
           dismissed: dismissed,
           unread: unread,
         ),

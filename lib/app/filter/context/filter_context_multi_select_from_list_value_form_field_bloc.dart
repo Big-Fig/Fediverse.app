@@ -3,6 +3,4 @@ import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
 
 abstract class IFilterContextMultiSelectFromListValueFormFieldBloc
     implements
-        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType> {
-
-}
+        IMultiSelectFromListValueFormFieldBloc<MastodonFilterContextType?> {}

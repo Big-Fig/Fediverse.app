@@ -18,7 +18,7 @@ abstract class IPleromaChatMessageRepository
           {bool listen = true}) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-  Future<IPleromaChatMessage> findByRemoteId(String remoteId);
+  Future<IPleromaChatMessage?> findByRemoteId(String remoteId);
 
   Future deleteByRemoteId(String remoteId);
 
@@ -26,21 +26,21 @@ abstract class IPleromaChatMessageRepository
     List<pleroma_lib.IPleromaChatMessage> remoteChatMessages,
   );
 
-  Stream<IPleromaChatMessage> watchByRemoteId(
-    String remoteId,
+  Stream<IPleromaChatMessage?> watchByRemoteId(
+    String? remoteId,
   );
 
-  Future<IPleromaChatMessage> findByOldPendingRemoteId(
+  Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   );
 
-  Stream<IPleromaChatMessage> watchByOldPendingRemoteId(
+  Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   );
 
   Future updateLocalChatMessageByRemoteChatMessage({
-    @required IPleromaChatMessage oldLocalChatMessage,
-    @required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
+    required IPleromaChatMessage oldLocalChatMessage,
+    required pleroma_lib.IPleromaChatMessage newRemoteChatMessage,
   });
 
   Future upsertRemoteChatMessage(
@@ -48,51 +48,51 @@ abstract class IPleromaChatMessageRepository
   );
 
   Future<List<IPleromaChatMessage>> getChatMessages({
-    @required PleromaChatMessageRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChatMessage> pagination,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChatMessage>? pagination,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Stream<List<IPleromaChatMessage>> watchChatMessages({
-    @required PleromaChatMessageRepositoryFilters filters,
-    @required RepositoryPagination<IPleromaChatMessage> pagination,
+    required PleromaChatMessageRepositoryFilters? filters,
+    required RepositoryPagination<IPleromaChatMessage>? pagination,
     PleromaChatMessageOrderingTermData orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
   Future<IPleromaChatMessage> getChatMessage({
-    @required PleromaChatMessageRepositoryFilters filters,
-    PleromaChatMessageOrderingTermData orderingTermData =
+    required PleromaChatMessageRepositoryFilters? filters,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
-  Stream<IPleromaChatMessage> watchChatMessage({
-    @required PleromaChatMessageRepositoryFilters filters,
-    PleromaChatMessageOrderingTermData orderingTermData =
+  Stream<IPleromaChatMessage?> watchChatMessage({
+    required PleromaChatMessageRepositoryFilters? filters,
+    PleromaChatMessageOrderingTermData? orderingTermData =
         PleromaChatMessageOrderingTermData.createdAtDesc,
   });
 
-  Stream<IPleromaChatMessage> watchChatLastChatMessage({
-    @required IPleromaChat chat,
+  Stream<IPleromaChatMessage?> watchChatLastChatMessage({
+    required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Future<IPleromaChatMessage> getChatLastChatMessage({
-    @required IPleromaChat chat,
+  Future<IPleromaChatMessage?> getChatLastChatMessage({
+    required IPleromaChat chat,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Future<Map<IPleromaChat, IPleromaChatMessage>> getChatsLastChatMessage({
-    @required List<IPleromaChat> chats,
+  Future<Map<IPleromaChat, IPleromaChatMessage?>> getChatsLastChatMessage({
+    required List<IPleromaChat> chats,
     bool onlyPendingStatePublishedOrNull = false,
   });
 
   Future markChatMessageAsDeleted({
-    @required String chatMessageRemoteId,
+    required String chatMessageRemoteId,
   });
 
   Future markChatMessageAsHiddenLocallyOnDevice({
-    @required int chatMessageLocalId,
+    required int chatMessageLocalId,
   });
 }

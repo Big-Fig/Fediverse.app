@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
@@ -28,28 +29,27 @@ final _logger = Logger("timeline_tab_list_bloc_impl.dart");
 
 class TimelineTabListBloc extends AsyncInitLoadingBloc
     implements ITimelineTabListBloc {
-  BehaviorSubject<TimelineTabBlocsList> timelineTabBlocsListSubject =
+  BehaviorSubject<TimelineTabBlocsList?> timelineTabBlocsListSubject =
       BehaviorSubject();
 
   @override
-  Stream<TimelineTabBlocsList> get timelineTabBlocsListStream =>
+  Stream<TimelineTabBlocsList?> get timelineTabBlocsListStream =>
       timelineTabBlocsListSubject.stream;
 
   @override
-  TimelineTabBlocsList get timelineTabBlocsList =>
+  TimelineTabBlocsList? get timelineTabBlocsList =>
       timelineTabBlocsListSubject.value;
 
   @override
-  Stream<ITimelineTabBloc> get mainTimelineTabBlocStream =>
+  Stream<ITimelineTabBloc?> get mainTimelineTabBlocStream =>
       timelineTabBlocsListStream.map((timelineTabBlocsList) {
         var mainTimelineTabBloc;
 
         if (timelineTabBlocsList != null) {
           mainTimelineTabBloc =
-              timelineTabBlocsList.timelineTabBlocs.firstWhere(
+              timelineTabBlocsList.timelineTabBlocs.firstWhereOrNull(
             (timelineTabBloc) =>
                 timelineTabBloc.timeline.type == TimelineType.home,
-            orElse: () => null,
           );
         }
         return mainTimelineTabBloc;
@@ -70,26 +70,26 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final TickerProvider vsync;
   final IFilterRepository filterRepository;
-  VoidCallback tabControllerListener;
+  VoidCallback? tabControllerListener;
 
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   TimelineTabListBloc({
-    @required this.preferencesService,
-    @required this.currentAuthInstanceBloc,
-    @required this.pleromaTimelineService,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.myAccountBloc,
-    @required this.webSocketsSettingsBloc,
-    @required this.currentInstanceBloc,
-    @required this.timelinesHomeTabStorageLocalPreferences,
-    @required this.pleromaWebSocketsService,
-    @required this.chatNewMessagesHandlerBloc,
-    @required this.webSocketsHandlerManagerBloc,
-    @required this.vsync,
-    @required this.filterRepository,
-    @required this.paginationSettingsBloc,
+    required this.preferencesService,
+    required this.currentAuthInstanceBloc,
+    required this.pleromaTimelineService,
+    required this.pleromaAccountService,
+    required this.statusRepository,
+    required this.myAccountBloc,
+    required this.webSocketsSettingsBloc,
+    required this.currentInstanceBloc,
+    required this.timelinesHomeTabStorageLocalPreferences,
+    required this.pleromaWebSocketsService,
+    required this.chatNewMessagesHandlerBloc,
+    required this.webSocketsHandlerManagerBloc,
+    required this.vsync,
+    required this.filterRepository,
+    required this.paginationSettingsBloc,
   }) {
     addDisposable(subject: timelineTabBlocsListSubject);
 
@@ -106,7 +106,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   Future disposeTabControllerListener() async {
     if (tabControllerListener != null &&
         timelineTabBlocsList?.tabController != null) {
-      timelineTabBlocsList.tabController.removeListener(tabControllerListener);
+      timelineTabBlocsList!.tabController
+          .removeListener(tabControllerListener!);
       tabControllerListener = null;
     }
 
@@ -133,13 +134,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     updateTabBlocsInProgress = true;
 
-    var oldTimelineIds = timelineTabBlocsList?.timelineTabBlocs
-            ?.map((timelineTabBloc) => timelineTabBloc.timelineId)
-            ?.toList() ??
-        [];
+    var oldTimelineIds = timelineTabBlocsList?.timelineIds;
 
     var newTimelineIds =
-        timelinesHomeTabStorageLocalPreferences.value.timelineIds;
+        timelinesHomeTabStorageLocalPreferences.value!.timelineIds;
 
     if (listEquals(oldTimelineIds, newTimelineIds)) {
       return;
@@ -154,7 +152,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     var oldSelectedIndex = oldTabController?.index;
 
-    ITimelineTabBloc oldSelectedBloc;
+    ITimelineTabBloc? oldSelectedBloc;
     if (oldBlocs != null && oldSelectedIndex != null) {
       oldSelectedBloc = oldBlocs[oldSelectedIndex];
     }
@@ -183,11 +181,11 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       await timelineTabBloc.performAsyncInit();
       newTabBlocs.add(timelineTabBloc);
     }
-    int initialIndex;
+    int? initialIndex;
 
     if (oldSelectedBloc != null) {
       initialIndex = newTabBlocs
-          .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
+          .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc!.timelineId);
 
       if (initialIndex == -1) {
         initialIndex = null;
@@ -218,7 +216,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         );
       }
     };
-    tabController.addListener(tabControllerListener);
+    tabController.addListener(tabControllerListener!);
 
     timelineTabBlocsListSubject.add(
       TimelineTabBlocsList(
@@ -237,7 +235,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
   static TimelineTabListBloc createFromContext(
     BuildContext context, {
-    @required TickerProvider vsync,
+    required TickerProvider vsync,
   }) =>
       TimelineTabListBloc(
         vsync: vsync,

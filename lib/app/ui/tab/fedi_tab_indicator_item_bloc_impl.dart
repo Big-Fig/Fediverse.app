@@ -1,7 +1,6 @@
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_item_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:flutter/widgets.dart';
 
 class FediTabIndicatorItemBloc<T> extends DisposableOwner
     implements IFediTabIndicatorItemBloc<T> {
@@ -19,9 +18,9 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
       .map((selectedItem) => selectedItem == item);
 
   FediTabIndicatorItemBloc({
-    @required this.fediTabIndicatorBloc,
-    @required this.item,
-    @required this.index,
+    required this.fediTabIndicatorBloc,
+    required this.item,
+    required this.index,
   });
 
   @override

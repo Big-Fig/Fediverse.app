@@ -4,14 +4,13 @@ import 'package:fedi/media/device/file/media_device_file_bloc_impl.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/photo_manager/photo_manager_media_device_file_model.dart';
 import 'package:fedi/media/device/photo_manager_media_device_adapter.dart';
-import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class PhotoManagerMediaDeviceFileBloc extends MediaDeviceFileBloc {
   final PhotoManagerMediaDeviceFileMetadata photoManagerMediaDeviceFileMetadata;
 
   PhotoManagerMediaDeviceFileBloc({
-    @required this.photoManagerMediaDeviceFileMetadata,
+    required this.photoManagerMediaDeviceFileMetadata,
   }) : super(
           mediaDeviceFileMetadata: photoManagerMediaDeviceFileMetadata,
         );
@@ -20,7 +19,7 @@ class PhotoManagerMediaDeviceFileBloc extends MediaDeviceFileBloc {
       photoManagerMediaDeviceFileMetadata.assetEntity;
 
   @override
-  Future<Uint8List> loadThumbData({int width, int height}) =>
+  Future<Uint8List?> loadThumbData({required int width, required int height}) =>
       assetEntity.thumbDataWithSize(width, height);
 
   @override

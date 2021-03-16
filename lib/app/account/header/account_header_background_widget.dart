@@ -14,7 +14,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: accountBloc.headerStream.distinct(),
       builder: (context, snapshot) {
         var header = snapshot.data;
@@ -35,7 +35,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
   const _AccountHeaderBackgroundImageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,7 +72,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
   const _AccountHeaderBackgroundErrorWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -89,7 +89,7 @@ class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {
   const _AccountHeaderBackgroundProgressWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -102,11 +102,11 @@ class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {
 
 class _AccountHeaderBackgroundDarkOverlayWidget extends StatelessWidget {
   const _AccountHeaderBackgroundDarkOverlayWidget({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) => Container(

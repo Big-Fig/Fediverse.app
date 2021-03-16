@@ -15,7 +15,7 @@ class PostStatusScheduleActionWidget extends StatelessWidget {
       stream: postStatusBloc.isScheduledAtExistStream,
       initialData: postStatusBloc.isScheduledAtExist,
       builder: (context, snapshot) {
-        var isScheduled = snapshot.data;
+        var isScheduled = snapshot.data!;
 
         Null Function() onPressed;
         onPressed = () {

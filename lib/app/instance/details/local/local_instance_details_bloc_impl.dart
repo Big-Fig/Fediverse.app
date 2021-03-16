@@ -14,10 +14,10 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
   final IPleromaInstanceService pleromaInstanceService;
 
   LocalInstanceDetailsBloc({
-    @required IPleromaInstance initialInstance,
-    @required this.pleromaInstanceService,
+    required IPleromaInstance? initialInstance,
+    required this.pleromaInstanceService,
   }) : super(
-          instanceUri: pleromaInstanceService.restService.baseUri,
+          instanceUri: pleromaInstanceService.restService!.baseUri,
           initialInstance: initialInstance,
         );
 
@@ -28,13 +28,13 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return LocalInstanceDetailsBloc(
       pleromaInstanceService: pleromaInstanceService,
-      initialInstance: currentAuthInstanceBloc.currentInstance.info,
+      initialInstance: currentAuthInstanceBloc.currentInstance!.info,
     );
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
+    required Widget child,
   }) {
     return DisposableProvider<IInstanceDetailsBloc>(
       create: (context) => LocalInstanceDetailsBloc.createFromContext(context),
@@ -51,7 +51,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Uri get remoteInstanceUriOrNull => null;
+  Uri? get remoteInstanceUriOrNull => null;
 
 
 }

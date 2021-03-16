@@ -34,7 +34,7 @@ class ScheduledStatusListPage extends StatelessWidget {
         },
       );
 
-  const ScheduledStatusListPage({Key key}) : super(key: key);
+  const ScheduledStatusListPage({Key? key}) : super(key: key);
 }
 
 class _ScheduledStatusListPageEmptyWidget extends StatelessWidget {

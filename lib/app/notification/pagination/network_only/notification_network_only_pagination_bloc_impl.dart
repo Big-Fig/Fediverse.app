@@ -14,9 +14,9 @@ class NotificationNetworkOnlyPaginationBloc
   final INetworkOnlyListBloc<INotification> listService;
 
   NotificationNetworkOnlyPaginationBloc({
-    @required this.listService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -27,7 +27,7 @@ class NotificationNetworkOnlyPaginationBloc
 
   static NotificationNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       NotificationNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
@@ -43,10 +43,10 @@ class NotificationNetworkOnlyPaginationBloc
 
   @override
   Future<List<INotification>> loadItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required PaginationPage<INotification> olderPage,
-    @required PaginationPage<INotification> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required PaginationPage<INotification>? olderPage,
+    required PaginationPage<INotification>? newerPage,
   }) =>
       listService.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,

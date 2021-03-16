@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,14 +12,14 @@ part 'media_settings_model.g.dart';
 class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   @HiveField(0)
   @JsonKey(name: "auto_init")
-  final bool autoInit;
+  final bool? autoInit;
   @HiveField(1)
   @JsonKey(name: "auto_play")
-  final bool autoPlay;
+  final bool? autoPlay;
 
   MediaSettings({
-    @required this.autoInit,
-    @required this.autoPlay,
+    required this.autoInit,
+    required this.autoPlay,
   });
 
   factory MediaSettings.fromJson(Map<String, dynamic> json) =>
@@ -42,8 +41,8 @@ class MediaSettings implements IJsonObject, ISettings<MediaSettings> {
   MediaSettings clone() => copyWith();
 
   MediaSettings copyWith({
-    bool autoInit,
-    bool autoPlay,
+    bool? autoInit,
+    bool? autoPlay,
   }) =>
       MediaSettings(
         autoInit:

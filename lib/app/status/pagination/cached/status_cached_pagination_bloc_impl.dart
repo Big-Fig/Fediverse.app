@@ -16,50 +16,50 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
   final IStatusCachedListBloc statusListService;
 
   StatusCachedPaginationBloc({
-    @required this.statusListService,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.statusListService,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  IPleromaApi get pleromaApi => statusListService.pleromaApi;
+  IPleromaApi get pleromaApi => statusListService!.pleromaApi;
 
   @override
   Future<List<IStatus>> loadLocalItems({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IStatus> olderPage,
-    @required CachedPaginationPage<IStatus> newerPage,
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IStatus>? olderPage,
+    required CachedPaginationPage<IStatus>? newerPage,
   }) =>
       statusListService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.first,
+        olderThan: newerPage?.items.last,
       );
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
-    @required int pageIndex,
-    @required int itemsCountPerPage,
-    @required CachedPaginationPage<IStatus> olderPage,
-    @required CachedPaginationPage<IStatus> newerPage,
+  Future refreshItemsFromRemoteForPage({
+    required int pageIndex,
+    required int? itemsCountPerPage,
+    required CachedPaginationPage<IStatus?>? olderPage,
+    required CachedPaginationPage<IStatus?>? newerPage,
   }) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
     return statusListService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.first,
+      olderThan: newerPage?.items.last,
     );
   }
 
   static StatusCachedPaginationBloc createFromContext(
     BuildContext context, {
-    int maximumCachedPagesCount,
+    int? maximumCachedPagesCount,
   }) =>
       StatusCachedPaginationBloc(
         statusListService: Provider.of<IStatusCachedListBloc>(
@@ -75,8 +75,8 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    int maximumCachedPagesCount,
+    required Widget child,
+    int? maximumCachedPagesCount,
   }) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
@@ -85,7 +85,9 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
       child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,
-          IStatus>(child: child),
+          IStatus>(
+        child: child,
+      ),
     );
   }
 }

@@ -8,11 +8,11 @@ import 'package:provider/provider.dart';
 abstract class ConversationChatPaginationListBaseWidget
     extends FediPaginationListWidget<IConversationChatWithLastMessage> {
   ConversationChatPaginationListBaseWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    required Key key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -27,7 +27,7 @@ abstract class ConversationChatPaginationListBaseWidget
   IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
           IConversationChatWithLastMessage>
       retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
+          {required bool listen}) {
     var chatPaginationListBloc = Provider.of<
         IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
             IConversationChatWithLastMessage>>(context, listen: listen);

@@ -8,7 +8,7 @@ class ChatSelectionItemWidget extends StatelessWidget {
   final Widget child;
 
   const ChatSelectionItemWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override

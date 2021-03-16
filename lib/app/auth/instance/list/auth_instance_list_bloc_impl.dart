@@ -15,15 +15,15 @@ class AuthInstanceListBloc extends DisposableOwner
   final IAuthInstanceListLocalPreferenceBloc instanceListLocalPreferenceBloc;
 
   AuthInstanceListBloc({
-    @required this.instanceListLocalPreferenceBloc,
+    required this.instanceListLocalPreferenceBloc,
   });
 
   @override
-  List<AuthInstance> get availableInstances =>
+  List<AuthInstance?> get availableInstances =>
       instanceListLocalPreferenceBloc.value?.instances ?? [];
 
   @override
-  Stream<List<AuthInstance>> get availableInstancesStream =>
+  Stream<List<AuthInstance?>> get availableInstancesStream =>
       instanceListLocalPreferenceBloc.stream
           .map((instanceList) => instanceList?.instances ?? []);
 
@@ -42,7 +42,7 @@ class AuthInstanceListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances?.isNotEmpty == true);
 
   @override
-  Future addInstance(AuthInstance instance) async {
+  Future addInstance(AuthInstance? instance) async {
     _logger.finest(() => "addInstance $instance");
     var instances = availableInstances;
     if (!instances.contains(instance)) {
@@ -53,12 +53,12 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  Future removeInstance(AuthInstance instance) async {
+  Future removeInstance(AuthInstance? instance) async {
     _logger.finest(() => "removeInstance $instance");
     var instances = availableInstances;
 
     var foundInstanceToRemove =
-        findInstanceByCredentials(host: instance.urlHost, acct: instance.acct);
+        findInstanceByCredentials(host: instance!.urlHost, acct: instance.acct);
     if (foundInstanceToRemove != null) {
       instances.remove(foundInstanceToRemove);
       await instanceListLocalPreferenceBloc.setValue(
@@ -72,11 +72,11 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  AuthInstance findInstanceByCredentials(
-      {@required String host, @required String acct}) {
-    var instanceList = instanceListLocalPreferenceBloc.value;
-    var foundInstance = instanceList.instances.firstWhere(
-        (instance) => instance.urlHost == host && instance.acct == acct,
+  AuthInstance? findInstanceByCredentials(
+      {required String? host, required String? acct}) {
+    var instanceList = instanceListLocalPreferenceBloc.value!;
+    var foundInstance = instanceList.instances!.firstWhere(
+        (instance) => instance!.urlHost == host && instance.acct == acct,
         orElse: () => null);
 
     return foundInstance;

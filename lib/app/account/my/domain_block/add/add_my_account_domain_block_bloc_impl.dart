@@ -5,14 +5,13 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
-import 'package:flutter/widgets.dart';
 
 class AddMyAccountDomainBlockBloc extends FormBloc
     implements IAddMyAccountDomainBlockBloc {
   final IPleromaAuthAccountService pleromaAuthAccountService;
 
   AddMyAccountDomainBlockBloc({
-    @required this.pleromaAuthAccountService,
+    required this.pleromaAuthAccountService,
   }) : super(isAllItemsInitialized: true);
 
   @override
@@ -28,6 +27,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
   List<IFormItemBloc> get currentItems => [domainField];
 
   @override
-  Future submit() =>
-      pleromaAuthAccountService.blockDomain(domain: domainField.currentValue);
+  Future submit() => pleromaAuthAccountService.blockDomain(
+        domain: domainField.currentValue!,
+      );
 }

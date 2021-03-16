@@ -13,12 +13,12 @@ import 'package:logging/logging.dart';
 var _logger = Logger("account_list_item_widget.dart");
 
 class AccountListItemWidget extends StatelessWidget {
-  final AccountCallback accountSelectedCallback;
-  final List<Widget> accountActions;
+  final AccountCallback? accountSelectedCallback;
+  final List<Widget>? accountActions;
   final EdgeInsets padding;
 
   const AccountListItemWidget({
-    @required this.accountSelectedCallback,
+    required this.accountSelectedCallback,
     this.accountActions,
     this.padding = FediPadding.allMediumPadding,
 
@@ -33,7 +33,7 @@ class AccountListItemWidget extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         if (accountSelectedCallback != null) {
-          accountSelectedCallback(context, accountBloc.account);
+          accountSelectedCallback!(context, accountBloc.account!);
         }
       },
       child: Padding(
@@ -44,7 +44,7 @@ class AccountListItemWidget extends StatelessWidget {
             const Expanded(
               child: _AccountListItemBodyWidget(),
             ),
-            if (accountActions?.isNotEmpty == true) ...accountActions
+            if (accountActions?.isNotEmpty == true) ...accountActions!
           ],
         ),
       ),
@@ -54,7 +54,7 @@ class AccountListItemWidget extends StatelessWidget {
 
 class _AccountListItemBodyWidget extends StatelessWidget {
   const _AccountListItemBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

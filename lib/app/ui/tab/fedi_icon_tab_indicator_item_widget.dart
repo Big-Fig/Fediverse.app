@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
-  final TabToIconMapper<T> tabToIconMapper;
+  final TabToIconMapper<T?> tabToIconMapper;
 
-  const FediIconTabIndicatorItemWidget({@required this.tabToIconMapper});
+  const FediIconTabIndicatorItemWidget({required this.tabToIconMapper});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
         stream: fediTabIndicatorItemBloc.isSelectedStream,
         initialData: fediTabIndicatorItemBloc.isSelected,
         builder: (context, snapshot) {
-          var isSelected = snapshot.data;
+          var isSelected = snapshot.data!;
 
           Widget button;
           var iconData = tabToIconMapper(context, fediTabIndicatorItemBloc.item);

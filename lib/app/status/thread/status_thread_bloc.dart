@@ -16,33 +16,33 @@ abstract class IStatusThreadBloc implements IDisposable, IStatusListBloc {
 
   Stream<List<IPleromaMention>> get mentionsStream;
 
-  IStatus get initialStatusToFetchThread;
+  IStatus? get initialStatusToFetchThread;
 
-  IPleromaMediaAttachment get initialMediaAttachment;
+  IPleromaMediaAttachment? get initialMediaAttachment;
 
   int get initialStatusToFetchThreadIndex;
 
-  bool get firstStatusInThreadLoaded;
+  bool? get firstStatusInThreadLoaded;
 
   Stream<bool> get firstStatusInThreadLoadedStream;
 
-  IStatus get firstStatusInThread;
+  IStatus? get firstStatusInThread;
 
-  Stream<IStatus> get firstStatusInThreadStream;
+  Stream<IStatus?> get firstStatusInThreadStream;
 
-  IAccount get firstStatusAccountInThread;
+  IAccount? get firstStatusAccountInThread;
 
-  Stream<IAccount> get firstStatusAccountInThreadStream;
+  Stream<IAccount?> get firstStatusAccountInThreadStream;
 
-  List<IStatus> get statuses;
+  List<IStatus?>? get statuses;
 
-  Stream<List<IStatus>> get statusesStream;
+  Stream<List<IStatus?>> get statusesStream;
 
-  Stream<List<IStatus>> get statusesDistinctStream;
+  Stream<List<IStatus?>> get statusesDistinctStream;
 
-  List<String> get mentionAccts;
+  List<String?> get mentionAccts;
 
-  Stream<List<String>> get mentionAcctsStream;
+  Stream<List<String?>> get mentionAcctsStream;
 
   String get mentionAcctsListString;
 

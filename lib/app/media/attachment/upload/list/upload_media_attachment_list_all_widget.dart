@@ -7,11 +7,11 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 class UploadMediaAttachmentListAllWidget extends StatelessWidget {
   final bool scrollable;
 
-  final double heightOnKeyboardOpen;
+  final double? heightOnKeyboardOpen;
 
   const UploadMediaAttachmentListAllWidget({
-    @required this.scrollable,
-    @required this.heightOnKeyboardOpen,
+    required this.scrollable,
+    required this.heightOnKeyboardOpen,
   });
 
   @override
@@ -38,7 +38,7 @@ class UploadMediaAttachmentListAllWidget extends StatelessWidget {
           if (isKeyboardVisible == true) {
             return ConstrainedBox(
               //                height: heightOnKeyboardOpen,
-              constraints: BoxConstraints(maxHeight: heightOnKeyboardOpen),
+              constraints: BoxConstraints(maxHeight: heightOnKeyboardOpen!),
               child: child,
             );
           } else {

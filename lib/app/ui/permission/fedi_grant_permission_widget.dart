@@ -11,15 +11,15 @@ class FediGrantPermissionWidget extends StatelessWidget {
   final WidgetBuilder grantedBuilder;
 
   FediGrantPermissionWidget({
-    @required this.permissionBloc,
-    @required this.grantedBuilder,
+    required this.permissionBloc,
+    required this.grantedBuilder,
   }) {
     permissionBloc.checkPermissionStatus();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
         stream: permissionBloc.permissionGrantedStream.distinct(),
         initialData: permissionBloc.permissionGranted,
         builder: (context, snapshot) {

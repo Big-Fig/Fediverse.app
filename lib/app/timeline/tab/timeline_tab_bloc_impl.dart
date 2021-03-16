@@ -2,7 +2,6 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -21,23 +20,22 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("timeline_tab_bloc_impl.dart");
 
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
-  Timeline get timeline => timelineLocalPreferencesBloc.value;
+  Timeline get timeline => timelineLocalPreferencesBloc.value!;
   @override
-  TimelineStatusCachedListBloc statusCachedListBloc;
-  IStatusCachedPaginationBloc statusCachedPaginationBloc;
+  late TimelineStatusCachedListBloc statusCachedListBloc;
+  late IStatusCachedPaginationBloc statusCachedPaginationBloc;
   @override
-  ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  late ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
   @override
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
-      paginationListWithNewItemsBloc;
+  late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
+      IStatus> paginationListWithNewItemsBloc;
 
   final IPleromaAccountService pleromaAccountService;
   final IPleromaTimelineService pleromaTimelineService;
@@ -55,23 +53,23 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   TimelineTabBloc({
-    @required this.timelineId,
-    @required this.preferencesService,
-    @required this.pleromaTimelineService,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.currentAuthInstanceBloc,
-    @required this.webSocketsHandlerManagerBloc,
-    @required this.myAccountBloc,
-    @required this.webSocketsListenType,
-    @required this.filterRepository,
-    @required this.paginationSettingsBloc,
+    required this.timelineId,
+    required this.preferencesService,
+    required this.pleromaTimelineService,
+    required this.pleromaAccountService,
+    required this.statusRepository,
+    required this.currentAuthInstanceBloc,
+    required this.webSocketsHandlerManagerBloc,
+    required this.myAccountBloc,
+    required this.webSocketsListenType,
+    required this.filterRepository,
+    required this.paginationSettingsBloc,
   }) {
     _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
 
     timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
       preferencesService,
-      userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
+      userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
       timelineId: timelineId,
       defaultValue: null,
     );
@@ -79,8 +77,9 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 
-  IStatusCachedListBloc createListService(
-          {@required WebSocketsListenType webSocketsListenType}) =>
+  TimelineStatusCachedListBloc createListService({
+    required WebSocketsListenType webSocketsListenType,
+  }) =>
       TimelineStatusCachedListBloc(
         pleromaAccountService: pleromaAccountService,
         pleromaTimelineService: pleromaTimelineService,

@@ -13,8 +13,8 @@ import 'auth_instance_chooser_instance_list_item_bloc.dart';
   final AuthInstance instance;
 
    AuthInstanceChooserInstanceListItemBloc({
-     @required this.isSelected,
-     @required this.instance,
+     required this.isSelected,
+     required this.instance,
    });
 
    @override

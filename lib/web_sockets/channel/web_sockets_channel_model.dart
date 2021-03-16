@@ -1,9 +1,9 @@
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/rest/rest_query_helper.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source_impl.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
-import 'package:flutter/widgets.dart';
 
 typedef WebSocketsChannelEventCallback<T> = void Function(T event);
 
@@ -16,16 +16,16 @@ abstract class IWebSocketsChannelConfig<T extends WebSocketsEvent> {
 abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
     implements IWebSocketsChannelConfig<T> {
   final Uri baseUrl;
-  final Map<String, String> queryArgs;
+  final Map<String, String?> queryArgs;
 
   T eventParser(Map<String, dynamic> json);
 
   final IConnectionService connectionService;
 
   WebSocketsChannelConfig({
-    @required this.connectionService,
-    @required this.baseUrl,
-    @required this.queryArgs,
+    required this.connectionService,
+    required this.baseUrl,
+    required this.queryArgs,
   });
 
   @override
@@ -37,9 +37,7 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
 
   @override
   Uri calculateWebSocketsUrl() {
-    var queryArgsString = queryArgs.entries
-        .map((entry) => "${entry.key}=${entry.value}")
-        .join("&");
+    var queryArgsString = queryArgs.combineQueryArguments();
 
     var webSocketPath = baseUrl.toString() + "?$queryArgsString";
     // _logger.finest(() => "calculateUrl $webSocketPath");
@@ -68,8 +66,8 @@ class WebSocketChannelListener<T> {
   final WebSocketsChannelEventCallback<T> onEvent;
 
   WebSocketChannelListener({
-    @required this.listenType,
-    @required this.onEvent,
+    required this.listenType,
+    required this.onEvent,
   });
 
   @override

@@ -9,7 +9,7 @@ class EditMediaSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditMediaSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -26,12 +26,12 @@ class EditMediaSettingsWidget extends StatelessWidget {
 
 class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
   const _EditMediaSettingsAutoPlayFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
+    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc?>(
       update: (context, value, previous) => value.autoPlayFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_media_settings_field_autoPlay_label,
@@ -42,12 +42,12 @@ class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
 
 class _EditMediaSettingsAutoInitFieldWidget extends StatelessWidget {
   const _EditMediaSettingsAutoInitFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
+    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc?>(
       update: (context, value, previous) => value.autoInitFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_media_settings_field_autoInit_label,

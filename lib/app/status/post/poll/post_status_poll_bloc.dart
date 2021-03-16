@@ -9,12 +9,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPostStatusPollBloc implements IFormBloc, IDisposable {
-  static IPostStatusPollBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPostStatusPollBloc>(context, listen: listen);
-
-  static final Duration minimumPollExpiration = Duration(minutes: 10);
-  static final Duration defaultPollExpiration = Duration(days: 1);
-  static final int defaultMaxPollOptions = 20;
+  static IPostStatusPollBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPostStatusPollBloc>(
+        context,
+        listen: listen,
+      );
 
   IOneTypeFormGroupBloc<IStringValueFormFieldBloc> get pollOptionsGroupBloc;
 

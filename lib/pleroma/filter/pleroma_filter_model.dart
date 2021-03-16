@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/filter/mastodon_filter_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +9,7 @@ part 'pleroma_filter_model.g.dart';
 abstract class IPleromaFilter extends IMastodonFilter {
   IPleromaFilter copyWith({
     List<String> context,
-    DateTime expiresAt,
+    DateTime? expiresAt,
     String id,
     bool irreversible,
     String phrase,
@@ -23,7 +22,6 @@ abstract class IPleromaFilter extends IMastodonFilter {
 }
 
 abstract class IPostPleromaFilter implements IPostMastodonFilter {
-
   Map<String, dynamic> toJson();
 
   String toJsonString();
@@ -42,7 +40,7 @@ class PleromaFilter extends IPleromaFilter {
   @override
   @HiveField(1)
   @JsonKey(name: "expires_at")
-  final DateTime expiresAt;
+  final DateTime? expiresAt;
 
   @override
   @HiveField(2)
@@ -62,18 +60,16 @@ class PleromaFilter extends IPleromaFilter {
   final bool wholeWord;
 
   PleromaFilter({
-    @required this.context,
-    @required this.phrase,
-    this.expiresAt,
-    this.id,
-    this.irreversible,
-    this.wholeWord,
+    required this.context,
+    required this.phrase,
+    required this.expiresAt,
+    required this.id,
+    required this.irreversible,
+    required this.wholeWord,
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType => context?.map(
-        (contextString) => contextString.toMastodonFilterContextType(),
-      );
+  List<MastodonFilterContextType> get contextMastodonType => context.toMastodonFilterContextTypes();
 
   @override
   bool operator ==(Object other) =>
@@ -105,12 +101,12 @@ class PleromaFilter extends IPleromaFilter {
 
   @override
   PleromaFilter copyWith({
-    List<String> context,
-    DateTime expiresAt,
-    String id,
-    bool irreversible,
-    String phrase,
-    bool wholeWord,
+    List<String>? context,
+    DateTime? expiresAt,
+    String? id,
+    bool? irreversible,
+    String? phrase,
+    bool? wholeWord,
   }) =>
       PleromaFilter(
         context: context ?? this.context,
@@ -148,7 +144,7 @@ class PostPleromaFilter extends IPostPleromaFilter {
 
   @override
   @JsonKey(name: "expires_in")
-  final int expiresInSeconds;
+  final int? expiresInSeconds;
 
   @override
   final bool irreversible;
@@ -161,18 +157,17 @@ class PostPleromaFilter extends IPostPleromaFilter {
   final bool wholeWord;
 
   PostPleromaFilter({
-    @required this.context,
-    @required this.phrase,
-    this.expiresInSeconds,
-    this.irreversible,
-    this.wholeWord,
+    required this.context,
+    required this.phrase,
+    required this.expiresInSeconds,
+    required this.irreversible,
+    required this.wholeWord,
   });
 
   @override
-  List<MastodonFilterContextType> get contextMastodonType => context?.map(
+  List<MastodonFilterContextType> get contextMastodonType => context.map(
         (contextString) => contextString.toMastodonFilterContextType(),
-      );
-
+      ).toList();
 
   @override
   bool operator ==(Object other) =>
@@ -193,28 +188,31 @@ class PostPleromaFilter extends IPostPleromaFilter {
       phrase.hashCode ^
       wholeWord.hashCode;
 
-
   @override
   String toString() {
-    return 'PostPleromaFilter{context: $context,'
-        ' expiresInSeconds: $expiresInSeconds,'
-        ' irreversible: $irreversible, phrase: $phrase,'
-        ' wholeWord: $wholeWord}';
+    return 'PostPleromaFilter{'
+        'context: $context, '
+        'expiresInSeconds: $expiresInSeconds, '
+        'irreversible: $irreversible, '
+        'phrase: $phrase, '
+        'wholeWord: $wholeWord'
+        '}';
   }
 
   PostPleromaFilter copyWith({
-    List<String> context,
-    int expiresInSeconds,
-    bool irreversible,
-    String phrase,
-    bool wholeWord,
-  }) => PostPleromaFilter(
-      context: context ?? this.context,
-      expiresInSeconds: expiresInSeconds ?? this.expiresInSeconds,
-      irreversible: irreversible ?? this.irreversible,
-      phrase: phrase ?? this.phrase,
-      wholeWord: wholeWord ?? this.wholeWord,
-    );
+    List<String>? context,
+    int? expiresInSeconds,
+    bool? irreversible,
+    String? phrase,
+    bool? wholeWord,
+  }) =>
+      PostPleromaFilter(
+        context: context ?? this.context,
+        expiresInSeconds: expiresInSeconds ?? this.expiresInSeconds,
+        irreversible: irreversible ?? this.irreversible,
+        phrase: phrase ?? this.phrase,
+        wholeWord: wholeWord ?? this.wholeWord,
+      );
 
   factory PostPleromaFilter.fromJson(Map<String, dynamic> json) =>
       _$PostPleromaFilterFromJson(json);

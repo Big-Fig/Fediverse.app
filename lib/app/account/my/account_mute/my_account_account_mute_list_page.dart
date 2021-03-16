@@ -56,7 +56,7 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
 
 class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
   const _MyAccountAccountMuteListPageAddButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -97,7 +97,7 @@ class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {
 
 class _MyAccountAccountMuteListPageWarningWidget extends StatelessWidget {
   const _MyAccountAccountMuteListPageWarningWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

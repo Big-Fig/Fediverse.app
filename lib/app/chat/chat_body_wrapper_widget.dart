@@ -10,7 +10,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
   final Widget child;
 
   const ChatBodyWrapperWidget({
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -21,7 +21,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
       stream: postMessageBloc.isExpandedStream,
       initialData: postMessageBloc.isExpanded,
       builder: (context, snapshot) {
-        var isPostMessageExpanded = snapshot.data;
+        var isPostMessageExpanded = snapshot.data!;
         if (isPostMessageExpanded) {
           return postMessageWidget;
         } else {
@@ -46,7 +46,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
 
 class _ChatPostMessageWidget extends StatelessWidget {
   const _ChatPostMessageWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

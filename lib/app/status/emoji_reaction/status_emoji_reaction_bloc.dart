@@ -4,9 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusEmojiReactionBloc implements IDisposable {
-  static IStatusEmojiReactionBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IStatusEmojiReactionBloc>(context, listen: listen);
+  static IStatusEmojiReactionBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IStatusEmojiReactionBloc>(
+        context,
+        listen: listen,
+      );
 
   IPleromaStatusEmojiReaction get emojiReaction;
 

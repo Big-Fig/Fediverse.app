@@ -5,12 +5,12 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/widgets.dart';
 
 class FediSimpleAlertDialog extends FediBaseAlertDialog {
-  final DialogActionCallback action;
+  final DialogActionCallback? action;
 
   FediSimpleAlertDialog({
-    @required BuildContext context,
-    String title,
-    String contentText,
+    required BuildContext context,
+    String? title,
+    String? contentText,
     this.action,
   }) : super(
           title: title,
@@ -20,8 +20,8 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
 
   @override
   Widget buildDismissAction({
-    @required BuildContext context,
-    @required bool isLast,
+    required BuildContext context,
+    required bool isLast,
   }) =>
       buildButton(
         context: context,

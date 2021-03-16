@@ -16,9 +16,9 @@ class SearchResultItemNetworkOnlyPaginationBloc
   final ISearchResultItemNetworkOnlyListBloc listBloc;
 
   SearchResultItemNetworkOnlyPaginationBloc({
-    @required this.listBloc,
-    @required IPaginationSettingsBloc paginationSettingsBloc,
-    @required int maximumCachedPagesCount,
+    required this.listBloc,
+    required IPaginationSettingsBloc paginationSettingsBloc,
+    required int? maximumCachedPagesCount,
   }) : super(
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
@@ -29,7 +29,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
 
   static SearchResultItemNetworkOnlyPaginationBloc createFromContext(
           BuildContext context,
-          {int maximumCachedPagesCount}) =>
+          {int? maximumCachedPagesCount}) =>
       SearchResultItemNetworkOnlyPaginationBloc(
         maximumCachedPagesCount: maximumCachedPagesCount,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
@@ -43,7 +43,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
       );
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
       create: (context) =>
           SearchResultItemNetworkOnlyPaginationBloc.createFromContext(context),
@@ -63,10 +63,10 @@ class SearchResultItemNetworkOnlyPaginationBloc
 
   @override
   Future<List<ISearchResultItem>> loadItemsFromRemoteForPage(
-          {@required int pageIndex,
-          @required int itemsCountPerPage,
-          @required PaginationPage<ISearchResultItem> olderPage,
-          @required PaginationPage<ISearchResultItem> newerPage}) =>
+          {required int pageIndex,
+          required int? itemsCountPerPage,
+          required PaginationPage<ISearchResultItem>? olderPage,
+          required PaginationPage<ISearchResultItem>? newerPage}) =>
       listBloc.loadItemsFromRemoteForPage(
           itemsCountPerPage: itemsCountPerPage,
           // not used

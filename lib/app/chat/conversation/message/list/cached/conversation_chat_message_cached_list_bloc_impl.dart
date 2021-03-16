@@ -17,13 +17,13 @@ var _logger = Logger("pleroma_chat_message_cached_list_bloc_impl.dart");
 class ConversationChatMessageCachedListBloc extends DisposableOwner
     implements IConversationChatMessageCachedListBloc {
   final ConversationChatStatusListBloc conversationChatStatusListBloc;
-  final IConversationChat chat;
-  final IConversationChatMessage lastMessage;
+  final IConversationChat? chat;
+  final IConversationChatMessage? lastMessage;
 
   ConversationChatMessageCachedListBloc({
-    @required this.chat,
-    @required this.conversationChatStatusListBloc,
-    @required this.lastMessage,
+    required this.chat,
+    required this.conversationChatStatusListBloc,
+    required this.lastMessage,
   });
 
   @override
@@ -31,9 +31,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
-    @required int limit,
-    @required IConversationChatMessage newerThan,
-    @required IConversationChatMessage olderThan,
+    required int? limit,
+    required IConversationChatMessage? newerThan,
+    required IConversationChatMessage? olderThan,
   }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t chat = $chat"
@@ -58,9 +58,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 
   @override
   Future<List<IConversationChatMessage>> loadLocalItems({
-    @required int limit,
-    @required IConversationChatMessage newerThan,
-    @required IConversationChatMessage olderThan,
+    required int? limit,
+    required IConversationChatMessage? newerThan,
+    required IConversationChatMessage? olderThan,
   }) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
@@ -75,10 +75,10 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     _logger.finer(
         () => "finish loadLocalItems for $chat messages ${statuses.length}");
     return statuses
-        ?.map(
-          (status) => ConversationChatMessageStatusAdapter(status),
+        .map(
+          (status) => status.toConversationChatMessageStatusAdapter(),
         )
-        ?.toList();
+        .toList();
   }
 
   @override
@@ -86,19 +86,19 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     IConversationChatMessage item,
   ) =>
       conversationChatStatusListBloc
-          .watchLocalItemsNewerThanItem(item?.status)
+          .watchLocalItemsNewerThanItem(item.status)
           .map(
             (statuses) => statuses
-                ?.map(
-                  (status) => ConversationChatMessageStatusAdapter(status),
+                .map(
+                  (status) => status.toConversationChatMessageStatusAdapter(),
                 )
-                ?.toList(),
+                .toList(),
           );
 
   static ConversationChatMessageCachedListBloc createFromContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required IConversationChatMessage lastMessage,
+    required IConversationChat? conversation,
+    required IConversationChatMessage? lastMessage,
   }) {
     var chatStatusListBloc = _createStatusListBloc(
       context: context,
@@ -116,9 +116,9 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required IConversationChat conversation,
-    @required IConversationChatMessage lastMessage,
-    @required Widget child,
+    required IConversationChat? conversation,
+    required IConversationChatMessage? lastMessage,
+    required Widget child,
   }) {
     return DisposableProvider<IConversationChatMessageCachedListBloc>(
       create: (context) =>
@@ -133,13 +133,13 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
 }
 
 ConversationChatStatusListBloc _createStatusListBloc({
-  @required BuildContext context,
-  @required IConversationChat conversation,
-  @required IConversationChatMessage lastMessage,
+  required BuildContext context,
+  required IConversationChat? conversation,
+  required IConversationChatMessage? lastMessage,
 }) {
   var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
 
-  if (currentInstanceBloc.currentInstance.isPleroma) {
+  if (currentInstanceBloc.currentInstance!.isPleroma!) {
     // pleroma instances support loading by conversation id
     return ConversationChatStatusListConversationApiBloc.createFromContext(
       context,

@@ -15,11 +15,11 @@ class ChatMessageListItem<T extends IChatMessage> {
   final bool isLastInDayGroup;
 
   ChatMessageListItem({
-    @required this.message,
-    @required this.isFirstInMinuteGroup,
-    @required this.isLastInMinuteGroup,
-    @required this.isFirstInDayGroup,
-    @required this.isLastInDayGroup,
+    required this.message,
+    required this.isFirstInMinuteGroup,
+    required this.isLastInMinuteGroup,
+    required this.isFirstInDayGroup,
+    required this.isLastInDayGroup,
   });
 
   @override

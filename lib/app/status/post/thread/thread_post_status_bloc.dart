@@ -8,11 +8,11 @@ abstract class IThreadPostStatusBloc implements IPostStatusBloc {
   static IThreadPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IThreadPostStatusBloc>(context, listen: listen);
 
-  IStatus get notCanceledOriginInReplyToStatus;
+  IStatus? get notCanceledOriginInReplyToStatus;
 
-  Stream<IStatus> get notCanceledOriginInReplyToStatusStream;
+  Stream<IStatus?> get notCanceledOriginInReplyToStatusStream;
 
-  bool get originInReplyToStatusCanceled;
+  bool? get originInReplyToStatusCanceled;
 
   Stream<bool> get originInReplyToStatusCanceledStream;
 

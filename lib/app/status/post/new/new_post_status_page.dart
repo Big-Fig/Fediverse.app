@@ -42,7 +42,7 @@ class NewPostStatusPage extends StatelessWidget {
 
 class _NewPostStatusPageBodyWidget extends StatelessWidget {
   const _NewPostStatusPageBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -60,7 +60,7 @@ class _NewPostStatusPageBodyWidget extends StatelessWidget {
 
 class _NewPostStatusPageComposeWidget extends StatelessWidget {
   const _NewPostStatusPageComposeWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -78,7 +78,7 @@ class _NewPostStatusPageComposeWidget extends StatelessWidget {
 class NewPostStatusPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const NewPostStatusPageAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -100,9 +100,9 @@ class NewPostStatusPageAppBar extends StatelessWidget
 
 void goToNewPostStatusPageWithInitial(
   BuildContext context, {
-  String initialText,
-  String initialSubject,
-  List<PleromaMediaAttachment> initialMediaAttachments,
+  String? initialText,
+  String? initialSubject,
+  List<PleromaMediaAttachment>? initialMediaAttachments,
 }) {
   Navigator.push(
     context,
@@ -120,7 +120,7 @@ void goToNewPostStatusPageWithInitial(
 
 void goToNewPostStatusPage(
   BuildContext context, {
-  @required PostStatusData initialData,
+  required PostStatusData initialData,
 }) {
   Navigator.push(
     context,

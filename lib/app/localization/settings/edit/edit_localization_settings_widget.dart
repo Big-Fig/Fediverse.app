@@ -8,7 +8,7 @@ class EditLocalizationSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditLocalizationSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override

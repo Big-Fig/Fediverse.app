@@ -58,8 +58,8 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
 class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
     extends StatelessWidget {
   const _CreateItemTimelinesHomeTabStoragePageSaveActionWidget({
-    Key key,
-    @required this.createTimelineBloc,
+    Key? key,
+    required this.createTimelineBloc,
   }) : super(key: key);
 
   final ICreateTimelineBloc createTimelineBloc;
@@ -75,7 +75,7 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
             builder: (context, onPressed) => FediIconButton(
               icon: Icon(Icons.check),
               color: IFediUiColorTheme.of(context).darkGrey,
-              onPressed: isReadyToSubmit ? onPressed : null,
+              onPressed: isReadyToSubmit! ? onPressed : null,
             ),
             asyncButtonAction: createTimelineBloc.save,
           );
@@ -104,7 +104,7 @@ MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
           Navigator.of(context).pop();
         },
         authInstance:
-            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
+            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance!,
         localPreferencesService: ILocalPreferencesService.of(
           context,
           listen: false,

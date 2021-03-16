@@ -8,39 +8,39 @@ class FediTransparentEditTextField extends StatelessWidget {
   final bool autofocus;
   final TextEditingController textEditingController;
   final String hintText;
-  final String errorText;
-  final FocusNode focusNode;
-  final int maxLines;
-  final ValueChanged<String> onSubmitted;
+  final String? errorText;
+  final FocusNode? focusNode;
+  final int? maxLines;
+  final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
   final bool displayUnderlineBorder;
   final bool autocorrect;
   final bool obscureText;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
 
-  final InputBorder border;
-  final InputBorder focusedBorder;
-  final InputBorder errorBorder;
+  final InputBorder? border;
+  final InputBorder? focusedBorder;
+  final InputBorder? errorBorder;
 
-  final TextStyle hintStyle;
-  final TextStyle textStyle;
+  final TextStyle? hintStyle;
+  final TextStyle? textStyle;
   final bool highlightMentions;
-  final int maxLength;
-  final bool enabled;
+  final int? maxLength;
+  final bool? enabled;
 
-  final Color customBorderColor;
+  final Color? customBorderColor;
 
   FediTransparentEditTextField({
-    @required this.expanded,
-    @required this.autofocus,
-    @required this.hintText,
-    @required this.errorText,
-    @required this.maxLines,
-    @required this.onSubmitted,
-    @required this.textInputAction,
-    @required this.textEditingController,
+    required this.expanded,
+    required this.autofocus,
+    required this.hintText,
+    required this.errorText,
+    required this.maxLines,
+    required this.onSubmitted,
+    required this.textInputAction,
+    required this.textEditingController,
     this.displayUnderlineBorder = false,
-    @required this.focusNode,
+    required this.focusNode,
     this.hintStyle,
     this.textStyle,
     this.border,
@@ -50,8 +50,8 @@ class FediTransparentEditTextField extends StatelessWidget {
     this.customBorderColor,
     this.autocorrect = true,
     this.obscureText = false,
-    @required this.highlightMentions,
-    @required this.maxLength,
+    required this.highlightMentions,
+    required this.maxLength,
     this.enabled = true,
   });
 

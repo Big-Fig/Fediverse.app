@@ -12,7 +12,7 @@ class FediListTile extends StatelessWidget {
   final oneSidePadding;
 
   const FediListTile({
-    @required this.child,
+    required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
     this.oneSidePadding = FediSizes.smallPadding,

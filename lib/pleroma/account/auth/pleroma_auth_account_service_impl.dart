@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
@@ -26,7 +25,7 @@ class PleromaAuthAccountService extends PleromaAccountService
       authRestService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -40,57 +39,69 @@ class PleromaAuthAccountService extends PleromaAccountService
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAuthAccountService({@required this.authRestService})
+  PleromaAuthAccountService({required this.authRestService})
       : super(
           restService: authRestService,
         );
 
   @override
-  Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts(
-      {@required List<String> remoteAccountIds}) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+  Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts({
+    required List<String> remoteAccountIds,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: urlPath.join(accountRelativeUrlPath, "relationships"),
         queryArgs: remoteAccountIds
-            .map((id) => RestRequestQueryArg("id", id))
-            .toList()));
+            .map(
+              (id) => RestRequestQueryArg("id[]", id),
+            )
+            .toList(),
+      ),
+    );
 
     return parseAccountRelationshipResponseList(httpResponse);
   }
 
   @override
   Future<IPleromaAccountRelationship> blockAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
-      relativePath:
-          urlPath.join(accountRelativeUrlPath, accountRemoteId, "block"),
-    ));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "block",
+        ),
+      ),
+    );
 
     return parseAccountRelationshipResponse(httpResponse);
   }
 
   @override
   Future<IPleromaAccountRelationship> followAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
-      relativePath:
-          urlPath.join(accountRelativeUrlPath, accountRemoteId, "follow"),
-    ));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "follow",
+        ),
+      ),
+    );
 
     return parseAccountRelationshipResponse(httpResponse);
   }
 
   @override
   Future<IPleromaAccountRelationship> muteAccount({
-    @required String accountRemoteId,
-    @required bool notifications,
-    @required int expireDurationInSeconds,
+    required String? accountRemoteId,
+    required bool? notifications,
+    required int? expireDurationInSeconds,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-
     var bodyJson = <String, dynamic>{
       if (notifications != null) "notifications": notifications.toString(),
     };
@@ -103,8 +114,11 @@ class PleromaAuthAccountService extends PleromaAccountService
     }
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "mute"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "mute",
+        ),
         bodyJson: bodyJson,
       ),
     );
@@ -114,13 +128,15 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<IPleromaAccountRelationship> pinAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "pin"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "pin",
+        ),
       ),
     );
 
@@ -129,13 +145,15 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<IPleromaAccountRelationship> unBlockAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "unblock"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "unblock",
+        ),
       ),
     );
 
@@ -144,13 +162,15 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<IPleromaAccountRelationship> unFollowAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "unfollow"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "unfollow",
+        ),
       ),
     );
 
@@ -159,13 +179,15 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<IPleromaAccountRelationship> unMuteAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "unmute"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "unmute",
+        ),
       ),
     );
 
@@ -174,13 +196,15 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<IPleromaAccountRelationship> unPinAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "unpin"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "unpin",
+        ),
       ),
     );
 
@@ -189,26 +213,32 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<List<IPleromaAccountIdentityProof>> getAccountIdentifyProofs({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-      relativePath: urlPath.join(
-          accountRelativeUrlPath, accountRemoteId, "identity_proofs"),
-    ));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "identity_proofs",
+        ),
+      ),
+    );
 
     return parseAccountAccountIdentityProofList(httpResponse);
   }
 
   @override
   Future<List<IPleromaList>> getListsWithAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
-        relativePath:
-            urlPath.join(accountRelativeUrlPath, accountRemoteId, "lists"),
+        relativePath: urlPath.join(
+          accountRelativeUrlPath,
+          accountRemoteId,
+          "lists",
+        ),
       ),
     );
 
@@ -217,12 +247,11 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<List<IPleromaAccount>> search({
-    @required String query,
-    bool resolve,
-    bool following,
-    IPleromaPaginationRequest pagination,
+    required String query,
+    bool? resolve,
+    bool? following,
+    IPleromaPaginationRequest? pagination,
   }) async {
-    assert(query?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: urlPath.join(accountRelativeUrlPath, "search"),
@@ -230,9 +259,15 @@ class PleromaAuthAccountService extends PleromaAccountService
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
           RestRequestQueryArg("q", query),
           if (resolve != null)
-            RestRequestQueryArg("resolve", resolve?.toString()),
+            RestRequestQueryArg(
+              "resolve",
+              resolve.toString(),
+            ),
           if (following != null)
-            RestRequestQueryArg("following", following?.toString()),
+            RestRequestQueryArg(
+              "following",
+              following.toString(),
+            ),
         ],
       ),
     );
@@ -242,12 +277,11 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future<bool> reportAccount({
-    IPleromaAccountReportRequest reportRequest,
+    required IPleromaAccountReportRequest reportRequest,
   }) async {
-    assert(reportRequest?.accountId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
-        relativePath: urlPath.join(accountReportRelativeUrlPath),
+        relativePath: accountReportRelativeUrlPath,
         bodyJson: reportRequest.toJson(),
       ),
     );
@@ -257,62 +291,80 @@ class PleromaAuthAccountService extends PleromaAccountService
 
   @override
   Future blockDomain({
-    @required String domain,
-  }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
-      relativePath: urlPath.join("api/v1/domain_blocks"),
-      queryArgs: [
-        RestRequestQueryArg("domain", domain),
-      ],
-    ));
-
-    if (httpResponse.statusCode != 200) {
-      throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
-    }
-  }
-
-  @override
-  Future unBlockDomain({
-    @required String domain,
+    required String domain,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
-      RestRequest.delete(
+      RestRequest.post(
         relativePath: urlPath.join("api/v1/domain_blocks"),
         queryArgs: [
-          RestRequestQueryArg("domain", domain),
+          RestRequestQueryArg(
+            "domain",
+            domain,
+          ),
         ],
       ),
     );
 
     if (httpResponse.statusCode != 200) {
       throw PleromaAccountException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
+    }
+  }
+
+  @override
+  Future unBlockDomain({
+    required String domain,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.delete(
+        relativePath: urlPath.join("api/v1/domain_blocks"),
+        queryArgs: [
+          RestRequestQueryArg(
+            "domain",
+            domain,
+          ),
+        ],
+      ),
+    );
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaAccountException(
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
   @override
   Future<IPleromaAccountRelationship> subscribeAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
-      relativePath: urlPath.join(
-          pleromaAccountRelativeUrlPath, accountRemoteId, "subscribe"),
-    ));
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: urlPath.join(
+          pleromaAccountRelativeUrlPath,
+          accountRemoteId,
+          "subscribe",
+        ),
+      ),
+    );
 
     return parseAccountRelationshipResponse(httpResponse);
   }
 
   @override
   Future<IPleromaAccountRelationship> unSubscribeAccount({
-    @required String accountRemoteId,
+    required String accountRemoteId,
   }) async {
-    assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.post(
         relativePath: urlPath.join(
-            pleromaAccountRelativeUrlPath, accountRemoteId, "unsubscribe"),
+          pleromaAccountRelativeUrlPath,
+          accountRemoteId,
+          "unsubscribe",
+        ),
       ),
     );
 

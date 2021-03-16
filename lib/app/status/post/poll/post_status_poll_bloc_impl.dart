@@ -12,18 +12,18 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:flutter/cupertino.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
-      PleromaInstancePollLimits pollLimits) {
-    Duration pollMinimumExpiration = calculatePollMinimumExpiration(pollLimits);
+    PleromaInstancePollLimits pollLimit,
+  ) {
+    Duration pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
-    Duration pollMaximumExpiration = calculatePollMaximumExpiration(pollLimits);
+    Duration pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
 
     return DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(
-        duration: IPostStatusPollBloc.defaultPollExpiration,
+        duration: PleromaInstancePollLimits.defaultPollExpiration,
         dateTime: null,
       ),
       minDuration: pollMinimumExpiration,
@@ -33,41 +33,27 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     );
   }
 
-  static Duration calculatePollMinimumExpiration(
-      PleromaInstancePollLimits pollLimits) {
-    return pollLimits?.minExpiration != null
-        ? Duration(seconds: pollLimits?.minExpiration)
-        : IPostStatusPollBloc.minimumPollExpiration;
-  }
-
-  static Duration calculatePollMaximumExpiration(
-      PleromaInstancePollLimits pollLimits) {
-    return pollLimits?.maxExpiration != null
-        ? Duration(seconds: pollLimits?.maxExpiration)
-        : null;
-  }
-
   final PleromaInstancePollLimits pollLimits;
 
-  int get pollMaximumOptionsCount =>
-      pollLimits?.maxOptions ?? IPostStatusPollBloc.defaultMaxPollOptions;
+  int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
 
-  int get pollMaximumOptionLength => pollLimits?.maxOptionChars;
+  int? get pollMaximumOptionLength => pollLimits.maxOptionCharsOrDefault;
 
   Duration get pollMinimumExpiration =>
-      calculatePollMinimumExpiration(pollLimits);
+      pollLimits.minExpirationDurationOrDefault;
 
   Duration get pollMaximumExpiration =>
-      calculatePollMaximumExpiration(pollLimits);
+      pollLimits.maxExpirationDurationOrDefault;
 
   PostStatusPollBloc({
-    @required this.pollLimits,
-  })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-          originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
+    required this.pollLimits,
+  })   : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
+          originalItems:
+              createDefaultPollOptions(pollLimits.maxOptionCharsOrDefault),
           minimumFieldsCount: 2,
-          maximumFieldsCount: pollLimits?.maxOptions ?? 20,
+          maximumFieldsCount: pollLimits.maxOptionsOrDefault,
           newEmptyFieldCreator: () =>
-              createPollOptionBloc(pollLimits?.maxOptionChars),
+              createPollOptionBloc(pollLimits.maxOptionCharsOrDefault),
         ),
         durationDateTimeLengthFieldBloc =
             createDurationDateTimeLengthBloc(pollLimits),
@@ -81,16 +67,16 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       ];
 
   @override
-  DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
+  late DurationDateTimeValueFormFieldBloc durationDateTimeLengthFieldBloc;
   @override
-  IBoolValueFormFieldBloc multiplyFieldBloc =
+  late IBoolValueFormFieldBloc multiplyFieldBloc =
       BoolValueFormFieldBloc(originValue: false);
 
   @override
-  IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
+  final IOneTypeFormGroupBloc<IStringValueFormFieldBloc> pollOptionsGroupBloc;
 
   static List<IStringValueFormFieldBloc> createDefaultPollOptions(
-      int maximumOptionLength) {
+      int? maximumOptionLength) {
     return <IStringValueFormFieldBloc>[
       createPollOptionBloc(maximumOptionLength),
       createPollOptionBloc(maximumOptionLength),
@@ -98,12 +84,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   }
 
   static StringValueFormFieldBloc createPollOptionBloc(
-          int maximumOptionLength) =>
+          int? maximumOptionLength) =>
       createPollOptionFieldBloc(null, maximumOptionLength);
 
   static StringValueFormFieldBloc createPollOptionFieldBloc(
-    String originValue,
-    int maximumOptionLength,
+    String? originValue,
+    int? maximumOptionLength,
   ) {
     return StringValueFormFieldBloc(
       originValue: originValue,
@@ -120,7 +106,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     durationDateTimeLengthFieldBloc
         .changeCurrentValueDuration(poll.durationLength);
-    if (poll.options?.isNotEmpty == true) {
+    if (poll.options.isNotEmpty) {
       pollOptionsGroupBloc.removeAllFields();
 
       poll.options.forEach(
@@ -141,7 +127,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     // super.clear();
 
     pollOptionsGroupBloc.changeFields(
-      createDefaultPollOptions(pollLimits?.maxOptionChars),
+      createDefaultPollOptions(pollLimits.maxOptionChars),
     );
   }
 }

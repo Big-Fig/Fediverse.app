@@ -14,7 +14,7 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
         stream: mediaPlayerBloc.isBufferingStream,
         initialData: mediaPlayerBloc.isBuffering,
         builder: (context, snapshot) {
-          var isBuffering = snapshot.data;
+          var isBuffering = snapshot.data!;
 
           if (isBuffering) {
             return _FediPlayerControlPositionDurationLoadingWidget();
@@ -29,7 +29,7 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
 
 class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
   const _FediPlayerControlPositionDurationBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
       stream: mediaPlayerBloc.positionDurationStream,
       builder: (context, snapshot) {
         var duration = snapshot.data;
-        return Provider<Duration>.value(
+        return Provider<Duration?>.value(
           value: duration,
           child: const FediPlayerControlDurationWidget(),
         );
@@ -50,7 +50,7 @@ class _FediPlayerControlPositionDurationBodyWidget extends StatelessWidget {
 
 class _FediPlayerControlPositionDurationLoadingWidget extends StatelessWidget {
   const _FediPlayerControlPositionDurationLoadingWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

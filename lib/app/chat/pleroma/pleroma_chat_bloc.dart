@@ -18,24 +18,24 @@ abstract class IPleromaChatBloc implements IChatBloc, IAsyncInitLoadingBloc {
   Stream<IPleromaChat> get chatStream;
 
   @override
-  IPleromaChatMessage get lastChatMessage;
+  IPleromaChatMessage? get lastChatMessage;
 
   @override
-  IPleromaChatMessage get lastPublishedChatMessage;
+  IPleromaChatMessage? get lastPublishedChatMessage;
 
   @override
-  Stream<IPleromaChatMessage> get lastChatMessageStream;
+  Stream<IPleromaChatMessage?> get lastChatMessageStream;
 
-  Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream;
+  Stream<IPleromaChatMessage?> get onMessageLocallyHiddenStream;
 
   Future postMessage({
-    @required
+    required
         pleroma_lib.IPleromaChatMessageSendData pleromaChatMessageSendData,
-    @required IPleromaMediaAttachment pleromaChatMessageSendDataMediaAttachment,
-    @required IPleromaChatMessage oldPendingFailedPleromaChatMessage,
+    required IPleromaMediaAttachment? pleromaChatMessageSendDataMediaAttachment,
+    required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   });
 
   Future deleteMessage({
-    @required IPleromaChatMessage pleromaChatMessage,
+    required IPleromaChatMessage pleromaChatMessage,
   });
 }

@@ -1,11 +1,11 @@
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,32 +14,30 @@ class NotificationCachedPaginationListWithNewItemsBloc<
     extends CachedPaginationListWithNewItemsBloc<TPage, INotification> {
   final INotificationCachedListBloc cachedListBloc;
 
-  NotificationCachedPaginationListWithNewItemsBloc(
-      {@required bool mergeNewItemsImmediately,
-      @required this.cachedListBloc,
-      @required IPaginationBloc<TPage, INotification> paginationBloc})
-      : super(
-            mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: paginationBloc);
+  NotificationCachedPaginationListWithNewItemsBloc({
+    required bool mergeNewItemsImmediately,
+    required this.cachedListBloc,
+    required ICachedPaginationBloc<TPage, INotification> cachedPaginationBloc,
+  }) : super(
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          paginationBloc: cachedPaginationBloc,
+        );
 
   @override
-  Stream<List<INotification>> watchItemsNewerThanItem(INotification item) {
-    return cachedListBloc.watchLocalItemsNewerThanItem(item);
-  }
+  Stream<List<INotification>> watchItemsNewerThanItem(INotification item) =>
+      cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override
-  int compareItemsToSort(INotification a, INotification b) {
+  int compareItemsToSort(INotification? a, INotification? b) {
     if (a == null && b == null) {
       return 0;
-    }
-
-    if (a != null && b == null) {
+    } else if (a != null && b == null) {
       return 1;
-    }
-    if (a == null && b != null) {
+    } else if (a == null && b != null) {
       return -1;
+    } else {
+      return a!.createdAt.compareTo(b!.createdAt);
     }
-    return a.createdAt.compareTo(b.createdAt);
   }
 
   @override
@@ -48,14 +46,17 @@ class NotificationCachedPaginationListWithNewItemsBloc<
 
   static Widget
       provideToContext<TPage extends CachedPaginationPage<INotification>>(
-          BuildContext context,
-          {@required bool mergeNewItemsImmediately,
-          @required Widget child}) {
+    BuildContext context, {
+    required bool mergeNewItemsImmediately,
+    required Widget child,
+  }) {
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<TPage, INotification>>(
       create: (context) => NotificationCachedPaginationListWithNewItemsBloc
-          .createFromContext<TPage>(context,
-              mergeNewItemsImmediately: mergeNewItemsImmediately),
+          .createFromContext<TPage>(
+        context,
+        mergeNewItemsImmediately: mergeNewItemsImmediately,
+      ),
       child: ProxyProvider<
           ICachedPaginationListWithNewItemsBloc<TPage, INotification>,
           ICachedPaginationListWithNewItemsBloc>(
@@ -68,14 +69,20 @@ class NotificationCachedPaginationListWithNewItemsBloc<
 
   static NotificationCachedPaginationListWithNewItemsBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<INotification>>(
-          BuildContext context,
-          {@required bool mergeNewItemsImmediately}) {
+    BuildContext context, {
+    required bool mergeNewItemsImmediately,
+  }) {
     return NotificationCachedPaginationListWithNewItemsBloc<TPage>(
       mergeNewItemsImmediately: mergeNewItemsImmediately,
-      paginationBloc: Provider.of<IPaginationBloc<TPage, INotification>>(
-          context,
-          listen: false),
-      cachedListBloc: INotificationCachedListBloc.of(context, listen: false),
+      cachedPaginationBloc:
+          Provider.of<ICachedPaginationBloc<TPage, INotification>>(
+        context,
+        listen: false,
+      ),
+      cachedListBloc: INotificationCachedListBloc.of(
+        context,
+        listen: false,
+      ),
     );
   }
 }

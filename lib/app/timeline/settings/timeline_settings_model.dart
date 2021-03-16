@@ -7,7 +7,6 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -41,7 +40,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   static TimelineSettings createDefaultCustomListSettings({
-    @required IPleromaList onlyInRemoteList,
+    required IPleromaList? onlyInRemoteList,
   }) =>
       TimelineSettings.list(
         withMuted: false,
@@ -51,7 +50,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   static TimelineSettings createDefaultHashtagSettings({
-    @required String withRemoteHashtag,
+    required String? withRemoteHashtag,
   }) =>
       TimelineSettings.hashtag(
         onlyWithMedia: false,
@@ -63,7 +62,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   static TimelineSettings createDefaultAccountSettings({
-    @required IPleromaAccount onlyFromRemoteAccount,
+    required IPleromaAccount? onlyFromRemoteAccount,
   }) =>
       TimelineSettings.account(
         onlyWithMedia: false,
@@ -76,87 +75,87 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   @HiveField(1)
   @JsonKey(name: "only_with_media")
-  final bool onlyWithMedia;
+  final bool? onlyWithMedia;
 
   @HiveField(2)
   @JsonKey(name: "exclude_replies")
-  final bool excludeReplies;
+  final bool? excludeReplies;
 
   @HiveField(3)
   @JsonKey(name: "exclude_nsfw_sensitive")
-  final bool excludeNsfwSensitive;
+  final bool? excludeNsfwSensitive;
 
   @HiveField(4)
   @JsonKey(name: "only_remote")
-  final bool onlyRemote;
+  final bool? onlyRemote;
 
   @HiveField(5)
   @JsonKey(name: "only_local")
-  final bool onlyLocal;
+  final bool? onlyLocal;
 
   @HiveField(6)
   @JsonKey(name: "with_muted")
-  final bool withMuted;
+  final bool? withMuted;
 
   @HiveField(7)
   @JsonKey(name: "exclude_visibilities_strings")
-  final List<String> excludeVisibilitiesStrings;
+  final List<String>? excludeVisibilitiesStrings;
 
   @HiveField(9)
   @JsonKey(name: "only_in_list")
-  final PleromaList onlyInRemoteList;
+  final PleromaList? onlyInRemoteList;
 
   @HiveField(10)
   @JsonKey(name: "with_remote_hashtag")
-  final String withRemoteHashtag;
+  final String? withRemoteHashtag;
 
   @HiveField(11)
   @JsonKey(name: "reply_visibility_filter_string")
-  final String replyVisibilityFilterString;
+  final String? replyVisibilityFilterString;
 
   @HiveField(13)
   @JsonKey(name: "only_from_remote_account")
-  final PleromaAccount onlyFromRemoteAccount;
+  final PleromaAccount? onlyFromRemoteAccount;
 
   @HiveField(14)
   @JsonKey(name: "only_pinned")
-  final bool onlyPinned;
+  final bool? onlyPinned;
 
   @HiveField(15)
   @JsonKey(name: "exclude_reblogs")
-  final bool excludeReblogs;
+  final bool? excludeReblogs;
 
   @HiveField(16)
   @JsonKey(name: "web_sockets_updates")
-  final bool webSocketsUpdates;
+  final bool? webSocketsUpdates;
 
   @HiveField(17)
   @JsonKey(name: "instance")
-  final String onlyFromInstance;
+  final String? onlyFromInstance;
 
   TimelineSettings({
-    @required this.onlyWithMedia,
-    @required this.excludeReplies,
-    @required this.excludeNsfwSensitive,
-    @required this.onlyRemote,
-    @required this.onlyLocal,
-    @required this.withMuted,
-    @required this.excludeVisibilitiesStrings,
-    @required this.onlyInRemoteList,
-    @required this.withRemoteHashtag,
-    @required this.replyVisibilityFilterString,
-    @required this.onlyFromRemoteAccount,
-    @required this.onlyPinned,
-    @required this.excludeReblogs,
-    @required this.webSocketsUpdates,
-    @required this.onlyFromInstance,
+    required this.onlyWithMedia,
+    required this.excludeReplies,
+    required this.excludeNsfwSensitive,
+    required this.onlyRemote,
+    required this.onlyLocal,
+    required this.withMuted,
+    required this.excludeVisibilitiesStrings,
+    required this.onlyInRemoteList,
+    required this.withRemoteHashtag,
+    required this.replyVisibilityFilterString,
+    required this.onlyFromRemoteAccount,
+    required this.onlyPinned,
+    required this.excludeReblogs,
+    required this.webSocketsUpdates,
+    required this.onlyFromInstance,
   });
 
   TimelineSettings.home({
-    @required bool onlyLocal,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool websocketsUpdates,
+    required bool onlyLocal,
+    required bool withMuted,
+    required List<PleromaVisibility> excludeVisibilities,
+    required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
           excludeReplies: null,
@@ -178,13 +177,13 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         );
 
   TimelineSettings.public({
-    @required bool onlyWithMedia,
-    @required bool onlyRemote,
-    @required bool onlyLocal,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required bool websocketsUpdates,
-    @required String onlyFromInstance,
+    required bool onlyWithMedia,
+    required bool onlyRemote,
+    required bool onlyLocal,
+    required bool withMuted,
+    required List<PleromaVisibility> excludeVisibilities,
+    required bool websocketsUpdates,
+    required String? onlyFromInstance,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,
@@ -206,12 +205,12 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         );
 
   TimelineSettings.hashtag({
-    @required bool onlyWithMedia,
-    @required bool onlyLocal,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required String withRemoteHashtag,
-    @required bool websocketsUpdates,
+    required bool onlyWithMedia,
+    required bool onlyLocal,
+    required bool withMuted,
+    required List<PleromaVisibility> excludeVisibilities,
+    required String? withRemoteHashtag,
+    required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,
@@ -233,10 +232,10 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         );
 
   TimelineSettings.list({
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required IPleromaList onlyInRemoteList,
-    @required bool websocketsUpdates,
+    required bool withMuted,
+    required List<PleromaVisibility> excludeVisibilities,
+    required IPleromaList? onlyInRemoteList,
+    required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
           excludeReplies: null,
@@ -247,7 +246,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          onlyInRemoteList: onlyInRemoteList,
+          onlyInRemoteList: onlyInRemoteList as PleromaList?,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
@@ -258,12 +257,12 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         );
 
   TimelineSettings.account({
-    @required IPleromaAccount onlyFromRemoteAccount,
-    @required bool onlyWithMedia,
-    @required bool excludeReplies,
-    @required bool excludeReblogs,
-    @required bool onlyPinned,
-    @required bool websocketsUpdates,
+    required IPleromaAccount? onlyFromRemoteAccount,
+    required bool onlyWithMedia,
+    required bool excludeReplies,
+    required bool excludeReblogs,
+    required bool onlyPinned,
+    required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: excludeReplies,
@@ -275,7 +274,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyInRemoteList: null,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
-          onlyFromRemoteAccount: onlyFromRemoteAccount,
+          onlyFromRemoteAccount: onlyFromRemoteAccount as PleromaAccount?,
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
           webSocketsUpdates: websocketsUpdates,
@@ -355,12 +354,12 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   String toJsonString() => jsonEncode(_$TimelineSettingsToJson(this));
 
-  List<PleromaVisibility> get excludeVisibilities => excludeVisibilitiesStrings
+  List<PleromaVisibility>? get excludeVisibilities => excludeVisibilitiesStrings
       ?.map((excludeVisibilityString) =>
           excludeVisibilityString.toPleromaVisibility())
       ?.toList();
 
-  PleromaReplyVisibilityFilter get replyVisibilityFilter =>
+  PleromaReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toPleromaReplyVisibilityFilter();
 
   static String generateUniqueTimelineId() =>
@@ -370,21 +369,21 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   TimelineSettings clone() => copyWith();
 
   TimelineSettings copyWith({
-    bool onlyWithMedia,
-    bool excludeReplies,
-    bool excludeNsfwSensitive,
-    bool onlyRemote,
-    bool onlyLocal,
-    bool withMuted,
-    List<String> excludeVisibilitiesStrings,
-    PleromaList onlyInRemoteList,
-    String withRemoteHashtag,
-    String replyVisibilityFilterString,
-    PleromaAccount onlyFromRemoteAccount,
-    bool onlyPinned,
-    bool excludeReblogs,
-    bool webSocketsUpdates,
-    String onlyFromInstance,
+    bool? onlyWithMedia,
+    bool? excludeReplies,
+    bool? excludeNsfwSensitive,
+    bool? onlyRemote,
+    bool? onlyLocal,
+    bool? withMuted,
+    List<String>? excludeVisibilitiesStrings,
+    PleromaList? onlyInRemoteList,
+    String? withRemoteHashtag,
+    String? replyVisibilityFilterString,
+    PleromaAccount? onlyFromRemoteAccount,
+    bool? onlyPinned,
+    bool? excludeReblogs,
+    bool? webSocketsUpdates,
+    String? onlyFromInstance,
   }) =>
       TimelineSettings(
         onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
@@ -411,21 +410,14 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     switch (timelineType) {
       case TimelineType.public:
         return createDefaultPublicSettings();
-        break;
       case TimelineType.customList:
         return createDefaultCustomListSettings(onlyInRemoteList: null);
-        break;
       case TimelineType.home:
         return createDefaultHomeSettings();
-        break;
       case TimelineType.hashtag:
         return createDefaultHashtagSettings(withRemoteHashtag: null);
-        break;
       case TimelineType.account:
         return createDefaultAccountSettings(onlyFromRemoteAccount: null);
-        break;
     }
-
-    throw UnsupportedError("Unsupported timelineType $timelineType");
   }
 }

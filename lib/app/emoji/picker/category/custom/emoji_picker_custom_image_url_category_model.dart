@@ -15,7 +15,7 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
   @HiveField(0)
-  final List<CustomEmojiPickerImageUrlItem> items;
+  final List<CustomEmojiPickerImageUrlItem>? items;
 
   EmojiPickerCustomImageUrlCategoryItems({this.items});
 

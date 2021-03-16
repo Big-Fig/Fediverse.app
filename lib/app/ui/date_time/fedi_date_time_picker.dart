@@ -18,10 +18,10 @@ export 'package:flutter_datetime_picker/src/date_model.dart';
 export 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 export 'package:flutter_datetime_picker/src/i18n_model.dart';
 
-typedef void DateChangedCallback(DateTime time);
+typedef void DateChangedCallback(DateTime? time);
 typedef void DateCancelledCallback();
 typedef void DateDeletedCallback();
-typedef String StringAtIndexCallBack(int index);
+typedef String? StringAtIndexCallBack(int index);
 
 class FediDatePicker {
   ///
@@ -30,16 +30,16 @@ class FediDatePicker {
   static Future<DateTime> showDatePicker(
     BuildContext context, {
     bool showTitleActions = true,
-    DateTime minTime,
-    DateTime maxTime,
-    DateChangedCallback onChanged,
-    DateChangedCallback onConfirm,
-    DateCancelledCallback onCancel,
+    DateTime? minTime,
+    DateTime? maxTime,
+    DateChangedCallback? onChanged,
+    DateChangedCallback? onConfirm,
+    DateCancelledCallback? onCancel,
     locale = LocaleType.en,
-    DateTime currentTime,
-    FediDatePickerTheme theme,
-    @required DateDeletedCallback onDelete,
-    @required bool isDeletePossible,
+    DateTime? currentTime,
+    FediDatePickerTheme? theme,
+    required DateDeletedCallback onDelete,
+    required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
       onDelete: onDelete,
@@ -67,14 +67,14 @@ class FediDatePicker {
     BuildContext context, {
     bool showTitleActions = true,
     bool showSecondsColumn = true,
-    DateChangedCallback onChanged,
-    DateChangedCallback onConfirm,
-    DateCancelledCallback onCancel,
+    DateChangedCallback? onChanged,
+    DateChangedCallback? onConfirm,
+    DateCancelledCallback? onCancel,
     locale = LocaleType.en,
-    DateTime currentTime,
-    FediDatePickerTheme theme,
-    @required DateDeletedCallback onDelete,
-    @required bool isDeletePossible,
+    DateTime? currentTime,
+    FediDatePickerTheme? theme,
+    required DateDeletedCallback onDelete,
+    required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
       onDelete: onDelete,
@@ -100,14 +100,14 @@ class FediDatePicker {
   static Future<DateTime> showTime12hPicker(
     BuildContext context, {
     bool showTitleActions = true,
-    DateChangedCallback onChanged,
-    DateChangedCallback onConfirm,
-    DateCancelledCallback onCancel,
+    DateChangedCallback? onChanged,
+    DateChangedCallback? onConfirm,
+    DateCancelledCallback? onCancel,
     locale = LocaleType.en,
-    DateTime currentTime,
-    FediDatePickerTheme theme,
-    @required DateDeletedCallback onDelete,
-    @required bool isDeletePossible,
+    DateTime? currentTime,
+    FediDatePickerTheme? theme,
+    required DateDeletedCallback onDelete,
+    required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
       onDelete: onDelete,
@@ -127,19 +127,19 @@ class FediDatePicker {
   ///
   /// Display date&time picker bottom sheet.
   ///
-  static Future<DateTime> showDateTimePicker(
+  static Future<DateTime?> showDateTimePicker(
     BuildContext context, {
     bool showTitleActions = true,
-    DateTime minDateTime,
-    DateTime maxDateTime,
-    DateChangedCallback onChanged,
-    DateChangedCallback onConfirm,
-    DateDeletedCallback onDelete,
-    DateCancelledCallback onCancel,
+    DateTime? minDateTime,
+    DateTime? maxDateTime,
+    DateChangedCallback? onChanged,
+    DateChangedCallback? onConfirm,
+    DateDeletedCallback? onDelete,
+    DateCancelledCallback? onCancel,
     locale = LocaleType.en,
-    DateTime currentDateTime,
-    FediDatePickerTheme theme,
-    @required bool isDeletePossible,
+    DateTime? currentDateTime,
+    FediDatePickerTheme? theme,
+    required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
       isDeletePossible: isDeletePossible,
@@ -166,14 +166,14 @@ class FediDatePicker {
   static Future<DateTime> showPicker(
     BuildContext context, {
     bool showTitleActions = true,
-    DateChangedCallback onChanged,
-    DateChangedCallback onConfirm,
-    DateCancelledCallback onCancel,
+    DateChangedCallback? onChanged,
+    DateChangedCallback? onConfirm,
+    DateCancelledCallback? onCancel,
     locale = LocaleType.en,
-    BasePickerModel pickerModel,
-    FediDatePickerTheme theme,
-    @required DateDeletedCallback onDelete,
-    @required bool isDeletePossible,
+    BasePickerModel? pickerModel,
+    FediDatePickerTheme? theme,
+    required DateDeletedCallback onDelete,
+    required bool isDeletePossible,
   }) async {
     return _showDatePickerPopup(
       onDelete: onDelete,
@@ -191,17 +191,17 @@ class FediDatePicker {
   }
 
   static Future<DateTime> _showDatePickerPopup({
-    @required BuildContext context,
-    @required bool showTitleActions,
-    @required DateChangedCallback onChanged,
-    @required DateChangedCallback onConfirm,
-    @required DateCancelledCallback onCancel,
-    @required DateDeletedCallback onDelete,
-    @required LocaleType locale,
-    @required FediDatePickerTheme theme,
-    @required String barrierLabel,
-    @required BasePickerModel pickerModel,
-    @required bool isDeletePossible,
+    required BuildContext context,
+    required bool showTitleActions,
+    required DateChangedCallback? onChanged,
+    required DateChangedCallback? onConfirm,
+    required DateCancelledCallback? onCancel,
+    required DateDeletedCallback? onDelete,
+    required LocaleType locale,
+    required FediDatePickerTheme? theme,
+    required String barrierLabel,
+    required BasePickerModel? pickerModel,
+    required bool isDeletePossible,
   }) {
     var completer = Completer<DateTime>();
     Widget widget = _FediDatePickerComponent(
@@ -231,9 +231,8 @@ class FediDatePicker {
       isDeletePossible: isDeletePossible,
     );
     ThemeData inheritTheme = Theme.of(context);
-    if (inheritTheme != null) {
-      widget = Theme(data: inheritTheme, child: widget);
-    }
+    widget = Theme(data: inheritTheme, child: widget);
+
     showFediModalBottomSheetDialog(context: context, child: widget);
 
     return completer.future;
@@ -242,28 +241,28 @@ class FediDatePicker {
 
 class _FediDatePickerComponent extends StatefulWidget {
   _FediDatePickerComponent({
-    Key key,
-    @required this.theme,
-    @required this.locale,
-    @required this.pickerModel,
-    @required this.showTitleActions,
-    @required this.onChanged,
-    @required this.isDeletePossible,
-    @required this.onDelete,
-    @required this.onConfirm,
-    @required this.onCancel,
+    Key? key,
+    required this.theme,
+    required this.locale,
+    required this.pickerModel,
+    required this.showTitleActions,
+    required this.onChanged,
+    required this.isDeletePossible,
+    required this.onDelete,
+    required this.onConfirm,
+    required this.onCancel,
   }) : super(key: key);
 
-  final DateChangedCallback onChanged;
-  final DateChangedCallback onConfirm;
-  final DateCancelledCallback onCancel;
-  final DateDeletedCallback onDelete;
+  final DateChangedCallback? onChanged;
+  final DateChangedCallback? onConfirm;
+  final DateCancelledCallback? onCancel;
+  final DateDeletedCallback? onDelete;
   final bool isDeletePossible;
-  final FediDatePickerTheme theme;
+  final FediDatePickerTheme? theme;
 
   final LocaleType locale;
 
-  final BasePickerModel pickerModel;
+  final BasePickerModel? pickerModel;
 
   final bool showTitleActions;
 
@@ -274,7 +273,9 @@ class _FediDatePickerComponent extends StatefulWidget {
 }
 
 class _DatePickerState extends State<_FediDatePickerComponent> {
-  FixedExtentScrollController leftScrollCtrl, middleScrollCtrl, rightScrollCtrl;
+  FixedExtentScrollController? leftScrollCtrl,
+      middleScrollCtrl,
+      rightScrollCtrl;
 
   @override
   void initState() {
@@ -285,23 +286,23 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   void refreshScrollOffset() {
 //    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
     leftScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentLeftIndex());
+        initialItem: widget.pickerModel!.currentLeftIndex());
     middleScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentMiddleIndex());
+        initialItem: widget.pickerModel!.currentMiddleIndex());
     rightScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentRightIndex());
+        initialItem: widget.pickerModel!.currentRightIndex());
   }
 
   @override
   Widget build(BuildContext context) {
-    FediDatePickerTheme theme = widget.theme;
+    FediDatePickerTheme theme = widget.theme!;
 
     return _renderPickerView(theme);
   }
 
   void _notifyDateChanged() {
     if (widget.onChanged != null) {
-      widget.onChanged(widget.pickerModel.finalTime());
+      widget.onChanged!(widget.pickerModel!.finalTime());
     }
   }
 
@@ -330,10 +331,10 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
       ValueKey key,
       FediDatePickerTheme theme,
       StringAtIndexCallBack stringAtIndexCB,
-      ScrollController scrollController,
+      ScrollController? scrollController,
       int layoutProportion,
       ValueChanged<int> selectedChangedWhenScrolling,
-      ValueChanged<int> selectedChangedWhenScrollEnd) {
+      ValueChanged<int>? selectedChangedWhenScrollEnd) {
     return Expanded(
       flex: layoutProportion,
       child: Container(
@@ -345,7 +346,8 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
                     selectedChangedWhenScrollEnd != null &&
                     notification is ScrollEndNotification &&
                     notification.metrics is FixedExtentMetrics) {
-                  final FixedExtentMetrics metrics = notification.metrics;
+                  final FixedExtentMetrics metrics =
+                      notification.metrics as FixedExtentMetrics;
                   final int currentItemIndex = metrics.itemIndex;
                   selectedChangedWhenScrollEnd(currentItemIndex);
                 }
@@ -353,7 +355,8 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
               },
               child: CupertinoPicker.builder(
                   key: key,
-                  scrollController: scrollController,
+                  scrollController:
+                      scrollController as FixedExtentScrollController?,
                   itemExtent: theme.itemHeight,
                   onSelectedItemChanged: (int index) {
                     selectedChangedWhenScrolling(index);
@@ -382,14 +385,14 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
-          child: widget.pickerModel.layoutProportions()[0] > 0
+          child: widget.pickerModel!.layoutProportions()[0] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel.currentLeftIndex()),
+                  ValueKey(widget.pickerModel!.currentLeftIndex()),
                   theme,
-                  widget.pickerModel.leftStringAtIndex,
+                  widget.pickerModel!.leftStringAtIndex,
                   leftScrollCtrl,
-                  widget.pickerModel.layoutProportions()[0], (index) {
-                  widget.pickerModel.setLeftIndex(index);
+                  widget.pickerModel!.layoutProportions()[0], (index) {
+                  widget.pickerModel!.setLeftIndex(index);
                 }, (index) {
                   setState(() {
                     refreshScrollOffset();
@@ -399,18 +402,18 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
               : null,
         ),
         Text(
-          widget.pickerModel.leftDivider(),
+          widget.pickerModel!.leftDivider(),
           style: theme.itemStyle,
         ),
         Container(
-          child: widget.pickerModel.layoutProportions()[1] > 0
+          child: widget.pickerModel!.layoutProportions()[1] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel.currentLeftIndex()),
+                  ValueKey(widget.pickerModel!.currentLeftIndex()),
                   theme,
-                  widget.pickerModel.middleStringAtIndex,
+                  widget.pickerModel!.middleStringAtIndex,
                   middleScrollCtrl,
-                  widget.pickerModel.layoutProportions()[1], (index) {
-                  widget.pickerModel.setMiddleIndex(index);
+                  widget.pickerModel!.layoutProportions()[1], (index) {
+                  widget.pickerModel!.setMiddleIndex(index);
                 }, (index) {
                   setState(() {
                     refreshScrollOffset();
@@ -420,19 +423,19 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
               : null,
         ),
         Text(
-          widget.pickerModel.rightDivider(),
+          widget.pickerModel!.rightDivider(),
           style: theme.itemStyle,
         ),
         Container(
-          child: widget.pickerModel.layoutProportions()[2] > 0
+          child: widget.pickerModel!.layoutProportions()[2] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel.currentMiddleIndex() * 100 +
-                      widget.pickerModel.currentLeftIndex()),
+                  ValueKey(widget.pickerModel!.currentMiddleIndex() * 100 +
+                      widget.pickerModel!.currentLeftIndex()),
                   theme,
-                  widget.pickerModel.rightStringAtIndex,
+                  widget.pickerModel!.rightStringAtIndex,
                   rightScrollCtrl,
-                  widget.pickerModel.layoutProportions()[2], (index) {
-                  widget.pickerModel.setRightIndex(index);
+                  widget.pickerModel!.layoutProportions()[2], (index) {
+                  widget.pickerModel!.setRightIndex(index);
                   _notifyDateChanged();
                 }, null)
               : null,
@@ -455,20 +458,20 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
           FediPrimaryFilledTextButtonWithBorder(
             '$done',
             onPressed: () {
-              Navigator.pop(context, widget.pickerModel.finalTime());
+              Navigator.pop(context, widget.pickerModel!.finalTime());
               if (widget.onConfirm != null) {
-                widget.onConfirm(widget.pickerModel.finalTime());
+                widget.onConfirm!(widget.pickerModel!.finalTime());
               }
             },
             expanded: false,
           ),
-          if(widget.isDeletePossible)
+          if (widget.isDeletePossible)
             FediTransparentTextButtonWithBorder(
               '$delete',
               color: IFediUiColorTheme.of(context).darkGrey,
               onPressed: () {
                 if (widget.onDelete != null) {
-                  widget.onDelete();
+                  widget.onDelete!();
                 }
                 Navigator.pop(context);
               },
@@ -480,7 +483,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
             onPressed: () {
               Navigator.pop(context);
               if (widget.onCancel != null) {
-                widget.onCancel();
+                widget.onCancel!();
               }
             },
             expanded: false,
@@ -491,13 +494,15 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   }
 
   String _localeDone() {
-    return widget.theme.customDone ?? i18nObjInLocale(widget.locale)['done'];
+    return widget.theme!.customDone ??
+        i18nObjInLocale(widget.locale)['done'] as String;
   }
 
   String _localeCancel() {
-    return widget.theme.customCancel ??
-        i18nObjInLocale(widget.locale)['cancel'];
+    return widget.theme!.customCancel ??
+        i18nObjInLocale(widget.locale)['cancel'] as String;
   }
+
   String _localeDelete() {
     return S.of(context).app_duration_picker_action_delete;
   }
@@ -508,7 +513,7 @@ class FediDatePickerTheme {
   final TextStyle doneStyle;
   final TextStyle itemStyle;
   final Color backgroundColor;
-  final Color headerColor;
+  final Color? headerColor;
 
   final double containerHeight;
   final double titleHeight;
@@ -526,14 +531,14 @@ class FediDatePickerTheme {
     this.containerHeight = 210.0,
     this.titleHeight = 44.0,
     this.itemHeight = 36.0,
-    @required this.customTitle,
-    @required this.customDone,
-    @required this.customCancel,
+    required this.customTitle,
+    required this.customDone,
+    required this.customCancel,
   });
 
   FediDatePickerTheme.byDefault({
-    @required BuildContext context,
-    String customTitle,
+    required BuildContext context,
+    String? customTitle,
   }) : this(
           headerColor: IFediUiColorTheme.of(context, listen: false).white,
           backgroundColor: IFediUiColorTheme.of(context, listen: false).white,

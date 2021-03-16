@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountDomainBlockListItemWidget extends StatelessWidget {
-  final DomainBlockCallback domainBlockSelectedCallback;
-  final List<Widget> domainBlockActions;
+  final DomainBlockCallback? domainBlockSelectedCallback;
+  final List<Widget>? domainBlockActions;
 
   MyAccountDomainBlockListItemWidget({
-    @required this.domainBlockSelectedCallback,
+    required this.domainBlockSelectedCallback,
     this.domainBlockActions,
   });
 
@@ -23,7 +23,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
             context,
             listen: false,
           );
-          domainBlockSelectedCallback(context, domain);
+          domainBlockSelectedCallback!(context, domain);
         }
       },
       child: Padding(
@@ -34,7 +34,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
             const Expanded(
               child: _MyAccountDomainBlockListItemBodyWidget(),
             ),
-            if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions
+            if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions!
           ],
         ),
       ),
@@ -44,7 +44,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
 
 class _MyAccountDomainBlockListItemBodyWidget extends StatelessWidget {
   const _MyAccountDomainBlockListItemBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

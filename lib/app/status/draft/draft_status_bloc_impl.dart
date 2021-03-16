@@ -28,17 +28,17 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       BehaviorSubject.seeded(DraftStatusState.draft);
 
   @override
-  DraftStatusState get state => _stateSubject.value;
+  DraftStatusState? get state => _stateSubject.value;
 
   @override
   Stream<DraftStatusState> get stateStream => _stateSubject.stream;
 
   DraftStatusBloc({
-    @required this.pleromaAuthStatusService,
-    @required this.statusRepository,
-    @required this.scheduledStatusRepository,
-    @required this.draftStatusRepository,
-    @required IDraftStatus draftStatus, // for better performance we don't
+    required this.pleromaAuthStatusService,
+    required this.statusRepository,
+    required this.scheduledStatusRepository,
+    required this.draftStatusRepository,
+    required IDraftStatus draftStatus, // for better performance we don't
     // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
@@ -47,7 +47,6 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     addDisposable(subject: _draftStatusSubject);
     addDisposable(subject: _stateSubject);
 
-    assert(isNeedWatchLocalRepositoryForUpdates != null);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(draftStatus);
@@ -61,19 +60,21 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
-            streamSubscription: draftStatusRepository
-                .watchById(draftStatus.localId)
-                .listen((updatedStatus) {
-          if (updatedStatus != null) {
-            _draftStatusSubject.add(updatedStatus);
-          }
-        }));
+          streamSubscription:
+              draftStatusRepository.watchById(draftStatus.localId).listen(
+            (updatedStatus) {
+              if (updatedStatus != null) {
+                _draftStatusSubject.add(updatedStatus);
+              }
+            },
+          ),
+        );
       }
     }
   }
 
   @override
-  IDraftStatus get draftStatus => _draftStatusSubject.value;
+  IDraftStatus? get draftStatus => _draftStatusSubject.value;
 
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;
@@ -86,7 +87,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }) =>
       DraftStatusBloc(
         pleromaAuthStatusService:
-            IPleromaStatusService.of(context, listen: false),
+            IPleromaStatusService.of(context, listen: false)
+                as IPleromaAuthStatusService,
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),
@@ -99,19 +101,19 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       );
 
   @override
-  DateTime get updatedAt => draftStatus.updatedAt;
+  DateTime? get updatedAt => draftStatus!.updatedAt;
 
   @override
-  Stream<DateTime> get updatedAtStream =>
+  Stream<DateTime?> get updatedAtStream =>
       draftStatusStream.map((draftStatus) => draftStatus.updatedAt);
 
   @override
-  IPostStatusData calculatePostStatusData() => draftStatus.postStatusData;
+  IPostStatusData? calculatePostStatusData() => draftStatus!.postStatusData;
 
   @override
   Future cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
-    return draftStatusRepository.deleteById(draftStatus.localId);
+    return draftStatusRepository.deleteById(draftStatus!.localId);
   }
 
   @override
@@ -138,14 +140,14 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
       );
     }
 
-    await draftStatusRepository.deleteById(draftStatus.localId);
+    await draftStatusRepository.deleteById(draftStatus!.localId);
 
     _stateSubject.add(DraftStatusState.alreadyPosted);
   }
 
   @override
   Future updatePostStatusData(PostStatusData postStatusData) async {
-    var localId = draftStatus.localId;
+    var localId = draftStatus!.localId;
     await draftStatusRepository.updateById(
       localId,
       DbDraftStatus(

@@ -14,7 +14,7 @@ class ExternalShareMediaPage extends StatelessWidget {
   final bool isShareAsLinkPossible;
 
   const ExternalShareMediaPage({
-    @required this.isShareAsLinkPossible,
+    required this.isShareAsLinkPossible,
   });
 
   @override
@@ -37,9 +37,9 @@ class ExternalShareMediaPage extends StatelessWidget {
 }
 
 void goToExternalShareMediaPage({
-  @required BuildContext context,
-  @required IPleromaMediaAttachment mediaAttachment,
-  @required bool isShareAsLinkPossible,
+  required BuildContext context,
+  required IPleromaMediaAttachment? mediaAttachment,
+  required bool isShareAsLinkPossible,
 }) {
   Navigator.push(
     context,
@@ -52,15 +52,15 @@ void goToExternalShareMediaPage({
 }
 
 MaterialPageRoute createExternalShareMediaPageRoute({
-  @required BuildContext context,
-  @required IPleromaMediaAttachment mediaAttachment,
-  @required bool isShareAsLinkPossible,
+  required BuildContext context,
+  required IPleromaMediaAttachment? mediaAttachment,
+  required bool isShareAsLinkPossible,
 }) {
   return MaterialPageRoute(
     builder: (context) => ExternalShareMediaBloc.provideToContext(
       context,
       mediaAttachment: mediaAttachment,
-      child: Provider<IPleromaMediaAttachment>.value(
+      child: Provider<IPleromaMediaAttachment?>.value(
         value: mediaAttachment,
         child: ExternalShareMediaPage(
           isShareAsLinkPossible: isShareAsLinkPossible,

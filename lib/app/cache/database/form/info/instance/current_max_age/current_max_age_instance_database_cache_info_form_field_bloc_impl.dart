@@ -4,15 +4,15 @@ import 'package:fedi/form/field/info/info_form_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc
-    extends InfoFormFieldBloc<DateTime>
+    extends InfoFormFieldBloc<DateTime?>
     implements ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc {
   final IDatabaseService databaseService;
 
   CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc({
-    @required this.databaseService,
+    required this.databaseService,
   });
 
   @override
-  Future<DateTime> calculateCurrentValue() async =>
+  Future<DateTime?> calculateCurrentValue() async =>
       databaseService.calculateOldestEntryAge();
 }

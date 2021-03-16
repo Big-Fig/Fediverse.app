@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,11 +9,39 @@ part 'pleroma_emoji_model.g.dart';
 abstract class IPleromaEmoji extends IMastodonEmoji {}
 
 abstract class IPleromaCustomEmoji {
-  List<String> get tags;
+  List<String>? get tags;
 
   String get imageUrl;
 
   String get name;
+}
+
+extension IPleromaEmojiExtension on IPleromaEmoji {
+  PleromaEmoji toPleromaEmoji() {
+    if (this is PleromaEmoji) {
+      return this as PleromaEmoji;
+    } else {
+      return PleromaEmoji(
+        shortcode: shortcode,
+        url: url,
+        staticUrl: staticUrl,
+        visibleInPicker: visibleInPicker,
+        category: category,
+      );
+    }
+  }
+}
+
+extension IPleromaEmojiListExtension on List<IPleromaEmoji> {
+  List<PleromaEmoji> toPleromaEmojis() {
+    if (this is List<PleromaEmoji>) {
+      return this as List<PleromaEmoji>;
+    } else {
+      return map(
+            (emoji) => emoji.toPleromaEmoji(),
+      ).toList();
+    }
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -26,28 +53,28 @@ abstract class IPleromaCustomEmoji {
 class PleromaEmoji implements IPleromaEmoji {
   @override
   @HiveField(0)
-  final String shortcode;
+  final String? shortcode;
   @override
   @HiveField(1)
-  final String url;
+  final String? url;
   @override
   @HiveField(2)
   @JsonKey(name: "static_url")
-  final String staticUrl;
+  final String? staticUrl;
   @override
   @JsonKey(name: "visible_in_picker")
   @HiveField(3)
-  final bool visibleInPicker;
+  final bool? visibleInPicker;
   @override
   @HiveField(4)
-  final String category;
+  final String? category;
 
   PleromaEmoji({
-    @required this.shortcode,
-    @required this.url,
-    @required this.staticUrl,
-    @required this.visibleInPicker,
-    @required this.category,
+    required this.shortcode,
+    required this.url,
+    required this.staticUrl,
+    required this.visibleInPicker,
+    required this.category,
   });
 
   @override
@@ -91,7 +118,7 @@ class PleromaEmoji implements IPleromaEmoji {
 class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @override
   @HiveField(0)
-  final List<String> tags;
+  final List<String>? tags;
   @override
   @HiveField(1)
   @JsonKey(name: "image_url")
@@ -102,9 +129,9 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
   final String name;
 
   PleromaCustomEmoji({
-    this.tags,
-    this.imageUrl,
-    this.name,
+    required this.tags,
+    required this.imageUrl,
+    required this.name,
   });
 
   @override

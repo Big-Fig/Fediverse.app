@@ -18,8 +18,8 @@ class MyAccountDetailsWidget extends StatefulWidget {
 }
 
 class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
-  ScrollControllerBloc scrollControllerBloc;
-  ScrollController scrollController;
+  ScrollControllerBloc? scrollControllerBloc;
+  ScrollController? scrollController;
 
   @override
   void initState() {
@@ -32,8 +32,8 @@ class _MyAccountDetailsWidgetState extends State<MyAccountDetailsWidget> {
   @override
   void dispose() {
     super.dispose();
-    scrollController.dispose();
-    scrollControllerBloc.dispose();
+    scrollController!.dispose();
+    scrollControllerBloc!.dispose();
   }
 
   @override

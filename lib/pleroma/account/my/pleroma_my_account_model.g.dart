@@ -18,13 +18,13 @@ class PleromaMyAccountSourceAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountSource(
-      privacy: fields[1] as String,
-      sensitive: fields[2] as bool,
-      language: fields[3] as String,
-      note: fields[4] as String,
-      fields: (fields[5] as List)?.cast<PleromaField>(),
-      followRequestsCount: fields[6] as int,
-      pleroma: fields[7] as PleromaMyAccountSourcePleromaPart,
+      privacy: fields[1] as String?,
+      sensitive: fields[2] as bool?,
+      language: fields[3] as String?,
+      note: fields[4] as String?,
+      fields: (fields[5] as List?)?.cast<PleromaField>(),
+      followRequestsCount: fields[6] as int?,
+      pleroma: fields[7] as PleromaMyAccountSourcePleromaPart?,
     );
   }
 
@@ -71,10 +71,10 @@ class PleromaMyAccountSourcePleromaPartAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountSourcePleromaPart(
-      showRole: fields[1] as bool,
-      noRichText: fields[2] as bool,
-      discoverable: fields[3] as bool,
-      actorType: fields[4] as String,
+      showRole: fields[1] as bool?,
+      noRichText: fields[2] as bool?,
+      discoverable: fields[3] as bool?,
+      actorType: fields[4] as String?,
     );
   }
 
@@ -114,30 +114,30 @@ class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccount(
-      username: fields[0] as String,
-      url: fields[1] as String,
-      statusesCount: fields[2] as int,
-      note: fields[3] as String,
-      locked: fields[4] as bool,
-      id: fields[5] as String,
-      headerStatic: fields[6] as String,
-      header: fields[7] as String,
-      followingCount: fields[8] as int,
-      followersCount: fields[9] as int,
-      fields: (fields[10] as List)?.cast<PleromaField>(),
-      emojis: (fields[11] as List)?.cast<PleromaEmoji>(),
-      displayName: fields[12] as String,
-      createdAt: fields[13] as DateTime,
-      bot: fields[14] as bool,
-      avatarStatic: fields[15] as String,
-      avatar: fields[16] as String,
-      acct: fields[17] as String,
-      pleroma: fields[19] as PleromaMyAccountPleromaPart,
-      lastStatusAt: fields[20] as DateTime,
-      source: fields[21] as PleromaMyAccountSource,
-      discoverable: fields[22] as bool,
-      followRequestsCount: fields[23] as int,
-      fqn: fields[24] as String,
+      username: fields[0] as String?,
+      url: fields[1] as String?,
+      statusesCount: fields[2] as int?,
+      note: fields[3] as String?,
+      locked: fields[4] as bool?,
+      id: fields[5] as String?,
+      headerStatic: fields[6] as String?,
+      header: fields[7] as String?,
+      followingCount: fields[8] as int?,
+      followersCount: fields[9] as int?,
+      fields: (fields[10] as List?)?.cast<PleromaField>(),
+      emojis: (fields[11] as List?)?.cast<PleromaEmoji>(),
+      displayName: fields[12] as String?,
+      createdAt: fields[13] as DateTime?,
+      bot: fields[14] as bool?,
+      avatarStatic: fields[15] as String?,
+      avatar: fields[16] as String?,
+      acct: fields[17] as String?,
+      pleroma: fields[19] as PleromaMyAccountPleromaPart?,
+      lastStatusAt: fields[20] as DateTime?,
+      source: fields[21] as PleromaMyAccountSource?,
+      discoverable: fields[22] as bool?,
+      followRequestsCount: fields[23] as int?,
+      fqn: fields[24] as String?,
     );
   }
 
@@ -218,12 +218,12 @@ class PleromaMyAccountPleromaPartNotificationsSettingsAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountPleromaPartNotificationsSettings(
-      followers: fields[0] as bool,
-      follows: fields[1] as bool,
-      nonFollowers: fields[2] as bool,
-      nonFollows: fields[3] as bool,
-      blockFromStrangers: fields[4] as bool,
-      hideNotificationContents: fields[5] as bool,
+      followers: fields[0] as bool?,
+      follows: fields[1] as bool?,
+      nonFollowers: fields[2] as bool?,
+      nonFollows: fields[3] as bool?,
+      blockFromStrangers: fields[4] as bool?,
+      hideNotificationContents: fields[5] as bool?,
     );
   }
 
@@ -269,31 +269,31 @@ class PleromaMyAccountPleromaPartAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountPleromaPart(
-      backgroundImage: fields[1] as String,
-      tags: (fields[2] as List)?.cast<dynamic>(),
-      relationship: fields[3] as PleromaAccountRelationship,
-      isAdmin: fields[4] as bool,
-      isModerator: fields[5] as bool,
-      confirmationPending: fields[7] as bool,
-      hideFavorites: fields[8] as bool,
-      hideFollowers: fields[9] as bool,
-      hideFollows: fields[11] as bool,
-      hideFollowersCount: fields[12] as bool,
-      hideFollowsCount: fields[13] as bool,
-      settingsStore: (fields[14] as Map)?.cast<String, dynamic>(),
-      chatToken: fields[15] as String,
-      deactivated: fields[16] as bool,
-      allowFollowingMove: fields[17] as bool,
-      unreadConversationCount: fields[18] as int,
-      skipThreadContainment: fields[20] as bool,
+      backgroundImage: fields[1] as String?,
+      tags: (fields[2] as List?)?.cast<dynamic>(),
+      relationship: fields[3] as PleromaAccountRelationship?,
+      isAdmin: fields[4] as bool?,
+      isModerator: fields[5] as bool?,
+      confirmationPending: fields[7] as bool?,
+      hideFavorites: fields[8] as bool?,
+      hideFollowers: fields[9] as bool?,
+      hideFollows: fields[11] as bool?,
+      hideFollowersCount: fields[12] as bool?,
+      hideFollowsCount: fields[13] as bool?,
+      settingsStore: (fields[14] as Map?)?.cast<String, dynamic>(),
+      chatToken: fields[15] as String?,
+      deactivated: fields[16] as bool?,
+      allowFollowingMove: fields[17] as bool?,
+      unreadConversationCount: fields[18] as int?,
+      skipThreadContainment: fields[20] as bool?,
       notificationSettings:
-          fields[19] as PleromaMyAccountPleromaPartNotificationsSettings,
-      acceptsChatMessages: fields[21] as bool,
-      isConfirmed: fields[22] as bool,
-      favicon: fields[23] as String,
-      apId: fields[24] as String,
-      alsoKnownAs: (fields[25] as List)?.cast<String>(),
-      unreadNotificationsCount: fields[26] as int,
+          fields[19] as PleromaMyAccountPleromaPartNotificationsSettings?,
+      acceptsChatMessages: fields[21] as bool?,
+      isConfirmed: fields[22] as bool?,
+      favicon: fields[23] as String?,
+      apId: fields[24] as String?,
+      alsoKnownAs: (fields[25] as List?)?.cast<String>(),
+      unreadNotificationsCount: fields[26] as int?,
     );
   }
 
@@ -368,36 +368,36 @@ class PleromaMyAccountPleromaPartAdapter
 
 PleromaMyAccountEdit _$PleromaMyAccountEditFromJson(Map<String, dynamic> json) {
   return PleromaMyAccountEdit(
-    bot: json['bot'] as bool,
-    discoverable: json['discoverable'] as bool,
-    displayName: json['display_name'] as String,
-    fieldsAttributes: (json['fields_attributes'] as Map<String, dynamic>)?.map(
+    bot: json['bot'] as bool?,
+    discoverable: json['discoverable'] as bool?,
+    displayName: json['display_name'] as String?,
+    fieldsAttributes: (json['fields_attributes'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(int.parse(k),
           e == null ? null : PleromaField.fromJson(e as Map<String, dynamic>)),
     ),
-    locked: json['locked'] as bool,
-    note: json['note'] as String,
+    locked: json['locked'] as bool?,
+    note: json['note'] as String?,
     source: json['source'] == null
         ? null
         : PleromaMyAccountEditSource.fromJson(
             json['source'] as Map<String, dynamic>),
     actorType: json['actor_type'],
-    allowFollowingMove: json['allow_following_move'] as bool,
-    acceptsChatMessages: json['accepts_chat_messages'] as bool,
-    defaultScope: json['default_scope'] as String,
-    hideFavorites: json['hide_favorites'] as bool,
-    hideFollowers: json['hide_followers'] as bool,
-    hideFollowersCount: json['hide_followers_count'] as bool,
-    hideFollows: json['hide_follows'] as bool,
-    hideFollowsCount: json['hide_follows_count'] as bool,
-    noRichText: json['no_rich_text'] as bool,
-    pleromaBackgroundImage: json['pleroma_background_image'] as String,
+    allowFollowingMove: json['allow_following_move'] as bool?,
+    acceptsChatMessages: json['accepts_chat_messages'] as bool?,
+    defaultScope: json['default_scope'] as String?,
+    hideFavorites: json['hide_favorites'] as bool?,
+    hideFollowers: json['hide_followers'] as bool?,
+    hideFollowersCount: json['hide_followers_count'] as bool?,
+    hideFollows: json['hide_follows'] as bool?,
+    hideFollowsCount: json['hide_follows_count'] as bool?,
+    noRichText: json['no_rich_text'] as bool?,
+    pleromaBackgroundImage: json['pleroma_background_image'] as String?,
     pleromaSettingsStore:
-        json['pleroma_settings_store'] as Map<String, dynamic>,
-    showRole: json['show_role'] as bool,
-    skipThreadContainment: json['skip_thread_containment'] as bool,
+        json['pleroma_settings_store'] as Map<String, dynamic>?,
+    showRole: json['show_role'] as bool?,
+    skipThreadContainment: json['skip_thread_containment'] as bool?,
     alsoKnownAs:
-        (json['also_known_as'] as List)?.map((e) => e as String)?.toList(),
+        (json['also_known_as'] as List?)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -432,9 +432,9 @@ Map<String, dynamic> _$PleromaMyAccountEditToJson(
 PleromaMyAccountEditSource _$PleromaMyAccountEditSourceFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountEditSource(
-    language: json['language'] as String,
-    privacy: json['privacy'] as String,
-    sensitive: json['sensitive'] as bool,
+    language: json['language'] as String?,
+    privacy: json['privacy'] as String?,
+    sensitive: json['sensitive'] as bool?,
   );
 }
 
@@ -449,15 +449,15 @@ Map<String, dynamic> _$PleromaMyAccountEditSourceToJson(
 PleromaMyAccountSource _$PleromaMyAccountSourceFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountSource(
-    privacy: json['privacy'] as String,
-    sensitive: json['sensitive'] as bool,
-    language: json['language'] as String,
-    note: json['note'] as String,
-    fields: (json['fields'] as List)
+    privacy: json['privacy'] as String?,
+    sensitive: json['sensitive'] as bool?,
+    language: json['language'] as String?,
+    note: json['note'] as String?,
+    fields: (json['fields'] as List?)
         ?.map((e) =>
             e == null ? null : PleromaField.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    followRequestsCount: json['follow_requests_count'] as int,
+    followRequestsCount: json['follow_requests_count'] as int?,
     pleroma: json['pleroma'] == null
         ? null
         : PleromaMyAccountSourcePleromaPart.fromJson(
@@ -480,10 +480,10 @@ Map<String, dynamic> _$PleromaMyAccountSourceToJson(
 PleromaMyAccountSourcePleromaPart _$PleromaMyAccountSourcePleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountSourcePleromaPart(
-    showRole: json['show_role'] as bool,
-    noRichText: json['no_rich_text'] as bool,
-    discoverable: json['discoverable'] as bool,
-    actorType: json['actor_type'] as String,
+    showRole: json['show_role'] as bool?,
+    noRichText: json['no_rich_text'] as bool?,
+    discoverable: json['discoverable'] as bool?,
+    actorType: json['actor_type'] as String?,
   );
 }
 
@@ -498,32 +498,32 @@ Map<String, dynamic> _$PleromaMyAccountSourcePleromaPartToJson(
 
 PleromaMyAccount _$PleromaMyAccountFromJson(Map<String, dynamic> json) {
   return PleromaMyAccount(
-    username: json['username'] as String,
-    url: json['url'] as String,
-    statusesCount: json['statuses_count'] as int,
-    note: json['note'] as String,
-    locked: json['locked'] as bool,
-    id: json['id'] as String,
-    headerStatic: json['header_static'] as String,
-    header: json['header'] as String,
-    followingCount: json['following_count'] as int,
-    followersCount: json['followers_count'] as int,
-    fields: (json['fields'] as List)
+    username: json['username'] as String?,
+    url: json['url'] as String?,
+    statusesCount: json['statuses_count'] as int?,
+    note: json['note'] as String?,
+    locked: json['locked'] as bool?,
+    id: json['id'] as String?,
+    headerStatic: json['header_static'] as String?,
+    header: json['header'] as String?,
+    followingCount: json['following_count'] as int?,
+    followersCount: json['followers_count'] as int?,
+    fields: (json['fields'] as List?)
         ?.map((e) =>
             e == null ? null : PleromaField.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    emojis: (json['emojis'] as List)
+    emojis: (json['emojis'] as List?)
         ?.map((e) =>
             e == null ? null : PleromaEmoji.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    displayName: json['display_name'] as String,
+    displayName: json['display_name'] as String?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-    bot: json['bot'] as bool,
-    avatarStatic: json['avatar_static'] as String,
-    avatar: json['avatar'] as String,
-    acct: json['acct'] as String,
+    bot: json['bot'] as bool?,
+    avatarStatic: json['avatar_static'] as String?,
+    avatar: json['avatar'] as String?,
+    acct: json['acct'] as String?,
     pleroma: json['pleroma'] == null
         ? null
         : PleromaMyAccountPleromaPart.fromJson(
@@ -535,9 +535,9 @@ PleromaMyAccount _$PleromaMyAccountFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaMyAccountSource.fromJson(
             json['source'] as Map<String, dynamic>),
-    discoverable: json['discoverable'] as bool,
-    followRequestsCount: json['follow_requests_count'] as int,
-    fqn: json['fqn'] as String,
+    discoverable: json['discoverable'] as bool?,
+    followRequestsCount: json['follow_requests_count'] as int?,
+    fqn: json['fqn'] as String?,
   );
 }
 
@@ -573,12 +573,12 @@ PleromaMyAccountPleromaPartNotificationsSettings
     _$PleromaMyAccountPleromaPartNotificationsSettingsFromJson(
         Map<String, dynamic> json) {
   return PleromaMyAccountPleromaPartNotificationsSettings(
-    followers: json['followers'] as bool,
-    follows: json['follows'] as bool,
-    nonFollowers: json['non_followers'] as bool,
-    nonFollows: json['non_follows'] as bool,
-    blockFromStrangers: json['block_from_strangers'] as bool,
-    hideNotificationContents: json['hide_notification_contents'] as bool,
+    followers: json['followers'] as bool?,
+    follows: json['follows'] as bool?,
+    nonFollowers: json['non_followers'] as bool?,
+    nonFollows: json['non_follows'] as bool?,
+    blockFromStrangers: json['block_from_strangers'] as bool?,
+    hideNotificationContents: json['hide_notification_contents'] as bool?,
   );
 }
 
@@ -596,37 +596,37 @@ Map<String, dynamic> _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(
 PleromaMyAccountPleromaPart _$PleromaMyAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaMyAccountPleromaPart(
-    backgroundImage: json['background_image'] as String,
-    tags: json['tags'] as List,
+    backgroundImage: json['background_image'] as String?,
+    tags: json['tags'] as List?,
     relationship: json['relationship'] == null
         ? null
         : PleromaAccountRelationship.fromJson(
             json['relationship'] as Map<String, dynamic>),
-    isAdmin: json['is_admin'] as bool,
-    isModerator: json['is_moderator'] as bool,
-    confirmationPending: json['confirmation_pending'] as bool,
-    hideFavorites: json['hide_favorites'] as bool,
-    hideFollowers: json['hide_followers'] as bool,
-    hideFollows: json['hide_follows'] as bool,
-    hideFollowersCount: json['hide_followers_count'] as bool,
-    hideFollowsCount: json['hide_follows_count'] as bool,
-    settingsStore: json['settings_store'] as Map<String, dynamic>,
-    chatToken: json['chat_token'] as String,
-    deactivated: json['deactivated'] as bool,
-    allowFollowingMove: json['allow_following_move'] as bool,
-    unreadConversationCount: json['unread_conversation_count'] as int,
-    skipThreadContainment: json['skip_thread_containment'] as bool,
+    isAdmin: json['is_admin'] as bool?,
+    isModerator: json['is_moderator'] as bool?,
+    confirmationPending: json['confirmation_pending'] as bool?,
+    hideFavorites: json['hide_favorites'] as bool?,
+    hideFollowers: json['hide_followers'] as bool?,
+    hideFollows: json['hide_follows'] as bool?,
+    hideFollowersCount: json['hide_followers_count'] as bool?,
+    hideFollowsCount: json['hide_follows_count'] as bool?,
+    settingsStore: json['settings_store'] as Map<String, dynamic>?,
+    chatToken: json['chat_token'] as String?,
+    deactivated: json['deactivated'] as bool?,
+    allowFollowingMove: json['allow_following_move'] as bool?,
+    unreadConversationCount: json['unread_conversation_count'] as int?,
+    skipThreadContainment: json['skip_thread_containment'] as bool?,
     notificationSettings: json['notifications_settings'] == null
         ? null
         : PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
             json['notifications_settings'] as Map<String, dynamic>),
-    acceptsChatMessages: json['accepts_chat_messages'] as bool,
-    isConfirmed: json['is_confirmed'] as bool,
-    favicon: json['favicon'] as String,
-    apId: json['apId'] as String,
+    acceptsChatMessages: json['accepts_chat_messages'] as bool?,
+    isConfirmed: json['is_confirmed'] as bool?,
+    favicon: json['favicon'] as String?,
+    apId: json['apId'] as String?,
     alsoKnownAs:
-        (json['also_known_as'] as List)?.map((e) => e as String)?.toList(),
-    unreadNotificationsCount: json['unread_notifications_count'] as int,
+        (json['also_known_as'] as List?)?.map((e) => e as String)?.toList(),
+    unreadNotificationsCount: json['unread_notifications_count'] as int?,
   );
 }
 

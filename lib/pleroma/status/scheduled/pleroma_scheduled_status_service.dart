@@ -5,24 +5,29 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaScheduledStatusService implements IPleromaApi {
-  static IPleromaScheduledStatusService of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IPleromaScheduledStatusService>(context, listen: listen);
+  static IPleromaScheduledStatusService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaScheduledStatusService>(
+        context,
+        listen: listen,
+      );
 
   Future<bool> cancelScheduledStatus({
-    @required String scheduledStatusRemoteId,
+    required String scheduledStatusRemoteId,
   });
 
   Future<IPleromaScheduledStatus> getScheduledStatus({
-    @required String scheduledStatusRemoteId,
+    required String scheduledStatusRemoteId,
   });
 
   Future<IPleromaScheduledStatus> reScheduleStatus({
-    @required String scheduledStatusRemoteId,
-    @required DateTime scheduledAt,
+    required String scheduledStatusRemoteId,
+    required DateTime scheduledAt,
   });
 
   Future<List<IPleromaScheduledStatus>> getScheduledStatuses({
-    IPleromaPaginationRequest pagination,
+    IPleromaPaginationRequest? pagination,
   });
 }

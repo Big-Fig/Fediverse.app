@@ -13,12 +13,12 @@ class DraftStatusPaginationListBloc<TPage extends PaginationPage<IDraftStatus>>
   final IDraftStatusLocalOnlyListBloc draftStatusLocalListService;
 
   DraftStatusPaginationListBloc(
-      {@required this.draftStatusLocalListService,
-      @required IPaginationBloc<TPage, IDraftStatus> paginationBloc})
+      {required this.draftStatusLocalListService,
+      required IPaginationBloc<TPage, IDraftStatus> paginationBloc})
       : super(paginationBloc: paginationBloc);
 
   static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+      {required Widget child}) {
     return DisposableProvider<
         IPaginationListBloc<PaginationPage<IDraftStatus>, IDraftStatus>>(
       create: (context) => DraftStatusPaginationListBloc(

@@ -9,9 +9,9 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
   final VoidCallback onClick;
 
   const SimpleFediSelectionItemRowWidget({
-    Key key,
-    @required this.title,
-    @required this.onClick,
+    Key? key,
+    required this.title,
+    required this.onClick,
   }) : super(key: key);
 
   @override
@@ -33,8 +33,8 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
 
 class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
   const SimpleFediSelectionItemRowTitleWidget({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   final String title;
@@ -53,14 +53,14 @@ class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
 
 class FediSelectionItemRowWidget extends StatelessWidget {
   final Widget title;
-  final Widget leading;
-  final Widget ending;
+  final Widget? leading;
+  final Widget? ending;
 
   const FediSelectionItemRowWidget({
-    Key key,
-    @required this.title,
-    @required this.leading,
-    @required this.ending,
+    Key? key,
+    required this.title,
+    required this.leading,
+    required this.ending,
   }) : super(key: key);
 
   @override
@@ -77,11 +77,11 @@ class FediSelectionItemRowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (leading != null) leading,
+                if (leading != null) leading!,
                 title,
               ],
             ),
-            if (ending != null) ending,
+            if (ending != null) ending!,
           ],
         ),
       ),
@@ -91,8 +91,8 @@ class FediSelectionItemRowWidget extends StatelessWidget {
 
 class FediSelectionItemIconWidget extends StatelessWidget {
   const FediSelectionItemIconWidget({
-    Key key,
-    @required this.onClick,
+    Key? key,
+    required this.onClick,
   }) : super(key: key);
 
   final VoidCallback onClick;

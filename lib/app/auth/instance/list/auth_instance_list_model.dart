@@ -15,7 +15,7 @@ part 'auth_instance_list_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class AuthInstanceList extends IJsonObject {
   @HiveField(0)
-  final List<AuthInstance> instances;
+  final List<AuthInstance?>? instances;
 
   AuthInstanceList({this.instances});
 

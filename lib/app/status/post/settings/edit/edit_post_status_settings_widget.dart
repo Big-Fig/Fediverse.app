@@ -13,7 +13,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditPostStatusSettingsWidget({
-    @required this.shrinkWrap,
+    required this.shrinkWrap,
   });
 
   @override
@@ -32,12 +32,12 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
 class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
     extends StatelessWidget {
   const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
+    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc?>(
       update: (context, value, previous) =>
           value.markMediaAsNsfwOnAttachFormFieldBloc,
       child: BoolValueFormFieldRowWidget(
@@ -53,13 +53,13 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
 class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
     extends StatelessWidget {
   const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPostStatusSettingsBloc,
-        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
+        ILocalizationLocaleSingleFromListValueFormFieldBloc?>(
       update: (context, value, previous) =>
       value.defaultStatusLocaleFormFieldBloc,
       child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
@@ -71,13 +71,13 @@ class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
 class _EditPostStatusSettingsDefaultVisibilityFieldWidget
     extends StatelessWidget {
   const _EditPostStatusSettingsDefaultVisibilityFieldWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPostStatusSettingsBloc,
-        IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
+        IStatusVisibilitySelectSingleFromListValueFormFieldBloc?>(
       update: (context, value, previous) =>
           value.defaultVisibilityFormFieldBloc,
       child: const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),

@@ -16,12 +16,12 @@ import 'package:provider/provider.dart';
 class AccountStatusesTimelineWidget extends AccountStatusesWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   const AccountStatusesTimelineWidget({
-    Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    ScrollController scrollController,
+    Key? key,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
+    ScrollController? scrollController,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
           key: key,
@@ -34,10 +34,10 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
 
   @override
   ScrollView buildItemsCollectionView({
-    @required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer,
+    required BuildContext context,
+    required List<IStatus> items,
+    required Widget? header,
+    required Widget? footer,
   }) =>
       PaginationListWidget.buildItemsListView(
         context: context,

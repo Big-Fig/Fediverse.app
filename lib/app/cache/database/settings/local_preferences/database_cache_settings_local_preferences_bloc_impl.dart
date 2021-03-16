@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 abstract class DatabaseCacheSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<DatabaseCacheSettings>
+    extends ObjectLocalPreferenceBloc<DatabaseCacheSettings?>
     implements IDatabaseCacheSettingsLocalPreferencesBloc {
   DatabaseCacheSettingsLocalPreferencesBloc(
       ILocalPreferencesService preferencesService,

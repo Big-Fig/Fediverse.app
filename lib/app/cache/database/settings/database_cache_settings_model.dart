@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:fedi/app/cache/database/database_cache_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/age/database_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/database/cache/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,22 +15,22 @@ class DatabaseCacheSettings
     implements IJsonObject, ISettings<DatabaseCacheSettings> {
   @HiveField(2)
   @JsonKey(name: "entries_count_by_type_limit_type")
-  final String entriesCountByTypeLimitTypeString;
+  final String? entriesCountByTypeLimitTypeString;
 
-  DatabaseCacheEntriesCountByTypeLimitType get entriesCountByTypeLimitType =>
+  DatabaseCacheEntriesCountByTypeLimitType? get entriesCountByTypeLimitType =>
       entriesCountByTypeLimitTypeString
           ?.toDatabaseCacheEntriesCountByTypeLimitType();
 
   @HiveField(3)
   @JsonKey(name: "age_limit_in_microseconds_type")
-  final String ageLimitTypeString;
+  final String? ageLimitTypeString;
 
-  DatabaseCacheAgeLimitType get ageLimitType =>
+  DatabaseCacheAgeLimitType? get ageLimitType =>
       ageLimitTypeString?.toDatabaseCacheAgeLimitType();
 
   DatabaseCacheSettings({
-    @required this.entriesCountByTypeLimitTypeString,
-    @required this.ageLimitTypeString,
+    required this.entriesCountByTypeLimitTypeString,
+    required this.ageLimitTypeString,
   });
 
   factory DatabaseCacheSettings.fromJson(Map<String, dynamic> json) =>
@@ -52,8 +52,8 @@ class DatabaseCacheSettings
   DatabaseCacheSettings clone() => copyWith();
 
   DatabaseCacheSettings copyWith({
-    String entriesCountByTypeLimitTypeString,
-    String ageLimitTypeString,
+    String? entriesCountByTypeLimitTypeString,
+    String? ageLimitTypeString,
   }) =>
       DatabaseCacheSettings(
         entriesCountByTypeLimitTypeString: entriesCountByTypeLimitTypeString ??

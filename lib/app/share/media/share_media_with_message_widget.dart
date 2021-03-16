@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShareMediaWithMessageWidget extends StatelessWidget {
-  final Widget footer;
+  final Widget? footer;
 
   const ShareMediaWithMessageWidget({
-    @required this.footer,
+    required this.footer,
   });
 
   @override

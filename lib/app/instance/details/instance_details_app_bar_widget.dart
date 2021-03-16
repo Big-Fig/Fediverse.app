@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 class InstanceDetailsPageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   const InstanceDetailsPageAppBarWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

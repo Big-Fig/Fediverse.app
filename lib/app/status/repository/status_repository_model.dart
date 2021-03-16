@@ -9,12 +9,12 @@ import 'package:moor/moor.dart';
 Function eq = const ListEquality().equals;
 
 class PleromaReplyVisibilityFilterCondition {
-  final String myAccountRemoteId;
-  final PleromaReplyVisibilityFilter replyVisibilityFilter;
+  final String? myAccountRemoteId;
+  final PleromaReplyVisibilityFilter? replyVisibilityFilter;
 
   PleromaReplyVisibilityFilterCondition({
-    @required this.myAccountRemoteId,
-    @required this.replyVisibilityFilter,
+    required this.myAccountRemoteId,
+    required this.replyVisibilityFilter,
   });
 
   @override
@@ -37,27 +37,27 @@ class PleromaReplyVisibilityFilterCondition {
 }
 
 class StatusRepositoryFilters {
-  final String onlyInListWithRemoteId;
-  final String onlyWithHashtag;
-  final IAccount onlyFromAccountsFollowingByAccount;
-  final IAccount onlyFromAccount;
-  final IConversationChat onlyInConversation;
-  final StatusOnlyLocalCondition onlyLocalCondition;
-  final bool onlyWithMedia;
-  final bool withMuted;
-  final List<PleromaVisibility> excludeVisibilities;
-  final bool onlyNoNsfwSensitive;
-  final bool onlyNoReplies;
-  final bool isFromHomeTimeline;
-  final bool onlyFavourited;
-  final bool onlyBookmarked;
-  final List<StatusTextCondition> excludeTextConditions;
+  final String? onlyInListWithRemoteId;
+  final String? onlyWithHashtag;
+  final IAccount? onlyFromAccountsFollowingByAccount;
+  final IAccount? onlyFromAccount;
+  final IConversationChat? onlyInConversation;
+  final StatusOnlyLocalCondition? onlyLocalCondition;
+  final bool? onlyWithMedia;
+  final bool? withMuted;
+  final List<PleromaVisibility>? excludeVisibilities;
+  final bool? onlyNoNsfwSensitive;
+  final bool? onlyNoReplies;
+  final bool? isFromHomeTimeline;
+  final bool? onlyFavourited;
+  final bool? onlyBookmarked;
+  final List<StatusTextCondition>? excludeTextConditions;
   final bool onlyNotDeleted;
   final bool onlyNotHiddenLocallyOnDevice;
-  final StatusOnlyRemoteCondition onlyRemoteCondition;
+  final StatusOnlyRemoteCondition? onlyRemoteCondition;
   final bool mustBeConversationItem;
-  final String onlyFromInstance;
-  final PleromaReplyVisibilityFilterCondition replyVisibilityFilterCondition;
+  final String? onlyFromInstance;
+  final PleromaReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
   final bool onlyPendingStatePublishedOrNull;
 
   StatusRepositoryFilters({
@@ -86,7 +86,7 @@ class StatusRepositoryFilters {
   });
 
   static StatusRepositoryFilters createForOnlyInConversation({
-    @required IConversationChat conversation,
+    required IConversationChat? conversation,
     bool onlyPendingStatePublishedOrNull = true,
   }) =>
       StatusRepositoryFilters(
@@ -216,8 +216,8 @@ class StatusRepositoryOrderingTermData {
   );
 
   const StatusRepositoryOrderingTermData({
-    @required this.orderByType,
-    @required this.orderingMode,
+    required this.orderByType,
+    required this.orderingMode,
   });
 
   @override
@@ -230,7 +230,7 @@ class StatusRepositoryOrderingTermData {
 }
 
 class StatusOnlyLocalCondition {
-  final String localUrlHost;
+  final String? localUrlHost;
 
   StatusOnlyLocalCondition(this.localUrlHost);
 
@@ -251,7 +251,7 @@ class StatusOnlyLocalCondition {
 }
 
 class StatusOnlyRemoteCondition {
-  final String localUrlHost;
+  final String? localUrlHost;
 
   StatusOnlyRemoteCondition(this.localUrlHost);
 
@@ -276,8 +276,8 @@ class StatusTextCondition {
   final bool wholeWord;
 
   StatusTextCondition({
-    @required this.phrase,
-    @required this.wholeWord,
+    required this.phrase,
+    required this.wholeWord,
   });
 
   @override

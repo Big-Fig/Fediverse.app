@@ -3,17 +3,15 @@ import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_
 import 'package:fedi/pagination/list/edit/edit_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:flutter/widgets.dart';
 
 class EditCustomListAccountListPaginationListBloc
     extends EditPaginationListBloc<PaginationPage<IAccount>, IAccount>
     implements IEditCustomListAccountListPaginationListBloc {
   EditCustomListAccountListPaginationListBloc({
-    @required
-        IPaginationListBloc<PaginationPage<IAccount>, IAccount>
-            paginationListBloc,
+    required IPaginationListBloc<PaginationPage<IAccount>, IAccount>
+        paginationListBloc,
   }) : super(
           paginationListBloc: paginationListBloc,
-          itemEquality: (IAccount a, IAccount b) => a?.remoteId == b?.remoteId,
+          itemEquality: (IAccount a, IAccount b) => a.remoteId == b.remoteId,
         );
 }

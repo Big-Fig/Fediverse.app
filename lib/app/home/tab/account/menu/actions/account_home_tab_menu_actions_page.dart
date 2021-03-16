@@ -35,7 +35,7 @@ class AccountHomeTabMenuActionsPage extends StatelessWidget {
 
 class _AccountHomeTabMenuActionsBody extends StatelessWidget {
   const _AccountHomeTabMenuActionsBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class _AccountHomeTabMenuActionsBody extends StatelessWidget {
 
 class _MyAccountSettingsEditButton extends StatelessWidget {
   const _MyAccountSettingsEditButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -75,7 +75,7 @@ class _MyAccountSettingsEditButton extends StatelessWidget {
 
 class _MyAccountSettingsScheduledButton extends StatelessWidget {
   const _MyAccountSettingsScheduledButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,7 +91,7 @@ class _MyAccountSettingsScheduledButton extends StatelessWidget {
 
 class _MyAccountSettingsDraftsButton extends StatelessWidget {
   const _MyAccountSettingsDraftsButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -107,7 +107,7 @@ class _MyAccountSettingsDraftsButton extends StatelessWidget {
 
 class _MyAccountSettingsFavouritedButton extends StatelessWidget {
   const _MyAccountSettingsFavouritedButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -123,7 +123,7 @@ class _MyAccountSettingsFavouritedButton extends StatelessWidget {
 
 class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
   const _MyAccountSettingsFollowRequestsButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -154,7 +154,7 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
 
 class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
   const _MyAccountSettingsAccountBlocksButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -170,7 +170,7 @@ class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
 
 class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
   const _MyAccountSettingsAccountMutesButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -186,7 +186,7 @@ class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
 
 class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
   const _MyAccountSettingsDomainBlocksButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -202,7 +202,7 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
 
 class _MyAccountSettingsFiltersButton extends StatelessWidget {
   const _MyAccountSettingsFiltersButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -5,11 +5,11 @@ import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 
 class AuthHostAccessTokenLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<PleromaOAuthToken>
+    extends ObjectLocalPreferenceBloc<PleromaOAuthToken?>
     implements IAuthHostAccessTokenLocalPreferenceBloc {
   AuthHostAccessTokenLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
-    @required String host,
+    required String? host,
   }) : super(
           preferencesService,
           "auth.host.$host.access_token",

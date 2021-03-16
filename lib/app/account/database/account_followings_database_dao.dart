@@ -26,20 +26,26 @@ part 'account_followings_database_dao.g.dart';
 })
 class AccountFollowingsDao extends DatabaseAccessor<AppDatabase>
     with _$AccountFollowingsDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
 
   // Called by the AppDatabase class
   AccountFollowingsDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbAccountFollowing> entity,
-          {InsertMode mode}) async =>
+          {InsertMode? mode}) async =>
       into(dbAccountFollowings).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbAccountFollowing>> entities,
           InsertMode mode) async =>
-      await batch((batch) {
-        batch.insertAll(dbAccountFollowings, entities, mode: mode);
-      });
+      await batch(
+        (batch) {
+          batch.insertAll(
+            dbAccountFollowings,
+            entities as List<Insertable<DbAccountFollowing>>,
+            mode: mode,
+          );
+        },
+      );
 
   Future<bool> replace(Insertable<DbAccountFollowing> entity) async =>
       await update(dbAccountFollowings).replace(entity);

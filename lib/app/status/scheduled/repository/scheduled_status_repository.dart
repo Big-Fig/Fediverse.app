@@ -13,9 +13,14 @@ abstract class IScheduledStatusRepository
         IDisposable,
         IReadIdListRepository<IScheduledStatus, int>,
         IWriteIdListRepository<DbScheduledStatus, int> {
-  static IScheduledStatusRepository of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<IScheduledStatusRepository>(context, listen: listen);
+  static IScheduledStatusRepository of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IScheduledStatusRepository>(
+        context,
+        listen: listen,
+      );
 
   Future upsertRemoteScheduledStatuses(
     List<IPleromaScheduledStatus> remoteScheduledStatuses,
@@ -26,45 +31,45 @@ abstract class IScheduledStatusRepository
   );
 
   Future updateLocalScheduledStatusByRemoteScheduledStatus({
-    @required IScheduledStatus oldLocalScheduledStatus,
-    @required IPleromaScheduledStatus newRemoteScheduledStatus,
+    required IScheduledStatus oldLocalScheduledStatus,
+    required IPleromaScheduledStatus newRemoteScheduledStatus,
   });
 
   Future markAsCanceled({
-    @required IScheduledStatus scheduledStatus,
+    required IScheduledStatus scheduledStatus,
   });
 
-  Future<IScheduledStatus> findByRemoteId(
+  Future<IScheduledStatus?> findByRemoteId(
     String remoteId,
   );
 
-  Stream<IScheduledStatus> watchByRemoteId(
-    String remoteId,
+  Stream<IScheduledStatus?> watchByRemoteId(
+    String? remoteId,
   );
 
   Future<List<IScheduledStatus>> getScheduledStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IScheduledStatus> pagination,
-    ScheduledStatusOrderingTermData orderingTermData =
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IScheduledStatus>? pagination,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   });
 
   Stream<List<IScheduledStatus>> watchScheduledStatuses({
-    @required ScheduledStatusRepositoryFilters filters,
-    @required RepositoryPagination<IScheduledStatus> pagination,
-    ScheduledStatusOrderingTermData orderingTermData =
+    required ScheduledStatusRepositoryFilters? filters,
+    required RepositoryPagination<IScheduledStatus>? pagination,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   });
 
-  Future<IScheduledStatus> getScheduledStatus({
-    @required ScheduledStatusRepositoryFilters filters,
-    ScheduledStatusOrderingTermData orderingTermData =
+  Future<IScheduledStatus?> getScheduledStatus({
+    required ScheduledStatusRepositoryFilters? filters,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   });
 
-  Stream<IScheduledStatus> watchScheduledStatus({
-    @required ScheduledStatusRepositoryFilters filters,
-    ScheduledStatusOrderingTermData orderingTermData =
+  Stream<IScheduledStatus?> watchScheduledStatus({
+    required ScheduledStatusRepositoryFilters? filters,
+    ScheduledStatusOrderingTermData? orderingTermData =
         ScheduledStatusOrderingTermData.remoteIdDesc,
   });
 }

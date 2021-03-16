@@ -2,16 +2,16 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:moor/moor.dart';
 
 class PleromaChatMessageRepositoryFilters {
-  final List<IPleromaChat> onlyInChats;
+  final List<IPleromaChat>? onlyInChats;
   final bool onlyPendingStatePublishedOrNull;
   final bool onlyNotDeleted;
   final bool onlyNotHiddenLocallyOnDevice;
 
   PleromaChatMessageRepositoryFilters({
     this.onlyInChats,
-    @required this.onlyPendingStatePublishedOrNull,
-    @required this.onlyNotDeleted,
-    @required this.onlyNotHiddenLocallyOnDevice,
+    required this.onlyPendingStatePublishedOrNull,
+    required this.onlyNotDeleted,
+    required this.onlyNotHiddenLocallyOnDevice,
   });
 
 
@@ -52,8 +52,8 @@ class PleromaChatMessageOrderingTermData {
   final OrderingMode orderingMode;
 
   const PleromaChatMessageOrderingTermData({
-    @required this.orderType,
-    @required this.orderingMode,
+    required this.orderType,
+    required this.orderingMode,
   });
 
   static const PleromaChatMessageOrderingTermData remoteIdDesc =

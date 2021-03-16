@@ -24,26 +24,20 @@ class TimelineTypeSingleFromListValueFormFieldRowWidget
   const TimelineTypeSingleFromListValueFormFieldRowWidget();
 }
 
-String mapTimelineTypeToLabel(BuildContext context, TimelineType type) {
+String mapTimelineTypeToLabel(BuildContext context, TimelineType? type) {
   if(type == null) {
     return S.of(context).app_timeline_type_field_null;
   }
   switch (type) {
     case TimelineType.public:
       return S.of(context).app_timeline_type_public;
-      break;
     case TimelineType.customList:
       return S.of(context).app_timeline_type_customList;
-      break;
     case TimelineType.home:
       return S.of(context).app_timeline_type_home;
-      break;
     case TimelineType.hashtag:
       return S.of(context).app_timeline_type_hashtag;
-      break;
     case TimelineType.account:
       return S.of(context).app_timeline_type_account;
-      break;
   }
-  throw "Unsupported TimelineType $type";
 }

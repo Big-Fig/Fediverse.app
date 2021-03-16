@@ -12,7 +12,7 @@ abstract class IMultiMediaPickerBloc implements IMediaPickerBloc {
   Stream<List<IMediaDeviceFileMetadata>>
       get currentFilesMetadataSelectionStream;
 
-  List<IMediaDeviceFileMetadata> get currentFilesMetadataSelection;
+  List<IMediaDeviceFileMetadata>? get currentFilesMetadataSelection;
 
   bool get isSomethingSelected;
 

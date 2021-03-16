@@ -1,4 +1,4 @@
-import 'package:fedi/app/cache/files/files_cache_model.dart';
+import 'package:fedi/app/cache/files/cache/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc_proxy_provider.dart';
@@ -10,13 +10,13 @@ class AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider
   final Widget child;
 
   AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IAgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc,
-          ISingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType>>(
+          ISingleSelectFromListValueFormFieldBloc<FilesCacheAgeLimitType?>>(
         update: (context, value, previous) => value,
         child: SingleSelectFromListValueFormFieldBlocProxyProvider<
             FilesCacheAgeLimitType>(

@@ -14,8 +14,6 @@ import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
@@ -23,8 +21,8 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatService pleromaChatService;
 
-  String get message {
-    var message = shareMessageInputBloc.messageField.currentValue;
+  String? get message {
+    String? message = shareMessageInputBloc.messageField.currentValue;
 
     if (message?.isNotEmpty != true) {
       message = null;
@@ -37,12 +35,12 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   PleromaChatShareBloc({
-    @required this.chatRepository,
-    @required this.chatMessageRepository,
-    @required this.pleromaChatService,
-    @required IMyAccountBloc myAccountBloc,
-    @required IAccountRepository accountRepository,
-    @required IPleromaAccountService pleromaAccountService,
+    required this.chatRepository,
+    required this.chatMessageRepository,
+    required this.pleromaChatService,
+    required IMyAccountBloc myAccountBloc,
+    required IAccountRepository accountRepository,
+    required IPleromaAccountService pleromaAccountService,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
@@ -95,9 +93,9 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     if (newerThan != null || olderThan != null) {
       return [];
@@ -115,9 +113,9 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<List<IPleromaAccount>> customRemoteAccountListLoader({
-    @required int limit,
-    @required IAccount newerThan,
-    @required IAccount olderThan,
+    required int? limit,
+    required IAccount? newerThan,
+    required IAccount? olderThan,
   }) async {
     if (newerThan != null || olderThan != null) {
       return [];

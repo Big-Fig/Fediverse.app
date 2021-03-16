@@ -11,42 +11,42 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
       Provider.of<IUploadMediaAttachmentsCollectionBloc>(context,
           listen: listen);
 
-  List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc>? get onlyMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>?> get onlyMediaAttachmentBlocsStream;
 
-  List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc>? get onlyNonMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>>
+  Stream<List<IUploadMediaAttachmentBloc>?>
       get onlyNonMediaAttachmentBlocsStream;
 
   bool get isMaximumMediaAttachmentCountReached;
 
   Stream<bool> get isMaximumMediaAttachmentCountReachedStream;
 
-  int get maximumMediaAttachmentCountLeft;
+  int? get maximumMediaAttachmentCountLeft;
 
-  Stream<int> get maximumMediaAttachmentCountLeftStream;
+  Stream<int?> get maximumMediaAttachmentCountLeftStream;
 
-  bool get isAllAttachedMediaUploaded;
+  bool? get isAllAttachedMediaUploaded;
 
   Stream<bool> get isAllAttachedMediaUploadedStream;
 
   int get maximumMediaAttachmentCount;
 
-  int get maximumFileSizeInBytes;
+  int? get maximumFileSizeInBytes;
 
   bool get isPossibleToAttachMedia;
 
   Stream<bool> get isPossibleToAttachMediaStream;
 
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc>? get mediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>?> get mediaAttachmentBlocsStream;
 
   Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 
-  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
+  Future attachMedias(List<IMediaDeviceFile>? mediaDeviceFiles);
 
   void detachMediaAttachmentBloc(
       IUploadMediaAttachmentBloc mediaAttachmentBloc);

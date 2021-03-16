@@ -8,7 +8,7 @@ class ToastServiceProvider extends StatelessWidget {
   final Widget child;
 
   ToastServiceProvider({
-    @required this.child,
+    required this.child,
   });
 
   @override

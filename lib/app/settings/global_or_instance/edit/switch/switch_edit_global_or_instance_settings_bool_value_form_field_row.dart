@@ -13,7 +13,7 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
   final ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback;
 
   const ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget({
-    @required this.showGlobalSettingsDialogCallback,
+    required this.showGlobalSettingsDialogCallback,
   });
 
   @override
@@ -21,7 +21,7 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
     var switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc =
         ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context);
 
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
           .currentValueStream
           .distinct(),

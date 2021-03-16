@@ -9,12 +9,12 @@ import 'package:rxdart/rxdart.dart';
 class ChatSelectionItemBloc extends DisposableOwner
     implements IChatSelectionItemBloc {
   final IChatSelectionBloc chatSelectionBloc;
-  final IChatMessage chatMessage;
+  final IChatMessage? chatMessage;
 
   final BehaviorSubject<bool> isSelectionPossibleSubject;
 
   @override
-  bool get isSelectionPossible => isSelectionPossibleSubject.value;
+  bool? get isSelectionPossible => isSelectionPossibleSubject.value;
 
   @override
   Stream<bool> get isSelectionPossibleStream =>
@@ -26,9 +26,9 @@ class ChatSelectionItemBloc extends DisposableOwner
   }
 
   ChatSelectionItemBloc({
-    @required this.chatSelectionBloc,
-    @required this.chatMessage,
-    @required bool isSelectionPossible,
+    required this.chatSelectionBloc,
+    required this.chatMessage,
+    required bool isSelectionPossible,
   }) : isSelectionPossibleSubject =
             BehaviorSubject.seeded(isSelectionPossible) {
     addDisposable(subject: isSelectionPossibleSubject);
@@ -61,8 +61,8 @@ class ChatSelectionItemBloc extends DisposableOwner
 
   static ChatSelectionItemBloc createFromContext(
     BuildContext context, {
-    @required IChatMessage chatMessage,
-    @required bool isSelectionPossible,
+    required IChatMessage chatMessage,
+    required bool isSelectionPossible,
   }) {
     var chatSelectionBloc = IChatSelectionBloc.of(
       context,
@@ -77,9 +77,9 @@ class ChatSelectionItemBloc extends DisposableOwner
 
   static Widget provideToContext(
     BuildContext context, {
-    @required Widget child,
-    @required IChatMessage chatMessage,
-    @required bool isSelectionPossible,
+    required Widget child,
+    required IChatMessage chatMessage,
+    required bool isSelectionPossible,
   }) =>
       DisposableProvider<IChatSelectionItemBloc>(
         create: (context) => ChatSelectionItemBloc.createFromContext(

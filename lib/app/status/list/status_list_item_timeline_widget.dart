@@ -137,10 +137,10 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
   }
 
   Widget buildDeletedStreamBuilderOverlay({
-    @required Widget child,
-    @required IStatusBloc statusBloc,
+    required Widget child,
+    required IStatusBloc statusBloc,
   }) {
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: statusBloc.deletedStream.distinct(),
       builder: (context, snapshot) {
         var deleted = snapshot.data ?? false;
@@ -164,7 +164,7 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
 
 class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -218,7 +218,7 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
 class _StatusListItemTimelineOriginalBodyReplySubHeaderWidget
     extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyReplySubHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -232,7 +232,7 @@ class _StatusListItemTimelineOriginalBodyReplySubHeaderWidget
 
 class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
   const _StatusListItemTimelineReplyToStatusWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -264,7 +264,7 @@ class _StatusListItemTimelineReplyToStatusWidget extends StatelessWidget {
 
 class _StatusListItemTimelineStatusHeaderWidget extends StatelessWidget {
   const _StatusListItemTimelineStatusHeaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -319,7 +319,7 @@ Widget buildBody(BuildContext context) {
 
 class _StatusListItemTimelineOriginalBodyContentWidget extends StatelessWidget {
   const _StatusListItemTimelineOriginalBodyContentWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -338,7 +338,7 @@ void _onStatusListItemClick(BuildContext context) {
       IStatusListItemTimelineBloc.of(context, listen: false);
 
   if (statusListItemTimelineBloc.statusCallback != null) {
-    statusListItemTimelineBloc.statusCallback(
+    statusListItemTimelineBloc.statusCallback!(
         context, statusListItemTimelineBloc.status);
   }
 }

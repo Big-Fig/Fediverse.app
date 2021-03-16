@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 
 class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
   final bool isTransparent;
-  final TabToTextMapper<T> tabToTextMapper;
+  final TabToTextMapper<T?> tabToTextMapper;
 
   const FediTextTabIndicatorItemWidget({
-    @required this.isTransparent,
-    @required this.tabToTextMapper,
+    required this.isTransparent,
+    required this.tabToTextMapper,
   });
 
   @override
@@ -27,7 +27,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
         stream: fediTabIndicatorItemBloc.isSelectedStream,
         initialData: fediTabIndicatorItemBloc.isSelected,
         builder: (context, snapshot) {
-          var isSelected = snapshot.data;
+          var isSelected = snapshot.data!;
 
           Widget text;
 

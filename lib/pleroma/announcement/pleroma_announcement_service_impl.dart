@@ -5,7 +5,6 @@ import 'package:fedi/pleroma/announcement/pleroma_announcement_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 
@@ -22,7 +21,7 @@ class PleromaAnnouncementService extends DisposableOwner
       restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState get pleromaApiState => restService.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
@@ -36,7 +35,7 @@ class PleromaAnnouncementService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaAnnouncementService({@required this.restService});
+  PleromaAnnouncementService({required this.restService});
 
   List<IPleromaAnnouncement> parseAnnouncementListResponse(
       Response httpResponse) {
@@ -56,19 +55,19 @@ class PleromaAnnouncementService extends DisposableOwner
         relativePath: announcementRelativeUrlPath,
         queryArgs: [
           RestRequestQueryArg("with_dismissed", withDismissed.toString())
-        ]));
+        ]))!;
 
     return parseAnnouncementListResponse(httpResponse);
   }
 
   @override
   Future dismissAnnouncement({
-    @required String announcementId,
+    required String announcementId,
   }) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
       relativePath:
           urlPath.join(announcementRelativeUrlPath, announcementId, "dismiss"),
-    ));
+    ))!;
 
     if (httpResponse.statusCode != 200) {
       throw PleromaAnnouncementException(
@@ -78,13 +77,13 @@ class PleromaAnnouncementService extends DisposableOwner
 
   @override
   Future addAnnouncementReaction({
-    @required String announcementId,
-    @required String name,
+    required String announcementId,
+    required String name,
   }) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.put(
       relativePath: urlPath.join(
           announcementRelativeUrlPath, announcementId, "reactions", name),
-    ));
+    ))!;
 
     if (httpResponse.statusCode != 200) {
       // todo: handle 422: Unprocessable Entity
@@ -96,13 +95,13 @@ class PleromaAnnouncementService extends DisposableOwner
 
   @override
   Future removeAnnouncementReaction({
-    @required String announcementId,
-    @required String name,
+    required String announcementId,
+    required String name,
   }) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.delete(
       relativePath: urlPath.join(
           announcementRelativeUrlPath, announcementId, "reactions", name),
-    ));
+    ))!;
 
     if (httpResponse.statusCode != 200) {
       // todo: handle 422: Unprocessable Entity

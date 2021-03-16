@@ -9,13 +9,13 @@ part of 'pleroma_media_attachment_model.dart';
 PleromaMediaAttachment _$PleromaMediaAttachmentFromJson(
     Map<String, dynamic> json) {
   return PleromaMediaAttachment(
-    description: json['description'] as String,
-    id: json['id'] as String,
-    previewUrl: json['preview_url'] as String,
-    remoteUrl: json['remote_url'] as String,
-    textUrl: json['text_url'] as String,
-    type: json['type'] as String,
-    url: json['url'] as String,
+    description: json['description'] as String?,
+    id: json['id'] as String?,
+    previewUrl: json['preview_url'] as String?,
+    remoteUrl: json['remote_url'] as String?,
+    textUrl: json['text_url'] as String?,
+    type: json['type'] as String?,
+    url: json['url'] as String?,
     pleroma: json['pleroma'] == null
         ? null
         : PleromaMediaAttachmentPleromaPart.fromJson(
@@ -39,7 +39,7 @@ Map<String, dynamic> _$PleromaMediaAttachmentToJson(
 PleromaMediaAttachmentPleromaPart _$PleromaMediaAttachmentPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaMediaAttachmentPleromaPart(
-    mimeType: json['mime_type'] as String,
+    mimeType: json['mime_type'] as String?,
   );
 }
 

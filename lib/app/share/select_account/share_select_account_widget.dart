@@ -19,10 +19,10 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShareSelectAccountWidget extends StatelessWidget {
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const ShareSelectAccountWidget({
     this.header,
@@ -66,17 +66,17 @@ class ShareSelectAccountWidget extends StatelessWidget {
 
 class _ShareSelectAccountBodyWidget extends StatelessWidget {
   const _ShareSelectAccountBodyWidget({
-    Key key,
-    @required this.header,
-    @required this.footer,
-    @required this.alwaysShowHeader,
-    @required this.alwaysShowFooter,
+    Key? key,
+    required this.header,
+    required this.footer,
+    required this.alwaysShowHeader,
+    required this.alwaysShowFooter,
   }) : super(key: key);
 
-  final Widget header;
-  final Widget footer;
-  final bool alwaysShowHeader;
-  final bool alwaysShowFooter;
+  final Widget? header;
+  final Widget? footer;
+  final bool? alwaysShowHeader;
+  final bool? alwaysShowFooter;
 
   @override
   Widget build(BuildContext context) {
@@ -150,10 +150,10 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
 }
 
 class _ShareSelectAccountSearchResultsWidget extends StatelessWidget {
-  final bool alwaysShowHeader;
-  final Widget header;
-  final bool alwaysShowFooter;
-  final Widget footer;
+  final bool? alwaysShowHeader;
+  final Widget? header;
+  final bool? alwaysShowFooter;
+  final Widget? footer;
 
   const _ShareSelectAccountSearchResultsWidget({
     this.header,
@@ -187,17 +187,17 @@ class _ShareSelectAccountSearchResultsWidget extends StatelessWidget {
 class _ShareSelectAccountSearchHeaderWithSearchInputWidget
     extends StatelessWidget {
   const _ShareSelectAccountSearchHeaderWithSearchInputWidget({
-    Key key,
-    @required this.header,
+    Key? key,
+    required this.header,
   }) : super(key: key);
 
-  final Widget header;
+  final Widget? header;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        header,
+        header!,
         const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: SearchInputWidget(),

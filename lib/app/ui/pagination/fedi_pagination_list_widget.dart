@@ -19,16 +19,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 var _logger = Logger("fedi_pagination_list_widget.dart");
 
 abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
-  final Widget customLoadingWidget;
-  final Widget customEmptyWidget;
+  final Widget? customLoadingWidget;
+  final Widget? customEmptyWidget;
 
   const FediPaginationListWidget({
-    Key key,
-    ScrollController scrollController,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
+    Key? key,
+    ScrollController? scrollController,
+    Widget? header,
+    Widget? footer,
+    bool? alwaysShowHeader,
+    bool? alwaysShowFooter,
     this.customLoadingWidget,
     this.customEmptyWidget,
     bool refreshOnFirstLoad = true,
@@ -57,9 +57,9 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   Widget buildSmartRefresher(
       IPaginationListBloc paginationListBloc,
       BuildContext context,
-      List<T> items,
+      List<T>? items,
       RefreshController refreshController,
-      ScrollController scrollController,
+      ScrollController? scrollController,
       Widget Function(BuildContext context) smartRefresherBodyBuilder) {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
@@ -104,7 +104,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   @override
   Widget buildSmartRefresherBody(
     BuildContext context,
-    List<T> items,
+    List<T>? items,
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
   ) {
     _logger.finest(() => "buildSmartRefresherBody ${items?.length}");
@@ -149,7 +149,6 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                         title: S.of(context).pagination_list_empty,
                       ),
                     );
-                break;
             }
           },
         ),

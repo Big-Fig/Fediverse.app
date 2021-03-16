@@ -3,7 +3,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountAcctWidget extends StatelessWidget {
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   const AccountAcctWidget({this.textStyle});
 
@@ -12,7 +12,7 @@ class AccountAcctWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var textStyle =
         this.textStyle ?? IFediUiTextTheme.of(context).mediumShortDarkGrey;
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: accountBloc.acctWithForcedRemoteInstanceHostStream,
       builder: (context, snapshot) {
         var acct = snapshot.data;

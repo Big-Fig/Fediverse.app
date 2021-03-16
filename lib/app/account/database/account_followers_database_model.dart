@@ -4,8 +4,8 @@ import 'package:moor/moor.dart';
 @DataClassName("DbAccountFollower")
 class DbAccountFollowers extends Table {
   // integer ids works better in SQLite
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn? get id => integer().autoIncrement()();
 
-  TextColumn get accountRemoteId => text()();
-  TextColumn get followerAccountRemoteId => text()();
+  TextColumn? get accountRemoteId => text()();
+  TextColumn? get followerAccountRemoteId => text()();
 }

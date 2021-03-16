@@ -12,7 +12,7 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget
         child: SingleSelectFromListValueFormFieldRowWidget<WebSocketsHandlingType>(
           label: S.of(context).app_web_sockets_settings_field_type_label,
           valueTitleMapper: (context, value) =>
-              mapWebSocketsHandlingTypeToLabel(context, value),
+              mapWebSocketsHandlingTypeToLabel(context, value!),
           description:
               S.of(context).app_web_sockets_settings_field_type_description,
           descriptionOnDisabled: null,
@@ -30,16 +30,12 @@ String mapWebSocketsHandlingTypeToLabel(
   switch (type) {
     case WebSocketsHandlingType.disabled:
       return S.of(context).app_web_sockets_settings_type_disabled;
-      break;
     case WebSocketsHandlingType.onlyForeground:
       return S.of(context).app_web_sockets_settings_type_onlyForeground;
-      break;
     case WebSocketsHandlingType.foregroundAndBackground:
       return S
           .of(context)
           .app_web_sockets_settings_type_foregroundAndBackground;
-      break;
   }
 
-  throw "Unsupported WebSocketsHandlingType $type";
 }

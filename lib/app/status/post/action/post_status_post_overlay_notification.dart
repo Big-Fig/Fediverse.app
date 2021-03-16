@@ -4,9 +4,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 void showPostStatusPostOverlayNotification({
-  @required BuildContext context,
-  @required IPostStatusBloc postStatusBloc,
-  @required bool isScheduled,
+  required BuildContext context,
+  required IPostStatusBloc postStatusBloc,
+  required bool isScheduled,
 }) {
   var toastService = IToastService.of(context, listen: false);
 

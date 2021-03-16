@@ -1,8 +1,8 @@
 class RepositoryPagination<T> {
-  final T newerThanItem;
-  final T olderThanItem;
-  final int limit;
-  final int offset;
+  final T? newerThanItem;
+  final T? olderThanItem;
+  final int? limit;
+  final int? offset;
 
   RepositoryPagination({
     this.newerThanItem,

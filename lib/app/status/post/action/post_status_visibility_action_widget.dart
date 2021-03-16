@@ -20,7 +20,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var isPleromaInstance = ICurrentAuthInstanceBloc.of(
       context,
       listen: false,
-    ).currentInstance.isPleroma;
+    ).currentInstance!.isPleroma;
 
     return StreamBuilder<PleromaVisibility>(
       stream: postStatusBloc.visibilityStream,
@@ -45,7 +45,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                   postStatusBloc: postStatusBloc,
                   visibility: PleromaVisibility.public,
                 ),
-                if (isPleromaInstance)
+                if (isPleromaInstance!)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,
@@ -81,11 +81,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   }
 
   SelectionDialogAction buildVisibilityDialogAction({
-    @required BuildContext context,
-    @required IPostStatusBloc postStatusBloc,
-    @required PleromaVisibility visibility,
+    required BuildContext context,
+    required IPostStatusBloc postStatusBloc,
+    required PleromaVisibility visibility,
   }) {
-    DialogActionCallback onPressed;
+    DialogActionCallback? onPressed;
     var isPossibleToChangeVisibility =
         postStatusBloc.isPossibleToChangeVisibility;
     var isSelectedVisibility = postStatusBloc.visibility == visibility;

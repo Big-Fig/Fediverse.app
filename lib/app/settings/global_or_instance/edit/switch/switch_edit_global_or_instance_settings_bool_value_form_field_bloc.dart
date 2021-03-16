@@ -10,7 +10,7 @@ abstract class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
       Provider.of<ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc>(context,
           listen: listen);
 
-  GlobalOrInstanceSettingsType get globalOrInstanceSettingsType;
-  Stream<GlobalOrInstanceSettingsType> get globalOrInstanceSettingsTypeStream;
+  GlobalOrInstanceSettingsType? get globalOrInstanceSettingsType;
+  Stream<GlobalOrInstanceSettingsType?> get globalOrInstanceSettingsTypeStream;
 
 }

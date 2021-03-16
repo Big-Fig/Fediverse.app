@@ -18,7 +18,7 @@ class AccountFollowingAccountListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_account_following_title(
-              account.acct,
+              account.acct!,
             ),
       ),
       body: SafeArea(
@@ -28,27 +28,29 @@ class AccountFollowingAccountListPage extends StatelessWidget {
   }
 }
 
-void goToAccountFollowingAccountListPage(
-  BuildContext context,
-  IAccount account,
-) {
+void goToAccountFollowingAccountListPage({
+  required BuildContext context,
+  required IAccount account,
+}) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
-      return AccountFollowingAccountCachedListBloc.provideToContext(
-        context,
-        account: account,
-        child: AccountCachedPaginationBloc.provideToContext(
+    MaterialPageRoute(
+      builder: (context) {
+        return AccountFollowingAccountCachedListBloc.provideToContext(
           context,
-          child: AccountPaginationListBloc.provideToContext(
+          account: account,
+          child: AccountCachedPaginationBloc.provideToContext(
             context,
-            child: Provider<IAccount>.value(
-              value: account,
-              child: const AccountFollowingAccountListPage(),
+            child: AccountPaginationListBloc.provideToContext(
+              context,
+              child: Provider<IAccount?>.value(
+                value: account,
+                child: const AccountFollowingAccountListPage(),
+              ),
             ),
           ),
-        ),
-      );
-    }),
+        );
+      },
+    ),
   );
 }

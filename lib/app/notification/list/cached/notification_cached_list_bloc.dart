@@ -20,15 +20,15 @@ abstract class INotificationCachedListBloc
 
   @override
   Future<List<INotification>> loadLocalItems(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan});
+      {required int? limit,
+      required INotification? newerThan,
+      required INotification? olderThan});
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required INotification newerThan,
-      @required INotification olderThan});
+      {required int? limit,
+      required INotification? newerThan,
+      required INotification? olderThan});
 
   Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification item);
 

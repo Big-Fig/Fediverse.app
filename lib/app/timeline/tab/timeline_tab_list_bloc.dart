@@ -11,8 +11,8 @@ abstract class ITimelineTabListBloc
   static ITimelineTabListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ITimelineTabListBloc>(context, listen: listen);
 
-  Stream<TimelineTabBlocsList> get timelineTabBlocsListStream;
+  Stream<TimelineTabBlocsList?> get timelineTabBlocsListStream;
 
-  TimelineTabBlocsList get timelineTabBlocsList;
-  Stream<ITimelineTabBloc> get mainTimelineTabBlocStream;
+  TimelineTabBlocsList? get timelineTabBlocsList;
+  Stream<ITimelineTabBloc?> get mainTimelineTabBlocStream;
 }

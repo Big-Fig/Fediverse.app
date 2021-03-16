@@ -14,17 +14,17 @@ class RecentSelectAccountBloc extends DisposableOwner
   final int recentCountLimit;
 
   @override
-  RecentSelectAccountList get recentSelectAccountList =>
+  RecentSelectAccountList? get recentSelectAccountList =>
       recentSelectAccountLocalPreferenceBloc.value;
 
   @override
-  Stream<RecentSelectAccountList> get recentSelectAccountListStream =>
+  Stream<RecentSelectAccountList?> get recentSelectAccountListStream =>
       recentSelectAccountLocalPreferenceBloc.stream;
 
   RecentSelectAccountBloc({
     this.recentCountLimit = 20,
-    @required this.selectAccountListBloc,
-    @required this.recentSelectAccountLocalPreferenceBloc,
+    required this.selectAccountListBloc,
+    required this.recentSelectAccountLocalPreferenceBloc,
   }) {
     addDisposable(
       streamSubscription: selectAccountListBloc.accountSelectedStream.listen(
@@ -32,7 +32,7 @@ class RecentSelectAccountBloc extends DisposableOwner
           var oldValue = recentSelectAccountList ??
               RecentSelectAccountList(recentItems: []);
 
-          var recentItems = oldValue.recentItems;
+          var recentItems = oldValue.recentItems!;
           if (recentItems.length > recentCountLimit) {
             recentItems = recentItems.sublist(0, recentCountLimit);
           }
@@ -42,9 +42,7 @@ class RecentSelectAccountBloc extends DisposableOwner
                 (account) => account.id == selectedAccount.remoteId);
 
             recentItems.add(
-              mapLocalAccountToRemoteAccount(
-                selectedAccount,
-              ),
+              selectedAccount.toPleromaAccount()
             );
           }
 
@@ -70,7 +68,7 @@ class RecentSelectAccountBloc extends DisposableOwner
       );
 
   static bool _calculateIsRecentSelectAccountListEmpty(
-      RecentSelectAccountList list) {
+      RecentSelectAccountList? list) {
     var recentItems = list?.recentItems;
     var isEmpty = !(recentItems?.isNotEmpty == true);
     return isEmpty;

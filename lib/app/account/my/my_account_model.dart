@@ -13,74 +13,113 @@ import 'package:json_annotation/json_annotation.dart';
 part 'my_account_model.g.dart';
 
 abstract class IMyAccount extends IAccount implements IJsonObject {
-  PleromaMyAccountPleromaPartNotificationsSettings
+  PleromaMyAccountPleromaPartNotificationsSettings?
       get pleromaNotificationSettings;
 
-  Map<String, dynamic> get pleromaSettingsStore;
+  Map<String, dynamic>? get pleromaSettingsStore;
 
-  int get pleromaUnreadNotificationsCount;
+  int? get pleromaUnreadNotificationsCount;
 
-  int get pleromaUnreadConversationCount;
+  int? get pleromaUnreadConversationCount;
 
-  String get pleromaChatToken;
+  String? get pleromaChatToken;
 
   bool get discoverable;
 
-  int get followRequestsCount;
+  int? get followRequestsCount;
 
-  String get fqn;
+  String? get fqn;
 
-  IPleromaMyAccountSource get source;
+  IPleromaMyAccountSource? get source;
 
-  IPleromaMyAccountPleromaPart get pleroma;
+  IPleromaMyAccountPleromaPart? get pleroma;
 
   @override
   IMyAccount copyWith({
-    int id,
-    String remoteId,
-    String username,
-    String url,
-    String note,
-    bool locked,
-    String headerStatic,
-    String header,
-    int followingCount,
-    int followersCount,
-    int statusesCount,
-    String displayName,
-    DateTime createdAt,
-    bool bot,
-    String avatarStatic,
-    String avatar,
-    String acct,
-    DateTime lastStatusAt,
-    List<PleromaField> fields,
-    List<PleromaEmoji> emojis,
-    List<PleromaTag> pleromaTags,
-    PleromaAccountRelationship pleromaRelationship,
-    bool pleromaIsAdmin,
-    bool pleromaIsModerator,
-    bool pleromaConfirmationPending,
-    bool pleromaHideFavorites,
-    bool pleromaHideFollowers,
-    bool pleromaHideFollows,
-    bool pleromaHideFollowersCount,
-    bool pleromaHideFollowsCount,
-    bool pleromaDeactivated,
-    bool pleromaAllowFollowingMove,
-    bool pleromaSkipThreadContainment,
-    String pleromaBackgroundImage,
-    bool pleromaAcceptsChatMessages,
-    PleromaMyAccountPleromaPartNotificationsSettings
+    int? id,
+    String? remoteId,
+    String? username,
+    String? url,
+    String? note,
+    bool? locked,
+    String? headerStatic,
+    String? header,
+    int? followingCount,
+    int? followersCount,
+    int? statusesCount,
+    String? displayName,
+    DateTime? createdAt,
+    bool? bot,
+    String? avatarStatic,
+    String? avatar,
+    String? acct,
+    DateTime? lastStatusAt,
+    List<PleromaField>? fields,
+    List<PleromaEmoji>? emojis,
+    List<PleromaTag>? pleromaTags,
+    IPleromaAccountRelationship? pleromaRelationship,
+    bool? pleromaIsAdmin,
+    bool? pleromaIsModerator,
+    bool? pleromaConfirmationPending,
+    bool? pleromaHideFavorites,
+    bool? pleromaHideFollowers,
+    bool? pleromaHideFollows,
+    bool? pleromaHideFollowersCount,
+    bool? pleromaHideFollowsCount,
+    bool? pleromaDeactivated,
+    bool? pleromaAllowFollowingMove,
+    bool? pleromaSkipThreadContainment,
+    String? pleromaBackgroundImage,
+    bool? pleromaAcceptsChatMessages,
+    PleromaMyAccountPleromaPartNotificationsSettings?
         pleromaNotificationSettings,
-    int pleromaUnreadConversationCount,
-    String pleromaChatToken,
-    bool discoverable,
-    int followRequestsCount,
-    IPleromaMyAccountSource source,
-    Map<String, dynamic> pleromaSettingsStore,
-    int pleromaUnreadNotificationsCount,
+    int? pleromaUnreadConversationCount,
+    String? pleromaChatToken,
+    bool? discoverable,
+    int? followRequestsCount,
+    IPleromaMyAccountSource? source,
+    Map<String, dynamic>? pleromaSettingsStore,
+    int? pleromaUnreadNotificationsCount,
+    List<String>? pleromaAlsoKnownAs,
+    String? pleromaApId,
+    String? pleromaFavicon,
+    bool? pleromaIsConfirmed,
   });
+}
+
+extension IMyAccountPleromaExtension on IMyAccount {
+  PleromaMyAccount toPleromaMyAccount() {
+    if (this is PleromaMyAccountWrapper) {
+      return (this as PleromaMyAccountWrapper).pleromaAccount;
+    } else {
+      return PleromaMyAccount(
+        header: header,
+        headerStatic: headerStatic,
+        username: username,
+        url: url,
+        statusesCount: statusesCount,
+        note: note,
+        locked: locked,
+        id: remoteId,
+        followingCount: followingCount,
+        followersCount: followersCount,
+        fields: fields?.toPleromaFields(),
+        emojis: emojis?.toPleromaEmojis(),
+        displayName: displayName,
+        createdAt: createdAt,
+        bot: bot,
+        avatarStatic: avatarStatic,
+        avatar: avatar,
+        acct: acct,
+        pleroma: pleroma?.toPleromaMyAccountPleromaPart(),
+        lastStatusAt: lastStatusAt,
+        source: source?.toPleromaMyAccountSource(),
+        discoverable: discoverable,
+        followRequestsCount: followRequestsCount,
+        fqn: fqn,
+      );
+    }
+  }
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -89,189 +128,192 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
 //@HiveType()
 @HiveType(typeId: -32 + 53)
 @JsonSerializable(explicitToJson: true)
-class MyAccountRemoteWrapper extends IMyAccount {
+class PleromaMyAccountWrapper extends IMyAccount {
   @HiveField(0)
   @JsonKey(name: "remote_account")
-  final PleromaMyAccount remoteAccount;
+  final PleromaMyAccount pleromaAccount;
 
-  MyAccountRemoteWrapper({
-    this.remoteAccount,
+  PleromaMyAccountWrapper({
+    required this.pleromaAccount,
   });
 
   @override
-  IPleromaMyAccountSource get source => remoteAccount.source;
+  IPleromaMyAccountSource? get source => pleromaAccount.source;
 
   @override
-  IPleromaMyAccountPleromaPart get pleroma => remoteAccount.pleroma;
+  IPleromaMyAccountPleromaPart? get pleroma => pleromaAccount.pleroma;
 
   @override
   bool get discoverable =>
-      remoteAccount?.discoverable ?? source?.pleroma?.discoverable ?? false;
+      pleromaAccount?.discoverable ?? source?.pleroma?.discoverable ?? false;
 
   @override
-  String get acct => remoteAccount.acct;
+  String get acct => pleromaAccount.acct;
 
   @override
-  String get avatar => remoteAccount.avatar;
+  String get avatar => pleromaAccount.avatar;
 
   @override
-  String get avatarStatic => remoteAccount.avatarStatic;
+  String get avatarStatic => pleromaAccount.avatarStatic;
 
   @override
-  bool get bot => remoteAccount.bot;
+  bool get bot => pleromaAccount.bot;
 
   @override
-  DateTime get createdAt => remoteAccount.createdAt;
+  DateTime get createdAt => pleromaAccount.createdAt;
 
   @override
-  String get displayName => remoteAccount.displayName;
+  String? get displayName => pleromaAccount.displayName;
 
   @override
-  List<IPleromaEmoji> get emojis => remoteAccount.emojis;
+  List<IPleromaEmoji>? get emojis => pleromaAccount.emojis;
 
   @override
-  List<IPleromaField> get fields => remoteAccount.fields;
+  List<IPleromaField>? get fields => pleromaAccount.fields;
 
   @override
-  int get followersCount => remoteAccount.followersCount;
+  int get followersCount => pleromaAccount.followersCount;
 
   @override
-  int get followingCount => remoteAccount.followingCount;
+  int get followingCount => pleromaAccount.followingCount;
 
   @override
-  String get header => remoteAccount.header;
+  String get header => pleromaAccount.header;
 
   @override
-  String get headerStatic => remoteAccount.headerStatic;
+  String get headerStatic => pleromaAccount.headerStatic;
 
   @override
-  DateTime get lastStatusAt => remoteAccount.lastStatusAt;
+  DateTime? get lastStatusAt => pleromaAccount.lastStatusAt;
 
   @override
-  int get localId => null;
+  int? get localId => null;
 
   @override
-  bool get locked => remoteAccount.locked;
+  bool get locked => pleromaAccount.locked;
 
   @override
-  String get note => remoteAccount.note;
+  String? get note => pleromaAccount.note;
 
   @override
-  bool get pleromaAllowFollowingMove =>
-      remoteAccount.pleroma?.allowFollowingMove;
+  bool? get pleromaAllowFollowingMove =>
+      pleromaAccount.pleroma?.allowFollowingMove;
 
   @override
-  bool get pleromaConfirmationPending =>
-      remoteAccount.pleroma?.confirmationPending;
+  bool? get pleromaConfirmationPending =>
+      pleromaAccount.pleroma?.confirmationPending;
 
   @override
-  bool get pleromaDeactivated => remoteAccount.pleroma?.deactivated;
+  bool? get pleromaDeactivated => pleromaAccount.pleroma?.deactivated;
 
   @override
-  bool get pleromaHideFavorites => remoteAccount.pleroma?.hideFavorites;
+  bool? get pleromaHideFavorites => pleromaAccount.pleroma?.hideFavorites;
 
   @override
-  bool get pleromaHideFollowers => remoteAccount.pleroma?.hideFollowers;
+  bool? get pleromaHideFollowers => pleromaAccount.pleroma?.hideFollowers;
 
   @override
-  bool get pleromaHideFollowersCount =>
-      remoteAccount.pleroma?.hideFollowersCount;
+  bool? get pleromaHideFollowersCount =>
+      pleromaAccount.pleroma?.hideFollowersCount;
 
   @override
-  bool get pleromaHideFollows => remoteAccount.pleroma?.hideFollows;
+  bool? get pleromaHideFollows => pleromaAccount.pleroma?.hideFollows;
 
   @override
-  bool get pleromaHideFollowsCount => remoteAccount.pleroma?.hideFollowsCount;
+  bool? get pleromaHideFollowsCount => pleromaAccount.pleroma?.hideFollowsCount;
 
   @override
-  bool get pleromaIsAdmin => remoteAccount.pleroma?.isAdmin;
+  bool? get pleromaIsAdmin => pleromaAccount.pleroma?.isAdmin;
 
   @override
-  bool get pleromaIsModerator => remoteAccount.pleroma?.isModerator;
+  bool? get pleromaIsModerator => pleromaAccount.pleroma?.isModerator;
 
   @override
-  PleromaAccountRelationship get pleromaRelationship =>
-      remoteAccount.pleroma?.relationship;
+  PleromaAccountRelationship? get pleromaRelationship =>
+      pleromaAccount.pleroma?.relationship;
 
   @override
-  bool get pleromaSkipThreadContainment =>
-      remoteAccount.pleroma?.skipThreadContainment;
+  bool? get pleromaSkipThreadContainment =>
+      pleromaAccount.pleroma?.skipThreadContainment;
 
   @override
-  List<dynamic> get pleromaTags => remoteAccount.pleroma?.tags;
+  List<PleromaTag>? get pleromaTags => pleromaAccount.pleroma?.tags;
 
   @override
-  String get remoteId => remoteAccount.id;
+  String get remoteId => pleromaAccount.id;
 
   @override
-  int get statusesCount => remoteAccount.statusesCount;
+  int get statusesCount => pleromaAccount.statusesCount;
 
   @override
-  String get url => remoteAccount.url;
+  String get url => pleromaAccount.url;
 
   @override
-  String get username => remoteAccount.username;
+  String get username => pleromaAccount.username;
 
   @override
-  int get followRequestsCount =>
+  int? get followRequestsCount =>
       // pleroma
-      remoteAccount?.followRequestsCount ??
+      pleromaAccount.followRequestsCount ??
       // mastodon
-      remoteAccount?.source?.followRequestsCount;
+      pleromaAccount.source?.followRequestsCount;
 
   @override
-  String get fqn => remoteAccount.fqn;
+  String? get fqn => pleromaAccount.fqn;
 
   @override
   IMyAccount copyWith({
-    int id,
-    String remoteId,
-    String username,
-    String url,
-    String note,
-    bool locked,
-    String headerStatic,
-    String header,
-    int followingCount,
-    int followersCount,
-    int statusesCount,
-    String displayName,
-    DateTime createdAt,
-    bool bot,
-    String avatarStatic,
-    String avatar,
-    String acct,
-    DateTime lastStatusAt,
-    List<PleromaField> fields,
-    List<PleromaEmoji> emojis,
-    List<PleromaTag> pleromaTags,
-    PleromaAccountRelationship pleromaRelationship,
-    bool pleromaIsAdmin,
-    bool pleromaIsModerator,
-    bool pleromaConfirmationPending,
-    bool pleromaHideFavorites,
-    bool pleromaHideFollowers,
-    bool pleromaHideFollows,
-    bool pleromaHideFollowersCount,
-    bool pleromaHideFollowsCount,
-    bool pleromaDeactivated,
-    bool pleromaAllowFollowingMove,
-    bool pleromaSkipThreadContainment,
-    String pleromaBackgroundImage,
-    bool pleromaAcceptsChatMessages,
-    PleromaMyAccountPleromaPartNotificationsSettings
+    int? id,
+    String? remoteId,
+    String? username,
+    String? url,
+    String? note,
+    bool? locked,
+    String? headerStatic,
+    String? header,
+    int? followingCount,
+    int? followersCount,
+    int? statusesCount,
+    String? displayName,
+    DateTime? createdAt,
+    bool? bot,
+    String? avatarStatic,
+    String? avatar,
+    String? acct,
+    DateTime? lastStatusAt,
+    List<PleromaField>? fields,
+    List<PleromaEmoji>? emojis,
+    List<PleromaTag>? pleromaTags,
+    IPleromaAccountRelationship? pleromaRelationship,
+    bool? pleromaIsAdmin,
+    bool? pleromaIsModerator,
+    bool? pleromaConfirmationPending,
+    bool? pleromaHideFavorites,
+    bool? pleromaHideFollowers,
+    bool? pleromaHideFollows,
+    bool? pleromaHideFollowersCount,
+    bool? pleromaHideFollowsCount,
+    bool? pleromaDeactivated,
+    bool? pleromaAllowFollowingMove,
+    bool? pleromaSkipThreadContainment,
+    String? pleromaBackgroundImage,
+    bool? pleromaAcceptsChatMessages,
+    PleromaMyAccountPleromaPartNotificationsSettings?
         pleromaNotificationSettings,
-    int pleromaUnreadConversationCount,
-    String pleromaChatToken,
-    bool discoverable,
-    int followRequestsCount,
-    IPleromaMyAccountSource source,
-    Map<String, dynamic> pleromaSettingsStore,
-    int pleromaUnreadNotificationsCount,
-    String fqn,
+    int? pleromaUnreadConversationCount,
+    String? pleromaChatToken,
+    bool? discoverable,
+    int? followRequestsCount,
+    IPleromaMyAccountSource? source,
+    Map<String, dynamic>? pleromaSettingsStore,
+    int? pleromaUnreadNotificationsCount,
+    List<String>? pleromaAlsoKnownAs,
+    String? pleromaApId,
+    String? pleromaFavicon,
+    bool? pleromaIsConfirmed,
   }) =>
-      MyAccountRemoteWrapper(
-        remoteAccount: remoteAccount.copyWith(
+      PleromaMyAccountWrapper(
+        pleromaAccount: pleromaAccount.copyWith(
           id: remoteId,
           username: username,
           url: url,
@@ -291,13 +333,14 @@ class MyAccountRemoteWrapper extends IMyAccount {
           lastStatusAt: lastStatusAt,
           fields: fields,
           emojis: emojis,
-          source: source,
+          source: source as PleromaMyAccountSource?,
           fqn: fqn,
           discoverable: discoverable,
           followRequestsCount: followRequestsCount,
           pleroma: PleromaMyAccountPleromaPart(
-            tags: pleromaTags ?? this.pleromaTags,
-            relationship: pleromaRelationship ?? this.pleromaRelationship,
+            tags: pleromaTags?.toPleromaTags() ?? this.pleromaTags,
+            relationship: pleromaRelationship?.toPleromaAccountRelationship() ??
+                this.pleromaRelationship,
             isAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
             isModerator: pleromaIsModerator ?? this.pleromaIsModerator,
             confirmationPending:
@@ -321,49 +364,70 @@ class MyAccountRemoteWrapper extends IMyAccount {
             notificationSettings:
                 pleromaNotificationSettings ?? this.pleromaNotificationSettings,
             settingsStore: pleromaSettingsStore ?? this.pleromaSettingsStore,
+            alsoKnownAs: pleromaAlsoKnownAs ?? this.pleromaAlsoKnownAs,
+            backgroundImage:
+                pleromaBackgroundImage ?? this.pleromaBackgroundImage,
+            apId: pleromaApId ?? this.pleromaApId,
+            acceptsChatMessages:
+                pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+            chatToken: pleromaChatToken ?? this.pleromaChatToken,
+            favicon: pleromaFavicon ?? this.pleromaFavicon,
+            isConfirmed: pleromaIsConfirmed ?? this.pleromaIsConfirmed,
           ),
         ),
       );
 
   @override
-  String get pleromaChatToken => remoteAccount.pleroma?.chatToken;
+  String? get pleromaChatToken => pleromaAccount.pleroma?.chatToken;
 
   @override
-  PleromaMyAccountPleromaPartNotificationsSettings
+  PleromaMyAccountPleromaPartNotificationsSettings?
       get pleromaNotificationSettings =>
-          remoteAccount.pleroma?.notificationSettings;
+          pleromaAccount.pleroma?.notificationSettings;
 
   @override
-  Map<String, dynamic> get pleromaSettingsStore =>
-      remoteAccount.pleroma?.settingsStore;
+  Map<String, dynamic>? get pleromaSettingsStore =>
+      pleromaAccount.pleroma?.settingsStore;
 
   @override
-  int get pleromaUnreadConversationCount =>
-      remoteAccount.pleroma?.unreadConversationCount;
+  int? get pleromaUnreadConversationCount =>
+      pleromaAccount.pleroma?.unreadConversationCount;
 
   @override
-  int get pleromaUnreadNotificationsCount =>
-      remoteAccount.pleroma?.unreadNotificationsCount;
+  int? get pleromaUnreadNotificationsCount =>
+      pleromaAccount.pleroma?.unreadNotificationsCount;
 
   @override
-  bool get pleromaAcceptsChatMessages =>
-      remoteAccount.pleroma?.acceptsChatMessages;
+  bool? get pleromaAcceptsChatMessages =>
+      pleromaAccount.pleroma?.acceptsChatMessages;
 
   @override
-  String toString() => 'MyAccountRemoteWrapper{remoteAccount: $remoteAccount}';
+  List<String>? get pleromaAlsoKnownAs => pleromaAccount.pleroma?.alsoKnownAs;
 
   @override
-  String get pleromaBackgroundImage => remoteAccount.pleroma?.backgroundImage;
+  String? get pleromaApId => pleromaAccount.pleroma?.apId;
 
-  factory MyAccountRemoteWrapper.fromJson(Map<String, dynamic> json) =>
+  @override
+  String? get pleromaFavicon => pleromaAccount.pleroma?.favicon;
+
+  @override
+  bool? get pleromaIsConfirmed => pleromaAccount.pleroma?.isConfirmed;
+
+  @override
+  String toString() => 'MyAccountRemoteWrapper{remoteAccount: $pleromaAccount}';
+
+  @override
+  String? get pleromaBackgroundImage => pleromaAccount.pleroma?.backgroundImage;
+
+  factory PleromaMyAccountWrapper.fromJson(Map<String, dynamic> json) =>
       _$MyAccountRemoteWrapperFromJson(json);
 
-  factory MyAccountRemoteWrapper.fromJsonString(String jsonString) =>
+  factory PleromaMyAccountWrapper.fromJsonString(String jsonString) =>
       _$MyAccountRemoteWrapperFromJson(jsonDecode(jsonString));
 
-  static List<MyAccountRemoteWrapper> listFromJsonString(String str) =>
-      List<MyAccountRemoteWrapper>.from(
-          json.decode(str).map((x) => MyAccountRemoteWrapper.fromJson(x)));
+  static List<PleromaMyAccountWrapper> listFromJsonString(String str) =>
+      List<PleromaMyAccountWrapper>.from(
+          json.decode(str).map((x) => PleromaMyAccountWrapper.fromJson(x)));
 
   @override
   Map<String, dynamic> toJson() => _$MyAccountRemoteWrapperToJson(this);
