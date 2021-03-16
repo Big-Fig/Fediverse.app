@@ -10,12 +10,12 @@ PleromaMediaAttachment _$PleromaMediaAttachmentFromJson(
     Map<String, dynamic> json) {
   return PleromaMediaAttachment(
     description: json['description'] as String?,
-    id: json['id'] as String?,
+    id: json['id'] as String,
     previewUrl: json['preview_url'] as String?,
     remoteUrl: json['remote_url'] as String?,
     textUrl: json['text_url'] as String?,
-    type: json['type'] as String?,
-    url: json['url'] as String?,
+    type: json['type'] as String,
+    url: json['url'] as String,
     pleroma: json['pleroma'] == null
         ? null
         : PleromaMediaAttachmentPleromaPart.fromJson(

@@ -14,9 +14,9 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbConversation> findById(int id) {
+  Selectable<DbConversation> findById(int? id) {
     return customSelect('SELECT * FROM db_conversations WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
   }
 
@@ -30,20 +30,20 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<DbConversation> findByRemoteId(String remoteId) {
     return customSelect(
         'SELECT * FROM db_conversations WHERE remote_id LIKE :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_conversations WHERE id = :id;',
-            variables: [Variable.withInt(id)], readsFrom: {dbConversations})
+            variables: [Variable<int?>(id)], readsFrom: {dbConversations})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_conversations WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbConversations},
       updateKind: UpdateKind.delete,
     );
@@ -52,7 +52,7 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByRemoteId(String remoteId) {
     return customUpdate(
       'DELETE FROM db_conversations WHERE remote_id = :remoteId;',
-      variables: [Variable.withString(remoteId)],
+      variables: [Variable<String>(remoteId)],
       updates: {dbConversations},
       updateKind: UpdateKind.delete,
     );
@@ -73,10 +73,10 @@ mixin _$ConversationDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbConversations}).map(dbConversations.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_conversations WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbConversations}).map((QueryRow row) => row.readInt('id'));
   }
 }

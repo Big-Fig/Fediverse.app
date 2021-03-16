@@ -95,8 +95,8 @@ extension PleromaVisibilityStringListExtension on List<String> {
 
 class PleromaVisibilityTypeConverter
     implements
-        JsonConverter<PleromaVisibility, String?>,
-        TypeConverter<PleromaVisibility, String?> {
+        JsonConverter<PleromaVisibility, String>,
+        TypeConverter<PleromaVisibility, String> {
   const PleromaVisibilityTypeConverter();
 
   @override
@@ -104,7 +104,8 @@ class PleromaVisibilityTypeConverter
       value?.toPleromaVisibility() ?? defaultPleromaVisibility;
 
   @override
-  String? toJson(PleromaVisibility? value) => value?.toJsonValue();
+  String toJson(PleromaVisibility? value) =>
+      value?.toJsonValue() ?? defaultPleromaVisibility.toJsonValue();
 
   @override
   PleromaVisibility? mapToDart(String? fromDb) => fromJson(fromDb);

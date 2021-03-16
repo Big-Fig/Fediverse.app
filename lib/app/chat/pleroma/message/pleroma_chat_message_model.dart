@@ -194,11 +194,11 @@ class DbChatMessagePopulatedWrapper extends IPleromaChatMessage {
   int get hashCode => dbChatMessagePopulated.hashCode;
 
   @override
-  bool get deleted => dbChatMessagePopulated.dbChatMessage.deleted;
+  bool get deleted => dbChatMessagePopulated.dbChatMessage.deleted == true;
 
   @override
   bool get hiddenLocallyOnDevice =>
-      dbChatMessagePopulated.dbChatMessage.hiddenLocallyOnDevice;
+      dbChatMessagePopulated.dbChatMessage.hiddenLocallyOnDevice == true;
 }
 
 class DbChatMessagePopulated {

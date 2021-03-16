@@ -42,7 +42,7 @@ abstract class IStatus {
 
   String get uri;
 
-  String get url;
+  String? get url;
 
   int get repliesCount;
 
@@ -178,7 +178,7 @@ abstract class IStatus {
     PleromaContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction?>? pleromaEmojiReactions,
+    List<PleromaStatusEmojiReaction>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -350,7 +350,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   PleromaApplication? get application => dbStatusPopulated.dbStatus.application;
 
   @override
-  bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked;
+  bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked == true;
 
   @override
   PleromaCard? get card => dbStatusPopulated.dbStatus.card;
@@ -477,7 +477,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   String get uri => dbStatusPopulated.dbStatus.uri;
 
   @override
-  String get url => dbStatusPopulated.dbStatus.url;
+  String? get url => dbStatusPopulated.dbStatus.url;
 
   @override
   PleromaVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
@@ -501,7 +501,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   }
 
   @override
-  bool get pinned => dbStatusPopulated.dbStatus.pinned;
+  bool get pinned => dbStatusPopulated.dbStatus.pinned == true;
 
   @override
   bool get deleted => dbStatusPopulated.dbStatus.deleted == true;
@@ -581,7 +581,7 @@ class DbStatusPopulatedWrapper extends IStatus {
     PleromaContent? pleromaSpoilerText,
     DateTime? pleromaExpiresAt,
     bool? pleromaThreadMuted,
-    List<PleromaStatusEmojiReaction?>? pleromaEmojiReactions,
+    List<PleromaStatusEmojiReaction>? pleromaEmojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -779,7 +779,7 @@ class DbStatusPopulated {
 
 extension IStatusExtension on IStatus {
   Uri get urlRemoteHostUri {
-    var uri = Uri.parse(url);
+    var uri = Uri.parse(url ?? this.uri);
 
     var resultUrl = "${uri.scheme}://${uri.host}";
     return Uri.parse(resultUrl);
@@ -788,7 +788,7 @@ extension IStatusExtension on IStatus {
   String get urlRemoteId {
     try {
       // todo: perhaps need improvements
-      var splitResult = url.split("/");
+      var splitResult = (url ?? uri).split("/");
 
       var isHaveEndingSlash = splitResult.last.isNotEmpty;
       if (isHaveEndingSlash) {

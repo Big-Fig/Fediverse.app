@@ -15,29 +15,29 @@ mixin _$StatusFavouritedAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbStatusFavouritedAccount> findById(int id) {
+  Selectable<DbStatusFavouritedAccount> findById(int? id) {
     return customSelect(
             'SELECT * FROM db_status_favourited_accounts WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbStatusFavouritedAccounts})
         .map(dbStatusFavouritedAccounts.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
         'SELECT COUNT(*) FROM db_status_favourited_accounts WHERE id = :id;',
         variables: [
-          Variable.withInt(id)
+          Variable<int?>(id)
         ],
         readsFrom: {
           dbStatusFavouritedAccounts
         }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_status_favourited_accounts WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbStatusFavouritedAccounts},
       updateKind: UpdateKind.delete,
     );
@@ -46,7 +46,7 @@ mixin _$StatusFavouritedAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByStatusRemoteId(String statusRemoteId) {
     return customUpdate(
       'DELETE FROM db_status_favourited_accounts WHERE status_remote_id = :statusRemoteId;',
-      variables: [Variable.withString(statusRemoteId)],
+      variables: [Variable<String>(statusRemoteId)],
       updates: {dbStatusFavouritedAccounts},
       updateKind: UpdateKind.delete,
     );

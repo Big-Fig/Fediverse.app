@@ -48,7 +48,7 @@ abstract class IAccount {
 
   DateTime get createdAt;
 
-  bool get bot;
+  bool? get bot;
 
   String get avatarStatic;
 
@@ -172,7 +172,7 @@ class DbAccountWrapper implements IAccount {
   String get avatarStatic => dbAccount.avatarStatic;
 
   @override
-  bool get bot => dbAccount.bot;
+  bool? get bot => dbAccount.bot;
 
   @override
   DateTime get createdAt => dbAccount.createdAt;

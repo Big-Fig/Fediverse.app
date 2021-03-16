@@ -50,7 +50,7 @@ class PleromaTagHistoryAdapter extends TypeAdapter<PleromaTagHistory> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaTagHistory _$PleromaHistoryFromJson(Map<String, dynamic> json) {
+PleromaTagHistory _$PleromaTagHistoryFromJson(Map<String, dynamic> json) {
   return PleromaTagHistory(
     accounts: json['accounts'],
     dayInUnixTimestamp: json['dayInUnixTimestamp'] as int?,
@@ -58,7 +58,7 @@ PleromaTagHistory _$PleromaHistoryFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaHistoryToJson(PleromaTagHistory instance) =>
+Map<String, dynamic> _$PleromaTagHistoryToJson(PleromaTagHistory instance) =>
     <String, dynamic>{
       'accounts': instance.accounts,
       'dayInUnixTimestamp': instance.dayInUnixTimestamp,

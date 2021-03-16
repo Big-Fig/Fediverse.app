@@ -62,12 +62,12 @@ class PleromaTagHistory implements IPleromaTagHistory {
   });
 
   factory PleromaTagHistory.fromJson(Map<String, dynamic> json) =>
-      _$PleromaHistoryFromJson(json);
+      _$PleromaTagHistoryFromJson(json);
 
   factory PleromaTagHistory.fromJsonString(String jsonString) =>
-      _$PleromaHistoryFromJson(jsonDecode(jsonString));
+      _$PleromaTagHistoryFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaHistoryToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaTagHistoryToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaHistoryToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaTagHistoryToJson(this));
 }

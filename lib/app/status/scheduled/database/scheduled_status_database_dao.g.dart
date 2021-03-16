@@ -15,31 +15,31 @@ mixin _$ScheduledStatusDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbScheduledStatus> findById(int id) {
+  Selectable<DbScheduledStatus> findById(int? id) {
     return customSelect('SELECT * FROM db_scheduled_statuses WHERE id = :id;',
-        variables: [Variable.withInt(id)],
+        variables: [Variable<int?>(id)],
         readsFrom: {dbScheduledStatuses}).map(dbScheduledStatuses.mapFromRow);
   }
 
   Selectable<DbScheduledStatus> findByRemoteId(String remoteId) {
     return customSelect(
         'SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbScheduledStatuses}).map(dbScheduledStatuses.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
             'SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbScheduledStatuses})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_scheduled_statuses WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbScheduledStatuses},
       updateKind: UpdateKind.delete,
     );
@@ -63,7 +63,7 @@ mixin _$ScheduledStatusDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
             'SELECT id FROM db_scheduled_statuses WHERE remote_id = :remoteId;',
-            variables: [Variable.withString(remoteId)],
+            variables: [Variable<String>(remoteId)],
             readsFrom: {dbScheduledStatuses})
         .map((QueryRow row) => row.readInt('id'));
   }

@@ -157,7 +157,7 @@ class PleromaMyAccountWrapper extends IMyAccount {
   String get avatarStatic => pleromaAccount.avatarStatic;
 
   @override
-  bool get bot => pleromaAccount.bot;
+  bool? get bot => pleromaAccount.bot;
 
   @override
   DateTime get createdAt => pleromaAccount.createdAt;
@@ -420,19 +420,19 @@ class PleromaMyAccountWrapper extends IMyAccount {
   String? get pleromaBackgroundImage => pleromaAccount.pleroma?.backgroundImage;
 
   factory PleromaMyAccountWrapper.fromJson(Map<String, dynamic> json) =>
-      _$MyAccountRemoteWrapperFromJson(json);
+      _$PleromaMyAccountWrapperFromJson(json);
 
   factory PleromaMyAccountWrapper.fromJsonString(String jsonString) =>
-      _$MyAccountRemoteWrapperFromJson(jsonDecode(jsonString));
+      _$PleromaMyAccountWrapperFromJson(jsonDecode(jsonString));
 
   static List<PleromaMyAccountWrapper> listFromJsonString(String str) =>
       List<PleromaMyAccountWrapper>.from(
           json.decode(str).map((x) => PleromaMyAccountWrapper.fromJson(x)));
 
   @override
-  Map<String, dynamic> toJson() => _$MyAccountRemoteWrapperToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaMyAccountWrapperToJson(this);
 
-  String toJsonString() => jsonEncode(_$MyAccountRemoteWrapperToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaMyAccountWrapperToJson(this));
 }
 
 class SelfActionNotPossibleException implements Exception {

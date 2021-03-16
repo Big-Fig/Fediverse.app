@@ -18,10 +18,10 @@ class PleromaPushMessageBodyAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaPushMessageBody(
-      notificationId: fields[0] as String?,
-      server: fields[1] as String?,
-      account: fields[2] as String?,
-      notificationType: fields[3] as String?,
+      notificationId: fields[0] as String,
+      server: fields[1] as String,
+      account: fields[2] as String,
+      notificationType: fields[3] as String,
     );
   }
 
@@ -188,10 +188,10 @@ Map<String, dynamic> _$PleromaPushSubscriptionKeysToJson(
 PleromaPushMessageBody _$PleromaPushMessageBodyFromJson(
     Map<String, dynamic> json) {
   return PleromaPushMessageBody(
-    notificationId: json['notification_id'] as String?,
-    server: json['server'] as String?,
-    account: json['account'] as String?,
-    notificationType: json['notification_type'] as String?,
+    notificationId: json['notification_id'] as String,
+    server: json['server'] as String,
+    account: json['account'] as String,
+    notificationType: json['notification_type'] as String,
   );
 }
 

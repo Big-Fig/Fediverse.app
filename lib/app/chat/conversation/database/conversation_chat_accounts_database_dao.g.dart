@@ -15,10 +15,10 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbConversationAccount> findById(int id) {
+  Selectable<DbConversationAccount> findById(int? id) {
     return customSelect(
             'SELECT * FROM db_conversation_accounts WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbConversationAccounts})
         .map(dbConversationAccounts.mapFromRow);
   }
@@ -28,7 +28,7 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
     return customSelect(
         'SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId;',
         variables: [
-          Variable.withString(conversationRemoteId)
+          Variable<String>(conversationRemoteId)
         ],
         readsFrom: {
           dbConversationAccounts
@@ -41,26 +41,26 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
     return customSelect(
         'SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId AND account_remote_id = :accountRemoteId;',
         variables: [
-          Variable.withString(conversationRemoteId),
-          Variable.withString(accountRemoteId)
+          Variable<String>(conversationRemoteId),
+          Variable<String>(accountRemoteId)
         ],
         readsFrom: {
           dbConversationAccounts
         }).map(dbConversationAccounts.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
             'SELECT COUNT(*) FROM db_conversation_accounts WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbConversationAccounts})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_conversation_accounts WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbConversationAccounts},
       updateKind: UpdateKind.delete,
     );
@@ -69,7 +69,7 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByConversationRemoteId(String conversationRemoteId) {
     return customUpdate(
       'DELETE FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId;',
-      variables: [Variable.withString(conversationRemoteId)],
+      variables: [Variable<String>(conversationRemoteId)],
       updates: {dbConversationAccounts},
       updateKind: UpdateKind.delete,
     );

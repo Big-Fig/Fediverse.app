@@ -18,8 +18,8 @@ class CustomEmojiPickerCodeItemAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomEmojiPickerCodeItem(
-      code: fields[1] as String?,
-      name: fields[0] as String?,
+      code: fields[1] as String,
+      name: fields[0] as String,
     );
   }
 
@@ -51,8 +51,8 @@ class CustomEmojiPickerCodeItemAdapter
 CustomEmojiPickerCodeItem _$CustomEmojiPickerCodeItemFromJson(
     Map<String, dynamic> json) {
   return CustomEmojiPickerCodeItem(
-    code: json['code'] as String?,
-    name: json['name'] as String?,
+    code: json['code'] as String,
+    name: json['name'] as String,
   );
 }
 

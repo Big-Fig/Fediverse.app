@@ -228,9 +228,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   }) async {
     List<DbStatusList> alreadyAddedListStatuses =
         await listsDao.findByListRemoteId(listRemoteId).get();
-    Iterable<String?> alreadyAddedListStatusesIds =
+    Iterable<String> alreadyAddedListStatusesIds =
         alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
-    Iterable<String?> notAddedYetStatusRemoteIds =
+    Iterable<String> notAddedYetStatusRemoteIds =
         statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedListStatusesIds.contains(statusRemoteId);
     });
@@ -253,17 +253,18 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future addStatusesToConversationWithDuplicatePreCheck({
-    required List<String?> statusRemoteIds,
+    required List<String> statusRemoteIds,
     required String conversationRemoteId,
   }) async {
     List<DbConversationStatus> alreadyAddedConversationStatuses =
         await conversationStatusesDao
             .findByConversationRemoteId(conversationRemoteId)
             .get();
-    Iterable<String?> alreadyAddedConversationStatusesIds =
-        alreadyAddedConversationStatuses
-            .map((conversationStatus) => conversationStatus.statusRemoteId);
-    Iterable<String?> notAddedYetStatusRemoteIds =
+    Iterable<String> alreadyAddedConversationStatusesIds =
+        alreadyAddedConversationStatuses.map(
+      (conversationStatus) => conversationStatus.statusRemoteId,
+    );
+    Iterable<String> notAddedYetStatusRemoteIds =
         statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
@@ -899,7 +900,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future addStatusToConversation({
     required String statusRemoteId,
-    required String? conversationRemoteId,
+    required String conversationRemoteId,
   }) =>
       conversationStatusesDao.insert(
         DbConversationStatus(

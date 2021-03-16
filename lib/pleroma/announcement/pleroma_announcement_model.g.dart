@@ -19,11 +19,10 @@ PleromaAnnouncement _$PleromaAnnouncementFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['updated_at'] as String),
     read: json['read'] as bool?,
-    reactions: (json['reactions'] as List?)
-        ?.map((e) => e == null
-            ? null
-            : PleromaAnnouncementReaction.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    reactions: (json['reactions'] as List<dynamic>?)
+        ?.map((e) =>
+            PleromaAnnouncementReaction.fromJson(e as Map<String, dynamic>))
+        .toList(),
     scheduledAt: json['scheduled_at'] == null
         ? null
         : DateTime.parse(json['scheduled_at'] as String),
@@ -46,7 +45,7 @@ Map<String, dynamic> _$PleromaAnnouncementToJson(
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'read': instance.read,
-      'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
+      'reactions': instance.reactions?.map((e) => e.toJson()).toList(),
       'scheduled_at': instance.scheduledAt?.toIso8601String(),
       'starts_at': instance.startsAt?.toIso8601String(),
       'ends_at': instance.endsAt?.toIso8601String(),

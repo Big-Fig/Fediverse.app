@@ -11,7 +11,7 @@ part 'pleroma_chat_model.g.dart';
 abstract class IPleromaChat {
   String get id;
 
-  int? get unread;
+  int get unread;
 
   DateTime? get updatedAt;
 
@@ -25,7 +25,7 @@ class PleromaChat implements IPleromaChat {
   @override
   final String id;
   @override
-  final int? unread;
+  final int unread;
 
   @override
   @JsonKey(name: "updated_at")

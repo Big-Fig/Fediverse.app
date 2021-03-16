@@ -5,7 +5,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbChatMessage")
 class DbChatMessages extends Table {
   // integer ids works better in SQLite
-  IntColumn? get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
   TextColumn? get remoteId => text().customConstraint("UNIQUE NOT NULL")();
 

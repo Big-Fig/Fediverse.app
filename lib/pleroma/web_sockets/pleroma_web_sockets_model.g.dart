@@ -9,7 +9,7 @@ part of 'pleroma_web_sockets_model.dart';
 PleromaWebSocketsEvent _$PleromaWebSocketsEventFromJson(
     Map<String, dynamic> json) {
   return PleromaWebSocketsEvent(
-    event: json['event'] as String?,
+    event: json['event'] as String,
     payload: json['payload'] as String?,
   );
 }

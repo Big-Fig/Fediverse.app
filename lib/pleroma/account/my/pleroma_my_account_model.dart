@@ -664,7 +664,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IJsonObject {
   final DateTime createdAt;
   @override
   @HiveField(14)
-  final bool bot;
+  final bool? bot;
   @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")

@@ -14,9 +14,9 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect('SELECT COUNT(*) FROM db_notifications WHERE id = :id;',
-            variables: [Variable.withInt(id)], readsFrom: {dbNotifications})
+            variables: [Variable<int?>(id)], readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
@@ -27,10 +27,10 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_notifications WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbNotifications},
       updateKind: UpdateKind.delete,
     );
@@ -51,26 +51,26 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 
-  Selectable<int> findLocalIdByRemoteId(String remoteId) {
+  Selectable<int?> findLocalIdByRemoteId(String remoteId) {
     return customSelect(
         'SELECT id FROM db_notifications WHERE remote_id = :remoteId;',
-        variables: [Variable.withString(remoteId)],
+        variables: [Variable<String>(remoteId)],
         readsFrom: {dbNotifications}).map((QueryRow row) => row.readInt('id'));
   }
 
   Future<int> deleteOlderThanDate(DateTime createdAt) {
     return customUpdate(
       'DELETE FROM db_notifications WHERE created_at < :createdAt',
-      variables: [Variable.withDateTime(createdAt)],
+      variables: [Variable<DateTime>(createdAt)],
       updates: {dbNotifications},
       updateKind: UpdateKind.delete,
     );
   }
 
-  Future<int> deleteOlderThanLocalId(int id) {
+  Future<int> deleteOlderThanLocalId(int? id) {
     return customUpdate(
       'DELETE FROM db_notifications WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbNotifications},
       updateKind: UpdateKind.delete,
     );
@@ -79,7 +79,7 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
   Selectable<DbNotification> getNewestByLocalIdWithOffset(int offset) {
     return customSelect(
         'SELECT * FROM db_notifications ORDER BY id DESC LIMIT 1 OFFSET :offset',
-        variables: [Variable.withInt(offset)],
+        variables: [Variable<int>(offset)],
         readsFrom: {dbNotifications}).map(dbNotifications.mapFromRow);
   }
 }

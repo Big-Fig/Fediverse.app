@@ -4,7 +4,7 @@ import 'package:moor/moor.dart';
 @DataClassName("DbHomeTimelineStatus")
 class DbHomeTimelineStatuses extends Table {
   // integer ids works better in SQLite
-  IntColumn? get id => integer().autoIncrement()();
+  IntColumn? get id => integer().nullable().autoIncrement()();
 
   TextColumn? get accountRemoteId => text()
       .customConstraint("NOT NULL")();

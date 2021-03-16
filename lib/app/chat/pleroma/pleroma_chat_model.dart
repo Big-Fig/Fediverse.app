@@ -66,7 +66,7 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
   String get remoteId => dbChatPopulated.dbChat.remoteId;
 
   @override
-  int? get unread => dbChatPopulated.dbChat.unread;
+  int get unread => dbChatPopulated.dbChat.unread;
 
   @override
   DateTime? get updatedAt => dbChatPopulated.dbChat.updatedAt;

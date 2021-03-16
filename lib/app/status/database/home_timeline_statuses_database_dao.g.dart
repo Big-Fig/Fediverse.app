@@ -15,26 +15,26 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Selectable<DbHomeTimelineStatus> findById(int id) {
+  Selectable<DbHomeTimelineStatus> findById(int? id) {
     return customSelect(
             'SELECT * FROM db_home_timeline_statuses WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbHomeTimelineStatuses})
         .map(dbHomeTimelineStatuses.mapFromRow);
   }
 
-  Selectable<int> countById(int id) {
+  Selectable<int> countById(int? id) {
     return customSelect(
             'SELECT COUNT(*) FROM db_home_timeline_statuses WHERE id = :id;',
-            variables: [Variable.withInt(id)],
+            variables: [Variable<int?>(id)],
             readsFrom: {dbHomeTimelineStatuses})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
-  Future<int> deleteById(int id) {
+  Future<int> deleteById(int? id) {
     return customUpdate(
       'DELETE FROM db_home_timeline_statuses WHERE id = :id;',
-      variables: [Variable.withInt(id)],
+      variables: [Variable<int?>(id)],
       updates: {dbHomeTimelineStatuses},
       updateKind: UpdateKind.delete,
     );
@@ -43,7 +43,7 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
   Future<int> deleteByAccountRemoteId(String accountRemoteId) {
     return customUpdate(
       'DELETE FROM db_home_timeline_statuses WHERE account_remote_id = :accountRemoteId;',
-      variables: [Variable.withString(accountRemoteId)],
+      variables: [Variable<String>(accountRemoteId)],
       updates: {dbHomeTimelineStatuses},
       updateKind: UpdateKind.delete,
     );

@@ -47,10 +47,10 @@ extension IPleromaTagListExtension on List<IPleromaTag> {
 class PleromaTag implements IPleromaTag {
   @override
   @HiveField(0)
-  final String? name;
+  final String name;
   @override
   @HiveField(1)
-  final String? url;
+  final String url;
   @override
   @HiveField(2)
   final List<PleromaTagHistory>? history;

@@ -279,10 +279,10 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get mutedStream => statusStream.map((status) => status.muted);
 
   @override
-  bool get bookmarked => status.bookmarked;
+  bool? get bookmarked => status.bookmarked;
 
   @override
-  Stream<bool> get bookmarkedStream =>
+  Stream<bool?> get bookmarkedStream =>
       statusStream.map((status) => status.bookmarked);
 
   @override

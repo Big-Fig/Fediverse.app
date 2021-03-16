@@ -141,8 +141,8 @@ class PleromaInstancePleromaPartMetadataFederationAdapter
     return PleromaInstancePleromaPartMetadataFederation(
       enabled: fields[0] as bool?,
       exclusions: fields[1] as bool?,
-      mrfObjectAge:
-          fields[2] as PleromaInstancePleromaPartMetadataFederationMfrObjectAge?,
+      mrfObjectAge: fields[2]
+          as PleromaInstancePleromaPartMetadataFederationMfrObjectAge?,
       mrfPolicies: (fields[3] as List?)?.cast<String>(),
       quarantinedInstances: (fields[4] as List?)?.cast<String>(),
     );
@@ -437,7 +437,8 @@ PleromaInstancePleromaPartMetadataFederationMfrObjectAge
         Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadataFederationMfrObjectAge(
     threshold: json['threshold'] as int?,
-    actions: (json['actions'] as List?)?.map((e) => e as String)?.toList(),
+    actions:
+        (json['actions'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
 }
 
@@ -459,11 +460,12 @@ PleromaInstancePleromaPartMetadataFederation
         ? null
         : PleromaInstancePleromaPartMetadataFederationMfrObjectAge.fromJson(
             json['mrf_object_age'] as Map<String, dynamic>),
-    mrfPolicies:
-        (json['mrf_policies'] as List?)?.map((e) => e as String)?.toList(),
-    quarantinedInstances: (json['quarantined_instances'] as List?)
+    mrfPolicies: (json['mrf_policies'] as List<dynamic>?)
         ?.map((e) => e as String)
-        ?.toList(),
+        .toList(),
+    quarantinedInstances: (json['quarantined_instances'] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
   );
 }
 
@@ -480,13 +482,15 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFederationToJson(
 PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
     Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadata(
-    features: (json['features'] as List?)?.map((e) => e as String)?.toList(),
+    features:
+        (json['features'] as List<dynamic>?)?.map((e) => e as String).toList(),
     federation: json['federation'] == null
         ? null
         : PleromaInstancePleromaPartMetadataFederation.fromJson(
             json['federation'] as Map<String, dynamic>),
-    postFormats:
-        (json['post_formats'] as List?)?.map((e) => e as String)?.toList(),
+    postFormats: (json['post_formats'] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
     accountActivationRequired: json['account_activation_required'] as bool?,
     fieldsLimits: json['fields_limits'] == null
         ? null
@@ -535,7 +539,8 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
         : PleromaAccount.fromJson(
             json['contact_account'] as Map<String, dynamic>),
     email: json['email'] as String?,
-    languages: (json['languages'] as List?)?.map((e) => e as String)?.toList(),
+    languages:
+        (json['languages'] as List<dynamic>?)?.map((e) => e as String).toList(),
     maxTootChars: PleromaInstance.parseMaxTootChars(json['max_toot_chars']),
     pleroma: json['pleroma'] == null
         ? null

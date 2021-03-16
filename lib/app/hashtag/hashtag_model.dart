@@ -1,22 +1,22 @@
 import 'package:fedi/pleroma/tag/history/pleroma_tag_history_model.dart';
 
 abstract class IHashtag {
-  String? get name;
+  String get name;
 
-  String? get url;
+  String get url;
 
   List<IPleromaTagHistory>? get history;
 }
 
 class Hashtag extends IHashtag {
   @override
-  final String? name;
+  final String name;
 
   @override
   final List<IPleromaTagHistory>? history;
 
   @override
-  final String? url;
+  final String url;
 
   Hashtag({
     required this.name,
