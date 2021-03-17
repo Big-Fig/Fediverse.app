@@ -285,19 +285,18 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future updateStatusTags({
     required String statusRemoteId,
-    required List<IPleromaTag> tags,
+    required List<IPleromaTag>? tags,
   }) async {
     await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
     await hashtagsDao.insertAll(
-      tags
-          .map(
+      tags?.map(
             (remoteTag) => DbStatusHashtag(
               id: null,
               statusRemoteId: statusRemoteId,
               hashtag: remoteTag.name,
             ),
           )
-          .toList(),
+          .toList() ?? [],
       InsertMode.insertOrReplace,
     );
   }

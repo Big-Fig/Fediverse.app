@@ -61,6 +61,12 @@ class PleromaTag implements IPleromaTag {
     required this.history,
   });
 
+  PleromaTag.only({
+    required this.name,
+    required this.url,
+    this.history,
+  });
+
   factory PleromaTag.fromJson(Map<String, dynamic> json) =>
       _$PleromaTagFromJson(json);
 

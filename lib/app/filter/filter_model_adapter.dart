@@ -2,36 +2,33 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/pleroma/filter/pleroma_filter_model.dart';
 
-IFilter mapRemoteFilterToLocalFilter(
-  IPleromaFilter remoteFilter,
-) =>
-    DbFilterPopulatedWrapper(
-      dbFilterPopulated: DbFilterPopulated(
-        dbFilter: mapRemoteFilterToDbFilter(
-          remoteFilter,
+extension IPleromaFilterExtension on IPleromaFilter {
+  IFilter toDbFilterPopulatedWrapper() => DbFilterPopulatedWrapper(
+        dbFilterPopulated: DbFilterPopulated(
+          dbFilter: toDbFilter(),
         ),
-      ),
-    );
+      );
 
-DbFilter mapRemoteFilterToDbFilter(IPleromaFilter remoteFilter) {
-  return DbFilter(
-    id: null,
-    remoteId: remoteFilter.id,
-    phrase: remoteFilter.phrase,
-    context: remoteFilter.context,
-    irreversible: remoteFilter.irreversible,
-    wholeWord: remoteFilter.wholeWord,
-    expiresAt: remoteFilter.expiresAt,
-  );
+  DbFilter toDbFilter() => DbFilter(
+      id: null,
+      remoteId: id,
+      phrase: phrase,
+      context: context,
+      irreversible: irreversible,
+      wholeWord: wholeWord,
+      expiresAt: expiresAt,
+    );
 }
 
-PleromaFilter mapLocalFilterToRemoteFilter(IFilter localFilter) {
-  return PleromaFilter(
-    id: localFilter.remoteId,
-    phrase: localFilter.phrase,
-    context: localFilter.context,
-    irreversible: localFilter.irreversible,
-    wholeWord: localFilter.wholeWord,
-    expiresAt: localFilter.expiresAt,
-  );
+extension IFilterExtension on IFilter {
+  PleromaFilter toPleromaFilter() {
+    return PleromaFilter(
+      id: remoteId,
+      phrase: phrase,
+      context: context,
+      irreversible: irreversible,
+      wholeWord: wholeWord,
+      expiresAt: expiresAt,
+    );
+  }
 }

@@ -95,7 +95,7 @@ abstract class IMastodonScheduledStatusParams {
 
   PleromaPostStatusPoll? get poll;
 
-  String get idempotency;
+  String? get idempotency;
 
   String? get inReplyToId;
 

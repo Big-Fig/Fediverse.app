@@ -193,7 +193,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final PleromaPostStatusPoll? poll;
 
   @override
-  final String idempotency;
+  final String? idempotency;
 
   @override
   @JsonKey(name: "in_reply_to_id")
@@ -232,6 +232,23 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
     required this.expiresInSeconds,
     required this.to,
     required this.inReplyToConversationId,
+  });
+
+  PleromaScheduledStatusParams.only({
+    this.text,
+    this.mediaIds,
+    required this.sensitive,
+    this.spoilerText,
+    required this.visibility,
+    required this.scheduledAt,
+    this.poll,
+    this.idempotency,
+    this.inReplyToId,
+    this.applicationId,
+    this.language,
+    this.expiresInSeconds,
+    this.to,
+    this.inReplyToConversationId,
   });
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
@@ -870,6 +887,16 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
     required this.me,
     required this.accounts,
   });
+
+
+  PleromaStatusEmojiReaction.only({
+    required this.name,
+    required this.count,
+    required this.me,
+    this.accounts,
+  });
+
+
 
   PleromaStatusEmojiReaction copyWith({
     String? name,

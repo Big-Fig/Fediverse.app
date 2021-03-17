@@ -138,7 +138,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     var remoteFilter =
         await actuallySubmitFilter(listRemoteId, postPleromaFilter);
 
-    var localFilter = mapRemoteFilterToLocalFilter(remoteFilter);
+    var localFilter = remoteFilter.toDbFilterPopulatedWrapper();
 
     submittedStreamController.add(localFilter);
 

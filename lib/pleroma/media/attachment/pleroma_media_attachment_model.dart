@@ -87,6 +87,17 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     required this.pleroma,
   });
 
+  PleromaMediaAttachment.only({
+    this.description,
+    required this.id,
+    this.previewUrl,
+    this.remoteUrl,
+    this.textUrl,
+    required this.type,
+    required this.url,
+    this.pleroma,
+  });
+
   factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
       _$PleromaMediaAttachmentFromJson(json);
 
