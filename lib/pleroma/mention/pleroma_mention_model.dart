@@ -65,13 +65,20 @@ class PleromaMention implements IPleromaMention {
   @override
   final String url;
   @override
-  final String username;
+  final String? username;
 
   PleromaMention({
     required this.acct,
     required this.id,
     required this.url,
     required this.username,
+  });
+
+  PleromaMention.only({
+    required this.acct,
+    required this.id,
+    required this.url,
+     this.username,
   });
 
   factory PleromaMention.fromJson(Map<String, dynamic> json) =>

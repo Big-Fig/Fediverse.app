@@ -5,5 +5,5 @@ abstract class IMastodonMention {
 
   String get url;
 
-  String get username;
+  String? get username;
 }

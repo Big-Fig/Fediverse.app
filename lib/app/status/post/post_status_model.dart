@@ -114,6 +114,21 @@ class PostStatusData implements IPostStatusData {
     required this.expiresInSeconds,
   });
 
+  const PostStatusData.only({
+    this.subject,
+    this.text,
+    this.scheduledAt,
+    required this.visibility,
+    this.to,
+    this.mediaAttachments,
+    this.poll,
+    this.inReplyToPleromaStatus,
+    this.inReplyToConversationId,
+    required this.isNsfwSensitiveEnabled,
+    this.language,
+    this.expiresInSeconds,
+  });
+
   PleromaVisibility get visibilityPleroma => visibility.toPleromaVisibility();
 
   @override

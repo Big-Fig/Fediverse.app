@@ -13,20 +13,19 @@ extension IPleromaCardExtension on IPleromaCard {
       return this as PleromaCard;
     } else {
       return PleromaCard(
-
-        authorName:authorName,
-        authorUrl:authorUrl,
-        description:description,
-        embedUrl:embedUrl,
-        height:height,
-        html:html,
-        image:image,
-        providerName:providerName,
-        providerUrl:providerUrl,
-        title:title,
-        type:type,
-        url:url,
-        width:width,
+        authorName: authorName,
+        authorUrl: authorUrl,
+        description: description,
+        embedUrl: embedUrl,
+        height: height,
+        html: html,
+        image: image,
+        providerName: providerName,
+        providerUrl: providerUrl,
+        title: title,
+        type: type,
+        url: url,
+        width: width,
       );
     }
   }
@@ -92,6 +91,22 @@ class PleromaCard implements IPleromaCard {
     required this.type,
     required this.url,
     required this.width,
+  });
+
+  PleromaCard.only({
+    this.authorName,
+    this.authorUrl,
+    this.description,
+    this.embedUrl,
+    this.height,
+    this.html,
+    this.image,
+    this.providerName,
+    this.providerUrl,
+    this.title,
+    this.type,
+    this.url,
+    this.width,
   });
 
   factory PleromaCard.fromJson(Map<String, dynamic> json) =>

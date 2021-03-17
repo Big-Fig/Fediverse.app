@@ -39,7 +39,7 @@ class FilterRepository extends AsyncInitLoadingBloc
         "$remoteFilter");
 
     await upsert(
-      mapRemoteFilterToDbFilter(remoteFilter),
+      remoteFilter.toDbFilter(),
     );
   }
 
@@ -53,7 +53,7 @@ class FilterRepository extends AsyncInitLoadingBloc
     }
     await upsertAll(remoteFilters
         .map(
-          (remoteFilter) => mapRemoteFilterToDbFilter(remoteFilter),
+          (remoteFilter) => remoteFilter.toDbFilter(),
         )
         .toList());
   }
@@ -234,7 +234,7 @@ class FilterRepository extends AsyncInitLoadingBloc
   }
 
   DbFilterPopulatedWrapper mapDataClassToItem(DbFilterPopulated dataClass) {
-    return DbFilterPopulatedWrapper(dbFilterPopulated:dataClass);
+    return DbFilterPopulatedWrapper(dbFilterPopulated: dataClass);
   }
 
   Insertable<DbFilter>? mapItemToDataClass(DbFilterPopulatedWrapper item) {
@@ -251,7 +251,9 @@ class FilterRepository extends AsyncInitLoadingBloc
         "\t newRemoteFilter: $newRemoteFilter");
 
     await updateById(
-        oldLocalFilter!.localId, mapRemoteFilterToDbFilter(newRemoteFilter));
+      oldLocalFilter!.localId,
+      newRemoteFilter.toDbFilter(),
+    );
   }
 
   @override
