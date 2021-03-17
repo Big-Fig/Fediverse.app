@@ -16,7 +16,6 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger =
     Logger("account_statuses_without_replies_cached_list_bloc_impl.dart");
@@ -34,7 +33,7 @@ class AccountStatusesWithoutRepliesListBloc
       );
 
   AccountStatusesWithoutRepliesListBloc({
-    required IAccount? account,
+    required IAccount account,
     required IPleromaAccountService pleromaAccountService,
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
@@ -106,10 +105,11 @@ class AccountStatusesWithoutRepliesListBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IStatus? newerThan,
-      required IStatus? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
+  }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
@@ -125,27 +125,27 @@ class AccountStatusesWithoutRepliesListBloc
       ),
     );
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null, conversationRemoteId: null);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
-      return false;
-    }
+    await statusRepository.upsertRemoteStatuses(
+      remoteStatuses,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
   }
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
 
-  static Widget provideToContext(BuildContext context,
-      {required IAccount? account, required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IAccount account,
+    required Widget child,
+  }) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
-          AccountStatusesWithoutRepliesListBloc.createFromContext(context,
-              account: account),
+          AccountStatusesWithoutRepliesListBloc.createFromContext(
+        context,
+        account: account,
+      ),
       child: StatusCachedListBlocProxyProvider(
         child: child,
       ),

@@ -37,7 +37,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -57,7 +57,6 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       ),
     );
 
-    if (remoteAccounts != null) {
       await accountRepository.upsertRemoteAccounts(
         remoteAccounts,
         conversationRemoteId: null,
@@ -66,15 +65,9 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
 
       await accountRepository.addAccountFollowings(
         accountRemoteId: account!.remoteId,
-        followings: remoteAccounts as List<PleromaAccount>,
+        followings: remoteAccounts?.toPleromaAccounts(),
       );
 
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "accounts is null");
-      return false;
-    }
   }
 
   @override

@@ -16,7 +16,6 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
-import 'package:flutter/widgets.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {

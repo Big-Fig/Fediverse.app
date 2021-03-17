@@ -8,9 +8,6 @@ final _logger = Logger("localization_locale_label_extension.dart");
 extension LocalizaionLocaleLabelExtension on LocalizationLocale {
   String toLabel(BuildContext context) {
     var s = S.of(context);
-    if(this == null) {
-        return s.localization_locale_default;
-    }
 
     switch (localeString) {
       case "en":

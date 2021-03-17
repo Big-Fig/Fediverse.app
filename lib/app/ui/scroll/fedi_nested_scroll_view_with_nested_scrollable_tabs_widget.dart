@@ -156,7 +156,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
     _logger.finest(
         () => "_buildTabBarView tabController ${tabController.hashCode}");
 
-    if (tabController == null || tabController.length == 0) {
+    if (tabController.length == 0) {
       var tabsEmptyBuilder = widget.tabsEmptyBuilder;
       if (tabsEmptyBuilder != null) {
         return Expanded(child: tabsEmptyBuilder(context));

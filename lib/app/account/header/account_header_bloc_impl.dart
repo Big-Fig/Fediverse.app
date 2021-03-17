@@ -1,7 +1,6 @@
 import 'package:fedi/app/account/header/account_header_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class AccountHeaderBloc extends DisposableOwner implements IAccountHeaderBloc {
   @override

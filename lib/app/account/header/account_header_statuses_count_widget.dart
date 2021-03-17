@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountHeaderStatusesCountWidget extends StatelessWidget {
-  final OnClickUiCallback onStatusesTapCallback;
+  final OnClickUiCallback? onStatusesTapCallback;
 
   const AccountHeaderStatusesCountWidget({
     required this.onStatusesTapCallback,
@@ -25,7 +25,7 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
           child: InkWell(
             onTap: () {
               if (onStatusesTapCallback != null) {
-                onStatusesTapCallback(context);
+                onStatusesTapCallback!(context);
               }
             },
             child: AccountHeaderStatisticWidget(

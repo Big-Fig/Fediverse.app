@@ -9,7 +9,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
-  final bool defaultMuting;
+  final bool? defaultMuting;
 
   const MyAccountAccountMuteActionMuteButtonWidget({
     Key? key,

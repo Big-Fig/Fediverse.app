@@ -128,9 +128,7 @@ Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
     var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
       statusRemoteId: remoteInstanceStatusRemoteId,
     );
-    if (remoteInstanceRemoteStatus != null) {
-      result = remoteInstanceRemoteStatus.account.toDbAccountWrapper();
-    }
+    result = remoteInstanceRemoteStatus.account.toDbAccountWrapper();
   }
 
   return result;

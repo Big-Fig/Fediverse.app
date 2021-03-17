@@ -8,7 +8,6 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc

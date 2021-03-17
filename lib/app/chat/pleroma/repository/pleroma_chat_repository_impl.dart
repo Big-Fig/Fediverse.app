@@ -370,7 +370,7 @@ class PleromaChatRepository extends AsyncInitLoadingBloc
         .findByAccountRemoteId(
           account.remoteId,
         )
-        .getSingle();
+        .getSingleOrNull();
 
     if (dbChatAccount != null) {
       return DbPleromaChatPopulatedWrapper(

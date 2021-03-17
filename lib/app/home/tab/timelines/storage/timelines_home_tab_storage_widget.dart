@@ -10,7 +10,6 @@ import 'package:fedi/app/ui/fedi_animations.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -58,10 +57,6 @@ class _TimelinesHomeTabStorageListWidget extends StatelessWidget {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
 
     var items = Provider.of<List<TimelinesHomeTabStorageListItem>>(context);
-
-    if (items == null) {
-      return const FediCircularProgressIndicator();
-    }
 
     if (items.isEmpty) {
       return Center(

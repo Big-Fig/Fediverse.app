@@ -5,8 +5,6 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:moor/moor.dart';
 
 abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
     extends AccountStatusesNetworkOnlyListBloc {
@@ -25,7 +23,6 @@ abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-
     var pleromaStatuses = await pleromaAccountService.getAccountStatuses(
       accountRemoteId: account!.remoteId,
       pagination: PleromaPaginationRequest(

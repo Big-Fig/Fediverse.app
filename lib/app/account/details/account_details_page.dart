@@ -204,15 +204,12 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             child: AccountStatusesTimelineWidget(),
           ),
         );
-        break;
       case AccountStatusesTab.media:
         return Container(
           color: fediUiColorTheme.white,
           child: const AccountStatusesMediaWidget(),
         );
-        break;
     }
-    throw "Invalid tab $tab";
   }
 
   Widget buildTabBodyOverlay({
@@ -229,13 +226,10 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
         case AccountStatusesTab.withoutReplies:
         case AccountStatusesTab.media:
           return const StatusListTapToLoadOverlayWidget();
-          break;
         case AccountStatusesTab.pinned:
         case AccountStatusesTab.favourites:
           return const SizedBox.shrink();
-          break;
       }
-      throw "Invalid tab $tab";
     } else {
       return const SizedBox.shrink();
     }

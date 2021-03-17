@@ -1,7 +1,6 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:flutter/widgets.dart';
 
 class DisabledRegistrationAuthHostException implements Exception {
   const DisabledRegistrationAuthHostException();

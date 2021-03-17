@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fedi/json/json_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

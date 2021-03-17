@@ -128,10 +128,8 @@ class _CurrentAuthInstanceContextInitWidgetState
               .cantFetchAndLocalCacheNotExist:
           case CurrentAuthInstanceContextInitState.invalidCredentials:
             return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
-            break;
           case CurrentAuthInstanceContextInitState.loading:
             return const SplashPage();
-            break;
         }
 
         throw "invalid state $state";

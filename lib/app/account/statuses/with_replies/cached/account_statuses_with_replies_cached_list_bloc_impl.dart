@@ -16,7 +16,6 @@ import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger =
     Logger("account_statuses_with_replies_cached_list_bloc_impl.dart");
@@ -106,10 +105,11 @@ class AccountStatusesWithRepliesCachedListBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IStatus? newerThan,
-      required IStatus? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IStatus? newerThan,
+    required IStatus? olderThan,
+  }) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
@@ -124,19 +124,11 @@ class AccountStatusesWithRepliesCachedListBloc
       ),
     );
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(
-        remoteStatuses,
-        listRemoteId: null,
-        conversationRemoteId: null,
-      );
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
-      return false;
-    }
+    await statusRepository.upsertRemoteStatuses(
+      remoteStatuses,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
   }
 
   @override

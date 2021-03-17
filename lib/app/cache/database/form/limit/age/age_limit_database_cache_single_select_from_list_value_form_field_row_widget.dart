@@ -31,35 +31,27 @@ class AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_notSet;
-              break;
             case DatabaseCacheAgeLimitType.days7:
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_days7;
-              break;
             case DatabaseCacheAgeLimitType.days30:
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_days30;
-              break;
             case DatabaseCacheAgeLimitType.days90:
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_days90;
-              break;
             case DatabaseCacheAgeLimitType.days180:
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_days180;
-              break;
             case DatabaseCacheAgeLimitType.days365:
               return S
                   .of(context)
                   .app_cache_database_settings_limitAge_value_days365;
-              break;
           }
-
-          throw UnsupportedError("invalid value $value");
         },
       ),
     );

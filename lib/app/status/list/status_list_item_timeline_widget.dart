@@ -47,11 +47,6 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
     var status = statusListItemTimelineBloc.status;
 
-    if (status == null) {
-      _logger.warning(() => "status is null");
-      return const SizedBox.shrink();
-    }
-
     _logger.finest(() => "build status?.remoteId ${status.remoteId}");
 
     Widget child;

@@ -18,7 +18,7 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
     return ShareWithMessageWidget(
-      child: ProxyProvider<IStatus, IPleromaCard>(
+      child: ProxyProvider<IStatus, IPleromaCard?>(
         update: (context, status, _) => PleromaCard(
           authorName: status.account.displayName,
           authorUrl: status.account.url,

@@ -1,5 +1,4 @@
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -37,15 +36,15 @@ class AsyncSmartRefresherHelper {
       case FediListSmartRefresherLoadingState.initialized:
       default:
         throw "invalid state $state";
-        break;
     }
 
     return state;
   }
 
-  static Future<FediListSmartRefresherLoadingState> doAsyncLoading(
-      {required RefreshController controller,
-      required AsyncAction action}) async {
+  static Future<FediListSmartRefresherLoadingState> doAsyncLoading({
+    required RefreshController controller,
+    required AsyncAction action,
+  }) async {
     _logger.finest(() => "doAsyncLoading");
     FediListSmartRefresherLoadingState state;
     try {
@@ -73,7 +72,6 @@ class AsyncSmartRefresherHelper {
       case FediListSmartRefresherLoadingState.initialized:
       default:
         throw "invalid state $state";
-        break;
     }
 
     return state;

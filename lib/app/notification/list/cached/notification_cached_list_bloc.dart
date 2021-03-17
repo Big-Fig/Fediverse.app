@@ -19,16 +19,18 @@ abstract class INotificationCachedListBloc
   IPleromaApi get pleromaApi;
 
   @override
-  Future<List<INotification>> loadLocalItems(
-      {required int? limit,
-      required INotification? newerThan,
-      required INotification? olderThan});
+  Future<List<INotification>> loadLocalItems({
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
+  });
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required INotification? newerThan,
-      required INotification? olderThan});
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required INotification? newerThan,
+    required INotification? olderThan,
+  });
 
   Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification item);
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final bool isNeedWatchLocalRepositoryForUpdates;

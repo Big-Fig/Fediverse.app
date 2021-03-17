@@ -2,10 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
-import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-
-var _logger = Logger("account_bloc_impl.dart");
 
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;

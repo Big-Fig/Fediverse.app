@@ -217,7 +217,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future markAsRead() async {
-    if (chat.unread != null && chat.unread! > 0) {
+    if (chat.unread > 0) {
       if (pleromaChatService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {

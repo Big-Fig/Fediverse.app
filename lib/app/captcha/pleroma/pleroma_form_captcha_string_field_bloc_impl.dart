@@ -129,10 +129,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
             case PleromaCaptchaType.kocaptcha:
             case PleromaCaptchaType.unknown:
               return Image.network(captcha!.url!);
-              break;
             case PleromaCaptchaType.native:
               return captcha!.decodeUrlAsBase64Image();
-              break;
             default:
               return null;
           }

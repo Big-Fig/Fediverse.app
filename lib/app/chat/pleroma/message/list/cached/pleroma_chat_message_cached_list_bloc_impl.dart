@@ -41,10 +41,11 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaChatService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IPleromaChatMessage? newerThan,
-      required IPleromaChatMessage? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IPleromaChatMessage? newerThan,
+    required IPleromaChatMessage? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t chat = $chat"
         "\t newerThan = $newerThan"
@@ -59,15 +60,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
       ),
     );
 
-    if (remoteMessages != null) {
-      await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "messages is null");
-      return false;
-    }
+    await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
   }
 
   @override

@@ -47,7 +47,6 @@ abstract class PostMessageBloc extends DisposableOwner
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         ) {
-    assert(pleromaMediaAttachmentService != null);
     addDisposable(subject: inputTextErrorsSubject);
     addDisposable(disposable: mediaAttachmentsBloc);
 
@@ -212,10 +211,10 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   Stream<bool> get isAnySelectedActionVisibleStream => selectedActionStream
-      .map((isAnySelectedActionVisible) => isAnySelectedActionVisible != null);
+      .map((selectedAction) => selectedAction != null);
 
   @override
-  bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
+  bool get isAnySelectedActionVisible => selectedAction != null;
 
   @override
   void clearSelectedAction() {

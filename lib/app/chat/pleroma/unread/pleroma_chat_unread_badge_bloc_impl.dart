@@ -11,7 +11,6 @@ class PleromaChatUnreadBadgeBloc extends DisposableOwner
   });
 
   @override
-  Stream<bool> get badgeStream => pleromaChatRepository
-      .watchTotalUnreadCount()
-      .map((count) => count != null && count > 0);
+  Stream<bool> get badgeStream =>
+      pleromaChatRepository.watchTotalUnreadCount().map((count) => count > 0);
 }

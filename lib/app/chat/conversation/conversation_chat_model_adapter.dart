@@ -24,7 +24,7 @@ extension IConversationChatExtension on IConversationChat {
   }) {
     var unread = this.unread;
     return PleromaConversation(
-      unread: (unread != null && unread > 0) ? true : false,
+      unread: (unread > 0) ? true : false,
       lastStatus: lastStatus?.toPleromaStatus(),
       id: remoteId,
       accounts: accounts.toPleromaAccounts(),

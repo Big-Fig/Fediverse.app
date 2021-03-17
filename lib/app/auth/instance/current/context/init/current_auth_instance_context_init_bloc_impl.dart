@@ -16,7 +16,6 @@ import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 

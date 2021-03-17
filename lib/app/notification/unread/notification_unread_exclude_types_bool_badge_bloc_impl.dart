@@ -57,7 +57,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
                   .toList(),
             ),
           )
-          .map((count) => count != null && count > 0)
+          .map((count) => count > 0)
           .listen(
         (unread) {
           badgeSubject.add(unread);

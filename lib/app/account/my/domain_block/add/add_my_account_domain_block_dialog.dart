@@ -7,7 +7,6 @@ import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/account/auth/pleroma_auth_account_service.dart';
-import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';

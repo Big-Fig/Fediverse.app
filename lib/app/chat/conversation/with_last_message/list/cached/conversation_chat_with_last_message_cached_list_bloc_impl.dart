@@ -9,9 +9,7 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
 
 var _logger =
     Logger("pleroma_chat_with_last_message_cached_list_bloc_impl.dart");
@@ -33,10 +31,11 @@ class ConversationChatWithLastMessageCachedListBloc
   IPleromaApi get pleromaApi => conversationChatService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {required int? limit,
-      required IConversationChatWithLastMessage? newerThan,
-      required IConversationChatWithLastMessage? olderThan}) async {
+  Future refreshItemsFromRemoteForPage({
+    required int? limit,
+    required IConversationChatWithLastMessage? newerThan,
+    required IConversationChatWithLastMessage? olderThan,
+  }) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
@@ -51,16 +50,9 @@ class ConversationChatWithLastMessageCachedListBloc
       ),
     );
 
-    if (remoteConversations != null) {
-      await conversationRepository
-          .upsertRemoteConversations(remoteConversations);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "chats is null");
-      return false;
-    }
+    await conversationRepository.upsertRemoteConversations(
+      remoteConversations,
+    );
   }
 
   @override

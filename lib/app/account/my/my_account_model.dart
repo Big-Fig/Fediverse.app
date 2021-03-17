@@ -28,8 +28,6 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
 
   int? get followRequestsCount;
 
-  String? get fqn;
-
   IPleromaMyAccountSource? get source;
 
   IPleromaMyAccountPleromaPart? get pleroma;

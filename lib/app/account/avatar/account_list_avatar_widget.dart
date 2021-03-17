@@ -91,18 +91,20 @@ class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
     switch (accounts.length) {
       case 2:
         return _AccountListAvatarMultiAccountTwoWidget(
-            baseAvatarSize: baseAvatarSize);
-        break;
+          baseAvatarSize: baseAvatarSize,
+        );
       case 3:
         return _AccountListAvatarMultiAccountThreeWidget(
-            baseAvatarSize: baseAvatarSize);
-        break;
+          baseAvatarSize: baseAvatarSize,
+        );
       case 4:
         return _AccountListAvatarMultiAccountFourWidget(
-            baseAvatarSize: baseAvatarSize);
+          baseAvatarSize: baseAvatarSize,
+        );
       default:
         return _AccountListAvatarMultiAccountFiveAndMoreWidget(
-            baseAvatarSize: baseAvatarSize);
+          baseAvatarSize: baseAvatarSize,
+        );
     }
   }
 }

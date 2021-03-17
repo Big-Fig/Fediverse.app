@@ -427,7 +427,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future logout() async {
     var currentInstance = currentInstanceBloc.currentInstance!;
-    assert(currentInstance != null);
 
     var instance = currentInstance;
     try {

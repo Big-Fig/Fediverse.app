@@ -8,11 +8,6 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/pagination/pleroma_pagination_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-
-var _logger =
-    Logger("my_account_bookmarked_statuses_cached_list_bloc_impl.dart");
 
 var _statusRepositoryFilters = StatusRepositoryFilters(
   onlyBookmarked: true,
@@ -63,7 +58,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     int? limit,
     IStatus? newerThan,
     IStatus? olderThan,
@@ -76,19 +71,11 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
       ),
     );
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(
-        remoteStatuses,
-        listRemoteId: null,
-        conversationRemoteId: null,
-      );
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "accounts is null");
-      return false;
-    }
+    await statusRepository.upsertRemoteStatuses(
+      remoteStatuses,
+      listRemoteId: null,
+      conversationRemoteId: null,
+    );
   }
 
   @override

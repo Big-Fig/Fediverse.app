@@ -19,7 +19,7 @@ final _logger = Logger("media_picker_file_grid_widget.dart");
 
 class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFileMetadata> {
-  final WidgetBuilder headerItemBuilder;
+  final WidgetBuilder? headerItemBuilder;
 
   MediaPickerFileGridWidget({
     Key? key,

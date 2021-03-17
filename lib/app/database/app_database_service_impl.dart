@@ -178,7 +178,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
           entriesCountByTypeLimit) {
         var oldestAccountToStartToDelete = await appDatabase.accountDao
             .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingle();
+            .getSingleOrNull();
         if (oldestAccountToStartToDelete != null) {
           await appDatabase.accountDao
               .deleteOlderThanLocalId(oldestAccountToStartToDelete.id!);
@@ -189,7 +189,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
           entriesCountByTypeLimit) {
         var oldestStatusToStartToDelete = await appDatabase.statusDao
             .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingle();
+            .getSingleOrNull();
         if (oldestStatusToStartToDelete != null) {
           await appDatabase.statusDao
               .deleteOlderThanLocalId(oldestStatusToStartToDelete.id!);
@@ -201,7 +201,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
         var oldestNotificationToStartToDelete = await appDatabase
             .notificationDao
             .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingle();
+            .getSingleOrNull();
         if (oldestNotificationToStartToDelete != null) {
           await appDatabase.notificationDao
               .deleteOlderThanLocalId(oldestNotificationToStartToDelete.id!);
@@ -212,7 +212,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
           entriesCountByTypeLimit) {
         var oldestChatMessageToStartToDelete = await appDatabase.chatMessageDao
             .getNewestByLocalIdWithOffset(entriesCountByTypeLimit)
-            .getSingle();
+            .getSingleOrNull();
         if (oldestChatMessageToStartToDelete != null) {
           await appDatabase.chatMessageDao
               .deleteOlderThanLocalId(oldestChatMessageToStartToDelete.id!);
