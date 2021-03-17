@@ -30,30 +30,24 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_notSet;
-                break;
               case DatabaseCacheEntriesCountByTypeLimitType.limit1000:
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_limit1000;
-                break;
               case DatabaseCacheEntriesCountByTypeLimitType.limit5000:
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_limit5000;
-                break;
               case DatabaseCacheEntriesCountByTypeLimitType.limit10000:
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_limit10000;
-                break;
               case DatabaseCacheEntriesCountByTypeLimitType.limit100000:
                 return S
                     .of(context)
                     .app_cache_database_settings_limitEntriesCountByType_value_limit100000;
-                break;
-            }
 
-            throw UnsupportedError("invalid value $value");
+            }
           },
           description: null,
           displayIconInDialog: false,

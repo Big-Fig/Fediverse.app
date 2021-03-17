@@ -19,14 +19,13 @@ class ChatUnreadBadgeBloc extends DisposableOwner
 
   @override
   Stream<bool> get badgeStream => Rx.combineLatest3(
-        pleromaChatRepository
-            .watchTotalUnreadCount()
-            .map((count) => count != null && count > 0),
+        pleromaChatRepository.watchTotalUnreadCount().map((count) => count > 0),
         conversationChatRepository
             .watchTotalUnreadCount()
-            .map((count) => count != null && count > 0),
+            .map((count) => count > 0),
         chatSettingsBloc.countConversationsInChatsUnreadBadgesStream,
-        (dynamic pleromaUnread, dynamic conversationUnread, dynamic countConversationsUnread) =>
+        (dynamic pleromaUnread, dynamic conversationUnread,
+                dynamic countConversationsUnread) =>
             pleromaUnread || (conversationUnread && countConversationsUnread),
       );
 }

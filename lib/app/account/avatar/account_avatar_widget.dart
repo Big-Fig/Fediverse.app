@@ -44,7 +44,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var avatarUrl = Provider.of<String>(context);
+    var avatarUrl = Provider.of<String?>(context);
     if (avatarUrl == null) {
       return Container(
         width: imageSize,

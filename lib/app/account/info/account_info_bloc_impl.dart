@@ -2,7 +2,6 @@ import 'package:fedi/app/account/info/account_info_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class AccountInfoBloc extends DisposableOwner implements IAccountInfoBloc {
   @override

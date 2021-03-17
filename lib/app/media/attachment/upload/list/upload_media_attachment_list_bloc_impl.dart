@@ -166,11 +166,10 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   void detachMediaAttachmentBloc(
       IUploadMediaAttachmentBloc mediaAttachmentBloc) {
-    if (mediaAttachmentBloc != null) {
       mediaAttachmentBloc.dispose();
       mediaAttachmentBlocs!.remove(mediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
-    }
+
   }
 
   IUploadMediaAttachmentBloc? findMediaAttachmentBlocByFilePickerFile(

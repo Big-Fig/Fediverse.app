@@ -4,7 +4,6 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
-import 'package:flutter/widgets.dart';
 
 class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
     implements IConversationChatNewMessagesHandlerBloc {

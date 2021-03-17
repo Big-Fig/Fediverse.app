@@ -61,8 +61,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
   ) {
     if (topSliverScrollOffsetToShowWhiteStatusBar != null) {
       return fediNestedScrollViewBloc.scrollOffsetStream.map((expandOffset) {
-        if (expandOffset != null &&
-            expandOffset > topSliverScrollOffsetToShowWhiteStatusBar!) {
+        if (expandOffset > topSliverScrollOffsetToShowWhiteStatusBar!) {
           return true;
         } else {
           return false;

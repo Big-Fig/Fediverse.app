@@ -15,7 +15,7 @@ class LocalizationLocaleSingleFromListValueFormFieldRowWidget
               .of(context)
               .app_localization_settings_field_localizationLocale_label,
           valueTitleMapper: (context, LocalizationLocale? value) =>
-              value?.toLabel(context) ?? "",
+              value?.toLabel(context) ?? S.of(context).localization_locale_default,
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,

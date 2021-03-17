@@ -17,7 +17,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var value = Provider.of<int>(context);
+    var value = Provider.of<int?>(context);
 
     if (value == null) {
       return const SizedBox.shrink();

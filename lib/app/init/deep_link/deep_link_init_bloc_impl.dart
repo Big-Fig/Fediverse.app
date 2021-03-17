@@ -14,7 +14,7 @@ var _logger = Logger("deep_link_init_bloc_impl.dart");
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
   final IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-  pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -58,12 +58,13 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);
 
-        if (authInstance != null) {
-          await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
-        }
+        await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
       } catch (e, stackTrace) {
-        _logger.warning(() => "Failed to _handleLoginOnAndroidWithoutChrome ",
-            e, stackTrace);
+        _logger.warning(
+          () => "Failed to _handleLoginOnAndroidWithoutChrome ",
+          e,
+          stackTrace,
+        );
       }
     }
   }

@@ -87,7 +87,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     var listener = () {
       var oldVideoPlayerValue = this.videoPlayerValue;
       var videoPlayerValue = videoPlayerController.value;
-      if (videoPlayerValue?.hasError == true) {
+      if (videoPlayerValue.hasError == true) {
         if (error == null && videoPlayerValue.errorDescription != null) {
           error == videoPlayerValue.errorDescription;
         }
@@ -102,38 +102,33 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
         playerStateSubject.add(MediaPlayerState.finished);
       }
 
-      if (videoPlayerValue != null) {
-        if (videoPlayerValue.isBuffering) {
-          isBufferingSubject.add(true);
-        } else {
-          // below lines is hack
-          // actually videoPlayerValue.isBuffering is always false
-          // in almost all cases
-          // so we should detect buffering on our side
-          if (isPlaying) {
-            var continuesPlaying = oldVideoPlayerValue?.isPlaying == true;
-            var positionChanged =
-                oldVideoPlayerValue?.position != videoPlayerValue.position;
+      if (videoPlayerValue.isBuffering) {
+        isBufferingSubject.add(true);
+      } else {
+        // below lines is hack
+        // actually videoPlayerValue.isBuffering is always false
+        // in almost all cases
+        // so we should detect buffering on our side
+        if (isPlaying) {
+          var continuesPlaying = oldVideoPlayerValue?.isPlaying == true;
+          var positionChanged =
+              oldVideoPlayerValue?.position != videoPlayerValue.position;
 
-            if (positionChanged) {
-              positionChangedLastDateTime = DateTime.now();
-            }
+          if (positionChanged) {
+            positionChangedLastDateTime = DateTime.now();
+          }
 
-            var now = DateTime.now();
-            if (continuesPlaying &&
-                now.difference(positionChangedLastDateTime).abs() >
-                    Duration(seconds: 1)) {
-              isBufferingSubject.add(true);
-            } else {
-              isBufferingSubject.add(false);
-            }
+          var now = DateTime.now();
+          if (continuesPlaying &&
+              now.difference(positionChangedLastDateTime).abs() >
+                  Duration(seconds: 1)) {
+            isBufferingSubject.add(true);
           } else {
             isBufferingSubject.add(false);
           }
+        } else {
+          isBufferingSubject.add(false);
         }
-      } else {
-        // not initialized = not buffering
-        isBufferingSubject.add(false);
       }
     };
 

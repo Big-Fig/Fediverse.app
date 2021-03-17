@@ -1,5 +1,4 @@
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
-import 'package:flutter/widgets.dart';
 
 class EditMyAccountCustomFieldsItemFieldData {
   final ILinkPairFormGroupBloc customField;

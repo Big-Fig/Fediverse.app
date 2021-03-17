@@ -14,5 +14,5 @@ class CachedPaginationListWithNewItemsUnreadBadgeBloc extends DisposableOwner
   @override
   Stream<bool> get badgeStream =>
       cachedPaginationListWithNewItemsBloc.unmergedNewItemsCountStream
-          .map((count) => count != null && count > 0);
+          .map((count) => count > 0);
 }

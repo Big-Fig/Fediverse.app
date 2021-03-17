@@ -26,7 +26,7 @@ class MyAccountBloc extends IMyAccountBloc {
   final AuthInstance instance;
 
   @override
-  bool get isLocalCacheExist => account != null;
+  bool get isLocalCacheExist => myAccount != null;
 
   MyAccountBloc({
     required this.myAccountLocalPreferenceBloc,

@@ -19,7 +19,7 @@ class CreateCustomListBloc extends EditCustomListBloc
     implements ICreateCustomListBloc {
   static CreateCustomListBloc createFromContext(
     BuildContext context, {
-    required Function(ICustomList) onSubmit,
+    required Function(ICustomList)? onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
       pleromaListService: IPleromaListService.of(

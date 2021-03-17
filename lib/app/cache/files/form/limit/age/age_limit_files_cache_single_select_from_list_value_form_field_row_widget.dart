@@ -29,35 +29,27 @@ class AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_notSet;
-              break;
             case FilesCacheAgeLimitType.days7:
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_days7;
-              break;
             case FilesCacheAgeLimitType.days30:
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_days30;
-              break;
             case FilesCacheAgeLimitType.days90:
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_days90;
-              break;
             case FilesCacheAgeLimitType.days180:
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_days180;
-              break;
             case FilesCacheAgeLimitType.days365:
               return S
                   .of(context)
                   .app_cache_files_settings_limitAge_value_days365;
-              break;
           }
-
-          throw UnsupportedError("invalid value $value");
         },
       ),
     );

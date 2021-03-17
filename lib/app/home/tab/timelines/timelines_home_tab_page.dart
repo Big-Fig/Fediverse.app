@@ -99,8 +99,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
             listener = mainTimelineTabBloc
                 .paginationListWithNewItemsBloc!.unmergedNewItemsCountStream
                 .listen((unreadCount) {
-              homeBloc.updateTimelinesUnread(
-                  unreadCount != null && unreadCount > 0);
+              homeBloc.updateTimelinesUnread(unreadCount > 0);
             });
             timelineTabListBloc.addDisposable(streamSubscription: listener);
           }
@@ -198,20 +197,20 @@ class _TimelinesHomeTabPageBody extends StatelessWidget {
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,
-      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc?>(
+      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
         update: (context, value, previous) =>
             value.timelineLocalPreferencesBloc,
         // value: tabBloc.timelineLocalPreferencesBloc,
         child: ProxyProvider<
             ITimelineTabBloc,
             ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
-                IStatus?>?>(
+                IStatus>>(
           // value: tabBloc.paginationListWithNewItemsBloc,
           update: (context, value, previous) =>
               value.paginationListWithNewItemsBloc,
           child: CachedPaginationListWithNewItemsBlocProxyProvider<
               CachedPaginationPage<IStatus>, IStatus>(
-            child: ProxyProvider<ITimelineTabBloc, IStatusCachedListBloc?>(
+            child: ProxyProvider<ITimelineTabBloc, IStatusCachedListBloc>(
               // value: tabBloc.paginationListWithNewItemsBloc,
               update: (context, value, previous) => value.statusCachedListBloc,
               child: StatusCachedListBlocProxyProvider(
@@ -299,15 +298,11 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timelineTabBlocsList = Provider.of<TimelineTabBlocsList>(context);
-    if (timelineTabBlocsList == null) {
-      return const SizedBox.shrink();
-    } else {
       return Padding(
         padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
         child: TimelineTabListTextTabIndicatorItemWidget(),
       );
-    }
+
   }
 }
 

@@ -41,7 +41,6 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     required this.mediaDeviceFile,
     required this.maximumFileSizeInBytes,
   }) {
-    assert(pleromaMediaAttachmentService != null);
     addDisposable(subject: uploadStateSubject);
     addDisposable(disposable: CustomDisposable(() async {
       if (mediaDeviceFile.isNeedDeleteAfterUsage) {

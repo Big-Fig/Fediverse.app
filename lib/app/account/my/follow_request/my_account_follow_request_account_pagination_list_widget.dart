@@ -69,7 +69,7 @@ class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
         var account = Provider.of<IAccount>(context, listen: false);
         await myAccountFollowRequestNetworkOnlyAccountListBloc
             .rejectFollowRequest(account: account);
-        paginationListBloc.refreshWithController();
+        await paginationListBloc.refreshWithController();
       },
       builder: (BuildContext context, void Function()? onPressed) {
         return FediTransparentTextButtonWithBorder(
@@ -102,7 +102,7 @@ class _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget
         var account = Provider.of<IAccount>(context, listen: false);
         await myAccountFollowRequestNetworkOnlyAccountListBloc
             .acceptFollowRequest(account: account);
-        paginationListBloc.refreshWithController();
+        await paginationListBloc.refreshWithController();
       },
       builder: (BuildContext context, void Function()? onPressed) {
         return FediTransparentTextButtonWithBorder(

@@ -7,7 +7,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
 import 'package:fedi/pleroma/web_sockets/pleroma_web_sockets_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
-import 'package:flutter/widgets.dart';
 
 class AccountWebSocketsHandler extends WebSocketsChannelHandler {
   AccountWebSocketsHandler({
@@ -16,9 +15,8 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
     required INotificationRepository notificationRepository,
     required IConversationChatRepository conversationRepository,
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
-    required
-        IConversationChatNewMessagesHandlerBloc
-            conversationChatNewMessagesHandlerBloc,
+    required IConversationChatNewMessagesHandlerBloc
+        conversationChatNewMessagesHandlerBloc,
     required String? accountId,
     required bool notification,
     required WebSocketsListenType listenType,

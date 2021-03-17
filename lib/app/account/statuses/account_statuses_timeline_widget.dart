@@ -70,7 +70,7 @@ Future _onStatusClick(BuildContext context, IStatus status) async {
   var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
   if (isLocal) {
-    goToLocalStatusThreadPage(
+    await goToLocalStatusThreadPage(
       context,
       status: status,
       initialMediaAttachment: null,

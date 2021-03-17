@@ -291,7 +291,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future markAsRead() async {
-    if (chat.unread != null && chat.unread! > 0) {
+    if (chat.unread > 0) {
       if (pleromaConversationService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
@@ -403,32 +403,23 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       var pleromaStatus = await pleromaAuthStatusService.postStatus(
         data: pleromaPostStatus,
       );
-      if (pleromaStatus != null) {
-        await statusRepository.updateById(
-          localStatusId,
-          dbStatus.copyWith(
-            hiddenLocallyOnDevice: true,
-            pendingState: PendingState.published,
-          ),
-        );
+      await statusRepository.updateById(
+        localStatusId,
+        dbStatus.copyWith(
+          hiddenLocallyOnDevice: true,
+          pendingState: PendingState.published,
+        ),
+      );
 
-        onMessageLocallyHiddenStreamController.add(
-          pleromaStatus.toConversationChatMessageStatusAdapter(),
-        );
+      onMessageLocallyHiddenStreamController.add(
+        pleromaStatus.toConversationChatMessageStatusAdapter(),
+      );
 
-        await statusRepository.upsertRemoteStatus(
-          pleromaStatus,
-          listRemoteId: null,
-          conversationRemoteId: chat!.remoteId,
-        );
-      } else {
-        await statusRepository.updateById(
-          localStatusId,
-          dbStatus.copyWith(
-            pendingState: PendingState.fail,
-          ),
-        );
-      }
+      await statusRepository.upsertRemoteStatus(
+        pleromaStatus,
+        listRemoteId: null,
+        conversationRemoteId: chat!.remoteId,
+      );
     } catch (e, stackTrace) {
       _logger.warning(() => "postMessage error", e, stackTrace);
       await statusRepository.updateById(

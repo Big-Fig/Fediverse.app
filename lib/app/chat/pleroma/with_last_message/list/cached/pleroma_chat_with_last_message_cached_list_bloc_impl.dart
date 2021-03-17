@@ -46,21 +46,13 @@ class PleromaChatWithLastMessageCachedListBloc
 
     remoteChats = await pleromaChatService.getChats(
       pagination: PleromaPaginationRequest(
-        maxId: olderThan?.chat?.remoteId,
-        sinceId: newerThan?.chat?.remoteId,
+        maxId: olderThan?.chat.remoteId,
+        sinceId: newerThan?.chat.remoteId,
         limit: limit,
       ),
     );
 
-    if (remoteChats != null) {
-      await chatRepository.upsertRemoteChats(remoteChats);
-
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "chats is null");
-      return false;
-    }
+    await chatRepository.upsertRemoteChats(remoteChats);
   }
 
   @override

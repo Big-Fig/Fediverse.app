@@ -160,9 +160,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationRemoteId: remoteId,
     );
 
-    if (remoteNotification != null) {
-      await _updateByRemoteNotification(remoteNotification);
-    }
+    await _updateByRemoteNotification(remoteNotification);
   }
 
   Future _updateByRemoteNotification(IPleromaNotification remoteNotification) {

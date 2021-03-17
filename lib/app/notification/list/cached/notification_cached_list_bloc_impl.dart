@@ -75,7 +75,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     required int? limit,
     required INotification? newerThan,
     required INotification? olderThan,
@@ -90,15 +90,11 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       excludeTypes: excludeTypes,
     );
 
-    if (remoteNotifications != null) {
       await notificationRepository.upsertRemoteNotifications(
         remoteNotifications,
         unread: null,
       );
-      return true;
-    } else {
-      return false;
-    }
+
   }
 
   static NotificationCachedListBloc createFromContext(

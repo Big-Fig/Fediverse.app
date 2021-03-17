@@ -16,7 +16,7 @@ const _cardBorderRadius = 8.0;
 class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaCard>(context);
+    var card = Provider.of<IPleromaCard?>(context);
 
     if (card == null) {
       return const SizedBox.shrink();

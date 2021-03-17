@@ -138,7 +138,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
           domain: domain.domain,
         );
         blocking = false;
-        paginationListBloc.refreshWithController();
+        await paginationListBloc.refreshWithController();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
         blocking

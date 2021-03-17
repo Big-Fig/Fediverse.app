@@ -185,9 +185,9 @@ void goToCustomListPage({
 
 MaterialPageRoute createCustomListPageRoute({
   required BuildContext context,
-  required ICustomList? customList,
-  required Function(ICustomList? customList) onChanged,
-  required VoidCallback onDeleted,
+  required ICustomList customList,
+  required Function(ICustomList? customList)? onChanged,
+  required VoidCallback? onDeleted,
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);

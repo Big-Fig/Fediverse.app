@@ -15,7 +15,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 
 abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
-  final IAccount? account;
+  final IAccount account;
   final IPleromaAccountService pleromaAccountService;
 
   final IStatusRepository statusRepository;

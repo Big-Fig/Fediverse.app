@@ -73,7 +73,7 @@ class SelectAccountListBloc extends DisposableOwner
   IPleromaApi get pleromaApi => pleromaAuthAccountService;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -119,16 +119,12 @@ class SelectAccountListBloc extends DisposableOwner
       }
     }
 
-    if (remoteAccounts != null) {
-      await accountRepository.upsertRemoteAccounts(remoteAccounts,
-          conversationRemoteId: null, chatRemoteId: null);
+    await accountRepository.upsertRemoteAccounts(
+      remoteAccounts,
+      conversationRemoteId: null,
+      chatRemoteId: null,
+    );
 
-      return true;
-    } else {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-          "accounts is null");
-      return false;
-    }
   }
 
   Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
