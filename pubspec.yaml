@@ -248,9 +248,16 @@ dependency_overrides:
 
   web_socket_channel: ^2.0.0
 
+  # for dart_code_metrics
+  crypto: ^3.0.0
+  quiver: ^2.0.0
+  glob: ^1.1.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # additional linter
+  dart_code_metrics: ^2.4.1
   # easy mock for tests
   mockito: ^5.0.0-nullsafety.7
   # build tools runner
