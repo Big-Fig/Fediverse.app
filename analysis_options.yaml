@@ -4,6 +4,40 @@
 #
 # Google internally enforced rules. See README.md for more information,
 # including a list of lints that are intentionally _not_ enforced.
+#include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - test/resources/**
+    - test/**/examples/**
+    - lib/generated/*
+  plugins:
+    - dart_code_metrics
+#  strong-mode:
+#    implicit-casts: false
+#    implicit-dynamic: false
+
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-arguments: 4
+    maximum-nesting: 5
+  metrics-exclude:
+    - test/**
+  rules:
+#    - binary-expression-operand-order
+#    - double-literal-format
+#    - newline-before-return
+#    - no-boolean-literal-compare
+#    - no-empty-block
+#    - no-equal-then-else
+#    - no-object-declaration
+#    - prefer-conditional-expressions
+    - prefer-trailing-comma
+
 linter:
   rules:
     - always_declare_return_types
@@ -51,7 +85,3 @@ linter:
 #    - use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
     - valid_regexps
-
-analyzer:
-  exclude:
-    - 'lib/generated/*'
