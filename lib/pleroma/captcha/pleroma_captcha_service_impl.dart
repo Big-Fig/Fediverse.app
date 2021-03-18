@@ -14,28 +14,30 @@ class PleromaCaptchaService extends DisposableOwner
     implements IPleromaCaptchaService {
   final captchaRelativeUrlPath = "/api/pleroma/captcha";
   @override
-  final IPleromaRestService? restService;
+  final IPleromaRestService restService;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
-      restService!.pleromaApiStateStream;
+      restService.pleromaApiStateStream;
 
   @override
-  PleromaApiState? get pleromaApiState => restService!.pleromaApiState;
+  PleromaApiState? get pleromaApiState => restService.pleromaApiState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream => restService!.isApiReadyToUseStream;
+  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
 
   @override
-  bool get isApiReadyToUse => restService!.isApiReadyToUse;
+  bool get isApiReadyToUse => restService.isApiReadyToUse;
 
   @override
-  bool get isConnected => restService!.isConnected;
+  bool get isConnected => restService.isConnected;
 
   @override
-  Stream<bool> get isConnectedStream => restService!.isConnectedStream;
+  Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaCaptchaService({required this.restService});
+  PleromaCaptchaService({
+    required this.restService,
+  });
 
   IPleromaCaptcha parseCaptchaResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
@@ -48,9 +50,11 @@ class PleromaCaptchaService extends DisposableOwner
 
   @override
   Future<IPleromaCaptcha> getCaptcha() async {
-    var httpResponse = await restService!.sendHttpRequest(
-      RestRequest.get(relativePath: captchaRelativeUrlPath),
-    )!;
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: captchaRelativeUrlPath,
+      ),
+    );
 
     return parseCaptchaResponse(httpResponse);
   }

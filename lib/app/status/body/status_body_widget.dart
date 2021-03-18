@@ -333,22 +333,23 @@ class _StatusBodyContentWithEmojisWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<EmojiText?>(
-        stream: statusBloc.contentWithEmojisStream.distinct(),
-        initialData: statusBloc.contentWithEmojis,
-        builder: (context, snapshot) {
-          var contentWithEmojis = snapshot.data;
+      stream: statusBloc.contentWithEmojisStream.distinct(),
+      initialData: statusBloc.contentWithEmojis,
+      builder: (context, snapshot) {
+        var contentWithEmojis = snapshot.data;
 
-          _logger.finest(() => "contentWithEmojis $contentWithEmojis");
+        _logger.finest(() => "contentWithEmojis $contentWithEmojis");
 
-          if (contentWithEmojis?.text?.isNotEmpty == true) {
-            return Provider<EmojiText?>.value(
-              value: contentWithEmojis,
-              child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        });
+        if (contentWithEmojis?.text.isNotEmpty == true) {
+          return Provider<EmojiText?>.value(
+            value: contentWithEmojis,
+            child: const _StatusBodyContentWithEmojisCollapsibleWidget(),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
@@ -430,11 +431,11 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
               break;
           }
 
-          return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+          return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
             update: (context, contentWithEmojis, _) {
               var htmlTextBloc = HtmlTextBloc(
                 inputData: HtmlTextInputData(
-                  input: contentWithEmojis?.text,
+                  input: contentWithEmojis?.text ?? "",
                   emojis: contentWithEmojis?.emojis,
                 ),
                 settings: HtmlTextSettings(

@@ -18,7 +18,7 @@ class MyAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-    var isNotMyAccount = !myAccountBloc.checkAccountIsMe(accountBloc.account!);
+    var isNotMyAccount = !myAccountBloc.checkAccountIsMe(accountBloc.account);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

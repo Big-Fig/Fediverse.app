@@ -494,7 +494,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
       SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
       List<PleromaVisibility> excludeVisibilities) {
-    assert(excludeVisibilities?.isNotEmpty == true);
+    assert(excludeVisibilities.isNotEmpty == true);
 
     List<String?> excludeVisibilityStrings = excludeVisibilities
         .map((visibility) => visibility.toJsonValue())

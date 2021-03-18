@@ -28,11 +28,15 @@ void showEditGlobalPostStatusSettingsDialog({
     child: DisposableProvider<IPostStatusSettingsBloc>(
       create: (context) => PostStatusSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstancePostStatusSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IInstancePostStatusSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
-            IGlobalPostStatusSettingsLocalPreferencesBloc.of(context,
-                listen: false),
+            IGlobalPostStatusSettingsLocalPreferencesBloc.of(
+          context,
+          listen: false,
+        ),
       ),
       child: DisposableProxyProvider<IPostStatusSettingsBloc,
           IEditPostStatusSettingsBloc>(
@@ -41,7 +45,7 @@ void showEditGlobalPostStatusSettingsDialog({
           postStatusSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
-          pleromaVisibilityPossibleValues: isPleromaInstance!
+          pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
                   PleromaVisibility.public,
                   PleromaVisibility.unlisted,

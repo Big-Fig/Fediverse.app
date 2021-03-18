@@ -34,7 +34,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
       );
 
   @override
-  bool get isSomethingChanged => isExist && super.isSomethingChanged!;
+  bool get isSomethingChanged => isExist && super.isSomethingChanged;
 
   @override
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(

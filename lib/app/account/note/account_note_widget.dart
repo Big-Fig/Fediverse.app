@@ -34,7 +34,7 @@ class AccountNoteWidget extends StatelessWidget {
       child: StreamProvider.value(
         value: accountBloc.noteEmojiTextStream,
         initialData: accountBloc.noteEmojiText,
-        child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+        child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
           update: (context, noteEmojiText, _) {
             var htmlTextBloc = HtmlTextBloc(
               inputData: HtmlTextInputData(
@@ -59,8 +59,8 @@ class AccountNoteWidget extends StatelessWidget {
               streamSubscription: htmlTextBloc.linkClickedStream.listen(
                 (url) {
                   _onLinkClick(
-                    url: url!,
-                    noteEmojiText: noteEmojiText,
+                    url: url,
+                    noteEmojiText: noteEmojiText!,
                     context: context,
                   );
                 },

@@ -82,7 +82,7 @@ class _MediaPickerPageFoldersWidget extends StatelessWidget {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
     return StreamBuilder<MediaDeviceGallerySelectedFolderData?>(
       stream: mediaDeviceGalleryBloc.selectedFolderDataStream
-          .distinct((old, current) => old?.folder?.id == current?.folder?.id),
+          .distinct((old, current) => old?.folder.id == current?.folder.id),
       builder: (context, snapshot) {
         var folderData = snapshot.data;
         var folder = folderData?.folder;

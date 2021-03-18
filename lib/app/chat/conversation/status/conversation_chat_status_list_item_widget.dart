@@ -120,7 +120,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Text(
-                  TimeOfDay.fromDateTime(statusBloc.createdAt!).format(context),
+                  TimeOfDay.fromDateTime(statusBloc.createdAt).format(context),
                   style: IFediUiTextTheme.of(context).smallShortMediumGrey,
                 ),
               ),
@@ -166,17 +166,17 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var contentWithEmojis = snapshot.data;
 
-          if (contentWithEmojis?.text?.isNotEmpty == true) {
+          if (contentWithEmojis?.text.isNotEmpty == true) {
             var fediUiColorTheme = IFediUiColorTheme.of(context);
             var textScaleFactor = MediaQuery.of(context).textScaleFactor;
             return Provider<EmojiText?>.value(
               value: contentWithEmojis,
-              child: DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+              child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                 update: (context, emojiText, _) {
                   var htmlTextBloc = HtmlTextBloc(
                     inputData: HtmlTextInputData(
-                      input: emojiText.text,
-                      emojis: emojiText.emojis,
+                      input: emojiText?.text ?? "",
+                      emojis: emojiText?.emojis,
                     ),
                     settings: HtmlTextSettings(
                       shrinkWrap: true,
@@ -200,7 +200,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       (url) {
                         UrlHelper.handleUrlClickWithInstanceLocation(
                           context: context,
-                          url: url!,
+                          url: url,
                           instanceLocationBloc: statusBloc,
                         );
                       },

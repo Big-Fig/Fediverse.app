@@ -49,7 +49,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
             context,
             listen: false,
           ),
-          pleromaVisibilityPossibleValues: isPleromaInstance!
+          pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
                   PleromaVisibility.public,
                   PleromaVisibility.unlisted,

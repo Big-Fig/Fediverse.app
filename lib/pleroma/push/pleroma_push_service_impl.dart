@@ -41,7 +41,8 @@ class PleromaPushService extends DisposableOwner
     return await super.dispose();
   }
 
-  PleromaPushSubscription? parsePushSubscriptionResponse(Response httpResponse) {
+  PleromaPushSubscription? parsePushSubscriptionResponse(
+      Response httpResponse) {
     RestResponse<PleromaPushSubscription> restResponse =
         RestResponse.fromResponse(
       response: httpResponse,
@@ -58,16 +59,22 @@ class PleromaPushService extends DisposableOwner
   }
 
   @override
-  Future<PleromaPushSubscription?> subscribe(
-      {required String endpointCallbackUrl,
-      required PleromaPushSubscribeData data}) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+  Future<PleromaPushSubscription?> subscribe({
+    required String endpointCallbackUrl,
+    required PleromaPushSubscribeData data,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
         relativePath: subscriptionRelativeUrlPath,
         bodyJson: PleromaPushSubscribeRequest(
                 subscription: PleromaPushSubscribeRequestSubscription(
-                    endpoint: endpointCallbackUrl, keys: keys),
+                  endpoint: endpointCallbackUrl,
+                  keys: keys,
+                ),
                 data: data)
-            .toJson()))!;
+            .toJson(),
+      ),
+    );
 
     return parsePushSubscriptionResponse(httpResponse);
   }
@@ -75,7 +82,10 @@ class PleromaPushService extends DisposableOwner
   @override
   Future<PleromaPushSubscription?> retrieveCurrentSubscription() async {
     var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(relativePath: subscriptionRelativeUrlPath))!;
+      RestRequest.get(
+        relativePath: subscriptionRelativeUrlPath,
+      ),
+    );
 
     return parsePushSubscriptionResponse(httpResponse);
   }
@@ -83,7 +93,10 @@ class PleromaPushService extends DisposableOwner
   @override
   Future<bool> unsubscribe() async {
     var httpResponse = await restService.sendHttpRequest(
-        RestRequest.delete(relativePath: subscriptionRelativeUrlPath))!;
+      RestRequest.delete(
+        relativePath: subscriptionRelativeUrlPath,
+      ),
+    );
 
     return httpResponse.statusCode == 200;
   }

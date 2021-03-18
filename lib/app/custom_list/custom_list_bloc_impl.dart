@@ -12,18 +12,20 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   BehaviorSubject<ICustomList?> customListSubject;
 
   CustomListBloc({
-    required ICustomList customList,
+    required ICustomList? customList,
     required this.pleromaListService,
   }) : customListSubject = BehaviorSubject.seeded(customList) {
     addDisposable(subject: customListSubject);
   }
 
+
+  // todo: rework this logic
   @override
   Stream get deletedStream =>
       customListStream.where((customList) => customList == null);
 
   @override
-  ICustomList? get customList => customListSubject.value;
+  ICustomList? get customList => customListSubject.value!;
 
   @override
   Stream<ICustomList?> get customListStream => customListSubject.stream;

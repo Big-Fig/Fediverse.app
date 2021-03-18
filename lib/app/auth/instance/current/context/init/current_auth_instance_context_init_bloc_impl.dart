@@ -142,7 +142,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future refreshOptionalData() async {
-    var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma!;
+    var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
     var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
 
     var actualNotificationUnreadCount = await notificationRepository.getCount(

@@ -24,9 +24,9 @@ class AuthInstancePleromaRestErrorData extends ErrorData {
       error: error,
       stackTrace: stackTrace,
       titleCreator: (context) =>
-          S.of(context!).app_auth_instance_join_fail_dialog_title,
+          S.of(context).app_auth_instance_join_fail_dialog_title,
       contentCreator: (context) =>
-          S.of(context!).app_auth_instance_join_fail_dialog_content(
+          S.of(context).app_auth_instance_join_fail_dialog_content(
                 error.toString(),
               ),
     );

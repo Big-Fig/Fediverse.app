@@ -44,8 +44,8 @@ class ConversationChatWithLastMessageCachedListBloc
 
     remoteConversations = await conversationChatService.getConversations(
       pagination: PleromaPaginationRequest(
-        maxId: olderThan?.chat?.remoteId,
-        sinceId: newerThan?.chat?.remoteId,
+        maxId: olderThan?.chat.remoteId,
+        sinceId: newerThan?.chat.remoteId,
         limit: limit,
       ),
     );
@@ -86,7 +86,7 @@ class ConversationChatWithLastMessageCachedListBloc
       chatWithLastMessageRepository.watchConversationsWithLastMessage(
         filters: null,
         pagination: RepositoryPagination<IConversationChat>(
-          newerThanItem: item?.chat,
+          newerThanItem: item.chat,
         ),
         orderingTermData: ConversationChatOrderingTermData.updatedAtDesc,
       );

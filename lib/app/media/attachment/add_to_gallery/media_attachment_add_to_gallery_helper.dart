@@ -37,10 +37,10 @@ Future<bool?> _save(IPleromaMediaAttachment mediaAttachment) async {
   bool? saved;
   var typeMastodon = mediaAttachment.typeMastodon;
   if (typeMastodon == MastodonMediaAttachmentType.image) {
-    saved = await GallerySaver.saveImage(mediaAttachment.url!);
+    saved = await GallerySaver.saveImage(mediaAttachment.url);
   } else if (typeMastodon == MastodonMediaAttachmentType.video ||
       typeMastodon == MastodonMediaAttachmentType.gifv) {
-    saved = await GallerySaver.saveVideo(mediaAttachment.url!);
+    saved = await GallerySaver.saveVideo(mediaAttachment.url);
   } else {
     saved = false;
   }

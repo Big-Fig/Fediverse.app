@@ -29,7 +29,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
         var visibility = snapshot.data;
         var icon = StatusVisibilityIconWidget.buildVisibilityIcon(
             context: context,
-            visibility: visibility,
+            visibility: visibility!,
             isSelectedVisibility: false,
             isPossibleToChangeVisibility: true);
 
@@ -45,7 +45,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                   postStatusBloc: postStatusBloc,
                   visibility: PleromaVisibility.public,
                 ),
-                if (isPleromaInstance!)
+                if (isPleromaInstance)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,

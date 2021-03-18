@@ -95,7 +95,7 @@ class SelectAccountListBloc extends DisposableOwner
 
       if (following) {
         await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account!.remoteId,
+          accountRemoteId: myAccountBloc.account.remoteId,
           followings: remoteAccounts as List<PleromaAccount>,
         );
       }
@@ -113,7 +113,7 @@ class SelectAccountListBloc extends DisposableOwner
           newerThan: newerThan,
         );
         await accountRepository.addAccountFollowings(
-          accountRemoteId: myAccountBloc.account!.remoteId,
+          accountRemoteId: myAccountBloc.account.remoteId,
           followings: remoteAccounts as List<PleromaAccount>,
         );
       }
@@ -139,7 +139,7 @@ class SelectAccountListBloc extends DisposableOwner
         maxId: olderThan?.remoteId,
         limit: limit,
       ),
-      accountRemoteId: myAccountBloc.account!.remoteId,
+      accountRemoteId: myAccountBloc.account.remoteId,
     );
   }
 
@@ -198,7 +198,7 @@ class SelectAccountListBloc extends DisposableOwner
         }
 
         if (valid && searchText != null) {
-          valid &= account.acct!.contains(searchText!);
+          valid &= account.acct.contains(searchText!);
         }
         return valid;
       }).toList();

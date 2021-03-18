@@ -70,7 +70,7 @@ HtmlTextResultData _calculateHtmlData({
   var input = inputData.input;
 
   if (input != null) {
-    var text = input.trim() ?? "";
+    var text = input.trim();
 
     var alreadyHaveHtmlInText = false;
     if (inputData.isHaveEmojis) {

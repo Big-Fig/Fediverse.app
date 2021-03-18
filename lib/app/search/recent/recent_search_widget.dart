@@ -22,8 +22,8 @@ class RecentSearchWidget extends StatelessWidget {
           var recentSearchList = snapshot.data;
 
           var recentItems = recentSearchList?.recentItems
-              ?.where((item) => item?.isNotEmpty == true)
-              ?.toList();
+              ?.where((item) => item.isNotEmpty == true)
+              .toList();
 
           var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
           return Provider<List<String>?>.value(
@@ -60,7 +60,7 @@ class _RecentSearchHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var recentItems = Provider.of<List<String>>(context);
 
-    var recentItemsIsNotEmpty = recentItems?.isNotEmpty == true;
+    var recentItemsIsNotEmpty = recentItems.isNotEmpty == true;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

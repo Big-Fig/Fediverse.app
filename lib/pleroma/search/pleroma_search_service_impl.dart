@@ -87,7 +87,7 @@ class PleromaSearchService extends DisposableOwner
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]) ,
         ],
       ),
-    )!;
+    );
 
     if (httpResponse.statusCode == 200) {
       return PleromaSearchResult.fromJsonString(httpResponse.body);

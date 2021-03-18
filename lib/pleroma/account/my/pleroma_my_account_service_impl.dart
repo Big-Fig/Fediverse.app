@@ -120,15 +120,17 @@ class PleromaMyAccountService extends DisposableOwner
 
   @override
   Future<IPleromaMyAccount> updateFiles(
-      PleromaMyAccountFilesRequest accountFiles) async {
+    PleromaMyAccountFilesRequest accountFiles,
+  ) async {
     _logger.finest(() => "updateFiles $accountFiles");
     var httpResponse = await restService.uploadFileMultipartRequest(
       UploadMultipartRestRequest.patch(
         relativePath: editProfileRelativeUrlPath,
         files: {
-          "header": accountFiles.header,
-          "avatar": accountFiles.avatar,
-          "pleroma_background_image": accountFiles.pleromaBackgroundImage,
+          if (accountFiles.header != null) "header": accountFiles.header!,
+          if (accountFiles.avatar != null) "avatar": accountFiles.avatar!,
+          if (accountFiles.pleromaBackgroundImage != null)
+            "pleroma_background_image": accountFiles.pleromaBackgroundImage!,
         },
       ),
     );

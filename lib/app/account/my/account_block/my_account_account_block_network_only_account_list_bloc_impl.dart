@@ -33,7 +33,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
     );
 
     var remoteAccount = account
@@ -54,7 +54,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.blockAccount(
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
     );
 
     var remoteAccount = account

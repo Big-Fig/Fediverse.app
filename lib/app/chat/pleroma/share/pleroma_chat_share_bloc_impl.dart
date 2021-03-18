@@ -55,7 +55,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     var targetAccounts = [account];
     List<IPleromaChat> pleromaChatsByAccounts;
-    if (targetAccounts?.isNotEmpty == true) {
+    if (targetAccounts.isNotEmpty) {
       var chatsByAccountsFuture = targetAccounts.map(
         (account) => pleromaChatService.getOrCreateChatByAccountId(
           accountId: account.remoteId,

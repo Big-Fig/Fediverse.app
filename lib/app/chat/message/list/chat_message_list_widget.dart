@@ -137,14 +137,12 @@ class ChatMessageListWidget<T extends IChatMessage>
                           listen: false,
                         ),
                         chatMessage: chatMessage,
-                        isSelectionPossible: chatMessageBloc
-                            .isNotPending,
+                        isSelectionPossible: chatMessageBloc.isNotPending,
                       );
 
                       chatSelectionItemBloc.addDisposable(
-                        streamSubscription: chatMessageBloc
-                            .isNotPendingStream
-                            .listen(
+                        streamSubscription:
+                            chatMessageBloc.isNotPendingStream.listen(
                           (isNotPending) {
                             chatSelectionItemBloc.changeSelectionPossible(
                               isNotPending,
@@ -209,7 +207,7 @@ class _ChatMessageListDaySeparatorWidget extends StatelessWidget {
       padding: FediPadding.allSmallPadding,
       child: Center(
           child: Text(
-        _daySeparatorDateFormat.format(message.createdAt!),
+        _daySeparatorDateFormat.format(message.createdAt),
         style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
       )),
     );
@@ -241,24 +239,33 @@ ChatMessageListItem<T> _calculateChatMessageListItem<T extends IChatMessage>({
   bool isLastInMinuteGroup;
 
   if (previousCreatedAt != null) {
-    isFirstInDayGroup =
-        !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
+    isFirstInDayGroup = !DateUtils.isSameDay(
+      currentCreatedAt,
+      previousCreatedAt,
+    );
     var isSameAccount =
-        currentMessage.account?.remoteId == previousMessage!.account?.remoteId;
-    isFirstInMinuteGroup =
-        !(CustomDateUtils.isSameMinute(currentCreatedAt!, previousCreatedAt) &&
-            isSameAccount);
+        currentMessage.account.remoteId == previousMessage!.account.remoteId;
+    isFirstInMinuteGroup = !(CustomDateUtils.isSameMinute(
+          currentCreatedAt,
+          previousCreatedAt,
+        ) &&
+        isSameAccount);
   } else {
     isFirstInDayGroup = true;
     isFirstInMinuteGroup = true;
   }
   if (nextCreatedAt != null) {
     var isSameAccount =
-        currentMessage.account?.remoteId == nextMessage!.account?.remoteId;
-    isLastInDayGroup = !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
-    isLastInMinuteGroup =
-        !(CustomDateUtils.isSameMinute(currentCreatedAt!, nextCreatedAt) &&
-            isSameAccount);
+        currentMessage.account.remoteId == nextMessage!.account.remoteId;
+    isLastInDayGroup = !DateUtils.isSameDay(
+      currentCreatedAt,
+      nextCreatedAt,
+    );
+    isLastInMinuteGroup = !(CustomDateUtils.isSameMinute(
+          currentCreatedAt,
+          nextCreatedAt,
+        ) &&
+        isSameAccount);
   } else {
     isLastInDayGroup = true;
     isLastInMinuteGroup = true;

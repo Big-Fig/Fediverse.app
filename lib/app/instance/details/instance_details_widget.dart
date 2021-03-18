@@ -357,7 +357,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                     (url) {
                       UrlHelper.handleUrlClickWithInstanceLocation(
                         context: context,
-                        url: url!,
+                        url: url,
                         instanceLocationBloc: instanceDetailsBloc,
                       );
                     },
@@ -955,7 +955,7 @@ class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
         if (maxTootChars != null) {
           return _InstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_maxTootChars_label,
-            value: maxTootChars?.toString(),
+            value: maxTootChars.toString(),
           );
         } else {
           return const SizedBox.shrink();
@@ -983,7 +983,7 @@ class _InstanceDetailsPleromaChatMessageLimitWidget extends StatelessWidget {
         if (chatLimit != null) {
           return _InstanceDetailsRowWidget(
             label: S.of(context).app_instance_details_field_chatLimit_label,
-            value: chatLimit?.toString(),
+            value: chatLimit.toString(),
           );
         } else {
           return const SizedBox.shrink();
@@ -1014,7 +1014,7 @@ class _InstanceDetailsPleromaImageDescriptionLimitWidget
             label: S
                 .of(context)
                 .app_instance_details_field_imageDescriptionLimit_label,
-            value: descriptionLimit?.toString(),
+            value: descriptionLimit.toString(),
           );
         } else {
           return const SizedBox.shrink();
@@ -1336,7 +1336,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
                         value: formatDuration(
                           context: context,
                           duration: Duration(
-                            seconds: pleromaMetadataFederation!
+                            seconds: pleromaMetadataFederation
                                 .mrfObjectAge!.threshold!,
                           ),
                         ),

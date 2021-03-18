@@ -17,7 +17,7 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
       onTap: () {
         UrlHelper.handleUrlClick(
           context: context,
-          url: mediaAttachment.url!,
+          url: mediaAttachment.url,
         );
       },
       child: const Padding(

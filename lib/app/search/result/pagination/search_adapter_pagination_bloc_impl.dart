@@ -50,7 +50,7 @@ abstract class SearchAdapterPaginationBloc<T> extends DisposableOwner
 
   @override
   List<PaginationPage<T>> get loadedPagesSortedByIndex =>
-      searchResultItemPaginationBloc.loadedPagesSortedByIndex!
+      searchResultItemPaginationBloc.loadedPagesSortedByIndex
           .map(mapPage)
           .toList();
 

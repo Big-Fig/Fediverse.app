@@ -18,7 +18,7 @@ class MediaAttachmentListCarouselWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
 
-    if (mediaAttachmentListBloc.mediaAttachments?.isNotEmpty == true) {
+    if (mediaAttachmentListBloc.mediaAttachments.isNotEmpty == true) {
       return SizedBox(
         width: double.infinity,
         child: const MediaAttachmentListCarouselBodyWidget(),

@@ -54,7 +54,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     required IndexedWidgetBuilder itemBuilder,
     required ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
   }) {
-    _logger.finest(() => "buildItemsListView items ${items?.length}");
+    _logger.finest(() => "buildItemsListView items ${items.length}");
 
     var itemCount =
         items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0);

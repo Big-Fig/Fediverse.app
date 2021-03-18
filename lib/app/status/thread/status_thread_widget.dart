@@ -135,7 +135,7 @@ class _StatusThreadInReplyToStatusWidget extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).app_status_reply_replyingTo(
-                          notCanceledOriginInReplyToStatus.account!.acct!),
+                          notCanceledOriginInReplyToStatus.account.acct),
                       style: IFediUiTextTheme.of(context)
                           .mediumShortGrey
                           .copyWith(height: 1),
@@ -167,7 +167,7 @@ class _StatusThreadPostStatusWidget extends StatelessWidget {
     var statusThreadBloc = IStatusThreadBloc.of(context);
     return PostStatusWidget(
       hintText: S.of(context).app_status_thread_post_hint(
-            statusThreadBloc.initialStatusToFetchThread!.account!.acct!,
+            statusThreadBloc.initialStatusToFetchThread!.account.acct,
           ),
     );
   }

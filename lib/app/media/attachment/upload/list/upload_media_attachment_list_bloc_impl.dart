@@ -75,22 +75,22 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   List<IUploadMediaAttachmentBloc>? get onlyMediaAttachmentBlocs =>
-      mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList();
+      mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>?> get onlyMediaAttachmentBlocsStream =>
       mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-          mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList());
+          mediaAttachmentBlocs?.where((bloc) => bloc.isMedia).toList());
 
   @override
   List<IUploadMediaAttachmentBloc>? get onlyNonMediaAttachmentBlocs =>
-      mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList();
+      mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia).toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>?>
       get onlyNonMediaAttachmentBlocsStream =>
           mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList());
+              mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia).toList());
 
   @override
   bool get isMaximumMediaAttachmentCountReached =>

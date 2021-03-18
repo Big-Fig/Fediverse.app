@@ -27,24 +27,30 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
     required this.searchInputBloc,
     required this.recentSearchLocalPreferenceBloc,
   }) {
-    addDisposable(streamSubscription:
-        searchInputBloc.confirmedSearchTermStream.listen((confirmedSearchTerm) {
-      var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
+    addDisposable(
+      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
+        (confirmedSearchTerm) {
+          var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
 
-      var recentItems = oldValue.recentItems!;
-      if (recentItems.length > recentCountLimit) {
-        recentItems = recentItems.sublist(0, recentCountLimit);
-      }
+          var recentItems = oldValue.recentItems!;
+          if (recentItems.length > recentCountLimit) {
+            recentItems = recentItems.sublist(0, recentCountLimit);
+          }
 
-      if (confirmedSearchTerm?.isNotEmpty == true) {
-        if (!recentItems.contains(confirmedSearchTerm)) {
-          recentItems.add(confirmedSearchTerm);
-        }
-      }
+          if (confirmedSearchTerm.isNotEmpty == true) {
+            if (!recentItems.contains(confirmedSearchTerm)) {
+              recentItems.add(confirmedSearchTerm);
+            }
+          }
 
-      recentSearchLocalPreferenceBloc
-          .setValue(RecentSearchList(recentItems: recentItems));
-    }));
+          recentSearchLocalPreferenceBloc.setValue(
+            RecentSearchList(
+              recentItems: recentItems,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override

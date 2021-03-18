@@ -82,12 +82,12 @@ class _MediaFilePathBodyWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              mediaFilePathBloc.extension?.toUpperCase() ?? "?",
+              mediaFilePathBloc.extension.toUpperCase(),
               overflow: TextOverflow.ellipsis,
               style: IFediUiTextTheme.of(context).smallShortGrey,
             ),
             Text(
-              mediaFilePathBloc.name ?? "",
+              mediaFilePathBloc.name,
               overflow: TextOverflow.ellipsis,
               style: IFediUiTextTheme.of(context).smallShortDarkGrey,
             ),
@@ -131,7 +131,7 @@ class _MediaFilePathIconWidget extends StatelessWidget {
             child: Align(
                 alignment: Alignment.bottomCenter,
                 child: AutoSizeText(
-                  mediaFilePathBloc.extension?.toUpperCase() ?? "?",
+                  mediaFilePathBloc.extension.toUpperCase(),
                   maxLines: 1,
                   minFontSize: 8.0,
                   style: IFediUiTextTheme.of(context).smallShortDarkGrey,

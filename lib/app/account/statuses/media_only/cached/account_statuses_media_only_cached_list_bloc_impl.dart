@@ -105,7 +105,7 @@ class AccountStatusesMediaOnlyCachedListBloc
   }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     required int? limit,
     required IStatus? newerThan,
     required IStatus? olderThan,
@@ -117,7 +117,7 @@ class AccountStatusesMediaOnlyCachedListBloc
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
       onlyWithMedia: true,
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,

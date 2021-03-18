@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/pagination/cached/conversation_chat_message_cached_pagination_bloc.dart';
@@ -34,12 +35,14 @@ class ConversationChatMessageCachedPaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IConversationChatMessage>? olderPage,
     required CachedPaginationPage<IConversationChatMessage>? newerPage,
-  }) =>
-      chatMessageListService.loadLocalItems(
+  }) {
+
+    return chatMessageListService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
       );
+  }
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -53,8 +56,8 @@ class ConversationChatMessageCachedPaginationBloc
 
     return chatMessageListService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
     );
   }
 

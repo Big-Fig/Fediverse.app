@@ -142,18 +142,18 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
     if (oldSelectedFolder?.folder != null) {
       var newSelectedFolder = folders.firstWhereOrNull(
-        (folder) => folder.id == oldSelectedFolder?.folder?.id,
+        (folder) => folder.id == oldSelectedFolder?.folder.id,
       );
 
       if (newSelectedFolder != null) {
         await selectFolder(newSelectedFolder);
       } else {
-        if (folders?.isNotEmpty == true) {
+        if (folders.isNotEmpty == true) {
           await selectFolder(folders.first);
         }
       }
     } else {
-      if (folders?.isNotEmpty == true) {
+      if (folders.isNotEmpty == true) {
         await selectFolder(folders.first);
       }
     }

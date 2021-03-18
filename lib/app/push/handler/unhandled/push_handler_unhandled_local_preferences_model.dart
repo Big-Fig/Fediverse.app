@@ -15,10 +15,10 @@ part 'push_handler_unhandled_local_preferences_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PushHandlerUnhandledList implements IJsonObject {
   @HiveField(0)
-  final List<PushHandlerMessage>? messages;
+  final List<PushHandlerMessage> messages;
 
   PushHandlerUnhandledList({
-    this.messages,
+    required this.messages,
   });
 
   @override

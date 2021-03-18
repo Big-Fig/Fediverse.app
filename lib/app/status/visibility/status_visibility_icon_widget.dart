@@ -23,11 +23,12 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         isSelectedVisibility: isSelectedVisibility,
       );
 
-  static Icon buildVisibilityIcon(
-          {required BuildContext context,
-          required PleromaVisibility? visibility,
-          required isPossibleToChangeVisibility,
-          required isSelectedVisibility}) =>
+  static Icon buildVisibilityIcon({
+    required BuildContext context,
+    required PleromaVisibility visibility,
+    required isPossibleToChangeVisibility,
+    required isSelectedVisibility,
+  }) =>
       Icon(
         mapVisibilityToIconData(visibility),
         color: calculateVisibilityColor(
@@ -37,7 +38,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(PleromaVisibility? visibility) {
+  static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
     switch (visibility) {
       case PleromaVisibility.public:
         return FediIcons.world;
@@ -52,6 +53,5 @@ class StatusVisibilityIconWidget extends StatelessWidget {
       case PleromaVisibility.private:
         return FediIcons.private;
     }
-    throw "Not supported visibility $visibility";
   }
 }

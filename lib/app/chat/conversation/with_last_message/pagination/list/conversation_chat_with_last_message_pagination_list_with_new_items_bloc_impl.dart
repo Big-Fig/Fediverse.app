@@ -22,11 +22,13 @@ class ConversationChatWithLastMessagePaginationListWithNewItemsBloc<
   @override
   Stream<List<IConversationChatWithLastMessage>> watchItemsNewerThanItem(
           IConversationChatWithLastMessage item) =>
-      cachedListBloc!.watchLocalItemsNewerThanItem(item);
+      cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override
-  int compareItemsToSort(IConversationChatWithLastMessage? a,
-      IConversationChatWithLastMessage? b) {
+  int compareItemsToSort(
+    IConversationChatWithLastMessage? a,
+    IConversationChatWithLastMessage? b,
+  ) {
     if (a?.chat.updatedAt == null && b?.chat.updatedAt == null) {
       return 0;
     } else if (a?.chat.updatedAt != null && b?.chat.updatedAt == null) {

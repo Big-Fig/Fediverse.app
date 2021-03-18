@@ -418,6 +418,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_cache_files_settings_sizeLimit_value_notSet" : MessageLookupByLibrary.simpleMessage("Нет"),
     "app_cache_files_settings_sizeLimit_value_size100" : MessageLookupByLibrary.simpleMessage("100"),
     "app_cache_files_settings_sizeLimit_value_size1000" : MessageLookupByLibrary.simpleMessage("1000"),
+    "app_cache_files_settings_sizeLimit_value_size10000" : MessageLookupByLibrary.simpleMessage("10000"),
     "app_cache_files_settings_sizeLimit_value_size200" : MessageLookupByLibrary.simpleMessage("200"),
     "app_cache_files_settings_sizeLimit_value_size50" : MessageLookupByLibrary.simpleMessage("50"),
     "app_cache_files_settings_sizeLimit_value_size500" : MessageLookupByLibrary.simpleMessage("500"),

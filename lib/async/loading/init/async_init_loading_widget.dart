@@ -47,6 +47,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
                 child: Text(S.of(context).async_init_state_notStarted),
               ),
             );
+          case null:
           case AsyncInitLoadingState.loading:
             Widget? child;
             if (loadingWidget == null) {
@@ -69,7 +70,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
                 ));
         }
 
-        throw "Invalid AsyncInitLoadingState $loadingState";
+
       },
     );
   }

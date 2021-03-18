@@ -121,9 +121,9 @@ class ConversationChatStatusListWidget
 
         if (previousCreatedAt != null) {
           isFirstInDayGroup =
-              !CustomDateUtils.isSameDay(currentCreatedAt!, previousCreatedAt);
-          var isSameAccount = currentMessage.account!.remoteId ==
-              previousMessage!.account!.remoteId;
+              !CustomDateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
+          var isSameAccount = currentMessage.account.remoteId ==
+              previousMessage!.account.remoteId;
           isFirstInMinuteGroup =
               !(CustomDateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
@@ -133,9 +133,9 @@ class ConversationChatStatusListWidget
         }
         if (nextCreatedAt != null) {
           var isSameAccount =
-              currentMessage.account!.remoteId == nextMessage!.account!.remoteId;
+              currentMessage.account.remoteId == nextMessage!.account.remoteId;
           isLastInDayGroup =
-              !CustomDateUtils.isSameDay(currentCreatedAt!, nextCreatedAt);
+              !CustomDateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =
               !(CustomDateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
                   isSameAccount);
@@ -165,7 +165,7 @@ class ConversationChatStatusListWidget
                 padding: FediPadding.allSmallPadding,
                 child: Center(
                     child: Text(
-                  _dateSeparatorDateFormat.format(currentCreatedAt!),
+                  _dateSeparatorDateFormat.format(currentCreatedAt),
                   style: IFediUiTextTheme.of(context).smallShortBoldGrey,
                 )),
               ),

@@ -31,7 +31,7 @@ class FilterListItemWidget extends StatelessWidget {
           },
           onDelete: () async {
             await IFilterRepository.of(context, listen: false)
-                .deleteById(filterBloc.filter!.localId);
+                .deleteById(filterBloc.filter.localId);
             _refresh(context);
           },
         );
@@ -97,7 +97,7 @@ class _FilterListItemPhraseWidget extends StatelessWidget {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
 
     return Text(
-      filterBloc.filter!.phrase!,
+      filterBloc.filter.phrase,
       style: fediUiTextTheme.bigTallBoldDarkGrey,
     );
   }

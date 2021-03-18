@@ -25,18 +25,16 @@ class OverlayNotificationService extends DisposableOwner
         key: ValueKey(key),
         child: FediLightStatusBarStyleArea(
           child: Material(
-            color: background ?? Theme.of(context)?.accentColor,
+            color: background ?? Theme.of(context).accentColor,
             elevation: elevation,
             child: SafeArea(
                 bottom: position == NotificationPosition.bottom,
                 top: position == NotificationPosition.top,
                 child: ListTileTheme(
                   textColor: foreground ??
-                      // ignore: deprecated_member_use
-                      Theme.of(context)?.accentTextTheme?.title?.color,
+                      Theme.of(context).accentTextTheme.headline6?.color,
                   iconColor: foreground ??
-                      // ignore: deprecated_member_use
-                      Theme.of(context)?.accentTextTheme?.title?.color,
+                      Theme.of(context).accentTextTheme.headline6?.color,
                   child: ListTile(
                     leading: leading,
                     title: content,

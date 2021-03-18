@@ -4,7 +4,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 Function eq = const ListEquality().equals;
 
 class EmojiText {
-  final String? text;
+  final String text;
   final List<IPleromaEmoji>? emojis;
 
   EmojiText({

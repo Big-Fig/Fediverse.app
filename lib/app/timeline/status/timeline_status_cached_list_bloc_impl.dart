@@ -94,7 +94,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc!.stream
+  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
       .map((timeline) => timeline?.settings)
       .map((_) => true)
       .distinct();

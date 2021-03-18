@@ -16,6 +16,6 @@ class GlobalUiSettingsLocalPreferencesBloc
   UiSettings get defaultValue => UiSettings(
         themeId: null,
         statusFontSize:
-            IUiSettingsBloc.defaultStatusFontSettingsValue?.toJsonValue(),
+            IUiSettingsBloc.defaultStatusFontSettingsValue.toJsonValue(),
       );
 }

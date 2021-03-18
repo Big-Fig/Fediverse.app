@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/list/local_only/local_only_list_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
@@ -79,11 +80,12 @@ class DraftStatusLocalOnlyPaginationBloc
     required PaginationPage<IDraftStatus>? olderPage,
     required PaginationPage<IDraftStatus>? newerPage,
   }) {
+
     return listService.loadItemsFromLocalForPage(
       itemsCountPerPage: itemsCountPerPage,
       pageIndex: pageIndex,
-      newerThan: newerPage?.items?.last,
-      olderThan: olderPage?.items?.first,
+      newerThan: newerPage?.items.lastOrNull,
+      olderThan: olderPage?.items.firstOrNull,
     );
   }
 }

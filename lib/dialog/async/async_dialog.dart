@@ -49,7 +49,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     result = await cancelableOperation.valueOrCancellation(null);
   } catch (e, stackTrace) {
     error = e;
-    for (ErrorDataBuilder builder in errorDataBuilders ?? []) {
+    for (ErrorDataBuilder builder in errorDataBuilders) {
       errorData = builder(context, e, stackTrace);
       if (errorData != null) {
         needRethrow = false;

@@ -151,7 +151,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     );
 
     if (conversationRemoteId != null) {
-      var accountRemoteId = pleromaAccount!.id;
+      var accountRemoteId = pleromaAccount.id;
 
       await conversationAccountsDao.insert(
         DbConversationAccount(
@@ -191,20 +191,20 @@ class AccountRepository extends AsyncInitLoadingBloc
         (remoteAccount) {
           var found = existConversationAccount.firstWhereOrNull(
               (conversationAccount) =>
-                  conversationAccount.accountRemoteId == remoteAccount!.id);
+                  conversationAccount.accountRemoteId == remoteAccount.id);
           var exist = found != null;
           return !exist;
         },
       );
 
-      if (accountsToInsert?.isNotEmpty == true) {
+      if (accountsToInsert.isNotEmpty == true) {
         await conversationAccountsDao.insertAll(
-            accountsToInsert!
+            accountsToInsert
                 .map(
                   (accountToInsert) => DbConversationAccount(
                     id: null,
                     conversationRemoteId: conversationRemoteId,
-                    accountRemoteId: accountToInsert!.id,
+                    accountRemoteId: accountToInsert.id,
                   ),
                 )
                 .toList(),
@@ -216,23 +216,23 @@ class AccountRepository extends AsyncInitLoadingBloc
       var existChatAccounts =
           await chatAccountsDao.findByChatRemoteId(chatRemoteId).get();
 
-      var accountsToInsert = pleromaAccounts?.where(
+      var accountsToInsert = pleromaAccounts.where(
         (remoteAccount) {
           var found = existChatAccounts.firstWhereOrNull((chatAccount) =>
-              chatAccount.accountRemoteId == remoteAccount!.id);
+              chatAccount.accountRemoteId == remoteAccount.id);
           var exist = found != null;
           return !exist;
         },
       );
 
-      if (accountsToInsert?.isNotEmpty == true) {
+      if (accountsToInsert.isNotEmpty == true) {
         await chatAccountsDao.insertAll(
-          accountsToInsert!
+          accountsToInsert
               .map(
                 (accountToInsert) => DbChatAccount(
                   id: null,
                   chatRemoteId: chatRemoteId,
-                  accountRemoteId: accountToInsert!.id,
+                  accountRemoteId: accountToInsert.id,
                 ),
               )
               .toList(),
@@ -268,7 +268,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       );
     }
     await updateById(
-      oldLocalAccount!.localId,
+      oldLocalAccount.localId,
       newLocalDbAccount,
     );
   }

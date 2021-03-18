@@ -173,7 +173,7 @@ class EditCustomListBloc extends DisposableOwner
       paginationBloc: customListAccountListNetworkOnlyPaginationBloc,
     );
 
-    accountPaginationListBloc!.refreshWithoutController();
+    accountPaginationListBloc.refreshWithoutController();
 
     editCustomListAccountListPaginationListBloc =
         EditCustomListAccountListPaginationListBloc(
@@ -222,11 +222,11 @@ class EditCustomListBloc extends DisposableOwner
 
   bool _calculateIsReadyToSubmit({
     required bool customListFormBlocIsHaveAtLeastOneError,
-    required bool? customListFormBlocIsSomethingChanged,
+    required bool customListFormBlocIsSomethingChanged,
     required bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
   }) {
     return !customListFormBlocIsHaveAtLeastOneError &&
-        (customListFormBlocIsSomethingChanged! ||
+        (customListFormBlocIsSomethingChanged ||
             editCustomListAccountListPaginationListBlocIsSomethingChanged);
   }
 

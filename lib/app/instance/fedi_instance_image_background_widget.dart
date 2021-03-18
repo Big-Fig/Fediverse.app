@@ -42,7 +42,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         // backgroundImage maybe relative path or absolute path]
         if (backgroundImage != null) {
           var backgroundImageUri = Uri.parse(backgroundImage);
-          var isRelative = backgroundImageUri.host?.isNotEmpty != true;
+          var isRelative = backgroundImageUri.host.isNotEmpty != true;
           if (isRelative) {
             var hostPath = currentInstance!.uri.toString();
             backgroundImageAbsolutePath = hostPath + backgroundImage;
@@ -73,7 +73,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
   Widget build(BuildContext context) {
     var backgroundImageAbsolutePath = Provider.of<String>(context);
 
-    if (backgroundImageAbsolutePath?.isNotEmpty == true) {
+    if (backgroundImageAbsolutePath.isNotEmpty == true) {
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return IFilesCacheService.of(context).createCachedNetworkImageWidget(

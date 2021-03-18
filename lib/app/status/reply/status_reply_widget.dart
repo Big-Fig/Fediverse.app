@@ -33,6 +33,7 @@ class StatusReplyWidget extends StatelessWidget {
         var loadingState = snapshot.data;
 
         switch (loadingState) {
+          case null:
           case AsyncInitLoadingState.notStarted:
           case AsyncInitLoadingState.loading:
             return const _StatusReplyLoadingWidget();
@@ -45,7 +46,7 @@ class StatusReplyWidget extends StatelessWidget {
             return _StatusReplyFailedWidget();
         }
 
-        throw "Invalid loadingState $loadingState";
+
       },
     );
   }

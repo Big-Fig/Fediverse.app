@@ -125,7 +125,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                         stream: postStatusBloc.inputTextStream,
                         builder: (context, snapshot) {
                           var inputText = snapshot.data;
-                          if (inputText?.trim()?.isNotEmpty == true) {
+                          if (inputText?.trim().isNotEmpty == true) {
                             return const PostMessageEmojiActionWidget();
                           } else {
                             return const PostMessageAttachActionWidget();

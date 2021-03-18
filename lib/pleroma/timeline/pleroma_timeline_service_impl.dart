@@ -171,7 +171,7 @@ class PleromaTimelineService extends DisposableOwner
             [])
       ],
     );
-    var httpResponse = await restService.sendHttpRequest(request)!;
+    var httpResponse = await restService.sendHttpRequest(request);
 
     RestResponse<List<IPleromaStatus>> restResponse = RestResponse.fromResponse(
       response: httpResponse,

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
@@ -29,12 +30,14 @@ class PleromaChatWithLastMessagePaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? olderPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? newerPage,
-  }) =>
-      cachedListBloc.loadLocalItems(
+  }) {
+
+    return cachedListBloc.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
       );
+  }
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -48,8 +51,8 @@ class PleromaChatWithLastMessagePaginationBloc
 
     return cachedListBloc.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
     );
   }
 }

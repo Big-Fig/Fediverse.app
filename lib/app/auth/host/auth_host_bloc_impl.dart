@@ -160,7 +160,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future<bool> retrieveAppAccessToken() async {
-    var accessToken = await pleromaOAuthService!.retrieveAppAccessToken(
+    var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
         tokenRequest: PleromaOAuthAppTokenRequest(
       redirectUri: await _calculateRedirectUri(),
       scope: scopes,
@@ -169,7 +169,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     ));
 
     if (accessToken != null) {
-      await hostAccessTokenLocalPreferenceBloc!.setValue(accessToken);
+      await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
       return true;
     } else {
       return false;
@@ -181,12 +181,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     _logger.finest(() => "launchLoginToAccount");
     await checkApplicationRegistration();
 
-    var baseUrl = pleromaOAuthService!.restService!.baseUri;
+    var baseUrl = pleromaOAuthService.restService.baseUri;
 
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());
 
-    var authCode = await pleromaOAuthService!
+    var authCode = await pleromaOAuthService
         .launchAuthorizeFormAndExtractAuthorizationCode(
       authorizeRequest: PleromaOAuthAuthorizeRequest(
         redirectUri: await _calculateRedirectUri(),
@@ -210,7 +210,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future<AuthInstance> loginWithAuthCode(String authCode) async {
-    var token = await (pleromaOAuthService!.retrieveAccountAccessToken(
+    var token = await (pleromaOAuthService.retrieveAccountAccessToken(
         tokenRequest: PleromaOAuthAccountTokenRequest(
       redirectUri: await _calculateRedirectUri(),
       scope: scopes,
@@ -371,7 +371,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var result = false;
 
-    late PleromaInstanceService pleromaInstanceService;
+    PleromaInstanceService? pleromaInstanceService;
     try {
       pleromaInstanceService =
           PleromaInstanceService(restService: pleromaRestService);
@@ -430,7 +430,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var instance = currentInstance;
     try {
-      await pleromaOAuthService!.revokeToken(
+      await pleromaOAuthService.revokeToken(
         revokeRequest: PleromaOAuthAppTokenRevokeRequest(
           clientId: instance.application!.clientId,
           clientSecret: instance.application!.clientSecret,
@@ -444,8 +444,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   @override
   Future internalAsyncInit() async {
-    await hostApplicationLocalPreferenceBloc!.performAsyncInit();
-    await hostAccessTokenLocalPreferenceBloc!.performAsyncInit();
+    await hostApplicationLocalPreferenceBloc.performAsyncInit();
+    await hostAccessTokenLocalPreferenceBloc.performAsyncInit();
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .performAsyncInit();
   }

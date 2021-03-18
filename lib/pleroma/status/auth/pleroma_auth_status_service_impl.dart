@@ -245,7 +245,7 @@ class PleromaAuthStatusService extends PleromaStatusService
       relativePath: statusRelativeUrlPath,
       headers: {
         if (data.idempotencyKey?.isNotEmpty == true)
-          "Idempotency-Key": data.idempotencyKey,
+          "Idempotency-Key": data.idempotencyKey!,
       },
       bodyJson: json,
     );

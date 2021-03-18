@@ -49,7 +49,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     List<IPleromaAccount> remoteAccounts;
 
     remoteAccounts = await pleromaAccountService.getAccountFollowings(
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
         maxId: olderThan?.remoteId,
         sinceId: newerThan?.remoteId,
@@ -64,8 +64,8 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
       );
 
       await accountRepository.addAccountFollowings(
-        accountRemoteId: account!.remoteId,
-        followings: remoteAccounts?.toPleromaAccounts(),
+        accountRemoteId: account.remoteId,
+        followings: remoteAccounts.toPleromaAccounts(),
       );
 
   }

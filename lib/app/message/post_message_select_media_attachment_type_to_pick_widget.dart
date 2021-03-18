@@ -101,7 +101,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
         var pickedFilesResult = await FilePicker.platform.pickFiles();
         var pickedFile;
 
-        if (pickedFilesResult?.files?.isNotEmpty == true) {
+        if (pickedFilesResult?.files.isNotEmpty == true) {
           pickedFile = File(pickedFilesResult!.files.first.path!);
         }
         if (pickedFile != null) {

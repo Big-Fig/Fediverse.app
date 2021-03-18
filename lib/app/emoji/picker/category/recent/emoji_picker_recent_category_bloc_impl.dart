@@ -40,13 +40,12 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
       preferenceBloc.setValue(
         EmojiPickerRecentCategoryItemsList(
           recentCodeItems:
-              currentItems?.whereType<CustomEmojiPickerCodeItem>()?.toList(),
-          recentImageItems: currentItems
-              ?.whereType<CustomEmojiPickerImageUrlItem>()
-              ?.toList(),
+              currentItems.whereType<CustomEmojiPickerCodeItem>().toList(),
+          recentImageItems:
+              currentItems.whereType<CustomEmojiPickerImageUrlItem>().toList(),
         ),
       );
     }
-    _logger.finest(() => "onEmojiSelected items ${items?.length} ");
+    _logger.finest(() => "onEmojiSelected items ${items.length} ");
   }
 }

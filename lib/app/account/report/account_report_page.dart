@@ -39,7 +39,7 @@ class _AccountReportPageAppBar extends StatelessWidget
     var accountReportBloc = IAccountReportBloc.of(context);
     var account = accountReportBloc.account!;
     return FediPageTitleAppBar(
-      title: S.of(context).app_account_report_title(account.acct!),
+      title: S.of(context).app_account_report_title(account.acct),
       actions: [
         const _AccountReportSendButton(),
       ],
@@ -94,8 +94,8 @@ class _AccountReportSendButton extends StatelessWidget {
 
 void goToAccountReportPage(
   BuildContext context, {
-  required IAccount? account,
-  required List<IStatus?> statuses,
+  required IAccount account,
+  required List<IStatus> statuses,
 }) {
   Navigator.push(
     context,
@@ -107,8 +107,8 @@ void goToAccountReportPage(
 }
 
 MaterialPageRoute createAccountReportPageRoute({
-  required IAccount? account,
-  required List<IStatus?> statuses,
+  required IAccount account,
+  required List<IStatus> statuses,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IAccountReportBloc>(

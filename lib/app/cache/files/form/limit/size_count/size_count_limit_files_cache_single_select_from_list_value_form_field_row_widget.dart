@@ -48,9 +48,13 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
                 return S
                     .of(context)
                     .app_cache_files_settings_sizeLimit_value_size1000;
+                case FilesCacheSizeLimitCountType.size10000:
+                return S
+                    .of(context)
+                    .app_cache_files_settings_sizeLimit_value_size10000;
             }
 
-            throw UnsupportedError("invalid value $value");
+
           },
           displayIconInDialog: false,
           description: null,

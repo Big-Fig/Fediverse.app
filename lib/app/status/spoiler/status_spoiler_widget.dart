@@ -27,7 +27,7 @@ class StatusSpoilerWidget extends StatelessWidget {
       stream: statusBloc.spoilerTextWithEmojisStream,
       builder: (context, snapshot) {
         var spoilerEmojiText = snapshot.data;
-        if (spoilerEmojiText?.text?.isNotEmpty != true) {
+        if (spoilerEmojiText?.text.isNotEmpty != true) {
           return const SizedBox.shrink();
         }
         return Provider<EmojiText?>.value(
@@ -61,11 +61,11 @@ class StatusSpoilerWidget extends StatelessWidget {
                     break;
                 }
 
-                return DisposableProxyProvider<EmojiText, IHtmlTextBloc>(
+                return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                   update: (context, spoilerWithEmojis, _) {
                     var htmlTextBloc = HtmlTextBloc(
                       inputData: HtmlTextInputData(
-                        input: spoilerWithEmojis?.text,
+                        input: spoilerWithEmojis?.text ?? "",
                         emojis: spoilerWithEmojis?.emojis,
                       ),
                       settings: HtmlTextSettings(

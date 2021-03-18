@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_pagination_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
@@ -47,11 +48,13 @@ class MyAccountDomainBlockNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<DomainBlock>? olderPage,
     required PaginationPage<DomainBlock>? newerPage,
-  }) =>
-      listBloc.loadItemsFromRemoteForPage(
+  }) {
+
+    return listBloc.loadItemsFromRemoteForPage(
         itemsCountPerPage: itemsCountPerPage,
-        maxId: newerPage?.items?.last?.domain,
-        minId: olderPage?.items?.first?.domain,
+        maxId: newerPage?.items.lastOrNull?.domain,
+        minId: olderPage?.items.firstOrNull?.domain,
         pageIndex: pageIndex,
       );
+  }
 }

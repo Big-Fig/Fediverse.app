@@ -51,11 +51,14 @@ class PleromaAnnouncementService extends DisposableOwner
   Future<List<IPleromaAnnouncement>> getAnnouncements({
     bool withDismissed = false,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
         relativePath: announcementRelativeUrlPath,
         queryArgs: [
           RestRequestQueryArg("with_dismissed", withDismissed.toString())
-        ]))!;
+        ],
+      ),
+    );
 
     return parseAnnouncementListResponse(httpResponse);
   }
@@ -64,10 +67,12 @@ class PleromaAnnouncementService extends DisposableOwner
   Future dismissAnnouncement({
     required String announcementId,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
-      relativePath:
-          urlPath.join(announcementRelativeUrlPath, announcementId, "dismiss"),
-    ))!;
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+        relativePath: urlPath.join(
+            announcementRelativeUrlPath, announcementId, "dismiss"),
+      ),
+    );
 
     if (httpResponse.statusCode != 200) {
       throw PleromaAnnouncementException(
@@ -80,16 +85,20 @@ class PleromaAnnouncementService extends DisposableOwner
     required String announcementId,
     required String name,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.put(
-      relativePath: urlPath.join(
-          announcementRelativeUrlPath, announcementId, "reactions", name),
-    ))!;
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.put(
+        relativePath: urlPath.join(
+            announcementRelativeUrlPath, announcementId, "reactions", name),
+      ),
+    );
 
     if (httpResponse.statusCode != 200) {
       // todo: handle 422: Unprocessable Entity
       // {"error":"Validation failed: Name is not a recognized emoji"}
       throw PleromaAnnouncementException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+        statusCode: httpResponse.statusCode,
+        body: httpResponse.body,
+      );
     }
   }
 
@@ -98,10 +107,16 @@ class PleromaAnnouncementService extends DisposableOwner
     required String announcementId,
     required String name,
   }) async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.delete(
-      relativePath: urlPath.join(
-          announcementRelativeUrlPath, announcementId, "reactions", name),
-    ))!;
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.delete(
+        relativePath: urlPath.join(
+          announcementRelativeUrlPath,
+          announcementId,
+          "reactions",
+          name,
+        ),
+      ),
+    );
 
     if (httpResponse.statusCode != 200) {
       // todo: handle 422: Unprocessable Entity

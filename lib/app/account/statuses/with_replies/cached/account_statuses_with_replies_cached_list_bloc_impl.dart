@@ -33,7 +33,7 @@ class AccountStatusesWithRepliesCachedListBloc
       );
 
   AccountStatusesWithRepliesCachedListBloc({
-    required IAccount? account,
+    required IAccount account,
     required IPleromaAccountService pleromaAccountService,
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
@@ -52,8 +52,9 @@ class AccountStatusesWithRepliesCachedListBloc
   IPleromaApi get pleromaApi => pleromaAccountService;
 
   static AccountStatusesWithRepliesCachedListBloc createFromContext(
-      BuildContext context,
-      {required IAccount? account}) {
+    BuildContext context, {
+    required IAccount account,
+  }) {
     return AccountStatusesWithRepliesCachedListBloc(
       account: account,
       pleromaAccountService: IPleromaAccountService.of(context, listen: false),
@@ -116,7 +117,7 @@ class AccountStatusesWithRepliesCachedListBloc
         "\t olderThan=$olderThan");
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-      accountRemoteId: account!.remoteId,
+      accountRemoteId: account.remoteId,
       pagination: PleromaPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
@@ -134,12 +135,17 @@ class AccountStatusesWithRepliesCachedListBloc
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
 
-  static Widget provideToContext(BuildContext context,
-      {required IAccount? account, required Widget child}) {
+  static Widget provideToContext(
+    BuildContext context, {
+    required IAccount account,
+    required Widget child,
+  }) {
     return DisposableProvider<IStatusCachedListBloc>(
       create: (context) =>
-          AccountStatusesWithRepliesCachedListBloc.createFromContext(context,
-              account: account),
+          AccountStatusesWithRepliesCachedListBloc.createFromContext(
+        context,
+        account: account,
+      ),
       child: StatusCachedListBlocProxyProvider(child: child),
     );
   }

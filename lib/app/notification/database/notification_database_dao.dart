@@ -270,28 +270,25 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   }
 
   DbNotificationPopulated typedResultToPopulated(TypedResult typedResult) {
-
     var notificationAccount = typedResult.readTable(accountAlias);
     var notificationStatus = typedResult.readTable(statusAlias);
 
     DbStatusPopulated? statusPopulated;
-    if (notificationStatus?.remoteId != null) {
-      var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
-      var rebloggedStatus = typedResult.readTable(statusReblogAlias);
-      var rebloggedStatusAccount =
-          typedResult.readTable(statusReblogAccountAlias);
+    var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
+    var rebloggedStatus = typedResult.readTable(statusReblogAlias);
+    var rebloggedStatusAccount =
+        typedResult.readTable(statusReblogAccountAlias);
 
-      statusPopulated = DbStatusPopulated(
-        reblogDbStatus: rebloggedStatus,
-        reblogDbStatusAccount: rebloggedStatusAccount,
-        dbStatus: notificationStatus,
-        dbAccount: notificationStatusAccount,
-        replyDbStatus: null,
-        replyDbStatusAccount: null,
-        replyReblogDbStatus: null,
-        replyReblogDbStatusAccount: null,
-      );
-    }
+    statusPopulated = DbStatusPopulated(
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount,
+      dbStatus: notificationStatus,
+      dbAccount: notificationStatusAccount,
+      replyDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyReblogDbStatusAccount: null,
+    );
 
     return DbNotificationPopulated(
       dbNotification: typedResult.readTable(db.dbNotifications),

@@ -46,7 +46,7 @@ class EditMyAccountCustomFieldsItemFieldWidget extends StatelessWidget {
                 );
               },
             ),
-            nextFocusNode: itemData.nextCustomField?.keyField?.focusNode,
+            nextFocusNode: itemData.nextCustomField?.keyField.focusNode,
           ),
         ),
       ],

@@ -120,7 +120,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
 
   @override
   String? get inReplyToAccountRemoteId =>
-      postStatusData.inReplyToPleromaStatus?.account?.id;
+      postStatusData.inReplyToPleromaStatus?.account.id;
 
   @override
   String? get inReplyToRemoteId => postStatusData.inReplyToPleromaStatus?.id;

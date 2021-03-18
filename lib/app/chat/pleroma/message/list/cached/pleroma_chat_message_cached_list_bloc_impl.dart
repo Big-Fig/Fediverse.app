@@ -52,7 +52,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         "\t olderThan = $olderThan");
 
     var remoteMessages = await pleromaChatService.getChatMessages(
-      chatId: chat!.remoteId,
+      chatId: chat.remoteId,
       pagination: PleromaPaginationRequest(
         maxId: olderThan?.remoteId,
         sinceId: newerThan?.remoteId,

@@ -236,7 +236,7 @@ class PleromaChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> deleteById(int id) async {
-    var affectedRows = await dao.deleteById(id!);
+    var affectedRows = await dao.deleteById(id);
     assert(affectedRows == 0 || affectedRows == 1);
     return (affectedRows) == 1;
   }

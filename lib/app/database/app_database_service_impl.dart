@@ -132,9 +132,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
         await appDatabase.chatMessageDao.oldest().getSingle();
 
     var dateTimes = <DateTime?>[
-      oldestStatus?.createdAt,
-      oldestNotification?.createdAt,
-      oldestChatMessage?.createdAt,
+      oldestStatus.createdAt,
+      oldestNotification.createdAt,
+      oldestChatMessage.createdAt,
     ].where((datetime) => datetime != null).toList();
 
     var oldestDateTime;

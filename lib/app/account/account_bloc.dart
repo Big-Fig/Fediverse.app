@@ -242,16 +242,16 @@ extension IAccountBlocExtension on IAccountBloc {
 
 extension AccountEmojiTextExtension on IAccount {
   EmojiText? toNoteEmojiText() {
-    if (note?.isNotEmpty == true && emojis?.isNotEmpty == true) {
-      return EmojiText(text: note!, emojis: emojis!);
+    if (note?.isNotEmpty == true) {
+      return EmojiText(text: note!, emojis: emojis);
     } else {
       return null;
     }
   }
 
   EmojiText? toDisplayNameEmojiText() {
-    if (displayName?.isNotEmpty == true && emojis?.isNotEmpty == true) {
-      return EmojiText(text: displayName!, emojis: emojis!);
+    if (displayName?.isNotEmpty == true) {
+      return EmojiText(text: displayName!, emojis: emojis);
     } else {
       return null;
     }

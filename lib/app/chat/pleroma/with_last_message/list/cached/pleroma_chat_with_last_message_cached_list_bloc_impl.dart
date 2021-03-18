@@ -34,7 +34,7 @@ class PleromaChatWithLastMessageCachedListBloc
       PleromaChatOrderingTermData.updatedAtDesc;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
+  Future refreshItemsFromRemoteForPage(
       {required int? limit,
       required IPleromaChatWithLastMessage? newerThan,
       required IPleromaChatWithLastMessage? olderThan}) async {
@@ -84,7 +84,7 @@ class PleromaChatWithLastMessageCachedListBloc
       chatWithLastMessageRepository.watchChatsWithLastMessage(
         filters: filters,
         pagination: RepositoryPagination(
-          newerThanItem: item?.chat,
+          newerThanItem: item.chat,
         ),
         orderingTermData: orderingTermData,
       );

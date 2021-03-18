@@ -152,7 +152,7 @@ class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
       onSubmitted: (String value) {
         _logger.finest(() => "onSubmitted $value");
         var nextItem = pollOptionsGroupBloc.findNextItemFor(pollItemBloc);
-        nextItem?.focusNode?.requestFocus();
+        nextItem?.focusNode.requestFocus();
       },
       textInputAction: isLast ? TextInputAction.done : TextInputAction.go,
       // textInputAction: TextInputAction.done,

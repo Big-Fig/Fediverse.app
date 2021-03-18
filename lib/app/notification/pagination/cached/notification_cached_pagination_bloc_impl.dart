@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 class NotificationCachedPaginationBloc
     extends CachedPleromaPaginationBloc<INotification>
     implements INotificationCachedPaginationBloc {
-  final INotificationCachedListBloc? notificationListService;
+  final INotificationCachedListBloc notificationListService;
 
   NotificationCachedPaginationBloc({
     required this.notificationListService,
@@ -26,7 +27,7 @@ class NotificationCachedPaginationBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => notificationListService!.pleromaApi;
+  IPleromaApi get pleromaApi => notificationListService.pleromaApi;
 
   @override
   Future<List<INotification>> loadLocalItems({
@@ -34,15 +35,17 @@ class NotificationCachedPaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<INotification>? olderPage,
     required CachedPaginationPage<INotification>? newerPage,
-  }) =>
-      notificationListService!.loadLocalItems(
+  }) {
+
+    return notificationListService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThan: olderPage?.items?.first,
-        olderThan: newerPage?.items?.last,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
       );
+  }
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required CachedPaginationPage<INotification>? olderPage,
@@ -51,10 +54,10 @@ class NotificationCachedPaginationBloc
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
-    return notificationListService!.refreshItemsFromRemoteForPage(
+    return notificationListService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThan: olderPage?.items?.first,
-      olderThan: newerPage?.items?.last,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
     );
   }
 

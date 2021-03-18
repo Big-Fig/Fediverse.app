@@ -32,7 +32,7 @@ class AccountBigListItemWidget extends StatelessWidget {
       onTap: () {
         var callback = accountSelectedCallback;
         if (callback != null) {
-          callback(context, accountBloc.account!);
+          callback(context, accountBloc.account);
         }
       },
       child: Padding(

@@ -107,11 +107,11 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   Future markAsLaunchMessage(PushHandlerMessage message) async {
     var unhandledList = unhandledLocalPreferencesBloc.value!;
 
-    unhandledList.messages!.remove(message);
+    unhandledList.messages.remove(message);
 
-    unhandledList.messages!.add(
+    unhandledList.messages.add(
       message.copyWith(
-        pushMessage: message.pushMessage!.copyWith(
+        pushMessage: message.pushMessage.copyWith(
           typeString: PushMessageType.launch.toJsonValue(),
         ),
       ),

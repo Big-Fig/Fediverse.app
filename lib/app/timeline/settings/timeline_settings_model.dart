@@ -164,8 +164,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
-              ?.toList(),
+              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
@@ -192,8 +192,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
-              ?.toList(),
+              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
@@ -219,8 +219,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
-              ?.toList(),
+              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: withRemoteHashtag,
           replyVisibilityFilterString: null,
@@ -244,8 +244,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: null,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
-              ?.toList(),
+              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .toList(),
           onlyInRemoteList: onlyInRemoteList as PleromaList?,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
@@ -357,7 +357,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   List<PleromaVisibility>? get excludeVisibilities => excludeVisibilitiesStrings
       ?.map((excludeVisibilityString) =>
           excludeVisibilityString.toPleromaVisibility())
-      ?.toList();
+      .toList();
 
   PleromaReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toPleromaReplyVisibilityFilter();

@@ -12,21 +12,24 @@ var _logger = Logger("filter_bloc_impl.dart");
 
 class FilterBloc extends DisposableOwner implements IFilterBloc {
   @override
-  bool get isExpired => filter!.isExpired;
+  bool get isExpired => filter.isExpired;
 
   @override
   Stream<bool> get isExpiredStream => filterStream.map(
-        (filter) => filter!.isExpired,
+        (filter) => filter.isExpired,
       );
 
   @override
-  IFilter? get filter => _filterSubject.value;
+  IFilter get filter => _filterSubject.value!;
 
   @override
-  Stream<IFilter?> get filterStream => _filterSubject.stream.distinct();
+  Stream<IFilter> get filterStream => _filterSubject.stream.distinct();
 
-  static FilterBloc createFromContext(BuildContext context, IFilter filter,
-          {bool isNeedWatchLocalRepositoryForUpdates = true}) =>
+  static FilterBloc createFromContext(
+    BuildContext context,
+    IFilter filter, {
+    bool isNeedWatchLocalRepositoryForUpdates = true,
+  }) =>
       FilterBloc(
         pleromaFilterService: IPleromaFilterService.of(context, listen: false),
         filterRepository: IFilterRepository.of(context, listen: false),
@@ -36,16 +39,16 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
             isNeedWatchLocalRepositoryForUpdates,
       );
 
-  final BehaviorSubject<IFilter?> _filterSubject;
+  final BehaviorSubject<IFilter> _filterSubject;
 
   final IPleromaFilterService pleromaFilterService;
-  final IFilterRepository? filterRepository;
+  final IFilterRepository filterRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   FilterBloc({
     required this.pleromaFilterService,
     required this.filterRepository,
-    required IFilter? filter,
+    required IFilter filter,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -68,7 +71,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
       if (isNeedWatchLocalRepositoryForUpdates) {
         addDisposable(
           streamSubscription:
-              filterRepository!.watchByRemoteId(filter!.remoteId).listen(
+              filterRepository.watchByRemoteId(filter!.remoteId).listen(
             (updatedFilter) {
               if (updatedFilter != null) {
                 _filterSubject.add(updatedFilter);
@@ -91,7 +94,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }
 
   Future _updateByRemoteFilter(IPleromaFilter remoteFilter) {
-    return filterRepository!.updateLocalFilterByRemoteFilter(
+    return filterRepository.updateLocalFilterByRemoteFilter(
       oldLocalFilter: filter,
       newRemoteFilter: remoteFilter,
     );
@@ -104,5 +107,5 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }
 
   @override
-  String? get remoteId => filter!.remoteId;
+  String? get remoteId => filter.remoteId;
 }

@@ -32,7 +32,7 @@ class PleromaAuthRestService extends PleromaRestService
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {
-    request.headers!.addAll(createAuthHeaders());
+    request.headers.addAll(createAuthHeaders());
     return super.sendHttpRequest(request);
   }
 
@@ -40,10 +40,10 @@ class PleromaAuthRestService extends PleromaRestService
   Future<Response>
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
           T request) {
-    request.headers!.addAll(createAuthHeaders());
+    request.headers.addAll(createAuthHeaders());
     return super.uploadFileMultipartRequest(request);
   }
 
   @override
-  bool get isMastodon => !isPleroma!;
+  bool get isMastodon => !isPleroma;
 }
